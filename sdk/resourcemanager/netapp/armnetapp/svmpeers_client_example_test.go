@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-15-preview/SvmPeers_Get.json
-func ExampleSvmPeersClient_Get() {
+func ExampleSVMPeersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,25 +22,25 @@ func ExampleSvmPeersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSvmPeersClient().Get(ctx, "contosoNetAppRg", "contoso-external-cluster", "peerA", "contoso-svm-peer-a", nil)
+	res, err := clientFactory.NewSVMPeersClient().Get(ctx, "contosoNetAppRg", "contoso-external-cluster", "peerA", "contoso-svm-peer-a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.SvmPeersClientGetResponse{
-	// 	SvmPeer: armnetapp.SvmPeer{
+	// res = armnetapp.SVMPeersClientGetResponse{
+	// 	SVMPeer: armnetapp.SVMPeer{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/contoso-svm-peer-a"),
 	// 		Name: to.Ptr("contoso-svm-peer-a"),
 	// 		Type: to.Ptr("Microsoft.NetApp/externalClusters/clusterPeers/svmPeers"),
-	// 		Properties: &armnetapp.SvmPeerProperties{
-	// 			AnfSvmName: to.Ptr("anf-svm"),
-	// 			ExternalSvmResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
-	// 			Status: to.Ptr(armnetapp.SvmPeerStatusActive),
+	// 		Properties: &armnetapp.SVMPeerProperties{
+	// 			AnfSVMName: to.Ptr("anf-svm"),
+	// 			ExternalSVMResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
+	// 			Status: to.Ptr(armnetapp.SVMPeerStatusActive),
 	// 			AcceptCommand: to.Ptr("vserver peer accept -vserver contoso-svm -peer-vserver anf-svm"),
-	// 			PeerTypes: []*armnetapp.SvmPeerType{
-	// 				to.Ptr(armnetapp.SvmPeerTypeReplication),
+	// 			PeerTypes: []*armnetapp.SVMPeerType{
+	// 				to.Ptr(armnetapp.SVMPeerTypeReplication),
 	// 			},
 	// 			HybridReplicationResourceIDs: []*string{
 	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/hybridReplications/contosoHybridReplication"),
@@ -51,7 +51,7 @@ func ExampleSvmPeersClient_Get() {
 }
 
 // Generated from example definition: 2026-08-15-preview/SvmPeers_ListByParent.json
-func ExampleSvmPeersClient_NewListByParentPager() {
+func ExampleSVMPeersClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleSvmPeersClient_NewListByParentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSvmPeersClient().NewListByParentPager("contosoNetAppRg", "contoso-external-cluster", "peerA", nil)
+	pager := clientFactory.NewSVMPeersClient().NewListByParentPager("contosoNetAppRg", "contoso-external-cluster", "peerA", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -72,20 +72,20 @@ func ExampleSvmPeersClient_NewListByParentPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.SvmPeersClientListByParentResponse{
+		// page = armnetapp.SVMPeersClientListByParentResponse{
 		// 	SvmPeerListResult: armnetapp.SvmPeerListResult{
-		// 		Value: []*armnetapp.SvmPeer{
+		// 		Value: []*armnetapp.SVMPeer{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/svm-peerA"),
 		// 				Name: to.Ptr("svm-peerA"),
 		// 				Type: to.Ptr("Microsoft.NetApp/externalClusters/clusterPeers/svmPeers"),
-		// 				Properties: &armnetapp.SvmPeerProperties{
-		// 					AnfSvmName: to.Ptr("anf-svm"),
-		// 					ExternalSvmResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
-		// 					Status: to.Ptr(armnetapp.SvmPeerStatusActive),
+		// 				Properties: &armnetapp.SVMPeerProperties{
+		// 					AnfSVMName: to.Ptr("anf-svm"),
+		// 					ExternalSVMResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
+		// 					Status: to.Ptr(armnetapp.SVMPeerStatusActive),
 		// 					AcceptCommand: to.Ptr("vserver peer accept -vserver contoso-svm-1 -peer-vserver anf-svm"),
-		// 					PeerTypes: []*armnetapp.SvmPeerType{
-		// 						to.Ptr(armnetapp.SvmPeerTypeReplication),
+		// 					PeerTypes: []*armnetapp.SVMPeerType{
+		// 						to.Ptr(armnetapp.SVMPeerTypeReplication),
 		// 					},
 		// 					HybridReplicationResourceIDs: []*string{
 		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/hybridReplications/contosoHybridReplication"),
@@ -96,13 +96,13 @@ func ExampleSvmPeersClient_NewListByParentPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/svm-peer2"),
 		// 				Name: to.Ptr("svm-peer2"),
 		// 				Type: to.Ptr("Microsoft.NetApp/externalClusters/clusterPeers/svmPeers"),
-		// 				Properties: &armnetapp.SvmPeerProperties{
-		// 					AnfSvmName: to.Ptr("anf-svm-2"),
-		// 					ExternalSvmResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/svm2"),
-		// 					Status: to.Ptr(armnetapp.SvmPeerStatusPending),
+		// 				Properties: &armnetapp.SVMPeerProperties{
+		// 					AnfSVMName: to.Ptr("anf-svm-2"),
+		// 					ExternalSVMResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/svm2"),
+		// 					Status: to.Ptr(armnetapp.SVMPeerStatusPending),
 		// 					AcceptCommand: to.Ptr("vserver peer accept -vserver contoso-svm-2 -peer-vserver anf-svm-2"),
-		// 					PeerTypes: []*armnetapp.SvmPeerType{
-		// 						to.Ptr(armnetapp.SvmPeerTypeCache),
+		// 					PeerTypes: []*armnetapp.SVMPeerType{
+		// 						to.Ptr(armnetapp.SVMPeerTypeCache),
 		// 					},
 		// 				},
 		// 			},

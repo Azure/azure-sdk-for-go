@@ -659,33 +659,33 @@ type ExternalClustersClientUpdateResponse struct {
 	ExternalCluster
 }
 
-// ExternalSvmsClientCreateOrUpdateResponse contains the response from method ExternalSvmsClient.BeginCreateOrUpdate.
-type ExternalSvmsClientCreateOrUpdateResponse struct {
+// ExternalSVMsClientCreateOrUpdateResponse contains the response from method ExternalSVMsClient.BeginCreateOrUpdate.
+type ExternalSVMsClientCreateOrUpdateResponse struct {
 	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
-	ExternalSvm
+	ExternalSVM
 }
 
-// ExternalSvmsClientDeleteResponse contains the response from method ExternalSvmsClient.BeginDelete.
-type ExternalSvmsClientDeleteResponse struct {
+// ExternalSVMsClientDeleteResponse contains the response from method ExternalSVMsClient.BeginDelete.
+type ExternalSVMsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ExternalSvmsClientGetResponse contains the response from method ExternalSvmsClient.Get.
-type ExternalSvmsClientGetResponse struct {
+// ExternalSVMsClientGetResponse contains the response from method ExternalSVMsClient.Get.
+type ExternalSVMsClientGetResponse struct {
 	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
-	ExternalSvm
+	ExternalSVM
 }
 
-// ExternalSvmsClientListByParentResponse contains the response from method ExternalSvmsClient.NewListByParentPager.
-type ExternalSvmsClientListByParentResponse struct {
+// ExternalSVMsClientListByParentResponse contains the response from method ExternalSVMsClient.NewListByParentPager.
+type ExternalSVMsClientListByParentResponse struct {
 	// The response of a ExternalSvm list operation.
 	ExternalSvmListResult
 }
 
-// ExternalSvmsClientUpdateResponse contains the response from method ExternalSvmsClient.BeginUpdate.
-type ExternalSvmsClientUpdateResponse struct {
+// ExternalSVMsClientUpdateResponse contains the response from method ExternalSVMsClient.BeginUpdate.
+type ExternalSVMsClientUpdateResponse struct {
 	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
-	ExternalSvm
+	ExternalSVM
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -829,6 +829,18 @@ type ResourceUsagesClientListResponse struct {
 	UsagesListResult
 }
 
+// SVMPeersClientGetResponse contains the response from method SVMPeersClient.Get.
+type SVMPeersClientGetResponse struct {
+	// SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
+	SVMPeer
+}
+
+// SVMPeersClientListByParentResponse contains the response from method SVMPeersClient.NewListByParentPager.
+type SVMPeersClientListByParentResponse struct {
+	// The response of a SvmPeer list operation.
+	SvmPeerListResult
+}
+
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.
 type SnapshotPoliciesClientCreateResponse struct {
 	// Snapshot policy information
@@ -934,18 +946,6 @@ type SubvolumesClientUpdateResponse struct {
 	// Subvolume Information properties
 	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
-}
-
-// SvmPeersClientGetResponse contains the response from method SvmPeersClient.Get.
-type SvmPeersClientGetResponse struct {
-	// SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
-	SvmPeer
-}
-
-// SvmPeersClientListByParentResponse contains the response from method SvmPeersClient.NewListByParentPager.
-type SvmPeersClientListByParentResponse struct {
-	// The response of a SvmPeer list operation.
-	SvmPeerListResult
 }
 
 // VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.BeginCreate.

@@ -697,33 +697,33 @@ type ExternalClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExternalSvmsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalSvmsClient.BeginCreateOrUpdate
+// ExternalSVMsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginCreateOrUpdate
 // method.
-type ExternalSvmsClientBeginCreateOrUpdateOptions struct {
+type ExternalSVMsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ExternalSvmsClientBeginDeleteOptions contains the optional parameters for the ExternalSvmsClient.BeginDelete method.
-type ExternalSvmsClientBeginDeleteOptions struct {
+// ExternalSVMsClientBeginDeleteOptions contains the optional parameters for the ExternalSVMsClient.BeginDelete method.
+type ExternalSVMsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ExternalSvmsClientBeginUpdateOptions contains the optional parameters for the ExternalSvmsClient.BeginUpdate method.
-type ExternalSvmsClientBeginUpdateOptions struct {
+// ExternalSVMsClientBeginUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginUpdate method.
+type ExternalSVMsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ExternalSvmsClientGetOptions contains the optional parameters for the ExternalSvmsClient.Get method.
-type ExternalSvmsClientGetOptions struct {
+// ExternalSVMsClientGetOptions contains the optional parameters for the ExternalSVMsClient.Get method.
+type ExternalSVMsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExternalSvmsClientListByParentOptions contains the optional parameters for the ExternalSvmsClient.NewListByParentPager
+// ExternalSVMsClientListByParentOptions contains the optional parameters for the ExternalSVMsClient.NewListByParentPager
 // method.
-type ExternalSvmsClientListByParentOptions struct {
+type ExternalSVMsClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -855,6 +855,16 @@ type ResourceUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SVMPeersClientGetOptions contains the optional parameters for the SVMPeersClient.Get method.
+type SVMPeersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SVMPeersClientListByParentOptions contains the optional parameters for the SVMPeersClient.NewListByParentPager method.
+type SVMPeersClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the SnapshotPoliciesClient.BeginDelete method.
 type SnapshotPoliciesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -952,16 +962,6 @@ type SubvolumesClientGetOptions struct {
 
 // SubvolumesClientListByVolumeOptions contains the optional parameters for the SubvolumesClient.NewListByVolumePager method.
 type SubvolumesClientListByVolumeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SvmPeersClientGetOptions contains the optional parameters for the SvmPeersClient.Get method.
-type SvmPeersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SvmPeersClientListByParentOptions contains the optional parameters for the SvmPeersClient.NewListByParentPager method.
-type SvmPeersClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 

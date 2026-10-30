@@ -81,8 +81,8 @@ type ServerFactory struct {
 	// ExternalClustersServer contains the fakes for client ExternalClustersClient
 	ExternalClustersServer ExternalClustersServer
 
-	// ExternalSvmsServer contains the fakes for client ExternalSvmsClient
-	ExternalSvmsServer ExternalSvmsServer
+	// ExternalSVMsServer contains the fakes for client ExternalSVMsClient
+	ExternalSVMsServer ExternalSVMsServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
@@ -108,6 +108,9 @@ type ServerFactory struct {
 	// ResourceUsagesServer contains the fakes for client ResourceUsagesClient
 	ResourceUsagesServer ResourceUsagesServer
 
+	// SVMPeersServer contains the fakes for client SVMPeersClient
+	SVMPeersServer SVMPeersServer
+
 	// SnapshotPoliciesServer contains the fakes for client SnapshotPoliciesClient
 	SnapshotPoliciesServer SnapshotPoliciesServer
 
@@ -116,9 +119,6 @@ type ServerFactory struct {
 
 	// SubvolumesServer contains the fakes for client SubvolumesClient
 	SubvolumesServer SubvolumesServer
-
-	// SvmPeersServer contains the fakes for client SvmPeersClient
-	SvmPeersServer SvmPeersServer
 
 	// VolumeGroupsServer contains the fakes for client VolumeGroupsClient
 	VolumeGroupsServer VolumeGroupsServer
@@ -166,7 +166,7 @@ type ServerFactoryTransport struct {
 	trExternalCacheConnectionsServer   *ExternalCacheConnectionsServerTransport
 	trExternalCachesServer             *ExternalCachesServerTransport
 	trExternalClustersServer           *ExternalClustersServerTransport
-	trExternalSvmsServer               *ExternalSvmsServerTransport
+	trExternalSVMsServer               *ExternalSVMsServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trPoolsServer                      *PoolsServerTransport
 	trRansomwareReportsServer          *RansomwareReportsServerTransport
@@ -175,10 +175,10 @@ type ServerFactoryTransport struct {
 	trResourceQuotaLimitsServer        *ResourceQuotaLimitsServerTransport
 	trResourceRegionInfosServer        *ResourceRegionInfosServerTransport
 	trResourceUsagesServer             *ResourceUsagesServerTransport
+	trSVMPeersServer                   *SVMPeersServerTransport
 	trSnapshotPoliciesServer           *SnapshotPoliciesServerTransport
 	trSnapshotsServer                  *SnapshotsServerTransport
 	trSubvolumesServer                 *SubvolumesServerTransport
-	trSvmPeersServer                   *SvmPeersServerTransport
 	trVolumeGroupsServer               *VolumeGroupsServerTransport
 	trVolumeQuotaRulesServer           *VolumeQuotaRulesServerTransport
 	trVolumesServer                    *VolumesServerTransport
@@ -295,9 +295,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExternalClustersServerTransport(&s.srv.ExternalClustersServer)
 		})
 		resp, err = s.trExternalClustersServer.Do(req)
-	case "ExternalSvmsClient":
-		initServer(&s.trMu, &s.trExternalSvmsServer, func() *ExternalSvmsServerTransport { return NewExternalSvmsServerTransport(&s.srv.ExternalSvmsServer) })
-		resp, err = s.trExternalSvmsServer.Do(req)
+	case "ExternalSVMsClient":
+		initServer(&s.trMu, &s.trExternalSVMsServer, func() *ExternalSVMsServerTransport { return NewExternalSVMsServerTransport(&s.srv.ExternalSVMsServer) })
+		resp, err = s.trExternalSVMsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -332,6 +332,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewResourceUsagesServerTransport(&s.srv.ResourceUsagesServer)
 		})
 		resp, err = s.trResourceUsagesServer.Do(req)
+	case "SVMPeersClient":
+		initServer(&s.trMu, &s.trSVMPeersServer, func() *SVMPeersServerTransport { return NewSVMPeersServerTransport(&s.srv.SVMPeersServer) })
+		resp, err = s.trSVMPeersServer.Do(req)
 	case "SnapshotPoliciesClient":
 		initServer(&s.trMu, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
 			return NewSnapshotPoliciesServerTransport(&s.srv.SnapshotPoliciesServer)
@@ -343,9 +346,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SubvolumesClient":
 		initServer(&s.trMu, &s.trSubvolumesServer, func() *SubvolumesServerTransport { return NewSubvolumesServerTransport(&s.srv.SubvolumesServer) })
 		resp, err = s.trSubvolumesServer.Do(req)
-	case "SvmPeersClient":
-		initServer(&s.trMu, &s.trSvmPeersServer, func() *SvmPeersServerTransport { return NewSvmPeersServerTransport(&s.srv.SvmPeersServer) })
-		resp, err = s.trSvmPeersServer.Do(req)
 	case "VolumeGroupsClient":
 		initServer(&s.trMu, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
 		resp, err = s.trVolumeGroupsServer.Do(req)

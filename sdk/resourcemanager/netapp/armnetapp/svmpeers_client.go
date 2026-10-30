@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// SvmPeersClient contains the methods for the SvmPeers group.
-// Don't use this type directly, use NewSvmPeersClient() instead.
+// SVMPeersClient contains the methods for the SVMPeers group.
+// Don't use this type directly, use NewSVMPeersClient() instead.
 //
 // Generated from API version 2026-08-15-preview
-type SvmPeersClient struct {
+type SVMPeersClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSvmPeersClient creates a new instance of SvmPeersClient with the specified values.
+// NewSVMPeersClient creates a new instance of SVMPeersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSvmPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SvmPeersClient, error) {
+func NewSVMPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SVMPeersClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewSvmPeersClient(subscriptionID string, credential azcore.TokenCredential,
 	if err != nil {
 		return nil, err
 	}
-	client := &SvmPeersClient{
+	client := &SVMPeersClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,26 +50,26 @@ func NewSvmPeersClient(subscriptionID string, credential azcore.TokenCredential,
 //   - externalClusterName - The name of the ExternalCluster
 //   - peerID - The name of the ClusterPeer
 //   - svmPeerID - The name of the SvmPeer
-//   - options - SvmPeersClientGetOptions contains the optional parameters for the SvmPeersClient.Get method.
-func (client *SvmPeersClient) Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *SvmPeersClientGetOptions) (SvmPeersClientGetResponse, error) {
+//   - options - SVMPeersClientGetOptions contains the optional parameters for the SVMPeersClient.Get method.
+func (client *SVMPeersClient) Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *SVMPeersClientGetOptions) (SVMPeersClientGetResponse, error) {
 	var err error
-	const operationName = "SvmPeersClient.Get"
+	const operationName = "SVMPeersClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, externalClusterName, peerID, svmPeerID, options)
 	if err != nil {
-		return SvmPeersClientGetResponse{}, err
+		return SVMPeersClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SvmPeersClientGetResponse{}, err
+		return SVMPeersClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SvmPeersClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, _ *SvmPeersClientGetOptions) (*policy.Request, error) {
+func (client *SVMPeersClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, _ *SVMPeersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/clusterPeers/{peerId}/svmPeers/{svmPeerId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -103,13 +103,13 @@ func (client *SvmPeersClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *SvmPeersClient) getHandleResponse(resp *http.Response, successCodes ...int) (SvmPeersClientGetResponse, error) {
-	result := SvmPeersClientGetResponse{}
+func (client *SVMPeersClient) getHandleResponse(resp *http.Response, successCodes ...int) (SVMPeersClientGetResponse, error) {
+	result := SVMPeersClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SvmPeer); err != nil {
-		return SvmPeersClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.SVMPeer); err != nil {
+		return SVMPeersClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -118,26 +118,26 @@ func (client *SvmPeersClient) getHandleResponse(resp *http.Response, successCode
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - externalClusterName - The name of the ExternalCluster
 //   - peerID - The name of the ClusterPeer
-//   - options - SvmPeersClientListByParentOptions contains the optional parameters for the SvmPeersClient.NewListByParentPager
+//   - options - SVMPeersClientListByParentOptions contains the optional parameters for the SVMPeersClient.NewListByParentPager
 //     method.
-func (client *SvmPeersClient) NewListByParentPager(resourceGroupName string, externalClusterName string, peerID string, options *SvmPeersClientListByParentOptions) *runtime.Pager[SvmPeersClientListByParentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SvmPeersClientListByParentResponse]{
-		More: func(page SvmPeersClientListByParentResponse) bool {
+func (client *SVMPeersClient) NewListByParentPager(resourceGroupName string, externalClusterName string, peerID string, options *SVMPeersClientListByParentOptions) *runtime.Pager[SVMPeersClientListByParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SVMPeersClientListByParentResponse]{
+		More: func(page SVMPeersClientListByParentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SvmPeersClientListByParentResponse) (SvmPeersClientListByParentResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SvmPeersClient.NewListByParentPager")
+		Fetcher: func(ctx context.Context, page *SVMPeersClientListByParentResponse) (SVMPeersClientListByParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SVMPeersClient.NewListByParentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByParentCreateRequest(ctx, resourceGroupName, externalClusterName, peerID, nextLink, options)
 			if err != nil {
-				return SvmPeersClientListByParentResponse{}, err
+				return SVMPeersClientListByParentResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return SvmPeersClientListByParentResponse{}, err
+				return SVMPeersClientListByParentResponse{}, err
 			}
 			return client.listByParentHandleResponse(resp, http.StatusOK)
 		},
@@ -146,7 +146,7 @@ func (client *SvmPeersClient) NewListByParentPager(resourceGroupName string, ext
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *SvmPeersClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, nextLink string, _ *SvmPeersClientListByParentOptions) (*policy.Request, error) {
+func (client *SVMPeersClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, nextLink string, _ *SVMPeersClientListByParentOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -185,13 +185,13 @@ func (client *SvmPeersClient) listByParentCreateRequest(ctx context.Context, res
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *SvmPeersClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (SvmPeersClientListByParentResponse, error) {
-	result := SvmPeersClientListByParentResponse{}
+func (client *SVMPeersClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (SVMPeersClientListByParentResponse, error) {
+	result := SVMPeersClientListByParentResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SvmPeerListResult); err != nil {
-		return SvmPeersClientListByParentResponse{}, err
+		return SVMPeersClientListByParentResponse{}, err
 	}
 	return result, nil
 }

@@ -208,9 +208,9 @@ func (c *ClientFactory) NewExternalClustersClient() *ExternalClustersClient {
 	}
 }
 
-// NewExternalSvmsClient creates a new instance of ExternalSvmsClient.
-func (c *ClientFactory) NewExternalSvmsClient() *ExternalSvmsClient {
-	return &ExternalSvmsClient{
+// NewExternalSVMsClient creates a new instance of ExternalSVMsClient.
+func (c *ClientFactory) NewExternalSVMsClient() *ExternalSVMsClient {
+	return &ExternalSVMsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -279,6 +279,14 @@ func (c *ClientFactory) NewResourceUsagesClient() *ResourceUsagesClient {
 	}
 }
 
+// NewSVMPeersClient creates a new instance of SVMPeersClient.
+func (c *ClientFactory) NewSVMPeersClient() *SVMPeersClient {
+	return &SVMPeersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSnapshotPoliciesClient creates a new instance of SnapshotPoliciesClient.
 func (c *ClientFactory) NewSnapshotPoliciesClient() *SnapshotPoliciesClient {
 	return &SnapshotPoliciesClient{
@@ -298,14 +306,6 @@ func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 // NewSubvolumesClient creates a new instance of SubvolumesClient.
 func (c *ClientFactory) NewSubvolumesClient() *SubvolumesClient {
 	return &SubvolumesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSvmPeersClient creates a new instance of SvmPeersClient.
-func (c *ClientFactory) NewSvmPeersClient() *SvmPeersClient {
-	return &SvmPeersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

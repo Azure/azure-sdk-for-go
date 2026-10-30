@@ -19,54 +19,54 @@ import (
 	"slices"
 )
 
-// ExternalSvmsServer is a fake server for instances of the armnetapp.ExternalSvmsClient type.
-type ExternalSvmsServer struct {
-	// BeginCreateOrUpdate is the fake for method ExternalSvmsClient.BeginCreateOrUpdate
+// ExternalSVMsServer is a fake server for instances of the armnetapp.ExternalSVMsClient type.
+type ExternalSVMsServer struct {
+	// BeginCreateOrUpdate is the fake for method ExternalSVMsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource armnetapp.ExternalSvm, options *armnetapp.ExternalSvmsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetapp.ExternalSvmsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource armnetapp.ExternalSVM, options *armnetapp.ExternalSVMsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetapp.ExternalSVMsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method ExternalSvmsClient.BeginDelete
+	// BeginDelete is the fake for method ExternalSVMsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *armnetapp.ExternalSvmsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.ExternalSvmsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *armnetapp.ExternalSVMsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.ExternalSVMsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method ExternalSvmsClient.BeginUpdate
+	// BeginUpdate is the fake for method ExternalSVMsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties armnetapp.ExternalSvmTagsUpdate, options *armnetapp.ExternalSvmsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ExternalSvmsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties armnetapp.ExternalSvmTagsUpdate, options *armnetapp.ExternalSVMsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ExternalSVMsClientUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExternalSvmsClient.Get
+	// Get is the fake for method ExternalSVMsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *armnetapp.ExternalSvmsClientGetOptions) (resp azfake.Responder[armnetapp.ExternalSvmsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *armnetapp.ExternalSVMsClientGetOptions) (resp azfake.Responder[armnetapp.ExternalSVMsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByParentPager is the fake for method ExternalSvmsClient.NewListByParentPager
+	// NewListByParentPager is the fake for method ExternalSVMsClient.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByParentPager func(resourceGroupName string, externalClusterName string, options *armnetapp.ExternalSvmsClientListByParentOptions) (resp azfake.PagerResponder[armnetapp.ExternalSvmsClientListByParentResponse])
+	NewListByParentPager func(resourceGroupName string, externalClusterName string, options *armnetapp.ExternalSVMsClientListByParentOptions) (resp azfake.PagerResponder[armnetapp.ExternalSVMsClientListByParentResponse])
 }
 
-// NewExternalSvmsServerTransport creates a new instance of ExternalSvmsServerTransport with the provided implementation.
-// The returned ExternalSvmsServerTransport instance is connected to an instance of armnetapp.ExternalSvmsClient via the
+// NewExternalSVMsServerTransport creates a new instance of ExternalSVMsServerTransport with the provided implementation.
+// The returned ExternalSVMsServerTransport instance is connected to an instance of armnetapp.ExternalSVMsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewExternalSvmsServerTransport(srv *ExternalSvmsServer) *ExternalSvmsServerTransport {
-	return &ExternalSvmsServerTransport{
+func NewExternalSVMsServerTransport(srv *ExternalSVMsServer) *ExternalSVMsServerTransport {
+	return &ExternalSVMsServerTransport{
 		srv:                  srv,
-		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientCreateOrUpdateResponse]](),
-		beginDelete:          newTracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientDeleteResponse]](),
-		beginUpdate:          newTracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientUpdateResponse]](),
-		newListByParentPager: newTracker[azfake.PagerResponder[armnetapp.ExternalSvmsClientListByParentResponse]](),
+		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientCreateOrUpdateResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientDeleteResponse]](),
+		beginUpdate:          newTracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientUpdateResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armnetapp.ExternalSVMsClientListByParentResponse]](),
 	}
 }
 
-// ExternalSvmsServerTransport connects instances of armnetapp.ExternalSvmsClient to instances of ExternalSvmsServer.
-// Don't use this type directly, use NewExternalSvmsServerTransport instead.
-type ExternalSvmsServerTransport struct {
-	srv                  *ExternalSvmsServer
-	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientCreateOrUpdateResponse]]
-	beginDelete          *tracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientDeleteResponse]]
-	beginUpdate          *tracker[azfake.PollerResponder[armnetapp.ExternalSvmsClientUpdateResponse]]
-	newListByParentPager *tracker[azfake.PagerResponder[armnetapp.ExternalSvmsClientListByParentResponse]]
+// ExternalSVMsServerTransport connects instances of armnetapp.ExternalSVMsClient to instances of ExternalSVMsServer.
+// Don't use this type directly, use NewExternalSVMsServerTransport instead.
+type ExternalSVMsServerTransport struct {
+	srv                  *ExternalSVMsServer
+	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientCreateOrUpdateResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientDeleteResponse]]
+	beginUpdate          *tracker[azfake.PollerResponder[armnetapp.ExternalSVMsClientUpdateResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armnetapp.ExternalSVMsClientListByParentResponse]]
 }
 
-// Do implements the policy.Transporter interface for ExternalSvmsServerTransport.
-func (e *ExternalSvmsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ExternalSVMsServerTransport.
+func (e *ExternalSVMsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -76,25 +76,25 @@ func (e *ExternalSvmsServerTransport) Do(req *http.Request) (*http.Response, err
 	return e.dispatchToMethodFake(req, method)
 }
 
-func (e *ExternalSvmsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
-		if externalSvmsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = externalSvmsServerTransportInterceptor.Do(req)
+		if externalSvMSServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = externalSvMSServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ExternalSvmsClient.BeginCreateOrUpdate":
+			case "ExternalSVMsClient.BeginCreateOrUpdate":
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
-			case "ExternalSvmsClient.BeginDelete":
+			case "ExternalSVMsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "ExternalSvmsClient.BeginUpdate":
+			case "ExternalSVMsClient.BeginUpdate":
 				res.resp, res.err = e.dispatchBeginUpdate(req)
-			case "ExternalSvmsClient.Get":
+			case "ExternalSVMsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
-			case "ExternalSvmsClient.NewListByParentPager":
+			case "ExternalSVMsClient.NewListByParentPager":
 				res.resp, res.err = e.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -112,7 +112,7 @@ func (e *ExternalSvmsServerTransport) dispatchToMethodFake(req *http.Request, me
 	}
 }
 
-func (e *ExternalSvmsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
@@ -124,7 +124,7 @@ func (e *ExternalSvmsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.ExternalSvm](req)
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.ExternalSVM](req)
 		if err != nil {
 			return nil, err
 		}
@@ -164,7 +164,7 @@ func (e *ExternalSvmsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	return resp, nil
 }
 
-func (e *ExternalSvmsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -212,7 +212,7 @@ func (e *ExternalSvmsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
-func (e *ExternalSvmsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
@@ -264,7 +264,7 @@ func (e *ExternalSvmsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	return resp, nil
 }
 
-func (e *ExternalSvmsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -294,14 +294,14 @@ func (e *ExternalSvmsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExternalSvm, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExternalSVM, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (e *ExternalSvmsServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
+func (e *ExternalSVMsServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListByParentPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
 	}
@@ -324,7 +324,7 @@ func (e *ExternalSvmsServerTransport) dispatchNewListByParentPager(req *http.Req
 		resp := e.srv.NewListByParentPager(resourceGroupNameParam, externalClusterNameParam, nil)
 		newListByParentPager = &resp
 		e.newListByParentPager.add(req, newListByParentPager)
-		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armnetapp.ExternalSvmsClientListByParentResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armnetapp.ExternalSVMsClientListByParentResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -342,8 +342,8 @@ func (e *ExternalSvmsServerTransport) dispatchNewListByParentPager(req *http.Req
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ExternalSvmsServerTransport
-var externalSvmsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ExternalSVMsServerTransport
+var externalSvMSServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

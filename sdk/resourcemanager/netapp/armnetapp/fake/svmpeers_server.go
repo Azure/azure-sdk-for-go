@@ -19,36 +19,36 @@ import (
 	"slices"
 )
 
-// SvmPeersServer is a fake server for instances of the armnetapp.SvmPeersClient type.
-type SvmPeersServer struct {
-	// Get is the fake for method SvmPeersClient.Get
+// SVMPeersServer is a fake server for instances of the armnetapp.SVMPeersClient type.
+type SVMPeersServer struct {
+	// Get is the fake for method SVMPeersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *armnetapp.SvmPeersClientGetOptions) (resp azfake.Responder[armnetapp.SvmPeersClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *armnetapp.SVMPeersClientGetOptions) (resp azfake.Responder[armnetapp.SVMPeersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByParentPager is the fake for method SvmPeersClient.NewListByParentPager
+	// NewListByParentPager is the fake for method SVMPeersClient.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByParentPager func(resourceGroupName string, externalClusterName string, peerID string, options *armnetapp.SvmPeersClientListByParentOptions) (resp azfake.PagerResponder[armnetapp.SvmPeersClientListByParentResponse])
+	NewListByParentPager func(resourceGroupName string, externalClusterName string, peerID string, options *armnetapp.SVMPeersClientListByParentOptions) (resp azfake.PagerResponder[armnetapp.SVMPeersClientListByParentResponse])
 }
 
-// NewSvmPeersServerTransport creates a new instance of SvmPeersServerTransport with the provided implementation.
-// The returned SvmPeersServerTransport instance is connected to an instance of armnetapp.SvmPeersClient via the
+// NewSVMPeersServerTransport creates a new instance of SVMPeersServerTransport with the provided implementation.
+// The returned SVMPeersServerTransport instance is connected to an instance of armnetapp.SVMPeersClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewSvmPeersServerTransport(srv *SvmPeersServer) *SvmPeersServerTransport {
-	return &SvmPeersServerTransport{
+func NewSVMPeersServerTransport(srv *SVMPeersServer) *SVMPeersServerTransport {
+	return &SVMPeersServerTransport{
 		srv:                  srv,
-		newListByParentPager: newTracker[azfake.PagerResponder[armnetapp.SvmPeersClientListByParentResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armnetapp.SVMPeersClientListByParentResponse]](),
 	}
 }
 
-// SvmPeersServerTransport connects instances of armnetapp.SvmPeersClient to instances of SvmPeersServer.
-// Don't use this type directly, use NewSvmPeersServerTransport instead.
-type SvmPeersServerTransport struct {
-	srv                  *SvmPeersServer
-	newListByParentPager *tracker[azfake.PagerResponder[armnetapp.SvmPeersClientListByParentResponse]]
+// SVMPeersServerTransport connects instances of armnetapp.SVMPeersClient to instances of SVMPeersServer.
+// Don't use this type directly, use NewSVMPeersServerTransport instead.
+type SVMPeersServerTransport struct {
+	srv                  *SVMPeersServer
+	newListByParentPager *tracker[azfake.PagerResponder[armnetapp.SVMPeersClientListByParentResponse]]
 }
 
-// Do implements the policy.Transporter interface for SvmPeersServerTransport.
-func (s *SvmPeersServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for SVMPeersServerTransport.
+func (s *SVMPeersServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -58,7 +58,7 @@ func (s *SvmPeersServerTransport) Do(req *http.Request) (*http.Response, error) 
 	return s.dispatchToMethodFake(req, method)
 }
 
-func (s *SvmPeersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (s *SVMPeersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -68,9 +68,9 @@ func (s *SvmPeersServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "SvmPeersClient.Get":
+			case "SVMPeersClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SvmPeersClient.NewListByParentPager":
+			case "SVMPeersClient.NewListByParentPager":
 				res.resp, res.err = s.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -88,7 +88,7 @@ func (s *SvmPeersServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (s *SvmPeersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (s *SVMPeersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -122,14 +122,14 @@ func (s *SvmPeersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SvmPeer, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SVMPeer, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (s *SvmPeersServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
+func (s *SVMPeersServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByParentPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
 	}
@@ -156,7 +156,7 @@ func (s *SvmPeersServerTransport) dispatchNewListByParentPager(req *http.Request
 		resp := s.srv.NewListByParentPager(resourceGroupNameParam, externalClusterNameParam, peerIDParam, nil)
 		newListByParentPager = &resp
 		s.newListByParentPager.add(req, newListByParentPager)
-		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armnetapp.SvmPeersClientListByParentResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armnetapp.SVMPeersClientListByParentResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -174,7 +174,7 @@ func (s *SvmPeersServerTransport) dispatchNewListByParentPager(req *http.Request
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to SvmPeersServerTransport
+// set this to conditionally intercept incoming requests to SVMPeersServerTransport
 var svmPeersServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

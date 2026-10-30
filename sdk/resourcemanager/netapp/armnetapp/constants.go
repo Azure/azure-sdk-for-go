@@ -1714,6 +1714,45 @@ func PossibleReplicationTypeValues() []ReplicationType {
 	}
 }
 
+// SVMPeerStatus - SVM Peer status enum
+type SVMPeerStatus string
+
+const (
+	// SVMPeerStatusActive - Active peering
+	SVMPeerStatusActive SVMPeerStatus = "Active"
+	// SVMPeerStatusError - Error state, use command on your cluster for more details(command: vserver peer show)
+	SVMPeerStatusError SVMPeerStatus = "Error"
+	// SVMPeerStatusPending - Pending state, the peering needs to be accepted on your SVM (command: vserver peer accept)
+	SVMPeerStatusPending SVMPeerStatus = "Pending"
+)
+
+// PossibleSVMPeerStatusValues returns the possible values for the SVMPeerStatus const type.
+func PossibleSVMPeerStatusValues() []SVMPeerStatus {
+	return []SVMPeerStatus{
+		SVMPeerStatusActive,
+		SVMPeerStatusError,
+		SVMPeerStatusPending,
+	}
+}
+
+// SVMPeerType - SVM peer relationship type enum
+type SVMPeerType string
+
+const (
+	// SVMPeerTypeCache - Cache peer
+	SVMPeerTypeCache SVMPeerType = "Cache"
+	// SVMPeerTypeReplication - Replication peer
+	SVMPeerTypeReplication SVMPeerType = "Replication"
+)
+
+// PossibleSVMPeerTypeValues returns the possible values for the SVMPeerType const type.
+func PossibleSVMPeerTypeValues() []SVMPeerType {
+	return []SVMPeerType{
+		SVMPeerTypeCache,
+		SVMPeerTypeReplication,
+	}
+}
+
 // SecureLdapType - Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
 type SecureLdapType string
 
@@ -1882,45 +1921,6 @@ func PossibleSnapshotUsageValues() []SnapshotUsage {
 	return []SnapshotUsage{
 		SnapshotUsageCreateNewSnapshot,
 		SnapshotUsageUseExistingSnapshot,
-	}
-}
-
-// SvmPeerStatus - SVM Peer status enum
-type SvmPeerStatus string
-
-const (
-	// SvmPeerStatusActive - Active peering
-	SvmPeerStatusActive SvmPeerStatus = "Active"
-	// SvmPeerStatusError - Error state, use command on your cluster for more details(command: vserver peer show)
-	SvmPeerStatusError SvmPeerStatus = "Error"
-	// SvmPeerStatusPending - Pending state, the peering needs to be accepted on your SVM (command: vserver peer accept)
-	SvmPeerStatusPending SvmPeerStatus = "Pending"
-)
-
-// PossibleSvmPeerStatusValues returns the possible values for the SvmPeerStatus const type.
-func PossibleSvmPeerStatusValues() []SvmPeerStatus {
-	return []SvmPeerStatus{
-		SvmPeerStatusActive,
-		SvmPeerStatusError,
-		SvmPeerStatusPending,
-	}
-}
-
-// SvmPeerType - SVM peer relationship type enum
-type SvmPeerType string
-
-const (
-	// SvmPeerTypeCache - Cache peer
-	SvmPeerTypeCache SvmPeerType = "Cache"
-	// SvmPeerTypeReplication - Replication peer
-	SvmPeerTypeReplication SvmPeerType = "Replication"
-)
-
-// PossibleSvmPeerTypeValues returns the possible values for the SvmPeerType const type.
-func PossibleSvmPeerTypeValues() []SvmPeerType {
-	return []SvmPeerType{
-		SvmPeerTypeCache,
-		SvmPeerTypeReplication,
 	}
 }
 

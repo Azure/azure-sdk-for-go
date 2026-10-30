@@ -5590,11 +5590,11 @@ func (e ExternalCacheConnectionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "clusterPeerResourceId", e.ClusterPeerResourceID)
 	populate(objectMap, "clusterPeerSubnetResourceId", e.ClusterPeerSubnetResourceID)
 	populate(objectMap, "externalCacheName", e.ExternalCacheName)
-	populate(objectMap, "externalSvmResourceId", e.ExternalSvmResourceID)
+	populate(objectMap, "externalSvmResourceId", e.ExternalSVMResourceID)
 	populate(objectMap, "originVolumeResourceId", e.OriginVolumeResourceID)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "svmPeerResourceId", e.SVMPeerResourceID)
 	populate(objectMap, "setupInformation", e.SetupInformation)
-	populate(objectMap, "svmPeerResourceId", e.SvmPeerResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -5617,7 +5617,7 @@ func (e *ExternalCacheConnectionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ExternalCacheName", &e.ExternalCacheName)
 			delete(rawMsg, key)
 		case "externalSvmResourceId":
-			err = unpopulate(val, "ExternalSvmResourceID", &e.ExternalSvmResourceID)
+			err = unpopulate(val, "ExternalSVMResourceID", &e.ExternalSVMResourceID)
 			delete(rawMsg, key)
 		case "originVolumeResourceId":
 			err = unpopulate(val, "OriginVolumeResourceID", &e.OriginVolumeResourceID)
@@ -5625,11 +5625,11 @@ func (e *ExternalCacheConnectionProperties) UnmarshalJSON(data []byte) error {
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
 			delete(rawMsg, key)
+		case "svmPeerResourceId":
+			err = unpopulate(val, "SVMPeerResourceID", &e.SVMPeerResourceID)
+			delete(rawMsg, key)
 		case "setupInformation":
 			err = unpopulate(val, "SetupInformation", &e.SetupInformation)
-			delete(rawMsg, key)
-		case "svmPeerResourceId":
-			err = unpopulate(val, "SvmPeerResourceID", &e.SvmPeerResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5703,7 +5703,7 @@ func (e ExternalCacheProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "connectionStatus", e.ConnectionStatus)
 	populate(objectMap, "createCommand", e.CreateCommand)
 	populate(objectMap, "externalCacheName", e.ExternalCacheName)
-	populate(objectMap, "originSvmName", e.OriginSvmName)
+	populate(objectMap, "originSvmName", e.OriginSVMName)
 	populate(objectMap, "originVolumeName", e.OriginVolumeName)
 	populate(objectMap, "originVolumeResourceId", e.OriginVolumeResourceID)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
@@ -5731,7 +5731,7 @@ func (e *ExternalCacheProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ExternalCacheName", &e.ExternalCacheName)
 			delete(rawMsg, key)
 		case "originSvmName":
-			err = unpopulate(val, "OriginSvmName", &e.OriginSvmName)
+			err = unpopulate(val, "OriginSVMName", &e.OriginSVMName)
 			delete(rawMsg, key)
 		case "originVolumeName":
 			err = unpopulate(val, "OriginVolumeName", &e.OriginVolumeName)
@@ -5974,8 +5974,8 @@ func (e *ExternalResourceNetworkInterfaces) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExternalSvm.
-func (e ExternalSvm) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExternalSVM.
+func (e ExternalSVM) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "location", e.Location)
@@ -5987,8 +5987,8 @@ func (e ExternalSvm) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalSvm.
-func (e *ExternalSvm) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalSVM.
+func (e *ExternalSVM) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
@@ -6025,6 +6025,41 @@ func (e *ExternalSvm) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ExternalSVMProperties.
+func (e ExternalSVMProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "ontapSvmName", e.OntapSVMName)
+	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "svmPeerResourceIds", e.SVMPeerResourceIDs)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalSVMProperties.
+func (e *ExternalSVMProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "ontapSvmName":
+			err = unpopulate(val, "OntapSVMName", &e.OntapSVMName)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "svmPeerResourceIds":
+			err = unpopulate(val, "SVMPeerResourceIDs", &e.SVMPeerResourceIDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ExternalSvmListResult.
 func (e ExternalSvmListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -6047,41 +6082,6 @@ func (e *ExternalSvmListResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &e.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExternalSvmProperties.
-func (e ExternalSvmProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "ontapSvmName", e.OntapSvmName)
-	populate(objectMap, "provisioningState", e.ProvisioningState)
-	populate(objectMap, "svmPeerResourceIds", e.SvmPeerResourceIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalSvmProperties.
-func (e *ExternalSvmProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "ontapSvmName":
-			err = unpopulate(val, "OntapSvmName", &e.OntapSvmName)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
-			delete(rawMsg, key)
-		case "svmPeerResourceIds":
-			err = unpopulate(val, "SvmPeerResourceIDs", &e.SvmPeerResourceIDs)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -8437,6 +8437,104 @@ func (r *RestoreStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SVMPeer.
+func (s SVMPeer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SVMPeer.
+func (s *SVMPeer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &s.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &s.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SVMPeerProperties.
+func (s SVMPeerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "acceptCommand", s.AcceptCommand)
+	populate(objectMap, "anfSvmName", s.AnfSVMName)
+	populate(objectMap, "externalCacheConnectionResourceIds", s.ExternalCacheConnectionResourceIDs)
+	populate(objectMap, "externalSvmResourceId", s.ExternalSVMResourceID)
+	populate(objectMap, "hybridReplicationResourceIds", s.HybridReplicationResourceIDs)
+	populate(objectMap, "peerTypes", s.PeerTypes)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "status", s.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SVMPeerProperties.
+func (s *SVMPeerProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "acceptCommand":
+			err = unpopulate(val, "AcceptCommand", &s.AcceptCommand)
+			delete(rawMsg, key)
+		case "anfSvmName":
+			err = unpopulate(val, "AnfSVMName", &s.AnfSVMName)
+			delete(rawMsg, key)
+		case "externalCacheConnectionResourceIds":
+			err = unpopulate(val, "ExternalCacheConnectionResourceIDs", &s.ExternalCacheConnectionResourceIDs)
+			delete(rawMsg, key)
+		case "externalSvmResourceId":
+			err = unpopulate(val, "ExternalSVMResourceID", &s.ExternalSVMResourceID)
+			delete(rawMsg, key)
+		case "hybridReplicationResourceIds":
+			err = unpopulate(val, "HybridReplicationResourceIDs", &s.HybridReplicationResourceIDs)
+			delete(rawMsg, key)
+		case "peerTypes":
+			err = unpopulate(val, "PeerTypes", &s.PeerTypes)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &s.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SecretPassword.
 func (s SecretPassword) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -9403,49 +9501,6 @@ func (s *SuspectFile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SvmPeer.
-func (s SvmPeer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SvmPeer.
-func (s *SvmPeer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type SvmPeerCommandResponse.
 func (s SvmPeerCommandResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -9522,61 +9577,6 @@ func (s *SvmPeerListResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &s.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SvmPeerProperties.
-func (s SvmPeerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "acceptCommand", s.AcceptCommand)
-	populate(objectMap, "anfSvmName", s.AnfSvmName)
-	populate(objectMap, "externalCacheConnectionResourceIds", s.ExternalCacheConnectionResourceIDs)
-	populate(objectMap, "externalSvmResourceId", s.ExternalSvmResourceID)
-	populate(objectMap, "hybridReplicationResourceIds", s.HybridReplicationResourceIDs)
-	populate(objectMap, "peerTypes", s.PeerTypes)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SvmPeerProperties.
-func (s *SvmPeerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "acceptCommand":
-			err = unpopulate(val, "AcceptCommand", &s.AcceptCommand)
-			delete(rawMsg, key)
-		case "anfSvmName":
-			err = unpopulate(val, "AnfSvmName", &s.AnfSvmName)
-			delete(rawMsg, key)
-		case "externalCacheConnectionResourceIds":
-			err = unpopulate(val, "ExternalCacheConnectionResourceIDs", &s.ExternalCacheConnectionResourceIDs)
-			delete(rawMsg, key)
-		case "externalSvmResourceId":
-			err = unpopulate(val, "ExternalSvmResourceID", &s.ExternalSvmResourceID)
-			delete(rawMsg, key)
-		case "hybridReplicationResourceIds":
-			err = unpopulate(val, "HybridReplicationResourceIDs", &s.HybridReplicationResourceIDs)
-			delete(rawMsg, key)
-		case "peerTypes":
-			err = unpopulate(val, "PeerTypes", &s.PeerTypes)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {

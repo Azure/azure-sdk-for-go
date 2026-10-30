@@ -1,6 +1,6 @@
 # Release History
 
-## 11.1.0-beta.1 (2026-10-28)
+## 11.1.0-beta.1 (2026-10-30)
 ### Features Added
 
 - New enum type `AsyncDirectoryDeleteStatus` with values `AsyncDirectoryDeleteStatusDisabled`, `AsyncDirectoryDeleteStatusEnabled`
@@ -28,11 +28,11 @@
 - New enum type `LargeVolumeType` with values `LargeVolumeTypeExtraLargeVolume7Dot2PiB`, `LargeVolumeTypeLargeVolume`
 - New enum type `OriginVolume` with values `OriginVolumeDisabled`, `OriginVolumeEnabled`
 - New enum type `PolicyStatus` with values `PolicyStatusDisabled`, `PolicyStatusEnabled`
+- New enum type `SVMPeerStatus` with values `SVMPeerStatusActive`, `SVMPeerStatusError`, `SVMPeerStatusPending`
+- New enum type `SVMPeerType` with values `SVMPeerTypeCache`, `SVMPeerTypeReplication`
 - New enum type `SmbOplocks` with values `SmbOplocksDisabled`, `SmbOplocksEnabled`
 - New enum type `SnapshotDirectoryVisibility` with values `SnapshotDirectoryVisibilityHidden`, `SnapshotDirectoryVisibilityVisible`
 - New enum type `SnapshotUsage` with values `SnapshotUsageCreateNewSnapshot`, `SnapshotUsageUseExistingSnapshot`
-- New enum type `SvmPeerStatus` with values `SvmPeerStatusActive`, `SvmPeerStatusError`, `SvmPeerStatusPending`
-- New enum type `SvmPeerType` with values `SvmPeerTypeCache`, `SvmPeerTypeReplication`
 - New enum type `VolumeSize` with values `VolumeSizeLarge`, `VolumeSizeRegular`
 - New function `NewActiveDirectoryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActiveDirectoryConfigsClient, error)`
 - New function `*ActiveDirectoryConfigsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body ActiveDirectoryConfig, options *ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ActiveDirectoryConfigsClientCreateOrUpdateResponse], error)`
@@ -54,8 +54,8 @@
 - New function `*ClientFactory.NewExternalCacheConnectionsClient() *ExternalCacheConnectionsClient`
 - New function `*ClientFactory.NewExternalCachesClient() *ExternalCachesClient`
 - New function `*ClientFactory.NewExternalClustersClient() *ExternalClustersClient`
-- New function `*ClientFactory.NewExternalSvmsClient() *ExternalSvmsClient`
-- New function `*ClientFactory.NewSvmPeersClient() *SvmPeersClient`
+- New function `*ClientFactory.NewExternalSVMsClient() *ExternalSVMsClient`
+- New function `*ClientFactory.NewSVMPeersClient() *SVMPeersClient`
 - New function `NewClusterPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPeersClient, error)`
 - New function `*ClusterPeersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, options *ClusterPeersClientGetOptions) (ClusterPeersClientGetResponse, error)`
 - New function `*ClusterPeersClient.NewListByParentPager(resourceGroupName string, externalClusterName string, options *ClusterPeersClientListByParentOptions) *runtime.Pager[ClusterPeersClientListByParentResponse]`
@@ -128,15 +128,15 @@
 - New function `*ExternalClustersClient.NewListByResourceGroupPager(resourceGroupName string, options *ExternalClustersClientListByResourceGroupOptions) *runtime.Pager[ExternalClustersClientListByResourceGroupResponse]`
 - New function `*ExternalClustersClient.NewListBySubscriptionPager(options *ExternalClustersClientListBySubscriptionOptions) *runtime.Pager[ExternalClustersClientListBySubscriptionResponse]`
 - New function `*ExternalClustersClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, properties ExternalClusterUpdate, options *ExternalClustersClientBeginUpdateOptions) (*runtime.Poller[ExternalClustersClientUpdateResponse], error)`
-- New function `NewExternalSvmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSvmsClient, error)`
-- New function `*ExternalSvmsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSvm, options *ExternalSvmsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalSvmsClientCreateOrUpdateResponse], error)`
-- New function `*ExternalSvmsClient.BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientBeginDeleteOptions) (*runtime.Poller[ExternalSvmsClientDeleteResponse], error)`
-- New function `*ExternalSvmsClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientGetOptions) (ExternalSvmsClientGetResponse, error)`
-- New function `*ExternalSvmsClient.NewListByParentPager(resourceGroupName string, externalClusterName string, options *ExternalSvmsClientListByParentOptions) *runtime.Pager[ExternalSvmsClientListByParentResponse]`
-- New function `*ExternalSvmsClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSvmsClientBeginUpdateOptions) (*runtime.Poller[ExternalSvmsClientUpdateResponse], error)`
-- New function `NewSvmPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SvmPeersClient, error)`
-- New function `*SvmPeersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *SvmPeersClientGetOptions) (SvmPeersClientGetResponse, error)`
-- New function `*SvmPeersClient.NewListByParentPager(resourceGroupName string, externalClusterName string, peerID string, options *SvmPeersClientListByParentOptions) *runtime.Pager[SvmPeersClientListByParentResponse]`
+- New function `NewExternalSVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSVMsClient, error)`
+- New function `*ExternalSVMsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSVM, options *ExternalSVMsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalSVMsClientCreateOrUpdateResponse], error)`
+- New function `*ExternalSVMsClient.BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSVMsClientBeginDeleteOptions) (*runtime.Poller[ExternalSVMsClientDeleteResponse], error)`
+- New function `*ExternalSVMsClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSVMsClientGetOptions) (ExternalSVMsClientGetResponse, error)`
+- New function `*ExternalSVMsClient.NewListByParentPager(resourceGroupName string, externalClusterName string, options *ExternalSVMsClientListByParentOptions) *runtime.Pager[ExternalSVMsClientListByParentResponse]`
+- New function `*ExternalSVMsClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSVMsClientBeginUpdateOptions) (*runtime.Poller[ExternalSVMsClientUpdateResponse], error)`
+- New function `NewSVMPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SVMPeersClient, error)`
+- New function `*SVMPeersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *SVMPeersClientGetOptions) (SVMPeersClientGetResponse, error)`
+- New function `*SVMPeersClient.NewListByParentPager(resourceGroupName string, externalClusterName string, peerID string, options *SVMPeersClientListByParentOptions) *runtime.Pager[SVMPeersClientListByParentResponse]`
 - New struct `ActiveDirectoryConfig`
 - New struct `ActiveDirectoryConfigListResult`
 - New struct `ActiveDirectoryConfigProperties`
@@ -220,19 +220,19 @@
 - New struct `ExternalClusterUpdate`
 - New struct `ExternalClusterUpdateProperties`
 - New struct `ExternalResourceNetworkInterfaces`
-- New struct `ExternalSvm`
+- New struct `ExternalSVM`
+- New struct `ExternalSVMProperties`
 - New struct `ExternalSvmListResult`
-- New struct `ExternalSvmProperties`
 - New struct `ExternalSvmTagsUpdate`
 - New struct `KeyVaultClusterPeerPassphrasePatchProperties`
 - New struct `KeyVaultClusterPeerPassphraseProperties`
+- New struct `SVMPeer`
+- New struct `SVMPeerProperties`
 - New struct `SecretPassword`
 - New struct `SecretPasswordIdentity`
 - New struct `SecretPasswordKeyVaultProperties`
 - New struct `SetupInformation`
-- New struct `SvmPeer`
 - New struct `SvmPeerListResult`
-- New struct `SvmPeerProperties`
 - New struct `VolumeNamespaceProperties`
 - New struct `VolumePatchNamespaceProperties`
 - New field `EntraIDConfig` in struct `AccountProperties`

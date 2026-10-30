@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-15-preview/ExternalSvms_CreateOrUpdate.json
-func ExampleExternalSvmsClient_BeginCreateOrUpdate() {
+func ExampleExternalSVMsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,10 +23,10 @@ func ExampleExternalSvmsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalSvmsClient().BeginCreateOrUpdate(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", armnetapp.ExternalSvm{
+	poller, err := clientFactory.NewExternalSVMsClient().BeginCreateOrUpdate(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", armnetapp.ExternalSVM{
 		Location: to.Ptr("eastus"),
-		Properties: &armnetapp.ExternalSvmProperties{
-			OntapSvmName: to.Ptr("contoso-svm"),
+		Properties: &armnetapp.ExternalSVMProperties{
+			OntapSVMName: to.Ptr("contoso-svm"),
 		},
 	}, nil)
 	if err != nil {
@@ -39,22 +39,22 @@ func ExampleExternalSvmsClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ExternalSvmsClientCreateOrUpdateResponse{
-	// 	ExternalSvm: armnetapp.ExternalSvm{
+	// res = armnetapp.ExternalSVMsClientCreateOrUpdateResponse{
+	// 	ExternalSVM: armnetapp.ExternalSVM{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
 	// 		Name: to.Ptr("contoso-svm"),
 	// 		Type: to.Ptr("Microsoft.NetApp/externalClusters/externalSvms"),
 	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.ExternalSvmProperties{
+	// 		Properties: &armnetapp.ExternalSVMProperties{
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateCreating),
-	// 			OntapSvmName: to.Ptr("contoso-svm"),
+	// 			OntapSVMName: to.Ptr("contoso-svm"),
 	// 		},
 	// 	},
 	// }
 }
 
 // Generated from example definition: 2026-08-15-preview/ExternalSvms_Delete.json
-func ExampleExternalSvmsClient_BeginDelete() {
+func ExampleExternalSVMsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -64,7 +64,7 @@ func ExampleExternalSvmsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalSvmsClient().BeginDelete(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", nil)
+	poller, err := clientFactory.NewExternalSVMsClient().BeginDelete(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -75,7 +75,7 @@ func ExampleExternalSvmsClient_BeginDelete() {
 }
 
 // Generated from example definition: 2026-08-15-preview/ExternalSvms_Update.json
-func ExampleExternalSvmsClient_BeginUpdate() {
+func ExampleExternalSVMsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleExternalSvmsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalSvmsClient().BeginUpdate(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", armnetapp.ExternalSvmTagsUpdate{
+	poller, err := clientFactory.NewExternalSVMsClient().BeginUpdate(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", armnetapp.ExternalSvmTagsUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("production"),
 		},
@@ -100,8 +100,8 @@ func ExampleExternalSvmsClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ExternalSvmsClientUpdateResponse{
-	// 	ExternalSvm: armnetapp.ExternalSvm{
+	// res = armnetapp.ExternalSVMsClientUpdateResponse{
+	// 	ExternalSVM: armnetapp.ExternalSVM{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
 	// 		Name: to.Ptr("contoso-svm"),
 	// 		Type: to.Ptr("Microsoft.NetApp/externalClusters/externalSvms"),
@@ -109,10 +109,10 @@ func ExampleExternalSvmsClient_BeginUpdate() {
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("production"),
 	// 		},
-	// 		Properties: &armnetapp.ExternalSvmProperties{
+	// 		Properties: &armnetapp.ExternalSVMProperties{
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-	// 			OntapSvmName: to.Ptr("contoso-svm"),
-	// 			SvmPeerResourceIDs: []*string{
+	// 			OntapSVMName: to.Ptr("contoso-svm"),
+	// 			SVMPeerResourceIDs: []*string{
 	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/svm-peerA"),
 	// 			},
 	// 		},
@@ -121,7 +121,7 @@ func ExampleExternalSvmsClient_BeginUpdate() {
 }
 
 // Generated from example definition: 2026-08-15-preview/ExternalSvms_Get.json
-func ExampleExternalSvmsClient_Get() {
+func ExampleExternalSVMsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -131,23 +131,23 @@ func ExampleExternalSvmsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExternalSvmsClient().Get(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", nil)
+	res, err := clientFactory.NewExternalSVMsClient().Get(ctx, "contosoNetAppRg", "contoso-external-cluster", "contoso-svm", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ExternalSvmsClientGetResponse{
-	// 	ExternalSvm: armnetapp.ExternalSvm{
+	// res = armnetapp.ExternalSVMsClientGetResponse{
+	// 	ExternalSVM: armnetapp.ExternalSVM{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
 	// 		Name: to.Ptr("contoso-svm"),
 	// 		Type: to.Ptr("Microsoft.NetApp/externalClusters/externalSvms"),
 	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.ExternalSvmProperties{
+	// 		Properties: &armnetapp.ExternalSVMProperties{
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-	// 			OntapSvmName: to.Ptr("contoso-svm"),
-	// 			SvmPeerResourceIDs: []*string{
+	// 			OntapSVMName: to.Ptr("contoso-svm"),
+	// 			SVMPeerResourceIDs: []*string{
 	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/contosoSvmPeerA"),
 	// 			},
 	// 		},
@@ -156,7 +156,7 @@ func ExampleExternalSvmsClient_Get() {
 }
 
 // Generated from example definition: 2026-08-15-preview/ExternalSvms_ListByParent.json
-func ExampleExternalSvmsClient_NewListByParentPager() {
+func ExampleExternalSVMsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -166,7 +166,7 @@ func ExampleExternalSvmsClient_NewListByParentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExternalSvmsClient().NewListByParentPager("contosoNetAppRg", "contoso-external-cluster", nil)
+	pager := clientFactory.NewExternalSVMsClient().NewListByParentPager("contosoNetAppRg", "contoso-external-cluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -177,18 +177,18 @@ func ExampleExternalSvmsClient_NewListByParentPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.ExternalSvmsClientListByParentResponse{
+		// page = armnetapp.ExternalSVMsClientListByParentResponse{
 		// 	ExternalSvmListResult: armnetapp.ExternalSvmListResult{
-		// 		Value: []*armnetapp.ExternalSvm{
+		// 		Value: []*armnetapp.ExternalSVM{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/externalSvms/contoso-svm"),
 		// 				Name: to.Ptr("contoso-svm"),
 		// 				Type: to.Ptr("Microsoft.NetApp/externalClusters/externalSvms"),
 		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetapp.ExternalSvmProperties{
+		// 				Properties: &armnetapp.ExternalSVMProperties{
 		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-		// 					OntapSvmName: to.Ptr("contoso-svm"),
-		// 					SvmPeerResourceIDs: []*string{
+		// 					OntapSVMName: to.Ptr("contoso-svm"),
+		// 					SVMPeerResourceIDs: []*string{
 		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoNetAppRg/providers/Microsoft.NetApp/externalClusters/contoso-external-cluster/clusterPeers/peerA/svmPeers/svm-peerA"),
 		// 					},
 		// 				},
@@ -198,9 +198,9 @@ func ExampleExternalSvmsClient_NewListByParentPager() {
 		// 				Name: to.Ptr("svm2"),
 		// 				Type: to.Ptr("Microsoft.NetApp/externalClusters/externalSvms"),
 		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetapp.ExternalSvmProperties{
+		// 				Properties: &armnetapp.ExternalSVMProperties{
 		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-		// 					OntapSvmName: to.Ptr("svm2"),
+		// 					OntapSVMName: to.Ptr("svm2"),
 		// 				},
 		// 			},
 		// 		},

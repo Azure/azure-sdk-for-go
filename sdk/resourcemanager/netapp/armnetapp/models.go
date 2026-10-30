@@ -2385,7 +2385,7 @@ type ExternalCacheConnectionProperties struct {
 	ExternalCacheName *string
 
 	// REQUIRED; External SVM resource ID, the external storage virtual machine associated with this cache connection
-	ExternalSvmResourceID *string
+	ExternalSVMResourceID *string
 
 	// REQUIRED; Origin volume resource ID, the ANF volume that acts as the origin for the cache connection
 	OriginVolumeResourceID *string
@@ -2399,11 +2399,11 @@ type ExternalCacheConnectionProperties struct {
 	// READ-ONLY; Current status of the operation
 	ProvisioningState *ProvisioningState
 
+	// READ-ONLY; Resource ID of the SVM peer
+	SVMPeerResourceID *string
+
 	// READ-ONLY; Setup information for the external cache connection
 	SetupInformation *SetupInformation
-
-	// READ-ONLY; Resource ID of the SVM peer
-	SvmPeerResourceID *string
 }
 
 // ExternalCacheConnectionTagsUpdate - The type used for updating tags in ExternalCacheConnection resources.
@@ -2433,7 +2433,7 @@ type ExternalCacheProperties struct {
 	ExternalCacheName *string
 
 	// READ-ONLY; Name of the origin SVM (Storage Virtual Machine) associated with this cache
-	OriginSvmName *string
+	OriginSVMName *string
 
 	// READ-ONLY; Name of the origin volume associated with this cache
 	OriginVolumeName *string
@@ -2529,14 +2529,14 @@ type ExternalResourceNetworkInterfaces struct {
 	PeerIPAddress *string
 }
 
-// ExternalSvm - External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP
+// ExternalSVM - External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP
 // system
-type ExternalSvm struct {
+type ExternalSVM struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The resource-specific properties for this resource.
-	Properties *ExternalSvmProperties
+	Properties *ExternalSVMProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -2554,25 +2554,25 @@ type ExternalSvm struct {
 	Type *string
 }
 
-// ExternalSvmListResult - The response of a ExternalSvm list operation.
-type ExternalSvmListResult struct {
-	// REQUIRED; The ExternalSvm items on this page
-	Value []*ExternalSvm
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ExternalSvmProperties - External SVM properties
-type ExternalSvmProperties struct {
+// ExternalSVMProperties - External SVM properties
+type ExternalSVMProperties struct {
 	// REQUIRED; Name of the external ONTAP SVM (different from Azure resource name). Must be unique across the cluster.
-	OntapSvmName *string
+	OntapSVMName *string
 
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Resource IDs of associated SVM Peer relationships
-	SvmPeerResourceIDs []*string
+	SVMPeerResourceIDs []*string
+}
+
+// ExternalSvmListResult - The response of a ExternalSvm list operation.
+type ExternalSvmListResult struct {
+	// REQUIRED; The ExternalSvm items on this page
+	Value []*ExternalSVM
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ExternalSvmTagsUpdate - The type used for updating tags in ExternalSvm resources.
@@ -3489,6 +3489,51 @@ type RestoreStatus struct {
 	UnhealthyReason *string
 }
 
+// SVMPeer - SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
+type SVMPeer struct {
+	// The resource-specific properties for this resource.
+	Properties *SVMPeerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SVMPeerProperties - SVM Peer properties
+type SVMPeerProperties struct {
+	// READ-ONLY; Command to accept the peer relationship
+	AcceptCommand *string
+
+	// READ-ONLY; Name of the Azure Net App Files (ANF) SVM
+	AnfSVMName *string
+
+	// READ-ONLY; Resource IDs of External Cache Connections associated with this SVM peer
+	ExternalCacheConnectionResourceIDs []*string
+
+	// READ-ONLY; Resource ID of the external SVM
+	ExternalSVMResourceID *string
+
+	// READ-ONLY; Resource IDs of Hybrid Replication resources associated with this SVM peer
+	HybridReplicationResourceIDs []*string
+
+	// READ-ONLY; Peer types; expected values include "Replication" or "Cache"
+	PeerTypes []*SVMPeerType
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Status of the peer relationship
+	Status *SVMPeerStatus
+}
+
 // SecretPassword - Access password from Azure KeyVault Secrets to connect Active Directory
 type SecretPassword struct {
 	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
@@ -3852,24 +3897,6 @@ type SuspectFile struct {
 	SuspectFileName *string
 }
 
-// SvmPeer - SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
-type SvmPeer struct {
-	// The resource-specific properties for this resource.
-	Properties *SvmPeerProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // SvmPeerCommandResponse - Information about svm peering process
 type SvmPeerCommandResponse struct {
 	// Represents the properties of the SVM peer command response.
@@ -3886,37 +3913,10 @@ type SvmPeerCommandResponseProperties struct {
 // SvmPeerListResult - The response of a SvmPeer list operation.
 type SvmPeerListResult struct {
 	// REQUIRED; The SvmPeer items on this page
-	Value []*SvmPeer
+	Value []*SVMPeer
 
 	// The link to the next page of items
 	NextLink *string
-}
-
-// SvmPeerProperties - SVM Peer properties
-type SvmPeerProperties struct {
-	// READ-ONLY; Command to accept the peer relationship
-	AcceptCommand *string
-
-	// READ-ONLY; Name of the Azure Net App Files (ANF) SVM
-	AnfSvmName *string
-
-	// READ-ONLY; Resource IDs of External Cache Connections associated with this SVM peer
-	ExternalCacheConnectionResourceIDs []*string
-
-	// READ-ONLY; Resource ID of the external SVM
-	ExternalSvmResourceID *string
-
-	// READ-ONLY; Resource IDs of Hybrid Replication resources associated with this SVM peer
-	HybridReplicationResourceIDs []*string
-
-	// READ-ONLY; Peer types; expected values include "Replication" or "Cache"
-	PeerTypes []*SvmPeerType
-
-	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Status of the peer relationship
-	Status *SvmPeerStatus
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

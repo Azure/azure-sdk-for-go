@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// ExternalSvmsClient contains the methods for the ExternalSvms group.
-// Don't use this type directly, use NewExternalSvmsClient() instead.
+// ExternalSVMsClient contains the methods for the ExternalSVMs group.
+// Don't use this type directly, use NewExternalSVMsClient() instead.
 //
 // Generated from API version 2026-08-15-preview
-type ExternalSvmsClient struct {
+type ExternalSVMsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewExternalSvmsClient creates a new instance of ExternalSvmsClient with the specified values.
+// NewExternalSVMsClient creates a new instance of ExternalSVMsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewExternalSvmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSvmsClient, error) {
+func NewExternalSVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSVMsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewExternalSvmsClient(subscriptionID string, credential azcore.TokenCredent
 	if err != nil {
 		return nil, err
 	}
-	client := &ExternalSvmsClient{
+	client := &ExternalSVMsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,20 +50,20 @@ func NewExternalSvmsClient(subscriptionID string, credential azcore.TokenCredent
 //   - externalClusterName - The name of the ExternalCluster
 //   - externalSvmName - The name of the ExternalSvm
 //   - resource - Resource create parameters.
-//   - options - ExternalSvmsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalSvmsClient.BeginCreateOrUpdate
+//   - options - ExternalSVMsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginCreateOrUpdate
 //     method.
-func (client *ExternalSvmsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSvm, options *ExternalSvmsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalSvmsClientCreateOrUpdateResponse], error) {
+func (client *ExternalSVMsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSVM, options *ExternalSVMsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalSVMsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, externalClusterName, externalSvmName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSvmsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSVMsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSvmsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSVMsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -71,9 +71,9 @@ func (client *ExternalSvmsClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // createOrUpdate - Create or update the specified External SVM
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExternalSvmsClient) createOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSvm, options *ExternalSvmsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *ExternalSVMsClient) createOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSVM, options *ExternalSVMsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ExternalSvmsClient.BeginCreateOrUpdate"
+	const operationName = "ExternalSVMsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -92,7 +92,7 @@ func (client *ExternalSvmsClient) createOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *ExternalSvmsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSvm, _ *ExternalSvmsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExternalSVMsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSVM, _ *ExternalSVMsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -130,20 +130,20 @@ func (client *ExternalSvmsClient) createOrUpdateCreateRequest(ctx context.Contex
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - externalClusterName - The name of the ExternalCluster
 //   - externalSvmName - The name of the ExternalSvm
-//   - options - ExternalSvmsClientBeginDeleteOptions contains the optional parameters for the ExternalSvmsClient.BeginDelete
+//   - options - ExternalSVMsClientBeginDeleteOptions contains the optional parameters for the ExternalSVMsClient.BeginDelete
 //     method.
-func (client *ExternalSvmsClient) BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientBeginDeleteOptions) (*runtime.Poller[ExternalSvmsClientDeleteResponse], error) {
+func (client *ExternalSVMsClient) BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSVMsClientBeginDeleteOptions) (*runtime.Poller[ExternalSVMsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, externalClusterName, externalSvmName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSvmsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSVMsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSvmsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSVMsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -151,9 +151,9 @@ func (client *ExternalSvmsClient) BeginDelete(ctx context.Context, resourceGroup
 
 // deleteOperation - Delete the specified External SVM
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExternalSvmsClient) deleteOperation(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExternalSVMsClient) deleteOperation(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSVMsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ExternalSvmsClient.BeginDelete"
+	const operationName = "ExternalSVMsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -172,7 +172,7 @@ func (client *ExternalSvmsClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the delete request.
-func (client *ExternalSvmsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, _ *ExternalSvmsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ExternalSVMsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, _ *ExternalSVMsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -206,20 +206,20 @@ func (client *ExternalSvmsClient) deleteCreateRequest(ctx context.Context, resou
 //   - externalClusterName - The name of the ExternalCluster
 //   - externalSvmName - The name of the ExternalSvm
 //   - properties - The resource properties to be updated.
-//   - options - ExternalSvmsClientBeginUpdateOptions contains the optional parameters for the ExternalSvmsClient.BeginUpdate
+//   - options - ExternalSVMsClientBeginUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginUpdate
 //     method.
-func (client *ExternalSvmsClient) BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSvmsClientBeginUpdateOptions) (*runtime.Poller[ExternalSvmsClientUpdateResponse], error) {
+func (client *ExternalSVMsClient) BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSVMsClientBeginUpdateOptions) (*runtime.Poller[ExternalSVMsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, externalClusterName, externalSvmName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSvmsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalSVMsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSvmsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalSVMsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -227,9 +227,9 @@ func (client *ExternalSvmsClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // update - Patch the specified External SVM
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExternalSvmsClient) update(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSvmsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ExternalSVMsClient) update(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSVMsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ExternalSvmsClient.BeginUpdate"
+	const operationName = "ExternalSVMsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -248,7 +248,7 @@ func (client *ExternalSvmsClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the update request.
-func (client *ExternalSvmsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, _ *ExternalSvmsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ExternalSVMsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, _ *ExternalSVMsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -286,26 +286,26 @@ func (client *ExternalSvmsClient) updateCreateRequest(ctx context.Context, resou
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - externalClusterName - The name of the ExternalCluster
 //   - externalSvmName - The name of the ExternalSvm
-//   - options - ExternalSvmsClientGetOptions contains the optional parameters for the ExternalSvmsClient.Get method.
-func (client *ExternalSvmsClient) Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientGetOptions) (ExternalSvmsClientGetResponse, error) {
+//   - options - ExternalSVMsClientGetOptions contains the optional parameters for the ExternalSVMsClient.Get method.
+func (client *ExternalSVMsClient) Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSVMsClientGetOptions) (ExternalSVMsClientGetResponse, error) {
 	var err error
-	const operationName = "ExternalSvmsClient.Get"
+	const operationName = "ExternalSVMsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, externalClusterName, externalSvmName, options)
 	if err != nil {
-		return ExternalSvmsClientGetResponse{}, err
+		return ExternalSVMsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ExternalSvmsClientGetResponse{}, err
+		return ExternalSVMsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExternalSvmsClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, _ *ExternalSvmsClientGetOptions) (*policy.Request, error) {
+func (client *ExternalSVMsClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, _ *ExternalSVMsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -335,13 +335,13 @@ func (client *ExternalSvmsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExternalSvmsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExternalSvmsClientGetResponse, error) {
-	result := ExternalSvmsClientGetResponse{}
+func (client *ExternalSVMsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExternalSVMsClientGetResponse, error) {
+	result := ExternalSVMsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSvm); err != nil {
-		return ExternalSvmsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSVM); err != nil {
+		return ExternalSVMsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -349,26 +349,26 @@ func (client *ExternalSvmsClient) getHandleResponse(resp *http.Response, success
 // NewListByParentPager - List all External SVMs under an External Cluster
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - externalClusterName - The name of the ExternalCluster
-//   - options - ExternalSvmsClientListByParentOptions contains the optional parameters for the ExternalSvmsClient.NewListByParentPager
+//   - options - ExternalSVMsClientListByParentOptions contains the optional parameters for the ExternalSVMsClient.NewListByParentPager
 //     method.
-func (client *ExternalSvmsClient) NewListByParentPager(resourceGroupName string, externalClusterName string, options *ExternalSvmsClientListByParentOptions) *runtime.Pager[ExternalSvmsClientListByParentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExternalSvmsClientListByParentResponse]{
-		More: func(page ExternalSvmsClientListByParentResponse) bool {
+func (client *ExternalSVMsClient) NewListByParentPager(resourceGroupName string, externalClusterName string, options *ExternalSVMsClientListByParentOptions) *runtime.Pager[ExternalSVMsClientListByParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExternalSVMsClientListByParentResponse]{
+		More: func(page ExternalSVMsClientListByParentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ExternalSvmsClientListByParentResponse) (ExternalSvmsClientListByParentResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExternalSvmsClient.NewListByParentPager")
+		Fetcher: func(ctx context.Context, page *ExternalSVMsClientListByParentResponse) (ExternalSVMsClientListByParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExternalSVMsClient.NewListByParentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByParentCreateRequest(ctx, resourceGroupName, externalClusterName, nextLink, options)
 			if err != nil {
-				return ExternalSvmsClientListByParentResponse{}, err
+				return ExternalSVMsClientListByParentResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ExternalSvmsClientListByParentResponse{}, err
+				return ExternalSVMsClientListByParentResponse{}, err
 			}
 			return client.listByParentHandleResponse(resp, http.StatusOK)
 		},
@@ -377,7 +377,7 @@ func (client *ExternalSvmsClient) NewListByParentPager(resourceGroupName string,
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *ExternalSvmsClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, nextLink string, _ *ExternalSvmsClientListByParentOptions) (*policy.Request, error) {
+func (client *ExternalSVMsClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, externalClusterName string, nextLink string, _ *ExternalSVMsClientListByParentOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -412,13 +412,13 @@ func (client *ExternalSvmsClient) listByParentCreateRequest(ctx context.Context,
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *ExternalSvmsClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (ExternalSvmsClientListByParentResponse, error) {
-	result := ExternalSvmsClientListByParentResponse{}
+func (client *ExternalSVMsClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (ExternalSVMsClientListByParentResponse, error) {
+	result := ExternalSVMsClientListByParentResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSvmListResult); err != nil {
-		return ExternalSvmsClientListByParentResponse{}, err
+		return ExternalSVMsClientListByParentResponse{}, err
 	}
 	return result, nil
 }

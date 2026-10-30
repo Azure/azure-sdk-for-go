@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesGetSharedKeys.json
+// Generated from example definition: 2026-03-01/WorkspacesGetSharedKeys.json
 func ExampleSharedKeysClient_GetSharedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleSharedKeysClient_GetSharedKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesRegenerateSharedKeys.json
+// Generated from example definition: 2026-03-01/WorkspacesRegenerateSharedKeys.json
 func ExampleSharedKeysClient_Regenerate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

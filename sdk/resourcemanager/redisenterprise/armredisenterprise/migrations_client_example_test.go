@@ -12,8 +12,108 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseMigrationCancel.json
-func ExampleMigrationsClient_BeginCancel() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationStart.json
+func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMigrationsClient().BeginStart(ctx, "rg1", "cache1", armredisenterprise.Migration{
+		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
+			SkipDataMigration: to.Ptr(true),
+			SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+			SourceType:        to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
+			SwitchDNS:         to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.MigrationsClientStartResponse{
+	// 	Migration: armredisenterprise.Migration{
+	// 		Name: to.Ptr("cache1/default"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
+	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
+	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateSucceeded),
+	// 			RollbackEligibleUntil: to.Ptr(time.Date(2024, time.October, 31, 12, 0, 0, 0, time.UTC)),
+	// 			SkipDataMigration: to.Ptr(true),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+	// 			SourceType: to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
+	// 			StatusDetails: nil,
+	// 			SwitchDNS: to.Ptr(true),
+	// 			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationStartWithDataMigration.json
+func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStartWithDataMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMigrationsClient().BeginStart(ctx, "rg1", "cache1", armredisenterprise.Migration{
+		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
+			SkipDataMigration: to.Ptr(false),
+			SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+			SourceType:        to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
+			SwitchDNS:         to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.MigrationsClientStartResponse{
+	// 	Migration: armredisenterprise.Migration{
+	// 		Name: to.Ptr("cache1/default"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
+	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
+	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateSucceeded),
+	// 			RollbackEligibleUntil: to.Ptr(time.Date(2024, time.October, 31, 12, 0, 0, 0, time.UTC)),
+	// 			SkipDataMigration: to.Ptr(false),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+	// 			SourceType: to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
+	// 			StatusDetails: nil,
+	// 			SwitchDNS: to.Ptr(true),
+	// 			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationUndo.json
+func ExampleMigrationsClient_BeginUndo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +123,10 @@ func ExampleMigrationsClient_BeginCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMigrationsClient().BeginCancel(ctx, "rg1", "cache1", nil)
+	poller, err := clientFactory.NewMigrationsClient().BeginUndo(ctx, "rg1", "cache1", &armredisenterprise.MigrationsClientBeginUndoOptions{
+		Body: &armredisenterprise.MigrationUndoRequest{
+			RollbackReason: to.Ptr(armredisenterprise.MigrationRollbackReasonPerformance),
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,14 +136,35 @@ func ExampleMigrationsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseMigrationGet.json
-func ExampleMigrationsClient_Get() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationUnlinkMigratedEndpoint.json
+func ExampleMigrationsClient_BeginUnlinkMigratedEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
 	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMigrationsClient().BeginUnlinkMigratedEndpoint(ctx, "rg1", "cache1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationGet.json
+func ExampleMigrationsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -55,30 +179,30 @@ func ExampleMigrationsClient_Get() {
 	// 	Migration: armredisenterprise.Migration{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
 	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
 	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateInProgress),
 	// 			SkipDataMigration: to.Ptr(true),
-	// 			SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
 	// 			SourceType: to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
-	// 			StatusDetails: to.Ptr(""),
+	// 			StatusDetails: nil,
 	// 			SwitchDNS: to.Ptr(true),
-	// 			TargetResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+	// 			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseMigrationList.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationList.json
 func ExampleMigrationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -99,17 +223,17 @@ func ExampleMigrationsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("cache1/default"),
 		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
 		// 				Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
 		// 					CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateInProgress),
 		// 					SkipDataMigration: to.Ptr(true),
-		// 					SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+		// 					SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
 		// 					SourceType: to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
-		// 					StatusDetails: to.Ptr(""),
+		// 					StatusDetails: nil,
 		// 					SwitchDNS: to.Ptr(true),
-		// 					TargetResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+		// 					TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
 		// 				},
 		// 			},
 		// 		},
@@ -118,70 +242,72 @@ func ExampleMigrationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseMigrationStart.json
-func ExampleMigrationsClient_BeginStart() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationValidate.json
+func ExampleMigrationsClient_Validate_redisEnterpriseMigrationValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMigrationsClient().BeginStart(ctx, "rg1", "cache1", armredisenterprise.Migration{
-		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
-			SkipDataMigration: to.Ptr(true),
-			SourceResourceID:  to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
-			SourceType:        to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
-			SwitchDNS:         to.Ptr(true),
-		},
+	res, err := clientFactory.NewMigrationsClient().Validate(ctx, "rg1", "cache1", armredisenterprise.MigrationValidationRequest{
+		SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+		SkipDataMigration: to.Ptr(true),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.MigrationsClientStartResponse{
-	// 	Migration: armredisenterprise.Migration{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
-	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
-	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
-	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningState("Completed")),
-	// 			SkipDataMigration: to.Ptr(true),
-	// 			SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
-	// 			SourceType: to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
-	// 			StatusDetails: to.Ptr(""),
-	// 			SwitchDNS: to.Ptr(true),
-	// 			TargetResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+	// res = armredisenterprise.MigrationsClientValidateResponse{
+	// 	MigrationValidationResponse: armredisenterprise.MigrationValidationResponse{
+	// 		IsValid: to.Ptr(false),
+	// 		Errors: []*armredisenterprise.MigrationValidationError{
+	// 			{
+	// 				Disparities: []*armredisenterprise.MigrationValidationDisparity{
+	// 					{
+	// 						Category: to.Ptr("TLS"),
+	// 						Message: to.Ptr("The source resource only accepts TLS connections, but the target resource only accepts non-TLS connections."),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Warnings: []*armredisenterprise.MigrationValidationWarning{
+	// 			{
+	// 				Disparities: []*armredisenterprise.MigrationValidationDisparity{
+	// 					{
+	// 						Category: to.Ptr("Managed Identity"),
+	// 						Message: to.Ptr("The source resource has a system-assigned managed identity. Managed identities are not copied as part of migration."),
+	// 					},
+	// 					{
+	// 						Category: to.Ptr("Persistence"),
+	// 						Message: to.Ptr("The source resource has RDB persistence enabled. Persistence settings are not copied as part of migration."),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseMigrationValidate.json
-func ExampleMigrationsClient_Validate() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationValidateWithDataMigration.json
+func ExampleMigrationsClient_Validate_redisEnterpriseMigrationValidateWithDataMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMigrationsClient().Validate(ctx, "rg1", "cache1", armredisenterprise.MigrationValidationRequest{
-		SourceResourceID:  to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
-		SkipDataMigration: to.Ptr(true),
-		ForceMigrate:      to.Ptr(false),
+		SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
+		SkipDataMigration: to.Ptr(false),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

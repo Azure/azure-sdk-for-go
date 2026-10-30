@@ -44,19 +44,11 @@ type AccessPolicyAssignmentList struct {
 
 // AccessPolicyAssignmentProperties - Properties of Redis Enterprise database access policy assignment.
 type AccessPolicyAssignmentProperties struct {
-	// REQUIRED; The user associated with the access policy.
-	User *AccessPolicyAssignmentPropertiesUser
-
-	// **Deprecated.** This property always returns "default". Use `accessString` to configure custom Redis ACL permissions instead.
+	// REQUIRED; Name of access policy under specific access policy assignment. Only "default" policy is supported for now.
 	AccessPolicyName *string
 
-	// The Redis ACL permissions string applied to this assignment, for example `+@read ~cache:*`. Defaults to `+@all ~*` if not
-	// specified.
-	AccessString *string
-
-	// READ-ONLY; Provisioning error details when the access string failed to apply (e.g., invalid ACL syntax). Null when provisioning
-	// succeeded.
-	ProvisioningError *AccessPolicyAssignmentProvisioningError
+	// REQUIRED; The user associated with the access policy.
+	User *AccessPolicyAssignmentPropertiesUser
 
 	// READ-ONLY; Current provisioning status of the access policy assignment.
 	ProvisioningState *ProvisioningState
@@ -68,21 +60,9 @@ type AccessPolicyAssignmentPropertiesUser struct {
 	ObjectID *string
 }
 
-// AccessPolicyAssignmentProvisioningError - Error details for access policy assignment provisioning failures.
-type AccessPolicyAssignmentProvisioningError struct {
-	// REQUIRED; Machine-readable error code (e.g., "InvalidAccessString").
-	Code *string
-
-	// REQUIRED; Human-readable error message describing the failure.
-	Message *string
-
-	// The property that caused the error (e.g., "properties.accessString").
-	Target *string
-}
-
 // AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
 type AzureCacheForRedisMigrationProperties struct {
-	// REQUIRED; Sets whether the data is migrated from source to target or not. This property must be true during the preview.
+	// REQUIRED; Sets whether the data is migrated from source to target or not. Set this property to true to skip data migration.
 	SkipDataMigration *bool
 
 	// REQUIRED; The source resource ID to migrate from. This is the resource ID of the Azure Cache for Redis.
@@ -110,6 +90,11 @@ type AzureCacheForRedisMigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -120,12 +105,13 @@ type AzureCacheForRedisMigrationProperties struct {
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type AzureCacheForRedisMigrationProperties.
 func (a *AzureCacheForRedisMigrationProperties) GetMigrationProperties() *MigrationProperties {
 	return &MigrationProperties{
-		CreationTime:      a.CreationTime,
-		LastModifiedTime:  a.LastModifiedTime,
-		ProvisioningState: a.ProvisioningState,
-		SourceType:        a.SourceType,
-		StatusDetails:     a.StatusDetails,
-		TargetResourceID:  a.TargetResourceID,
+		CreationTime:          a.CreationTime,
+		LastModifiedTime:      a.LastModifiedTime,
+		ProvisioningState:     a.ProvisioningState,
+		RollbackEligibleUntil: a.RollbackEligibleUntil,
+		SourceType:            a.SourceType,
+		StatusDetails:         a.StatusDetails,
+		TargetResourceID:      a.TargetResourceID,
 	}
 }
 
@@ -608,6 +594,11 @@ type MigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -617,6 +608,13 @@ type MigrationProperties struct {
 
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type MigrationProperties.
 func (m *MigrationProperties) GetMigrationProperties() *MigrationProperties { return m }
+
+// MigrationUndoRequest - Parameters supplied to the undo migration operation.
+type MigrationUndoRequest struct {
+	// The reason for undoing (rolling back) the migration. Choose the value that best describes why the rollback is needed. This
+	// information helps us improve the migration experience and does not change how the rollback is performed.
+	RollbackReason *MigrationRollbackReason
+}
 
 // MigrationValidationDisparity - Represents a specific validation issue found during migration validation.
 type MigrationValidationDisparity struct {
@@ -638,11 +636,6 @@ type MigrationValidationError struct {
 type MigrationValidationRequest struct {
 	// REQUIRED; The source resource ID to validate migration from. This is the resource ID of the Azure Cache for Redis.
 	SourceResourceID *string
-
-	// Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this property
-	// is true, the isValid property in the response will ignore warning-level disparities between the source and target resource.
-	// The default value is false.
-	ForceMigrate *bool
 
 	// Sets whether the data is migrated from source to target or not. The default value is true.
 	SkipDataMigration *bool

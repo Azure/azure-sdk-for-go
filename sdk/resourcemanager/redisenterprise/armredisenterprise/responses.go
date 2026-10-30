@@ -68,6 +68,11 @@ type ClientUpdateResponse struct {
 	Cluster
 }
 
+// ClustersClientUnlinkMigratedEndpointResponse contains the response from method ClustersClient.BeginUnlinkMigratedEndpoint.
+type ClustersClientUnlinkMigratedEndpointResponse struct {
+	// placeholder for future response values
+}
+
 // DatabasesClientCreateResponse contains the response from method DatabasesClient.BeginCreate.
 type DatabasesClientCreateResponse struct {
 	// Describes a database on the Redis Enterprise cluster
@@ -139,11 +144,6 @@ type DatabasesClientUpgradeDBRedisVersionResponse struct {
 	// placeholder for future response values
 }
 
-// MigrationsClientCancelResponse contains the response from method MigrationsClient.BeginCancel.
-type MigrationsClientCancelResponse struct {
-	// placeholder for future response values
-}
-
 // MigrationsClientGetResponse contains the response from method MigrationsClient.Get.
 type MigrationsClientGetResponse struct {
 	// Describes the current migration operation on a Redis Enterprise cluster.
@@ -160,6 +160,16 @@ type MigrationsClientListResponse struct {
 type MigrationsClientStartResponse struct {
 	// Describes the current migration operation on a Redis Enterprise cluster.
 	Migration
+}
+
+// MigrationsClientUndoResponse contains the response from method MigrationsClient.BeginUndo.
+type MigrationsClientUndoResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationsClientUnlinkMigratedEndpointResponse contains the response from method MigrationsClient.BeginUnlinkMigratedEndpoint.
+type MigrationsClientUnlinkMigratedEndpointResponse struct {
+	// placeholder for future response values
 }
 
 // MigrationsClientValidateResponse contains the response from method MigrationsClient.Validate.

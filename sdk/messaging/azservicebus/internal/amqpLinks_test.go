@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -634,6 +635,42 @@ func TestAMQPLinksRetry(t *testing.T) {
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 	require.EqualValues(t, 3, createLinksCalled)
+}
+
+func TestAMQPLinksRetrySkipsStaleNamespaceCleanup(t *testing.T) {
+	createLinkFn := func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
+		return newLinksForAMQPLinksTest("entity path", session)
+	}
+
+	md, links, ns, cleanup := newAMQPLinksForTest(t, emulation.MockDataOptions{}, createLinkFn)
+	defer cleanup()
+
+	links2 := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:                  ns,
+		EntityPath:          "entity path",
+		CreateLinkFunc:      createLinkFn,
+		GetRecoveryKindFunc: GetRecoveryKind,
+	}).(*AMQPLinksImpl)
+	defer test.RequireLinksClose(t, links2)
+
+	lwid2, err := links2.Get(context.Background())
+	require.NoError(t, err)
+	require.EqualValues(t, 1, lwid2.ID.Conn)
+
+	err = links.Retry(context.Background(), exported.EventConn, "Test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+		require.NoError(t, links2.RecoverIfNeeded(ctx, lwid2.ID, &amqp.ConnError{}))
+		return &amqp.ConnError{}
+	}, exported.RetryOptions{MaxRetries: -1})
+
+	var connErr *amqp.ConnError
+	require.ErrorAs(t, err, &connErr)
+
+	ns.clientMu.RLock()
+	client, connID := ns.client, ns.connID
+	ns.clientMu.RUnlock()
+	require.NotNil(t, client)
+	require.EqualValues(t, 2, connID)
+	require.Len(t, md.Events.GetOpenConns(), 1)
 }
 
 func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {

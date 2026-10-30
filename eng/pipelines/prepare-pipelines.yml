@@ -3,57 +3,7 @@ trigger: none
 variables:
 - template: /eng/pipelines/templates/variables/image.yml
 
-jobs:
-  - template: /eng/common/pipelines/templates/jobs/prepare-pipelines.yml
-    parameters:
-      Repository: Azure/azure-sdk-for-go
-
-  # The shared template does not enable its tests convention for Go.
-  # Keep the Go-specific invocation here rather than changing synchronized eng/common files.
-  - job: PrepareGoTestPipelines
-    displayName: Prepare Go live test pipelines
-    variables:
-      Secrets_for_Resource_Provisioner: 64
-    pool:
-      name: $(LINUXPOOL)
-      vmImage: $(LINUXVMIMAGE)
-    steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Repositories:
-            - Name: Azure/azure-sdk-for-go
-              Commitish: $(Build.SourceVersion)
-              WorkingDirectory: $(System.DefaultWorkingDirectory)
-          Paths:
-            - 'sdk/**/*.yml'
-            - '!sdk/**/test-recordings/*'
-            - '!sdk/**/recordings/*'
-            - '!sdk/**/SessionRecords/*'
-            - '!sdk/**/session-records/*'
-
-      - template: /eng/common/pipelines/templates/steps/install-pipeline-generation.yml
-      - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
-
-      - task: AzureCLI@2
-        displayName: Generate Go test pipelines
-        inputs:
-          azureSubscription: opensource-api-connection
-          scriptType: pscore
-          scriptLocation: inlineScript
-          inlineScript: >
-            $(Pipeline.Workspace)/pipeline-generator/pipeline-generator generate
-            --organization azure-sdk
-            --project internal
-            --prefix go
-            --devopspath "\go"
-            --path "$(System.DefaultWorkingDirectory)/sdk"
-            --endpoint Azure
-            --repository Azure/azure-sdk-for-go
-            --convention tests
-            --agentpool Hosted
-            --branch refs/heads/$(DefaultBranch)
-            --set-managed-variables
-            --no-schedule
-            --debug
-            --variablegroups $(Secrets_for_Resource_Provisioner)
-            --serviceconnections "Azure" "azure-sdk-tests-cosmos"
+extends:
+  template: /eng/common/pipelines/templates/jobs/prepare-pipelines.yml
+  parameters:
+    Repository: Azure/azure-sdk-for-go

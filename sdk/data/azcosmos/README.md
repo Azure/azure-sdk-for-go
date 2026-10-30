@@ -473,19 +473,19 @@ scenario failures are not retried or silently quarantined.
 
 Use the standard PR-based pipeline bootstrap before requesting manual registration:
 
-1. Include the existing `ci.yml`, the new `tests.yml`, and their referenced test/resource files
-   in the PR. This change also updates the Go-owned `eng/pipelines/prepare-pipelines.yml` wrapper:
-   the synchronized shared template leaves Go's `TestVariableGroups` empty and otherwise skips
-   its `tests` convention. The additional Go job invokes that convention without modifying
-   `eng/common`.
-2. Comment `/azp run prepare-pipelines` on the PR. Check the job
-   **Prepare Go live test pipelines**, especially **Generate Go test pipelines**. The generator
-   scans the PR commit's YAML files and creates/updates **go - azcosmos - tests** in
-   `azure-sdk/internal`, pointing to `sdk/data/azcosmos/tests.yml`.
-3. If the run does not show the added Go job, it compiled an older prepare-pipelines wrapper.
-   The wrapper must be available to the prepare run before this Go-specific generation path can
-   execute. A green shared prepare job alone is not evidence that the tests pipeline was created.
-4. Open the generated definition and manually select the branch containing all changes. The
+1. Include the new `tests.yml` and its referenced test/resource files in the PR, alongside the
+   existing `ci.yml` on that branch. Keep repository-wide pipeline generation unchanged for this
+   first attempt.
+2. Comment `/azp run prepare-pipelines` on the PR. Inspect the existing
+   **Generate test pipelines** task and check whether it creates or updates
+   **go - azcosmos - tests** in `azure-sdk/internal`, pointing to
+   `sdk/data/azcosmos/tests.yml`. Generation alone does not run live tests or deploy resources.
+3. If that task is skipped or the definition is absent, retain the task condition, logs, and
+   definition lookup as evidence before proposing a separate engineering-system change.
+   The current shared template leaves Go's `TestVariableGroups` empty, while its test-generation
+   task requires a nonempty value. A green prepare run is therefore not sufficient evidence that
+   the standalone tests pipeline was created.
+4. If the definition was created, open it and manually select the branch containing all changes. The
    generator sets the default branch to `main`, where this new file may not exist yet. Leave
    **RunLiveTests=false** for the first validation-only run: it checks the offline result gate
    without authenticating to Azure, provisioning resources, or claiming live certification.
@@ -493,13 +493,11 @@ Use the standard PR-based pipeline bootstrap before requesting manual registrati
    The job must run in `internal` on a `refs/heads/` branch, not a `refs/pull/` merge ref.
    Only trusted, reviewed branch content should be run with the service connection.
 
-The Go invocation requests the existing resource-provisioner variable group (ID 64), GitHub
-connection `Azure`, and `azure-sdk-tests-cosmos` service connection. It passes `--no-schedule`
-so the generator does not add its own default daily schedule on top of the explicit YAML
-schedule. Generation does not execute the live tests or deploy the Bicep template. Missing
-resources or insufficient authorization fail the generation/task rather than silently succeeding.
-If the generated definition cannot access a required resource, inspect that exact error before
-requesting help. The prerequisites are:
+If a definition is created, inspect its effective schedules, variable groups, and service-connection
+permissions: the existing generator may add definition-level defaults that override or supplement
+the YAML. Do not assume it authorized the Cosmos-specific service connection or that the YAML's
+weekly schedule is the only effective schedule. If generation or resource authorization fails,
+inspect that exact error before requesting help. The live execution prerequisites are:
 
 - The `azsdk-pool` Linux agent pool, with a working C compiler and PowerShell.
 - The `azure-sdk-tests-cosmos` workload-identity-federated service connection. Its identity must

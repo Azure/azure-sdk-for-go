@@ -27,10 +27,50 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
+// CustomerManagedKeyEncryption - Customer-managed key encryption properties for the resource.
+type CustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+
+	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	// or https://contosovault.vault.azure.net/keys/contosokek.
+	KeyEncryptionKeyURL *string
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // FileShare - File share resource
 type FileShare struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *FileShareProperties
@@ -49,6 +89,28 @@ type FileShare struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// FileShareEncryption - Encryption settings for the file share. Composes the standard common encryption type with read-only
+// customer-managed key rotation status owned by the file share resource provider. Automatic key rotation follows the Azure
+// Storage account model and is derived from the key URL shape: an unversioned customerManagedKeyEncryption.keyEncryptionKeyUrl
+// opts into automatic rotation to the latest key version, while a versioned URL pins a specific version.
+type FileShareEncryption struct {
+	// All Customer-managed key encryption properties for the resource.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
+
+	// Values are enabled and disabled.
+	InfrastructureEncryption *InfrastructureEncryption
+
+	// READ-ONLY; The last customer-actionable error encountered while automatically rotating to the latest key version.
+	AutoKeyRotationError *ErrorDetail
+
+	// READ-ONLY; The versioned key encryption key URL currently applied to the file share by the service. When an unversioned
+	// keyEncryptionKeyUrl is supplied, this reflects the resolved latest key version currently in use.
+	CurrentKeyEncryptionKeyURL *string
+
+	// READ-ONLY; The UTC timestamp when the service last successfully rotated the active customer-managed key version.
+	LastKeyRotationTimestamp *time.Time
 }
 
 // FileShareLimits - File share-related limits in the specified subscription/location.
@@ -93,6 +155,12 @@ type FileShareLimitsOutput struct {
 	ProvisioningConstants *FileShareProvisioningConstants
 }
 
+// FileShareLimitsRequest - Request structure for the file share limits API.
+type FileShareLimitsRequest struct {
+	// REQUIRED; Properties used to select the file share offer.
+	Properties *FileShareOfferInput
+}
+
 // FileShareLimitsResponse - Response structure for file share limits API.
 type FileShareLimitsResponse struct {
 	// REQUIRED; The properties of the file share limits.
@@ -108,8 +176,23 @@ type FileShareListResult struct {
 	NextLink *string
 }
 
+// FileShareOfferInput - File share offer dimensions.
+type FileShareOfferInput struct {
+	// The storage media tier. Defaults to SSD.
+	MediaTier *MediaTier
+
+	// The file sharing protocol. Defaults to NFS.
+	Protocol *Protocol
+
+	// The scale mode. Defaults to Compatibility.
+	ScaleMode *ScaleMode
+}
+
 // FileShareProperties - File share properties
 type FileShareProperties struct {
+	// Encryption settings for the file share.
+	Encryption *FileShareEncryption
+
 	// The storage media tier of the file share.
 	MediaTier *MediaTier
 
@@ -142,6 +225,9 @@ type FileShareProperties struct {
 	// The chosen redundancy level of the file share.
 	Redundancy *Redundancy
 
+	// The scale mode selected when the file share is created.
+	ScaleMode *ScaleMode
+
 	// READ-ONLY; The host name of the file share.
 	HostName *string
 
@@ -152,6 +238,9 @@ type FileShareProperties struct {
 	// READ-ONLY; Max burst IOPS credits shows the maximum number of burst credits the share can have at the current IOPS provisioning
 	// level.
 	MaxBurstIOPerSecCredits *int64
+
+	// READ-ONLY; The current migration state of the file share.
+	MigrationState *MigrationState
 
 	// READ-ONLY; The list of associated private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -195,6 +284,15 @@ type FileShareProvisioningRecommendationInput struct {
 	// REQUIRED; The desired provisioned storage size of the share in GiB. Will be use to calculate the values of remaining provisioning
 	// parameters.
 	ProvisionedStorageGiB *int32
+
+	// The storage media tier. Defaults to SSD.
+	MediaTier *MediaTier
+
+	// The file sharing protocol. Defaults to NFS.
+	Protocol *Protocol
+
+	// The scale mode. Defaults to Compatibility.
+	ScaleMode *ScaleMode
 }
 
 // FileShareProvisioningRecommendationOutput - File share provisioning parameters recommendation API result.
@@ -275,6 +373,9 @@ type FileShareSnapshotUpdateProperties struct {
 
 // FileShareUpdate - The type used for update operations of the FileShare.
 type FileShareUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// The resource-specific properties for this resource.
 	Properties *FileShareUpdateProperties
 
@@ -284,6 +385,9 @@ type FileShareUpdate struct {
 
 // FileShareUpdateProperties - The updatable properties of the FileShare.
 type FileShareUpdateProperties struct {
+	// Encryption settings for the file share.
+	Encryption *FileShareEncryption
+
 	// Protocol settings specific NFS.
 	NfsProtocolProperties *NfsProtocolProperties
 
@@ -316,10 +420,51 @@ type FileShareUsageDataResponse struct {
 	Properties *FileShareUsageDataOutput
 }
 
+// KeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity should
+// be used to auth to Key Vault.
+type KeyEncryptionKeyIdentity struct {
+	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
+	// and userAssignedIdentity - internal use only.
+	DelegatedIdentityClientID *string
+
+	// application client identity to use for accessing key encryption key Url in a different tenant. Ex: f83c6b1b-4d34-47e4-bb34-9d83df58b540
+	FederatedClientID *string
+
+	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
+	IdentityType *KeyEncryptionKeyIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
+	UserAssignedIdentityResourceID *string
+}
+
 // LiveSharesUsageData - Usage data for live shares.
 type LiveSharesUsageData struct {
 	// REQUIRED; The number of active file shares.
 	FileShareCount *int32
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// MigrationState - Summary of the current migration state for the file share.
+type MigrationState struct {
+	// READ-ONLY; Indicates whether a redundancy conversion is in progress for the file share.
+	RedundancyConversionInProgress *bool
 }
 
 // NfsProtocolProperties - Properties specific to the NFS protocol.
@@ -488,6 +633,40 @@ type PublicAccessProperties struct {
 	AllowedSubnets []*string
 }
 
+// RedundancyConversionStatusOutput - The status and details of the current or most recent redundancy conversion.
+type RedundancyConversionStatusOutput struct {
+	// READ-ONLY; The current status of the redundancy conversion.
+	ConversionStatus *RedundancyConversionStatus
+
+	// READ-ONLY; The target redundancy requested for the redundancy conversion.
+	TargetRedundancy *Redundancy
+
+	// READ-ONLY; Detailed information about why the redundancy conversion failed.
+	ConversionFailedDetailedReason *string
+
+	// READ-ONLY; The reason the redundancy conversion failed.
+	ConversionFailedReason *string
+}
+
+// RedundancyConversionStatusResponse - Response containing the status and details of the current or most recent redundancy
+// conversion.
+type RedundancyConversionStatusResponse struct {
+	// REQUIRED; Properties containing the redundancy conversion status output.
+	Properties *RedundancyConversionStatusOutput
+}
+
+// StartRedundancyConversionInput - Input for starting a redundancy conversion.
+type StartRedundancyConversionInput struct {
+	// REQUIRED; The requested target redundancy for the conversion.
+	TargetRedundancy *Redundancy
+}
+
+// StartRedundancyConversionRequest - Parameters for starting a redundancy conversion.
+type StartRedundancyConversionRequest struct {
+	// REQUIRED; Properties containing the redundancy conversion input.
+	Properties *StartRedundancyConversionInput
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -507,4 +686,13 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }

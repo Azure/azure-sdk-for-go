@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-09-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,225 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdate - Create or update a file share.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
+//   - resource - Resource create parameters.
+//   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update a file share.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a FileShare
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
+//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete a FileShare
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a FileShare
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
+//   - properties - The resource properties to be updated.
+//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a FileShare
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) update(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, options *ClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // CheckNameAvailability - Implements local CheckNameAvailability operations
@@ -82,7 +301,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -102,150 +321,6 @@ func (client *Client) checkNameAvailabilityHandleResponse(resp *http.Response, s
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create or update a file share.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
-//   - resource - Resource create parameters.
-//   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update a file share.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, resource FileShare, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete a FileShare
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
-//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete a FileShare
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get a FileShare
@@ -290,7 +365,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,6 +379,68 @@ func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
 		return ClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetRedundancyConversionStatus - Gets the status and details of the current or most recent redundancy conversion for the
+// file share.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
+//   - options - ClientGetRedundancyConversionStatusOptions contains the optional parameters for the Client.GetRedundancyConversionStatus
+//     method.
+func (client *Client) GetRedundancyConversionStatus(ctx context.Context, resourceGroupName string, resourceName string, options *ClientGetRedundancyConversionStatusOptions) (ClientGetRedundancyConversionStatusResponse, error) {
+	var err error
+	const operationName = "Client.GetRedundancyConversionStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getRedundancyConversionStatusCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return ClientGetRedundancyConversionStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientGetRedundancyConversionStatusResponse{}, err
+	}
+	return client.getRedundancyConversionStatusHandleResponse(httpResp, http.StatusOK)
+}
+
+// getRedundancyConversionStatusCreateRequest creates the GetRedundancyConversionStatus request.
+func (client *Client) getRedundancyConversionStatusCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientGetRedundancyConversionStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/getRedundancyConversionStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getRedundancyConversionStatusHandleResponse handles the GetRedundancyConversionStatus response.
+func (client *Client) getRedundancyConversionStatusHandleResponse(resp *http.Response, successCodes ...int) (ClientGetRedundancyConversionStatusResponse, error) {
+	result := ClientGetRedundancyConversionStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RedundancyConversionStatusResponse); err != nil {
+		return ClientGetRedundancyConversionStatusResponse{}, err
 	}
 	return result, nil
 }
@@ -360,7 +497,7 @@ func (client *Client) listByParentCreateRequest(ctx context.Context, resourceGro
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -426,7 +563,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, nextL
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -445,54 +582,36 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// BeginUpdate - Update a FileShare
+// StartRedundancyConversion - Starts a redundancy conversion for the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
-//   - properties - The resource properties to be updated.
-//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a FileShare
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) update(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, options *ClientBeginUpdateOptions) (*http.Response, error) {
+//   - body - The content of the action request
+//   - options - ClientStartRedundancyConversionOptions contains the optional parameters for the Client.StartRedundancyConversion
+//     method.
+func (client *Client) StartRedundancyConversion(ctx context.Context, resourceGroupName string, resourceName string, body StartRedundancyConversionRequest, options *ClientStartRedundancyConversionOptions) (ClientStartRedundancyConversionResponse, error) {
 	var err error
-	const operationName = "Client.BeginUpdate"
+	const operationName = "Client.StartRedundancyConversion"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, properties, options)
+	req, err := client.startRedundancyConversionCreateRequest(ctx, resourceGroupName, resourceName, body, options)
 	if err != nil {
-		return nil, err
+		return ClientStartRedundancyConversionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ClientStartRedundancyConversionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		return ClientStartRedundancyConversionResponse{}, runtime.NewResponseError(httpResp)
 	}
-	return httpResp, nil
+	return ClientStartRedundancyConversionResponse{}, nil
 }
 
-// updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, properties FileShareUpdate, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}"
+// startRedundancyConversionCreateRequest creates the StartRedundancyConversion request.
+func (client *Client) startRedundancyConversionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, body StartRedundancyConversionRequest, _ *ClientStartRedundancyConversionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/startRedundancyConversion"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -505,16 +624,15 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil

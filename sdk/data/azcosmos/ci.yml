@@ -20,6 +20,12 @@ pr:
     include:
     - sdk/data/azcosmos/
 
+parameters:
+  - name: RunLiveTests
+    displayName: Provision resources and run Entra ID smoke tests (billed)
+    type: boolean
+    default: false
+
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
@@ -29,6 +35,8 @@ extends:
     LintVersion: 'v2.14.0'
     MatrixReplace:
       - GoVersion=.*/1.27.2
+    # Keep the shared build matrix unchanged. Its live path also uses that matrix,
+    # including unsupported native targets, so compose the bounded Linux lane below.
     AdditionalStages:
       - stage: Emulator
         displayName: 'Cosmos Emulator'
@@ -105,6 +113,9 @@ extends:
             os: linux
 
           steps:
+          - pwsh: ./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
+            displayName: 'Verify live result gate without Azure credentials'
+
           - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
             parameters:
               AgentImage: ubuntu
@@ -208,3 +219,106 @@ extends:
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
                 AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
                 CGO_ENABLED: '1'
+
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), ne(variables['Build.Reason'], 'PullRequest'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), eq(variables['Build.Reason'], 'Schedule'), endsWith(variables['Build.DefinitionName'], '- weekly'))) }}:
+        - stage: AzureLive
+          displayName: 'Cosmos Entra ID live smoke'
+          dependsOn: []
+          variables:
+          - template: /eng/pipelines/templates/variables/globals.yml@self
+          - template: /eng/pipelines/templates/variables/image.yml@self
+          jobs:
+          - job: LinuxAMD64
+            timeoutInMinutes: 45
+            cancelTimeoutInMinutes: 15
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            templateContext:
+              outputs:
+              - output: pipelineArtifact
+                targetPath: '$(Build.ArtifactStagingDirectory)/cosmos-live'
+                artifactName: cosmos-live-linux-amd64
+                condition: succeededOrFailed()
+                sbomEnabled: false
+            steps:
+            - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
+              parameters:
+                AgentImage: ubuntu
+
+            - task: GoTool@0
+              inputs:
+                version: '1.27.2'
+              displayName: 'Select Go Version'
+
+            - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+
+            - pwsh: |
+                $target = (& go env -json GOOS GOARCH CGO_ENABLED) | ConvertFrom-Json
+                if ($LASTEXITCODE -ne 0 -or $target.GOOS -ne 'linux' -or
+                    $target.GOARCH -ne 'amd64' -or $target.CGO_ENABLED -ne '1' -or
+                    ![System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform(
+                      [System.Runtime.InteropServices.OSPlatform]::Linux) -or
+                    [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne 'X64') {
+                    throw 'Hosted live smoke requires a Linux amd64 agent and cgo native build.'
+                }
+              displayName: 'Reject unsupported live targets before provisioning'
+              workingDirectory: sdk/data/azcosmos
+              env:
+                CGO_ENABLED: '1'
+
+            - template: /eng/common/TestResources/deploy-test-resources.yml@self
+              parameters:
+                ServiceDirectory: data/azcosmos
+                Location: eastus
+                ServiceConnection: azure-sdk-tests-cosmos
+                UseFederatedAuth: true
+                DeleteAfterHours: 8
+
+            - task: AzurePowerShell@5
+              displayName: 'Run native Go Entra ID smoke scenarios'
+              inputs:
+                azureSubscription: azure-sdk-tests-cosmos
+                azurePowerShellVersion: LatestVersion
+                pwsh: true
+                ScriptType: InlineScript
+                Inline: |
+                  $account = (Get-AzContext).Account
+                  $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+                  $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+                  ./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 `
+                    -OutputDirectory '$(Build.ArtifactStagingDirectory)/cosmos-live'
+              env:
+                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+                AZURE_RECORD_MODE: live
+                AZURE_COSMOS_E2E_BACKEND: azureLive
+                AZCOSMOS_ENDPOINT: $(AZCOSMOS_ENDPOINT)
+                AZCOSMOS_DATABASE: $(AZCOSMOS_DATABASE)
+                AZCOSMOS_CONTAINER: $(AZCOSMOS_CONTAINER)
+                CGO_ENABLED: '1'
+
+            - task: PublishTestResults@2
+              displayName: 'Publish live scenario results'
+              condition: succeededOrFailed()
+              inputs:
+                testResultsFormat: JUnit
+                testResultsFiles: '$(Build.ArtifactStagingDirectory)/cosmos-live/report.xml'
+                failTaskOnFailedTests: true
+                failTaskOnMissingResultsFile: true
+
+            - task: AzurePowerShell@5
+              displayName: 'Remove owned live resources'
+              condition: and(always(), eq(variables['CI_HAS_DEPLOYED_RESOURCES'], 'true'))
+              inputs:
+                azureSubscription: azure-sdk-tests-cosmos
+                azurePowerShellVersion: LatestVersion
+                pwsh: true
+                ScriptType: InlineScript
+                Inline: |
+                  ./eng/common/scripts/Import-AzModules.ps1
+                  $config = @'
+                  $(SubscriptionConfiguration)
+                  '@ | ConvertFrom-Json -AsHashtable
+                  ./eng/common/TestResources/Remove-TestResources.ps1 @config `
+                    -ServiceDirectory data/azcosmos -CI -Force

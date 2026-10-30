@@ -19,7 +19,7 @@ import (
 // ReplicationNetworkMappingsClient contains the methods for the ReplicationNetworkMappings group.
 // Don't use this type directly, use NewReplicationNetworkMappingsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationNetworkMappingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -73,7 +73,7 @@ func (client *ReplicationNetworkMappingsClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Creates network mapping.
+// create - Creates network mapping.
 //
 // The operation to create an ASR network mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *ReplicationNetworkMappingsClient) create(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, _ *ReplicationNetworkMappingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.subscriptionID == "" {
@@ -129,7 +129,7 @@ func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -167,7 +167,7 @@ func (client *ReplicationNetworkMappingsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete network mapping.
+// deleteOperation - Delete network mapping.
 //
 // The operation to delete a network mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -191,7 +191,7 @@ func (client *ReplicationNetworkMappingsClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, _ *ReplicationNetworkMappingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.subscriptionID == "" {
@@ -223,8 +223,103 @@ func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates network mapping.
+//
+// The operation to update an ASR network mapping.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - networkName - Primary network name.
+//   - networkMappingName - Network mapping name.
+//   - input - Update network mapping input.
+//   - options - ReplicationNetworkMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginUpdate
+//     method.
+func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*runtime.Poller[ReplicationNetworkMappingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationNetworkMappingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationNetworkMappingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates network mapping.
+//
+// The operation to update an ASR network mapping.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationNetworkMappingsClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationNetworkMappingsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, _ *ReplicationNetworkMappingsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	if networkName == "" {
+		return nil, errors.New("parameter networkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkName}", url.PathEscape(networkName))
+	if networkMappingName == "" {
+		return nil, errors.New("parameter networkMappingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -288,7 +383,7 @@ func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,85 +397,6 @@ func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMapping); err != nil {
 		return ReplicationNetworkMappingsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets all the network mappings under a vault.
-//
-// Lists all ASR network mappings in the vault.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the recovery services vault.
-//   - options - ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.NewListPager
-//     method.
-func (client *ReplicationNetworkMappingsClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworkMappingsClientListResponse]{
-		More: func(page ReplicationNetworkMappingsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReplicationNetworkMappingsClientListResponse) (ReplicationNetworkMappingsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationNetworkMappingsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
-			if err != nil {
-				return ReplicationNetworkMappingsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationNetworkMappingsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ReplicationNetworkMappingsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if resourceName == "" {
-			return nil, errors.New("parameter resourceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationNetworkMappingsClientListResponse, error) {
-	result := ReplicationNetworkMappingsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
-		return ReplicationNetworkMappingsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -455,7 +471,7 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -474,97 +490,81 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleR
 	return result, nil
 }
 
-// BeginUpdate - Updates network mapping.
+// NewListPager - Gets all the network mappings under a vault.
 //
-// The operation to update an ASR network mapping.
-// If the operation fails it returns an *azcore.ResponseError type.
+// Lists all ASR network mappings in the vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - networkName - Primary network name.
-//   - networkMappingName - Network mapping name.
-//   - input - Update network mapping input.
-//   - options - ReplicationNetworkMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginUpdate
+//   - resourceName - The name of the recovery services vault.
+//   - options - ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.NewListPager
 //     method.
-func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*runtime.Poller[ReplicationNetworkMappingsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationNetworkMappingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationNetworkMappingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ReplicationNetworkMappingsClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworkMappingsClientListResponse]{
+		More: func(page ReplicationNetworkMappingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReplicationNetworkMappingsClientListResponse) (ReplicationNetworkMappingsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationNetworkMappingsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
+			if err != nil {
+				return ReplicationNetworkMappingsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReplicationNetworkMappingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - Updates network mapping.
-//
-// The operation to update an ASR network mapping.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationNetworkMappingsClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ReplicationNetworkMappingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ReplicationNetworkMappingsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, _ *ReplicationNetworkMappingsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	if networkName == "" {
-		return nil, errors.New("parameter networkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkName}", url.PathEscape(networkName))
-	if networkMappingName == "" {
-		return nil, errors.New("parameter networkMappingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20261101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationNetworkMappingsClientListResponse, error) {
+	result := ReplicationNetworkMappingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
+		return ReplicationNetworkMappingsClientListResponse{}, err
+	}
+	return result, nil
 }

@@ -254,6 +254,69 @@ func (a *A2AClusterUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type A2AClusterVMManagedDiskInputDetails.
+func (a A2AClusterVMManagedDiskInputDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
+	populate(objectMap, "diskId", a.DiskID)
+	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
+	populate(objectMap, "recoveryDiskAccessId", a.RecoveryDiskAccessID)
+	populate(objectMap, "recoveryDiskEncryptionSetId", a.RecoveryDiskEncryptionSetID)
+	populate(objectMap, "recoveryNetworkAccessPolicy", a.RecoveryNetworkAccessPolicy)
+	populate(objectMap, "recoveryPublicNetworkAccess", a.RecoveryPublicNetworkAccess)
+	populate(objectMap, "recoveryReplicaDiskAccountType", a.RecoveryReplicaDiskAccountType)
+	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
+	populate(objectMap, "recoveryTargetDiskAccountType", a.RecoveryTargetDiskAccountType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type A2AClusterVMManagedDiskInputDetails.
+func (a *A2AClusterVMManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "diskEncryptionInfo":
+			err = unpopulate(val, "DiskEncryptionInfo", &a.DiskEncryptionInfo)
+			delete(rawMsg, key)
+		case "diskId":
+			err = unpopulate(val, "DiskID", &a.DiskID)
+			delete(rawMsg, key)
+		case "primaryStagingAzureStorageAccountId":
+			err = unpopulate(val, "PrimaryStagingAzureStorageAccountID", &a.PrimaryStagingAzureStorageAccountID)
+			delete(rawMsg, key)
+		case "recoveryDiskAccessId":
+			err = unpopulate(val, "RecoveryDiskAccessID", &a.RecoveryDiskAccessID)
+			delete(rawMsg, key)
+		case "recoveryDiskEncryptionSetId":
+			err = unpopulate(val, "RecoveryDiskEncryptionSetID", &a.RecoveryDiskEncryptionSetID)
+			delete(rawMsg, key)
+		case "recoveryNetworkAccessPolicy":
+			err = unpopulate(val, "RecoveryNetworkAccessPolicy", &a.RecoveryNetworkAccessPolicy)
+			delete(rawMsg, key)
+		case "recoveryPublicNetworkAccess":
+			err = unpopulate(val, "RecoveryPublicNetworkAccess", &a.RecoveryPublicNetworkAccess)
+			delete(rawMsg, key)
+		case "recoveryReplicaDiskAccountType":
+			err = unpopulate(val, "RecoveryReplicaDiskAccountType", &a.RecoveryReplicaDiskAccountType)
+			delete(rawMsg, key)
+		case "recoveryResourceGroupId":
+			err = unpopulate(val, "RecoveryResourceGroupID", &a.RecoveryResourceGroupID)
+			delete(rawMsg, key)
+		case "recoveryTargetDiskAccountType":
+			err = unpopulate(val, "RecoveryTargetDiskAccountType", &a.RecoveryTargetDiskAccountType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type A2AContainerCreationInput.
 func (a A2AContainerCreationInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -619,6 +682,7 @@ func (a A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
 	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
 	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
+	populate(objectMap, "recoveryConfidentialDataDiskEncryptionIdentity", a.RecoveryConfidentialDataDiskEncryptionIdentity)
 	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
 	populate(objectMap, "recoveryExtendedLocation", a.RecoveryExtendedLocation)
 	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
@@ -680,6 +744,9 @@ func (a *A2AEnableProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryCloudServiceId":
 			err = unpopulate(val, "RecoveryCloudServiceID", &a.RecoveryCloudServiceID)
+			delete(rawMsg, key)
+		case "recoveryConfidentialDataDiskEncryptionIdentity":
+			err = unpopulate(val, "RecoveryConfidentialDataDiskEncryptionIdentity", &a.RecoveryConfidentialDataDiskEncryptionIdentity)
 			delete(rawMsg, key)
 		case "recoveryContainerId":
 			err = unpopulate(val, "RecoveryContainerID", &a.RecoveryContainerID)
@@ -1138,6 +1205,7 @@ func (a *A2AProtectedItemDetail) UnmarshalJSON(data []byte) error {
 func (a A2AProtectedManagedDiskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allowedDiskLevelOperation", a.AllowedDiskLevelOperation)
+	populate(objectMap, "confidentialDiskEncryptionInfo", a.ConfidentialDiskEncryptionInfo)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", a.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInStagingStorageAccountInMB", a.DataPendingInStagingStorageAccountInMB)
 	populate(objectMap, "dekKeyVaultArmId", a.DekKeyVaultArmID)
@@ -1155,8 +1223,11 @@ func (a A2AProtectedManagedDiskDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "monitoringPercentageCompletion", a.MonitoringPercentageCompletion)
 	populate(objectMap, "primaryDiskEncryptionSetId", a.PrimaryDiskEncryptionSetID)
 	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
+	populate(objectMap, "recoveryDiskAccessId", a.RecoveryDiskAccessID)
 	populate(objectMap, "recoveryDiskEncryptionSetId", a.RecoveryDiskEncryptionSetID)
+	populate(objectMap, "recoveryNetworkAccessPolicy", a.RecoveryNetworkAccessPolicy)
 	populate(objectMap, "recoveryOrignalTargetDiskId", a.RecoveryOrignalTargetDiskID)
+	populate(objectMap, "recoveryPublicNetworkAccess", a.RecoveryPublicNetworkAccess)
 	populate(objectMap, "recoveryReplicaDiskAccountType", a.RecoveryReplicaDiskAccountType)
 	populate(objectMap, "recoveryReplicaDiskId", a.RecoveryReplicaDiskID)
 	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
@@ -1179,6 +1250,9 @@ func (a *A2AProtectedManagedDiskDetails) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "allowedDiskLevelOperation":
 			err = unpopulate(val, "AllowedDiskLevelOperation", &a.AllowedDiskLevelOperation)
+			delete(rawMsg, key)
+		case "confidentialDiskEncryptionInfo":
+			err = unpopulate(val, "ConfidentialDiskEncryptionInfo", &a.ConfidentialDiskEncryptionInfo)
 			delete(rawMsg, key)
 		case "dataPendingAtSourceAgentInMB":
 			err = unpopulate(val, "DataPendingAtSourceAgentInMB", &a.DataPendingAtSourceAgentInMB)
@@ -1231,11 +1305,20 @@ func (a *A2AProtectedManagedDiskDetails) UnmarshalJSON(data []byte) error {
 		case "primaryStagingAzureStorageAccountId":
 			err = unpopulate(val, "PrimaryStagingAzureStorageAccountID", &a.PrimaryStagingAzureStorageAccountID)
 			delete(rawMsg, key)
+		case "recoveryDiskAccessId":
+			err = unpopulate(val, "RecoveryDiskAccessID", &a.RecoveryDiskAccessID)
+			delete(rawMsg, key)
 		case "recoveryDiskEncryptionSetId":
 			err = unpopulate(val, "RecoveryDiskEncryptionSetID", &a.RecoveryDiskEncryptionSetID)
 			delete(rawMsg, key)
+		case "recoveryNetworkAccessPolicy":
+			err = unpopulate(val, "RecoveryNetworkAccessPolicy", &a.RecoveryNetworkAccessPolicy)
+			delete(rawMsg, key)
 		case "recoveryOrignalTargetDiskId":
 			err = unpopulate(val, "RecoveryOrignalTargetDiskID", &a.RecoveryOrignalTargetDiskID)
+			delete(rawMsg, key)
+		case "recoveryPublicNetworkAccess":
+			err = unpopulate(val, "RecoveryPublicNetworkAccess", &a.RecoveryPublicNetworkAccess)
 			delete(rawMsg, key)
 		case "recoveryReplicaDiskAccountType":
 			err = unpopulate(val, "RecoveryReplicaDiskAccountType", &a.RecoveryReplicaDiskAccountType)
@@ -1528,6 +1611,7 @@ func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
 	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
 	populate(objectMap, "recoveryCloudService", a.RecoveryCloudService)
+	populate(objectMap, "recoveryConfidentialDataDiskEncryptionIdentity", a.RecoveryConfidentialDataDiskEncryptionIdentity)
 	populate(objectMap, "recoveryExtendedLocation", a.RecoveryExtendedLocation)
 	populate(objectMap, "recoveryFabricLocation", a.RecoveryFabricLocation)
 	populate(objectMap, "recoveryFabricObjectId", a.RecoveryFabricObjectID)
@@ -1714,6 +1798,9 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryCloudService":
 			err = unpopulate(val, "RecoveryCloudService", &a.RecoveryCloudService)
+			delete(rawMsg, key)
+		case "recoveryConfidentialDataDiskEncryptionIdentity":
+			err = unpopulate(val, "RecoveryConfidentialDataDiskEncryptionIdentity", &a.RecoveryConfidentialDataDiskEncryptionIdentity)
 			delete(rawMsg, key)
 		case "recoveryExtendedLocation":
 			err = unpopulate(val, "RecoveryExtendedLocation", &a.RecoveryExtendedLocation)
@@ -2209,6 +2296,7 @@ func (a A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
 	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
 	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
+	populate(objectMap, "recoveryConfidentialDataDiskEncryptionIdentity", a.RecoveryConfidentialDataDiskEncryptionIdentity)
 	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
 	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
 	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
@@ -2253,6 +2341,9 @@ func (a *A2ASwitchProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryCloudServiceId":
 			err = unpopulate(val, "RecoveryCloudServiceID", &a.RecoveryCloudServiceID)
+			delete(rawMsg, key)
+		case "recoveryConfidentialDataDiskEncryptionIdentity":
+			err = unpopulate(val, "RecoveryConfidentialDataDiskEncryptionIdentity", &a.RecoveryConfidentialDataDiskEncryptionIdentity)
 			delete(rawMsg, key)
 		case "recoveryContainerId":
 			err = unpopulate(val, "RecoveryContainerID", &a.RecoveryContainerID)
@@ -2431,6 +2522,7 @@ func (a A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
 	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
 	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
+	populate(objectMap, "recoveryConfidentialDataDiskEncryptionIdentity", a.RecoveryConfidentialDataDiskEncryptionIdentity)
 	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
 	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
 	populate(objectMap, "recoveryVirtualMachineScaleSetId", a.RecoveryVirtualMachineScaleSetID)
@@ -2470,6 +2562,9 @@ func (a *A2AUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "recoveryCloudServiceId":
 			err = unpopulate(val, "RecoveryCloudServiceID", &a.RecoveryCloudServiceID)
+			delete(rawMsg, key)
+		case "recoveryConfidentialDataDiskEncryptionIdentity":
+			err = unpopulate(val, "RecoveryConfidentialDataDiskEncryptionIdentity", &a.RecoveryConfidentialDataDiskEncryptionIdentity)
 			delete(rawMsg, key)
 		case "recoveryProximityPlacementGroupId":
 			err = unpopulate(val, "RecoveryProximityPlacementGroupID", &a.RecoveryProximityPlacementGroupID)
@@ -2529,10 +2624,14 @@ func (a *A2AVMDiskInputDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type A2AVMManagedDiskInputDetails.
 func (a A2AVMManagedDiskInputDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "confidentialDiskEncryptionInfo", a.ConfidentialDiskEncryptionInfo)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
+	populate(objectMap, "recoveryDiskAccessId", a.RecoveryDiskAccessID)
 	populate(objectMap, "recoveryDiskEncryptionSetId", a.RecoveryDiskEncryptionSetID)
+	populate(objectMap, "recoveryNetworkAccessPolicy", a.RecoveryNetworkAccessPolicy)
+	populate(objectMap, "recoveryPublicNetworkAccess", a.RecoveryPublicNetworkAccess)
 	populate(objectMap, "recoveryReplicaDiskAccountType", a.RecoveryReplicaDiskAccountType)
 	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
 	populate(objectMap, "recoveryTargetDiskAccountType", a.RecoveryTargetDiskAccountType)
@@ -2548,6 +2647,9 @@ func (a *A2AVMManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "confidentialDiskEncryptionInfo":
+			err = unpopulate(val, "ConfidentialDiskEncryptionInfo", &a.ConfidentialDiskEncryptionInfo)
+			delete(rawMsg, key)
 		case "diskEncryptionInfo":
 			err = unpopulate(val, "DiskEncryptionInfo", &a.DiskEncryptionInfo)
 			delete(rawMsg, key)
@@ -2557,8 +2659,17 @@ func (a *A2AVMManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
 		case "primaryStagingAzureStorageAccountId":
 			err = unpopulate(val, "PrimaryStagingAzureStorageAccountID", &a.PrimaryStagingAzureStorageAccountID)
 			delete(rawMsg, key)
+		case "recoveryDiskAccessId":
+			err = unpopulate(val, "RecoveryDiskAccessID", &a.RecoveryDiskAccessID)
+			delete(rawMsg, key)
 		case "recoveryDiskEncryptionSetId":
 			err = unpopulate(val, "RecoveryDiskEncryptionSetID", &a.RecoveryDiskEncryptionSetID)
+			delete(rawMsg, key)
+		case "recoveryNetworkAccessPolicy":
+			err = unpopulate(val, "RecoveryNetworkAccessPolicy", &a.RecoveryNetworkAccessPolicy)
+			delete(rawMsg, key)
+		case "recoveryPublicNetworkAccess":
+			err = unpopulate(val, "RecoveryPublicNetworkAccess", &a.RecoveryPublicNetworkAccess)
 			delete(rawMsg, key)
 		case "recoveryReplicaDiskAccountType":
 			err = unpopulate(val, "RecoveryReplicaDiskAccountType", &a.RecoveryReplicaDiskAccountType)
@@ -2580,6 +2691,7 @@ func (a *A2AVMManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type A2AVMManagedDiskUpdateDetails.
 func (a A2AVMManagedDiskUpdateDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "confidentialDiskEncryptionInfo", a.ConfidentialDiskEncryptionInfo)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "failoverDiskName", a.FailoverDiskName)
@@ -2598,6 +2710,9 @@ func (a *A2AVMManagedDiskUpdateDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "confidentialDiskEncryptionInfo":
+			err = unpopulate(val, "ConfidentialDiskEncryptionInfo", &a.ConfidentialDiskEncryptionInfo)
+			delete(rawMsg, key)
 		case "diskEncryptionInfo":
 			err = unpopulate(val, "DiskEncryptionInfo", &a.DiskEncryptionInfo)
 			delete(rawMsg, key)
@@ -4346,6 +4461,37 @@ func (c *ComputeSizeErrorDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "severity":
 			err = unpopulate(val, "Severity", &c.Severity)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfidentialDiskEncryptionInfo.
+func (c ConfidentialDiskEncryptionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "recoveryReplicaConfidentialDiskEncryptionSetId", c.RecoveryReplicaConfidentialDiskEncryptionSetID)
+	populate(objectMap, "recoveryTargetConfidentialDiskEncryptionSetId", c.RecoveryTargetConfidentialDiskEncryptionSetID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConfidentialDiskEncryptionInfo.
+func (c *ConfidentialDiskEncryptionInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "recoveryReplicaConfidentialDiskEncryptionSetId":
+			err = unpopulate(val, "RecoveryReplicaConfidentialDiskEncryptionSetID", &c.RecoveryReplicaConfidentialDiskEncryptionSetID)
+			delete(rawMsg, key)
+		case "recoveryTargetConfidentialDiskEncryptionSetId":
+			err = unpopulate(val, "RecoveryTargetConfidentialDiskEncryptionSetID", &c.RecoveryTargetConfidentialDiskEncryptionSetID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -8492,6 +8638,7 @@ func (h *HyperVVirtualMachineDetails) UnmarshalJSON(data []byte) error {
 func (i IPConfigDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "ipAddressType", i.IPAddressType)
+	populate(objectMap, "ipVersion", i.IPVersion)
 	populate(objectMap, "isPrimary", i.IsPrimary)
 	populate(objectMap, "isSeletedForFailover", i.IsSeletedForFailover)
 	populate(objectMap, "name", i.Name)
@@ -8520,6 +8667,9 @@ func (i *IPConfigDetails) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "ipAddressType":
 			err = unpopulate(val, "IPAddressType", &i.IPAddressType)
+			delete(rawMsg, key)
+		case "ipVersion":
+			err = unpopulate(val, "IPVersion", &i.IPVersion)
 			delete(rawMsg, key)
 		case "isPrimary":
 			err = unpopulate(val, "IsPrimary", &i.IsPrimary)
@@ -10740,6 +10890,7 @@ func (i *InMageRcmDiscoveredProtectedVMDetails) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmDiskInput.
 func (i InMageRcmDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "confidentialDiskEncryptionSetId", i.ConfidentialDiskEncryptionSetID)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskSizeInGB", i.DiskSizeInGB)
@@ -10760,6 +10911,9 @@ func (i *InMageRcmDiskInput) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "confidentialDiskEncryptionSetId":
+			err = unpopulate(val, "ConfidentialDiskEncryptionSetID", &i.ConfidentialDiskEncryptionSetID)
+			delete(rawMsg, key)
 		case "diskEncryptionSetId":
 			err = unpopulate(val, "DiskEncryptionSetID", &i.DiskEncryptionSetID)
 			delete(rawMsg, key)
@@ -10795,6 +10949,7 @@ func (i *InMageRcmDiskInput) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmDisksDefaultInput.
 func (i InMageRcmDisksDefaultInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "confidentialDiskEncryptionSetId", i.ConfidentialDiskEncryptionSetID)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskSizeInGB", i.DiskSizeInGB)
 	populate(objectMap, "diskType", i.DiskType)
@@ -10814,6 +10969,9 @@ func (i *InMageRcmDisksDefaultInput) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "confidentialDiskEncryptionSetId":
+			err = unpopulate(val, "ConfidentialDiskEncryptionSetID", &i.ConfidentialDiskEncryptionSetID)
+			delete(rawMsg, key)
 		case "diskEncryptionSetId":
 			err = unpopulate(val, "DiskEncryptionSetID", &i.DiskEncryptionSetID)
 			delete(rawMsg, key)
@@ -10861,6 +11019,7 @@ func (i InMageRcmEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
 	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
+	populate(objectMap, "targetExtendedLocation", i.TargetExtendedLocation)
 	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
 	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
 	populate(objectMap, "targetNicTags", i.TargetNicTags)
@@ -10930,6 +11089,9 @@ func (i *InMageRcmEnableProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetCapacityReservationGroupId":
 			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
+			delete(rawMsg, key)
+		case "targetExtendedLocation":
+			err = unpopulate(val, "TargetExtendedLocation", &i.TargetExtendedLocation)
 			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &i.TargetManagedDiskTags)
@@ -12217,6 +12379,7 @@ func (i *InMageRcmPolicyDetails) UnmarshalJSON(data []byte) error {
 func (i InMageRcmProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", i.CapacityInBytes)
+	populate(objectMap, "confidentialDiskEncryptionSetId", i.ConfidentialDiskEncryptionSetID)
 	populate(objectMap, "customTargetDiskName", i.CustomTargetDiskName)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", i.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInLogDataStoreInMB", i.DataPendingInLogDataStoreInMB)
@@ -12251,6 +12414,9 @@ func (i *InMageRcmProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "capacityInBytes":
 			err = unpopulate(val, "CapacityInBytes", &i.CapacityInBytes)
+			delete(rawMsg, key)
+		case "confidentialDiskEncryptionSetId":
+			err = unpopulate(val, "ConfidentialDiskEncryptionSetID", &i.ConfidentialDiskEncryptionSetID)
 			delete(rawMsg, key)
 		case "customTargetDiskName":
 			err = unpopulate(val, "CustomTargetDiskName", &i.CustomTargetDiskName)
@@ -12435,6 +12601,7 @@ func (i InMageRcmReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
 	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
+	populate(objectMap, "targetExtendedLocation", i.TargetExtendedLocation)
 	populate(objectMap, "targetGeneration", i.TargetGeneration)
 	populate(objectMap, "targetLocation", i.TargetLocation)
 	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
@@ -12610,6 +12777,9 @@ func (i *InMageRcmReplicationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetCapacityReservationGroupId":
 			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
+			delete(rawMsg, key)
+		case "targetExtendedLocation":
+			err = unpopulate(val, "TargetExtendedLocation", &i.TargetExtendedLocation)
 			delete(rawMsg, key)
 		case "targetGeneration":
 			err = unpopulate(val, "TargetGeneration", &i.TargetGeneration)
@@ -21811,6 +21981,33 @@ func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) Unmars
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UpdateConfidentialDiskEncryptionInfo.
+func (u UpdateConfidentialDiskEncryptionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "recoveryTargetConfidentialDiskEncryptionSetId", u.RecoveryTargetConfidentialDiskEncryptionSetID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateConfidentialDiskEncryptionInfo.
+func (u *UpdateConfidentialDiskEncryptionInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "recoveryTargetConfidentialDiskEncryptionSetId":
+			err = unpopulate(val, "RecoveryTargetConfidentialDiskEncryptionSetID", &u.RecoveryTargetConfidentialDiskEncryptionSetID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type UpdateDiskInput.
 func (u UpdateDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -22874,6 +23071,7 @@ func (v *VMwareCbtContainerMappingInput) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtDiskInput.
 func (v VMwareCbtDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "confidentialDiskEncryptionSetId", v.ConfidentialDiskEncryptionSetID)
 	populate(objectMap, "diskEncryptionSetId", v.DiskEncryptionSetID)
 	populate(objectMap, "diskId", v.DiskID)
 	populate(objectMap, "diskSizeInGB", v.DiskSizeInGB)
@@ -22896,6 +23094,9 @@ func (v *VMwareCbtDiskInput) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "confidentialDiskEncryptionSetId":
+			err = unpopulate(val, "ConfidentialDiskEncryptionSetID", &v.ConfidentialDiskEncryptionSetID)
+			delete(rawMsg, key)
 		case "diskEncryptionSetId":
 			err = unpopulate(val, "DiskEncryptionSetID", &v.DiskEncryptionSetID)
 			delete(rawMsg, key)
@@ -23551,6 +23752,7 @@ func (v *VMwareCbtPolicyCreationInput) UnmarshalJSON(data []byte) error {
 func (v VMwareCbtProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", v.CapacityInBytes)
+	populate(objectMap, "confidentialDiskEncryptionSetId", v.ConfidentialDiskEncryptionSetID)
 	populate(objectMap, "diskEncryptionSetId", v.DiskEncryptionSetID)
 	populate(objectMap, "diskId", v.DiskID)
 	populate(objectMap, "diskName", v.DiskName)
@@ -23583,6 +23785,9 @@ func (v *VMwareCbtProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "capacityInBytes":
 			err = unpopulate(val, "CapacityInBytes", &v.CapacityInBytes)
+			delete(rawMsg, key)
+		case "confidentialDiskEncryptionSetId":
+			err = unpopulate(val, "ConfidentialDiskEncryptionSetID", &v.ConfidentialDiskEncryptionSetID)
 			delete(rawMsg, key)
 		case "diskEncryptionSetId":
 			err = unpopulate(val, "DiskEncryptionSetID", &v.DiskEncryptionSetID)
@@ -24526,6 +24731,7 @@ func (v *VaultSettingCreationInput) UnmarshalJSON(data []byte) error {
 func (v VaultSettingCreationInputProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
+	populate(objectMap, "recoveryNetworkConfigAutoSync", v.RecoveryNetworkConfigAutoSync)
 	populate(objectMap, "vmwareToAzureProviderType", v.VmwareToAzureProviderType)
 	return json.Marshal(objectMap)
 }
@@ -24542,6 +24748,9 @@ func (v *VaultSettingCreationInputProperties) UnmarshalJSON(data []byte) error {
 		case "migrationSolutionId":
 			err = unpopulate(val, "MigrationSolutionID", &v.MigrationSolutionID)
 			delete(rawMsg, key)
+		case "recoveryNetworkConfigAutoSync":
+			err = unpopulate(val, "RecoveryNetworkConfigAutoSync", &v.RecoveryNetworkConfigAutoSync)
+			delete(rawMsg, key)
 		case "vmwareToAzureProviderType":
 			err = unpopulate(val, "VmwareToAzureProviderType", &v.VmwareToAzureProviderType)
 			delete(rawMsg, key)
@@ -24557,6 +24766,7 @@ func (v *VaultSettingCreationInputProperties) UnmarshalJSON(data []byte) error {
 func (v VaultSettingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
+	populate(objectMap, "recoveryNetworkConfigAutoSync", v.RecoveryNetworkConfigAutoSync)
 	populate(objectMap, "vmwareToAzureProviderType", v.VmwareToAzureProviderType)
 	return json.Marshal(objectMap)
 }
@@ -24572,6 +24782,9 @@ func (v *VaultSettingProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "migrationSolutionId":
 			err = unpopulate(val, "MigrationSolutionID", &v.MigrationSolutionID)
+			delete(rawMsg, key)
+		case "recoveryNetworkConfigAutoSync":
+			err = unpopulate(val, "RecoveryNetworkConfigAutoSync", &v.RecoveryNetworkConfigAutoSync)
 			delete(rawMsg, key)
 		case "vmwareToAzureProviderType":
 			err = unpopulate(val, "VmwareToAzureProviderType", &v.VmwareToAzureProviderType)

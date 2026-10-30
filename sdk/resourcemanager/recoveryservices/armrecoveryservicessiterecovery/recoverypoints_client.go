@@ -19,7 +19,7 @@ import (
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type RecoveryPointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

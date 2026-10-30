@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_AddDisks.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_AddDisks.json
 func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,11 +27,18 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 		Properties: &armrecoveryservicessiterecovery.AddDisksInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AAddDisksInput{
 				InstanceType: to.Ptr("A2A"),
-				VMDisks: []*armrecoveryservicessiterecovery.A2AVMDiskInputDetails{
+				VMManagedDisks: []*armrecoveryservicessiterecovery.A2AVMManagedDiskInputDetails{
 					{
-						DiskURI:                             to.Ptr("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd"),
+						DiskID:                              to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Compute/disks/datadisk2"),
 						PrimaryStagingAzureStorageAccountID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"),
-						RecoveryAzureStorageAccountID:       to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage"),
+						RecoveryResourceGroupID:             to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource"),
+						RecoveryNetworkAccessPolicy:         to.Ptr(armrecoveryservicessiterecovery.DiskNetworkAccessPolicyAllowPrivate),
+						RecoveryDiskAccessID:                to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Compute/diskAccesses/recoveryDiskAccess"),
+						RecoveryPublicNetworkAccess:         to.Ptr(armrecoveryservicessiterecovery.DiskPublicNetworkAccessDisabled),
+						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+							RecoveryTargetConfidentialDiskEncryptionSetID:  to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+						},
 					},
 				},
 			},
@@ -79,6 +86,19 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	// 			ProtectionStateDescription: to.Ptr("Protected"),
 	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AReplicationDetails{
 	// 				InstanceType: to.Ptr("A2A"),
+	// 				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+	// 				ProtectedManagedDisks: []*armrecoveryservicessiterecovery.A2AProtectedManagedDiskDetails{
+	// 					{
+	// 						DiskID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Compute/disks/datadisk2"),
+	// 						RecoveryResourceGroupID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource"),
+	// 						RecoveryReplicaDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						RecoveryTargetDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+	// 							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+	// 							RecoveryTargetConfidentialDiskEncryptionSetID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+	// 						},
+	// 					},
+	// 				},
 	// 			},
 	// 			RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud2/replicationProtectionContainers/cloud_81224fc6-f326-5d35-96de-fbf51efb3188"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("cloud2"),
@@ -93,7 +113,7 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_ApplyRecoveryPoint.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_ApplyRecoveryPoint.json
 func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,8 +188,8 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Create.json
-func ExampleReplicationProtectedItemsClient_BeginCreate() {
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Create.json
+func ExampleReplicationProtectedItemsClient_BeginCreate_enablesProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -241,7 +261,174 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Delete.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Create_A2ACvm.json
+func ExampleReplicationProtectedItemsClient_BeginCreate_enablesProtectionForAnA2AConfidentialVMWithCmkDiskEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("42195872-7e70-4f8a-837f-84b28ecbb78b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginCreate(ctx, "priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud", "a2aCvmVm", armrecoveryservicessiterecovery.EnableProtectionInput{
+		Properties: &armrecoveryservicessiterecovery.EnableProtectionInputProperties{
+			PolicyID:          to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationPolicies/a2aPolicy"),
+			ProtectableItemID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectableItems/a2aCvmVm"),
+			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AEnableProtectionInput{
+				InstanceType:            to.Ptr("A2A"),
+				FabricObjectID:          to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/virtualMachines/a2aCvmVm"),
+				RecoveryContainerID:     to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/EUSCanSite/replicationProtectionContainers/euscancloud"),
+				RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+				VMManagedDisks: []*armrecoveryservicessiterecovery.A2AVMManagedDiskInputDetails{
+					{
+						DiskID:                              to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk"),
+						PrimaryStagingAzureStorageAccountID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Storage/storageAccounts/a2acache"),
+						RecoveryResourceGroupID:             to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+						RecoveryReplicaDiskAccountType:      to.Ptr("Premium_LRS"),
+						RecoveryTargetDiskAccountType:       to.Ptr("Premium_LRS"),
+						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+							RecoveryTargetConfidentialDiskEncryptionSetID:  to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+						},
+					},
+				},
+				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientCreateResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		Name: to.Ptr("a2aCvmVm"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 		ID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectedItems/a2aCvmVm"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			ActiveLocation: to.Ptr("Primary"),
+	// 			AllowedOperations: []*string{
+	// 				to.Ptr("PlannedFailover"),
+	// 				to.Ptr("UnplannedFailover"),
+	// 				to.Ptr("DisableProtection"),
+	// 				to.Ptr("TestFailover"),
+	// 			},
+	// 			FriendlyName: to.Ptr("a2aCvmVm"),
+	// 			PolicyFriendlyName: to.Ptr("a2aPolicy"),
+	// 			PolicyID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationPolicies/a2aPolicy"),
+	// 			PrimaryFabricFriendlyName: to.Ptr("Central US"),
+	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("CentralUSCancloud"),
+	// 			ProtectableItemID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectableItems/a2aCvmVm"),
+	// 			ProtectedItemType: to.Ptr("A2A"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProtectionStateDescription: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AReplicationDetails{
+	// 				InstanceType: to.Ptr("A2A"),
+	// 				FabricObjectID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/virtualMachines/a2aCvmVm"),
+	// 				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+	// 				ProtectedManagedDisks: []*armrecoveryservicessiterecovery.A2AProtectedManagedDiskDetails{
+	// 					{
+	// 						DiskID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk"),
+	// 						RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+	// 						RecoveryReplicaDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						RecoveryTargetDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+	// 							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+	// 							RecoveryTargetConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 			TestFailoverState: to.Ptr("None"),
+	// 			TestFailoverStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Create_InMageRcmEdgeZone.json
+func ExampleReplicationProtectedItemsClient_BeginCreate_enablesProtectionForAnInMageRcmVMInAnExtendedLocation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "vmware-fabric", "vmware-container", "machine1", armrecoveryservicessiterecovery.EnableProtectionInput{
+		Properties: &armrecoveryservicessiterecovery.EnableProtectionInputProperties{
+			PolicyID:          to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionProfile1"),
+			ProtectableItemID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/vmware-fabric/replicationProtectionContainers/vmware-container/replicationProtectableItems/machine1"),
+			ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageRcmEnableProtectionInput{
+				FabricDiscoveryMachineID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/sourceResourceGroup/providers/Microsoft.OffAzure/VMwareSites/site1/machines/machine1"),
+				InstanceType:             to.Ptr("InMageRcm"),
+				ProcessServerID:          to.Ptr("process-server-1"),
+				TargetExtendedLocation: &armrecoveryservicessiterecovery.ExtendedLocation{
+					Name: to.Ptr("edge-zone-1"),
+					Type: to.Ptr(armrecoveryservicessiterecovery.ExtendedLocationTypeEdgeZone),
+				},
+				TargetNetworkID:       to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/targetResourceGroup/providers/Microsoft.Network/virtualNetworks/targetVNet"),
+				TargetResourceGroupID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/targetResourceGroup"),
+				TargetSubnetName:      to.Ptr("default"),
+				TargetVMName:          to.Ptr("machine1"),
+				TargetVMSize:          to.Ptr("Standard_D2s_v3"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientCreateResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		ID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/vmware-fabric/replicationProtectionContainers/vmware-container/replicationProtectedItems/machine1"),
+	// 		Name: to.Ptr("machine1"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			FriendlyName: to.Ptr("machine1"),
+	// 			PolicyFriendlyName: to.Ptr("protectionProfile1"),
+	// 			PolicyID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionProfile1"),
+	// 			ProtectableItemID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/vmware-fabric/replicationProtectionContainers/vmware-container/replicationProtectableItems/machine1"),
+	// 			ProtectedItemType: to.Ptr("VMwareVirtualMachine"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageRcmReplicationDetails{
+	// 				FabricDiscoveryMachineID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/sourceResourceGroup/providers/Microsoft.OffAzure/VMwareSites/site1/machines/machine1"),
+	// 				InstanceType: to.Ptr("InMageRcm"),
+	// 				ProcessServerID: to.Ptr("process-server-1"),
+	// 				TargetExtendedLocation: &armrecoveryservicessiterecovery.ExtendedLocation{
+	// 					Name: to.Ptr("edge-zone-1"),
+	// 					Type: to.Ptr(armrecoveryservicessiterecovery.ExtendedLocationTypeEdgeZone),
+	// 				},
+	// 				TargetLocation: to.Ptr("westus"),
+	// 				TargetNetworkID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/targetResourceGroup/providers/Microsoft.Network/virtualNetworks/targetVNet"),
+	// 				TargetResourceGroupID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/targetResourceGroup"),
+	// 				TargetVMName: to.Ptr("machine1"),
+	// 				TargetVMSize: to.Ptr("Standard_D2s_v3"),
+	// 			},
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Delete.json
 func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +455,7 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_FailoverCancel.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_FailoverCancel.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +521,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_FailoverCommit.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_FailoverCommit.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,208 +588,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Get.json
-func ExampleReplicationProtectedItemsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReplicationProtectedItemsClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientGetResponse{
-	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
-	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
-	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
-	// 			ActiveLocation: to.Ptr("Primary"),
-	// 			AllowedOperations: []*string{
-	// 				to.Ptr("PlannedFailover"),
-	// 				to.Ptr("UnplannedFailover"),
-	// 				to.Ptr("DisableProtection"),
-	// 				to.Ptr("TestFailover"),
-	// 			},
-	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
-	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
-	// 				ScenarioName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
-	// 			},
-	// 			FriendlyName: to.Ptr("vm1"),
-	// 			PolicyFriendlyName: to.Ptr("protectionprofile1"),
-	// 			PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
-	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
-	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
-	// 			ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 			ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
-	// 			ProtectionState: to.Ptr("Protected"),
-	// 			ProtectionStateDescription: to.Ptr("Protected"),
-	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
-	// 				InstanceType: to.Ptr("HyperVReplicaAzure"),
-	// 			},
-	// 			RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
-	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
-	// 			RecoveryFabricID: to.Ptr("Microsoft Azure"),
-	// 			RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
-	// 			RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
-	// 			ReplicationHealth: to.Ptr("Normal"),
-	// 			TestFailoverState: to.Ptr("None"),
-	// 			TestFailoverStateDescription: to.Ptr("None"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_List.json
-func ExampleReplicationProtectedItemsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationProtectedItemsClient().NewListPager("resourceGroupPS1", "vault1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListResponse{
-		// 	ReplicationProtectedItemCollection: armrecoveryservicessiterecovery.ReplicationProtectedItemCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.ReplicationProtectedItem{
-		// 			{
-		// 				Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
-		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 				Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
-		// 					ActiveLocation: to.Ptr("Primary"),
-		// 					AllowedOperations: []*string{
-		// 						to.Ptr("PlannedFailover"),
-		// 						to.Ptr("UnplannedFailover"),
-		// 						to.Ptr("DisableProtection"),
-		// 						to.Ptr("TestFailover"),
-		// 					},
-		// 					CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
-		// 						JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
-		// 						ScenarioName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
-		// 					},
-		// 					FriendlyName: to.Ptr("vm1"),
-		// 					PolicyFriendlyName: to.Ptr("protectionprofile1"),
-		// 					PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
-		// 					PrimaryFabricFriendlyName: to.Ptr("cloud1"),
-		// 					PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
-		// 					ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 					ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
-		// 					ProtectionState: to.Ptr("Protected"),
-		// 					ProtectionStateDescription: to.Ptr("Protected"),
-		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
-		// 						InstanceType: to.Ptr("HyperVReplicaAzure"),
-		// 					},
-		// 					RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
-		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
-		// 					RecoveryFabricID: to.Ptr("Microsoft Azure"),
-		// 					RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
-		// 					RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
-		// 					ReplicationHealth: to.Ptr("Normal"),
-		// 					TestFailoverState: to.Ptr("None"),
-		// 					TestFailoverStateDescription: to.Ptr("None"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
-func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContainersPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationProtectedItemsClient().NewListByReplicationProtectionContainersPager("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{
-		// 	ReplicationProtectedItemCollection: armrecoveryservicessiterecovery.ReplicationProtectedItemCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.ReplicationProtectedItem{
-		// 			{
-		// 				Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
-		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 				Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
-		// 					ActiveLocation: to.Ptr("Primary"),
-		// 					AllowedOperations: []*string{
-		// 						to.Ptr("PlannedFailover"),
-		// 						to.Ptr("UnplannedFailover"),
-		// 						to.Ptr("DisableProtection"),
-		// 						to.Ptr("TestFailover"),
-		// 					},
-		// 					CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
-		// 						JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
-		// 						ScenarioName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
-		// 					},
-		// 					FriendlyName: to.Ptr("vm1"),
-		// 					PolicyFriendlyName: to.Ptr("protectionprofile1"),
-		// 					PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
-		// 					PrimaryFabricFriendlyName: to.Ptr("cloud1"),
-		// 					PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
-		// 					ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
-		// 					ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
-		// 					ProtectionState: to.Ptr("Protected"),
-		// 					ProtectionStateDescription: to.Ptr("Protected"),
-		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
-		// 						InstanceType: to.Ptr("HyperVReplicaAzure"),
-		// 					},
-		// 					RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
-		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
-		// 					RecoveryFabricID: to.Ptr("Microsoft Azure"),
-		// 					RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
-		// 					RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
-		// 					ReplicationHealth: to.Ptr("Normal"),
-		// 					TestFailoverState: to.Ptr("None"),
-		// 					TestFailoverStateDescription: to.Ptr("None"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_PlannedFailover.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_PlannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -677,7 +663,7 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Purge.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Purge.json
 func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -698,7 +684,7 @@ func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_ReinstallMobilityService.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_ReinstallMobilityService.json
 func ExampleReplicationProtectedItemsClient_BeginReinstallMobilityService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -766,7 +752,7 @@ func ExampleReplicationProtectedItemsClient_BeginReinstallMobilityService() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_RemoveDisks.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_RemoveDisks.json
 func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -843,7 +829,7 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_RepairReplication.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_RepairReplication.json
 func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +894,7 @@ func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Reprotect.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Reprotect.json
 func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -983,7 +969,7 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_ResolveHealthErrors.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_ResolveHealthErrors.json
 func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1059,7 +1045,7 @@ func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_SwitchProvider.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_SwitchProvider.json
 func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1137,7 +1123,7 @@ func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_TestFailover.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_TestFailover.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1209,7 +1195,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_TestFailoverCleanup.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_TestFailoverCleanup.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1281,7 +1267,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_UnplannedFailover.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_UnplannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1357,8 +1343,8 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_Update.json
-func ExampleReplicationProtectedItemsClient_BeginUpdate() {
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Update.json
+func ExampleReplicationProtectedItemsClient_BeginUpdate_updatesTheReplicationProtectedItemSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1446,7 +1432,215 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_UpdateAppliance.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Update_A2ACvm.json
+func ExampleReplicationProtectedItemsClient_BeginUpdate_updatesTheTargetConfidentialDiskEncryptionSetForAnA2AConfidentialVM() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("42195872-7e70-4f8a-837f-84b28ecbb78b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdate(ctx, "priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud", "a2aCvmVm", armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput{
+		Properties: &armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInputProperties{
+			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AUpdateReplicationProtectedItemInput{
+				InstanceType:            to.Ptr("A2A"),
+				RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+				ManagedDiskUpdateDetails: []*armrecoveryservicessiterecovery.A2AVMManagedDiskUpdateDetails{
+					{
+						DiskID:                         to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk"),
+						RecoveryReplicaDiskAccountType: to.Ptr("Premium_LRS"),
+						RecoveryTargetDiskAccountType:  to.Ptr("Premium_LRS"),
+						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.UpdateConfidentialDiskEncryptionInfo{
+							RecoveryTargetConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+						},
+					},
+				},
+				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUpdateResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		Name: to.Ptr("a2aCvmVm"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 		ID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectedItems/a2aCvmVm"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			ActiveLocation: to.Ptr("Primary"),
+	// 			AllowedOperations: []*string{
+	// 				to.Ptr("PlannedFailover"),
+	// 				to.Ptr("UnplannedFailover"),
+	// 				to.Ptr("DisableProtection"),
+	// 				to.Ptr("TestFailover"),
+	// 			},
+	// 			FriendlyName: to.Ptr("a2aCvmVm"),
+	// 			PolicyFriendlyName: to.Ptr("a2aPolicy"),
+	// 			PolicyID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationPolicies/a2aPolicy"),
+	// 			PrimaryFabricFriendlyName: to.Ptr("Central US"),
+	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("CentralUSCancloud"),
+	// 			ProtectableItemID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectableItems/a2aCvmVm"),
+	// 			ProtectedItemType: to.Ptr("A2A"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProtectionStateDescription: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AReplicationDetails{
+	// 				InstanceType: to.Ptr("A2A"),
+	// 				FabricObjectID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/virtualMachines/a2aCvmVm"),
+	// 				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+	// 				ProtectedManagedDisks: []*armrecoveryservicessiterecovery.A2AProtectedManagedDiskDetails{
+	// 					{
+	// 						DiskID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk"),
+	// 						RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+	// 						RecoveryReplicaDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						RecoveryTargetDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+	// 							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+	// 							RecoveryTargetConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 			TestFailoverState: to.Ptr("None"),
+	// 			TestFailoverStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Update_A2ADualStack.json
+func ExampleReplicationProtectedItemsClient_BeginUpdate_updatesTheRecoveryIPConfigsOfADualStackIPv4AndIpv6A2AProtectedItem() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("42195872-7e70-4f8a-837f-84b28ecbb78b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdate(ctx, "priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud", "a2aDualStackVm", armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput{
+		Properties: &armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInputProperties{
+			SelectedRecoveryAzureNetworkID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/virtualNetworks/dualstack-recovery-vnet"),
+			VMNics: []*armrecoveryservicessiterecovery.VMNicInputDetails{
+				{
+					NicID:         to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/networkInterfaces/a2aDualStackVm-nic"),
+					SelectionType: to.Ptr("SelectedByUser"),
+					IPConfigs: []*armrecoveryservicessiterecovery.IPConfigInputDetails{
+						{
+							IPConfigName:            to.Ptr("ipconfig1"),
+							IsPrimary:               to.Ptr(true),
+							IsSeletedForFailover:    to.Ptr(true),
+							RecoverySubnetName:      to.Ptr("dualstack-subnet"),
+							RecoveryStaticIPAddress: to.Ptr("10.0.2.46"),
+						},
+						{
+							IPConfigName:            to.Ptr("ipconfig-v6"),
+							IsPrimary:               to.Ptr(false),
+							IsSeletedForFailover:    to.Ptr(true),
+							RecoverySubnetName:      to.Ptr("dualstack-subnet"),
+							RecoveryStaticIPAddress: to.Ptr("2001:db8:1::4"),
+						},
+					},
+				},
+			},
+			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AUpdateReplicationProtectedItemInput{
+				InstanceType:            to.Ptr("A2A"),
+				RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUpdateResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		Name: to.Ptr("a2aDualStackVm"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 		ID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectedItems/a2aDualStackVm"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			ActiveLocation: to.Ptr("Primary"),
+	// 			AllowedOperations: []*string{
+	// 				to.Ptr("PlannedFailover"),
+	// 				to.Ptr("UnplannedFailover"),
+	// 				to.Ptr("DisableProtection"),
+	// 				to.Ptr("TestFailover"),
+	// 			},
+	// 			FriendlyName: to.Ptr("a2aDualStackVm"),
+	// 			PolicyFriendlyName: to.Ptr("a2aPolicy"),
+	// 			PolicyID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationPolicies/a2aPolicy"),
+	// 			PrimaryFabricFriendlyName: to.Ptr("Central US"),
+	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("CentralUSCancloud"),
+	// 			ProtectableItemID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectableItems/a2aDualStackVm"),
+	// 			ProtectedItemType: to.Ptr("A2A"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProtectionStateDescription: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AReplicationDetails{
+	// 				InstanceType: to.Ptr("A2A"),
+	// 				FabricObjectID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/virtualMachines/a2aDualStackVm"),
+	// 				SelectedRecoveryAzureNetworkID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/virtualNetworks/dualstack-recovery-vnet"),
+	// 				VMNics: []*armrecoveryservicessiterecovery.VMNicDetails{
+	// 					{
+	// 						NicID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/networkInterfaces/a2aDualStackVm-nic"),
+	// 						SourceNicArmID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/networkInterfaces/a2aDualStackVm-nic"),
+	// 						SelectionType: to.Ptr("SelectedByUser"),
+	// 						RecoveryVMNetworkID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Network/virtualNetworks/dualstack-recovery-vnet"),
+	// 						IPConfigs: []*armrecoveryservicessiterecovery.IPConfigDetails{
+	// 							{
+	// 								Name: to.Ptr("ipconfig1"),
+	// 								IsPrimary: to.Ptr(true),
+	// 								IsSeletedForFailover: to.Ptr(true),
+	// 								IPVersion: to.Ptr(armrecoveryservicessiterecovery.IPVersionIPv4),
+	// 								SubnetName: to.Ptr("dualstack-subnet"),
+	// 								StaticIPAddress: to.Ptr("10.0.1.15"),
+	// 								IPAddressType: to.Ptr("Static"),
+	// 								RecoverySubnetName: to.Ptr("dualstack-subnet"),
+	// 								RecoveryStaticIPAddress: to.Ptr("10.0.2.46"),
+	// 								RecoveryIPAddressType: to.Ptr("Static"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("ipconfig-v6"),
+	// 								IsPrimary: to.Ptr(false),
+	// 								IsSeletedForFailover: to.Ptr(true),
+	// 								IPVersion: to.Ptr(armrecoveryservicessiterecovery.IPVersionIPv6),
+	// 								SubnetName: to.Ptr("dualstack-subnet"),
+	// 								StaticIPAddress: to.Ptr("2001:db8:0::4"),
+	// 								IPAddressType: to.Ptr("Static"),
+	// 								RecoverySubnetName: to.Ptr("dualstack-subnet"),
+	// 								RecoveryStaticIPAddress: to.Ptr("2001:db8:1::4"),
+	// 								RecoveryIPAddressType: to.Ptr("Static"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 			TestFailoverState: to.Ptr("None"),
+	// 			TestFailoverStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_UpdateAppliance.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1522,7 +1716,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectedItems_UpdateMobilityService.json
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_UpdateMobilityService.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1588,4 +1782,273 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Get.json
+func ExampleReplicationProtectedItemsClient_Get_getsTheDetailsOfAReplicationProtectedItem() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReplicationProtectedItemsClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientGetResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			ActiveLocation: to.Ptr("Primary"),
+	// 			AllowedOperations: []*string{
+	// 				to.Ptr("PlannedFailover"),
+	// 				to.Ptr("UnplannedFailover"),
+	// 				to.Ptr("DisableProtection"),
+	// 				to.Ptr("TestFailover"),
+	// 			},
+	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
+	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
+	// 				ScenarioName: to.Ptr("None"),
+	// 				StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
+	// 			},
+	// 			FriendlyName: to.Ptr("vm1"),
+	// 			PolicyFriendlyName: to.Ptr("protectionprofile1"),
+	// 			PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
+	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
+	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
+	// 			ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 			ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProtectionStateDescription: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
+	// 				InstanceType: to.Ptr("HyperVReplicaAzure"),
+	// 			},
+	// 			RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
+	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
+	// 			RecoveryFabricID: to.Ptr("Microsoft Azure"),
+	// 			RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
+	// 			RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 			TestFailoverState: to.Ptr("None"),
+	// 			TestFailoverStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_Get_A2ACvm.json
+func ExampleReplicationProtectedItemsClient_Get_getsTheDetailsOfAnA2AConfidentialVMWithCmkDiskEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("42195872-7e70-4f8a-837f-84b28ecbb78b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReplicationProtectedItemsClient().Get(ctx, "priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud", "a2aCvmVm", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientGetResponse{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 		Name: to.Ptr("a2aCvmVm"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+	// 		ID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectedItems/a2aCvmVm"),
+	// 		Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+	// 			ActiveLocation: to.Ptr("Primary"),
+	// 			AllowedOperations: []*string{
+	// 				to.Ptr("PlannedFailover"),
+	// 				to.Ptr("UnplannedFailover"),
+	// 				to.Ptr("DisableProtection"),
+	// 				to.Ptr("TestFailover"),
+	// 			},
+	// 			FriendlyName: to.Ptr("a2aCvmVm"),
+	// 			PolicyFriendlyName: to.Ptr("a2aPolicy"),
+	// 			PolicyID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationPolicies/a2aPolicy"),
+	// 			PrimaryFabricFriendlyName: to.Ptr("Central US"),
+	// 			PrimaryProtectionContainerFriendlyName: to.Ptr("CentralUSCancloud"),
+	// 			ProtectableItemID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.RecoveryServices/vaults/priyanponeboxvault/replicationFabrics/CentralUSCanSite/replicationProtectionContainers/CentralUSCancloud/replicationProtectableItems/a2aCvmVm"),
+	// 			ProtectedItemType: to.Ptr("A2A"),
+	// 			ProtectionState: to.Ptr("Protected"),
+	// 			ProtectionStateDescription: to.Ptr("Protected"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AReplicationDetails{
+	// 				InstanceType: to.Ptr("A2A"),
+	// 				FabricObjectID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/virtualMachines/a2aCvmVm"),
+	// 				RecoveryConfidentialDataDiskEncryptionIdentity: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cvm-cdde-uami"),
+	// 				ProtectedManagedDisks: []*armrecoveryservicessiterecovery.A2AProtectedManagedDiskDetails{
+	// 					{
+	// 						DiskID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk"),
+	// 						RecoveryResourceGroupID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg"),
+	// 						RecoveryTargetDiskID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/disks/a2aCvmVm-osdisk-recovery"),
+	// 						RecoveryReplicaDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						RecoveryTargetDiskAccountType: to.Ptr("Premium_LRS"),
+	// 						DiskName: to.Ptr("a2aCvmVm-osdisk"),
+	// 						DiskState: to.Ptr("Protected"),
+	// 						ConfidentialDiskEncryptionInfo: &armrecoveryservicessiterecovery.ConfidentialDiskEncryptionInfo{
+	// 							RecoveryReplicaConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-replica-des"),
+	// 							RecoveryTargetConfidentialDiskEncryptionSetID: to.Ptr("/Subscriptions/42195872-7e70-4f8a-837f-84b28ecbb78b/resourceGroups/priyanprg/providers/Microsoft.Compute/diskEncryptionSets/cvm-target-des"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ReplicationHealth: to.Ptr("Normal"),
+	// 			TestFailoverState: to.Ptr("None"),
+	// 			TestFailoverStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
+func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContainersPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationProtectedItemsClient().NewListByReplicationProtectionContainersPager("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{
+		// 	ReplicationProtectedItemCollection: armrecoveryservicessiterecovery.ReplicationProtectedItemCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.ReplicationProtectedItem{
+		// 			{
+		// 				Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 				Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+		// 					ActiveLocation: to.Ptr("Primary"),
+		// 					AllowedOperations: []*string{
+		// 						to.Ptr("PlannedFailover"),
+		// 						to.Ptr("UnplannedFailover"),
+		// 						to.Ptr("DisableProtection"),
+		// 						to.Ptr("TestFailover"),
+		// 					},
+		// 					CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
+		// 						JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
+		// 						ScenarioName: to.Ptr("None"),
+		// 						StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
+		// 					},
+		// 					FriendlyName: to.Ptr("vm1"),
+		// 					PolicyFriendlyName: to.Ptr("protectionprofile1"),
+		// 					PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
+		// 					PrimaryFabricFriendlyName: to.Ptr("cloud1"),
+		// 					PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
+		// 					ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 					ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
+		// 					ProtectionState: to.Ptr("Protected"),
+		// 					ProtectionStateDescription: to.Ptr("Protected"),
+		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
+		// 						InstanceType: to.Ptr("HyperVReplicaAzure"),
+		// 					},
+		// 					RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
+		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
+		// 					RecoveryFabricID: to.Ptr("Microsoft Azure"),
+		// 					RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
+		// 					RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
+		// 					ReplicationHealth: to.Ptr("Normal"),
+		// 					TestFailoverState: to.Ptr("None"),
+		// 					TestFailoverStateDescription: to.Ptr("None"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/ReplicationProtectedItems_List.json
+func ExampleReplicationProtectedItemsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationProtectedItemsClient().NewListPager("resourceGroupPS1", "vault1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListResponse{
+		// 	ReplicationProtectedItemCollection: armrecoveryservicessiterecovery.ReplicationProtectedItemCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.ReplicationProtectedItem{
+		// 			{
+		// 				Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
+		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 				Properties: &armrecoveryservicessiterecovery.ReplicationProtectedItemProperties{
+		// 					ActiveLocation: to.Ptr("Primary"),
+		// 					AllowedOperations: []*string{
+		// 						to.Ptr("PlannedFailover"),
+		// 						to.Ptr("UnplannedFailover"),
+		// 						to.Ptr("DisableProtection"),
+		// 						to.Ptr("TestFailover"),
+		// 					},
+		// 					CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
+		// 						JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/None"),
+		// 						ScenarioName: to.Ptr("None"),
+		// 						StartTime: to.Ptr(time.Date(1753, time.January, 1, 1, 1, 1, 0, time.UTC)),
+		// 					},
+		// 					FriendlyName: to.Ptr("vm1"),
+		// 					PolicyFriendlyName: to.Ptr("protectionprofile1"),
+		// 					PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
+		// 					PrimaryFabricFriendlyName: to.Ptr("cloud1"),
+		// 					PrimaryProtectionContainerFriendlyName: to.Ptr("cloud1"),
+		// 					ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
+		// 					ProtectedItemType: to.Ptr("HyperVVirtualMachine"),
+		// 					ProtectionState: to.Ptr("Protected"),
+		// 					ProtectionStateDescription: to.Ptr("Protected"),
+		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReplicationDetails{
+		// 						InstanceType: to.Ptr("HyperVReplicaAzure"),
+		// 					},
+		// 					RecoveryContainerID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationProtectionContainers/d38048d4-b460-4791-8ece-108395ee8478"),
+		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
+		// 					RecoveryFabricID: to.Ptr("Microsoft Azure"),
+		// 					RecoveryProtectionContainerFriendlyName: to.Ptr("Microsoft Azure"),
+		// 					RecoveryServicesProviderID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationRecoveryServicesProviders/241641e6-ee7b-4ee4-8141-821fadda43fa"),
+		// 					ReplicationHealth: to.Ptr("Normal"),
+		// 					TestFailoverState: to.Ptr("None"),
+		// 					TestFailoverStateDescription: to.Ptr("None"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

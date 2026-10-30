@@ -1,5 +1,39 @@
 # Release History
 
+## 4.0.0 (2026-10-30)
+### Breaking Changes
+
+- Type of `A2AProtectedItemDetail.VMManagedDisks` has been changed from `[]*A2AVMManagedDiskInputDetails` to `[]*A2AClusterVMManagedDiskInputDetails`
+- Type of `InMageRcmMobilityAgentDetails.AgentReinstallState` has been changed from `[]*MobilityAgentReinstallType` to `*MobilityAgentReinstallType`
+
+### Features Added
+
+- New enum type `DiskNetworkAccessPolicy` with values `DiskNetworkAccessPolicyAllowAll`, `DiskNetworkAccessPolicyAllowPrivate`, `DiskNetworkAccessPolicyDenyAll`
+- New enum type `DiskPublicNetworkAccess` with values `DiskPublicNetworkAccessDisabled`, `DiskPublicNetworkAccessEnabled`
+- New enum type `IPVersion` with values `IPVersionIPv4`, `IPVersionIPv6`
+- New enum type `RecoveryNetworkConfigAutoSyncPolicy` with values `RecoveryNetworkConfigAutoSyncPolicyDisabled`, `RecoveryNetworkConfigAutoSyncPolicyEnabled`
+- New struct `A2AClusterVMManagedDiskInputDetails`
+- New struct `ConfidentialDiskEncryptionInfo`
+- New struct `UpdateConfidentialDiskEncryptionInfo`
+- New field `RecoveryConfidentialDataDiskEncryptionIdentity` in struct `A2AEnableProtectionInput`
+- New field `ConfidentialDiskEncryptionInfo`, `RecoveryDiskAccessID`, `RecoveryNetworkAccessPolicy`, `RecoveryPublicNetworkAccess` in struct `A2AProtectedManagedDiskDetails`
+- New field `RecoveryConfidentialDataDiskEncryptionIdentity` in struct `A2AReplicationDetails`
+- New field `RecoveryConfidentialDataDiskEncryptionIdentity` in struct `A2ASwitchProtectionInput`
+- New field `RecoveryConfidentialDataDiskEncryptionIdentity` in struct `A2AUpdateReplicationProtectedItemInput`
+- New field `ConfidentialDiskEncryptionInfo`, `RecoveryDiskAccessID`, `RecoveryNetworkAccessPolicy`, `RecoveryPublicNetworkAccess` in struct `A2AVMManagedDiskInputDetails`
+- New field `ConfidentialDiskEncryptionInfo` in struct `A2AVMManagedDiskUpdateDetails`
+- New field `IPVersion` in struct `IPConfigDetails`
+- New field `ConfidentialDiskEncryptionSetID` in struct `InMageRcmDiskInput`
+- New field `ConfidentialDiskEncryptionSetID` in struct `InMageRcmDisksDefaultInput`
+- New field `TargetExtendedLocation` in struct `InMageRcmEnableProtectionInput`
+- New field `ConfidentialDiskEncryptionSetID` in struct `InMageRcmProtectedDiskDetails`
+- New field `TargetExtendedLocation` in struct `InMageRcmReplicationDetails`
+- New field `ConfidentialDiskEncryptionSetID` in struct `VMwareCbtDiskInput`
+- New field `ConfidentialDiskEncryptionSetID` in struct `VMwareCbtProtectedDiskDetails`
+- New field `RecoveryNetworkConfigAutoSync` in struct `VaultSettingCreationInputProperties`
+- New field `RecoveryNetworkConfigAutoSync` in struct `VaultSettingProperties`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

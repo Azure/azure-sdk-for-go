@@ -139,6 +139,39 @@ func (a *A2AClusterUnplannedFailoverInput) GetClusterUnplannedFailoverProviderSp
 	}
 }
 
+// A2AClusterVMManagedDiskInputDetails - A2A managed disk input details for cluster switch protection.
+type A2AClusterVMManagedDiskInputDetails struct {
+	// REQUIRED; The disk Id.
+	DiskID *string
+
+	// REQUIRED; The primary staging storage account Arm Id.
+	PrimaryStagingAzureStorageAccountID *string
+
+	// REQUIRED; The target resource group Arm Id.
+	RecoveryResourceGroupID *string
+
+	// The recovery disk encryption information (for one / single pass flows).
+	DiskEncryptionInfo *DiskEncryptionInfo
+
+	// The recovery disk access Arm Id.
+	RecoveryDiskAccessID *string
+
+	// The recovery disk encryption set Id.
+	RecoveryDiskEncryptionSetID *string
+
+	// The network access policy for the recovery managed disk.
+	RecoveryNetworkAccessPolicy *DiskNetworkAccessPolicy
+
+	// The public network access setting for the recovery managed disk.
+	RecoveryPublicNetworkAccess *DiskPublicNetworkAccess
+
+	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
+	RecoveryReplicaDiskAccountType *string
+
+	// The target disk type after failover. Its an optional value and will be same as source disk type if not user provided.
+	RecoveryTargetDiskAccountType *string
+}
+
 // A2AContainerCreationInput - A2A cloud creation input.
 type A2AContainerCreationInput struct {
 	// CONSTANT; The class type.
@@ -402,6 +435,10 @@ type A2AEnableProtectionInput struct {
 
 	// The recovery cloud service Id. Valid for V1 scenarios.
 	RecoveryCloudServiceID *string
+
+	// The Azure resource ID of the confidential data disk encryption user-assigned identity. Applicable to CMK confidential VM
+	// data disks.
+	RecoveryConfidentialDataDiskEncryptionIdentity *string
 
 	// The recovery container Id.
 	RecoveryContainerID *string
@@ -671,7 +708,7 @@ type A2AProtectedItemDetail struct {
 	ReplicationProtectedItemName *string
 
 	// The list of vm managed disk details.
-	VMManagedDisks []*A2AVMManagedDiskInputDetails
+	VMManagedDisks []*A2AClusterVMManagedDiskInputDetails
 }
 
 // A2AProtectedManagedDiskDetails - A2A protected managed disk details.
@@ -730,11 +767,20 @@ type A2AProtectedManagedDiskDetails struct {
 	// The primary staging storage account.
 	PrimaryStagingAzureStorageAccountID *string
 
+	// The recovery disk access Arm Id.
+	RecoveryDiskAccessID *string
+
 	// The recovery disk encryption set Id.
 	RecoveryDiskEncryptionSetID *string
 
+	// The network access policy for the recovery managed disk.
+	RecoveryNetworkAccessPolicy *DiskNetworkAccessPolicy
+
 	// Recovery original target disk Arm Id.
 	RecoveryOrignalTargetDiskID *string
+
+	// The public network access setting for the recovery managed disk.
+	RecoveryPublicNetworkAccess *DiskPublicNetworkAccess
 
 	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
 	RecoveryReplicaDiskAccountType *string
@@ -759,6 +805,9 @@ type A2AProtectedManagedDiskDetails struct {
 
 	// The test failover name for the managed disk.
 	TfoDiskName *string
+
+	// READ-ONLY; The confidential disk encryption info for the managed disk. Applicable to CMK confidential VMs.
+	ConfidentialDiskEncryptionInfo *ConfidentialDiskEncryptionInfo
 }
 
 // A2AProtectionContainerMappingDetails - A2A provider specific settings.
@@ -1007,6 +1056,10 @@ type A2AReplicationDetails struct {
 
 	// The recovery cloud service.
 	RecoveryCloudService *string
+
+	// The Azure resource ID of the confidential data disk encryption user-assigned identity. Applicable to CMK confidential VM
+	// data disks.
+	RecoveryConfidentialDataDiskEncryptionIdentity *string
 
 	// The recovery Extended Location.
 	RecoveryExtendedLocation *ExtendedLocation
@@ -1394,6 +1447,10 @@ type A2ASwitchProtectionInput struct {
 	// The recovery cloud service Id. Valid for V1 scenarios.
 	RecoveryCloudServiceID *string
 
+	// The Azure resource ID of the confidential data disk encryption user-assigned identity. Applicable to CMK confidential VM
+	// data disks.
+	RecoveryConfidentialDataDiskEncryptionIdentity *string
+
 	// The recovery container Id.
 	RecoveryContainerID *string
 
@@ -1525,6 +1582,10 @@ type A2AUpdateReplicationProtectedItemInput struct {
 	// The target cloud service ARM Id (for V1).
 	RecoveryCloudServiceID *string
 
+	// The Azure resource ID of the confidential data disk encryption user-assigned identity. Applicable to CMK confidential VM
+	// data disks.
+	RecoveryConfidentialDataDiskEncryptionIdentity *string
+
 	// The recovery proximity placement group Id.
 	RecoveryProximityPlacementGroupID *string
 
@@ -1569,11 +1630,23 @@ type A2AVMManagedDiskInputDetails struct {
 	// REQUIRED; The target resource group Arm Id.
 	RecoveryResourceGroupID *string
 
+	// The confidential disk encryption info for the managed disk. Applicable to CMK confidential VMs.
+	ConfidentialDiskEncryptionInfo *ConfidentialDiskEncryptionInfo
+
 	// The recovery disk encryption information (for one / single pass flows).
 	DiskEncryptionInfo *DiskEncryptionInfo
 
+	// The recovery disk access Arm Id.
+	RecoveryDiskAccessID *string
+
 	// The recovery disk encryption set Id.
 	RecoveryDiskEncryptionSetID *string
+
+	// The network access policy for the recovery managed disk.
+	RecoveryNetworkAccessPolicy *DiskNetworkAccessPolicy
+
+	// The public network access setting for the recovery managed disk.
+	RecoveryPublicNetworkAccess *DiskPublicNetworkAccess
 
 	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
 	RecoveryReplicaDiskAccountType *string
@@ -1584,6 +1657,10 @@ type A2AVMManagedDiskInputDetails struct {
 
 // A2AVMManagedDiskUpdateDetails - A2A Vm managed disk update details.
 type A2AVMManagedDiskUpdateDetails struct {
+	// The confidential disk encryption info to update for the managed disk. Only the recovery target confidential disk encryption
+	// set can be changed through this update operation. Applicable to A2A CMK confidential VMs.
+	ConfidentialDiskEncryptionInfo *UpdateConfidentialDiskEncryptionInfo
+
 	// The recovery os disk encryption information.
 	DiskEncryptionInfo *DiskEncryptionInfo
 
@@ -2326,6 +2403,19 @@ type ComputeSizeErrorDetails struct {
 
 	// The severity of the error.
 	Severity *string
+}
+
+// ConfidentialDiskEncryptionInfo - Confidential disk encryption info for an A2A CMK confidential VM managed disk. Specifies
+// the confidential disk encryption set ID for the replica disk used during replication and the confidential disk encryption
+// set ID for the target disk used after failover.
+type ConfidentialDiskEncryptionInfo struct {
+	// The Azure resource ID of the confidential disk encryption set used for the replica disk. Applicable to CMK confidential
+	// VMs.
+	RecoveryReplicaConfidentialDiskEncryptionSetID *string
+
+	// The Azure resource ID of the confidential disk encryption set used for the target disk after failover. Applicable to CMK
+	// confidential VMs.
+	RecoveryTargetConfidentialDiskEncryptionSetID *string
 }
 
 // ConfigurationSettings - Replication provider specific settings.
@@ -4431,6 +4521,11 @@ type IPConfigDetails struct {
 	TfoPublicIPAddressID            *string
 	TfoStaticIPAddress              *string
 	TfoSubnetName                   *string
+
+	// READ-ONLY; The IP version (IPv4 / IPv6) of the ip-config, as reported by the service. Read-only - it reflects the discovered
+	// NIC configuration and cannot be set by the caller. Orthogonal to the allocation type (static / dynamic). Omitted when IPv6
+	// support is not enabled.
+	IPVersion *IPVersion
 }
 
 type IPConfigInputDetails struct {
@@ -5684,6 +5779,9 @@ type InMageRcmDiskInput struct {
 	// REQUIRED; The log storage account ARM Id.
 	LogStorageAccountID *string
 
+	// The ConfidentialDiskEncryptionSet ARM Id.
+	ConfidentialDiskEncryptionSetID *string
+
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
 
@@ -5707,6 +5805,9 @@ type InMageRcmDisksDefaultInput struct {
 
 	// REQUIRED; The log storage account ARM Id.
 	LogStorageAccountID *string
+
+	// The ConfidentialDiskEncryptionSet ARM Id.
+	ConfidentialDiskEncryptionSetID *string
 
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
@@ -5774,6 +5875,9 @@ type InMageRcmEnableProtectionInput struct {
 
 	// The target capacity reservation group ARM Id.
 	TargetCapacityReservationGroupID *string
+
+	// The target extended location.
+	TargetExtendedLocation *ExtendedLocation
 
 	// The tags for the target managed disks.
 	TargetManagedDiskTags []*UserCreatedResourceTag
@@ -6369,7 +6473,7 @@ type InMageRcmMobilityAgentDetails struct {
 	AgentReinstallJobID *string
 
 	// READ-ONLY; The agent auto reinstall state.
-	AgentReinstallState []*MobilityAgentReinstallType
+	AgentReinstallState *MobilityAgentReinstallType
 
 	// READ-ONLY; The agent version expiry date.
 	AgentVersionExpiryDate *time.Time
@@ -6563,6 +6667,9 @@ type InMageRcmProtectedDiskDetails struct {
 	// READ-ONLY; The disk capacity in bytes.
 	CapacityInBytes *int64
 
+	// READ-ONLY; The ConfidentialDiskEncryptionSet ARM Id.
+	ConfidentialDiskEncryptionSetID *string
+
 	// READ-ONLY; The data pending at source agent in MB.
 	DataPendingAtSourceAgentInMB *float64
 
@@ -6683,6 +6790,9 @@ type InMageRcmReplicationDetails struct {
 
 	// The target capacity reservation group ARM Id.
 	TargetCapacityReservationGroupID *string
+
+	// The target extended location.
+	TargetExtendedLocation *ExtendedLocation
 
 	// The target location.
 	TargetLocation *string
@@ -10916,6 +11026,14 @@ func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) GetUpd
 	return u
 }
 
+// UpdateConfidentialDiskEncryptionInfo - Confidential disk encryption info used while updating replication of a CMK confidential
+// VM managed disk.
+type UpdateConfidentialDiskEncryptionInfo struct {
+	// The Azure resource ID of the confidential disk encryption set used for the target disk after failover. Applicable to CMK
+	// confidential VMs.
+	RecoveryTargetConfidentialDiskEncryptionSetID *string
+}
+
 // UpdateDiskInput - Disk input for update.
 type UpdateDiskInput struct {
 	// REQUIRED; The disk Id.
@@ -11364,6 +11482,9 @@ type VMwareCbtDiskInput struct {
 	// REQUIRED; The key vault secret name of the log storage account.
 	LogStorageAccountSasSecretName *string
 
+	// The ConfidentialDiskEncryptionSet ARM Id.
+	ConfidentialDiskEncryptionSetID *string
+
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
 
@@ -11805,6 +11926,9 @@ type VMwareCbtProtectedDiskDetails struct {
 
 	// READ-ONLY; The disk capacity in bytes.
 	CapacityInBytes *int64
+
+	// READ-ONLY; The ConfidentialDiskEncryptionSet ARM Id.
+	ConfidentialDiskEncryptionSetID *string
 
 	// READ-ONLY; The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
@@ -12348,6 +12472,10 @@ type VaultSettingCreationInputProperties struct {
 	// The migration solution Id.
 	MigrationSolutionID *string
 
+	// The vault level policy controlling whether the A2A recovery network configuration is automatically kept in sync with the
+	// source virtual machine. If the property is omitted from the request body, the policy is set to `Disabled`.
+	RecoveryNetworkConfigAutoSync *RecoveryNetworkConfigAutoSyncPolicy
+
 	// VMware to Azure provider type.
 	VmwareToAzureProviderType *string
 }
@@ -12356,6 +12484,10 @@ type VaultSettingCreationInputProperties struct {
 type VaultSettingProperties struct {
 	// The migration solution ARM Id.
 	MigrationSolutionID *string
+
+	// The vault level policy controlling whether the A2A recovery network configuration is automatically kept in sync with the
+	// source virtual machine.
+	RecoveryNetworkConfigAutoSync *RecoveryNetworkConfigAutoSyncPolicy
 
 	// VMware to Azure provider type.
 	VmwareToAzureProviderType *string

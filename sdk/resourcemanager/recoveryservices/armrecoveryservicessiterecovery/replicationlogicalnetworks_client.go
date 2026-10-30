@@ -19,7 +19,7 @@ import (
 // ReplicationLogicalNetworksClient contains the methods for the ReplicationLogicalNetworks group.
 // Don't use this type directly, use NewReplicationLogicalNetworksClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationLogicalNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -99,7 +99,7 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

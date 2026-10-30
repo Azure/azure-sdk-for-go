@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-10-22)
+## 3.0.0-beta.1 (2026-10-30)
 ### Breaking Changes
 
 - Struct `ValidateConfigurationResponse` has been removed

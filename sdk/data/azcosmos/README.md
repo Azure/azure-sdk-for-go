@@ -504,6 +504,73 @@ while the real native driver executes against the emulator. This validates the b
 native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
 delivery and cancellation races without relying on network timing.
 
+### Azure Live smoke tests
+
+`ci.yml` keeps unit and emulator validation unchanged and adds an opt-in, Linux amd64
+cgo live stage using the published native driver and Microsoft Entra ID. Ordinary PR and
+CI runs do not provision live resources or require live credentials. Manual runs opt in
+with `RunLiveTests=true`; scheduled runs and definitions ending in `- weekly` select the
+same bounded smoke suite. Separate definitions can reuse this `ci.yml`; no separate
+`tests.yml` is required. Live execution is restricted to branch builds, not PR merge refs.
+
+The selection in [`internal/e2e/live.go`](internal/e2e/live.go) contains five permanent
+shared scenario IDs: `bootstrap.primary-success`, `item.lifecycle`,
+`item.optimistic-concurrency`, `diagnostics.success-and-error`, and
+`query.pagination-resume`. The first four select `smokeTests`; pagination selects
+`coreOperations`. This certifies only these selected scenarios, not every scenario or
+axis in either profile. Extended, multi-region, and long-running partition-split
+profiles are not implemented by this lane, including on scheduled runs.
+The pinned catalog is not refreshed. Unsupported setup requirements and omitted
+required live scenarios fail validation before network I/O.
+
+For local execution, use a dedicated single-region East US Session account and a
+database/container with partition-key path `/pk`. The identity needs Cosmos DB
+data-plane permissions for metadata, items, and queries at database scope; management
+permissions alone are insufficient. Tests never create/delete databases or containers.
+Do not use a container containing customer data.
+
+Run in a native Linux amd64 or macOS arm64 shell with Go 1.27+, a C compiler,
+PowerShell 7, and a development credential:
+
+```powershell
+$env:AZURE_RECORD_MODE = 'live'
+$env:AZURE_COSMOS_E2E_BACKEND = 'azureLive'
+$env:AZCOSMOS_ENDPOINT = 'https://<test-account>.documents.azure.com/'
+$env:AZCOSMOS_DATABASE = '<test-database>'
+$env:AZCOSMOS_CONTAINER = '<test-container>'
+$env:CGO_ENABLED = '1'
+./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 -OutputDirectory <temporary-results-directory>
+```
+
+Leave `EMULATOR` and `AZURE_COSMOS_E2E_PROFILE/ACCOUNT/RUNTIME/CLIENT` overrides unset.
+The runner rejects unsupported and cross-compiled targets, clears stale results, and
+runs only `TestAzureLive` with race detection and a 12-minute timeout. Missing credentials,
+failed setup, skipped/missing scenarios, and incomplete results fail the run.
+`Test-LiveResults.ps1` emits JUnit and JSON with selected scenario IDs, profiles,
+durations, and outcomes; `metadata.json` records credential-free build/driver metadata
+and the expected (not independently measured) account configuration. Never enable
+credential/body logging or publish `.env` files, tokens, or raw native diagnostics.
+
+Each scenario uses an isolated runtime and random item IDs/partition keys. Cleanup is
+registered before writes with independent timeouts. Setup retries only newly deployed
+RBAC's 403/5302 for at most 90 seconds; scenarios are not retried. Explicit session-token
+reuse is covered without claiming broader session-management profile coverage.
+
+[`test-resources.bicep`](test-resources.bicep) creates a run-owned Session account,
+database, 400 RU/s container, and database-scoped data role assignment, without emitting
+account keys. Live jobs allow 45 minutes for provisioning and execution, with a 15-minute
+cancellation cleanup grace period. Teardown runs on success, failure, and cancellation;
+resource-group expiry tags provide a fallback for interrupted jobs. Container TTL
+expires items after one day but does not stop account/throughput billing. Hard agent
+termination cannot guarantee immediate teardown. Hosted provisioning, cancellation
+cleanup, runtime, and cost must be verified before expanding this lane.
+
+The result gate also has credential-free fixtures:
+
+```powershell
+./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
+```
+
 ## Getting Started
 
 ### Prerequisites

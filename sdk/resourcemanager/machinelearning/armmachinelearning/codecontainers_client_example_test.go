@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/CodeContainer/createOrUpdate.json
 func ExampleCodeContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleCodeContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeContainer/delete.json
+// Generated from example definition: 2026-07-01/Workspace/CodeContainer/delete.json
 func ExampleCodeContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleCodeContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeContainer/get.json
+// Generated from example definition: 2026-07-01/Workspace/CodeContainer/get.json
 func ExampleCodeContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleCodeContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeContainer/list.json
+// Generated from example definition: 2026-07-01/Workspace/CodeContainer/list.json
 func ExampleCodeContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleCodeContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.CodeContainersClientListResponse{
 		// 	CodeContainerResourceArmPaginatedResult: armmachinelearning.CodeContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/codes?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/codes?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.CodeContainer{
 		// 			{
 		// 				Name: to.Ptr("testContainer"),

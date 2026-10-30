@@ -31,6 +31,9 @@ type DataCollectionRuleAssociationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,12 +68,7 @@ func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, 
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionRuleAssociationsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -100,8 +98,11 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientCreateResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionRuleAssociationsClientCreateResponse, error) {
 	result := DataCollectionRuleAssociationsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
@@ -131,8 +132,7 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
+		return DataCollectionRuleAssociationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DataCollectionRuleAssociationsClientDeleteResponse{}, nil
 }
@@ -180,12 +180,7 @@ func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, res
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionRuleAssociationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -211,8 +206,11 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientGetResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionRuleAssociationsClientGetResponse, error) {
 	result := DataCollectionRuleAssociationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
@@ -237,47 +235,61 @@ func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDataCollectionEndpointCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
-			}, nil)
+			req, err := client.listByDataCollectionEndpointCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, nextLink, options)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 			}
-			return client.listByDataCollectionEndpointHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
+			}
+			return client.listByDataCollectionEndpointHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDataCollectionEndpointCreateRequest creates the ListByDataCollectionEndpoint request.
-func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, _ *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/associations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, nextLink string, _ *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/associations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if dataCollectionEndpointName == "" {
+			return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dataCollectionEndpointName == "" {
-		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240311)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240311)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDataCollectionEndpointHandleResponse handles the ListByDataCollectionEndpoint response.
-func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, error) {
 	result := DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
 		return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 	}
@@ -301,39 +313,53 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByResourceCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 			}
-			return client.listByResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
+			}
+			return client.listByResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, _ *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240311)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240311)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByResourceResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionRuleAssociationsClientListByResourceResponse, error) {
 	result := DataCollectionRuleAssociationsClientListByResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
 		return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 	}
@@ -358,53 +384,67 @@ func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByRuleCreateRequest(ctx, resourceGroupName, dataCollectionRuleName, options)
-			}, nil)
+			req, err := client.listByRuleCreateRequest(ctx, resourceGroupName, dataCollectionRuleName, nextLink, options)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 			}
-			return client.listByRuleHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
+			}
+			return client.listByRuleHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByRuleCreateRequest creates the ListByRule request.
-func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}/associations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, nextLink string, options *DataCollectionRuleAssociationsClientListByRuleOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}/associations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if dataCollectionRuleName == "" {
+			return nil, errors.New("parameter dataCollectionRuleName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{dataCollectionRuleName}", url.PathEscape(dataCollectionRuleName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dataCollectionRuleName == "" {
-		return nil, errors.New("parameter dataCollectionRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionRuleName}", url.PathEscape(dataCollectionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240311)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20240311)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByRuleHandleResponse handles the ListByRule response.
-func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByRuleResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionRuleAssociationsClientListByRuleResponse, error) {
 	result := DataCollectionRuleAssociationsClientListByRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
 		return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 	}

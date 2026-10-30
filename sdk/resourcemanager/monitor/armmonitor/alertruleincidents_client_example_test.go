@@ -32,9 +32,9 @@ func ExampleAlertRuleIncidentsClient_Get() {
 	// res = armmonitor.AlertRuleIncidentsClientGetResponse{
 	// 	Incident: armmonitor.Incident{
 	// 		Name: to.Ptr("Website_started"),
-	// 		ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.9792776Z"); return t}()),
+	// 		ActivatedTime: to.Ptr(time.Date(2017, time.September, 13, 15, 45, 26, 979277600, time.UTC)),
 	// 		IsActive: to.Ptr(true),
-	// 		ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.9792776Z"); return t}()),
+	// 		ResolvedTime: to.Ptr(time.Date(2017, time.September, 13, 22, 14, 28, 979277600, time.UTC)),
 	// 		RuleName: to.Ptr("myRuleName"),
 	// 	},
 	// }
@@ -67,9 +67,9 @@ func ExampleAlertRuleIncidentsClient_NewListByAlertRulePager() {
 		// 		Value: []*armmonitor.Incident{
 		// 			{
 		// 				Name: to.Ptr("Website_started"),
-		// 				ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.9792776Z"); return t}()),
+		// 				ActivatedTime: to.Ptr(time.Date(2017, time.September, 13, 15, 45, 26, 979277600, time.UTC)),
 		// 				IsActive: to.Ptr(true),
-		// 				ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.9792776Z"); return t}()),
+		// 				ResolvedTime: to.Ptr(time.Date(2017, time.September, 13, 22, 14, 28, 979277600, time.UTC)),
 		// 				RuleName: to.Ptr("myRuleName"),
 		// 			},
 		// 		},

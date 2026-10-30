@@ -87,7 +87,7 @@ func (m *MetricAlertsStatusServerTransport) dispatchList(req *http.Request) (*ht
 	if m.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/status`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -120,7 +120,7 @@ func (m *MetricAlertsStatusServerTransport) dispatchListByName(req *http.Request
 	if m.srv.ListByName == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByName not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status/(?P<statusName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/status/(?P<statusName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

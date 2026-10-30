@@ -14,13 +14,11 @@
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionModeEnabled` was set explicitly.
-* Added support for data locality. `file.Client.GetLayoutPager` returns a file's layout: the byte ranges making up the
-  file and the storage endpoint that serves each one. Pass the endpoint covering a given offset as
-  `DownloadStreamOptions.LayoutEndpoint` to route that read to it; retries of the read stay on that endpoint.
-* Added `LayoutAwareRouting` to `file.DownloadBufferOptions` and `file.DownloadFileOptions`. With
-  `LayoutAwareRoutingEnabled`, when the initial read carries the layout download hint, the remaining chunks are routed
-  to the endpoint that serves each one. The default, `LayoutAwareRoutingAuto`, currently resolves to
-  `LayoutAwareRoutingDisabled`.
+* Added support for data locality in managed downloads through `LayoutAwareRouting` on `file.DownloadBufferOptions`
+  and `file.DownloadFileOptions`. With `LayoutAwareRoutingEnabled`, when the initial read carries the service's layout
+  download hint, the remaining chunks are routed to the endpoint that serves each one. The default,
+  `LayoutAwareRoutingAuto`, currently resolves to `LayoutAwareRoutingDisabled`. When the service can't provide a
+  layout, downloads use the client's configured endpoint.
 
 ### Breaking Changes
 

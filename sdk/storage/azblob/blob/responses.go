@@ -28,7 +28,7 @@ type DownloadStreamResponse struct {
 	// stays on the same endpoint rather than falling back to the account endpoint.
 	layoutEndpoint string
 	// downloadHint is the service's x-ms-download-hint. Managed downloads fetch the blob's layout
-	// only when it is DownloadHintLayout.
+	// only when it is generated.DownloadHintLayout.
 	downloadHint *generated.DownloadHint
 }
 

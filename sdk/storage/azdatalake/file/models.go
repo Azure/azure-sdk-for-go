@@ -419,16 +419,6 @@ type DownloadStreamOptions struct {
 	// data wrapped in a structured message with per-segment CRC64 checksums. The SDK
 	// automatically decodes the structured message and validates checksums before returning data.
 	TransactionalValidation TransferValidationType
-	// LayoutEndpoint routes this read to a layout endpoint, the Value of a LayoutEndpoint returned
-	// by Client.GetLayoutPager, instead of the client's configured endpoint. The request still
-	// authenticates against the account. It is read from the blob endpoint, and retries of the read
-	// stay on the same layout endpoint.
-	//
-	// Most callers don't need to set it: use DownloadBuffer or DownloadFile with
-	// LayoutAwareRoutingEnabled, which select endpoints automatically. Set it only when implementing
-	// a custom chunked download: page through Client.GetLayoutPager, find the layout range covering
-	// Range.Offset, and pass that range's endpoint here.
-	LayoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -451,7 +441,6 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
-	downloadStreamOptions.LayoutEndpoint = o.LayoutEndpoint
 	if o.TransactionalValidation != nil {
 		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
 			downloadStreamOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)

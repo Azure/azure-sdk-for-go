@@ -74,11 +74,15 @@ type dlAccountFake struct {
 	downloadHint bool
 	// layoutPages are the Get Layout pages, served in order by marker.
 	layoutPages []string
+	// layoutErrorStatus and layoutErrorCode, when set, fail every Get Layout request.
+	layoutErrorStatus int
+	layoutErrorCode   string
 	// rejectSession, when set, returns 401 for a session-authenticated request it selects.
 	rejectSession func(r dlRequest) bool
-	// failFirstRead makes the first Get Blob body fail part way through.
-	failFirstRead bool
-	reads         int
+	// failFirstRoutedRead makes the body of the first Get Blob sent to the layout endpoint fail
+	// part way through.
+	failFirstRoutedRead bool
+	routedReads         int
 }
 
 func newDLAccount() *dlAccountFake {
@@ -166,8 +170,10 @@ func (a *dlAccountFake) readResponse(req *http.Request, r dlRequest) *http.Respo
 		h.Set("x-ms-download-hint", "layout")
 	}
 	a.mu.Lock()
-	a.reads++
-	failThis := a.failFirstRead && a.reads == 1
+	if req.URL.Host == dlLayoutHost {
+		a.routedReads++
+	}
+	failThis := a.failFirstRoutedRead && req.URL.Host == dlLayoutHost && a.routedReads == 1
 	a.mu.Unlock()
 	resp := dlResponse(req, http.StatusPartialContent, h, data)
 	if failThis {
@@ -177,6 +183,11 @@ func (a *dlAccountFake) readResponse(req *http.Request, r dlRequest) *http.Respo
 }
 
 func (a *dlAccountFake) layoutResponse(req *http.Request, marker string) *http.Response {
+	if a.layoutErrorStatus != 0 {
+		h := http.Header{}
+		h.Set("x-ms-error-code", a.layoutErrorCode)
+		return dlResponse(req, a.layoutErrorStatus, h, []byte("<Error><Code>"+a.layoutErrorCode+"</Code></Error>"))
+	}
 	i := 0
 	if marker != "" {
 		i, _ = strconv.Atoi(strings.TrimPrefix(marker, "m"))
@@ -473,81 +484,6 @@ func TestDataLakeSessionAccountName(t *testing.T) {
 
 // ---- Data locality ---------------------------------------------------------------------------
 
-func TestDataLakeGetLayoutPager(t *testing.T) {
-	a := newDLAccount()
-	a.layoutPages = []string{
-		layoutPage("m1", [3]int64{0, 149, 0}),
-		layoutPage("", [3]int64{150, 299, 0}),
-	}
-	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
-
-	pager := c.GetLayoutPager(&file.GetLayoutOptions{Range: &azdatalake.HTTPRange{Offset: 0, Count: dlFileSize}})
-	var ranges []*file.LayoutRange
-	pages := 0
-	for pager.More() {
-		page, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		pages++
-		require.NotNil(t, page.Ranges)
-		ranges = append(ranges, page.Ranges.Range...)
-		require.Equal(t, int64(dlFileSize), *page.FileContentLength, "blob properties map to file properties")
-		require.Equal(t, "application/octet-stream", *page.FileContentType)
-		require.Equal(t, azcore.ETag(dlETag), *page.ETag)
-		require.Equal(t, "https://"+dlLayoutHost, *page.Endpoints.Endpoint[0].Value)
-	}
-	require.Equal(t, 2, pages)
-	require.Len(t, ranges, 2)
-
-	reqs, _ := a.snapshot()
-	var layoutReqs []dlRequest
-	for _, r := range reqs {
-		if r.comp == "layout" {
-			layoutReqs = append(layoutReqs, r)
-		}
-	}
-	require.Len(t, layoutReqs, 2)
-	for _, r := range layoutReqs {
-		require.Equal(t, dlBlobHost, r.urlHost, "Get Layout is forwarded to the blob endpoint")
-		require.Equal(t, "bytes=0-299", r.rangeHdr)
-	}
-	require.Empty(t, layoutReqs[0].ifMatch)
-	require.Equal(t, dlETag, layoutReqs[1].ifMatch, "later pages are locked to the first page's ETag")
-}
-
-func TestDataLakeDownloadStreamLayoutEndpoint(t *testing.T) {
-	a := newDLAccount()
-	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
-
-	readAll(t, c, &file.DownloadStreamOptions{LayoutEndpoint: "https://" + dlLayoutHost})
-	r := a.last()
-	require.Equal(t, dlLayoutHost, r.urlHost, "the read is routed to the layout endpoint")
-	require.Equal(t, dlBlobHost, r.hostHeader, "and still authenticates against the account")
-}
-
-func TestDataLakeDownloadStreamRetryStaysOnLayoutEndpoint(t *testing.T) {
-	a := newDLAccount()
-	a.failFirstRead = true
-	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
-
-	// a Range is required: DataLake's NewRetryReader dereferences it
-	resp, err := c.DownloadStream(context.Background(), &file.DownloadStreamOptions{
-		Range:          &azdatalake.HTTPRange{Offset: 0, Count: dlFileSize},
-		LayoutEndpoint: "https://" + dlLayoutHost,
-	})
-	require.NoError(t, err)
-	body := resp.NewRetryReader(context.Background(), &file.RetryReaderOptions{MaxRetries: 2})
-	data, err := io.ReadAll(body)
-	require.NoError(t, err)
-	require.NoError(t, body.Close())
-	require.Len(t, data, dlFileSize)
-
-	reqs, _ := a.snapshot()
-	require.GreaterOrEqual(t, len(reqs), 2, "the failed read was retried")
-	for _, r := range reqs {
-		require.Equal(t, dlLayoutHost, r.urlHost, "every attempt stays on the layout endpoint")
-	}
-}
-
 func TestDataLakeManagedDownloadRoutingDefaultDisabled(t *testing.T) {
 	a := newDLAccount()
 	a.downloadHint = true
@@ -624,6 +560,83 @@ func TestDataLakeManagedDownloadRoutingEnabled(t *testing.T) {
 			require.Equal(t, []string{dlBlobHost}, a.createSessionHosts, "the session for a routed chunk is created at the account endpoint")
 		})
 	}
+}
+
+// A file whose layout the service can't provide, for example because Data Locality isn't enabled
+// for the account, is downloaded in full from the blob endpoint, asking for the layout only once.
+func TestDataLakeManagedDownloadLayoutUnavailableFallsBack(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.layoutErrorStatus, a.layoutErrorCode = http.StatusBadRequest, "FeatureNotEnabled"
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	buf := make([]byte, dlFileSize)
+	n, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
+		ChunkSize: 100, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(dlFileSize), n)
+	require.Equal(t, bytes.Repeat([]byte{'d'}, dlFileSize), buf)
+
+	reqs, _ := a.snapshot()
+	var layoutCalls, reads int
+	for _, r := range reqs {
+		switch {
+		case r.comp == "layout":
+			layoutCalls++
+		case r.method == http.MethodGet:
+			reads++
+			require.Equal(t, dlBlobHost, r.urlHost, "every read uses the configured endpoint")
+			if r.rangeHdr != "bytes=0-99" {
+				require.Equal(t, dlETag, r.ifMatch, "reads after the initial one are pinned to its ETag")
+			}
+		}
+	}
+	require.Equal(t, 1, layoutCalls, "the unavailable layout is cached for the rest of the download")
+	require.Equal(t, 3, reads, "the initial read plus the two remaining chunks")
+}
+
+// A Get Layout failure that isn't about the layout being unavailable fails the download.
+func TestDataLakeManagedDownloadLayoutAuthorizationErrorFails(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.layoutErrorStatus, a.layoutErrorCode = http.StatusForbidden, "AuthorizationPermissionMismatch"
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
+		ChunkSize: 100, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+	})
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusForbidden, respErr.StatusCode)
+}
+
+// A routed chunk whose read fails part way through is retried on the same layout endpoint.
+func TestDataLakeManagedDownloadRetryStaysOnLayoutEndpoint(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.failFirstRoutedRead = true
+	a.layoutPages = []string{layoutPage("", [3]int64{100, 299, 0})}
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	buf := make([]byte, dlFileSize)
+	_, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
+		ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+		RetryReaderOptionsPerChunk: &file.RetryReaderOptions{MaxRetries: 2},
+	})
+	require.NoError(t, err)
+	require.Equal(t, bytes.Repeat([]byte{'d'}, dlFileSize), buf)
+
+	reqs, _ := a.snapshot()
+	var routed int
+	for _, r := range reqs {
+		if r.method == http.MethodGet && r.comp == "" && r.rangeHdr != "bytes=0-99" {
+			routed++
+			require.Equal(t, dlLayoutHost, r.urlHost, "every read after the initial one, including the retry, is routed")
+			require.Equal(t, dlBlobHost, r.hostHeader)
+		}
+	}
+	require.Equal(t, 3, routed, "two routed chunks and the retry of the first")
 }
 
 func streamingBody(s string) *readSeekNopCloser {

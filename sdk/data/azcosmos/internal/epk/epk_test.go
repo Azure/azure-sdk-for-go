@@ -6,8 +6,10 @@ package epk
 import (
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"math"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -92,9 +94,119 @@ func loadBaselineResults(t *testing.T, filename string) epkBaselineResults {
 	return results
 }
 
-// TestComputeEPK_Baseline enumerates every case in the XML baseline files and
-// verifies that ComputeV1 and ComputeV2Hash/ComputeV2MultiHash produce the
-// expected hash values.
+func TestComputeV1Routing(t *testing.T) {
+	// Routing vectors from the Java and .NET SDKs, not raw Murmur32 hash baselines.
+	// https://github.com/Azure/azure-sdk-for-rust/blob/e259b26317ebe1b4e3171c89869f595e459455ac/sdk/cosmos/azure_data_cosmos_driver/testdata/EffectivePartitionKeyConformance.json
+	tests := []struct {
+		name     string
+		values   []interface{}
+		expected string
+	}{
+		{"empty string", []interface{}{""}, "05C1CF33970FF80800"},
+		{"string", []interface{}{"partitionKey"}, "05C1E1B3D9CD2608716273756A756A706F4C667A00"},
+		{"null", []interface{}{nil}, "05C1ED45D7475601"},
+		{"undefined", []interface{}{UndefinedMarker{}}, "05C1D529E345DC00"},
+		{"true", []interface{}{true}, "05C1D7C5A903D803"},
+		{"false", []interface{}{false}, "05C1DB857D857C02"},
+		{"negative number", []interface{}{float64(-128)}, "05C1D73349F54C053FA0"},
+		{"positive number", []interface{}{float64(127)}, "05C1DD539DDFCC05C05FE0"},
+		{"smallest positive number", []interface{}{math.SmallestNonzeroFloat64}, "05C1E5C91F4D3005800101010101010102"},
+		{"largest number", []interface{}{math.MaxFloat64}, "05C1CBE367C53005FFEFFFFFFFFFFFFFFE"},
+		{"large negative number", []interface{}{float64(math.MinInt64)}, "05C1DB35F33D1C053C20"},
+		{"large positive number", []interface{}{float64(math.MaxInt64)}, "05C1B799AB2DD005C3E0"},
+		{
+			"99 characters",
+			[]interface{}{strings.Repeat("abcdefghijklmnopqrstuvwxyz", 4)[:99]},
+			"05C19B2DC38FC00862636465666768696A6B6C6D6E6F707172737475767778797A7B62636465666768696A6B6C6D6E6F707172737475767778797A7B62636465666768696A6B6C6D6E6F707172737475767778797A7B62636465666768696A6B6C6D6E6F7071727374757600",
+		},
+		{"100 characters", []interface{}{strings.Repeat("a", 100)}, "05C1EB5921F70608" + strings.Repeat("62", 100) + "00"},
+		{"101 characters", []interface{}{strings.Repeat("a", 101)}, "05C1EB5921F70608" + strings.Repeat("62", 100) + "00"},
+		{"1024 characters", []interface{}{strings.Repeat("a", 1024)}, "05C1EB5921F70608" + strings.Repeat("62", 100) + "00"},
+		{
+			"combined components",
+			[]interface{}{float64(2), true, false, nil, UndefinedMarker{}, "\u041f\u0440\u0438\u0432\u0435\u0442!"},
+			"05C1D19581B37C05C0000302010008D1A0D281D1B9D1B3D1B6D2832200",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.expected, ComputeV1(tt.values))
+		})
+	}
+}
+
+func TestComputeV1StringBoundaries(t *testing.T) {
+	// Service-compatible UTF-16 truncation and 101-byte binary encoding vectors.
+	// https://github.com/Azure/azure-sdk-for-rust/blob/e259b26317ebe1b4e3171c89869f595e459455ac/sdk/cosmos/azure_data_cosmos_driver/src/models/effective_partition_key.rs
+	tests := []struct {
+		name     string
+		value    string
+		expected string
+	}{
+		{"100 bytes", "tenant\x00" + strings.Repeat("a", 91) + "\u00e9", "05C1EFBD31E1740875666F626F7501" + strings.Repeat("62", 91) + "C4AA00"},
+		{"101 bytes", "tenant\x00" + strings.Repeat("a", 92) + "\u00e9", "05C1C7CDE1BBB00875666F626F7501" + strings.Repeat("62", 92) + "C4AA"},
+		{"truncate before hashing", "tenant\x00" + strings.Repeat("a", 92) + "\u00e9z", "05C1C7CDE1BBB00875666F626F7501" + strings.Repeat("62", 92) + "C4AA"},
+		{"99 UTF-16 units", strings.Repeat("a", 97) + "\U0001f600", "05C1C973BF796808" + strings.Repeat("62", 97) + "F1A09981"},
+		{"100 UTF-16 units", strings.Repeat("a", 98) + "\U0001f600", "05C1DD87B7E74C08" + strings.Repeat("62", 98) + "F1A099"},
+		{"split surrogate pair", strings.Repeat("a", 99) + "\U0001f600", "05C1E153DB455808" + strings.Repeat("62", 99) + "F0C0"},
+		{"truncate surrogate pair", strings.Repeat("a", 100) + "\U0001f600", "05C1EB5921F70608" + strings.Repeat("62", 100) + "00"},
+		{"split UTF-8 bytes", strings.Repeat("a", 99) + "\u20ac", "05C1D747E54D9008" + strings.Repeat("62", 99) + "E383"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.expected, ComputeV1([]interface{}{tt.value}))
+		})
+	}
+}
+
+func TestWriteNumberForBinaryEncodingV1(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    float64
+		expected string
+	}{
+		{"zero", 0, "058000"},
+		{"negative zero", math.Copysign(0, -1), "058000"},
+		{"integer", 5, "05C014"},
+		{"fraction", 5.12312419050912359123, "05C0153F858949735550"},
+		{"negative integer", -128, "053FA0"},
+		{"smallest positive number", math.SmallestNonzeroFloat64, "05800101010101010102"},
+		{"largest number", math.MaxFloat64, "05FFEFFFFFFFFFFFFFFE"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var encoded []byte
+			writeNumberForBinaryEncodingV1(tt.value, &encoded)
+			require.Equal(t, tt.expected, toHexUpper(encoded))
+		})
+	}
+}
+
+func TestComputeV1DoesNotMutateComponents(t *testing.T) {
+	value := strings.Repeat("a", 101)
+	values := []interface{}{value}
+	ComputeV1(values)
+	require.Equal(t, []interface{}{value}, values)
+	require.Empty(t, ComputeV1(nil))
+}
+
+func TestComputeV2UnicodeStringsNotTruncated(t *testing.T) {
+	tests := []struct {
+		value    string
+		expected string
+	}{
+		{"tenant\x00" + strings.Repeat("a", 92) + "\u00e9z", "3C0D04FB07AECB6B45A1592465FDFAA7"},
+		{strings.Repeat("a", 99) + "\U0001f600", "3DCDC7ABFC5BF49867B328ECDB14F0BF"},
+	}
+	for _, tt := range tests {
+		values := []interface{}{tt.value}
+		require.Equal(t, tt.expected, ComputeV2HashForRouting(values))
+		require.Equal(t, tt.expected, ComputeV2MultiHashForRouting(values))
+	}
+}
+
+// The XML V1 fixtures describe raw per-component Murmur32 hashes, not routing
+// EPKs. V2 fixtures likewise contain raw, unmasked hashes.
 func TestComputeEPK_Baseline(t *testing.T) {
 	type fileSpec struct {
 		filename  string
@@ -116,10 +228,15 @@ func TestComputeEPK_Baseline(t *testing.T) {
 			expectedV1 := tc.Output.PartitionKeyHashV1
 			expectedV2 := tc.Output.PartitionKeyHashV2
 
-			t.Run(category+"/V1/"+tc.Input.Description, func(t *testing.T) {
-				actual := ComputeV1(values)
-				require.Equal(t, expectedV1, actual,
-					"V1 hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)
+			t.Run(category+"/RawV1Hash/"+tc.Input.Description, func(t *testing.T) {
+				var hashes strings.Builder
+				for _, value := range values {
+					var input []byte
+					writeForHashing(value, &input)
+					fmt.Fprintf(&hashes, "%032X", murmurhash3_32(input, 0))
+				}
+				require.Equal(t, expectedV1, hashes.String(),
+					"raw hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)
 			})
 
 			t.Run(category+"/V2/"+tc.Input.Description, func(t *testing.T) {

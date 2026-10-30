@@ -27,6 +27,9 @@ type DownloadStreamResponse struct {
 	// layoutEndpoint is the endpoint the layout selected for this read, kept so a retry of it
 	// stays on the same endpoint rather than falling back to the account endpoint.
 	layoutEndpoint string
+	// downloadHint is the service's x-ms-download-hint. Managed downloads fetch the blob's layout
+	// only when it is generated.DownloadHintLayout.
+	downloadHint *generated.DownloadHint
 }
 
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
@@ -48,7 +51,7 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			CPKInfo:                 r.cpkInfo,
 			CPKScopeInfo:            r.cpkScope,
 			TransactionalValidation: r.transactionalValidation,
-			LayoutEndpoint:          r.layoutEndpoint,
+			layoutEndpoint:          r.layoutEndpoint,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {
@@ -120,6 +123,3 @@ type ReleaseLeaseResponse = generated.BlobClientReleaseLeaseResponse
 
 // RenewLeaseResponse contains the response from method BlobClient.RenewLease.
 type RenewLeaseResponse = generated.BlobClientRenewLeaseResponse
-
-// GetLayoutResponse contains the response from method BlobClient.GetLayout.
-type GetLayoutResponse = generated.BlobClientGetLayoutResponse

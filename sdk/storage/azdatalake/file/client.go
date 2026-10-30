@@ -665,7 +665,6 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkInfo:                 o.CPKInfo,
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
-		layoutEndpoint:          o.LayoutEndpoint,
 	}
 
 	return fullResp, nil

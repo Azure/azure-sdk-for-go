@@ -25,18 +25,18 @@ import (
 // Client-level behavior (what DownloadBuffer puts on the wire) lives in client_layout_test.go.
 
 // createMockPager creates a mock pager for testing getLayout function
-func createMockPager(responses []GetLayoutResponse, err error) *runtime.Pager[GetLayoutResponse] {
+func createMockPager(responses []generated.BlobClientGetLayoutResponse, err error) *runtime.Pager[generated.BlobClientGetLayoutResponse] {
 	index := 0
-	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
-		More: func(resp GetLayoutResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[generated.BlobClientGetLayoutResponse]{
+		More: func(resp generated.BlobClientGetLayoutResponse) bool {
 			return resp.NextMarker != nil && *resp.NextMarker != ""
 		},
-		Fetcher: func(ctx context.Context, current *GetLayoutResponse) (GetLayoutResponse, error) {
+		Fetcher: func(ctx context.Context, current *generated.BlobClientGetLayoutResponse) (generated.BlobClientGetLayoutResponse, error) {
 			if err != nil {
-				return GetLayoutResponse{}, err
+				return generated.BlobClientGetLayoutResponse{}, err
 			}
 			if index >= len(responses) {
-				return GetLayoutResponse{}, errors.New("no more pages")
+				return generated.BlobClientGetLayoutResponse{}, errors.New("no more pages")
 			}
 			resp := responses[index]
 			index++
@@ -162,7 +162,7 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 	contentLength := int64(1000)
 	etag := azcore.ETag("test-etag")
 
-	responses := []GetLayoutResponse{
+	responses := []generated.BlobClientGetLayoutResponse{
 		{
 			BlobLayout: generated.BlobLayout{
 				Endpoints: &generated.BlobLayoutEndpoints{
@@ -209,7 +209,7 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 	contentLength := int64(500)
 	etag := azcore.ETag("no-layout-etag")
 
-	responses := []GetLayoutResponse{
+	responses := []generated.BlobClientGetLayoutResponse{
 		{
 			BlobLayout: generated.BlobLayout{
 				Endpoints: &generated.BlobLayoutEndpoints{
@@ -239,7 +239,7 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 	contentLength := int64(3000)
 	etag := azcore.ETag("multi-page-etag")
 
-	responses := []GetLayoutResponse{
+	responses := []generated.BlobClientGetLayoutResponse{
 		{
 			BlobLayout: generated.BlobLayout{
 				NextMarker: to.Ptr("marker1"),

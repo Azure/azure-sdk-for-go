@@ -108,7 +108,7 @@ func TestRetryReaderPreservesLayoutEndpoint(t *testing.T) {
 	ctx := context.Background()
 	dr, err := client.DownloadStream(ctx, &DownloadStreamOptions{
 		Range:          HTTPRange{Offset: 0, Count: 10},
-		LayoutEndpoint: "https://" + layoutHost,
+		layoutEndpoint: "https://" + layoutHost,
 	})
 	require.NoError(t, err)
 

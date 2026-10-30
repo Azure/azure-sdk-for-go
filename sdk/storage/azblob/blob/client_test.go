@@ -4872,7 +4872,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerSinglePage() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
-	pager := bbClient.GetLayoutPager(nil)
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), nil)
 	_require.NotNil(pager)
 
 	// Only one page will be returned, but we want to make sure that the pager is functional and returns the correct response
@@ -4938,7 +4938,7 @@ func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithSAS() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
-	pager := bbClient.GetLayoutPager(nil)
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), nil)
 	_require.NotNil(pager)
 
 	// Only one page will be returned, but we want to make sure that the pager is functional and returns the correct response
@@ -4982,7 +4982,7 @@ func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithRange() {
 	// Request layout for a specific range (first 10 bytes)
 	rangeStart := int64(0)
 	rangeEnd := int64(9)
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		Range: blob.HTTPRange{
 			Offset: rangeStart,
 			Count:  rangeEnd - rangeStart + 1,
@@ -5043,7 +5043,7 @@ func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	// Assert that upload was successful
 	_require.NoError(err)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))}) // 4 MiB block size to ensure multiple pages
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{MaxResults: to.Ptr(int32(5))}) // 4 MiB block size to ensure multiple pages
 	_require.NotNil(pager)
 
 	pageCount := 0
@@ -5083,7 +5083,7 @@ func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	_require.NoError(err)
 
 	// First, get the first page and capture the marker
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))})
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{MaxResults: to.Ptr(int32(5))})
 	_require.NotNil(pager)
 
 	var marker *string
@@ -5097,7 +5097,7 @@ func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	}
 
 	// Create a new pager starting from the captured marker
-	pagerWithMarker := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pagerWithMarker := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		Marker:     marker,
 		MaxResults: to.Ptr(int32(5)),
 		AccessConditions: &blob.AccessConditions{
@@ -5133,7 +5133,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchTrue() {
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -5162,7 +5162,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchFalse() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
 	eTag := azcore.ETag("garbage")
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -5193,7 +5193,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchTrue() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
 	eTag := azcore.ETag("garbage")
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -5224,7 +5224,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -5259,7 +5259,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -5292,7 +5292,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceFalse() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -5327,7 +5327,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -5360,7 +5360,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceFalse() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -5403,7 +5403,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsTrue() {
 		_require.NoError(err)
 	}()
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			LeaseAccessConditions: &blob.LeaseAccessConditions{
 				LeaseID: acquireResp.LeaseID,
@@ -5444,7 +5444,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsFalse() {
 	}()
 
 	badLeaseID := proposedLeaseIDs[1]
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		AccessConditions: &blob.AccessConditions{
 			LeaseAccessConditions: &blob.LeaseAccessConditions{
 				LeaseID: badLeaseID,
@@ -5481,7 +5481,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKTrue() {
 	_require.NoError(err)
 
 	// GetLayoutPager with correct CPK should succeed
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), &blob.GetLayoutOptionsForTest{
 		CPKInfo: &testcommon.TestCPKByValue,
 	})
 	_require.NotNil(pager)
@@ -5512,7 +5512,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKFalse() {
 	_require.NoError(err)
 
 	// GetLayoutPager without CPK should fail (blob was uploaded with CPK)
-	pager := bbClient.GetLayoutPager(nil)
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), nil)
 	_require.NotNil(pager)
 
 	for pager.More() {
@@ -5542,7 +5542,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
 	})
 	_require.NoError(err)
 
-	pager := bbClient.GetLayoutPager(nil)
+	pager := blob.GetLayoutPagerForTest(bbClient.BlobClient(), nil)
 	_require.NotNil(pager)
 
 	for pager.More() {

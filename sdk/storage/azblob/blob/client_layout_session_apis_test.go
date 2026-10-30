@@ -510,10 +510,9 @@ func TestLocalityRoutedRetryReappliesSession(t *testing.T) {
 	blobClient := svcClient.NewContainerClient(sessionTestContainer).NewBlobClient(sessionTestBlob)
 
 	ctx := context.Background()
-	dr, err := blobClient.DownloadStream(ctx, &blob.DownloadStreamOptions{
-		Range:          blob.HTTPRange{Offset: 0, Count: 10},
-		LayoutEndpoint: "https://" + localityHost,
-	})
+	dr, err := blobClient.DownloadStream(ctx, blob.WithLayoutEndpointForTest(&blob.DownloadStreamOptions{
+		Range: blob.HTTPRange{Offset: 0, Count: 10},
+	}, "https://"+localityHost))
 	require.NoError(t, err)
 
 	body := dr.NewRetryReader(ctx, &blob.RetryReaderOptions{MaxRetries: 2})

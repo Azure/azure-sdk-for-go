@@ -16,15 +16,11 @@
     cache across separately constructed clients, so that sessions survive the clients that created them.
   * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
     unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
-* Added support for data locality. `Client.GetLayoutPager` on the blob clients returns a blob's layout: the byte ranges
-  making up the blob and the storage endpoint that serves each one (`Layout`, `LayoutRange`, `LayoutEndpoint`). Pass
-  the endpoint covering a given offset as `DownloadStreamOptions.LayoutEndpoint` to route that read to it.
-  `DownloadResponse.DownloadHint` reports the service's `DownloadHintLayout` hint.
-* Added `LayoutAwareRouting` to `DownloadBufferOptions` and `DownloadFileOptions`. With `LayoutAwareRoutingEnabled`,
-  when the initial read carries the layout download hint, the remaining blocks are routed to the endpoint that serves
-  each one, using a cached layout that is refreshed in the background. The default, `LayoutAwareRoutingAuto`,
-  currently resolves to `LayoutAwareRoutingDisabled`. When the service can't provide a layout, downloads use the
-  client's configured endpoint.
+* Added support for data locality in managed downloads through `LayoutAwareRouting` on `DownloadBufferOptions` and
+  `DownloadFileOptions`. With `LayoutAwareRoutingEnabled`, when the initial read carries the service's layout download
+  hint, the remaining blocks are routed to the endpoint that serves each one, using a cached layout that is refreshed
+  in the background. The default, `LayoutAwareRoutingAuto`, currently resolves to `LayoutAwareRoutingDisabled`. When
+  the service can't provide a layout, downloads use the client's configured endpoint.
 
 ### Breaking Changes
 * `UploadBuffer` and `UploadFile` on `blockblob.Client` and `azblob.Client` now size the initial request the same as

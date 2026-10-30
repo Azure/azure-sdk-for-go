@@ -12,6 +12,15 @@ import (
 
 // ItemOptions includes options for operations on items.
 type ItemOptions struct {
+	// ReplaySafe permits bypassing write-safety retry guards for this item operation.
+	// It uses the same retry eligibility and budgets as reads, subject to write routing.
+	// Shared Cosmos retry limits and independent retry vetoes still apply; the flag
+	// does not grant an outer azcore retry after native recovery refuses a retry.
+	// The default is false. It has no effect on reads.
+	// Set this only when repeating the entire write, including any triggers, is safe.
+	// A previous attempt may already have committed; this does not provide exactly-once
+	// execution or turn a replay's conflict, not-found, or precondition failure into success.
+	ReplaySafe bool
 	// Triggers to be invoked before the operation.
 	PreTriggers []string
 	// Triggers to be invoked after the operation.

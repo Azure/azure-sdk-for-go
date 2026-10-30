@@ -5,7 +5,7 @@
 package armhybridcompute
 
 const (
-	version20260715 string = "2026-07-15"
+	version20260901 string = "2026-09-01"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
@@ -302,6 +302,8 @@ const (
 	IdentityKeyStoreDefault IdentityKeyStore = "Default"
 	// IdentityKeyStoreTPM - TPM
 	IdentityKeyStoreTPM IdentityKeyStore = "TPM"
+	// IdentityKeyStoreTpmTransition - The machine is transitioning its identity key store to TPM.
+	IdentityKeyStoreTpmTransition IdentityKeyStore = "TpmTransition"
 )
 
 // PossibleIdentityKeyStoreValues returns the possible values for the IdentityKeyStore const type.
@@ -309,6 +311,7 @@ func PossibleIdentityKeyStoreValues() []IdentityKeyStore {
 	return []IdentityKeyStore{
 		IdentityKeyStoreDefault,
 		IdentityKeyStoreTPM,
+		IdentityKeyStoreTpmTransition,
 	}
 }
 

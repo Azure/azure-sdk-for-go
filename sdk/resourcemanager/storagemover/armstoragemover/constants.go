@@ -5,7 +5,7 @@
 package armstoragemover
 
 const (
-	version20251201 string = "2025-12-01"
+	version20260501 string = "2026-05-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -216,6 +216,7 @@ type Frequency string
 
 const (
 	FrequencyDaily   Frequency = "Daily"
+	FrequencyHourly  Frequency = "Hourly"
 	FrequencyMonthly Frequency = "Monthly"
 	// FrequencyNone - No schedule frequency. The job definition will not run on a schedule.
 	FrequencyNone    Frequency = "None"
@@ -227,6 +228,7 @@ const (
 func PossibleFrequencyValues() []Frequency {
 	return []Frequency{
 		FrequencyDaily,
+		FrequencyHourly,
 		FrequencyMonthly,
 		FrequencyNone,
 		FrequencyOnetime,
@@ -286,8 +288,9 @@ func PossibleJobRunStatusValues() []JobRunStatus {
 type JobType string
 
 const (
-	JobTypeCloudToCloud  JobType = "CloudToCloud"
-	JobTypeOnPremToCloud JobType = "OnPremToCloud"
+	JobTypeCloudToCloud           JobType = "CloudToCloud"
+	JobTypeOnPremToCloud          JobType = "OnPremToCloud"
+	JobTypeOnPremToCloudAgentLess JobType = "OnPremToCloudAgentLess"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
@@ -295,6 +298,7 @@ func PossibleJobTypeValues() []JobType {
 	return []JobType{
 		JobTypeCloudToCloud,
 		JobTypeOnPremToCloud,
+		JobTypeOnPremToCloudAgentLess,
 	}
 }
 
@@ -338,6 +342,22 @@ func PossibleMinuteValues() []Minute {
 	}
 }
 
+// NfsMountSourceType - Source type to differentiate NFSMount and FSX-EFS endpoints. Default is NFSMount.
+type NfsMountSourceType string
+
+const (
+	NfsMountSourceTypeFSXEFS   NfsMountSourceType = "FSX-EFS"
+	NfsMountSourceTypeNfsMount NfsMountSourceType = "NfsMount"
+)
+
+// PossibleNfsMountSourceTypeValues returns the possible values for the NfsMountSourceType const type.
+func PossibleNfsMountSourceTypeValues() []NfsMountSourceType {
+	return []NfsMountSourceType{
+		NfsMountSourceTypeFSXEFS,
+		NfsMountSourceTypeNfsMount,
+	}
+}
+
 // NfsVersion - The NFS protocol version.
 type NfsVersion string
 
@@ -345,6 +365,7 @@ const (
 	NfsVersionNFSauto NfsVersion = "NFSauto"
 	NfsVersionNFSv3   NfsVersion = "NFSv3"
 	NfsVersionNFSv4   NfsVersion = "NFSv4"
+	NfsVersionNFSv41  NfsVersion = "NFSv4_1"
 )
 
 // PossibleNfsVersionValues returns the possible values for the NfsVersion const type.
@@ -353,6 +374,7 @@ func PossibleNfsVersionValues() []NfsVersion {
 		NfsVersionNFSauto,
 		NfsVersionNFSv3,
 		NfsVersionNFSv4,
+		NfsVersionNFSv41,
 	}
 }
 
@@ -419,6 +441,22 @@ func PossibleS3WithHmacSourceTypeValues() []S3WithHmacSourceType {
 		S3WithHmacSourceTypeIBM,
 		S3WithHmacSourceTypeMINIO,
 		S3WithHmacSourceTypeOTHER,
+	}
+}
+
+// SmbMountSourceType - Source type to differentiate SMBMount and FSX-SMB endpoints. Default is SMBMount.
+type SmbMountSourceType string
+
+const (
+	SmbMountSourceTypeFSXSMB   SmbMountSourceType = "FSX-SMB"
+	SmbMountSourceTypeSmbMount SmbMountSourceType = "SmbMount"
+)
+
+// PossibleSmbMountSourceTypeValues returns the possible values for the SmbMountSourceType const type.
+func PossibleSmbMountSourceTypeValues() []SmbMountSourceType {
+	return []SmbMountSourceType{
+		SmbMountSourceTypeFSXSMB,
+		SmbMountSourceTypeSmbMount,
 	}
 }
 

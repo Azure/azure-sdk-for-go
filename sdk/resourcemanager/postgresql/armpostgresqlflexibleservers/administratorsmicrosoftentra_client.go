@@ -19,7 +19,7 @@ import (
 // AdministratorsMicrosoftEntraClient contains the methods for the AdministratorsMicrosoftEntra group.
 // Don't use this type directly, use NewAdministratorsMicrosoftEntraClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-10-01
 type AdministratorsMicrosoftEntraClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *AdministratorsMicrosoftEntraClient) BeginCreateOrUpdate(ctx contex
 	}
 }
 
-// CreateOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
+// createOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters AdministratorMicrosoftEntraAdd, options *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Con
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AdministratorsMicrosoftEntraClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters AdministratorMicrosoftEntraAdd, _ *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
@@ -116,7 +116,7 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -149,7 +149,7 @@ func (client *AdministratorsMicrosoftEntraClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Deletes an existing server administrator associated to a Microsoft Entra principal.
+// deleteOperation - Deletes an existing server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AdministratorsMicrosoftEntraClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, _ *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
@@ -195,7 +195,7 @@ func (client *AdministratorsMicrosoftEntraClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +248,7 @@ func (client *AdministratorsMicrosoftEntraClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *AdministratorsMicrosoftEntraClient) listByServerCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

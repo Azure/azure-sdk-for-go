@@ -1,39 +1,26 @@
 # Release History
 
-## 6.0.0-beta.4 (2026-09-29)
+## 6.0.0 (2026-10-13)
+### Breaking Changes
+
+- Type of `Operation.Properties` has been changed from `map[string]any` to `*OperationProperties`
+- Type of `ServerProperties.Version` has been changed from `*PostgresMajorVersion` to `*string`
+- Type of `ServerPropertiesForPatch.Version` has been changed from `*PostgresMajorVersion` to `*string`
+- Enum `PostgresMajorVersion` has been removed
+
 ### Features Added
 
-- New value `PostgresMajorVersion19` added to enum type `PostgresMajorVersion`
-- New enum type `DbAgentForUpdateState` with values `DbAgentForUpdateStateDisabled`, `DbAgentForUpdateStateEnabled`
-- New enum type `DbAgentProvisioningState` with values `DbAgentProvisioningStateCanceled`, `DbAgentProvisioningStateFailed`, `DbAgentProvisioningStateInProgress`, `DbAgentProvisioningStateSucceeded`
-- New enum type `DbAgentState` with values `DbAgentStateDisabled`, `DbAgentStateDisabling`, `DbAgentStateEnabled`, `DbAgentStateEnabling`, `DbAgentStateFailed`
+- New value `HighAvailabilityModeDisabled` added to enum type `HighAvailabilityMode`
+- New value `HighAvailabilityStateComputeUpdatingByFailover`, `HighAvailabilityStateRecreatingStandby` added to enum type `HighAvailabilityState`
+- New value `RecommendationTypeEnumVacuumTable` added to enum type `RecommendationTypeEnum`
+- New value `RecommendationTypeParameterEnumVacuumTable` added to enum type `RecommendationTypeParameterEnum`
 - New enum type `FipsMode` with values `FipsModeDisabled`, `FipsModeEnabled`
 - New enum type `ImmutableBackup` with values `ImmutableBackupDisabled`, `ImmutableBackupEnabled`
-- New function `*ClientFactory.NewDbAgentsClient() *DbAgentsClient`
-- New function `NewDbAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DbAgentsClient, error)`
-- New function `*DbAgentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, resource DbAgentForUpdate, options *DbAgentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DbAgentsClientCreateOrUpdateResponse], error)`
-- New function `*DbAgentsClient.Get(ctx context.Context, resourceGroupName string, serverName string, options *DbAgentsClientGetOptions) (DbAgentsClientGetResponse, error)`
-- New function `*DbAgentsClient.NewListPager(resourceGroupName string, serverName string, options *DbAgentsClientListOptions) *runtime.Pager[DbAgentsClientListResponse]`
-- New struct `DbAgent`
-- New struct `DbAgentForUpdate`
-- New struct `DbAgentForUpdateProperties`
-- New struct `DbAgentListResult`
-- New struct `DbAgentProperties`
-- New field `ImmutableBackup` in struct `Backup`
-- New field `ImmutableBackup` in struct `BackupForPatch`
-- New field `FipsMode` in struct `ServerProperties`
-- New field `FipsMode`, `SourceServerResourceID` in struct `ServerPropertiesForPatch`
-- New field `AutoGrowIncrementPercent`, `AutoGrowMaxThresholdMb` in struct `Storage`
-
-
-## 6.0.0-beta.3 (2026-06-03)
-### Features Added
-
-- New value `HighAvailabilityStateComputeUpdatingByFailover`, `HighAvailabilityStateRecreatingStandby` added to enum type `HighAvailabilityState`
 - New enum type `MaintenanceEventStatus` with values `MaintenanceEventStatusCanceled`, `MaintenanceEventStatusComplete`, `MaintenanceEventStatusInProgress`, `MaintenanceEventStatusPlanned`, `MaintenanceEventStatusRescheduled`
 - New enum type `MaintenanceEventStatusFilter` with values `MaintenanceEventStatusFilterPast`, `MaintenanceEventStatusFilterUpcoming`
 - New enum type `MaintenanceType` with values `MaintenanceTypePlannedMaintenance`
 - New enum type `MajorVersionUpgradePrecheckStatus` with values `MajorVersionUpgradePrecheckStatusCanceled`, `MajorVersionUpgradePrecheckStatusFailed`, `MajorVersionUpgradePrecheckStatusSucceeded`, `MajorVersionUpgradePrecheckStatusValidating`
+- New enum type `NetworkMigrationState` with values `NetworkMigrationStateCancelInProgress`, `NetworkMigrationStateCancelled`, `NetworkMigrationStateFailed`, `NetworkMigrationStateInProgress`, `NetworkMigrationStatePending`, `NetworkMigrationStateSucceeded`
 - New function `*ClientFactory.NewMaintenanceEventsClient() *MaintenanceEventsClient`
 - New function `*ClientFactory.NewMajorVersionUpgradePrecheckClient() *MajorVersionUpgradePrecheckClient`
 - New function `NewMaintenanceEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceEventsClient, error)`
@@ -44,7 +31,10 @@
 - New function `NewMajorVersionUpgradePrecheckClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MajorVersionUpgradePrecheckClient, error)`
 - New function `*MajorVersionUpgradePrecheckClient.Get(ctx context.Context, resourceGroupName string, serverName string, precheckValidationID string, options *MajorVersionUpgradePrecheckClientGetOptions) (MajorVersionUpgradePrecheckClientGetResponse, error)`
 - New function `*MajorVersionUpgradePrecheckClient.NewListPager(resourceGroupName string, serverName string, options *MajorVersionUpgradePrecheckClientListOptions) *runtime.Pager[MajorVersionUpgradePrecheckClientListResponse]`
+- New function `PossibleMaintenanceEventStatusValues() []MaintenanceEventStatus`
+- New function `*ServersClient.BeginMigrateNetworkMode(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginMigrateNetworkModeOptions) (*runtime.Poller[ServersClientMigrateNetworkModeResponse], error)`
 - New function `*ServersClient.BeginStartMajorVersionUpgradePrecheck(ctx context.Context, resourceGroupName string, serverName string, body StartMajorVersionUpgradePrecheckRequest, options *ServersClientBeginStartMajorVersionUpgradePrecheckOptions) (*runtime.Poller[ServersClientStartMajorVersionUpgradePrecheckResponse], error)`
+- New struct `LogSpecification`
 - New struct `MaintenanceEventActionResponse`
 - New struct `MaintenanceEventRescheduleRequest`
 - New struct `MaintenanceEventResource`
@@ -53,41 +43,23 @@
 - New struct `MajorVersionUpgradePrecheckResource`
 - New struct `MajorVersionUpgradePrecheckResourceListResult`
 - New struct `MajorVersionUpgradePrecheckResourceProperties`
-- New struct `PolicyDetail`
-- New struct `PrecheckErrorInfo`
-- New struct `PrecheckResult`
-- New struct `StartMajorVersionUpgradePrecheckRequest`
-- New struct `StartMajorVersionUpgradePrecheckResponse`
-- New struct `UpgradeSequence`
-- New field `GeoBackupFederatedIdentityClientID`, `PrimaryFederatedIdentityClientID` in struct `DataEncryption`
-
-
-## 6.0.0-beta.2 (2026-03-11)
-### Breaking Changes
-
-- Field `XMSRequestID` of struct `BackupsLongTermRetentionClientStartResponse` has been removed
-- Field `XMSRequestID` of struct `ServersClientMigrateNetworkModeResponse` has been removed
-
-
-## 6.0.0-beta.1 (2026-02-27)
-### Breaking Changes
-
-- Type of `Operation.Properties` has been changed from `map[string]any` to `*OperationProperties`
-
-### Features Added
-
-- New value `HighAvailabilityModeDisabled` added to enum type `HighAvailabilityMode`
-- New value `RecommendationTypeEnumVacuumTable` added to enum type `RecommendationTypeEnum`
-- New value `RecommendationTypeParameterEnumVacuumTable` added to enum type `RecommendationTypeParameterEnum`
-- New enum type `NetworkMigrationState` with values `NetworkMigrationStateCancelInProgress`, `NetworkMigrationStateCancelled`, `NetworkMigrationStateFailed`, `NetworkMigrationStateInProgress`, `NetworkMigrationStatePending`, `NetworkMigrationStateSucceeded`
-- New function `*ServersClient.BeginMigrateNetworkMode(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginMigrateNetworkModeOptions) (*runtime.Poller[ServersClientMigrateNetworkModeResponse], error)`
-- New struct `LogSpecification`
 - New struct `MetricSpecification`
 - New struct `MigrateNetworkStatus`
 - New struct `OperationProperties`
+- New struct `PolicyDetail`
+- New struct `PrecheckErrorInfo`
+- New struct `PrecheckResult`
 - New struct `ServiceSpecification`
+- New struct `StartMajorVersionUpgradePrecheckRequest`
+- New struct `StartMajorVersionUpgradePrecheckResponse`
 - New struct `TuningOptionsProperties`
-- New field `XMSRequestID` in struct `BackupsLongTermRetentionClientStartResponse`
+- New struct `UpgradeSequence`
+- New field `ImmutableBackup` in struct `Backup`
+- New field `ImmutableBackup` in struct `BackupForPatch`
+- New field `GeoBackupFederatedIdentityClientID`, `PrimaryFederatedIdentityClientID` in struct `DataEncryption`
+- New field `FipsMode` in struct `ServerProperties`
+- New field `FipsMode`, `SourceServerResourceID` in struct `ServerPropertiesForPatch`
+- New field `AutoGrowIncrementPercent`, `AutoGrowMaxThresholdMb` in struct `Storage`
 - New field `Properties` in struct `TuningOptions`
 
 

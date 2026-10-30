@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/MajorVersionUpgradePrecheckGet.json
+// Generated from example definition: 2026-10-01/MajorVersionUpgradePrecheckGet.json
 func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,8 +40,8 @@ func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	// 			PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 	// 				Action: to.Ptr("Precheck"),
 	// 				UpgradeSequence: &armpostgresqlflexibleservers.UpgradeSequence{
-	// 					SourceVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionFourteen),
-	// 					TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEleven),
+	// 					SourceVersion: to.Ptr("14"),
+	// 					TargetVersion: to.Ptr("11"),
 	// 				},
 	// 				ErrorInfo: []*armpostgresqlflexibleservers.PrecheckErrorInfo{
 	// 					{
@@ -50,7 +50,7 @@ func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEleven),
+	// 			TargetVersion: to.Ptr("11"),
 	// 			PolicyDetails: []*armpostgresqlflexibleservers.PolicyDetail{
 	// 				{
 	// 					PolicyName: to.Ptr("NotSupportedExtensionPrecheckPolicy"),
@@ -143,7 +143,7 @@ func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/MajorVersionUpgradePrecheckListByServer.json
+// Generated from example definition: 2026-10-01/MajorVersionUpgradePrecheckListByServer.json
 func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,11 +178,11 @@ func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 		// 					PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 		// 						Action: to.Ptr("Precheck"),
 		// 						UpgradeSequence: &armpostgresqlflexibleservers.UpgradeSequence{
-		// 							SourceVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEleven),
-		// 							TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionFourteen),
+		// 							SourceVersion: to.Ptr("11"),
+		// 							TargetVersion: to.Ptr("14"),
 		// 						},
 		// 					},
-		// 					TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionFourteen),
+		// 					TargetVersion: to.Ptr("14"),
 		// 					PolicyDetails: []*armpostgresqlflexibleservers.PolicyDetail{
 		// 						{
 		// 							PolicyName: to.Ptr("NotSupportedExtensionPrecheckPolicy"),
@@ -209,8 +209,8 @@ func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 		// 					PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 		// 						Action: to.Ptr("Precheck"),
 		// 						UpgradeSequence: &armpostgresqlflexibleservers.UpgradeSequence{
-		// 							SourceVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionFourteen),
-		// 							TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEleven),
+		// 							SourceVersion: to.Ptr("14"),
+		// 							TargetVersion: to.Ptr("11"),
 		// 						},
 		// 						ErrorInfo: []*armpostgresqlflexibleservers.PrecheckErrorInfo{
 		// 							{
@@ -219,7 +219,7 @@ func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEleven),
+		// 					TargetVersion: to.Ptr("11"),
 		// 					PolicyDetails: []*armpostgresqlflexibleservers.PolicyDetail{
 		// 						{
 		// 							PolicyName: to.Ptr("NotSupportedExtensionPrecheckPolicy"),

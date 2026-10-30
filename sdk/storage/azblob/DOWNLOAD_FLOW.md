@@ -4,9 +4,10 @@ This describes what `DownloadBuffer` and `DownloadFile` actually do in
 `sdk/storage/azblob/blob/client.go` after the STG105 Data Locality work was integrated with
 main's initial-GetBlob download architecture (PR #27438).
 
-`DownloadStream` is the one-shot public read. It never fetches a layout on the caller's behalf —
-it only honours an explicit `DownloadStreamOptions.LayoutEndpoint`. Layout discovery belongs to
-the managed downloads described here.
+`DownloadStream` is the one-shot public read. It never fetches a layout or routes by one. Data
+Locality is reachable only through the managed downloads described here: Get Blob Layout, its
+models, the download hint and per-read endpoint routing are unexported while the feature is not
+generally available, and `LayoutAwareRouting` is its only public setting.
 
 Layout aware routing is **opt-in**. `LayoutAwareRouting` defaults to `LayoutAwareRoutingAuto`,
 which currently resolves to disabled, matching the other Azure Storage SDKs for the STG105
@@ -78,7 +79,7 @@ on that path.
 
 - **Range.** Only the remainder is enumerated: `Offset = o.Range.Offset + writerOffset`,
   `Count = remaining`. The part already delivered by the initial read is not described.
-- **Pagination.** `GetLayoutPager` pages on `NextMarker`. The TypeSpec emitter exposes only
+- **Pagination.** The unexported `getLayoutPager` pages on `NextMarker`. The TypeSpec emitter exposes only
   `GetLayout(ctx, options)` — there is no generated pager and no `GetLayoutCreateRequest` /
   `GetLayoutHandleResponse` — so the pager is built on repeated single-options calls.
 - **Cross-page consistency.** The first page's ETag is sent as `If-Match` on every later page, so
@@ -99,7 +100,7 @@ on that path.
 
 Each chunk's blob offset is `chunkStart + writerOffset + o.Range.Offset`. That offset is
 binary-searched against the cached layout ranges (`getIdealEndpoint`) and the result is set as
-`DownloadStreamOptions.LayoutEndpoint`.
+the unexported `DownloadStreamOptions.layoutEndpoint`.
 
 `locality.NewPolicy()` (`sdk/storage/internal/locality`, shared with azdatalake) performs the
 rewrite. It is registered **per-call**, alongside main's `shared.NewRangePolicy()`, in

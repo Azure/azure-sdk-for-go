@@ -101,25 +101,10 @@ type DownloadStreamOptions struct {
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
 
-	// LayoutEndpoint optionally routes this download to a specific storage endpoint for
-	// better locality. This is an advanced option; most callers should leave it empty, or
-	// use DownloadBuffer/DownloadFile with LayoutAwareRoutingEnabled, which selects
-	// endpoints automatically.
-	//
-	// Set it only when implementing a custom chunked download: page through
-	// Client.GetLayoutPager, find the layout range covering Range.Offset, and pass that
-	// range's endpoint here. Passing an endpoint that does not cover the requested range is
-	// not an error, but forfeits the locality benefit.
-	//
-	// Cache the layout rather than calling Client.GetLayoutPager per chunk: a single layout
-	// covers the whole range/blob, so one enumeration can serve every chunk of a download. A blob's
-	// layout can change over time, so refresh the cached layout roughly every 5 minutes, which
-	// is the interval DownloadBuffer and DownloadFile use internally.
-	//
-	// When set, the SDK rewrites the outgoing request URI's host/port to this endpoint while
-	// preserving the original Host header, so authentication (including SAS) is unaffected.
-	// When empty (the default), the request is sent to the client's configured endpoint.
-	LayoutEndpoint string
+	// layoutEndpoint routes this read to the storage endpoint the blob's layout serves its range
+	// from. Only managed downloads set it; when empty, the request is sent to the client's
+	// configured endpoint.
+	layoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
@@ -253,11 +238,11 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 	}
 }
 
-func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
+func (o *downloadOptions) getBlobLayoutOptions() *getLayoutOptions {
 	if o == nil {
 		return nil
 	}
-	return &GetLayoutOptions{
+	return &getLayoutOptions{
 		Range:            o.Range,
 		AccessConditions: o.AccessConditions,
 		CPKInfo:          o.CPKInfo,
@@ -911,26 +896,8 @@ func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOpti
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// Layout is a page of a blob's layout: the byte ranges making up the blob and the storage
-// endpoints that serve them. It is returned by Client.GetLayoutPager.
-type Layout = generated.BlobLayout
-
-// LayoutRanges contains the ranges of a Layout.
-type LayoutRanges = generated.BlobLayoutRanges
-
-// LayoutRange is a range of a blob, inclusive of Start and End, and the index of the endpoint in
-// LayoutEndpoints that serves it.
-type LayoutRange = generated.BlobLayoutRange
-
-// LayoutEndpoints contains the endpoints of a Layout.
-type LayoutEndpoints = generated.BlobLayoutEndpoints
-
-// LayoutEndpoint is an endpoint that serves ranges of a blob, referenced from LayoutRange by Index.
-// Pass its Value as DownloadStreamOptions.LayoutEndpoint to read a range from it.
-type LayoutEndpoint = generated.BlobLayoutEndpoint
-
-// GetLayoutOptions contains the optional parameters for the Client.GetLayout method
-type GetLayoutOptions struct {
+// getLayoutOptions contains the optional parameters for the Get Blob Layout operation.
+type getLayoutOptions struct {
 	Marker           *string
 	MaxResults       *int32
 	Range            HTTPRange
@@ -938,7 +905,7 @@ type GetLayoutOptions struct {
 	CPKInfo          *CPKInfo
 }
 
-func (o *GetLayoutOptions) format() *generated.BlobClientGetLayoutOptions {
+func (o *getLayoutOptions) format() *generated.BlobClientGetLayoutOptions {
 	if o == nil {
 		return nil
 	}

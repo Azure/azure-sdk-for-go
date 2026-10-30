@@ -795,7 +795,7 @@ func TestDownloadBufferExpiredLayoutSoftRefetchErrorFallsBack(t *testing.T) {
 }
 
 // TestClientLayoutFallbackCachedSingleRequest verifies that, when driven through the client's
-// GetLayoutPager, a cached fallback decision is only fetched from the service once.
+// getLayoutPager, a cached fallback decision is only fetched from the service once.
 func TestClientLayoutFallbackCachedSingleRequest(t *testing.T) {
 	f := &fakeLayoutResponder{
 		layoutResponses:       map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
@@ -804,7 +804,7 @@ func TestClientLayoutFallbackCachedSingleRequest(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	cache := newLayoutCache(func(ctx context.Context) (layout, error) {
-		return getLayout(ctx, client.GetLayoutPager(nil))
+		return getLayout(ctx, client.getLayoutPager(nil))
 	})
 
 	for i := 0; i < 3; i++ {
@@ -877,7 +877,7 @@ func TestGetLayoutPagerLocksETagAcrossPages(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	// nil options must be supported: the pager has to synthesize its own options to carry the marker.
-	pager := client.GetLayoutPager(nil)
+	pager := client.getLayoutPager(nil)
 	pages := 0
 	for pager.More() {
 		_, err := pager.NextPage(context.Background())
@@ -901,9 +901,9 @@ func TestGetLayoutPagerUserIfMatchWins(t *testing.T) {
 
 	userETag := azcore.ETag("user-etag")
 	mac := &ModifiedAccessConditions{IfMatch: &userETag}
-	options := &GetLayoutOptions{AccessConditions: &AccessConditions{ModifiedAccessConditions: mac}}
+	options := &getLayoutOptions{AccessConditions: &AccessConditions{ModifiedAccessConditions: mac}}
 
-	pager := client.GetLayoutPager(options)
+	pager := client.getLayoutPager(options)
 	for pager.More() {
 		_, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -1053,4 +1053,106 @@ func TestDownloadBufferHintIgnoredWhenRoutingDisabled(t *testing.T) {
 	layoutCalls, localityGets, _, _ := f.counts()
 	require.Zero(t, layoutCalls, "the hint must not override an explicit LayoutAwareRoutingDisabled")
 	require.Zero(t, localityGets)
+}
+
+// newLayoutErrorResponse is a Get Blob Layout failure carrying the service's error code.
+func newLayoutErrorResponse(statusCode int, errorCode string) *http.Response {
+	header := http.Header{}
+	header.Set("x-ms-error-code", errorCode)
+	body := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><Error><Code>%s</Code><Message>layout unavailable</Message></Error>`, errorCode)
+	return &http.Response{
+		StatusCode: statusCode,
+		Body:       io.NopCloser(bytes.NewReader([]byte(body))),
+		Header:     header,
+	}
+}
+
+// TestDownloadBufferLayoutUnavailableFallsBack covers a layout the service can't provide, for
+// example because Data Locality isn't enabled for the account. The download must complete from the
+// client's configured endpoint, asking for the layout only once. The status codes are the ones the
+// managed download treats as "no layout": a 400 whatever its error code, and any 5xx. The pipeline's
+// retries are disabled so that the count is of the managed download's own Get Blob Layout requests:
+// with the default retry policy a 5xx is retried before the managed download sees it.
+func TestDownloadBufferLayoutUnavailableFallsBack(t *testing.T) {
+	for _, tc := range []struct {
+		status int
+		code   string
+	}{
+		{http.StatusBadRequest, "FeatureNotEnabled"},
+		{http.StatusBadRequest, "UnsupportedQueryParameter"},
+		{http.StatusBadRequest, "InvalidQueryParameterValue"},
+		{http.StatusInternalServerError, "InternalError"},
+		{http.StatusServiceUnavailable, "ServerBusy"},
+	} {
+		t.Run(fmt.Sprintf("%d_%s", tc.status, tc.code), func(t *testing.T) {
+			f := &fakeLayoutResponder{size: 1000, eTag: "etag"}
+			f.layoutStatusOverride = func(int) *http.Response { return newLayoutErrorResponse(tc.status, tc.code) }
+			client, err := NewClientWithNoCredential("https://fake/blob/path", &ClientOptions{
+				ClientOptions: policy.ClientOptions{Transport: f, Retry: policy.RetryOptions{MaxRetries: -1}},
+			})
+			require.NoError(t, err)
+
+			n, err := client.DownloadBuffer(context.Background(), make([]byte, 1000), &DownloadBufferOptions{
+				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				BlockSize:          100,
+				Concurrency:        4,
+			})
+			require.NoError(t, err)
+			require.Equal(t, int64(1000), n)
+
+			layoutCalls, localityGets, normalGets, _ := f.counts()
+			require.Equal(t, 1, layoutCalls, "the unavailable layout must be cached for the rest of the download")
+			require.Zero(t, localityGets)
+			require.Equal(t, 10, normalGets, "the initial read plus the nine remaining chunks")
+			for _, ifMatch := range f.ifMatchHeaders()[1:] {
+				require.Equal(t, "etag", ifMatch, "the fallback reads stay locked to the initial read's ETag")
+			}
+		})
+	}
+}
+
+// TestDownloadBufferLayoutAuthorizationErrorIsNotSwallowed verifies that a Get Blob Layout failure
+// that isn't about the layout being unavailable fails the download instead of silently falling
+// back, so that an authorization or similar problem is reported to the caller.
+func TestDownloadBufferLayoutAuthorizationErrorIsNotSwallowed(t *testing.T) {
+	for _, tc := range []struct {
+		status int
+		code   string
+	}{
+		{http.StatusUnauthorized, "InvalidAuthenticationInfo"},
+		{http.StatusForbidden, "AuthorizationPermissionMismatch"},
+		{http.StatusForbidden, "AuthorizationFailure"},
+		{http.StatusNotFound, "BlobNotFound"},
+	} {
+		t.Run(fmt.Sprintf("%d_%s", tc.status, tc.code), func(t *testing.T) {
+			f := &fakeLayoutResponder{size: 1000, eTag: "etag"}
+			f.layoutStatusOverride = func(int) *http.Response { return newLayoutErrorResponse(tc.status, tc.code) }
+			client := newFakeLayoutClient(t, f)
+
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, 1000), &DownloadBufferOptions{
+				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				BlockSize:          100,
+			})
+			var respErr *azcore.ResponseError
+			require.ErrorAs(t, err, &respErr)
+			require.Equal(t, tc.status, respErr.StatusCode)
+			require.Equal(t, tc.code, respErr.ErrorCode)
+
+			layoutCalls, localityGets, normalGets, _ := f.counts()
+			require.Equal(t, 1, layoutCalls)
+			require.Zero(t, localityGets)
+			require.Equal(t, 1, normalGets, "no chunk is read after the layout fails")
+		})
+	}
+}
+
+// TestLayoutAwareRoutingPublicValues pins the public values of the one Data Locality setting that
+// remains public.
+func TestLayoutAwareRoutingPublicValues(t *testing.T) {
+	require.Equal(t, LayoutAwareRouting(""), LayoutAwareRoutingAuto)
+	require.Equal(t, LayoutAwareRouting("Enabled"), LayoutAwareRoutingEnabled)
+	require.Equal(t, LayoutAwareRouting("Disabled"), LayoutAwareRoutingDisabled)
+	require.Equal(t, []LayoutAwareRouting{LayoutAwareRoutingAuto, LayoutAwareRoutingEnabled, LayoutAwareRoutingDisabled}, PossibleLayoutAwareRoutingValues())
+	var opts DownloadBufferOptions
+	require.Equal(t, LayoutAwareRoutingAuto, opts.LayoutAwareRouting, "the zero value is Auto")
 }

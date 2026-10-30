@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
 )
 
@@ -75,7 +76,7 @@ func newLayoutCache(fetch func(context.Context) (layout, error)) *autorefresh.Ca
 // getLayout pages through the layout. A 400 or 5xx means the service can't provide one, which is
 // returned as a fallback layout rather than an error so that the decision is cached instead of
 // asked again for every read. Any other error is returned.
-func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (layout, error) {
+func getLayout(ctx context.Context, pager *runtime.Pager[generated.BlobClientGetLayoutResponse]) (layout, error) {
 	layoutRanges := make([]layoutRange, 0)
 
 	var contentLength int64

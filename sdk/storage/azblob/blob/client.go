@@ -390,7 +390,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 	// The download hint has to be read off the response before the body is consumed. It is what
 	// decides whether the remainder of this download is worth routing with the blob's layout.
-	downloadHint := dr.DownloadHint
+	downloadHint := dr.downloadHint
 	prog := &downloadProgress{}
 	var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 	if o.Progress != nil {
@@ -505,7 +505,7 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 				if err != nil {
 					return err
 				}
-				downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
+				downloadBlobOptions.layoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
 			}
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
@@ -547,8 +547,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	if o == nil {
 		o = &DownloadStreamOptions{}
 	}
-	if o.LayoutEndpoint != "" {
-		ctx = locality.WithEndpoint(ctx, o.LayoutEndpoint)
+	if o.layoutEndpoint != "" {
+		ctx = locality.WithEndpoint(ctx, o.layoutEndpoint)
 	}
 	dr, err := b.generated().Download(ctx, o.format())
 	var coreErr *azcore.ResponseError
@@ -575,7 +575,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
 		// carried so a retry of this read stays on the endpoint the layout chose for it
-		layoutEndpoint: o.LayoutEndpoint,
+		layoutEndpoint: o.layoutEndpoint,
+		downloadHint:   dr.DownloadHint,
 	}, err
 }
 
@@ -627,13 +628,13 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOffset, remaining int64) (*autorefresh.Cache[layout], error) {
 	layoutOptions := o.getBlobLayoutOptions()
 	if layoutOptions == nil {
-		layoutOptions = &GetLayoutOptions{}
+		layoutOptions = &getLayoutOptions{}
 	}
 	// Only the part of the blob that still has to be read needs a layout.
 	layoutOptions.Range = HTTPRange{Offset: o.Range.Offset + writerOffset, Count: remaining}
 
 	cache := newLayoutCache(func(ctx context.Context) (layout, error) {
-		return getLayout(ctx, b.GetLayoutPager(layoutOptions))
+		return getLayout(ctx, b.getLayoutPager(layoutOptions))
 	})
 	if _, err := cache.Get(ctx); err != nil {
 		return nil, err
@@ -641,21 +642,14 @@ func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOff
 	return cache, nil
 }
 
-// GetLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the
-// storage endpoint that serves each one. Pass the endpoint covering a given offset as
-// DownloadStreamOptions.LayoutEndpoint to route that read for better locality.
-//
-// A single enumeration describes the whole requested range, so callers implementing a custom
-// chunked download should enumerate once and reuse the result across chunks rather than paging
-// per chunk. A blob's layout can change over time; refresh the cached layout roughly every
-// 5 minutes, which is the interval Client.DownloadBuffer and Client.DownloadFile use internally.
+// getLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the
+// storage endpoint that serves each one. Managed downloads use it to route each range read to the
+// endpoint that serves it; it isn't exposed because Data Locality is not generally available.
 //
 // Unless the caller supplies an If-Match condition in options.AccessConditions, the ETag returned
 // by the first page is sent as If-Match on every subsequent page, so that a single enumeration
 // always describes one version of the blob.
-//
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
-func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+func (b *Client) getLayoutPager(options *getLayoutOptions) *runtime.Pager[generated.BlobClientGetLayoutResponse] {
 	opts := options.format()
 	if opts == nil {
 		opts = &generated.BlobClientGetLayoutOptions{}
@@ -664,11 +658,11 @@ func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 	// first response so every later page is locked to the same version of the blob.
 	initialIfMatch := opts.IfMatch
 
-	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
-		More: func(page GetLayoutResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[generated.BlobClientGetLayoutResponse]{
+		More: func(page generated.BlobClientGetLayoutResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GetLayoutResponse) (GetLayoutResponse, error) {
+		Fetcher: func(ctx context.Context, page *generated.BlobClientGetLayoutResponse) (generated.BlobClientGetLayoutResponse, error) {
 			pageOpts := *opts
 			if page != nil {
 				pageOpts.Marker = page.NextMarker
@@ -676,7 +670,7 @@ func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 			}
 			result, err := b.generated().GetLayout(ctx, &pageOpts)
 			if err != nil {
-				return GetLayoutResponse{}, err
+				return generated.BlobClientGetLayoutResponse{}, err
 			}
 			// Capture the ETag from the first response for every subsequent request.
 			if page == nil && initialIfMatch == nil {

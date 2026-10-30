@@ -138,7 +138,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutWithSessionEnabled() {
 	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
 
 	// Get Blob Layout over the session-enabled client.
-	pager := sessionBlobClient.GetLayoutPager(nil)
+	pager := blob.GetLayoutPagerForTest(sessionBlobClient, nil)
 	_require.NotNil(pager)
 	_require.True(pager.More())
 

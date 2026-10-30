@@ -4,32 +4,32 @@
 
 package ekm
 
-// CheckEkmConnectionOptions contains the optional parameters for the KeyVaultClient.CheckEkmConnection method.
-type CheckEkmConnectionOptions struct {
+// CheckConnectionOptions contains the optional parameters for the Client.CheckConnection method.
+type CheckConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreateEkmConnectionOptions contains the optional parameters for the KeyVaultClient.CreateEkmConnection method.
-type CreateEkmConnectionOptions struct {
+// CreateConnectionOptions contains the optional parameters for the Client.CreateConnection method.
+type CreateConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeleteEkmConnectionOptions contains the optional parameters for the KeyVaultClient.DeleteEkmConnection method.
-type DeleteEkmConnectionOptions struct {
+// DeleteConnectionOptions contains the optional parameters for the Client.DeleteConnection method.
+type DeleteConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetEkmCertificateOptions contains the optional parameters for the KeyVaultClient.GetEkmCertificate method.
-type GetEkmCertificateOptions struct {
+// GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
+type GetCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetEkmConnectionOptions contains the optional parameters for the KeyVaultClient.GetEkmConnection method.
-type GetEkmConnectionOptions struct {
+// GetConnectionOptions contains the optional parameters for the Client.GetConnection method.
+type GetConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateEkmConnectionOptions contains the optional parameters for the KeyVaultClient.UpdateEkmConnection method.
-type UpdateEkmConnectionOptions struct {
+// UpdateConnectionOptions contains the optional parameters for the Client.UpdateConnection method.
+type UpdateConnectionOptions struct {
 	// placeholder for future optional parameters
 }

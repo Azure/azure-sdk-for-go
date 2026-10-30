@@ -16,48 +16,48 @@ import (
 	"slices"
 )
 
-// KeyVaultServer is a fake server for instances of the ekm.KeyVaultClient type.
-type KeyVaultServer struct {
-	// CheckEkmConnection is the fake for method KeyVaultClient.CheckEkmConnection
+// Server is a fake server for instances of the ekm.Client type.
+type Server struct {
+	// CheckConnection is the fake for method Client.CheckConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckEkmConnection func(ctx context.Context, options *ekm.CheckEkmConnectionOptions) (resp azfake.Responder[ekm.CheckEkmConnectionResponse], errResp azfake.ErrorResponder)
+	CheckConnection func(ctx context.Context, options *ekm.CheckConnectionOptions) (resp azfake.Responder[ekm.CheckConnectionResponse], errResp azfake.ErrorResponder)
 
-	// CreateEkmConnection is the fake for method KeyVaultClient.CreateEkmConnection
+	// CreateConnection is the fake for method Client.CreateConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateEkmConnection func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.CreateEkmConnectionOptions) (resp azfake.Responder[ekm.CreateEkmConnectionResponse], errResp azfake.ErrorResponder)
+	CreateConnection func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.CreateConnectionOptions) (resp azfake.Responder[ekm.CreateConnectionResponse], errResp azfake.ErrorResponder)
 
-	// DeleteEkmConnection is the fake for method KeyVaultClient.DeleteEkmConnection
+	// DeleteConnection is the fake for method Client.DeleteConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteEkmConnection func(ctx context.Context, options *ekm.DeleteEkmConnectionOptions) (resp azfake.Responder[ekm.DeleteEkmConnectionResponse], errResp azfake.ErrorResponder)
+	DeleteConnection func(ctx context.Context, options *ekm.DeleteConnectionOptions) (resp azfake.Responder[ekm.DeleteConnectionResponse], errResp azfake.ErrorResponder)
 
-	// GetEkmCertificate is the fake for method KeyVaultClient.GetEkmCertificate
+	// GetCertificate is the fake for method Client.GetCertificate
 	// HTTP status codes to indicate success: http.StatusOK
-	GetEkmCertificate func(ctx context.Context, options *ekm.GetEkmCertificateOptions) (resp azfake.Responder[ekm.GetEkmCertificateResponse], errResp azfake.ErrorResponder)
+	GetCertificate func(ctx context.Context, options *ekm.GetCertificateOptions) (resp azfake.Responder[ekm.GetCertificateResponse], errResp azfake.ErrorResponder)
 
-	// GetEkmConnection is the fake for method KeyVaultClient.GetEkmConnection
+	// GetConnection is the fake for method Client.GetConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetEkmConnection func(ctx context.Context, options *ekm.GetEkmConnectionOptions) (resp azfake.Responder[ekm.GetEkmConnectionResponse], errResp azfake.ErrorResponder)
+	GetConnection func(ctx context.Context, options *ekm.GetConnectionOptions) (resp azfake.Responder[ekm.GetConnectionResponse], errResp azfake.ErrorResponder)
 
-	// UpdateEkmConnection is the fake for method KeyVaultClient.UpdateEkmConnection
+	// UpdateConnection is the fake for method Client.UpdateConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateEkmConnection func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateEkmConnectionOptions) (resp azfake.Responder[ekm.UpdateEkmConnectionResponse], errResp azfake.ErrorResponder)
+	UpdateConnection func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateConnectionOptions) (resp azfake.Responder[ekm.UpdateConnectionResponse], errResp azfake.ErrorResponder)
 }
 
-// NewKeyVaultServerTransport creates a new instance of KeyVaultServerTransport with the provided implementation.
-// The returned KeyVaultServerTransport instance is connected to an instance of ekm.KeyVaultClient via the
+// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
+// The returned ServerTransport instance is connected to an instance of ekm.Client via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewKeyVaultServerTransport(srv *KeyVaultServer) *KeyVaultServerTransport {
-	return &KeyVaultServerTransport{srv: srv}
+func NewServerTransport(srv *Server) *ServerTransport {
+	return &ServerTransport{srv: srv}
 }
 
-// KeyVaultServerTransport connects instances of ekm.KeyVaultClient to instances of KeyVaultServer.
-// Don't use this type directly, use NewKeyVaultServerTransport instead.
-type KeyVaultServerTransport struct {
-	srv *KeyVaultServer
+// ServerTransport connects instances of ekm.Client to instances of Server.
+// Don't use this type directly, use NewServerTransport instead.
+type ServerTransport struct {
+	srv *Server
 }
 
-// Do implements the policy.Transporter interface for KeyVaultServerTransport.
-func (k *KeyVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ServerTransport.
+func (k *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -67,28 +67,28 @@ func (k *KeyVaultServerTransport) Do(req *http.Request) (*http.Response, error) 
 	return k.dispatchToMethodFake(req, method)
 }
 
-func (k *KeyVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (k *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
-		if keyVaultServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = keyVaultServerTransportInterceptor.Do(req)
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "KeyVaultClient.CheckEkmConnection":
-				res.resp, res.err = k.dispatchCheckEkmConnection(req)
-			case "KeyVaultClient.CreateEkmConnection":
-				res.resp, res.err = k.dispatchCreateEkmConnection(req)
-			case "KeyVaultClient.DeleteEkmConnection":
-				res.resp, res.err = k.dispatchDeleteEkmConnection(req)
-			case "KeyVaultClient.GetEkmCertificate":
-				res.resp, res.err = k.dispatchGetEkmCertificate(req)
-			case "KeyVaultClient.GetEkmConnection":
-				res.resp, res.err = k.dispatchGetEkmConnection(req)
-			case "KeyVaultClient.UpdateEkmConnection":
-				res.resp, res.err = k.dispatchUpdateEkmConnection(req)
+			case "Client.CheckConnection":
+				res.resp, res.err = k.dispatchCheckConnection(req)
+			case "Client.CreateConnection":
+				res.resp, res.err = k.dispatchCreateConnection(req)
+			case "Client.DeleteConnection":
+				res.resp, res.err = k.dispatchDeleteConnection(req)
+			case "Client.GetCertificate":
+				res.resp, res.err = k.dispatchGetCertificate(req)
+			case "Client.GetConnection":
+				res.resp, res.err = k.dispatchGetConnection(req)
+			case "Client.UpdateConnection":
+				res.resp, res.err = k.dispatchUpdateConnection(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -105,11 +105,11 @@ func (k *KeyVaultServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (k *KeyVaultServerTransport) dispatchCheckEkmConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.CheckEkmConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckEkmConnection not implemented")}
+func (k *ServerTransport) dispatchCheckConnection(req *http.Request) (*http.Response, error) {
+	if k.srv.CheckConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckConnection not implemented")}
 	}
-	respr, errRespr := k.srv.CheckEkmConnection(req.Context(), nil)
+	respr, errRespr := k.srv.CheckConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -124,15 +124,15 @@ func (k *KeyVaultServerTransport) dispatchCheckEkmConnection(req *http.Request) 
 	return resp, nil
 }
 
-func (k *KeyVaultServerTransport) dispatchCreateEkmConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.CreateEkmConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateEkmConnection not implemented")}
+func (k *ServerTransport) dispatchCreateConnection(req *http.Request) (*http.Response, error) {
+	if k.srv.CreateConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateConnection not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[ekm.Connection](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := k.srv.CreateEkmConnection(req.Context(), body, nil)
+	respr, errRespr := k.srv.CreateConnection(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -147,11 +147,11 @@ func (k *KeyVaultServerTransport) dispatchCreateEkmConnection(req *http.Request)
 	return resp, nil
 }
 
-func (k *KeyVaultServerTransport) dispatchDeleteEkmConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.DeleteEkmConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeleteEkmConnection not implemented")}
+func (k *ServerTransport) dispatchDeleteConnection(req *http.Request) (*http.Response, error) {
+	if k.srv.DeleteConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteConnection not implemented")}
 	}
-	respr, errRespr := k.srv.DeleteEkmConnection(req.Context(), nil)
+	respr, errRespr := k.srv.DeleteConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -166,11 +166,11 @@ func (k *KeyVaultServerTransport) dispatchDeleteEkmConnection(req *http.Request)
 	return resp, nil
 }
 
-func (k *KeyVaultServerTransport) dispatchGetEkmCertificate(req *http.Request) (*http.Response, error) {
-	if k.srv.GetEkmCertificate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetEkmCertificate not implemented")}
+func (k *ServerTransport) dispatchGetCertificate(req *http.Request) (*http.Response, error) {
+	if k.srv.GetCertificate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCertificate not implemented")}
 	}
-	respr, errRespr := k.srv.GetEkmCertificate(req.Context(), nil)
+	respr, errRespr := k.srv.GetCertificate(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -185,11 +185,11 @@ func (k *KeyVaultServerTransport) dispatchGetEkmCertificate(req *http.Request) (
 	return resp, nil
 }
 
-func (k *KeyVaultServerTransport) dispatchGetEkmConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.GetEkmConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetEkmConnection not implemented")}
+func (k *ServerTransport) dispatchGetConnection(req *http.Request) (*http.Response, error) {
+	if k.srv.GetConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetConnection not implemented")}
 	}
-	respr, errRespr := k.srv.GetEkmConnection(req.Context(), nil)
+	respr, errRespr := k.srv.GetConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -204,15 +204,15 @@ func (k *KeyVaultServerTransport) dispatchGetEkmConnection(req *http.Request) (*
 	return resp, nil
 }
 
-func (k *KeyVaultServerTransport) dispatchUpdateEkmConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.UpdateEkmConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateEkmConnection not implemented")}
+func (k *ServerTransport) dispatchUpdateConnection(req *http.Request) (*http.Response, error) {
+	if k.srv.UpdateConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateConnection not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[ekm.Connection](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := k.srv.UpdateEkmConnection(req.Context(), body, nil)
+	respr, errRespr := k.srv.UpdateConnection(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -227,8 +227,8 @@ func (k *KeyVaultServerTransport) dispatchUpdateEkmConnection(req *http.Request)
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to KeyVaultServerTransport
-var keyVaultServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

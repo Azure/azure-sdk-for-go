@@ -42,13 +42,13 @@ type WorkbooksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(category armapplicationinsights.CategoryType, options *armapplicationinsights.WorkbooksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armapplicationinsights.WorkbooksClientListBySubscriptionResponse])
 
-	// RevisionGet is the fake for method WorkbooksClient.RevisionGet
-	// HTTP status codes to indicate success: http.StatusOK
-	RevisionGet func(ctx context.Context, resourceGroupName string, resourceName string, revisionID string, options *armapplicationinsights.WorkbooksClientRevisionGetOptions) (resp azfake.Responder[armapplicationinsights.WorkbooksClientRevisionGetResponse], errResp azfake.ErrorResponder)
-
 	// NewRevisionsListPager is the fake for method WorkbooksClient.NewRevisionsListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewRevisionsListPager func(resourceGroupName string, resourceName string, options *armapplicationinsights.WorkbooksClientRevisionsListOptions) (resp azfake.PagerResponder[armapplicationinsights.WorkbooksClientRevisionsListResponse])
+
+	// RevisionGet is the fake for method WorkbooksClient.RevisionGet
+	// HTTP status codes to indicate success: http.StatusOK
+	RevisionGet func(ctx context.Context, resourceGroupName string, resourceName string, revisionID string, options *armapplicationinsights.WorkbooksClientRevisionGetOptions) (resp azfake.Responder[armapplicationinsights.WorkbooksClientRevisionGetResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method WorkbooksClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -107,10 +107,10 @@ func (w *WorkbooksServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = w.dispatchNewListByResourceGroupPager(req)
 			case "WorkbooksClient.NewListBySubscriptionPager":
 				res.resp, res.err = w.dispatchNewListBySubscriptionPager(req)
-			case "WorkbooksClient.RevisionGet":
-				res.resp, res.err = w.dispatchRevisionGet(req)
 			case "WorkbooksClient.NewRevisionsListPager":
 				res.resp, res.err = w.dispatchNewRevisionsListPager(req)
+			case "WorkbooksClient.RevisionGet":
+				res.resp, res.err = w.dispatchRevisionGet(req)
 			case "WorkbooksClient.Update":
 				res.resp, res.err = w.dispatchUpdate(req)
 			default:
@@ -133,7 +133,7 @@ func (w *WorkbooksServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	if w.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -178,7 +178,7 @@ func (w *WorkbooksServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	if w.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -211,7 +211,7 @@ func (w *WorkbooksServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -257,7 +257,7 @@ func (w *WorkbooksServerTransport) dispatchNewListByResourceGroupPager(req *http
 	}
 	newListByResourceGroupPager := w.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -309,7 +309,7 @@ func (w *WorkbooksServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	}
 	newListBySubscriptionPager := w.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -349,50 +349,13 @@ func (w *WorkbooksServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	return resp, nil
 }
 
-func (w *WorkbooksServerTransport) dispatchRevisionGet(req *http.Request) (*http.Response, error) {
-	if w.srv.RevisionGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method RevisionGet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revisions/(?P<revisionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	revisionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("revisionId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.RevisionGet(req.Context(), resourceGroupNameParam, resourceNameParam, revisionIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workbook, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WorkbooksServerTransport) dispatchNewRevisionsListPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewRevisionsListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewRevisionsListPager not implemented")}
 	}
 	newRevisionsListPager := w.newRevisionsListPager.get(req)
 	if newRevisionsListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revisions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revisions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -427,11 +390,48 @@ func (w *WorkbooksServerTransport) dispatchNewRevisionsListPager(req *http.Reque
 	return resp, nil
 }
 
+func (w *WorkbooksServerTransport) dispatchRevisionGet(req *http.Request) (*http.Response, error) {
+	if w.srv.RevisionGet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RevisionGet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revisions/(?P<revisionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	revisionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("revisionId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.RevisionGet(req.Context(), resourceGroupNameParam, resourceNameParam, revisionIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workbook, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (w *WorkbooksServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if w.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/workbooks/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

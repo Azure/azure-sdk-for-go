@@ -19,7 +19,7 @@ import (
 // VersionsClient contains the methods for the Versions group.
 // Don't use this type directly, use NewVersionsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type VersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *VersionsClient) listCreateRequest(ctx context.Context, region stri
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260315Preview)
 		reqQP.Set("region", region)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}

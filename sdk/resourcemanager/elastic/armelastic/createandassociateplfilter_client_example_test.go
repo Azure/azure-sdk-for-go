@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/PrivateLinkTrafficFilters_Create.json
+// Generated from example definition: 2026-03-15-preview/PrivateLinkTrafficFilters_Create.json
 func ExampleCreateAndAssociatePLFilterClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

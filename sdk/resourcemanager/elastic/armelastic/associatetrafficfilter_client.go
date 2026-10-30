@@ -19,7 +19,7 @@ import (
 // AssociateTrafficFilterClient contains the methods for the AssociateTrafficFilter group.
 // Don't use this type directly, use NewAssociateTrafficFilterClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type AssociateTrafficFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -109,7 +109,7 @@ func (client *AssociateTrafficFilterClient) associateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

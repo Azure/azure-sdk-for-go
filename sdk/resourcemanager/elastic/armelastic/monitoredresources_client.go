@@ -19,7 +19,7 @@ import (
 // MonitoredResourcesClient contains the methods for the MonitoredResources group.
 // Don't use this type directly, use NewMonitoredResourcesClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type MonitoredResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *MonitoredResourcesClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260315Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

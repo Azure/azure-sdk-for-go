@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/TagRules_CreateOrUpdate.json
+// Generated from example definition: 2026-03-15-preview/TagRules_CreateOrUpdate.json
 func ExampleTagRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleTagRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TagRules_Delete.json
+// Generated from example definition: 2026-03-15-preview/TagRules_Delete.json
 func ExampleTagRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleTagRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TagRules_Get.json
+// Generated from example definition: 2026-03-15-preview/TagRules_Get.json
 func ExampleTagRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleTagRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TagRules_List.json
+// Generated from example definition: 2026-03-15-preview/TagRules_List.json
 func ExampleTagRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

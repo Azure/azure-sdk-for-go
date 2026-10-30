@@ -406,8 +406,10 @@ func (a *AzureMultiCloudConnectorEndpointUpdateProperties) UnmarshalJSON(data []
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageBlobContainerEndpointProperties.
 func (a AzureStorageBlobContainerEndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allowedStorageAccounts", a.AllowedStorageAccounts)
 	populate(objectMap, "blobContainerName", a.BlobContainerName)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "enableCrossTenantTransfer", a.EnableCrossTenantTransfer)
 	populate(objectMap, "endpointKind", a.EndpointKind)
 	objectMap["endpointType"] = EndpointTypeAzureStorageBlobContainer
 	populate(objectMap, "provisioningState", a.ProvisioningState)
@@ -424,11 +426,17 @@ func (a *AzureStorageBlobContainerEndpointProperties) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allowedStorageAccounts":
+			err = unpopulate(val, "AllowedStorageAccounts", &a.AllowedStorageAccounts)
+			delete(rawMsg, key)
 		case "blobContainerName":
 			err = unpopulate(val, "BlobContainerName", &a.BlobContainerName)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "enableCrossTenantTransfer":
+			err = unpopulate(val, "EnableCrossTenantTransfer", &a.EnableCrossTenantTransfer)
 			delete(rawMsg, key)
 		case "endpointKind":
 			err = unpopulate(val, "EndpointKind", &a.EndpointKind)
@@ -453,7 +461,9 @@ func (a *AzureStorageBlobContainerEndpointProperties) UnmarshalJSON(data []byte)
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageBlobContainerEndpointUpdateProperties.
 func (a AzureStorageBlobContainerEndpointUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allowedStorageAccounts", a.AllowedStorageAccounts)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "enableCrossTenantTransfer", a.EnableCrossTenantTransfer)
 	objectMap["endpointType"] = EndpointTypeAzureStorageBlobContainer
 	return json.Marshal(objectMap)
 }
@@ -467,8 +477,14 @@ func (a *AzureStorageBlobContainerEndpointUpdateProperties) UnmarshalJSON(data [
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allowedStorageAccounts":
+			err = unpopulate(val, "AllowedStorageAccounts", &a.AllowedStorageAccounts)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "enableCrossTenantTransfer":
+			err = unpopulate(val, "EnableCrossTenantTransfer", &a.EnableCrossTenantTransfer)
 			delete(rawMsg, key)
 		case "endpointType":
 			err = unpopulate(val, "EndpointType", &a.EndpointType)
@@ -562,7 +578,9 @@ func (a *AzureStorageNfsFileShareEndpointUpdateProperties) UnmarshalJSON(data []
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageSmbFileShareEndpointProperties.
 func (a AzureStorageSmbFileShareEndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allowedStorageAccounts", a.AllowedStorageAccounts)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "enableCrossTenantTransfer", a.EnableCrossTenantTransfer)
 	populate(objectMap, "endpointKind", a.EndpointKind)
 	objectMap["endpointType"] = EndpointTypeAzureStorageSmbFileShare
 	populate(objectMap, "fileShareName", a.FileShareName)
@@ -580,8 +598,14 @@ func (a *AzureStorageSmbFileShareEndpointProperties) UnmarshalJSON(data []byte) 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allowedStorageAccounts":
+			err = unpopulate(val, "AllowedStorageAccounts", &a.AllowedStorageAccounts)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "enableCrossTenantTransfer":
+			err = unpopulate(val, "EnableCrossTenantTransfer", &a.EnableCrossTenantTransfer)
 			delete(rawMsg, key)
 		case "endpointKind":
 			err = unpopulate(val, "EndpointKind", &a.EndpointKind)
@@ -609,7 +633,9 @@ func (a *AzureStorageSmbFileShareEndpointProperties) UnmarshalJSON(data []byte) 
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageSmbFileShareEndpointUpdateProperties.
 func (a AzureStorageSmbFileShareEndpointUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allowedStorageAccounts", a.AllowedStorageAccounts)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "enableCrossTenantTransfer", a.EnableCrossTenantTransfer)
 	objectMap["endpointType"] = EndpointTypeAzureStorageSmbFileShare
 	return json.Marshal(objectMap)
 }
@@ -623,8 +649,14 @@ func (a *AzureStorageSmbFileShareEndpointUpdateProperties) UnmarshalJSON(data []
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allowedStorageAccounts":
+			err = unpopulate(val, "AllowedStorageAccounts", &a.AllowedStorageAccounts)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "enableCrossTenantTransfer":
+			err = unpopulate(val, "EnableCrossTenantTransfer", &a.EnableCrossTenantTransfer)
 			delete(rawMsg, key)
 		case "endpointType":
 			err = unpopulate(val, "EndpointType", &a.EndpointType)
@@ -1049,12 +1081,16 @@ func (j JobDefinitionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "agentResourceId", j.AgentResourceID)
 	populate(objectMap, "connections", j.Connections)
 	populate(objectMap, "copyMode", j.CopyMode)
+	populate(objectMap, "crossTenantEndpointResourceId", j.CrossTenantEndpointResourceID)
+	populate(objectMap, "crossTenantEndpointTenantId", j.CrossTenantEndpointTenantID)
 	populate(objectMap, "dataIntegrityValidation", j.DataIntegrityValidation)
 	populate(objectMap, "description", j.Description)
+	populate(objectMap, "isCrossTenantJob", j.IsCrossTenantJob)
 	populate(objectMap, "jobType", j.JobType)
 	populate(objectMap, "latestJobRunName", j.LatestJobRunName)
 	populate(objectMap, "latestJobRunResourceId", j.LatestJobRunResourceID)
 	populate(objectMap, "latestJobRunStatus", j.LatestJobRunStatus)
+	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil, true)
 	populate(objectMap, "preservePermissions", j.PreservePermissions)
 	populate(objectMap, "provisioningState", j.ProvisioningState)
 	populate(objectMap, "schedule", j.Schedule)
@@ -1062,6 +1098,7 @@ func (j JobDefinitionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceResourceId", j.SourceResourceID)
 	populate(objectMap, "sourceSubpath", j.SourceSubpath)
 	populate(objectMap, "sourceTargetMap", j.SourceTargetMap)
+	populate(objectMap, "syncMode", j.SyncMode)
 	populate(objectMap, "targetName", j.TargetName)
 	populate(objectMap, "targetResourceId", j.TargetResourceID)
 	populate(objectMap, "targetSubpath", j.TargetSubpath)
@@ -1089,11 +1126,20 @@ func (j *JobDefinitionProperties) UnmarshalJSON(data []byte) error {
 		case "copyMode":
 			err = unpopulate(val, "CopyMode", &j.CopyMode)
 			delete(rawMsg, key)
+		case "crossTenantEndpointResourceId":
+			err = unpopulate(val, "CrossTenantEndpointResourceID", &j.CrossTenantEndpointResourceID)
+			delete(rawMsg, key)
+		case "crossTenantEndpointTenantId":
+			err = unpopulate(val, "CrossTenantEndpointTenantID", &j.CrossTenantEndpointTenantID)
+			delete(rawMsg, key)
 		case "dataIntegrityValidation":
 			err = unpopulate(val, "DataIntegrityValidation", &j.DataIntegrityValidation)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &j.Description)
+			delete(rawMsg, key)
+		case "isCrossTenantJob":
+			err = unpopulate(val, "IsCrossTenantJob", &j.IsCrossTenantJob)
 			delete(rawMsg, key)
 		case "jobType":
 			err = unpopulate(val, "JobType", &j.JobType)
@@ -1106,6 +1152,9 @@ func (j *JobDefinitionProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "latestJobRunStatus":
 			err = unpopulate(val, "LatestJobRunStatus", &j.LatestJobRunStatus)
+			delete(rawMsg, key)
+		case "moverSyncedUntil":
+			err = unpopulateTime[datetime.RFC3339](val, "MoverSyncedUntil", &j.MoverSyncedUntil)
 			delete(rawMsg, key)
 		case "preservePermissions":
 			err = unpopulate(val, "PreservePermissions", &j.PreservePermissions)
@@ -1127,6 +1176,9 @@ func (j *JobDefinitionProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceTargetMap":
 			err = unpopulate(val, "SourceTargetMap", &j.SourceTargetMap)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, "SyncMode", &j.SyncMode)
 			delete(rawMsg, key)
 		case "targetName":
 			err = unpopulate(val, "TargetName", &j.TargetName)
@@ -1207,7 +1259,9 @@ func (j JobDefinitionUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "copyMode", j.CopyMode)
 	populate(objectMap, "dataIntegrityValidation", j.DataIntegrityValidation)
 	populate(objectMap, "description", j.Description)
+	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil, true)
 	populate(objectMap, "schedule", j.Schedule)
+	populate(objectMap, "syncMode", j.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -1235,8 +1289,14 @@ func (j *JobDefinitionUpdateProperties) UnmarshalJSON(data []byte) error {
 		case "description":
 			err = unpopulate(val, "Description", &j.Description)
 			delete(rawMsg, key)
+		case "moverSyncedUntil":
+			err = unpopulateTime[datetime.RFC3339](val, "MoverSyncedUntil", &j.MoverSyncedUntil)
+			delete(rawMsg, key)
 		case "schedule":
 			err = unpopulate(val, "Schedule", &j.Schedule)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, "SyncMode", &j.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1644,6 +1704,7 @@ func (n NfsMountEndpointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "host", n.Host)
 	populate(objectMap, "nfsVersion", n.NfsVersion)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
+	populate(objectMap, "sourceType", n.SourceType)
 	return json.Marshal(objectMap)
 }
 
@@ -1676,6 +1737,9 @@ func (n *NfsMountEndpointProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &n.ProvisioningState)
+			delete(rawMsg, key)
+		case "sourceType":
+			err = unpopulate(val, "SourceType", &n.SourceType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2119,6 +2183,7 @@ func (s ScheduleInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "executionTime", s.ExecutionTime)
 	populate(objectMap, "frequency", s.Frequency)
 	populate(objectMap, "isActive", s.IsActive)
+	populate(objectMap, "repeatInterval", s.RepeatInterval)
 	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate, true)
 	return json.Marshal(objectMap)
 }
@@ -2152,6 +2217,9 @@ func (s *ScheduleInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "isActive":
 			err = unpopulate(val, "IsActive", &s.IsActive)
+			delete(rawMsg, key)
+		case "repeatInterval":
+			err = unpopulate(val, "RepeatInterval", &s.RepeatInterval)
 			delete(rawMsg, key)
 		case "startDate":
 			err = unpopulateTime[datetime.RFC3339](val, "StartDate", &s.StartDate)
@@ -2205,6 +2273,7 @@ func (s SmbMountEndpointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "host", s.Host)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "shareName", s.ShareName)
+	populate(objectMap, "sourceType", s.SourceType)
 	return json.Marshal(objectMap)
 }
 
@@ -2237,6 +2306,9 @@ func (s *SmbMountEndpointProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "shareName":
 			err = unpopulate(val, "ShareName", &s.ShareName)
+			delete(rawMsg, key)
+		case "sourceType":
+			err = unpopulate(val, "SourceType", &s.SourceType)
 			delete(rawMsg, key)
 		}
 		if err != nil {

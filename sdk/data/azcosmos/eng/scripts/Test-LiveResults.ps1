@@ -50,7 +50,7 @@ $results = @(
         if (!$passed) {
             $problems.Add("Required selected scenario $($entry.ID) did not pass.")
         }
-        [pscustomobject]@{
+        [PSCustomObject]@{
             scenario = $entry.ID
             profile = $entry.Profile
             backend = 'azureLive'

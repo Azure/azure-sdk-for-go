@@ -43,6 +43,9 @@ type AzureFileVolume struct {
 
 	// The reference to the storage account access key used to access the Azure File share.
 	StorageAccountKeyReference *string
+
+	// The client id of the user-assigned managed identity that has access to the Azure File share.
+	UserAssignedIdentityClientID *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -879,6 +882,22 @@ type Logs struct {
 	Content *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // NGroup - Describes the NGroups resource.
 type NGroup struct {
 	// The identity of the NGroup, if configured.
@@ -1128,6 +1147,81 @@ type ResourceRequirements struct {
 	Limits *ResourceLimits
 }
 
+// SandboxGroup - A SandboxGroup tracked resource.
+type SandboxGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *SandboxGroupProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SandboxGroupAccessToken - The result of getting an access token for a SandboxGroup.
+type SandboxGroupAccessToken struct {
+	// REQUIRED; The access token used to authenticate against the endpoint.
+	AccessToken *string
+
+	// REQUIRED; The endpoint URL to use with the access token.
+	Endpoint *string
+
+	// REQUIRED; The UTC date and time at which the access token expires.
+	NotAfter *time.Time
+}
+
+// SandboxGroupListResult - The response of a SandboxGroup list operation.
+type SandboxGroupListResult struct {
+	// REQUIRED; The SandboxGroup items on this page
+	Value []*SandboxGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SandboxGroupNetworkProfile - The network profile for a SandboxGroup.
+type SandboxGroupNetworkProfile struct {
+	// The list of subnets associated with the SandboxGroup.
+	Subnets []*SubnetReference
+}
+
+// SandboxGroupProperties - Properties of a SandboxGroup.
+type SandboxGroupProperties struct {
+	// The network profile of the SandboxGroup.
+	NetworkProfile *SandboxGroupNetworkProfile
+
+	// READ-ONLY; The ARM resource ID of the management resource group associated with this SandboxGroup.
+	ManagementResourceGroupID *string
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *SandboxGroupProvisioningState
+}
+
+// SandboxGroupTagsUpdate - The type used for updating a SandboxGroup resource.
+type SandboxGroupTagsUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // SecretReference - A secret reference
 type SecretReference struct {
 	// REQUIRED; The ARM resource id of the managed identity that has access to the secret in the key vault
@@ -1183,6 +1277,13 @@ type StandbyPoolProfileDefinition struct {
 // StorageProfile - Storage profile for storage related settings of a container group profile.
 type StorageProfile struct {
 	FileShares []*FileShare
+}
+
+// SubnetReference - A reference to a subnet resource.
+type SubnetReference struct {
+	// REQUIRED; The ARM resource ID of the subnet. The caller must have `Microsoft.Network/virtualNetworks/subnets/join/action`
+	// permission on this subnet (enforced via a linked access check at create/update time).
+	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1275,6 +1376,15 @@ type UserAssignedIdentities struct {
 	PrincipalID *string
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
 // Volume - The properties of the volume.
 type Volume struct {
 	// REQUIRED; The name of the volume.
@@ -1289,10 +1399,12 @@ type Volume struct {
 	// The git repo volume.
 	GitRepo *GitRepoVolume
 
-	// The secret volume.
+	// Defines files for a secret volume. Dictionary keys are file names and values are Base64-encoded secret data used as file
+	// contents. The values are sensitive, and the service does not return the contents of this property in GET responses.
 	Secret map[string]*string
 
-	// The secret reference volume.
+	// Defines files for a secret reference volume. Dictionary keys are file names and values identify entries in the container
+	// group's secretReferences collection. This property contains reference names rather than secret values.
 	SecretReference map[string]*string
 }
 

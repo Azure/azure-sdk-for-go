@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Jobs_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Jobs_Get_MaximumSet_Gen.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleJobsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "gt", "jobsName", nil)
+	res, err := clientFactory.NewJobsClient().Get(ctx, "subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", "jobsName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,51 +33,34 @@ func ExampleJobsClient_Get() {
 	// 	Job: armworkloadorchestration.Job{
 	// 		Properties: &armworkloadorchestration.JobProperties{
 	// 			JobType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
-	// 			StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-	// 			EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-	// 			Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
+	// 			StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+	// 			Status: to.Ptr(armworkloadorchestration.JobStatusNotStarted),
 	// 			JobParameter: &armworkloadorchestration.JobParameterBase{
 	// 				JobType: to.Ptr(armworkloadorchestration.JobType("JobParameterBase")),
 	// 			},
-	// 			CorrelationID: to.Ptr("fsebqmeouxfucluqkaoyagtp"),
+	// 			CorrelationID: to.Ptr("sjzhftgjqcooserdvyuhydqlmfzq"),
 	// 			Steps: []*armworkloadorchestration.JobStep{
 	// 				{
-	// 					Name: to.Ptr("duezohitlpz"),
-	// 					Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
-	// 					StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-	// 					EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-	// 					Message: to.Ptr("lkodiekkbtqwuixxryezipwvvavfu"),
-	// 					Statistics: &armworkloadorchestration.DeployJobStepStatistics{
-	// 						TotalCount: to.Ptr[int32](18),
-	// 						SuccessCount: to.Ptr[int32](25),
-	// 						FailedCount: to.Ptr[int32](25),
-	// 						StatisticsType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
+	// 					Name: to.Ptr("ziliuets"),
+	// 					Status: to.Ptr(armworkloadorchestration.JobStatusNotStarted),
+	// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+	// 					Message: to.Ptr("yceungzedktikkmmhhwoeewjcp"),
+	// 					Statistics: &armworkloadorchestration.JobStepStatisticsBase{
+	// 						StatisticsType: to.Ptr(armworkloadorchestration.JobType("JobStepStatisticsBase")),
 	// 					},
 	// 					Steps: []*armworkloadorchestration.JobStep{
 	// 					},
 	// 					ErrorDetails: &armworkloadorchestration.ErrorDetail{
-	// 						Code: to.Ptr("onimqg"),
-	// 						Message: to.Ptr("mzrbqqcxcbajkv"),
-	// 						Target: to.Ptr("cemnupikyh"),
+	// 						Code: to.Ptr("wfjndhlcqgbdf"),
+	// 						Message: to.Ptr("vwlupxz"),
+	// 						Target: to.Ptr("vvcgnsjtnmm"),
 	// 						Details: []*armworkloadorchestration.ErrorDetail{
-	// 							{
-	// 								Code: to.Ptr("rbclcfwozglwnucds"),
-	// 								Message: to.Ptr("zxbxf"),
-	// 								Target: to.Ptr("rt"),
-	// 								Details: []*armworkloadorchestration.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("nuqfqjakzxpxdthqvxo"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
 	// 						},
 	// 						AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
 	// 							{
-	// 								Type: to.Ptr("pttb"),
+	// 								Type: to.Ptr("zzxugrbxittbjvdjlz"),
 	// 								Info: map[string]any{
 	// 								},
 	// 							},
@@ -85,55 +68,44 @@ func ExampleJobsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TriggeredBy: to.Ptr("lquvgncryxca"),
+	// 			TriggeredBy: to.Ptr("gjabodmkrluxiqukaowrirgb"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 			ErrorDetails: &armworkloadorchestration.ErrorDetail{
-	// 				Code: to.Ptr("onimqg"),
-	// 				Message: to.Ptr("mzrbqqcxcbajkv"),
-	// 				Target: to.Ptr("cemnupikyh"),
+	// 				Code: to.Ptr("wfjndhlcqgbdf"),
+	// 				Message: to.Ptr("vwlupxz"),
+	// 				Target: to.Ptr("vvcgnsjtnmm"),
 	// 				Details: []*armworkloadorchestration.ErrorDetail{
-	// 					{
-	// 						Code: to.Ptr("rbclcfwozglwnucds"),
-	// 						Message: to.Ptr("zxbxf"),
-	// 						Target: to.Ptr("rt"),
-	// 						Details: []*armworkloadorchestration.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("nuqfqjakzxpxdthqvxo"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
 	// 				},
 	// 				AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
 	// 					{
-	// 						Type: to.Ptr("pttb"),
+	// 						Type: to.Ptr("zzxugrbxittbjvdjlz"),
 	// 						Info: map[string]any{
 	// 						},
 	// 					},
 	// 				},
 	// 			},
+	// 			AdditionalData: &armworkloadorchestration.AdditionalData{
+	// 				WorkflowID: to.Ptr("auivudiogfxntjzot"),
+	// 			},
 	// 		},
-	// 		ETag: to.Ptr("edzixghgizgqmjccbgpvcewnd"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("lxwubwlp"),
-	// 		Type: to.Ptr("enekwruxhkecxg"),
+	// 		ETag: to.Ptr("jtmssijyn"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget/providers/Microsoft.Edge/jobs/jobsName"),
+	// 		Name: to.Ptr("jobsName"),
+	// 		Type: to.Ptr("Microsoft.Edge/jobs"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("favedmahrbemfqzeuggazxzrvwugxw"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("lywqfnyqrutroctdfbxzytel"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Jobs_ListByTarget_MaximumSet_Gen.json
-func ExampleJobsClient_NewListByTargetPager() {
+// Generated from example definition: 2026-05-01-preview/Jobs_ListByTarget_MaximumSet_Gen.json
+func ExampleJobsClient_NewListByTargetPager_jobsListByTargetMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +115,7 @@ func ExampleJobsClient_NewListByTargetPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobsClient().NewListByTargetPager("gt", nil)
+	pager := clientFactory.NewJobsClient().NewListByTargetPager("subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -160,51 +132,34 @@ func ExampleJobsClient_NewListByTargetPager() {
 		// 			{
 		// 				Properties: &armworkloadorchestration.JobProperties{
 		// 					JobType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
-		// 					StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-		// 					EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-		// 					Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
+		// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+		// 					Status: to.Ptr(armworkloadorchestration.JobStatusNotStarted),
 		// 					JobParameter: &armworkloadorchestration.JobParameterBase{
 		// 						JobType: to.Ptr(armworkloadorchestration.JobType("JobParameterBase")),
 		// 					},
-		// 					CorrelationID: to.Ptr("fsebqmeouxfucluqkaoyagtp"),
+		// 					CorrelationID: to.Ptr("sjzhftgjqcooserdvyuhydqlmfzq"),
 		// 					Steps: []*armworkloadorchestration.JobStep{
 		// 						{
-		// 							Name: to.Ptr("duezohitlpz"),
-		// 							Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
-		// 							StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-		// 							EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
-		// 							Message: to.Ptr("lkodiekkbtqwuixxryezipwvvavfu"),
-		// 							Statistics: &armworkloadorchestration.DeployJobStepStatistics{
-		// 								TotalCount: to.Ptr[int32](18),
-		// 								SuccessCount: to.Ptr[int32](25),
-		// 								FailedCount: to.Ptr[int32](25),
-		// 								StatisticsType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
+		// 							Name: to.Ptr("ziliuets"),
+		// 							Status: to.Ptr(armworkloadorchestration.JobStatusNotStarted),
+		// 							StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 28, 816000000, time.UTC)),
+		// 							Message: to.Ptr("yceungzedktikkmmhhwoeewjcp"),
+		// 							Statistics: &armworkloadorchestration.JobStepStatisticsBase{
+		// 								StatisticsType: to.Ptr(armworkloadorchestration.JobType("JobStepStatisticsBase")),
 		// 							},
 		// 							Steps: []*armworkloadorchestration.JobStep{
 		// 							},
 		// 							ErrorDetails: &armworkloadorchestration.ErrorDetail{
-		// 								Code: to.Ptr("onimqg"),
-		// 								Message: to.Ptr("mzrbqqcxcbajkv"),
-		// 								Target: to.Ptr("cemnupikyh"),
+		// 								Code: to.Ptr("wfjndhlcqgbdf"),
+		// 								Message: to.Ptr("vwlupxz"),
+		// 								Target: to.Ptr("vvcgnsjtnmm"),
 		// 								Details: []*armworkloadorchestration.ErrorDetail{
-		// 									{
-		// 										Code: to.Ptr("rbclcfwozglwnucds"),
-		// 										Message: to.Ptr("zxbxf"),
-		// 										Target: to.Ptr("rt"),
-		// 										Details: []*armworkloadorchestration.ErrorDetail{
-		// 										},
-		// 										AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-		// 											{
-		// 												Type: to.Ptr("nuqfqjakzxpxdthqvxo"),
-		// 												Info: map[string]any{
-		// 												},
-		// 											},
-		// 										},
-		// 									},
 		// 								},
 		// 								AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
 		// 									{
-		// 										Type: to.Ptr("pttb"),
+		// 										Type: to.Ptr("zzxugrbxittbjvdjlz"),
 		// 										Info: map[string]any{
 		// 										},
 		// 									},
@@ -212,52 +167,77 @@ func ExampleJobsClient_NewListByTargetPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					TriggeredBy: to.Ptr("lquvgncryxca"),
+		// 					TriggeredBy: to.Ptr("gjabodmkrluxiqukaowrirgb"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 					ErrorDetails: &armworkloadorchestration.ErrorDetail{
-		// 						Code: to.Ptr("onimqg"),
-		// 						Message: to.Ptr("mzrbqqcxcbajkv"),
-		// 						Target: to.Ptr("cemnupikyh"),
+		// 						Code: to.Ptr("wfjndhlcqgbdf"),
+		// 						Message: to.Ptr("vwlupxz"),
+		// 						Target: to.Ptr("vvcgnsjtnmm"),
 		// 						Details: []*armworkloadorchestration.ErrorDetail{
-		// 							{
-		// 								Code: to.Ptr("rbclcfwozglwnucds"),
-		// 								Message: to.Ptr("zxbxf"),
-		// 								Target: to.Ptr("rt"),
-		// 								Details: []*armworkloadorchestration.ErrorDetail{
-		// 								},
-		// 								AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-		// 									{
-		// 										Type: to.Ptr("nuqfqjakzxpxdthqvxo"),
-		// 										Info: map[string]any{
-		// 										},
-		// 									},
-		// 								},
-		// 							},
 		// 						},
 		// 						AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
 		// 							{
-		// 								Type: to.Ptr("pttb"),
+		// 								Type: to.Ptr("zzxugrbxittbjvdjlz"),
 		// 								Info: map[string]any{
 		// 								},
 		// 							},
 		// 						},
 		// 					},
+		// 					AdditionalData: &armworkloadorchestration.AdditionalData{
+		// 						WorkflowID: to.Ptr("auivudiogfxntjzot"),
+		// 					},
 		// 				},
-		// 				ETag: to.Ptr("edzixghgizgqmjccbgpvcewnd"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("lxwubwlp"),
-		// 				Type: to.Ptr("enekwruxhkecxg"),
+		// 				ETag: to.Ptr("jtmssijyn"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget/providers/Microsoft.Edge/jobs/testJob"),
+		// 				Name: to.Ptr("testJob"),
+		// 				Type: to.Ptr("Microsoft.Edge/jobs"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("favedmahrbemfqzeuggazxzrvwugxw"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("lywqfnyqrutroctdfbxzytel"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Jobs_ListByTarget_MinimumSet_Gen.json
+func ExampleJobsClient_NewListByTargetPager_jobsListByTargetMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewJobsClient().NewListByTargetPager("subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.JobsClientListByTargetResponse{
+		// 	JobListResult: armworkloadorchestration.JobListResult{
+		// 		Value: []*armworkloadorchestration.Job{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget/providers/Microsoft.Edge/jobs/testJob"),
+		// 				Name: to.Ptr("testJob"),
+		// 				Type: to.Ptr("Microsoft.Edge/jobs"),
+		// 			},
+		// 		},
 		// 	},
 		// }
 	}

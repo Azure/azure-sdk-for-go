@@ -198,7 +198,7 @@ func liveLifecycle(t *testing.T, f *liveFixture) {
 	liveNoError(t, "delete item", err)
 	require.Equal(t, 204, deleted.StatusCode)
 	_, err = f.container.ReadItem(f.ctx, f.pk, f.prefix+"-lifecycle", nil)
-	liveCode(t, err, azcosmos.CodeNotFound, 404)
+	_ = liveCode(t, err, azcosmos.CodeNotFound, 404)
 }
 
 func liveCode(t *testing.T, err error, code azcosmos.Code, status int) *azcosmos.Error {
@@ -223,7 +223,7 @@ func liveConcurrency(t *testing.T, f *liveFixture) {
 	require.NotEqual(t, created.ETag, updated.ETag)
 	_, err = f.container.ReplaceItem(f.ctx, f.pk, f.prefix+"-etag", body,
 		&azcosmos.ReplaceItemOptions{Precondition: condition})
-	liveCode(t, err, azcosmos.CodePreconditionFailed, 412)
+	_ = liveCode(t, err, azcosmos.CodePreconditionFailed, 412)
 	read, err := f.container.ReadItem(f.ctx, f.pk, f.prefix+"-etag", nil)
 	liveNoError(t, "read after rejected replacement", err)
 	require.Equal(t, int64(2), mustUnmarshalItem(t, read.Value).Value)

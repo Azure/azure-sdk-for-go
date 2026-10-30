@@ -6,13 +6,12 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-10-01/NetworkExperimentGetPreconfiguredEndpoints.json
+// Generated from example definition: 2026-04-01/NetworkExperimentGetPreconfiguredEndpoints.json
 func ExamplePreconfiguredEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

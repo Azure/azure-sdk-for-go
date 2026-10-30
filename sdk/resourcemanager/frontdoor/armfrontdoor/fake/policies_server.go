@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // PoliciesServer is a fake server for instances of the armfrontdoor.PoliciesClient type.
@@ -83,9 +83,7 @@ func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -111,10 +109,7 @@ func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -131,7 +126,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -162,7 +157,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
 		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -179,7 +174,7 @@ func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -206,7 +201,7 @@ func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -221,7 +216,7 @@ func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -240,7 +235,7 @@ func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WebApplicationFirewallPolicy, req)
@@ -256,7 +251,7 @@ func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -277,7 +272,7 @@ func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -293,7 +288,7 @@ func (p *PoliciesServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	}
 	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -310,7 +305,7 @@ func (p *PoliciesServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -326,7 +321,7 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	beginUpdate := p.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/FrontDoorWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -357,7 +352,7 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

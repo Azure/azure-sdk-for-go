@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ChildAvailabilityStatus_GetByResource.json
+// Generated from example definition: 2026-07-01/ChildAvailabilityStatus_GetByResource.json
 func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ChildAvailabilityStatuses_List.json
+// Generated from example definition: 2026-07-01/ChildAvailabilityStatuses_List.json
 func ExampleChildAvailabilityStatusesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

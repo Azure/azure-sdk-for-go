@@ -1,5 +1,12 @@
 # Release History
 
+## 1.5.0 (2026-10-27)
+### Features Added
+
+- New struct `APIOperationLink`
+- New field `AdvisorRecommendations` in struct `EventProperties`
+
+
 ## 1.4.0 (2026-06-24)
 ### Features Added
 

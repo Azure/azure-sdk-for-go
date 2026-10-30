@@ -18,7 +18,7 @@ import (
 // ChildAvailabilityStatusesClient contains the methods for the ChildAvailabilityStatuses group.
 // Don't use this type directly, use NewChildAvailabilityStatusesClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type ChildAvailabilityStatusesClient struct {
 	internal *arm.Client
 }
@@ -77,7 +77,7 @@ func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -151,7 +151,7 @@ func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Con
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

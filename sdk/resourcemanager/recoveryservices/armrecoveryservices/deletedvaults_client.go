@@ -19,7 +19,7 @@ import (
 // DeletedVaultsClient contains the methods for the DeletedVaults group.
 // Don't use this type directly, use NewDeletedVaultsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-11-01
 type DeletedVaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,82 @@ func NewDeletedVaultsClient(subscriptionID string, credential azcore.TokenCreden
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginUndelete - Start undelete of a deleted vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The location name.
+//   - deletedVaultName - The name of the DeletedVault
+//   - body - The content of the action request
+//   - options - DeletedVaultsClientBeginUndeleteOptions contains the optional parameters for the DeletedVaultsClient.BeginUndelete
+//     method.
+func (client *DeletedVaultsClient) BeginUndelete(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, options *DeletedVaultsClientBeginUndeleteOptions) (*runtime.Poller[DeletedVaultsClientUndeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.undelete(ctx, location, deletedVaultName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedVaultsClientUndeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedVaultsClientUndeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// undelete - Start undelete of a deleted vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DeletedVaultsClient) undelete(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, options *DeletedVaultsClientBeginUndeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DeletedVaultsClient.BeginUndelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.undeleteCreateRequest(ctx, location, deletedVaultName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// undeleteCreateRequest creates the undelete request.
+func (client *DeletedVaultsClient) undeleteCreateRequest(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, _ *DeletedVaultsClientBeginUndeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults/{deletedVaultName}/undelete"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if deletedVaultName == "" {
+		return nil, errors.New("parameter deletedVaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deletedVaultName}", url.PathEscape(deletedVaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // Get - Get a specific deleted vault.
@@ -86,7 +162,7 @@ func (client *DeletedVaultsClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -151,7 +227,7 @@ func (client *DeletedVaultsClient) getOperationStatusCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -222,7 +298,7 @@ func (client *DeletedVaultsClient) listBySubscriptionIDCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -239,80 +315,4 @@ func (client *DeletedVaultsClient) listBySubscriptionIDHandleResponse(resp *http
 		return DeletedVaultsClientListBySubscriptionIDResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUndelete - Start undelete of a deleted vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
-//   - deletedVaultName - The name of the DeletedVault
-//   - body - The content of the action request
-//   - options - DeletedVaultsClientBeginUndeleteOptions contains the optional parameters for the DeletedVaultsClient.BeginUndelete
-//     method.
-func (client *DeletedVaultsClient) BeginUndelete(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, options *DeletedVaultsClientBeginUndeleteOptions) (*runtime.Poller[DeletedVaultsClientUndeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.undelete(ctx, location, deletedVaultName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedVaultsClientUndeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedVaultsClientUndeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Undelete - Start undelete of a deleted vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DeletedVaultsClient) undelete(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, options *DeletedVaultsClientBeginUndeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DeletedVaultsClient.BeginUndelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.undeleteCreateRequest(ctx, location, deletedVaultName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// undeleteCreateRequest creates the Undelete request.
-func (client *DeletedVaultsClient) undeleteCreateRequest(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, _ *DeletedVaultsClientBeginUndeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults/{deletedVaultName}/undelete"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if deletedVaultName == "" {
-		return nil, errors.New("parameter deletedVaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deletedVaultName}", url.PathEscape(deletedVaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

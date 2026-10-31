@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
 func ExampleFeaturestoreEntityContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleFeaturestoreEntityContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturestoreEntityContainer/delete.json
 func ExampleFeaturestoreEntityContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleFeaturestoreEntityContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/getEntity.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturestoreEntityContainer/getEntity.json
 func ExampleFeaturestoreEntityContainersClient_GetEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleFeaturestoreEntityContainersClient_GetEntity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturestoreEntityContainer/list.json
 func ExampleFeaturestoreEntityContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

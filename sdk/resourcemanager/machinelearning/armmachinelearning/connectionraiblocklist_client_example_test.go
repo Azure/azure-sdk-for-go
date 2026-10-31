@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklist/create.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklist/create.json
 func ExampleConnectionRaiBlocklistClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleConnectionRaiBlocklistClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklist/delete.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklist/delete.json
 func ExampleConnectionRaiBlocklistClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleConnectionRaiBlocklistClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklist/get.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklist/get.json
 func ExampleConnectionRaiBlocklistClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

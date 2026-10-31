@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentVersion/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentVersion/createOrUpdate.json
 func ExampleEnvironmentVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleEnvironmentVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentVersion/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentVersion/delete.json
 func ExampleEnvironmentVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleEnvironmentVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentVersion/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentVersion/get.json
 func ExampleEnvironmentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleEnvironmentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentVersion/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentVersion/list.json
 func ExampleEnvironmentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleEnvironmentVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentVersion/publish.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentVersion/publish.json
 func ExampleEnvironmentVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

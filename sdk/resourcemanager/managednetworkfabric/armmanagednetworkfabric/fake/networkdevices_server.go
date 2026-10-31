@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -28,18 +28,6 @@ type NetworkDevicesServer struct {
 	// BeginDelete is the fake for method NetworkDevicesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkDeviceName string, options *armmanagednetworkfabric.NetworkDevicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method NetworkDevicesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkDeviceName string, options *armmanagednetworkfabric.NetworkDevicesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkDevicesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method NetworkDevicesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method NetworkDevicesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse])
 
 	// BeginReboot is the fake for method NetworkDevicesClient.BeginReboot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -76,6 +64,18 @@ type NetworkDevicesServer struct {
 	// BeginUpgrade is the fake for method NetworkDevicesClient.BeginUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpgrade func(ctx context.Context, resourceGroupName string, networkDeviceName string, body armmanagednetworkfabric.NetworkDeviceUpgradeRequest, options *armmanagednetworkfabric.NetworkDevicesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NetworkDevicesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkDeviceName string, options *armmanagednetworkfabric.NetworkDevicesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkDevicesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method NetworkDevicesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method NetworkDevicesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse])
 }
 
 // NewNetworkDevicesServerTransport creates a new instance of NetworkDevicesServerTransport with the provided implementation.
@@ -86,8 +86,6 @@ func NewNetworkDevicesServerTransport(srv *NetworkDevicesServer) *NetworkDevices
 		srv:                            srv,
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse]](),
 		beginReboot:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientRebootResponse]](),
 		beginRefreshConfiguration:      newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientRefreshConfigurationResponse]](),
 		beginResyncCertificates:        newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse]](),
@@ -97,6 +95,8 @@ func NewNetworkDevicesServerTransport(srv *NetworkDevicesServer) *NetworkDevices
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpdateAdministrativeStateResponse]](),
 		beginUpgrade:                   newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpgradeResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -106,8 +106,6 @@ type NetworkDevicesServerTransport struct {
 	srv                            *NetworkDevicesServer
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse]]
 	beginReboot                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientRebootResponse]]
 	beginRefreshConfiguration      *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientRefreshConfigurationResponse]]
 	beginResyncCertificates        *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse]]
@@ -117,6 +115,8 @@ type NetworkDevicesServerTransport struct {
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpdateAdministrativeStateResponse]]
 	beginUpgrade                   *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkDevicesClientUpgradeResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkDevicesServerTransport.
@@ -144,12 +144,6 @@ func (n *NetworkDevicesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkDevicesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NetworkDevicesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NetworkDevicesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NetworkDevicesClient.NewListBySubscriptionPager":
-				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
 			case "NetworkDevicesClient.BeginReboot":
 				res.resp, res.err = n.dispatchBeginReboot(req)
 			case "NetworkDevicesClient.BeginRefreshConfiguration":
@@ -168,6 +162,12 @@ func (n *NetworkDevicesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = n.dispatchBeginUpdateAdministrativeState(req)
 			case "NetworkDevicesClient.BeginUpgrade":
 				res.resp, res.err = n.dispatchBeginUpgrade(req)
+			case "NetworkDevicesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkDevicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NetworkDevicesClient.NewListBySubscriptionPager":
+				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -273,109 +273,6 @@ func (n *NetworkDevicesServerTransport) dispatchBeginDelete(req *http.Request) (
 		n.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (n *NetworkDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices/(?P<networkDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkDeviceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkDeviceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkDevice, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkDevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkDevicesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		n.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -796,6 +693,109 @@ func (n *NetworkDevicesServerTransport) dispatchBeginUpgrade(req *http.Request) 
 		n.beginUpgrade.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices/(?P<networkDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkDeviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkDeviceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkDevice, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkDevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.NetworkDevicesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkDevicesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkDevices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.NetworkDevicesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		n.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

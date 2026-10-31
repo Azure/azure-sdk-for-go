@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type NetworkRacksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkRackName string, options *armmanagednetworkfabric.NetworkRacksClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkRacksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkRackName string, body armmanagednetworkfabric.NetworkRackPatch, options *armmanagednetworkfabric.NetworkRacksClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkRacksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkRackName string, options *armmanagednetworkfabric.NetworkRacksClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkRacksClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type NetworkRacksServer struct {
 	// NewListBySubscriptionPager is the fake for method NetworkRacksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkRacksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkRacksClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method NetworkRacksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkRackName string, body armmanagednetworkfabric.NetworkRackPatch, options *armmanagednetworkfabric.NetworkRacksClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkRacksServerTransport creates a new instance of NetworkRacksServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkRacksServerTransport(srv *NetworkRacksServer) *NetworkRacksServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkRacksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkRacksClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkRacksServerTransport struct {
 	srv                         *NetworkRacksServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkRacksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkRacksClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkRacksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkRacksServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkRacksServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkRacksClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkRacksClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkRacksClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkRacksClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkRacksClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NetworkRacksClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (n *NetworkRacksServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (n *NetworkRacksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkRacks/(?P<networkRackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkRackPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkRackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkRackName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkRackNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NetworkRacksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (n *NetworkRacksServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkRacksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkRacks/(?P<networkRackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkRackPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkRackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkRackName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkRackNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

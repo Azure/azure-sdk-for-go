@@ -54,7 +54,42 @@ type AccessControlListsClientUpdateResponse struct {
 // AccessControlListsClientValidateConfigurationResponse contains the response from method AccessControlListsClient.BeginValidateConfiguration.
 type AccessControlListsClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
+}
+
+// EdgeConnectorsClientCreateResponse contains the response from method EdgeConnectorsClient.BeginCreate.
+type EdgeConnectorsClientCreateResponse struct {
+	// EdgeConnector represents the mechanism by which a collection of on-prem infrastructure (Fabric) is connected to Azure.
+	EdgeConnector
+}
+
+// EdgeConnectorsClientDeleteResponse contains the response from method EdgeConnectorsClient.BeginDelete.
+type EdgeConnectorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeConnectorsClientGetResponse contains the response from method EdgeConnectorsClient.Get.
+type EdgeConnectorsClientGetResponse struct {
+	// EdgeConnector represents the mechanism by which a collection of on-prem infrastructure (Fabric) is connected to Azure.
+	EdgeConnector
+}
+
+// EdgeConnectorsClientListByResourceGroupResponse contains the response from method EdgeConnectorsClient.NewListByResourceGroupPager.
+type EdgeConnectorsClientListByResourceGroupResponse struct {
+	// The response of a EdgeConnector list operation.
+	EdgeConnectorListResult
+}
+
+// EdgeConnectorsClientListBySubscriptionResponse contains the response from method EdgeConnectorsClient.NewListBySubscriptionPager.
+type EdgeConnectorsClientListBySubscriptionResponse struct {
+	// The response of a EdgeConnector list operation.
+	EdgeConnectorListResult
+}
+
+// EdgeConnectorsClientUpdateResponse contains the response from method EdgeConnectorsClient.BeginUpdate.
+type EdgeConnectorsClientUpdateResponse struct {
+	// EdgeConnector represents the mechanism by which a collection of on-prem infrastructure (Fabric) is connected to Azure.
+	EdgeConnector
 }
 
 // ExternalNetworksClientCreateResponse contains the response from method ExternalNetworksClient.BeginCreate.
@@ -102,6 +137,41 @@ type ExternalNetworksClientUpdateResponse struct {
 type ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse struct {
 	// Update Administrative State Response.
 	UpdateAdministrativeStateResponse
+}
+
+// FabricsClientCreateResponse contains the response from method FabricsClient.BeginCreate.
+type FabricsClientCreateResponse struct {
+	// Represents a physical network deployment hosting infrastructure network configuration.
+	Fabric
+}
+
+// FabricsClientDeleteResponse contains the response from method FabricsClient.BeginDelete.
+type FabricsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FabricsClientGetResponse contains the response from method FabricsClient.Get.
+type FabricsClientGetResponse struct {
+	// Represents a physical network deployment hosting infrastructure network configuration.
+	Fabric
+}
+
+// FabricsClientListByResourceGroupResponse contains the response from method FabricsClient.NewListByResourceGroupPager.
+type FabricsClientListByResourceGroupResponse struct {
+	// The response of a Fabric list operation.
+	FabricListResult
+}
+
+// FabricsClientListBySubscriptionResponse contains the response from method FabricsClient.NewListBySubscriptionPager.
+type FabricsClientListBySubscriptionResponse struct {
+	// The response of a Fabric list operation.
+	FabricListResult
+}
+
+// FabricsClientUpdateResponse contains the response from method FabricsClient.BeginUpdate.
+type FabricsClientUpdateResponse struct {
+	// Represents a physical network deployment hosting infrastructure network configuration.
+	Fabric
 }
 
 // IPCommunitiesClientCreateResponse contains the response from method IPCommunitiesClient.BeginCreate.
@@ -382,7 +452,7 @@ type L2IsolationDomainsClientUpdateResponse struct {
 // L2IsolationDomainsClientValidateConfigurationResponse contains the response from method L2IsolationDomainsClient.BeginValidateConfiguration.
 type L2IsolationDomainsClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
 }
 
 // L3IsolationDomainsClientCommitConfigurationResponse contains the response from method L3IsolationDomainsClient.BeginCommitConfiguration.
@@ -435,7 +505,7 @@ type L3IsolationDomainsClientUpdateResponse struct {
 // L3IsolationDomainsClientValidateConfigurationResponse contains the response from method L3IsolationDomainsClient.BeginValidateConfiguration.
 type L3IsolationDomainsClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
 }
 
 // NeighborGroupsClientCreateResponse contains the response from method NeighborGroupsClient.BeginCreate.
@@ -855,7 +925,7 @@ type NetworkFabricsClientUpgradeResponse struct {
 // NetworkFabricsClientValidateConfigurationResponse contains the response from method NetworkFabricsClient.BeginValidateConfiguration.
 type NetworkFabricsClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
 }
 
 // NetworkFabricsClientViewDeviceConfigurationResponse contains the response from method NetworkFabricsClient.BeginViewDeviceConfiguration.
@@ -1060,7 +1130,7 @@ type NetworkTapRulesClientUpdateResponse struct {
 // NetworkTapRulesClientValidateConfigurationResponse contains the response from method NetworkTapRulesClient.BeginValidateConfiguration.
 type NetworkTapRulesClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
 }
 
 // NetworkTapsClientCreateResponse contains the response from method NetworkTapsClient.BeginCreate.
@@ -1214,5 +1284,5 @@ type RoutePoliciesClientUpdateResponse struct {
 // RoutePoliciesClientValidateConfigurationResponse contains the response from method RoutePoliciesClient.BeginValidateConfiguration.
 type RoutePoliciesClientValidateConfigurationResponse struct {
 	// The response of the action validate configuration.
-	ValidateConfigurationResponse
+	ValidateConfigurationResponseV2
 }

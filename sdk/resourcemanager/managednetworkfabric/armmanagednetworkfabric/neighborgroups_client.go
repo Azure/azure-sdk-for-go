@@ -19,7 +19,7 @@ import (
 // NeighborGroupsClient contains the methods for the NeighborGroups group.
 // Don't use this type directly, use NewNeighborGroupsClient() instead.
 //
-// Generated from API version 2025-07-15
+// Generated from API version 2026-01-15-preview
 type NeighborGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *NeighborGroupsClient) BeginCreate(ctx context.Context, resourceGro
 	}
 }
 
-// Create - Implements the Neighbor Group PUT method.
+// create - Implements the Neighbor Group PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NeighborGroupsClient) create(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroup, options *NeighborGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *NeighborGroupsClient) create(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *NeighborGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroup, _ *NeighborGroupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *NeighborGroupsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -143,7 +143,7 @@ func (client *NeighborGroupsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Implements Neighbor Group DELETE method.
+// deleteOperation - Implements Neighbor Group DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NeighborGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *NeighborGroupsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NeighborGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, _ *NeighborGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}"
 	if client.subscriptionID == "" {
@@ -185,8 +185,155 @@ func (client *NeighborGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginResync - Resync the Neighbor Group after a configuration change.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - neighborGroupName - Name of the Neighbor Group.
+//   - options - NeighborGroupsClientBeginResyncOptions contains the optional parameters for the NeighborGroupsClient.BeginResync
+//     method.
+func (client *NeighborGroupsClient) BeginResync(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginResyncOptions) (*runtime.Poller[NeighborGroupsClientResyncResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resync(ctx, resourceGroupName, neighborGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NeighborGroupsClientResyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NeighborGroupsClientResyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resync - Resync the Neighbor Group after a configuration change.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NeighborGroupsClient) resync(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginResyncOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NeighborGroupsClient.BeginResync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncCreateRequest(ctx, resourceGroupName, neighborGroupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resyncCreateRequest creates the resync request.
+func (client *NeighborGroupsClient) resyncCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, _ *NeighborGroupsClientBeginResyncOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}/resync"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if neighborGroupName == "" {
+		return nil, errors.New("parameter neighborGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{neighborGroupName}", url.PathEscape(neighborGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates the Neighbor Group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - neighborGroupName - Name of the Neighbor Group.
+//   - body - Neighbor Group properties to update. Only annotations are supported.
+//   - options - NeighborGroupsClientBeginUpdateOptions contains the optional parameters for the NeighborGroupsClient.BeginUpdate
+//     method.
+func (client *NeighborGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, options *NeighborGroupsClientBeginUpdateOptions) (*runtime.Poller[NeighborGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, neighborGroupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NeighborGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NeighborGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the Neighbor Group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NeighborGroupsClient) update(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, options *NeighborGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NeighborGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, neighborGroupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NeighborGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, _ *NeighborGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if neighborGroupName == "" {
+		return nil, errors.New("parameter neighborGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{neighborGroupName}", url.PathEscape(neighborGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -232,7 +379,7 @@ func (client *NeighborGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +450,7 @@ func (client *NeighborGroupsClient) listByResourceGroupCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715)
+		reqQP.Set("api-version", version20260115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -370,7 +517,7 @@ func (client *NeighborGroupsClient) listBySubscriptionCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715)
+		reqQP.Set("api-version", version20260115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -387,151 +534,4 @@ func (client *NeighborGroupsClient) listBySubscriptionHandleResponse(resp *http.
 		return NeighborGroupsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResync - Resync the Neighbor Group after a configuration change.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - neighborGroupName - Name of the Neighbor Group.
-//   - options - NeighborGroupsClientBeginResyncOptions contains the optional parameters for the NeighborGroupsClient.BeginResync
-//     method.
-func (client *NeighborGroupsClient) BeginResync(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginResyncOptions) (*runtime.Poller[NeighborGroupsClientResyncResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resync(ctx, resourceGroupName, neighborGroupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NeighborGroupsClientResyncResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NeighborGroupsClientResyncResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resync - Resync the Neighbor Group after a configuration change.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NeighborGroupsClient) resync(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginResyncOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NeighborGroupsClient.BeginResync"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resyncCreateRequest(ctx, resourceGroupName, neighborGroupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resyncCreateRequest creates the Resync request.
-func (client *NeighborGroupsClient) resyncCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, _ *NeighborGroupsClientBeginResyncOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}/resync"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if neighborGroupName == "" {
-		return nil, errors.New("parameter neighborGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{neighborGroupName}", url.PathEscape(neighborGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates the Neighbor Group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - neighborGroupName - Name of the Neighbor Group.
-//   - body - Neighbor Group properties to update. Only annotations are supported.
-//   - options - NeighborGroupsClientBeginUpdateOptions contains the optional parameters for the NeighborGroupsClient.BeginUpdate
-//     method.
-func (client *NeighborGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, options *NeighborGroupsClientBeginUpdateOptions) (*runtime.Poller[NeighborGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, neighborGroupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NeighborGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NeighborGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the Neighbor Group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NeighborGroupsClient) update(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, options *NeighborGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NeighborGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, neighborGroupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NeighborGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, neighborGroupName string, body NeighborGroupPatch, _ *NeighborGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if neighborGroupName == "" {
-		return nil, errors.New("parameter neighborGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{neighborGroupName}", url.PathEscape(neighborGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

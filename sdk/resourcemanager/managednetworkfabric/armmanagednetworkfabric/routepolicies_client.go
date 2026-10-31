@@ -19,7 +19,7 @@ import (
 // RoutePoliciesClient contains the methods for the RoutePolicies group.
 // Don't use this type directly, use NewRoutePoliciesClient() instead.
 //
-// Generated from API version 2025-07-15
+// Generated from API version 2026-01-15-preview
 type RoutePoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,7 @@ func (client *RoutePoliciesClient) BeginCommitConfiguration(ctx context.Context,
 	}
 }
 
-// CommitConfiguration - Commits the configuration of the given resources.
+// commitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutePoliciesClient) commitConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *RoutePoliciesClient) commitConfiguration(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// commitConfigurationCreateRequest creates the CommitConfiguration request.
+// commitConfigurationCreateRequest creates the commitConfiguration request.
 func (client *RoutePoliciesClient) commitConfigurationCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, _ *RoutePoliciesClientBeginCommitConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/commitConfiguration"
 	if client.subscriptionID == "" {
@@ -109,7 +109,7 @@ func (client *RoutePoliciesClient) commitConfigurationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -139,7 +139,7 @@ func (client *RoutePoliciesClient) BeginCreate(ctx context.Context, resourceGrou
 	}
 }
 
-// Create - Implements Route Policy PUT method.
+// create - Implements Route Policy PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutePoliciesClient) create(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicy, options *RoutePoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *RoutePoliciesClient) create(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicy, _ *RoutePoliciesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}"
 	if client.subscriptionID == "" {
@@ -181,7 +181,7 @@ func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -214,7 +214,7 @@ func (client *RoutePoliciesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Implements Route Policy DELETE method.
+// deleteOperation - Implements Route Policy DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -236,7 +236,7 @@ func (client *RoutePoliciesClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RoutePoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, _ *RoutePoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}"
 	if client.subscriptionID == "" {
@@ -256,8 +256,231 @@ func (client *RoutePoliciesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - API to update certain properties of the Route Policy resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - routePolicyName - Name of the Route Policy.
+//   - body - Route Policy properties to update.
+//   - options - RoutePoliciesClientBeginUpdateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdate
+//     method.
+func (client *RoutePoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*runtime.Poller[RoutePoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, routePolicyName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - API to update certain properties of the Route Policy resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RoutePoliciesClient) update(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoutePoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, routePolicyName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, _ *RoutePoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if routePolicyName == "" {
+		return nil, errors.New("parameter routePolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateAdministrativeState - Updated the admin state for this Route Policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - routePolicyName - Name of the Route Policy.
+//   - body - Request payload.
+//   - options - RoutePoliciesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdateAdministrativeState
+//     method.
+func (client *RoutePoliciesClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[RoutePoliciesClientUpdateAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, routePolicyName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateAdministrativeState - Updated the admin state for this Route Policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RoutePoliciesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoutePoliciesClient.BeginUpdateAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, routePolicyName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateAdministrativeStateCreateRequest creates the updateAdministrativeState request.
+func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, _ *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/updateAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if routePolicyName == "" {
+		return nil, errors.New("parameter routePolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateConfiguration - Validates the configuration of the resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - routePolicyName - Name of the Route Policy.
+//   - options - RoutePoliciesClientBeginValidateConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginValidateConfiguration
+//     method.
+func (client *RoutePoliciesClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*runtime.Poller[RoutePoliciesClientValidateConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, routePolicyName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateConfiguration - Validates the configuration of the resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RoutePoliciesClient) validateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoutePoliciesClient.BeginValidateConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, routePolicyName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateConfigurationCreateRequest creates the validateConfiguration request.
+func (client *RoutePoliciesClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, _ *RoutePoliciesClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/validateConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if routePolicyName == "" {
+		return nil, errors.New("parameter routePolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -303,7 +526,7 @@ func (client *RoutePoliciesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
+	reqQP.Set("api-version", version20260115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -374,7 +597,7 @@ func (client *RoutePoliciesClient) listByResourceGroupCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715)
+		reqQP.Set("api-version", version20260115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -441,7 +664,7 @@ func (client *RoutePoliciesClient) listBySubscriptionCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715)
+		reqQP.Set("api-version", version20260115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -458,227 +681,4 @@ func (client *RoutePoliciesClient) listBySubscriptionHandleResponse(resp *http.R
 		return RoutePoliciesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - API to update certain properties of the Route Policy resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - routePolicyName - Name of the Route Policy.
-//   - body - Route Policy properties to update.
-//   - options - RoutePoliciesClientBeginUpdateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdate
-//     method.
-func (client *RoutePoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*runtime.Poller[RoutePoliciesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, routePolicyName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - API to update certain properties of the Route Policy resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutePoliciesClient) update(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RoutePoliciesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, routePolicyName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, _ *RoutePoliciesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if routePolicyName == "" {
-		return nil, errors.New("parameter routePolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateAdministrativeState - Updated the admin state for this Route Policy.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - routePolicyName - Name of the Route Policy.
-//   - body - Request payload.
-//   - options - RoutePoliciesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdateAdministrativeState
-//     method.
-func (client *RoutePoliciesClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[RoutePoliciesClientUpdateAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, routePolicyName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateAdministrativeState - Updated the admin state for this Route Policy.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutePoliciesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RoutePoliciesClient.BeginUpdateAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, routePolicyName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
-func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, _ *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if routePolicyName == "" {
-		return nil, errors.New("parameter routePolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginValidateConfiguration - Validates the configuration of the resources.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - routePolicyName - Name of the Route Policy.
-//   - options - RoutePoliciesClientBeginValidateConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginValidateConfiguration
-//     method.
-func (client *RoutePoliciesClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*runtime.Poller[RoutePoliciesClientValidateConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateConfiguration(ctx, resourceGroupName, routePolicyName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutePoliciesClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutePoliciesClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ValidateConfiguration - Validates the configuration of the resources.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutePoliciesClient) validateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RoutePoliciesClient.BeginValidateConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, routePolicyName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateConfigurationCreateRequest creates the ValidateConfiguration request.
-func (client *RoutePoliciesClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, routePolicyName string, _ *RoutePoliciesClientBeginValidateConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/validateConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if routePolicyName == "" {
-		return nil, errors.New("parameter routePolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{routePolicyName}", url.PathEscape(routePolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

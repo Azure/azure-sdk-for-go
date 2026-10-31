@@ -1,67 +1,34 @@
 # Release History
 
-## 2.0.0-beta.3 (2026-10-09)
+## 2.0.0 (2026-10-23)
 ### Breaking Changes
 
-- Field `PolicyResourceID` of struct `CertificateProperties` has been removed
-- Field `PolicyResourceID` of struct `CertificatePropertiesWithNonce` has been removed
-- Field `IdentityResourceID` of struct `DeviceRegistry` has been removed
-
-### Features Added
-
-- New enum type `ConnectionProfile` with values `ConnectionProfileClassic`, `ConnectionProfileMqttV5`
-- New enum type `DeviceRegistryIdentityType` with values `DeviceRegistryIdentityTypeSystemAssigned`, `DeviceRegistryIdentityTypeUserAssigned`
-- New enum type `DeviceRegistryLinkingState` with values `DeviceRegistryLinkingStateFailed`, `DeviceRegistryLinkingStateInProgress`, `DeviceRegistryLinkingStateOrphaned`, `DeviceRegistryLinkingStateSuccess`
-- New enum type `MessagePayloadFormat` with values `MessagePayloadFormatDOObservationV1`, `MessagePayloadFormatNone`
-- New struct `DeviceRegistryIdentity`
-- New struct `DeviceRegistryLinkingProperties`
-- New struct `ErrorDetails`
-- New struct `MqttV5Settings`
-- New struct `TopicGroup`
-- New field `CertificateAuthorityResourceID` in struct `CertificateProperties`
-- New field `CertificateAuthorityResourceID` in struct `CertificatePropertiesWithNonce`
-- New field `DataPlaneHostName`, `Identity`, `LinkingProperties`, `NamespaceUUID` in struct `DeviceRegistry`
-- New field `ConnectionProfile`, `MqttV5Settings` in struct `Properties`
-- New field `DataSchema` in struct `RouteProperties`
-- New field `MessagePayloadFormat` in struct `RoutingCosmosDBSQLAPIProperties`
-- New field `MessagePayloadFormat` in struct `RoutingEventHubProperties`
-- New field `MessagePayloadFormat` in struct `RoutingEventStreamProperties`
-- New field `MessagePayloadFormat` in struct `RoutingServiceBusQueueEndpointProperties`
-- New field `MessagePayloadFormat` in struct `RoutingServiceBusTopicEndpointProperties`
-- New field `MessagePayloadFormat` in struct `RoutingStorageContainerProperties`
-
-
-## 2.0.0-beta.2 (2026-08-12)
-### Breaking Changes
-
+- Type of `FallbackRouteProperties.Source` has been changed from `*RoutingSource` to `*FallbackRouteSource`
 - Type of `RoutingTwin.Tags` has been changed from `any` to `map[string]any`
 - Type of `RoutingTwinProperties.Desired` has been changed from `any` to `map[string]any`
 - Type of `RoutingTwinProperties.Reported` has been changed from `any` to `map[string]any`
-- `IotHubSKUGEN2` from enum `IotHubSKU` has been removed
-- `IotHubSKUTierGeneration2` from enum `IotHubSKUTier` has been removed
-
-### Features Added
-
-- New enum type `EventStreamAuthenticationType` with values `EventStreamAuthenticationTypeIdentityBased`
-- New struct `RoutingEventStreamProperties`
-- New field `EventStreams` in struct `RoutingEndpoints`
-
-
-## 2.0.0-beta.1 (2026-05-20)
-### Breaking Changes
-
 - Struct `CertificateBodyDescription` has been removed
-- Struct `ErrorDetails` has been removed
 - Struct `Resource` has been removed
 
 ### Features Added
 
+- New enum type `DeviceRegistryIdentityType` with values `DeviceRegistryIdentityTypeSystemAssigned`, `DeviceRegistryIdentityTypeUserAssigned`
+- New enum type `DeviceRegistryLinkingState` with values `DeviceRegistryLinkingStateFailed`, `DeviceRegistryLinkingStateInProgress`, `DeviceRegistryLinkingStateOrphaned`, `DeviceRegistryLinkingStateSuccess`
+- New enum type `EventStreamAuthenticationType` with values `EventStreamAuthenticationTypeIdentityBased`
+- New enum type `FallbackRouteSource` with values `FallbackRouteSourceDeviceMessages`
 - New enum type `GatewayVersion` with values `GatewayVersionV1`, `GatewayVersionV2`
 - New struct `Details`
+- New struct `DeviceRegistry`
+- New struct `DeviceRegistryIdentity`
+- New struct `DeviceRegistryLinkingProperties`
+- New struct `RoutingEventStreamProperties`
 - New field `SystemData` in struct `CertificateDescription`
+- New field `CertificateAuthorityResourceID` in struct `CertificateProperties`
+- New field `CertificateAuthorityResourceID` in struct `CertificatePropertiesWithNonce`
 - New field `SystemData` in struct `EventHubConsumerGroupInfo`
 - New field `SystemData` in struct `PrivateEndpointConnection`
-- New field `DeviceHostName`, `IotHubDetails`, `ServiceHostName` in struct `Properties`
+- New field `DeviceHostName`, `DeviceRegistry`, `IotHubDetails`, `ServiceHostName` in struct `Properties`
+- New field `EventStreams` in struct `RoutingEndpoints`
 
 
 ## 1.4.0-beta.1 (2025-11-11)

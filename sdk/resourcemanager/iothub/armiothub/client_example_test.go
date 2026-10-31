@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01-preview/IotHub_ManualFailover.json
+// Generated from example definition: 2026-11-01/IotHub_ManualFailover.json
 func ExampleClient_BeginManualFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

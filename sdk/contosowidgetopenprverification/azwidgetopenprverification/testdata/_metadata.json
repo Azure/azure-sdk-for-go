@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Azure.Contoso.WidgetOpenPrVerification": "2022-12-01"
+  },
+  "emitterVersion": "0.17.6"
+}

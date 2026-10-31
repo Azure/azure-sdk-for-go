@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceDevice.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceDevice.json
 func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespaceDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,14 +29,15 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Outbound: &armdeviceregistry.OutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"iothubEndpoint": {
-							EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-							Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
+						"eventGridEndpoint": {
+							EndpointType: to.Ptr("Microsoft.Devices"),
+							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},
 					},
 				},
 			},
-			Enabled: to.Ptr(true),
+			ExternalDeviceID: to.Ptr("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
+			Enabled:          to.Ptr(true),
 			Attributes: map[string]any{
 				"deviceType":     "sensor",
 				"deviceOwner":    "IT",
@@ -56,10 +57,10 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
 	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
-	// 		Name: to.Ptr("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
-	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
-	// 		Location: to.Ptr("North Europe"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01/devices/dev-namespace-gbk0925-n01"),
+	// 		Name: to.Ptr("dev-namespace-gbk0925-n01"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/devices"),
+	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity"),
 	// 		},
@@ -75,13 +76,14 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 	// 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 	// 				Outbound: &armdeviceregistry.OutboundEndpoints{
 	// 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-	// 						"iothubEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
-	// 							EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 							Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
+	// 						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
+	// 							EndpointType: to.Ptr("Microsoft.Devices"),
+	// 							Address: to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 	// 						},
 	// 					},
 	// 				},
 	// 			},
+	// 			ExternalDeviceID: to.Ptr("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 			Enabled: to.Ptr(true),
 	// 			Attributes: map[string]any{
 	// 				"deviceType": "sensor",
@@ -89,12 +91,13 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 	// 				"deviceCategory": 16,
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("09801111-0000-0110-0000-0071e0104000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
 func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceWithAnonymousHostAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +119,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
 					"theOnlyOPCUABroker": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
-						EndpointType: to.Ptr("microsoft.opcua:v1"),
+						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
 						Authentication: &armdeviceregistry.HostAuthentication{
 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
@@ -145,9 +148,9 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
 	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/private.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
-	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
+	// 		Type: to.Ptr("private.deviceregistry/namespaces/devices"),
 	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity,rotation"),
@@ -166,7 +169,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
 	// 					"myonlyOPCUABroker": &armdeviceregistry.InboundEndpoints{
 	// 						Address: to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
-	// 						EndpointType: to.Ptr("microsoft.opcua:v1"),
+	// 						EndpointType: to.Ptr("microsoft.opcua"),
 	// 						Version: to.Ptr("2"),
 	// 						Authentication: &armdeviceregistry.HostAuthentication{
 	// 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
@@ -186,7 +189,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
 func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceWithUsernamesPasswordInboundAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +211,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
 					"theOnlyOPCUABroker": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
-						EndpointType: to.Ptr("microsoft.opcua:v1"),
+						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
 						Authentication: &armdeviceregistry.HostAuthentication{
 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
@@ -241,9 +244,9 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
 	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/private.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
-	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
+	// 		Type: to.Ptr("private.deviceregistry/namespaces/devices"),
 	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity,rotation"),
@@ -262,7 +265,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
 	// 					"theOnlyOPCUABroker": &armdeviceregistry.InboundEndpoints{
 	// 						Address: to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
-	// 						EndpointType: to.Ptr("microsoft.opcua:v1"),
+	// 						EndpointType: to.Ptr("microsoft.opcua"),
 	// 						Version: to.Ptr("2"),
 	// 						Authentication: &armdeviceregistry.HostAuthentication{
 	// 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
@@ -286,7 +289,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_x509.json
 func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceWithX509InboundAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +316,9 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 						Authentication: &armdeviceregistry.HostAuthentication{
 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodCertificate),
 							X509Credentials: &armdeviceregistry.X509CertificateCredentials{
-								CertificateSecretName: to.Ptr("cert-secret"),
+								CertificateSecretName:              to.Ptr("cert-secret"),
+								KeySecretName:                      to.Ptr("key-secret"),
+								IntermediateCertificatesSecretName: to.Ptr("intermediate-certs-secret"),
 							},
 						},
 					},
@@ -354,9 +359,9 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
 	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/private.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
-	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
+	// 		Type: to.Ptr("private.deviceregistry/namespaces/devices"),
 	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity,rotation"),
@@ -381,6 +386,8 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodCertificate),
 	// 							X509Credentials: &armdeviceregistry.X509CertificateCredentials{
 	// 								CertificateSecretName: to.Ptr("cert-secret"),
+	// 								KeySecretName: to.Ptr("key-secret"),
+	// 								IntermediateCertificatesSecretName: to.Ptr("intermediate-certs-secret"),
 	// 							},
 	// 						},
 	// 					},
@@ -412,7 +419,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Delete_NamespaceDevice.json
+// Generated from example definition: 2026-11-01/Delete_NamespaceDevice.json
 func ExampleNamespaceDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +440,7 @@ func ExampleNamespaceDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_NamespaceDevice.json
+// Generated from example definition: 2026-11-01/Get_NamespaceDevice.json
 func ExampleNamespaceDevicesClient_Get_getNamespaceDevice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,10 +464,10 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDevice() {
 	// 		Name: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/devices"),
 	// 		Location: to.Ptr("North Europe"),
-	// 		Etag: to.Ptr("\"c80325f9-0000-0800-0000-66fcb0290000\""),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity"),
 	// 		},
+	// 		Etag: to.Ptr("\"c80325f9-0000-0800-0000-66fcb0290000\""),
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
@@ -478,12 +485,13 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDevice() {
 	// 				"deviceCategory": 16,
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("09801111-0000-0110-0000-0071e0104000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_NamespaceDeviceWithEndpointErrorStatus.json
+// Generated from example definition: 2026-11-01/Get_NamespaceDeviceWithEndpointErrorStatus.json
 func ExampleNamespaceDevicesClient_Get_getNamespaceDeviceWithEndpointErrorStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,10 +519,10 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDeviceWithEndpointErrorStatus
 	// 			Type: to.Ptr("CustomLocation"),
 	// 			Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
 	// 		},
-	// 		Etag: to.Ptr("\"c80325f9-0000-0800-0000-66fcb0290000\""),
 	// 		Tags: map[string]*string{
 	// 			"sensor": to.Ptr("temperature,humidity"),
 	// 		},
+	// 		Etag: to.Ptr("\"c80325f9-0000-0800-0000-66fcb0290000\""),
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
@@ -534,6 +542,7 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDeviceWithEndpointErrorStatus
 	// 							Method: to.Ptr(armdeviceregistry.AuthenticationMethodCertificate),
 	// 							X509Credentials: &armdeviceregistry.X509CertificateCredentials{
 	// 								CertificateSecretName: to.Ptr("certificateSecretName"),
+	// 								KeySecretName: to.Ptr("keySecretName"),
 	// 							},
 	// 						},
 	// 					},
@@ -558,18 +567,24 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDeviceWithEndpointErrorStatus
 	// 									},
 	// 								},
 	// 							},
+	// 							HealthState: &armdeviceregistry.HealthState{
+	// 								Status: to.Ptr(armdeviceregistry.HealthStatusAvailable),
+	// 								LastTransitionTime: to.Ptr("2024-10-02T02:45:01.6394987Z"),
+	// 								LastUpdateTime: to.Ptr("2025-11-03T07:45:00Z"),
+	// 							},
 	// 						},
 	// 					},
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("09801111-0000-0110-0000-0071e0104000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/List_NamespaceDevices_ByResourceGroup.json
-func ExampleNamespaceDevicesClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-11-01/List_NamespaceDevices_ByNamespace.json
+func ExampleNamespaceDevicesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -579,7 +594,7 @@ func ExampleNamespaceDevicesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespaceDevicesClient().NewListByResourceGroupPager("myResourceGroup", "adr-namespace-gbk0925-n01", nil)
+	pager := clientFactory.NewNamespaceDevicesClient().NewListByNamespacePager("myResourceGroup", "adr-namespace-gbk0925-n01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -590,7 +605,7 @@ func ExampleNamespaceDevicesClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse{
+		// page = armdeviceregistry.NamespaceDevicesClientListByNamespaceResponse{
 		// 	NamespaceDeviceListResult: armdeviceregistry.NamespaceDeviceListResult{
 		// 		Value: []*armdeviceregistry.NamespaceDevice{
 		// 			{
@@ -642,9 +657,9 @@ func ExampleNamespaceDevicesClient_NewListByResourceGroupPager() {
 		// 					Endpoints: &armdeviceregistry.MessagingEndpoints{
 		// 						Outbound: &armdeviceregistry.OutboundEndpoints{
 		// 							Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-		// 								"iothubEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
-		// 									EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-		// 									Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
+		// 								"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
+		// 									EndpointType: to.Ptr("Microsoft.Devices"),
+		// 									Address: to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 		// 								},
 		// 							},
 		// 						},
@@ -665,63 +680,7 @@ func ExampleNamespaceDevicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/NamespaceDevices_Revoke.json
-func ExampleNamespaceDevicesClient_BeginRevoke_namespaceDevicesRevoke() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespaceDevicesClient().BeginRevoke(ctx, "rgdeviceregistry", "mynamespace", "device1", armdeviceregistry.DeviceCredentialsRevokeRequest{
-		Disable: to.Ptr(true),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.NamespaceDevicesClientRevokeResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-01-preview/NamespaceDevices_RevokeFailure.json
-func ExampleNamespaceDevicesClient_BeginRevoke_namespaceDevicesRevokeFailure() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespaceDevicesClient().BeginRevoke(ctx, "rgdeviceregistry", "mynamespace", "device1", armdeviceregistry.DeviceCredentialsRevokeRequest{
-		Disable: to.Ptr(true),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.NamespaceDevicesClientRevokeResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-01-preview/Update_NamespaceDevice.json
+// Generated from example definition: 2026-11-01/Update_NamespaceDevice.json
 func ExampleNamespaceDevicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -737,9 +696,9 @@ func ExampleNamespaceDevicesClient_BeginUpdate() {
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Outbound: &armdeviceregistry.OutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"iothubEndpoint": {
-							EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-							Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
+						"eventGridEndpoint": {
+							EndpointType: to.Ptr("Microsoft.Devices"),
+							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},
 					},
 				},
@@ -783,9 +742,9 @@ func ExampleNamespaceDevicesClient_BeginUpdate() {
 	// 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 	// 				Outbound: &armdeviceregistry.OutboundEndpoints{
 	// 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-	// 						"iothubEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
-	// 							EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 							Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
+	// 						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
+	// 							EndpointType: to.Ptr("Microsoft.Devices"),
+	// 							Address: to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 	// 						},
 	// 					},
 	// 				},
@@ -798,6 +757,7 @@ func ExampleNamespaceDevicesClient_BeginUpdate() {
 	// 				"deviceCategory": 16,
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("09801111-0000-0110-0000-0071e0104000"),
 	// 		},
 	// 	},
 	// }

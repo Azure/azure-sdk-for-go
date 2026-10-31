@@ -21,11 +21,17 @@ type ServerFactory struct {
 	// AssetsServer contains the fakes for client AssetsClient
 	AssetsServer AssetsServer
 
+	// AsyncOperationStatusServer contains the fakes for client AsyncOperationStatusClient
+	AsyncOperationStatusServer AsyncOperationStatusServer
+
 	// BillingContainersServer contains the fakes for client BillingContainersClient
 	BillingContainersServer BillingContainersServer
 
-	// CredentialsServer contains the fakes for client CredentialsClient
-	CredentialsServer CredentialsServer
+	// CertificateAuthoritiesServer contains the fakes for client CertificateAuthoritiesClient
+	CertificateAuthoritiesServer CertificateAuthoritiesServer
+
+	// CertificatePoliciesServer contains the fakes for client CertificatePoliciesClient
+	CertificatePoliciesServer CertificatePoliciesServer
 
 	// NamespaceAssetsServer contains the fakes for client NamespaceAssetsClient
 	NamespaceAssetsServer NamespaceAssetsServer
@@ -48,8 +54,8 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// PoliciesServer contains the fakes for client PoliciesClient
-	PoliciesServer PoliciesServer
+	// RegistryDevicesServer contains the fakes for client RegistryDevicesClient
+	RegistryDevicesServer RegistryDevicesServer
 
 	// SchemaRegistriesServer contains the fakes for client SchemaRegistriesClient
 	SchemaRegistriesServer SchemaRegistriesServer
@@ -77,8 +83,10 @@ type ServerFactoryTransport struct {
 	trMu                               sync.Mutex
 	trAssetEndpointProfilesServer      *AssetEndpointProfilesServerTransport
 	trAssetsServer                     *AssetsServerTransport
+	trAsyncOperationStatusServer       *AsyncOperationStatusServerTransport
 	trBillingContainersServer          *BillingContainersServerTransport
-	trCredentialsServer                *CredentialsServerTransport
+	trCertificateAuthoritiesServer     *CertificateAuthoritiesServerTransport
+	trCertificatePoliciesServer        *CertificatePoliciesServerTransport
 	trNamespaceAssetsServer            *NamespaceAssetsServerTransport
 	trNamespaceDevicesServer           *NamespaceDevicesServerTransport
 	trNamespaceDiscoveredAssetsServer  *NamespaceDiscoveredAssetsServerTransport
@@ -86,7 +94,7 @@ type ServerFactoryTransport struct {
 	trNamespacesServer                 *NamespacesServerTransport
 	trOperationStatusServer            *OperationStatusServerTransport
 	trOperationsServer                 *OperationsServerTransport
-	trPoliciesServer                   *PoliciesServerTransport
+	trRegistryDevicesServer            *RegistryDevicesServerTransport
 	trSchemaRegistriesServer           *SchemaRegistriesServerTransport
 	trSchemaVersionsServer             *SchemaVersionsServerTransport
 	trSchemasServer                    *SchemasServerTransport
@@ -113,14 +121,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AssetsClient":
 		initServer(&s.trMu, &s.trAssetsServer, func() *AssetsServerTransport { return NewAssetsServerTransport(&s.srv.AssetsServer) })
 		resp, err = s.trAssetsServer.Do(req)
+	case "AsyncOperationStatusClient":
+		initServer(&s.trMu, &s.trAsyncOperationStatusServer, func() *AsyncOperationStatusServerTransport {
+			return NewAsyncOperationStatusServerTransport(&s.srv.AsyncOperationStatusServer)
+		})
+		resp, err = s.trAsyncOperationStatusServer.Do(req)
 	case "BillingContainersClient":
 		initServer(&s.trMu, &s.trBillingContainersServer, func() *BillingContainersServerTransport {
 			return NewBillingContainersServerTransport(&s.srv.BillingContainersServer)
 		})
 		resp, err = s.trBillingContainersServer.Do(req)
-	case "CredentialsClient":
-		initServer(&s.trMu, &s.trCredentialsServer, func() *CredentialsServerTransport { return NewCredentialsServerTransport(&s.srv.CredentialsServer) })
-		resp, err = s.trCredentialsServer.Do(req)
+	case "CertificateAuthoritiesClient":
+		initServer(&s.trMu, &s.trCertificateAuthoritiesServer, func() *CertificateAuthoritiesServerTransport {
+			return NewCertificateAuthoritiesServerTransport(&s.srv.CertificateAuthoritiesServer)
+		})
+		resp, err = s.trCertificateAuthoritiesServer.Do(req)
+	case "CertificatePoliciesClient":
+		initServer(&s.trMu, &s.trCertificatePoliciesServer, func() *CertificatePoliciesServerTransport {
+			return NewCertificatePoliciesServerTransport(&s.srv.CertificatePoliciesServer)
+		})
+		resp, err = s.trCertificatePoliciesServer.Do(req)
 	case "NamespaceAssetsClient":
 		initServer(&s.trMu, &s.trNamespaceAssetsServer, func() *NamespaceAssetsServerTransport {
 			return NewNamespaceAssetsServerTransport(&s.srv.NamespaceAssetsServer)
@@ -152,9 +172,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PoliciesClient":
-		initServer(&s.trMu, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
-		resp, err = s.trPoliciesServer.Do(req)
+	case "RegistryDevicesClient":
+		initServer(&s.trMu, &s.trRegistryDevicesServer, func() *RegistryDevicesServerTransport {
+			return NewRegistryDevicesServerTransport(&s.srv.RegistryDevicesServer)
+		})
+		resp, err = s.trRegistryDevicesServer.Do(req)
 	case "SchemaRegistriesClient":
 		initServer(&s.trMu, &s.trSchemaRegistriesServer, func() *SchemaRegistriesServerTransport {
 			return NewSchemaRegistriesServerTransport(&s.srv.SchemaRegistriesServer)

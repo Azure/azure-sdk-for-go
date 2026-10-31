@@ -20,7 +20,7 @@ import (
 // EventSubscriptionsClient contains the methods for the EventSubscriptions group.
 // Don't use this type directly, use NewEventSubscriptionsClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type EventSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *EventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update an event subscription.
+// createOrUpdate - Create or update an event subscription.
 //
 // Asynchronously creates a new event subscription or updates an existing event subscription based on the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *EventSubscriptionsClient) createOrUpdate(ctx context.Context, scop
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, _ *EventSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
 	if scope == "" {
@@ -111,7 +111,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -131,7 +131,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *EventSubscriptionsClient) BeginDelete(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[EventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, scope, eventSubscriptionName, options)
+		resp, err := client.delete(ctx, scope, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -146,11 +146,11 @@ func (client *EventSubscriptionsClient) BeginDelete(ctx context.Context, scope s
 	}
 }
 
-// Delete - Delete an event subscription.
+// delete - Delete an event subscription.
 //
 // Delete an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EventSubscriptionsClient) deleteOperation(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EventSubscriptionsClient) delete(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -170,7 +170,7 @@ func (client *EventSubscriptionsClient) deleteOperation(ctx context.Context, sco
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, _ *EventSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
 	if scope == "" {
@@ -186,8 +186,84 @@ func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an event subscription.
+//
+// Asynchronously updates an existing event subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - scope - undefined
+//   - eventSubscriptionName - Name of the event subscription to be found.
+//   - eventSubscriptionUpdateParameters - Updated event subscription information.
+//   - options - EventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginUpdate
+//     method.
+func (client *EventSubscriptionsClient) BeginUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[EventSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EventSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EventSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an event subscription.
+//
+// Asynchronously updates an existing event subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EventSubscriptionsClient) update(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EventSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, _ *EventSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
+	if eventSubscriptionName == "" {
+		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -231,7 +307,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +366,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +425,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -438,7 +514,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -533,7 +609,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -548,86 +624,6 @@ func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListByResourceResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListGlobalByResourceGroupPager - List all global event subscriptions under an Azure subscription and resource group.
-//
-// List all global event subscriptions under a specific Azure subscription and resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalByResourceGroupPager
-//     method.
-func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupPager(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListGlobalByResourceGroupResponse]{
-		More: func(page EventSubscriptionsClientListGlobalByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalByResourceGroupResponse) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListGlobalByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
-			}
-			return client.listGlobalByResourceGroupHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listGlobalByResourceGroupCreateRequest creates the ListGlobalByResourceGroup request.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20250715Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listGlobalByResourceGroupHandleResponse handles the ListGlobalByResourceGroup response.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
-	result := EventSubscriptionsClientListGlobalByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -699,7 +695,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -718,47 +714,52 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHan
 	return result, nil
 }
 
-// NewListGlobalBySubscriptionPager - Get an aggregated list of all global event subscriptions under an Azure subscription.
+// NewListGlobalByResourceGroupPager - List all global event subscriptions under an Azure subscription and resource group.
 //
-// List all aggregated global event subscriptions under a specific Azure subscription.
-//   - options - EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalBySubscriptionPager
+// List all global event subscriptions under a specific Azure subscription and resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalByResourceGroupPager
 //     method.
-func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionPager(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListGlobalBySubscriptionResponse]{
-		More: func(page EventSubscriptionsClientListGlobalBySubscriptionResponse) bool {
+func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupPager(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListGlobalByResourceGroupResponse]{
+		More: func(page EventSubscriptionsClientListGlobalByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalBySubscriptionResponse) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListGlobalBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalByResourceGroupResponse) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListGlobalByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listGlobalBySubscriptionCreateRequest(ctx, nextLink, options)
+			req, err := client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
-				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 			}
-			return client.listGlobalBySubscriptionHandleResponse(resp, http.StatusOK)
+			return client.listGlobalByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listGlobalBySubscriptionCreateRequest creates the ListGlobalBySubscription request.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *EventSubscriptionsClientListGlobalBySubscriptionOptions) (*policy.Request, error) {
+// listGlobalByResourceGroupCreateRequest creates the ListGlobalByResourceGroup request.
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/eventSubscriptions"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -774,21 +775,21 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listGlobalBySubscriptionHandleResponse handles the ListGlobalBySubscription response.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
-	result := EventSubscriptionsClientListGlobalBySubscriptionResponse{}
+// listGlobalByResourceGroupHandleResponse handles the ListGlobalByResourceGroup response.
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
+	result := EventSubscriptionsClientListGlobalByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+		return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -854,7 +855,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -873,57 +874,47 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHand
 	return result, nil
 }
 
-// NewListRegionalByResourceGroupPager - List all regional event subscriptions under an Azure subscription and resource group.
+// NewListGlobalBySubscriptionPager - Get an aggregated list of all global event subscriptions under an Azure subscription.
 //
-// List all event subscriptions from the given location under a specific Azure subscription and resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - options - EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalByResourceGroupPager
+// List all aggregated global event subscriptions under a specific Azure subscription.
+//   - options - EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalBySubscriptionPager
 //     method.
-func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupPager(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListRegionalByResourceGroupResponse]{
-		More: func(page EventSubscriptionsClientListRegionalByResourceGroupResponse) bool {
+func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionPager(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListGlobalBySubscriptionResponse]{
+		More: func(page EventSubscriptionsClientListGlobalBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalByResourceGroupResponse) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListRegionalByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalBySubscriptionResponse) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListGlobalBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, nextLink, options)
+			req, err := client.listGlobalBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 			}
-			return client.listRegionalByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listGlobalBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listRegionalByResourceGroupCreateRequest creates the ListRegionalByResourceGroup request.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) (*policy.Request, error) {
+// listGlobalBySubscriptionCreateRequest creates the ListGlobalBySubscription request.
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *EventSubscriptionsClientListGlobalBySubscriptionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/eventSubscriptions"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -939,21 +930,21 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listRegionalByResourceGroupHandleResponse handles the ListRegionalByResourceGroup response.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
-	result := EventSubscriptionsClientListRegionalByResourceGroupResponse{}
+// listGlobalBySubscriptionHandleResponse handles the ListGlobalBySubscription response.
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
+	result := EventSubscriptionsClientListGlobalBySubscriptionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+		return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -1030,7 +1021,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1049,48 +1040,53 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeH
 	return result, nil
 }
 
-// NewListRegionalBySubscriptionPager - List all regional event subscriptions under an Azure subscription.
+// NewListRegionalByResourceGroupPager - List all regional event subscriptions under an Azure subscription and resource group.
 //
-// List all event subscriptions from the given location under a specific Azure subscription.
+// List all event subscriptions from the given location under a specific Azure subscription and resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - options - EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalBySubscriptionPager
+//   - options - EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalByResourceGroupPager
 //     method.
-func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionPager(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListRegionalBySubscriptionResponse]{
-		More: func(page EventSubscriptionsClientListRegionalBySubscriptionResponse) bool {
+func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupPager(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListRegionalByResourceGroupResponse]{
+		More: func(page EventSubscriptionsClientListRegionalByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalBySubscriptionResponse) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListRegionalBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalByResourceGroupResponse) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListRegionalByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listRegionalBySubscriptionCreateRequest(ctx, location, nextLink, options)
+			req, err := client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, nextLink, options)
 			if err != nil {
-				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 			}
-			return client.listRegionalBySubscriptionHandleResponse(resp, http.StatusOK)
+			return client.listRegionalByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listRegionalBySubscriptionCreateRequest creates the ListRegionalBySubscription request.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) (*policy.Request, error) {
+// listRegionalByResourceGroupCreateRequest creates the ListRegionalByResourceGroup request.
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")
 		}
@@ -1110,21 +1106,21 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listRegionalBySubscriptionHandleResponse handles the ListRegionalBySubscription response.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
-	result := EventSubscriptionsClientListRegionalBySubscriptionResponse{}
+// listRegionalByResourceGroupHandleResponse handles the ListRegionalByResourceGroup response.
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
+	result := EventSubscriptionsClientListRegionalByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+		return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -1196,7 +1192,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1215,78 +1211,82 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHa
 	return result, nil
 }
 
-// BeginUpdate - Update an event subscription.
+// NewListRegionalBySubscriptionPager - List all regional event subscriptions under an Azure subscription.
 //
-// Asynchronously updates an existing event subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - scope - undefined
-//   - eventSubscriptionName - Name of the event subscription to be found.
-//   - eventSubscriptionUpdateParameters - Updated event subscription information.
-//   - options - EventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginUpdate
+// List all event subscriptions from the given location under a specific Azure subscription.
+//   - location - The location name.
+//   - options - EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalBySubscriptionPager
 //     method.
-func (client *EventSubscriptionsClient) BeginUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[EventSubscriptionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EventSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EventSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionPager(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventSubscriptionsClientListRegionalBySubscriptionResponse]{
+		More: func(page EventSubscriptionsClientListRegionalBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalBySubscriptionResponse) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventSubscriptionsClient.NewListRegionalBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listRegionalBySubscriptionCreateRequest(ctx, location, nextLink, options)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+			}
+			return client.listRegionalBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - Update an event subscription.
-//
-// Asynchronously updates an existing event subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EventSubscriptionsClient) update(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+// listRegionalBySubscriptionCreateRequest creates the ListRegionalBySubscription request.
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "EventSubscriptionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, _ *EventSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
-	if eventSubscriptionName == "" {
-		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260615Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listRegionalBySubscriptionHandleResponse handles the ListRegionalBySubscription response.
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
+	result := EventSubscriptionsClientListRegionalBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
+		return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+	}
+	return result, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/ClientGroups_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/ClientGroups_CreateOrUpdate.json
 func ExampleClientGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleClientGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/ClientGroups_Delete.json
+// Generated from example definition: 2026-06-15-preview/ClientGroups_Delete.json
 func ExampleClientGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleClientGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/ClientGroups_Get.json
+// Generated from example definition: 2026-06-15-preview/ClientGroups_Get.json
 func ExampleClientGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleClientGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/ClientGroups_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/ClientGroups_ListByNamespace.json
 func ExampleClientGroupsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

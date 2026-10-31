@@ -30,6 +30,10 @@ type PartnerRegistrationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *armeventgrid.PartnerRegistrationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PartnerRegistrationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters armeventgrid.PartnerRegistrationUpdateParameters, options *armeventgrid.PartnerRegistrationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PartnerRegistrationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *armeventgrid.PartnerRegistrationsClientGetOptions) (resp azfake.Responder[armeventgrid.PartnerRegistrationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type PartnerRegistrationsServer struct {
 	// NewListBySubscriptionPager is the fake for method PartnerRegistrationsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armeventgrid.PartnerRegistrationsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.PartnerRegistrationsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method PartnerRegistrationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters armeventgrid.PartnerRegistrationUpdateParameters, options *armeventgrid.PartnerRegistrationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPartnerRegistrationsServerTransport creates a new instance of PartnerRegistrationsServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewPartnerRegistrationsServerTransport(srv *PartnerRegistrationsServer) *Pa
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armeventgrid.PartnerRegistrationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armeventgrid.PartnerRegistrationsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type PartnerRegistrationsServerTransport struct {
 	srv                         *PartnerRegistrationsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armeventgrid.PartnerRegistrationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armeventgrid.PartnerRegistrationsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.PartnerRegistrationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for PartnerRegistrationsServerTransport.
@@ -97,14 +97,14 @@ func (p *PartnerRegistrationsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PartnerRegistrationsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PartnerRegistrationsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PartnerRegistrationsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PartnerRegistrationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PartnerRegistrationsClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
-			case "PartnerRegistrationsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -208,6 +208,54 @@ func (p *PartnerRegistrationsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PartnerRegistrationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerRegistrations/(?P<partnerRegistrationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.PartnerRegistrationUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		partnerRegistrationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerRegistrationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, partnerRegistrationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -351,54 +399,6 @@ func (p *PartnerRegistrationsServerTransport) dispatchNewListBySubscriptionPager
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		p.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PartnerRegistrationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerRegistrations/(?P<partnerRegistrationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.PartnerRegistrationUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		partnerRegistrationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerRegistrationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, partnerRegistrationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -401,7 +401,7 @@ func TestChallengePolicy_ConcurrentRequests(t *testing.T) {
 			require.NoError(t, err)
 			res, err := pl.Do(req)
 			require.NoError(t, err)
-			defer res.Body.Close()
+			require.NoError(t, res.Body.Close())
 		})()
 		wg.Add(1)
 	}

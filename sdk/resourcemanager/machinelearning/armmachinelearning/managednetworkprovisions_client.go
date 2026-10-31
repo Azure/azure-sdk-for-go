@@ -19,7 +19,7 @@ import (
 // ManagedNetworkProvisionsClient contains the methods for the ManagedNetworkProvisions group.
 // Don't use this type directly, use NewManagedNetworkProvisionsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type ManagedNetworkProvisionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 	}
 }
 
-// ProvisionManagedNetwork - Provisions the managed network of a machine learning workspace.
+// provisionManagedNetwork - Provisions the managed network of a machine learning workspace.
 //
 // Provisions the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -93,7 +93,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx contex
 	return httpResp, nil
 }
 
-// provisionManagedNetworkCreateRequest creates the ProvisionManagedNetwork request.
+// provisionManagedNetworkCreateRequest creates the provisionManagedNetwork request.
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/provisionManagedNetwork"
 	if client.subscriptionID == "" {
@@ -113,7 +113,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
 func ExampleBenefitUtilizationSummariesClient_NewListByBillingAccountIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleBenefitUtilizationSummariesClient_NewListByBillingAccountIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-BillingProfile.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/SavingsPlan-BillingProfile.json
 func ExampleBenefitUtilizationSummariesClient_NewListByBillingProfileIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleBenefitUtilizationSummariesClient_NewListByBillingProfileIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanId-Monthly.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanId-Monthly.json
 func ExampleBenefitUtilizationSummariesClient_NewListBySavingsPlanIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleBenefitUtilizationSummariesClient_NewListBySavingsPlanIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanOrderId-Daily.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanOrderId-Daily.json
 func ExampleBenefitUtilizationSummariesClient_NewListBySavingsPlanOrderPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

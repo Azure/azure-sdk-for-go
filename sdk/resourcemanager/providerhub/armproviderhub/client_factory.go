@@ -64,6 +64,14 @@ func (c *ClientFactory) NewDefaultRolloutsClient() *DefaultRolloutsClient {
 	}
 }
 
+// NewEndpointRegistrationsClient creates a new instance of EndpointRegistrationsClient.
+func (c *ClientFactory) NewEndpointRegistrationsClient() *EndpointRegistrationsClient {
+	return &EndpointRegistrationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManifestsClient creates a new instance of ManifestsClient.
 func (c *ClientFactory) NewManifestsClient() *ManifestsClient {
 	return &ManifestsClient{

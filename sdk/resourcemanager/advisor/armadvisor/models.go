@@ -302,6 +302,12 @@ type PredictionResponseProperties struct {
 	ShortDescription *ShortDescription
 }
 
+// RecommendationPatchPayload - The recommendation patch payload.
+type RecommendationPatchPayload struct {
+	// The properties for recommendation patch payload.
+	Properties *RecommendationStatePropertiesPayload
+}
+
 // RecommendationProperties - The properties of the recommendation.
 type RecommendationProperties struct {
 	// The list of recommended actions to implement recommendation.
@@ -310,8 +316,14 @@ type RecommendationProperties struct {
 	// The category of the recommendation.
 	Category *Category
 
+	// The type of recommendation completion, which is either MarkedByUser or SystemVerified
+	CompletionType *string
+
 	// The sub-category of the recommendation.
 	Control *Control
+
+	// The created time of the recommendation.
+	CreatedTime *time.Time
 
 	// The detailed description of recommendation.
 	Description *string
@@ -334,7 +346,10 @@ type RecommendationProperties struct {
 	// The label of recommendation.
 	Label *string
 
-	// The most recent time that Advisor checked the validity of the recommendation.
+	// The most recent time Advisor evaluated the recommendation for validity (re-ingested).
+	LastRefreshed *time.Time
+
+	// The most recent time the recommendation state changed (manual or automated).
 	LastUpdated *time.Time
 
 	// The link to learn more about recommendation and generation logic.
@@ -346,8 +361,17 @@ type RecommendationProperties struct {
 	// Additional notes for the Recommendation
 	Notes *string
 
+	// The time the Recommendation was postponed until.
+	PostponedUntilDateTime *time.Time
+
 	// The potential benefit of implementing recommendation.
 	PotentialBenefits *string
+
+	// The reason the Recommendation was dismissed.
+	RecommendationDismissReason *RecommendationDismissReason
+
+	// The state of the Recommendation
+	RecommendationStatus *RecommendationStatus
 
 	// The recommendation-type GUID.
 	RecommendationTypeID *string
@@ -373,14 +397,26 @@ type RecommendationProperties struct {
 	// The Source System that this Recommendation originated from.
 	SourceSystem *string
 
-	// The list of snoozed and dismissed rules for the recommendation.
-	SuppressionIDs []*string
-
-	// If the Recommendation has Tracking enabled.
-	Tracked *bool
+	// The single snoozed or dismissed rule for the recommendation.
+	SuppressionID *string
 
 	// The properties of a tracked recommendation.
 	TrackedProperties *TrackedRecommendationProperties
+
+	// READ-ONLY; The criticality assigned to the recommendation.
+	Criticality *string
+
+	// READ-ONLY; The criticality score assigned to the recommendation.
+	CriticalityScore *string
+
+	// READ-ONLY; The estimated savings associated with the recommendation.
+	Savings *ResourceRecommendationSavings
+
+	// READ-ONLY; The time when the recommendation's criticality score last changed.
+	ScoreChangedAt *string
+
+	// READ-ONLY; The service group ID associated with the recommendation.
+	ServiceGroupID *string
 }
 
 // RecommendationPropertiesResourceWorkload - The Workload that this Resource belongs to.
@@ -401,10 +437,16 @@ type RecommendationPropertiesReview struct {
 	Name *string
 }
 
-// RecommendationRejectBody - Recommendation reject body.
-type RecommendationRejectBody struct {
-	// Reason for rejecting recommendation.
-	ReasonForRejection *ReasonForRejectionName
+// RecommendationStatePropertiesPayload - Properties for recommendation state patch payload.
+type RecommendationStatePropertiesPayload struct {
+	// The time the Recommendation was postponed until.
+	PostponedUntilDateTime *time.Time
+
+	// The reason the state of the Recommendation was changed.
+	RecommendationDismissReason *RecommendationDismissReason
+
+	// The state of the recommendation.
+	RecommendationStatus *RecommendationStatus
 }
 
 // ResiliencyReview - The Advisor resiliency review data structure.
@@ -498,6 +540,48 @@ type ResourceRecommendationBaseListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// ResourceRecommendationSavings - The estimated savings associated with a resource recommendation.
+type ResourceRecommendationSavings struct {
+	// The currency used for billing.
+	BillingCurrency *string
+
+	// The savings calculated using contracted pricing.
+	Contracted *ResourceRecommendationSavingsDetails
+
+	// Indicates whether the recommendation is for a direct billing channel.
+	IsDirectChannel *bool
+
+	// The currency used by the recommendation provider.
+	ProviderCurrency *string
+
+	// The time when the recommended resource was deleted.
+	ResourceDeletedOn *time.Time
+
+	// The savings calculated using retail pricing.
+	Retail *ResourceRecommendationSavingsDetails
+}
+
+// ResourceRecommendationSavingsDetails - The detailed savings amounts for a resource recommendation.
+type ResourceRecommendationSavingsDetails struct {
+	// The potential savings in the provider currency.
+	PotentialSavings *float64
+
+	// The potential savings in the billing currency.
+	PotentialSavingsInBillingCurrency *float64
+
+	// The realized savings in the provider currency.
+	RealizedSavings *float64
+
+	// The realized savings in the billing currency.
+	RealizedSavingsInBillingCurrency *float64
+
+	// The amount wasted to date in the provider currency.
+	WastedTillDate *float64
+
+	// The amount wasted to date in the billing currency.
+	WastedTillDateInBillingCurrency *float64
 }
 
 // ScoreEntity - The details of Advisor Score
@@ -634,137 +718,8 @@ type TimeSeriesEntity struct {
 
 // TrackedRecommendationProperties - The tracked properties of a Recommendation
 type TrackedRecommendationProperties struct {
-	// The time the Recommendation was postponed until.
-	PostponedTime *time.Time
-
 	// The Priority of the Recommendation.
 	Priority *Priority
-
-	// The reason the state of the Recommendation was changed.
-	Reason *Reason
-
-	// The state of the Recommendation
-	State *State
-}
-
-type TrackedRecommendationPropertiesPayload struct {
-	Properties *TrackedRecommendationPropertiesPayloadProperties
-}
-
-type TrackedRecommendationPropertiesPayloadProperties struct {
-	// The tracked properties of a Recommendation
-	TrackedProperties *TrackedRecommendationProperties
-}
-
-// TriageRecommendation - Triage recommendation data structure.
-type TriageRecommendation struct {
-	// Advisor resiliency review properties.
-	Properties *TriageRecommendationProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// TriageRecommendationCollection - Collection of Advisor triage recommendations.
-type TriageRecommendationCollection struct {
-	// REQUIRED; List of triage recommendations.
-	Value []*TriageRecommendation
-
-	// The URL to get the next set of triage recommendations, if there are any.
-	NextLink *string
-}
-
-// TriageRecommendationProperties - Triage recommendation properties.
-type TriageRecommendationProperties struct {
-	// READ-ONLY; List of subscription ids.
-	AppliesToSubscriptions []*string
-
-	// READ-ONLY; Recommendation description.
-	Description *string
-
-	// READ-ONLY; Recommendation notes.
-	Notes *string
-
-	// READ-ONLY; Recommendation potential benefit.
-	PotentialBenefits *string
-
-	// READ-ONLY; Recommendation priority.
-	Priority *PriorityName
-
-	// READ-ONLY; Recommendation status.
-	RecommendationStatus *RecommendationStatusName
-
-	// READ-ONLY; Recommendation rejection reason.
-	RejectReason *string
-
-	// READ-ONLY; Review id.
-	ReviewID *string
-
-	// READ-ONLY; Recommendation label.
-	Title *string
-
-	// READ-ONLY; Recommendation potential benefit.
-	UpdatedAt *string
-}
-
-// TriageResource - Triage resource data structure.
-type TriageResource struct {
-	// Triage resource properties.
-	Properties *TriageResourceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// TriageResourceCollection - Collection of Advisor triage resources.
-type TriageResourceCollection struct {
-	// REQUIRED; The TriageResource items on this page
-	Value []*TriageResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// TriageResourceProperties - Triage resource properties.
-type TriageResourceProperties struct {
-	// READ-ONLY; Unique identifier for the recommendation resource this triageResource belongs to.
-	RecommendationID *string
-
-	// READ-ONLY; Name of the resource group this triageResource belongs to.
-	ResourceGroup *string
-
-	// READ-ONLY; Full Azure resource id path of the resource this triageResource corresponds to.
-	ResourceID *string
-
-	// READ-ONLY; Name of the resource this triageResource corresponds to.
-	ResourceName *string
-
-	// READ-ONLY; Type of resource this triageResource corresponds to e.g. "Cosmos DB".
-	ResourceType *string
-
-	// READ-ONLY; Unique identifier for the review resource this triageResource belongs to.
-	ReviewID *string
-
-	// READ-ONLY; Unique identifier for the subscription resource this triageResource belongs to.
-	SubscriptionID *string
 }
 
 // WorkloadListResult - The Workload list result data structure.

@@ -5,7 +5,7 @@
 package armadvisor
 
 const (
-	version20250501Preview string = "2025-05-01-preview"
+	version20260801Preview string = "2026-08-01-preview"
 )
 
 // Aggregated - The aggregation level of the score.
@@ -231,87 +231,68 @@ func PossiblePriorityValues() []Priority {
 	}
 }
 
-// PriorityName - Recommendation priority name enum.
-type PriorityName string
+// RecommendationDismissReason - The reason for dismissing the Recommendation.
+type RecommendationDismissReason string
 
 const (
-	// PriorityNameHigh - High
-	PriorityNameHigh PriorityName = "High"
-	// PriorityNameLow - Low
-	PriorityNameLow PriorityName = "Low"
-	// PriorityNameMedium - Medium
-	PriorityNameMedium PriorityName = "Medium"
+	RecommendationDismissReasonAnAlternativeSolutionIsAlreadyInPlace   RecommendationDismissReason = "AnAlternativeSolutionIsAlreadyInPlace"
+	RecommendationDismissReasonExcessiveCostInvestmentRequired         RecommendationDismissReason = "ExcessiveCostInvestmentRequired"
+	RecommendationDismissReasonImplementationStepsAreUnclear           RecommendationDismissReason = "ImplementationStepsAreUnclear"
+	RecommendationDismissReasonIncompatibleWithTheCurrentConfiguration RecommendationDismissReason = "IncompatibleWithTheCurrentConfiguration"
+	RecommendationDismissReasonOther                                   RecommendationDismissReason = "Other"
+	RecommendationDismissReasonRiskIsAcceptable                        RecommendationDismissReason = "RiskIsAcceptable"
+	RecommendationDismissReasonTooComplexOrImpracticalToImplement      RecommendationDismissReason = "TooComplexOrImpracticalToImplement"
 )
 
-// PossiblePriorityNameValues returns the possible values for the PriorityName const type.
-func PossiblePriorityNameValues() []PriorityName {
-	return []PriorityName{
-		PriorityNameHigh,
-		PriorityNameLow,
-		PriorityNameMedium,
+// PossibleRecommendationDismissReasonValues returns the possible values for the RecommendationDismissReason const type.
+func PossibleRecommendationDismissReasonValues() []RecommendationDismissReason {
+	return []RecommendationDismissReason{
+		RecommendationDismissReasonAnAlternativeSolutionIsAlreadyInPlace,
+		RecommendationDismissReasonExcessiveCostInvestmentRequired,
+		RecommendationDismissReasonImplementationStepsAreUnclear,
+		RecommendationDismissReasonIncompatibleWithTheCurrentConfiguration,
+		RecommendationDismissReasonOther,
+		RecommendationDismissReasonRiskIsAcceptable,
+		RecommendationDismissReasonTooComplexOrImpracticalToImplement,
 	}
 }
 
-// Reason - The reason the state of the Recommendation was changed.
-type Reason string
+// RecommendationListMode - The mode used to retrieve recommendations.
+type RecommendationListMode string
 
 const (
-	ReasonAlternativeSolution Reason = "AlternativeSolution"
-	ReasonExcessiveInvestment Reason = "ExcessiveInvestment"
-	ReasonIncompatible        Reason = "Incompatible"
-	ReasonRiskAccepted        Reason = "RiskAccepted"
-	ReasonTooComplex          Reason = "TooComplex"
-	ReasonUnclear             Reason = "Unclear"
+	// RecommendationListModeAll - Returns all recommendations.
+	RecommendationListModeAll RecommendationListMode = "all"
+	// RecommendationListModeContextual - Returns prioritized subset of recommendations ordered descending by their criticality
+	// score.
+	RecommendationListModeContextual RecommendationListMode = "contextual"
 )
 
-// PossibleReasonValues returns the possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{
-		ReasonAlternativeSolution,
-		ReasonExcessiveInvestment,
-		ReasonIncompatible,
-		ReasonRiskAccepted,
-		ReasonTooComplex,
-		ReasonUnclear,
+// PossibleRecommendationListModeValues returns the possible values for the RecommendationListMode const type.
+func PossibleRecommendationListModeValues() []RecommendationListMode {
+	return []RecommendationListMode{
+		RecommendationListModeAll,
+		RecommendationListModeContextual,
 	}
 }
 
-// ReasonForRejectionName - Reason for rejecting recommendation name enum.
-type ReasonForRejectionName string
+// RecommendationStatus - The state of the Recommendation applicable from v2026-02-01-preview.
+type RecommendationStatus string
 
 const (
-	// ReasonForRejectionNameNotARisk - Not A Risk
-	ReasonForRejectionNameNotARisk ReasonForRejectionName = "NotARisk"
-	// ReasonForRejectionNameRiskAccepted - Risk Accepted
-	ReasonForRejectionNameRiskAccepted ReasonForRejectionName = "RiskAccepted"
+	RecommendationStatusCompleted RecommendationStatus = "Completed"
+	RecommendationStatusDismissed RecommendationStatus = "Dismissed"
+	RecommendationStatusNew       RecommendationStatus = "New"
+	RecommendationStatusPostponed RecommendationStatus = "Postponed"
 )
 
-// PossibleReasonForRejectionNameValues returns the possible values for the ReasonForRejectionName const type.
-func PossibleReasonForRejectionNameValues() []ReasonForRejectionName {
-	return []ReasonForRejectionName{
-		ReasonForRejectionNameNotARisk,
-		ReasonForRejectionNameRiskAccepted,
-	}
-}
-
-// RecommendationStatusName - Recommendation status name enum.
-type RecommendationStatusName string
-
-const (
-	// RecommendationStatusNameApproved - Approved
-	RecommendationStatusNameApproved RecommendationStatusName = "Approved"
-	// RecommendationStatusNamePending - Pending
-	RecommendationStatusNamePending RecommendationStatusName = "Pending"
-	// RecommendationStatusNameRejected - Rejected
-	RecommendationStatusNameRejected RecommendationStatusName = "Rejected"
-)
-
-// PossibleRecommendationStatusNameValues returns the possible values for the RecommendationStatusName const type.
-func PossibleRecommendationStatusNameValues() []RecommendationStatusName {
-	return []RecommendationStatusName{
-		RecommendationStatusNameApproved,
-		RecommendationStatusNamePending,
-		RecommendationStatusNameRejected,
+// PossibleRecommendationStatusValues returns the possible values for the RecommendationStatus const type.
+func PossibleRecommendationStatusValues() []RecommendationStatus {
+	return []RecommendationStatus{
+		RecommendationStatusCompleted,
+		RecommendationStatusDismissed,
+		RecommendationStatusNew,
+		RecommendationStatusPostponed,
 	}
 }
 
@@ -319,14 +300,12 @@ func PossibleRecommendationStatusNameValues() []RecommendationStatusName {
 type ReviewStatus string
 
 const (
-	// ReviewStatusCompleted - Completed
+	// ReviewStatusCompleted - The review has been completed.
 	ReviewStatusCompleted ReviewStatus = "Completed"
-	// ReviewStatusInProgress - In Progress
+	// ReviewStatusInProgress - The review is currently in progress.
 	ReviewStatusInProgress ReviewStatus = "InProgress"
-	// ReviewStatusNew - New
+	// ReviewStatusNew - The review has been newly created.
 	ReviewStatusNew ReviewStatus = "New"
-	// ReviewStatusTriaged - Triaged
-	ReviewStatusTriaged ReviewStatus = "Triaged"
 )
 
 // PossibleReviewStatusValues returns the possible values for the ReviewStatus const type.
@@ -335,7 +314,6 @@ func PossibleReviewStatusValues() []ReviewStatus {
 		ReviewStatusCompleted,
 		ReviewStatusInProgress,
 		ReviewStatusNew,
-		ReviewStatusTriaged,
 	}
 }
 
@@ -368,31 +346,5 @@ const (
 func PossibleScenarioValues() []Scenario {
 	return []Scenario{
 		ScenarioAlerts,
-	}
-}
-
-// State - The state of the Recommendation
-type State string
-
-const (
-	StateApproved   State = "Approved"
-	StateCompleted  State = "Completed"
-	StateDismissed  State = "Dismissed"
-	StateInProgress State = "InProgress"
-	StatePending    State = "Pending"
-	StatePostponed  State = "Postponed"
-	StateRejected   State = "Rejected"
-)
-
-// PossibleStateValues returns the possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{
-		StateApproved,
-		StateCompleted,
-		StateDismissed,
-		StateInProgress,
-		StatePending,
-		StatePostponed,
-		StateRejected,
 	}
 }

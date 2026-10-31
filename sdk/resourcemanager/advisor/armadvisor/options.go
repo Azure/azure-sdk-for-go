@@ -75,11 +75,28 @@ type RecommendationMetadataClientGetOptions struct {
 // RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.NewListPager
 // method.
 type RecommendationMetadataClientListOptions struct {
-	// placeholder for future optional parameters
+	// The filter to apply to the recommendation metadata.<br>Filter can be applied to properties ['[recommendationCategory](#category)',
+	// '[recommendationSubCategory](#recommendationSubCategory)', 'RetirementDate'] with operators ['eq', 'and', 'le', 'ge']<br>The
+	// filter can also be applied to property ['[TrackingIds]']<br><br>⚠ **Note:** `recommendationControl` is a legacy filter
+	// property and will be deprecated in the future. Please use `recommendationSubCategory` for filtering recommendation subcategory.<br><br>Valid
+	// options for recommendationSubCategory: ['BusinessContinuity', 'DisasterRecovery', 'HighAvailability', 'MonitoringAndAlerting',
+	// 'Other', 'Personalized', 'PrioritizedRecommendations', 'Scalability', 'ServiceUpgradeAndRetirement', 'Validation']<br><br>Example:<br>-
+	// $filter=recommendationCategory eq 'HighAvailability' and recommendationSubCategory eq 'ServiceUpgradeAndRetirement' and
+	// retirementDate ge '2024-01-01' and retirementDate le '2028-01-01'. Filter can be applied on trackingIds as well.<br>- $filter=trackingIds/any(t:
+	// t eq 'some-guid')<br><br>⚠ **Note:** `trackingIDs` filter can be used for filtering one value at a time. The support to
+	// filter multiple values is not currently available. Also the support to add other filters along with `trackingIDs` is not
+	// available.
+	Filter *string
 }
 
 // RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate method.
 type RecommendationsClientGenerateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecommendationsClientGetByServiceGroupOptions contains the optional parameters for the RecommendationsClient.GetByServiceGroup
+// method.
+type RecommendationsClientGetByServiceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -92,6 +109,32 @@ type RecommendationsClientGetGenerateStatusOptions struct {
 // RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
 type RecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RecommendationsClientListByServiceGroupOptions contains the optional parameters for the RecommendationsClient.NewListByServiceGroupPager
+// method.
+type RecommendationsClientListByServiceGroupOptions struct {
+	// The filter to apply to the recommendations.<br>Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid',
+	// '[Category](#category)', 'SubCategory', 'RetirementDate', '[RecommendationStatus](#recommendationStatus)', 'Criticality']
+	// with operators ['eq', 'and', 'or', 'lt', 'gt', 'le', 'ge']<br>.
+	// <br>**Note:** `Control` is a legacy filter property and will be deprecated in the future. Please use `SubCategory` for
+	// filtering recommendation subcategory.<br>
+	// <br>**Note:** `RecommendationStatus` filter is available from API Version 2026-02-01-preview and onwards.<br>
+	// <br>**Note:** `Criticality` filter is available from API Version 2026-08-01-preview and onwards.<br>
+	// <br>Valid options for SubCategory:<br>['BusinessContinuity', 'DisasterRecovery', 'HighAvailability', 'MonitoringAndAlerting',
+	// 'Other', 'Personalized', 'PrioritizedRecommendations', 'Scalability', 'ServiceUpgradeAndRetirement', 'Validation']<br>
+	// <br>Example:<br>- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'<br>-$filter=SubCategory eq 'ServiceUpgradeAndRetirement'
+	// and RetirementDate le '2028-01-01' and RetirementDate ge '2024-01-01'<br>-$filter=Criticality eq 'High'
+	Filter *string
+
+	// The recommendation retrieval mode.
+	Mode *RecommendationListMode
+
+	// The page-continuation token for the next page.
+	SkipToken *string
+
+	// The number of recommendations per page.
+	Top *int32
 }
 
 // RecommendationsClientListByTenantOptions contains the optional parameters for the RecommendationsClient.NewListByTenantPager
@@ -112,16 +155,20 @@ type RecommendationsClientListByTenantOptions struct {
 // RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager method.
 type RecommendationsClientListOptions struct {
 	// The filter to apply to the recommendations.<br>Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid',
-	// '[Category](#category)', 'SubCategory', 'RetirementDate', '[RecommendationStatus](#recommendationStatus)'] with operators
-	// ['eq', 'and', 'or', 'lt', 'gt', 'le', 'ge']<br>.
+	// '[Category](#category)', 'SubCategory', 'RetirementDate', '[RecommendationStatus](#recommendationStatus)', 'Criticality']
+	// with operators ['eq', 'and', 'or', 'lt', 'gt', 'le', 'ge']<br>.
 	// <br>**Note:** `Control` is a legacy filter property and will be deprecated in the future. Please use `SubCategory` for
 	// filtering recommendation subcategory.<br>
 	// <br>**Note:** `RecommendationStatus` filter is available from API Version 2026-02-01-preview and onwards.<br>
+	// <br>**Note:** `Criticality` filter is available from API Version 2026-08-01-preview and onwards.<br>
 	// <br>Valid options for SubCategory:<br>['BusinessContinuity', 'DisasterRecovery', 'HighAvailability', 'MonitoringAndAlerting',
 	// 'Other', 'Personalized', 'PrioritizedRecommendations', 'Scalability', 'ServiceUpgradeAndRetirement', 'Validation']<br>
 	// <br>Example:<br>- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'<br>-$filter=SubCategory eq 'ServiceUpgradeAndRetirement'
-	// and RetirementDate le '2024-01-01' and RetirementDate ge '2028-01-01'
+	// and RetirementDate le '2028-01-01' and RetirementDate ge '2024-01-01'<br>-$filter=Criticality eq 'Critical'
 	Filter *string
+
+	// The recommendation retrieval mode.
+	Mode *RecommendationListMode
 
 	// The page-continuation token to use with a paged version of this API.
 	SkipToken *string
@@ -130,8 +177,14 @@ type RecommendationsClientListOptions struct {
 	Top *int32
 }
 
-// RecommendationsClientPatchOptions contains the optional parameters for the RecommendationsClient.Patch method.
-type RecommendationsClientPatchOptions struct {
+// RecommendationsClientUpdateByServiceGroupOptions contains the optional parameters for the RecommendationsClient.UpdateByServiceGroup
+// method.
+type RecommendationsClientUpdateByServiceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecommendationsClientUpdateOptions contains the optional parameters for the RecommendationsClient.Update method.
+type RecommendationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -185,49 +238,6 @@ type SuppressionsClientListOptions struct {
 
 	// The number of suppressions per page if a paged version of this API is being used.
 	Top *int32
-}
-
-// TriageRecommendationsClientApproveTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.ApproveTriageRecommendation
-// method.
-type TriageRecommendationsClientApproveTriageRecommendationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TriageRecommendationsClientGetOptions contains the optional parameters for the TriageRecommendationsClient.Get method.
-type TriageRecommendationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TriageRecommendationsClientListOptions contains the optional parameters for the TriageRecommendationsClient.NewListPager
-// method.
-type TriageRecommendationsClientListOptions struct {
-	// The number of items to skip before starting to collect the result set.
-	Skip *int32
-
-	// The number of items to be included in the result.
-	Top *int32
-}
-
-// TriageRecommendationsClientRejectTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.RejectTriageRecommendation
-// method.
-type TriageRecommendationsClientRejectTriageRecommendationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TriageRecommendationsClientResetTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.ResetTriageRecommendation
-// method.
-type TriageRecommendationsClientResetTriageRecommendationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TriageResourcesClientGetOptions contains the optional parameters for the TriageResourcesClient.Get method.
-type TriageResourcesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TriageResourcesClientListOptions contains the optional parameters for the TriageResourcesClient.NewListPager method.
-type TriageResourcesClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // WorkloadsClientListOptions contains the optional parameters for the WorkloadsClient.NewListPager method.

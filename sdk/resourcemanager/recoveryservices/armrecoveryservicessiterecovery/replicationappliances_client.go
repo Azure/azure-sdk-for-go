@@ -19,7 +19,7 @@ import (
 // ReplicationAppliancesClient contains the methods for the ReplicationAppliances group.
 // Don't use this type directly, use NewReplicationAppliancesClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationAppliancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -5,7 +5,7 @@
 package armrecoveryservicessiterecovery
 
 const (
-	version20250801 string = "2025-08-01"
+	version20261101 string = "2026-11-01"
 )
 
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
@@ -360,6 +360,45 @@ func PossibleDiskAccountTypeValues() []DiskAccountType {
 	}
 }
 
+// DiskNetworkAccessPolicy - The network access policy for managed disks.
+type DiskNetworkAccessPolicy string
+
+const (
+	// DiskNetworkAccessPolicyAllowAll - Allow all network access.
+	DiskNetworkAccessPolicyAllowAll DiskNetworkAccessPolicy = "AllowAll"
+	// DiskNetworkAccessPolicyAllowPrivate - Allow private access through disk access resource.
+	DiskNetworkAccessPolicyAllowPrivate DiskNetworkAccessPolicy = "AllowPrivate"
+	// DiskNetworkAccessPolicyDenyAll - Deny all network access.
+	DiskNetworkAccessPolicyDenyAll DiskNetworkAccessPolicy = "DenyAll"
+)
+
+// PossibleDiskNetworkAccessPolicyValues returns the possible values for the DiskNetworkAccessPolicy const type.
+func PossibleDiskNetworkAccessPolicyValues() []DiskNetworkAccessPolicy {
+	return []DiskNetworkAccessPolicy{
+		DiskNetworkAccessPolicyAllowAll,
+		DiskNetworkAccessPolicyAllowPrivate,
+		DiskNetworkAccessPolicyDenyAll,
+	}
+}
+
+// DiskPublicNetworkAccess - The public network access setting for managed disks.
+type DiskPublicNetworkAccess string
+
+const (
+	// DiskPublicNetworkAccessDisabled - Public network access is disabled.
+	DiskPublicNetworkAccessDisabled DiskPublicNetworkAccess = "Disabled"
+	// DiskPublicNetworkAccessEnabled - Public network access is enabled.
+	DiskPublicNetworkAccessEnabled DiskPublicNetworkAccess = "Enabled"
+)
+
+// PossibleDiskPublicNetworkAccessValues returns the possible values for the DiskPublicNetworkAccess const type.
+func PossibleDiskPublicNetworkAccessValues() []DiskPublicNetworkAccess {
+	return []DiskPublicNetworkAccess{
+		DiskPublicNetworkAccessDisabled,
+		DiskPublicNetworkAccessEnabled,
+	}
+}
+
 // DiskReplicationProgressHealth - The progress health.
 type DiskReplicationProgressHealth string
 
@@ -585,6 +624,24 @@ func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureR
 		HyperVReplicaAzureRpRecoveryPointTypeLatest,
 		HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent,
 		HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed,
+	}
+}
+
+// IPVersion - The IP version (address family) of an ip-config.
+type IPVersion string
+
+const (
+	// IPVersionIPv4 - The ip-config carries an IPv4 address.
+	IPVersionIPv4 IPVersion = "IPv4"
+	// IPVersionIPv6 - The ip-config carries an IPv6 address.
+	IPVersionIPv6 IPVersion = "IPv6"
+)
+
+// PossibleIPVersionValues returns the possible values for the IPVersion const type.
+func PossibleIPVersionValues() []IPVersion {
+	return []IPVersion{
+		IPVersionIPv4,
+		IPVersionIPv6,
 	}
 }
 
@@ -975,6 +1032,27 @@ func PossibleRcmComponentStatusValues() []RcmComponentStatus {
 		RcmComponentStatusHealthy,
 		RcmComponentStatusUnknown,
 		RcmComponentStatusWarning,
+	}
+}
+
+// RecoveryNetworkConfigAutoSyncPolicy - The vault level policy controlling whether the A2A recovery network configuration
+// is automatically kept in sync with the source virtual machine.
+type RecoveryNetworkConfigAutoSyncPolicy string
+
+const (
+	// RecoveryNetworkConfigAutoSyncPolicyDisabled - Automatic synchronization of the recovery network configuration is turned
+	// off. Recovery NIC settings are changed only through an explicit update operation.
+	RecoveryNetworkConfigAutoSyncPolicyDisabled RecoveryNetworkConfigAutoSyncPolicy = "Disabled"
+	// RecoveryNetworkConfigAutoSyncPolicyEnabled - Automatic synchronization of the recovery network configuration is turned
+	// on. Recovery NIC settings are refreshed from the source virtual machine as its network configuration changes.
+	RecoveryNetworkConfigAutoSyncPolicyEnabled RecoveryNetworkConfigAutoSyncPolicy = "Enabled"
+)
+
+// PossibleRecoveryNetworkConfigAutoSyncPolicyValues returns the possible values for the RecoveryNetworkConfigAutoSyncPolicy const type.
+func PossibleRecoveryNetworkConfigAutoSyncPolicyValues() []RecoveryNetworkConfigAutoSyncPolicy {
+	return []RecoveryNetworkConfigAutoSyncPolicy{
+		RecoveryNetworkConfigAutoSyncPolicyDisabled,
+		RecoveryNetworkConfigAutoSyncPolicyEnabled,
 	}
 }
 

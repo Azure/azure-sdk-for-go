@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -20,13 +20,13 @@ import (
 
 // ReplicationVaultHealthServer is a fake server for instances of the armrecoveryservicessiterecovery.ReplicationVaultHealthClient type.
 type ReplicationVaultHealthServer struct {
-	// Get is the fake for method ReplicationVaultHealthClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationVaultHealthClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationVaultHealthClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginRefresh is the fake for method ReplicationVaultHealthClient.BeginRefresh
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRefresh func(ctx context.Context, resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationVaultHealthClientBeginRefreshOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationVaultHealthClientRefreshResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ReplicationVaultHealthClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationVaultHealthClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationVaultHealthClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReplicationVaultHealthServerTransport creates a new instance of ReplicationVaultHealthServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func (r *ReplicationVaultHealthServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
-			case "ReplicationVaultHealthClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
 			case "ReplicationVaultHealthClient.BeginRefresh":
 				res.resp, res.err = r.dispatchBeginRefresh(req)
+			case "ReplicationVaultHealthClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,39 +85,6 @@ func (r *ReplicationVaultHealthServerTransport) dispatchToMethodFake(req *http.R
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *ReplicationVaultHealthServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationVaultHealth`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VaultHealthDetails, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *ReplicationVaultHealthServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
@@ -161,6 +128,39 @@ func (r *ReplicationVaultHealthServerTransport) dispatchBeginRefresh(req *http.R
 		r.beginRefresh.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *ReplicationVaultHealthServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationVaultHealth`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VaultHealthDetails, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/ReplicationProtectionIntents_Create.json
+// Generated from example definition: 2026-11-01/ReplicationProtectionIntents_Create.json
 func ExampleReplicationProtectionIntentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectionIntents_Get.json
+// Generated from example definition: 2026-11-01/ReplicationProtectionIntents_Get.json
 func ExampleReplicationProtectionIntentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleReplicationProtectionIntentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectionIntents_List.json
+// Generated from example definition: 2026-11-01/ReplicationProtectionIntents_List.json
 func ExampleReplicationProtectionIntentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

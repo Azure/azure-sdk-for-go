@@ -3,6 +3,8 @@
 ## 3.2.1 (2026-10-30)
 ### Other Changes
 
+- Upgraded the service API version to 2026-11-01.
+
 
 ## 3.2.0 (2026-08-13)
 ### Features Added

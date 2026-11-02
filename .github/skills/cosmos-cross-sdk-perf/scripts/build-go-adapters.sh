@@ -56,7 +56,7 @@ require github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos v1.5.0
 EOF
 (
   cd "$output/work/go-v1"
-  go mod download
+  go mod tidy
   CGO_ENABLED=0 go build -tags go_v1 -buildvcs=false \
     -ldflags=-compressdwarf=false -o "$output/bin/cosmos-perf-go-v1" .
 )
@@ -73,7 +73,7 @@ replace github.com/Azure/azure-cosmos-driver/linux/amd64 => $native_module/linux
 EOF
 (
   cd "$output/work/go-v2"
-  go mod download
+  go mod tidy
   CGO_ENABLED=1 go build -tags go_v2 -buildvcs=false \
     -ldflags=-compressdwarf=false -o "$output/bin/cosmos-perf-go-v2-native" .
 )

@@ -28,9 +28,14 @@ func newSDKClient(_ context.Context, options options) (sdkClient, error) {
 	if err != nil {
 		return nil, err
 	}
+	container, err := client.NewContainer(options.database, options.container)
+	if err != nil {
+		client.Close()
+		return nil, err
+	}
 	return &v1Client{
 		client:    client,
-		container: client.NewContainer(options.database, options.container),
+		container: container,
 	}, nil
 }
 

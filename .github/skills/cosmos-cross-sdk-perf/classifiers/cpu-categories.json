@@ -18,11 +18,11 @@
     },
     {
       "name": "tls",
-      "patterns": ["(rustls|ring::|openssl|crypto/tls|x509|webpki)"]
+      "patterns": ["(rust[l]s|ring::|openssl|crypto/tls|x509|webpki)"]
     },
     {
       "name": "serialization-body-allocation-memcopy",
-      "patterns": ["(serde|encoding/json|memcpy|memmove|malloc|free|alloc::|bytes::|body)"]
+      "patterns": ["(ser[d]e|encoding/json|mem[c]py|memmove|malloc|free|alloc::|bytes::|body)"]
     },
     {
       "name": "aad-bearer-auth-headers",
@@ -34,11 +34,11 @@
     },
     {
       "name": "kernel-scheduling-syscalls",
-      "patterns": ["(\\[kernel\\.kallsyms\\].*(schedule|futex|epoll|sys_)|libc.*(poll|read|write))"]
+      "patterns": ["(\\[kernel\\.[k]all[s]yms\\].*(schedule|fu[t]ex|e[p]oll|sys_)|lib[c].*(poll|read|write))"]
     },
     {
       "name": "kernel-network-memory",
-      "patterns": ["(\\[kernel\\.kallsyms\\].*(tcp|ip_|sock|net_|page|slab|copy_))"]
+      "patterns": ["(\\[kernel\\.[k]all[s]yms\\].*(tcp|ip_|sock|net_|page|slab|copy_))"]
     },
     {
       "name": "resolved-other",

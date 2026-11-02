@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+# cSpell:words azsdk elif isinstance rglob rollup rustc shutil smaps vcpu
 
 """Lifecycle, validation, accounting, and reporting for the Cosmos perf campaign."""
 

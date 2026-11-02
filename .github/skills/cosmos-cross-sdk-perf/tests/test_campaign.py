@@ -1,5 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+# cSpell:words kallsyms mallocgc rollup smaps vcpu westus
 
 import csv
 import importlib.util

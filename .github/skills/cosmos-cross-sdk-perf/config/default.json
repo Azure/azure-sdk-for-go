@@ -7,7 +7,7 @@
     "existingCosmosAccountResourceId": "",
     "provisionCosmosAccount": false,
     "cosmosAccountName": "",
-    "database": "perfdb",
+    "database": "cosmos-perf-db",
     "container": "perfcontainer",
     "provisionDatabaseContainer": false,
     "throughput": 10000,

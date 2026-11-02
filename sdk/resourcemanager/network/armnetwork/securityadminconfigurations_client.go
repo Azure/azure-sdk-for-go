@@ -54,7 +54,7 @@ func NewSecurityAdminConfigurationsClient(subscriptionID string, credential azco
 //     method.
 func (client *SecurityAdminConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityAdminConfigurationsClientBeginDeleteOptions) (*runtime.Poller[SecurityAdminConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *SecurityAdminConfigurationsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// delete - Deletes a network manager security admin configuration.
+// deleteOperation - Deletes a network manager security admin configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityAdminConfigurationsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityAdminConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityAdminConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityAdminConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityAdminConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

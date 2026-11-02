@@ -70,7 +70,7 @@ func (client *EncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates or updates a devcenter encryption set resource.
+// createOrUpdate - Creates or updates a devcenter encryption set resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EncryptionSetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSet, options *EncryptionSetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *EncryptionSetsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EncryptionSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSet, _ *EncryptionSetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/encryptionSets/{encryptionSetName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *EncryptionSetsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a devcenter encryption set.
+// deleteOperation - Deletes a devcenter encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EncryptionSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, options *EncryptionSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *EncryptionSetsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EncryptionSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, _ *EncryptionSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/encryptionSets/{encryptionSetName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,87 @@ func (client *EncryptionSetsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Partially updates a devcenter encryption set.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - encryptionSetName - The name of the devcenter encryption set.
+//   - body - Updatable devcenter encryption set properties.
+//   - options - EncryptionSetsClientBeginUpdateOptions contains the optional parameters for the EncryptionSetsClient.BeginUpdate
+//     method.
+func (client *EncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, options *EncryptionSetsClientBeginUpdateOptions) (*runtime.Poller[EncryptionSetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, devCenterName, encryptionSetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EncryptionSetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EncryptionSetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Partially updates a devcenter encryption set.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EncryptionSetsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, options *EncryptionSetsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EncryptionSetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, encryptionSetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EncryptionSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, _ *EncryptionSetsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/encryptionSets/{encryptionSetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if devCenterName == "" {
+		return nil, errors.New("parameter devCenterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+	if encryptionSetName == "" {
+		return nil, errors.New("parameter encryptionSetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{encryptionSetName}", url.PathEscape(encryptionSetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -343,85 +424,4 @@ func (client *EncryptionSetsClient) listHandleResponse(resp *http.Response, succ
 		return EncryptionSetsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Partially updates a devcenter encryption set.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - devCenterName - The name of the devcenter.
-//   - encryptionSetName - The name of the devcenter encryption set.
-//   - body - Updatable devcenter encryption set properties.
-//   - options - EncryptionSetsClientBeginUpdateOptions contains the optional parameters for the EncryptionSetsClient.BeginUpdate
-//     method.
-func (client *EncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, options *EncryptionSetsClientBeginUpdateOptions) (*runtime.Poller[EncryptionSetsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, devCenterName, encryptionSetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EncryptionSetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EncryptionSetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Partially updates a devcenter encryption set.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EncryptionSetsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, options *EncryptionSetsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EncryptionSetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, encryptionSetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EncryptionSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, encryptionSetName string, body EncryptionSetUpdate, _ *EncryptionSetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/encryptionSets/{encryptionSetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if encryptionSetName == "" {
-		return nil, errors.New("parameter encryptionSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{encryptionSetName}", url.PathEscape(encryptionSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

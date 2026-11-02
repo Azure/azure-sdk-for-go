@@ -70,7 +70,7 @@ func (client *SingleSignOnConfigurationsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Configures single-sign-on for this resource.
+// createOrUpdate - Configures single-sign-on for this resource.
 //
 // Configures single-sign-on for this resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body SingleSignOnResource, _ *SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {

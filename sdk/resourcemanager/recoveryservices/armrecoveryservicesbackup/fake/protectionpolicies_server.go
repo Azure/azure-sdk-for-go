@@ -20,13 +20,13 @@ import (
 
 // ProtectionPoliciesServer is a fake server for instances of the armrecoveryservicesbackup.ProtectionPoliciesClient type.
 type ProtectionPoliciesServer struct {
-	// CreateOrUpdate is the fake for method ProtectionPoliciesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	CreateOrUpdate func(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters armrecoveryservicesbackup.ProtectionPolicyResource, options *armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ProtectionPoliciesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *armrecoveryservicesbackup.ProtectionPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ProtectionPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ProtectionPoliciesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	CreateOrUpdate func(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters armrecoveryservicesbackup.ProtectionPolicyResource, options *armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ProtectionPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,10 +71,10 @@ func (p *ProtectionPoliciesServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "ProtectionPoliciesClient.CreateOrUpdate":
-				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "ProtectionPoliciesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProtectionPoliciesClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "ProtectionPoliciesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			default:
@@ -91,54 +91,6 @@ func (p *ProtectionPoliciesServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (p *ProtectionPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionPolicyResource](req)
-	if err != nil {
-		return nil, err
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
-	if err != nil {
-		return nil, err
-	}
-	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
-	var options *armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions
-	if xMSAuthorizationAuxiliaryParam != nil {
-		options = &armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions{
-			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
-		}
-	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), vaultNameParam, resourceGroupNameParam, policyNameParam, body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectionPolicyResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (p *ProtectionPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -186,6 +138,54 @@ func (p *ProtectionPoliciesServerTransport) dispatchBeginDelete(req *http.Reques
 		p.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ProtectionPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionPolicyResource](req)
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
+	if err != nil {
+		return nil, err
+	}
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+	var options *armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions
+	if xMSAuthorizationAuxiliaryParam != nil {
+		options = &armrecoveryservicesbackup.ProtectionPoliciesClientCreateOrUpdateOptions{
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+		}
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), vaultNameParam, resourceGroupNameParam, policyNameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectionPolicyResource, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

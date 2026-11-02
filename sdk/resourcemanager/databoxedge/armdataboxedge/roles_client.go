@@ -66,7 +66,7 @@ func (client *RolesClient) BeginCreateOrUpdate(ctx context.Context, deviceName s
 	}
 }
 
-// CreateOrUpdate - Create or update a role.
+// createOrUpdate - Create or update a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RolesClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, role RoleClassification, options *RolesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *RolesClient) createOrUpdate(ctx context.Context, deviceName string
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RolesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, role RoleClassification, _ *RolesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{name}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *RolesClient) BeginDelete(ctx context.Context, deviceName string, n
 	}
 }
 
-// Delete - Deletes the role on the device.
+// deleteOperation - Deletes the role on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RolesClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *RolesClient) deleteOperation(ctx context.Context, deviceName strin
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RolesClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *RolesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{name}"
 	if client.subscriptionID == "" {

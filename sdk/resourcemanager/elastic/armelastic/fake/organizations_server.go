@@ -21,6 +21,10 @@ import (
 
 // OrganizationsServer is a fake server for instances of the armelastic.OrganizationsClient type.
 type OrganizationsServer struct {
+	// BeginResubscribe is the fake for method OrganizationsClient.BeginResubscribe
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResubscribe func(ctx context.Context, resourceGroupName string, monitorName string, options *armelastic.OrganizationsClientBeginResubscribeOptions) (resp azfake.PollerResponder[armelastic.OrganizationsClientResubscribeResponse], errResp azfake.ErrorResponder)
+
 	// GetAPIKey is the fake for method OrganizationsClient.GetAPIKey
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAPIKey func(ctx context.Context, options *armelastic.OrganizationsClientGetAPIKeyOptions) (resp azfake.Responder[armelastic.OrganizationsClientGetAPIKeyResponse], errResp azfake.ErrorResponder)
@@ -28,10 +32,6 @@ type OrganizationsServer struct {
 	// GetElasticToAzureSubscriptionMapping is the fake for method OrganizationsClient.GetElasticToAzureSubscriptionMapping
 	// HTTP status codes to indicate success: http.StatusOK
 	GetElasticToAzureSubscriptionMapping func(ctx context.Context, options *armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (resp azfake.Responder[armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse], errResp azfake.ErrorResponder)
-
-	// BeginResubscribe is the fake for method OrganizationsClient.BeginResubscribe
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginResubscribe func(ctx context.Context, resourceGroupName string, monitorName string, options *armelastic.OrganizationsClientBeginResubscribeOptions) (resp azfake.PollerResponder[armelastic.OrganizationsClientResubscribeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
@@ -72,12 +72,12 @@ func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
+			case "OrganizationsClient.BeginResubscribe":
+				res.resp, res.err = o.dispatchBeginResubscribe(req)
 			case "OrganizationsClient.GetAPIKey":
 				res.resp, res.err = o.dispatchGetAPIKey(req)
 			case "OrganizationsClient.GetElasticToAzureSubscriptionMapping":
 				res.resp, res.err = o.dispatchGetElasticToAzureSubscriptionMapping(req)
-			case "OrganizationsClient.BeginResubscribe":
-				res.resp, res.err = o.dispatchBeginResubscribe(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -92,6 +92,60 @@ func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, m
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (o *OrganizationsServerTransport) dispatchBeginResubscribe(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginResubscribe == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResubscribe not implemented")}
+	}
+	beginResubscribe := o.beginResubscribe.get(req)
+	if beginResubscribe == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resubscribe`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armelastic.ResubscribeProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armelastic.OrganizationsClientBeginResubscribeOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armelastic.OrganizationsClientBeginResubscribeOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := o.srv.BeginResubscribe(req.Context(), resourceGroupNameParam, monitorNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResubscribe = &respr
+		o.beginResubscribe.add(req, beginResubscribe)
+	}
+
+	resp, err := server.PollerResponderNext(beginResubscribe, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginResubscribe.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResubscribe) {
+		o.beginResubscribe.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (o *OrganizationsServerTransport) dispatchGetAPIKey(req *http.Request) (*http.Response, error) {
@@ -151,60 +205,6 @@ func (o *OrganizationsServerTransport) dispatchGetElasticToAzureSubscriptionMapp
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (o *OrganizationsServerTransport) dispatchBeginResubscribe(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginResubscribe == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginResubscribe not implemented")}
-	}
-	beginResubscribe := o.beginResubscribe.get(req)
-	if beginResubscribe == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resubscribe`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armelastic.ResubscribeProperties](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armelastic.OrganizationsClientBeginResubscribeOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armelastic.OrganizationsClientBeginResubscribeOptions{
-				Body: &body,
-			}
-		}
-		respr, errRespr := o.srv.BeginResubscribe(req.Context(), resourceGroupNameParam, monitorNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginResubscribe = &respr
-		o.beginResubscribe.add(req, beginResubscribe)
-	}
-
-	resp, err := server.PollerResponderNext(beginResubscribe, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginResubscribe.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginResubscribe) {
-		o.beginResubscribe.remove(req)
-	}
-
 	return resp, nil
 }
 

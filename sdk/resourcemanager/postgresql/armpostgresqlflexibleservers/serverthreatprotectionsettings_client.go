@@ -70,7 +70,7 @@ func (client *ServerThreatProtectionSettingsClient) BeginCreateOrUpdate(ctx cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
+// createOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters AdvancedThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.C
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters AdvancedThreatProtectionSettingsModel, _ *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}"
 	if client.subscriptionID == "" {

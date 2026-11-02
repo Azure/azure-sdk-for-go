@@ -30,6 +30,10 @@ type DevBoxDefinitionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *armdevcenter.DevBoxDefinitionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DevBoxDefinitionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body armdevcenter.DevBoxDefinitionUpdate, options *armdevcenter.DevBoxDefinitionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DevBoxDefinitionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *armdevcenter.DevBoxDefinitionsClientGetOptions) (resp azfake.Responder[armdevcenter.DevBoxDefinitionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,10 +49,6 @@ type DevBoxDefinitionsServer struct {
 	// NewListByProjectPager is the fake for method DevBoxDefinitionsClient.NewListByProjectPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByProjectPager func(resourceGroupName string, projectName string, options *armdevcenter.DevBoxDefinitionsClientListByProjectOptions) (resp azfake.PagerResponder[armdevcenter.DevBoxDefinitionsClientListByProjectResponse])
-
-	// BeginUpdate is the fake for method DevBoxDefinitionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body armdevcenter.DevBoxDefinitionUpdate, options *armdevcenter.DevBoxDefinitionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDevBoxDefinitionsServerTransport creates a new instance of DevBoxDefinitionsServerTransport with the provided implementation.
@@ -59,9 +59,9 @@ func NewDevBoxDefinitionsServerTransport(srv *DevBoxDefinitionsServer) *DevBoxDe
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientDeleteResponse]](),
+		beginUpdate:             newTracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse]](),
 		newListByDevCenterPager: newTracker[azfake.PagerResponder[armdevcenter.DevBoxDefinitionsClientListByDevCenterResponse]](),
 		newListByProjectPager:   newTracker[azfake.PagerResponder[armdevcenter.DevBoxDefinitionsClientListByProjectResponse]](),
-		beginUpdate:             newTracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse]](),
 	}
 }
 
@@ -71,9 +71,9 @@ type DevBoxDefinitionsServerTransport struct {
 	srv                     *DevBoxDefinitionsServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientDeleteResponse]]
+	beginUpdate             *tracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse]]
 	newListByDevCenterPager *tracker[azfake.PagerResponder[armdevcenter.DevBoxDefinitionsClientListByDevCenterResponse]]
 	newListByProjectPager   *tracker[azfake.PagerResponder[armdevcenter.DevBoxDefinitionsClientListByProjectResponse]]
-	beginUpdate             *tracker[azfake.PollerResponder[armdevcenter.DevBoxDefinitionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DevBoxDefinitionsServerTransport.
@@ -101,6 +101,8 @@ func (d *DevBoxDefinitionsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DevBoxDefinitionsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DevBoxDefinitionsClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DevBoxDefinitionsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DevBoxDefinitionsClient.GetByProject":
@@ -109,8 +111,6 @@ func (d *DevBoxDefinitionsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = d.dispatchNewListByDevCenterPager(req)
 			case "DevBoxDefinitionsClient.NewListByProjectPager":
 				res.resp, res.err = d.dispatchNewListByProjectPager(req)
-			case "DevBoxDefinitionsClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -222,6 +222,58 @@ func (d *DevBoxDefinitionsServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		d.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DevBoxDefinitionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devboxdefinitions/(?P<devBoxDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdevcenter.DevBoxDefinitionUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
+		if err != nil {
+			return nil, err
+		}
+		devBoxDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devBoxDefinitionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, devCenterNameParam, devBoxDefinitionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -414,58 +466,6 @@ func (d *DevBoxDefinitionsServerTransport) dispatchNewListByProjectPager(req *ht
 	if !server.PagerResponderMore(newListByProjectPager) {
 		d.newListByProjectPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DevBoxDefinitionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devboxdefinitions/(?P<devBoxDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdevcenter.DevBoxDefinitionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
-		if err != nil {
-			return nil, err
-		}
-		devBoxDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devBoxDefinitionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, devCenterNameParam, devBoxDefinitionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

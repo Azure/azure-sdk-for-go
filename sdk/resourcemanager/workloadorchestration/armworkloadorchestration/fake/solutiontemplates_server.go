@@ -33,6 +33,10 @@ type SolutionTemplatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, solutionTemplateName string, options *armworkloadorchestration.SolutionTemplatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRemoveVersion is the fake for method SolutionTemplatesClient.BeginRemoveVersion
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRemoveVersion func(ctx context.Context, resourceGroupName string, solutionTemplateName string, body armworkloadorchestration.VersionParameter, options *armworkloadorchestration.SolutionTemplatesClientBeginRemoveVersionOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SolutionTemplatesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, solutionTemplateName string, options *armworkloadorchestration.SolutionTemplatesClientGetOptions) (resp azfake.Responder[armworkloadorchestration.SolutionTemplatesClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,10 +48,6 @@ type SolutionTemplatesServer struct {
 	// NewListBySubscriptionPager is the fake for method SolutionTemplatesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armworkloadorchestration.SolutionTemplatesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadorchestration.SolutionTemplatesClientListBySubscriptionResponse])
-
-	// BeginRemoveVersion is the fake for method SolutionTemplatesClient.BeginRemoveVersion
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRemoveVersion func(ctx context.Context, resourceGroupName string, solutionTemplateName string, body armworkloadorchestration.VersionParameter, options *armworkloadorchestration.SolutionTemplatesClientBeginRemoveVersionOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method SolutionTemplatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -63,9 +63,9 @@ func NewSolutionTemplatesServerTransport(srv *SolutionTemplatesServer) *Solution
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientCreateOrUpdateResponse]](),
 		beginCreateVersion:          newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientCreateVersionResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientDeleteResponse]](),
+		beginRemoveVersion:          newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplatesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplatesClientListBySubscriptionResponse]](),
-		beginRemoveVersion:          newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse]](),
 	}
 }
 
@@ -76,9 +76,9 @@ type SolutionTemplatesServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientCreateOrUpdateResponse]]
 	beginCreateVersion          *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientCreateVersionResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientDeleteResponse]]
+	beginRemoveVersion          *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplatesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplatesClientListBySubscriptionResponse]]
-	beginRemoveVersion          *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplatesClientRemoveVersionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SolutionTemplatesServerTransport.
@@ -108,14 +108,14 @@ func (s *SolutionTemplatesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = s.dispatchBeginCreateVersion(req)
 			case "SolutionTemplatesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SolutionTemplatesClient.BeginRemoveVersion":
+				res.resp, res.err = s.dispatchBeginRemoveVersion(req)
 			case "SolutionTemplatesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionTemplatesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "SolutionTemplatesClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "SolutionTemplatesClient.BeginRemoveVersion":
-				res.resp, res.err = s.dispatchBeginRemoveVersion(req)
 			case "SolutionTemplatesClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -274,6 +274,54 @@ func (s *SolutionTemplatesServerTransport) dispatchBeginDelete(req *http.Request
 	return resp, nil
 }
 
+func (s *SolutionTemplatesServerTransport) dispatchBeginRemoveVersion(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRemoveVersion == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveVersion not implemented")}
+	}
+	beginRemoveVersion := s.beginRemoveVersion.get(req)
+	if beginRemoveVersion == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/solutionTemplates/(?P<solutionTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeVersion`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.VersionParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRemoveVersion(req.Context(), resourceGroupNameParam, solutionTemplateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRemoveVersion = &respr
+		s.beginRemoveVersion.add(req, beginRemoveVersion)
+	}
+
+	resp, err := server.PollerResponderNext(beginRemoveVersion, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginRemoveVersion.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRemoveVersion) {
+		s.beginRemoveVersion.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SolutionTemplatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -374,54 +422,6 @@ func (s *SolutionTemplatesServerTransport) dispatchNewListBySubscriptionPager(re
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SolutionTemplatesServerTransport) dispatchBeginRemoveVersion(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRemoveVersion == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveVersion not implemented")}
-	}
-	beginRemoveVersion := s.beginRemoveVersion.get(req)
-	if beginRemoveVersion == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/solutionTemplates/(?P<solutionTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeVersion`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.VersionParameter](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		solutionTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionTemplateName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRemoveVersion(req.Context(), resourceGroupNameParam, solutionTemplateNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRemoveVersion = &respr
-		s.beginRemoveVersion.add(req, beginRemoveVersion)
-	}
-
-	resp, err := server.PollerResponderNext(beginRemoveVersion, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginRemoveVersion.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRemoveVersion) {
-		s.beginRemoveVersion.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -21,10 +21,6 @@ import (
 
 // DevicesServer is a fake server for instances of the armdataboxedge.DevicesClient type.
 type DevicesServer struct {
-	// CreateOrUpdate is the fake for method DevicesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice armdataboxedge.Device, options *armdataboxedge.DevicesClientCreateOrUpdateOptions) (resp azfake.Responder[armdataboxedge.DevicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdateSecuritySettings is the fake for method DevicesClient.BeginCreateOrUpdateSecuritySettings
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCreateOrUpdateSecuritySettings func(ctx context.Context, deviceName string, resourceGroupName string, securitySettings armdataboxedge.SecuritySettings, options *armdataboxedge.DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientCreateOrUpdateSecuritySettingsResponse], errResp azfake.ErrorResponder)
@@ -36,6 +32,18 @@ type DevicesServer struct {
 	// BeginDownloadUpdates is the fake for method DevicesClient.BeginDownloadUpdates
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDownloadUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginDownloadUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientDownloadUpdatesResponse], errResp azfake.ErrorResponder)
+
+	// BeginInstallUpdates is the fake for method DevicesClient.BeginInstallUpdates
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginInstallUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginInstallUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientInstallUpdatesResponse], errResp azfake.ErrorResponder)
+
+	// BeginScanForUpdates is the fake for method DevicesClient.BeginScanForUpdates
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginScanForUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginScanForUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method DevicesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice armdataboxedge.Device, options *armdataboxedge.DevicesClientCreateOrUpdateOptions) (resp azfake.Responder[armdataboxedge.DevicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// GenerateCertificate is the fake for method DevicesClient.GenerateCertificate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -57,10 +65,6 @@ type DevicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetUpdateSummary func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientGetUpdateSummaryOptions) (resp azfake.Responder[armdataboxedge.DevicesClientGetUpdateSummaryResponse], errResp azfake.ErrorResponder)
 
-	// BeginInstallUpdates is the fake for method DevicesClient.BeginInstallUpdates
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInstallUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginInstallUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientInstallUpdatesResponse], errResp azfake.ErrorResponder)
-
 	// NewListByResourceGroupPager is the fake for method DevicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdataboxedge.DevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdataboxedge.DevicesClientListByResourceGroupResponse])
@@ -68,10 +72,6 @@ type DevicesServer struct {
 	// NewListBySubscriptionPager is the fake for method DevicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdataboxedge.DevicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdataboxedge.DevicesClientListBySubscriptionResponse])
-
-	// BeginScanForUpdates is the fake for method DevicesClient.BeginScanForUpdates
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginScanForUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginScanForUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method DevicesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -96,9 +96,9 @@ func NewDevicesServerTransport(srv *DevicesServer) *DevicesServerTransport {
 		beginDelete:                         newTracker[azfake.PollerResponder[armdataboxedge.DevicesClientDeleteResponse]](),
 		beginDownloadUpdates:                newTracker[azfake.PollerResponder[armdataboxedge.DevicesClientDownloadUpdatesResponse]](),
 		beginInstallUpdates:                 newTracker[azfake.PollerResponder[armdataboxedge.DevicesClientInstallUpdatesResponse]](),
+		beginScanForUpdates:                 newTracker[azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse]](),
 		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armdataboxedge.DevicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armdataboxedge.DevicesClientListBySubscriptionResponse]](),
-		beginScanForUpdates:                 newTracker[azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse]](),
 	}
 }
 
@@ -110,9 +110,9 @@ type DevicesServerTransport struct {
 	beginDelete                         *tracker[azfake.PollerResponder[armdataboxedge.DevicesClientDeleteResponse]]
 	beginDownloadUpdates                *tracker[azfake.PollerResponder[armdataboxedge.DevicesClientDownloadUpdatesResponse]]
 	beginInstallUpdates                 *tracker[azfake.PollerResponder[armdataboxedge.DevicesClientInstallUpdatesResponse]]
+	beginScanForUpdates                 *tracker[azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse]]
 	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armdataboxedge.DevicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armdataboxedge.DevicesClientListBySubscriptionResponse]]
-	beginScanForUpdates                 *tracker[azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse]]
 }
 
 // Do implements the policy.Transporter interface for DevicesServerTransport.
@@ -136,14 +136,18 @@ func (d *DevicesServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "DevicesClient.CreateOrUpdate":
-				res.resp, res.err = d.dispatchCreateOrUpdate(req)
 			case "DevicesClient.BeginCreateOrUpdateSecuritySettings":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdateSecuritySettings(req)
 			case "DevicesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DevicesClient.BeginDownloadUpdates":
 				res.resp, res.err = d.dispatchBeginDownloadUpdates(req)
+			case "DevicesClient.BeginInstallUpdates":
+				res.resp, res.err = d.dispatchBeginInstallUpdates(req)
+			case "DevicesClient.BeginScanForUpdates":
+				res.resp, res.err = d.dispatchBeginScanForUpdates(req)
+			case "DevicesClient.CreateOrUpdate":
+				res.resp, res.err = d.dispatchCreateOrUpdate(req)
 			case "DevicesClient.GenerateCertificate":
 				res.resp, res.err = d.dispatchGenerateCertificate(req)
 			case "DevicesClient.Get":
@@ -154,14 +158,10 @@ func (d *DevicesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = d.dispatchGetNetworkSettings(req)
 			case "DevicesClient.GetUpdateSummary":
 				res.resp, res.err = d.dispatchGetUpdateSummary(req)
-			case "DevicesClient.BeginInstallUpdates":
-				res.resp, res.err = d.dispatchBeginInstallUpdates(req)
 			case "DevicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DevicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
-			case "DevicesClient.BeginScanForUpdates":
-				res.resp, res.err = d.dispatchBeginScanForUpdates(req)
 			case "DevicesClient.Update":
 				res.resp, res.err = d.dispatchUpdate(req)
 			case "DevicesClient.UpdateExtendedInformation":
@@ -182,43 +182,6 @@ func (d *DevicesServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DevicesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.Device](req)
-	if err != nil {
-		return nil, err
-	}
-	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CreateOrUpdate(req.Context(), deviceNameParam, resourceGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Device, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DevicesServerTransport) dispatchBeginCreateOrUpdateSecuritySettings(req *http.Request) (*http.Response, error) {
@@ -354,6 +317,131 @@ func (d *DevicesServerTransport) dispatchBeginDownloadUpdates(req *http.Request)
 		d.beginDownloadUpdates.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DevicesServerTransport) dispatchBeginInstallUpdates(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginInstallUpdates == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInstallUpdates not implemented")}
+	}
+	beginInstallUpdates := d.beginInstallUpdates.get(req)
+	if beginInstallUpdates == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/installUpdates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginInstallUpdates(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInstallUpdates = &respr
+		d.beginInstallUpdates.add(req, beginInstallUpdates)
+	}
+
+	resp, err := server.PollerResponderNext(beginInstallUpdates, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginInstallUpdates.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInstallUpdates) {
+		d.beginInstallUpdates.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DevicesServerTransport) dispatchBeginScanForUpdates(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginScanForUpdates == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginScanForUpdates not implemented")}
+	}
+	beginScanForUpdates := d.beginScanForUpdates.get(req)
+	if beginScanForUpdates == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scanForUpdates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginScanForUpdates(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginScanForUpdates = &respr
+		d.beginScanForUpdates.add(req, beginScanForUpdates)
+	}
+
+	resp, err := server.PollerResponderNext(beginScanForUpdates, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginScanForUpdates.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginScanForUpdates) {
+		d.beginScanForUpdates.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DevicesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.Device](req)
+	if err != nil {
+		return nil, err
+	}
+	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CreateOrUpdate(req.Context(), deviceNameParam, resourceGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Device, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -522,50 +610,6 @@ func (d *DevicesServerTransport) dispatchGetUpdateSummary(req *http.Request) (*h
 	return resp, nil
 }
 
-func (d *DevicesServerTransport) dispatchBeginInstallUpdates(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginInstallUpdates == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInstallUpdates not implemented")}
-	}
-	beginInstallUpdates := d.beginInstallUpdates.get(req)
-	if beginInstallUpdates == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/installUpdates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginInstallUpdates(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInstallUpdates = &respr
-		d.beginInstallUpdates.add(req, beginInstallUpdates)
-	}
-
-	resp, err := server.PollerResponderNext(beginInstallUpdates, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginInstallUpdates.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInstallUpdates) {
-		d.beginInstallUpdates.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (d *DevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -649,50 +693,6 @@ func (d *DevicesServerTransport) dispatchNewListBySubscriptionPager(req *http.Re
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		d.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DevicesServerTransport) dispatchBeginScanForUpdates(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginScanForUpdates == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginScanForUpdates not implemented")}
-	}
-	beginScanForUpdates := d.beginScanForUpdates.get(req)
-	if beginScanForUpdates == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scanForUpdates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginScanForUpdates(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginScanForUpdates = &respr
-		d.beginScanForUpdates.add(req, beginScanForUpdates)
-	}
-
-	resp, err := server.PollerResponderNext(beginScanForUpdates, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginScanForUpdates.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginScanForUpdates) {
-		d.beginScanForUpdates.remove(req)
-	}
-
 	return resp, nil
 }
 

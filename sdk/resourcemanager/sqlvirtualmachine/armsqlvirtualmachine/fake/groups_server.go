@@ -29,21 +29,21 @@ type GroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *armsqlvirtualmachine.GroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsqlvirtualmachine.GroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters armsqlvirtualmachine.GroupUpdate, options *armsqlvirtualmachine.GroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsqlvirtualmachine.GroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *armsqlvirtualmachine.GroupsClientGetOptions) (resp azfake.Responder[armsqlvirtualmachine.GroupsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method GroupsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsqlvirtualmachine.GroupsClientListOptions) (resp azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method GroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsqlvirtualmachine.GroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method GroupsClient.BeginUpdate
+	// NewListPager is the fake for method GroupsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters armsqlvirtualmachine.GroupUpdate, options *armsqlvirtualmachine.GroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsqlvirtualmachine.GroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armsqlvirtualmachine.GroupsClientListOptions) (resp azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse])
 }
 
 // NewGroupsServerTransport creates a new instance of GroupsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewGroupsServerTransport(srv *GroupsServer) *GroupsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type GroupsServerTransport struct {
 	srv                         *GroupsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsqlvirtualmachine.GroupsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armsqlvirtualmachine.GroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GroupsServerTransport.
@@ -96,14 +96,14 @@ func (g *GroupsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GroupsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
-			case "GroupsClient.Get":
-				res.resp, res.err = g.dispatchGet(req)
-			case "GroupsClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
-			case "GroupsClient.NewListByResourceGroupPager":
-				res.resp, res.err = g.dispatchNewListByResourceGroupPager(req)
 			case "GroupsClient.BeginUpdate":
 				res.resp, res.err = g.dispatchBeginUpdate(req)
+			case "GroupsClient.Get":
+				res.resp, res.err = g.dispatchGet(req)
+			case "GroupsClient.NewListByResourceGroupPager":
+				res.resp, res.err = g.dispatchNewListByResourceGroupPager(req)
+			case "GroupsClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,109 +212,6 @@ func (g *GroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (g *GroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	sqlVirtualMachineGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sqlVirtualMachineGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, sqlVirtualMachineGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Group, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := g.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := g.srv.NewListPager(nil)
-		newListPager = &resp
-		g.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsqlvirtualmachine.GroupsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (g *GroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsqlvirtualmachine.GroupsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		g.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -360,6 +257,109 @@ func (g *GroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sqlVirtualMachineGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sqlVirtualMachineGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, sqlVirtualMachineGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Group, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsqlvirtualmachine.GroupsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		g.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (g *GroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := g.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := g.srv.NewListPager(nil)
+		newListPager = &resp
+		g.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsqlvirtualmachine.GroupsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		g.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

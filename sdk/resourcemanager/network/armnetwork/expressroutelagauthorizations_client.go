@@ -135,7 +135,7 @@ func (client *ExpressRouteLagAuthorizationsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *ExpressRouteLagAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, authorizationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, authorizationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +150,9 @@ func (client *ExpressRouteLagAuthorizationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Deletes the specified authorization from the specified express route LAG.
+// deleteOperation - Deletes the specified authorization from the specified express route LAG.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagAuthorizationsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagAuthorizationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

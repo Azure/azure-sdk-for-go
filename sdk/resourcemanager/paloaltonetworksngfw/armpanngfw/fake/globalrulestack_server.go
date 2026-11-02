@@ -42,10 +42,6 @@ type GlobalRulestackServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetChangeLog func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientGetChangeLogOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientGetChangeLogResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method GlobalRulestackClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpanngfw.GlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse])
-
 	// ListAdvancedSecurityObjects is the fake for method GlobalRulestackClient.ListAdvancedSecurityObjects
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAdvancedSecurityObjects func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
@@ -69,6 +65,10 @@ type GlobalRulestackServer struct {
 	// ListSecurityServices is the fake for method GlobalRulestackClient.ListSecurityServices
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecurityServices func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.GlobalRulestackClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method GlobalRulestackClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armpanngfw.GlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse])
 
 	// Revert is the fake for method GlobalRulestackClient.Revert
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -133,8 +133,6 @@ func (g *GlobalRulestackServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = g.dispatchGet(req)
 			case "GlobalRulestackClient.GetChangeLog":
 				res.resp, res.err = g.dispatchGetChangeLog(req)
-			case "GlobalRulestackClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GlobalRulestackClient.ListAdvancedSecurityObjects":
 				res.resp, res.err = g.dispatchListAdvancedSecurityObjects(req)
 			case "GlobalRulestackClient.ListAppIDs":
@@ -147,6 +145,8 @@ func (g *GlobalRulestackServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = g.dispatchListPredefinedURLCategories(req)
 			case "GlobalRulestackClient.ListSecurityServices":
 				res.resp, res.err = g.dispatchListSecurityServices(req)
+			case "GlobalRulestackClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GlobalRulestackClient.Revert":
 				res.resp, res.err = g.dispatchRevert(req)
 			case "GlobalRulestackClient.Update":
@@ -345,33 +345,6 @@ func (g *GlobalRulestackServerTransport) dispatchGetChangeLog(req *http.Request)
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Changelog, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GlobalRulestackServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := g.newListPager.get(req)
-	if newListPager == nil {
-		resp := g.srv.NewListPager(nil)
-		newListPager = &resp
-		g.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpanngfw.GlobalRulestackClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		g.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -645,6 +618,33 @@ func (g *GlobalRulestackServerTransport) dispatchListSecurityServices(req *http.
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityServicesResponse, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GlobalRulestackServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := g.newListPager.get(req)
+	if newListPager == nil {
+		resp := g.srv.NewListPager(nil)
+		newListPager = &resp
+		g.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpanngfw.GlobalRulestackClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		g.newListPager.remove(req)
 	}
 	return resp, nil
 }

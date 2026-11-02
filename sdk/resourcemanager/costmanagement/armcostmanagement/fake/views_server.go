@@ -45,13 +45,13 @@ type ViewsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByScope func(ctx context.Context, scope string, viewName string, options *armcostmanagement.ViewsClientGetByScopeOptions) (resp azfake.Responder[armcostmanagement.ViewsClientGetByScopeResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ViewsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcostmanagement.ViewsClientListOptions) (resp azfake.PagerResponder[armcostmanagement.ViewsClientListResponse])
-
 	// NewListByScopePager is the fake for method ViewsClient.NewListByScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByScopePager func(scope string, options *armcostmanagement.ViewsClientListByScopeOptions) (resp azfake.PagerResponder[armcostmanagement.ViewsClientListByScopeResponse])
+
+	// NewListPager is the fake for method ViewsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcostmanagement.ViewsClientListOptions) (resp azfake.PagerResponder[armcostmanagement.ViewsClientListResponse])
 }
 
 // NewViewsServerTransport creates a new instance of ViewsServerTransport with the provided implementation.
@@ -60,8 +60,8 @@ type ViewsServer struct {
 func NewViewsServerTransport(srv *ViewsServer) *ViewsServerTransport {
 	return &ViewsServerTransport{
 		srv:                 srv,
-		newListPager:        newTracker[azfake.PagerResponder[armcostmanagement.ViewsClientListResponse]](),
 		newListByScopePager: newTracker[azfake.PagerResponder[armcostmanagement.ViewsClientListByScopeResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcostmanagement.ViewsClientListResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ func NewViewsServerTransport(srv *ViewsServer) *ViewsServerTransport {
 // Don't use this type directly, use NewViewsServerTransport instead.
 type ViewsServerTransport struct {
 	srv                 *ViewsServer
-	newListPager        *tracker[azfake.PagerResponder[armcostmanagement.ViewsClientListResponse]]
 	newListByScopePager *tracker[azfake.PagerResponder[armcostmanagement.ViewsClientListByScopeResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcostmanagement.ViewsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ViewsServerTransport.
@@ -106,10 +106,10 @@ func (v *ViewsServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = v.dispatchGet(req)
 			case "ViewsClient.GetByScope":
 				res.resp, res.err = v.dispatchGetByScope(req)
-			case "ViewsClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "ViewsClient.NewListByScopePager":
 				res.resp, res.err = v.dispatchNewListByScopePager(req)
+			case "ViewsClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -320,33 +320,6 @@ func (v *ViewsServerTransport) dispatchGetByScope(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (v *ViewsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcostmanagement.ViewsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *ViewsServerTransport) dispatchNewListByScopePager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByScopePager not implemented")}
@@ -380,6 +353,33 @@ func (v *ViewsServerTransport) dispatchNewListByScopePager(req *http.Request) (*
 	}
 	if !server.PagerResponderMore(newListByScopePager) {
 		v.newListByScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *ViewsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcostmanagement.ViewsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

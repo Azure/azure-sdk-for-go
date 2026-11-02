@@ -68,7 +68,7 @@ func (client *IntegrationFabricsClient) BeginCreate(ctx context.Context, resourc
 	}
 }
 
-// Create - Create a IntegrationFabric
+// create - Create a IntegrationFabric
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IntegrationFabricsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabric, options *IntegrationFabricsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *IntegrationFabricsClient) create(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *IntegrationFabricsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabric, _ *IntegrationFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *IntegrationFabricsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a IntegrationFabric
+// deleteOperation - Delete a IntegrationFabric
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IntegrationFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, options *IntegrationFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *IntegrationFabricsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IntegrationFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, _ *IntegrationFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}"
 	if client.subscriptionID == "" {
@@ -196,6 +196,86 @@ func (client *IntegrationFabricsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a IntegrationFabric
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The workspace name of Azure Managed Grafana.
+//   - integrationFabricName - The integration fabric name of Azure Managed Grafana.
+//   - options - IntegrationFabricsClientBeginUpdateOptions contains the optional parameters for the IntegrationFabricsClient.BeginUpdate
+//     method.
+func (client *IntegrationFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, options *IntegrationFabricsClientBeginUpdateOptions) (*runtime.Poller[IntegrationFabricsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IntegrationFabricsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IntegrationFabricsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a IntegrationFabric
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationFabricsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, options *IntegrationFabricsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IntegrationFabricsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *IntegrationFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, _ *IntegrationFabricsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if integrationFabricName == "" {
+		return nil, errors.New("parameter integrationFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{integrationFabricName}", url.PathEscape(integrationFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestBodyParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -339,84 +419,4 @@ func (client *IntegrationFabricsClient) listHandleResponse(resp *http.Response, 
 		return IntegrationFabricsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a IntegrationFabric
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The workspace name of Azure Managed Grafana.
-//   - integrationFabricName - The integration fabric name of Azure Managed Grafana.
-//   - options - IntegrationFabricsClientBeginUpdateOptions contains the optional parameters for the IntegrationFabricsClient.BeginUpdate
-//     method.
-func (client *IntegrationFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, options *IntegrationFabricsClientBeginUpdateOptions) (*runtime.Poller[IntegrationFabricsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IntegrationFabricsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IntegrationFabricsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a IntegrationFabric
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IntegrationFabricsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, options *IntegrationFabricsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IntegrationFabricsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *IntegrationFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters IntegrationFabricUpdateParameters, _ *IntegrationFabricsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if integrationFabricName == "" {
-		return nil, errors.New("parameter integrationFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{integrationFabricName}", url.PathEscape(integrationFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, requestBodyParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

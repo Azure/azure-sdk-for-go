@@ -71,7 +71,7 @@ func (client *MonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets
+// createOrUpdate - Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets
 // up the integration between Azure and your New Relic account, enabling observability and monitoring of your Azure resources
 // through New Relic
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, resource NewRelicMonitorResource, _ *MonitorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
@@ -149,8 +149,8 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and stopping
-// the observability of your Azure resources through New Relic
+// deleteOperation - Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration
+// and stopping the observability of your Azure resources through New Relic
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
@@ -195,6 +195,244 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", version20260601)
 	reqQP.Set("userEmail", userEmail)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLinkSaaS - Links a new SaaS to the newrelic organization of the underlying monitor.
+//
+// Links a new SaaS to the newrelic organization of the underlying monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the Monitors resource
+//   - body - Link SaaS body parameter
+//   - options - MonitorsClientBeginLinkSaaSOptions contains the optional parameters for the MonitorsClient.BeginLinkSaaS method.
+func (client *MonitorsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorsClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorsClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, monitorName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkSaaS - Links a new SaaS to the newrelic organization of the underlying monitor.
+//
+// Links a new SaaS to the newrelic organization of the underlying monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MonitorsClient) linkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorsClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MonitorsClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, monitorName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the linkSaaS request.
+func (client *MonitorsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, _ *MonitorsClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginResubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the Monitors resource
+//   - options - MonitorsClientBeginResubscribeOptions contains the optional parameters for the MonitorsClient.BeginResubscribe
+//     method.
+func (client *MonitorsClient) BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*runtime.Poller[MonitorsClientResubscribeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resubscribe(ctx, resourceGroupName, monitorName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientResubscribeResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientResubscribeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MonitorsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MonitorsClient.BeginResubscribe"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resubscribeCreateRequest(ctx, resourceGroupName, monitorName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resubscribeCreateRequest creates the resubscribe request.
+func (client *MonitorsClient) resubscribeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/resubscribe"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing New Relic monitor resource from your Azure subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the Monitors resource
+//   - properties - The resource properties to be updated.
+//   - options - MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
+func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, options *MonitorsClientBeginUpdateOptions) (*runtime.Poller[MonitorsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, monitorName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing New Relic monitor resource from your Azure subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MonitorsClient) update(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, options *MonitorsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MonitorsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, _ *MonitorsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -449,86 +687,6 @@ func (client *MonitorsClient) latestLinkedSaaSHandleResponse(resp *http.Response
 		return MonitorsClientLatestLinkedSaaSResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLinkSaaS - Links a new SaaS to the newrelic organization of the underlying monitor.
-//
-// Links a new SaaS to the newrelic organization of the underlying monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Name of the Monitors resource
-//   - body - Link SaaS body parameter
-//   - options - MonitorsClientBeginLinkSaaSOptions contains the optional parameters for the MonitorsClient.BeginLinkSaaS method.
-func (client *MonitorsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorsClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorsClientLinkSaaSResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkSaaS(ctx, resourceGroupName, monitorName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientLinkSaaSResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientLinkSaaSResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkSaaS - Links a new SaaS to the newrelic organization of the underlying monitor.
-//
-// Links a new SaaS to the newrelic organization of the underlying monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitorsClient) linkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorsClientBeginLinkSaaSOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MonitorsClient.BeginLinkSaaS"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, monitorName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkSaaSCreateRequest creates the LinkSaaS request.
-func (client *MonitorsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, _ *MonitorsClientBeginLinkSaaSOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListAppServicesPager - Lists the app service resources currently being monitored by the New Relic resource, helping
@@ -1046,89 +1204,6 @@ func (client *MonitorsClient) refreshIngestionKeyCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginResubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
-//
-// A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Name of the Monitors resource
-//   - options - MonitorsClientBeginResubscribeOptions contains the optional parameters for the MonitorsClient.BeginResubscribe
-//     method.
-func (client *MonitorsClient) BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*runtime.Poller[MonitorsClientResubscribeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resubscribe(ctx, resourceGroupName, monitorName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientResubscribeResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientResubscribeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
-//
-// A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitorsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MonitorsClient.BeginResubscribe"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resubscribeCreateRequest(ctx, resourceGroupName, monitorName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resubscribeCreateRequest creates the Resubscribe request.
-func (client *MonitorsClient) resubscribeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/resubscribe"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
 // SwitchBilling - Switches the billing for the New Relic Monitor resource to be billed by Azure Marketplace
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -1200,81 +1275,6 @@ func (client *MonitorsClient) switchBillingHandleResponse(resp *http.Response, s
 		return MonitorsClientSwitchBillingResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an existing New Relic monitor resource from your Azure subscription
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Name of the Monitors resource
-//   - properties - The resource properties to be updated.
-//   - options - MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
-func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, options *MonitorsClientBeginUpdateOptions) (*runtime.Poller[MonitorsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, monitorName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing New Relic monitor resource from your Azure subscription
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitorsClient) update(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, options *MonitorsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MonitorsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, properties NewRelicMonitorResourceUpdate, _ *MonitorsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // VMHostPayload - Returns the payload that needs to be passed in the request body for installing the New Relic agent on a

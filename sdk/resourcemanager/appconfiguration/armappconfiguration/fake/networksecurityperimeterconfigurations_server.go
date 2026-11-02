@@ -21,6 +21,10 @@ import (
 
 // NetworkSecurityPerimeterConfigurationsServer is a fake server for instances of the armappconfiguration.NetworkSecurityPerimeterConfigurationsClient type.
 type NetworkSecurityPerimeterConfigurationsServer struct {
+	// BeginReconcile is the fake for method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReconcile func(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *armappconfiguration.NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (resp azfake.PollerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkSecurityPerimeterConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *armappconfiguration.NetworkSecurityPerimeterConfigurationsClientGetOptions) (resp azfake.Responder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,10 +32,6 @@ type NetworkSecurityPerimeterConfigurationsServer struct {
 	// NewListByConfigurationStorePager is the fake for method NetworkSecurityPerimeterConfigurationsClient.NewListByConfigurationStorePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByConfigurationStorePager func(resourceGroupName string, configStoreName string, options *armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse])
-
-	// BeginReconcile is the fake for method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReconcile func(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *armappconfiguration.NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (resp azfake.PollerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkSecurityPerimeterConfigurationsServerTransport creates a new instance of NetworkSecurityPerimeterConfigurationsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type NetworkSecurityPerimeterConfigurationsServer struct {
 func NewNetworkSecurityPerimeterConfigurationsServerTransport(srv *NetworkSecurityPerimeterConfigurationsServer) *NetworkSecurityPerimeterConfigurationsServerTransport {
 	return &NetworkSecurityPerimeterConfigurationsServerTransport{
 		srv:                              srv,
-		newListByConfigurationStorePager: newTracker[azfake.PagerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse]](),
 		beginReconcile:                   newTracker[azfake.PollerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse]](),
+		newListByConfigurationStorePager: newTracker[azfake.PagerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewNetworkSecurityPerimeterConfigurationsServerTransport(srv *NetworkSecuri
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsServerTransport instead.
 type NetworkSecurityPerimeterConfigurationsServerTransport struct {
 	srv                              *NetworkSecurityPerimeterConfigurationsServer
-	newListByConfigurationStorePager *tracker[azfake.PagerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse]]
 	beginReconcile                   *tracker[azfake.PollerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse]]
+	newListByConfigurationStorePager *tracker[azfake.PagerResponder[armappconfiguration.NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkSecurityPerimeterConfigurationsServerTransport.
@@ -74,12 +74,12 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchToMethod
 		}
 		if !intercepted {
 			switch method {
+			case "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile":
+				res.resp, res.err = n.dispatchBeginReconcile(req)
 			case "NetworkSecurityPerimeterConfigurationsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkSecurityPerimeterConfigurationsClient.NewListByConfigurationStorePager":
 				res.resp, res.err = n.dispatchNewListByConfigurationStorePager(req)
-			case "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile":
-				res.resp, res.err = n.dispatchBeginReconcile(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -94,6 +94,54 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchToMethod
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchBeginReconcile(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginReconcile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReconcile not implemented")}
+	}
+	beginReconcile := n.beginReconcile.get(req)
+	if beginReconcile == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
+		if err != nil {
+			return nil, err
+		}
+		networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginReconcile(req.Context(), resourceGroupNameParam, configStoreNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReconcile = &respr
+		n.beginReconcile.add(req, beginReconcile)
+	}
+
+	resp, err := server.PollerResponderNext(beginReconcile, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginReconcile.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReconcile) {
+		n.beginReconcile.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -171,54 +219,6 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchNewListB
 	if !server.PagerResponderMore(newListByConfigurationStorePager) {
 		n.newListByConfigurationStorePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchBeginReconcile(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginReconcile == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginReconcile not implemented")}
-	}
-	beginReconcile := n.beginReconcile.get(req)
-	if beginReconcile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
-		if err != nil {
-			return nil, err
-		}
-		networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginReconcile(req.Context(), resourceGroupNameParam, configStoreNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginReconcile = &respr
-		n.beginReconcile.add(req, beginReconcile)
-	}
-
-	resp, err := server.PollerResponderNext(beginReconcile, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		n.beginReconcile.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginReconcile) {
-		n.beginReconcile.remove(req)
-	}
-
 	return resp, nil
 }
 

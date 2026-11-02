@@ -78,10 +78,6 @@ type PrivateStoreServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetRequestApproval func(ctx context.Context, privateStoreID string, requestApprovalID string, options *armmarketplace.PrivateStoreClientGetRequestApprovalOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientGetRequestApprovalResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateStoreClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armmarketplace.PrivateStoreClientListOptions) (resp azfake.PagerResponder[armmarketplace.PrivateStoreClientListResponse])
-
 	// ListNewPlansNotifications is the fake for method PrivateStoreClient.ListNewPlansNotifications
 	// HTTP status codes to indicate success: http.StatusOK
 	ListNewPlansNotifications func(ctx context.Context, privateStoreID string, options *armmarketplace.PrivateStoreClientListNewPlansNotificationsOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientListNewPlansNotificationsResponse], errResp azfake.ErrorResponder)
@@ -93,6 +89,10 @@ type PrivateStoreServer struct {
 	// ListSubscriptionsContext is the fake for method PrivateStoreClient.ListSubscriptionsContext
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSubscriptionsContext func(ctx context.Context, privateStoreID string, options *armmarketplace.PrivateStoreClientListSubscriptionsContextOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientListSubscriptionsContextResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method PrivateStoreClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armmarketplace.PrivateStoreClientListOptions) (resp azfake.PagerResponder[armmarketplace.PrivateStoreClientListResponse])
 
 	// QueryApprovedPlans is the fake for method PrivateStoreClient.QueryApprovedPlans
 	// HTTP status codes to indicate success: http.StatusOK
@@ -189,14 +189,14 @@ func (p *PrivateStoreServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = p.dispatchGetApprovalRequestsList(req)
 			case "PrivateStoreClient.GetRequestApproval":
 				res.resp, res.err = p.dispatchGetRequestApproval(req)
-			case "PrivateStoreClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateStoreClient.ListNewPlansNotifications":
 				res.resp, res.err = p.dispatchListNewPlansNotifications(req)
 			case "PrivateStoreClient.ListStopSellOffersPlansNotifications":
 				res.resp, res.err = p.dispatchListStopSellOffersPlansNotifications(req)
 			case "PrivateStoreClient.ListSubscriptionsContext":
 				res.resp, res.err = p.dispatchListSubscriptionsContext(req)
+			case "PrivateStoreClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateStoreClient.QueryApprovedPlans":
 				res.resp, res.err = p.dispatchQueryApprovedPlans(req)
 			case "PrivateStoreClient.QueryNotificationsState":
@@ -695,41 +695,6 @@ func (p *PrivateStoreServerTransport) dispatchGetRequestApproval(req *http.Reque
 	return resp, nil
 }
 
-func (p *PrivateStoreServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		qp := req.URL.Query()
-		useCacheParam := getOptional(qp.Get("use-cache"))
-		var options *armmarketplace.PrivateStoreClientListOptions
-		if useCacheParam != nil {
-			options = &armmarketplace.PrivateStoreClientListOptions{
-				UseCache: useCacheParam,
-			}
-		}
-		resp := p.srv.NewListPager(options)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmarketplace.PrivateStoreClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateStoreServerTransport) dispatchListNewPlansNotifications(req *http.Request) (*http.Response, error) {
 	if p.srv.ListNewPlansNotifications == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListNewPlansNotifications not implemented")}
@@ -823,6 +788,41 @@ func (p *PrivateStoreServerTransport) dispatchListSubscriptionsContext(req *http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionsContextList, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PrivateStoreServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		qp := req.URL.Query()
+		useCacheParam := getOptional(qp.Get("use-cache"))
+		var options *armmarketplace.PrivateStoreClientListOptions
+		if useCacheParam != nil {
+			options = &armmarketplace.PrivateStoreClientListOptions{
+				UseCache: useCacheParam,
+			}
+		}
+		resp := p.srv.NewListPager(options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmarketplace.PrivateStoreClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

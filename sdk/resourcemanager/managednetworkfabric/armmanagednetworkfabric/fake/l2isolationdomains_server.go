@@ -33,18 +33,6 @@ type L2IsolationDomainsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *armmanagednetworkfabric.L2IsolationDomainsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method L2IsolationDomainsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *armmanagednetworkfabric.L2IsolationDomainsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.L2IsolationDomainsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method L2IsolationDomainsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method L2IsolationDomainsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse])
-
 	// BeginUpdate is the fake for method L2IsolationDomainsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body armmanagednetworkfabric.L2IsolationDomainPatch, options *armmanagednetworkfabric.L2IsolationDomainsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -56,6 +44,18 @@ type L2IsolationDomainsServer struct {
 	// BeginValidateConfiguration is the fake for method L2IsolationDomainsClient.BeginValidateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateConfiguration func(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *armmanagednetworkfabric.L2IsolationDomainsClientBeginValidateConfigurationOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientValidateConfigurationResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method L2IsolationDomainsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *armmanagednetworkfabric.L2IsolationDomainsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.L2IsolationDomainsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method L2IsolationDomainsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method L2IsolationDomainsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse])
 }
 
 // NewL2IsolationDomainsServerTransport creates a new instance of L2IsolationDomainsServerTransport with the provided implementation.
@@ -67,11 +67,11 @@ func NewL2IsolationDomainsServerTransport(srv *L2IsolationDomainsServer) *L2Isol
 		beginCommitConfiguration:       newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientCommitConfigurationResponse]](),
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientUpdateAdministrativeStateResponse]](),
 		beginValidateConfiguration:     newTracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientValidateConfigurationResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -82,11 +82,11 @@ type L2IsolationDomainsServerTransport struct {
 	beginCommitConfiguration       *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientCommitConfigurationResponse]]
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientUpdateAdministrativeStateResponse]]
 	beginValidateConfiguration     *tracker[azfake.PollerResponder[armmanagednetworkfabric.L2IsolationDomainsClientValidateConfigurationResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for L2IsolationDomainsServerTransport.
@@ -116,18 +116,18 @@ func (l *L2IsolationDomainsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = l.dispatchBeginCreate(req)
 			case "L2IsolationDomainsClient.BeginDelete":
 				res.resp, res.err = l.dispatchBeginDelete(req)
-			case "L2IsolationDomainsClient.Get":
-				res.resp, res.err = l.dispatchGet(req)
-			case "L2IsolationDomainsClient.NewListByResourceGroupPager":
-				res.resp, res.err = l.dispatchNewListByResourceGroupPager(req)
-			case "L2IsolationDomainsClient.NewListBySubscriptionPager":
-				res.resp, res.err = l.dispatchNewListBySubscriptionPager(req)
 			case "L2IsolationDomainsClient.BeginUpdate":
 				res.resp, res.err = l.dispatchBeginUpdate(req)
 			case "L2IsolationDomainsClient.BeginUpdateAdministrativeState":
 				res.resp, res.err = l.dispatchBeginUpdateAdministrativeState(req)
 			case "L2IsolationDomainsClient.BeginValidateConfiguration":
 				res.resp, res.err = l.dispatchBeginValidateConfiguration(req)
+			case "L2IsolationDomainsClient.Get":
+				res.resp, res.err = l.dispatchGet(req)
+			case "L2IsolationDomainsClient.NewListByResourceGroupPager":
+				res.resp, res.err = l.dispatchNewListByResourceGroupPager(req)
+			case "L2IsolationDomainsClient.NewListBySubscriptionPager":
+				res.resp, res.err = l.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -280,109 +280,6 @@ func (l *L2IsolationDomainsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
-func (l *L2IsolationDomainsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains/(?P<l2IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	l2IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l2IsolationDomainName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, l2IsolationDomainNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).L2IsolationDomain, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *L2IsolationDomainsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := l.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := l.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		l.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		l.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *L2IsolationDomainsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := l.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := l.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		l.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		l.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (l *L2IsolationDomainsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -520,6 +417,109 @@ func (l *L2IsolationDomainsServerTransport) dispatchBeginValidateConfiguration(r
 		l.beginValidateConfiguration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (l *L2IsolationDomainsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if l.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains/(?P<l2IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	l2IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l2IsolationDomainName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, l2IsolationDomainNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).L2IsolationDomain, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (l *L2IsolationDomainsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := l.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := l.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		l.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.L2IsolationDomainsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		l.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *L2IsolationDomainsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := l.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l2IsolationDomains`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := l.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		l.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.L2IsolationDomainsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		l.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

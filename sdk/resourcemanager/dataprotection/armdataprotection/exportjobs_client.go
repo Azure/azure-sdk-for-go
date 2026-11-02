@@ -66,7 +66,7 @@ func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupN
 	}
 }
 
-// Trigger - Triggers export of jobs and returns an OperationID to track.
+// trigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// triggerCreateRequest creates the Trigger request.
+// triggerCreateRequest creates the trigger request.
 func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *ExportJobsClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/exportBackupJobs"
 	if client.subscriptionID == "" {

@@ -25,13 +25,13 @@ type ReplicationStorageClassificationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, storageClassificationName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ReplicationStorageClassificationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse])
-
 	// NewListByReplicationFabricsPager is the fake for method ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByReplicationFabricsPager func(resourceGroupName string, resourceName string, fabricName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListByReplicationFabricsOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListByReplicationFabricsResponse])
+
+	// NewListPager is the fake for method ReplicationStorageClassificationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse])
 }
 
 // NewReplicationStorageClassificationsServerTransport creates a new instance of ReplicationStorageClassificationsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type ReplicationStorageClassificationsServer struct {
 func NewReplicationStorageClassificationsServerTransport(srv *ReplicationStorageClassificationsServer) *ReplicationStorageClassificationsServerTransport {
 	return &ReplicationStorageClassificationsServerTransport{
 		srv:                              srv,
-		newListPager:                     newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse]](),
 		newListByReplicationFabricsPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListByReplicationFabricsResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewReplicationStorageClassificationsServerTransport(srv *ReplicationStorage
 // Don't use this type directly, use NewReplicationStorageClassificationsServerTransport instead.
 type ReplicationStorageClassificationsServerTransport struct {
 	srv                              *ReplicationStorageClassificationsServer
-	newListPager                     *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse]]
 	newListByReplicationFabricsPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListByReplicationFabricsResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationStorageClassificationsServerTransport.
@@ -76,10 +76,10 @@ func (r *ReplicationStorageClassificationsServerTransport) dispatchToMethodFake(
 			switch method {
 			case "ReplicationStorageClassificationsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ReplicationStorageClassificationsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager":
 				res.resp, res.err = r.dispatchNewListByReplicationFabricsPager(req)
+			case "ReplicationStorageClassificationsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -137,47 +137,6 @@ func (r *ReplicationStorageClassificationsServerTransport) dispatchGet(req *http
 	return resp, nil
 }
 
-func (r *ReplicationStorageClassificationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *ReplicationStorageClassificationsServerTransport) dispatchNewListByReplicationFabricsPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByReplicationFabricsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByReplicationFabricsPager not implemented")}
@@ -219,6 +178,47 @@ func (r *ReplicationStorageClassificationsServerTransport) dispatchNewListByRepl
 	}
 	if !server.PagerResponderMore(newListByReplicationFabricsPager) {
 		r.newListByReplicationFabricsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *ReplicationStorageClassificationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

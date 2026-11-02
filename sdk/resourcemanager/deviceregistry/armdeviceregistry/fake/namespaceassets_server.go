@@ -29,6 +29,10 @@ type NamespaceAssetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, options *armdeviceregistry.NamespaceAssetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NamespaceAssetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties armdeviceregistry.NamespaceAssetUpdate, options *armdeviceregistry.NamespaceAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NamespaceAssetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, options *armdeviceregistry.NamespaceAssetsClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceAssetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type NamespaceAssetsServer struct {
 	// NewListByResourceGroupPager is the fake for method NamespaceAssetsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceAssetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method NamespaceAssetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties armdeviceregistry.NamespaceAssetUpdate, options *armdeviceregistry.NamespaceAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespaceAssetsServerTransport creates a new instance of NamespaceAssetsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewNamespaceAssetsServerTransport(srv *NamespaceAssetsServer) *NamespaceAss
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type NamespaceAssetsServerTransport struct {
 	srv                         *NamespaceAssetsServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceAssetsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceAssetsServerTransport.
@@ -90,12 +90,12 @@ func (n *NamespaceAssetsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = n.dispatchBeginCreateOrReplace(req)
 			case "NamespaceAssetsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespaceAssetsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NamespaceAssetsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespaceAssetsClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NamespaceAssetsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (n *NamespaceAssetsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (n *NamespaceAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/assets/(?P<assetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceAssetUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		assetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, assetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NamespaceAssetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (n *NamespaceAssetsServerTransport) dispatchNewListByResourceGroupPager(req
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		n.newListByResourceGroupPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NamespaceAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/assets/(?P<assetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceAssetUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		assetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, assetNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

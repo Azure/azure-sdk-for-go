@@ -71,7 +71,7 @@ func (client *ReplicationVaultSettingClient) BeginCreate(ctx context.Context, re
 	}
 }
 
-// Create - Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
+// create - Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
 //
 // The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ReplicationVaultSettingClient) create(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, vaultSettingName string, input VaultSettingCreationInput, _ *ReplicationVaultSettingClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}"
 	if client.subscriptionID == "" {

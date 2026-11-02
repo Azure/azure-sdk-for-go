@@ -68,7 +68,7 @@ func (client *CloudVMClustersClient) BeginAddVMs(ctx context.Context, resourceGr
 	}
 }
 
-// AddVMs - Add VMs to the VM Cluster
+// addVMs - Add VMs to the VM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudVMClustersClient) addVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginAddVMsOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *CloudVMClustersClient) addVMs(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// addVMsCreateRequest creates the AddVMs request.
+// addVMsCreateRequest creates the addVMs request.
 func (client *CloudVMClustersClient) addVMsCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, _ *CloudVMClustersClientBeginAddVMsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/addVms"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *CloudVMClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create a CloudVmCluster
+// createOrUpdate - Create a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudVMClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, resource CloudVMCluster, options *CloudVMClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *CloudVMClustersClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CloudVMClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, resource CloudVMCluster, _ *CloudVMClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}"
 	if client.subscriptionID == "" {
@@ -219,7 +219,7 @@ func (client *CloudVMClustersClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a CloudVmCluster
+// deleteOperation - Delete a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudVMClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudvmclustername string, options *CloudVMClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -241,7 +241,7 @@ func (client *CloudVMClustersClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CloudVMClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, _ *CloudVMClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}"
 	if client.subscriptionID == "" {
@@ -263,6 +263,158 @@ func (client *CloudVMClustersClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRemoveVMs - Remove VMs from the VM Cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudvmclustername - CloudVmCluster name
+//   - body - The content of the action request
+//   - options - CloudVMClustersClientBeginRemoveVMsOptions contains the optional parameters for the CloudVMClustersClient.BeginRemoveVMs
+//     method.
+func (client *CloudVMClustersClient) BeginRemoveVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginRemoveVMsOptions) (*runtime.Poller[CloudVMClustersClientRemoveVMsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeVMs(ctx, resourceGroupName, cloudvmclustername, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudVMClustersClientRemoveVMsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudVMClustersClientRemoveVMsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeVMs - Remove VMs from the VM Cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudVMClustersClient) removeVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginRemoveVMsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudVMClustersClient.BeginRemoveVMs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeVMsCreateRequest(ctx, resourceGroupName, cloudvmclustername, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeVMsCreateRequest creates the removeVMs request.
+func (client *CloudVMClustersClient) removeVMsCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, _ *CloudVMClustersClientBeginRemoveVMsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/removeVms"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudvmclustername == "" {
+		return nil, errors.New("parameter cloudvmclustername cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a CloudVmCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudvmclustername - CloudVmCluster name
+//   - properties - The resource properties to be updated.
+//   - options - CloudVMClustersClientBeginUpdateOptions contains the optional parameters for the CloudVMClustersClient.BeginUpdate
+//     method.
+func (client *CloudVMClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, options *CloudVMClustersClientBeginUpdateOptions) (*runtime.Poller[CloudVMClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, cloudvmclustername, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudVMClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudVMClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CloudVmCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudVMClustersClient) update(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, options *CloudVMClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudVMClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudvmclustername, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CloudVMClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, _ *CloudVMClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudvmclustername == "" {
+		return nil, errors.New("parameter cloudvmclustername cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -322,6 +474,72 @@ func (client *CloudVMClustersClient) getHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudVMCluster); err != nil {
 		return CloudVMClustersClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPrivateIPAddresses - List Private IP Addresses by the provided filter
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudvmclustername - CloudVmCluster name
+//   - body - The content of the action request
+//   - options - CloudVMClustersClientListPrivateIPAddressesOptions contains the optional parameters for the CloudVMClustersClient.ListPrivateIPAddresses
+//     method.
+func (client *CloudVMClustersClient) ListPrivateIPAddresses(ctx context.Context, resourceGroupName string, cloudvmclustername string, body PrivateIPAddressesFilter, options *CloudVMClustersClientListPrivateIPAddressesOptions) (CloudVMClustersClientListPrivateIPAddressesResponse, error) {
+	var err error
+	const operationName = "CloudVMClustersClient.ListPrivateIPAddresses"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPrivateIPAddressesCreateRequest(ctx, resourceGroupName, cloudvmclustername, body, options)
+	if err != nil {
+		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
+	}
+	return client.listPrivateIPAddressesHandleResponse(httpResp, http.StatusOK)
+}
+
+// listPrivateIPAddressesCreateRequest creates the ListPrivateIPAddresses request.
+func (client *CloudVMClustersClient) listPrivateIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, body PrivateIPAddressesFilter, _ *CloudVMClustersClientListPrivateIPAddressesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/listPrivateIpAddresses"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudvmclustername == "" {
+		return nil, errors.New("parameter cloudvmclustername cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listPrivateIPAddressesHandleResponse handles the ListPrivateIPAddresses response.
+func (client *CloudVMClustersClient) listPrivateIPAddressesHandleResponse(resp *http.Response, successCodes ...int) (CloudVMClustersClientListPrivateIPAddressesResponse, error) {
+	result := CloudVMClustersClientListPrivateIPAddressesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateIPAddressPropertiesArray); err != nil {
+		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
 	}
 	return result, nil
 }
@@ -463,222 +681,4 @@ func (client *CloudVMClustersClient) listBySubscriptionHandleResponse(resp *http
 		return CloudVMClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// ListPrivateIPAddresses - List Private IP Addresses by the provided filter
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudvmclustername - CloudVmCluster name
-//   - body - The content of the action request
-//   - options - CloudVMClustersClientListPrivateIPAddressesOptions contains the optional parameters for the CloudVMClustersClient.ListPrivateIPAddresses
-//     method.
-func (client *CloudVMClustersClient) ListPrivateIPAddresses(ctx context.Context, resourceGroupName string, cloudvmclustername string, body PrivateIPAddressesFilter, options *CloudVMClustersClientListPrivateIPAddressesOptions) (CloudVMClustersClientListPrivateIPAddressesResponse, error) {
-	var err error
-	const operationName = "CloudVMClustersClient.ListPrivateIPAddresses"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listPrivateIPAddressesCreateRequest(ctx, resourceGroupName, cloudvmclustername, body, options)
-	if err != nil {
-		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
-	}
-	return client.listPrivateIPAddressesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listPrivateIPAddressesCreateRequest creates the ListPrivateIPAddresses request.
-func (client *CloudVMClustersClient) listPrivateIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, body PrivateIPAddressesFilter, _ *CloudVMClustersClientListPrivateIPAddressesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/listPrivateIpAddresses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudvmclustername == "" {
-		return nil, errors.New("parameter cloudvmclustername cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listPrivateIPAddressesHandleResponse handles the ListPrivateIPAddresses response.
-func (client *CloudVMClustersClient) listPrivateIPAddressesHandleResponse(resp *http.Response, successCodes ...int) (CloudVMClustersClientListPrivateIPAddressesResponse, error) {
-	result := CloudVMClustersClientListPrivateIPAddressesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateIPAddressPropertiesArray); err != nil {
-		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRemoveVMs - Remove VMs from the VM Cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudvmclustername - CloudVmCluster name
-//   - body - The content of the action request
-//   - options - CloudVMClustersClientBeginRemoveVMsOptions contains the optional parameters for the CloudVMClustersClient.BeginRemoveVMs
-//     method.
-func (client *CloudVMClustersClient) BeginRemoveVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginRemoveVMsOptions) (*runtime.Poller[CloudVMClustersClientRemoveVMsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeVMs(ctx, resourceGroupName, cloudvmclustername, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudVMClustersClientRemoveVMsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudVMClustersClientRemoveVMsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveVMs - Remove VMs from the VM Cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudVMClustersClient) removeVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginRemoveVMsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudVMClustersClient.BeginRemoveVMs"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeVMsCreateRequest(ctx, resourceGroupName, cloudvmclustername, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeVMsCreateRequest creates the RemoveVMs request.
-func (client *CloudVMClustersClient) removeVMsCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, _ *CloudVMClustersClientBeginRemoveVMsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/removeVms"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudvmclustername == "" {
-		return nil, errors.New("parameter cloudvmclustername cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a CloudVmCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudvmclustername - CloudVmCluster name
-//   - properties - The resource properties to be updated.
-//   - options - CloudVMClustersClientBeginUpdateOptions contains the optional parameters for the CloudVMClustersClient.BeginUpdate
-//     method.
-func (client *CloudVMClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, options *CloudVMClustersClientBeginUpdateOptions) (*runtime.Poller[CloudVMClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudvmclustername, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudVMClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudVMClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CloudVmCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudVMClustersClient) update(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, options *CloudVMClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudVMClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudvmclustername, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CloudVMClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, _ *CloudVMClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudvmclustername == "" {
-		return nil, errors.New("parameter cloudvmclustername cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudvmclustername}", url.PathEscape(cloudvmclustername))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

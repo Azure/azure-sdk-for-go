@@ -68,7 +68,7 @@ func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update a custom certificate.
+// createOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, _ *CustomCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customCertificates/{certificateName}"
 	if client.subscriptionID == "" {

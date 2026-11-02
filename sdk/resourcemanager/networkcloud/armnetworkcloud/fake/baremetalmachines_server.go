@@ -35,18 +35,6 @@ type BareMetalMachinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method BareMetalMachinesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientGetOptions) (resp azfake.Responder[armnetworkcloud.BareMetalMachinesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method BareMetalMachinesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method BareMetalMachinesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse])
-
 	// BeginPowerOff is the fake for method BareMetalMachinesClient.BeginPowerOff
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPowerOff func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse], errResp azfake.ErrorResponder)
@@ -90,6 +78,18 @@ type BareMetalMachinesServer struct {
 	// BeginUpdate is the fake for method BareMetalMachinesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters armnetworkcloud.BareMetalMachinePatchParameters, options *armnetworkcloud.BareMetalMachinesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method BareMetalMachinesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientGetOptions) (resp azfake.Responder[armnetworkcloud.BareMetalMachinesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method BareMetalMachinesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method BareMetalMachinesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse])
 }
 
 // NewBareMetalMachinesServerTransport creates a new instance of BareMetalMachinesServerTransport with the provided implementation.
@@ -101,8 +101,6 @@ func NewBareMetalMachinesServerTransport(srv *BareMetalMachinesServer) *BareMeta
 		beginCordon:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]](),
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]](),
 		beginPowerOff:                  newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]](),
 		beginReimage:                   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]](),
 		beginReplace:                   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]](),
@@ -114,6 +112,8 @@ func NewBareMetalMachinesServerTransport(srv *BareMetalMachinesServer) *BareMeta
 		beginStart:                     newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]](),
 		beginUncordon:                  newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -124,8 +124,6 @@ type BareMetalMachinesServerTransport struct {
 	beginCordon                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]]
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]]
 	beginPowerOff                  *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]]
 	beginReimage                   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]]
 	beginReplace                   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]]
@@ -137,6 +135,8 @@ type BareMetalMachinesServerTransport struct {
 	beginStart                     *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]]
 	beginUncordon                  *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for BareMetalMachinesServerTransport.
@@ -166,12 +166,6 @@ func (b *BareMetalMachinesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BareMetalMachinesClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
-			case "BareMetalMachinesClient.Get":
-				res.resp, res.err = b.dispatchGet(req)
-			case "BareMetalMachinesClient.NewListByResourceGroupPager":
-				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
-			case "BareMetalMachinesClient.NewListBySubscriptionPager":
-				res.resp, res.err = b.dispatchNewListBySubscriptionPager(req)
 			case "BareMetalMachinesClient.BeginPowerOff":
 				res.resp, res.err = b.dispatchBeginPowerOff(req)
 			case "BareMetalMachinesClient.BeginReimage":
@@ -194,6 +188,12 @@ func (b *BareMetalMachinesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = b.dispatchBeginUncordon(req)
 			case "BareMetalMachinesClient.BeginUpdate":
 				res.resp, res.err = b.dispatchBeginUpdate(req)
+			case "BareMetalMachinesClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BareMetalMachinesClient.NewListByResourceGroupPager":
+				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			case "BareMetalMachinesClient.NewListBySubscriptionPager":
+				res.resp, res.err = b.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -371,147 +371,6 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginDelete(req *http.Request
 		b.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (b *BareMetalMachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	bareMetalMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bareMetalMachineName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BareMetalMachine, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		b.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := b.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := b.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		b.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		b.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -1055,6 +914,147 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUpdate(req *http.Request
 		b.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BareMetalMachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	bareMetalMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bareMetalMachineName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BareMetalMachine, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		b.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := b.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := b.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		b.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		b.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

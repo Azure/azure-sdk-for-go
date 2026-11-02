@@ -29,6 +29,10 @@ type NetworkAnchorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkAnchorName string, options *armoracledatabase.NetworkAnchorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkAnchorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkAnchorName string, properties armoracledatabase.NetworkAnchorUpdate, options *armoracledatabase.NetworkAnchorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkAnchorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkAnchorName string, options *armoracledatabase.NetworkAnchorsClientGetOptions) (resp azfake.Responder[armoracledatabase.NetworkAnchorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type NetworkAnchorsServer struct {
 	// NewListBySubscriptionPager is the fake for method NetworkAnchorsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.NetworkAnchorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.NetworkAnchorsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method NetworkAnchorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkAnchorName string, properties armoracledatabase.NetworkAnchorUpdate, options *armoracledatabase.NetworkAnchorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkAnchorsServerTransport creates a new instance of NetworkAnchorsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkAnchorsServerTransport(srv *NetworkAnchorsServer) *NetworkAnchors
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.NetworkAnchorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.NetworkAnchorsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkAnchorsServerTransport struct {
 	srv                         *NetworkAnchorsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.NetworkAnchorsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.NetworkAnchorsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.NetworkAnchorsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkAnchorsServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkAnchorsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NetworkAnchorsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkAnchorsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkAnchorsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkAnchorsClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkAnchorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NetworkAnchorsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (n *NetworkAnchorsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (n *NetworkAnchorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/networkAnchors/(?P<networkAnchorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.NetworkAnchorUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkAnchorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkAnchorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkAnchorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NetworkAnchorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (n *NetworkAnchorsServerTransport) dispatchNewListBySubscriptionPager(req *
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkAnchorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/networkAnchors/(?P<networkAnchorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.NetworkAnchorUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkAnchorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkAnchorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkAnchorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

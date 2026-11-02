@@ -21,13 +21,13 @@ import (
 
 // FleetAnalyticsServer is a fake server for instances of the armcosmos.FleetAnalyticsClient type.
 type FleetAnalyticsServer struct {
-	// Create is the fake for method FleetAnalyticsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, body armcosmos.FleetAnalyticsResource, options *armcosmos.FleetAnalyticsClientCreateOptions) (resp azfake.Responder[armcosmos.FleetAnalyticsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method FleetAnalyticsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *armcosmos.FleetAnalyticsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcosmos.FleetAnalyticsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method FleetAnalyticsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, body armcosmos.FleetAnalyticsResource, options *armcosmos.FleetAnalyticsClientCreateOptions) (resp azfake.Responder[armcosmos.FleetAnalyticsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FleetAnalyticsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (f *FleetAnalyticsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "FleetAnalyticsClient.Create":
-				res.resp, res.err = f.dispatchCreate(req)
 			case "FleetAnalyticsClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FleetAnalyticsClient.Create":
+				res.resp, res.err = f.dispatchCreate(req)
 			case "FleetAnalyticsClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FleetAnalyticsClient.NewListPager":
@@ -102,54 +102,13 @@ func (f *FleetAnalyticsServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
-func (f *FleetAnalyticsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if f.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fleetAnalytics/(?P<fleetAnalyticsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcosmos.FleetAnalyticsResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-	if err != nil {
-		return nil, err
-	}
-	fleetAnalyticsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetAnalyticsName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := f.srv.Create(req.Context(), resourceGroupNameParam, fleetNameParam, fleetAnalyticsNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FleetAnalyticsResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (f *FleetAnalyticsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := f.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fleetAnalytics/(?P<fleetAnalyticsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fleetAnalytics/(?P<fleetAnalyticsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -191,11 +150,52 @@ func (f *FleetAnalyticsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (f *FleetAnalyticsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if f.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fleetAnalytics/(?P<fleetAnalyticsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcosmos.FleetAnalyticsResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+	if err != nil {
+		return nil, err
+	}
+	fleetAnalyticsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetAnalyticsName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Create(req.Context(), resourceGroupNameParam, fleetNameParam, fleetAnalyticsNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FleetAnalyticsResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (f *FleetAnalyticsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fleetAnalytics/(?P<fleetAnalyticsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fleetAnalytics/(?P<fleetAnalyticsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -234,7 +234,7 @@ func (f *FleetAnalyticsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := f.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fleetAnalytics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fleetAnalytics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

@@ -25,6 +25,10 @@ type MigrationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCancel func(ctx context.Context, resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientBeginCancelOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse], errResp azfake.ErrorResponder)
 
+	// BeginStart is the fake for method MigrationsClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, parameters armredisenterprise.Migration, options *armredisenterprise.MigrationsClientBeginStartOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MigrationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientGetOptions) (resp azfake.Responder[armredisenterprise.MigrationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type MigrationsServer struct {
 	// NewListPager is the fake for method MigrationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientListOptions) (resp azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse])
-
-	// BeginStart is the fake for method MigrationsClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, parameters armredisenterprise.Migration, options *armredisenterprise.MigrationsClientBeginStartOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse], errResp azfake.ErrorResponder)
 
 	// Validate is the fake for method MigrationsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -49,8 +49,8 @@ func NewMigrationsServerTransport(srv *MigrationsServer) *MigrationsServerTransp
 	return &MigrationsServerTransport{
 		srv:          srv,
 		beginCancel:  newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]](),
 		beginStart:   newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]](),
 	}
 }
 
@@ -59,8 +59,8 @@ func NewMigrationsServerTransport(srv *MigrationsServer) *MigrationsServerTransp
 type MigrationsServerTransport struct {
 	srv          *MigrationsServer
 	beginCancel  *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse]]
-	newListPager *tracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]]
 	beginStart   *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]]
+	newListPager *tracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MigrationsServerTransport.
@@ -86,12 +86,12 @@ func (m *MigrationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 			switch method {
 			case "MigrationsClient.BeginCancel":
 				res.resp, res.err = m.dispatchBeginCancel(req)
+			case "MigrationsClient.BeginStart":
+				res.resp, res.err = m.dispatchBeginStart(req)
 			case "MigrationsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MigrationsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MigrationsClient.BeginStart":
-				res.resp, res.err = m.dispatchBeginStart(req)
 			case "MigrationsClient.Validate":
 				res.resp, res.err = m.dispatchValidate(req)
 			default:
@@ -149,6 +149,54 @@ func (m *MigrationsServerTransport) dispatchBeginCancel(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginCancel) {
 		m.beginCancel.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MigrationsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := m.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.Migration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		m.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		m.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		m.beginStart.remove(req)
 	}
 
 	return resp, nil
@@ -225,54 +273,6 @@ func (m *MigrationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MigrationsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := m.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.Migration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		m.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		m.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		m.beginStart.remove(req)
-	}
-
 	return resp, nil
 }
 

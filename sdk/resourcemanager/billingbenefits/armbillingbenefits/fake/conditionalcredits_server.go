@@ -33,6 +33,10 @@ type ConditionalCreditsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *armbillingbenefits.ConditionalCreditsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConditionalCreditsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, conditionalCreditName string, body armbillingbenefits.ConditionalCreditPatchRequest, options *armbillingbenefits.ConditionalCreditsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConditionalCreditsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *armbillingbenefits.ConditionalCreditsClientGetOptions) (resp azfake.Responder[armbillingbenefits.ConditionalCreditsClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type ConditionalCreditsServer struct {
 	// NewScopeListPager is the fake for method ConditionalCreditsClient.NewScopeListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewScopeListPager func(scope string, options *armbillingbenefits.ConditionalCreditsClientScopeListOptions) (resp azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientScopeListResponse])
-
-	// BeginUpdate is the fake for method ConditionalCreditsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, conditionalCreditName string, body armbillingbenefits.ConditionalCreditPatchRequest, options *armbillingbenefits.ConditionalCreditsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConditionalCreditsServerTransport creates a new instance of ConditionalCreditsServerTransport with the provided implementation.
@@ -63,10 +63,10 @@ func NewConditionalCreditsServerTransport(srv *ConditionalCreditsServer) *Condit
 		beginCancel:                 newTracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientCancelResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientListBySubscriptionResponse]](),
 		newScopeListPager:           newTracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientScopeListResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse]](),
 	}
 }
 
@@ -77,10 +77,10 @@ type ConditionalCreditsServerTransport struct {
 	beginCancel                 *tracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientCancelResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientListBySubscriptionResponse]]
 	newScopeListPager           *tracker[azfake.PagerResponder[armbillingbenefits.ConditionalCreditsClientScopeListResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.ConditionalCreditsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConditionalCreditsServerTransport.
@@ -110,6 +110,8 @@ func (c *ConditionalCreditsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConditionalCreditsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConditionalCreditsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConditionalCreditsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConditionalCreditsClient.NewListByResourceGroupPager":
@@ -118,8 +120,6 @@ func (c *ConditionalCreditsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ConditionalCreditsClient.NewScopeListPager":
 				res.resp, res.err = c.dispatchNewScopeListPager(req)
-			case "ConditionalCreditsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -272,6 +272,54 @@ func (c *ConditionalCreditsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
+func (c *ConditionalCreditsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/conditionalCredits/(?P<conditionalCreditName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.ConditionalCreditPatchRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		conditionalCreditNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("conditionalCreditName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, conditionalCreditNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConditionalCreditsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -409,54 +457,6 @@ func (c *ConditionalCreditsServerTransport) dispatchNewScopeListPager(req *http.
 	if !server.PagerResponderMore(newScopeListPager) {
 		c.newScopeListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConditionalCreditsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/conditionalCredits/(?P<conditionalCreditName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.ConditionalCreditPatchRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		conditionalCreditNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("conditionalCreditName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, conditionalCreditNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -30,6 +30,10 @@ type SchedulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *armdevcenter.SchedulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.SchedulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SchedulesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body armdevcenter.ScheduleUpdate, options *armdevcenter.SchedulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.SchedulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SchedulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *armdevcenter.SchedulesClientGetOptions) (resp azfake.Responder[armdevcenter.SchedulesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type SchedulesServer struct {
 	// NewListByPoolPager is the fake for method SchedulesClient.NewListByPoolPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByPoolPager func(resourceGroupName string, projectName string, poolName string, options *armdevcenter.SchedulesClientListByPoolOptions) (resp azfake.PagerResponder[armdevcenter.SchedulesClientListByPoolResponse])
-
-	// BeginUpdate is the fake for method SchedulesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body armdevcenter.ScheduleUpdate, options *armdevcenter.SchedulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.SchedulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchedulesServerTransport creates a new instance of SchedulesServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewSchedulesServerTransport(srv *SchedulesServer) *SchedulesServerTransport
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdevcenter.SchedulesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdevcenter.SchedulesClientDeleteResponse]](),
-		newListByPoolPager:  newTracker[azfake.PagerResponder[armdevcenter.SchedulesClientListByPoolResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armdevcenter.SchedulesClientUpdateResponse]](),
+		newListByPoolPager:  newTracker[azfake.PagerResponder[armdevcenter.SchedulesClientListByPoolResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type SchedulesServerTransport struct {
 	srv                 *SchedulesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdevcenter.SchedulesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdevcenter.SchedulesClientDeleteResponse]]
-	newListByPoolPager  *tracker[azfake.PagerResponder[armdevcenter.SchedulesClientListByPoolResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armdevcenter.SchedulesClientUpdateResponse]]
+	newListByPoolPager  *tracker[azfake.PagerResponder[armdevcenter.SchedulesClientListByPoolResponse]]
 }
 
 // Do implements the policy.Transporter interface for SchedulesServerTransport.
@@ -91,12 +91,12 @@ func (s *SchedulesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SchedulesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SchedulesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SchedulesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SchedulesClient.NewListByPoolPager":
 				res.resp, res.err = s.dispatchNewListByPoolPager(req)
-			case "SchedulesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -255,6 +255,79 @@ func (s *SchedulesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (s *SchedulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/schedules/(?P<scheduleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		body, err := server.UnmarshalRequestAsJSON[armdevcenter.ScheduleUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		scheduleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdevcenter.SchedulesClientBeginUpdateOptions
+		if topParam != nil {
+			options = &armdevcenter.SchedulesClientBeginUpdateOptions{
+				Top: topParam,
+			}
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, projectNameParam, poolNameParam, scheduleNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SchedulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -372,79 +445,6 @@ func (s *SchedulesServerTransport) dispatchNewListByPoolPager(req *http.Request)
 	if !server.PagerResponderMore(newListByPoolPager) {
 		s.newListByPoolPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SchedulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/schedules/(?P<scheduleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		body, err := server.UnmarshalRequestAsJSON[armdevcenter.ScheduleUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		scheduleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdevcenter.SchedulesClientBeginUpdateOptions
-		if topParam != nil {
-			options = &armdevcenter.SchedulesClientBeginUpdateOptions{
-				Top: topParam,
-			}
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, projectNameParam, poolNameParam, scheduleNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

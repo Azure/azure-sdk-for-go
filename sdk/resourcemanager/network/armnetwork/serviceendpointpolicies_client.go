@@ -128,7 +128,7 @@ func (client *ServiceEndpointPoliciesClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesClientBeginDeleteOptions) (*runtime.Poller[ServiceEndpointPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, serviceEndpointPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Deletes the specified service endpoint policy.
+// deleteOperation - Deletes the specified service endpoint policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceEndpointPoliciesClient) delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ServiceEndpointPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceEndpointPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

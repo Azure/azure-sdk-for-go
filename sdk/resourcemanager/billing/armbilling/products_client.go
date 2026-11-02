@@ -39,6 +39,81 @@ func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	return client, nil
 }
 
+// BeginMove - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+// profile as the existing invoice section. This operation is supported only for products that are purchased with a recurring
+// charge and for billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - productName - The ID that uniquely identifies a product.
+//   - parameters - The properties of the product to initiate a transfer.
+//   - options - ProductsClientBeginMoveOptions contains the optional parameters for the ProductsClient.BeginMove method.
+func (client *ProductsClient) BeginMove(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*runtime.Poller[ProductsClientMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.move(ctx, billingAccountName, productName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProductsClientMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProductsClientMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// move - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing profile
+// as the existing invoice section. This operation is supported only for products that are purchased with a recurring charge
+// and for billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProductsClient) move(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProductsClient.BeginMove"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.moveCreateRequest(ctx, billingAccountName, productName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// moveCreateRequest creates the move request.
+func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, _ *ProductsClientBeginMoveOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/move"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if productName == "" {
+		return nil, errors.New("parameter productName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -462,81 +537,6 @@ func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Resp
 		return ProductsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginMove - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
-// profile as the existing invoice section. This operation is supported only for products that are purchased with a recurring
-// charge and for billing accounts with agreement type Microsoft Customer Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - productName - The ID that uniquely identifies a product.
-//   - parameters - The properties of the product to initiate a transfer.
-//   - options - ProductsClientBeginMoveOptions contains the optional parameters for the ProductsClient.BeginMove method.
-func (client *ProductsClient) BeginMove(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*runtime.Poller[ProductsClientMoveResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.move(ctx, billingAccountName, productName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProductsClientMoveResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProductsClientMoveResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Move - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing profile
-// as the existing invoice section. This operation is supported only for products that are purchased with a recurring charge
-// and for billing accounts with agreement type Microsoft Customer Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProductsClient) move(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProductsClient.BeginMove"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.moveCreateRequest(ctx, billingAccountName, productName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// moveCreateRequest creates the Move request.
-func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, _ *ProductsClientBeginMoveOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/move"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if productName == "" {
-		return nil, errors.New("parameter productName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Update - Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for

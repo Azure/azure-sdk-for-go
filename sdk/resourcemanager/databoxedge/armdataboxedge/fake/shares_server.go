@@ -29,6 +29,10 @@ type SharesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, deviceName string, name string, resourceGroupName string, options *armdataboxedge.SharesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdataboxedge.SharesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRefresh is the fake for method SharesClient.BeginRefresh
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefresh func(ctx context.Context, deviceName string, name string, resourceGroupName string, options *armdataboxedge.SharesClientBeginRefreshOptions) (resp azfake.PollerResponder[armdataboxedge.SharesClientRefreshResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SharesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, deviceName string, name string, resourceGroupName string, options *armdataboxedge.SharesClientGetOptions) (resp azfake.Responder[armdataboxedge.SharesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type SharesServer struct {
 	// NewListByDataBoxEdgeDevicePager is the fake for method SharesClient.NewListByDataBoxEdgeDevicePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDataBoxEdgeDevicePager func(deviceName string, resourceGroupName string, options *armdataboxedge.SharesClientListByDataBoxEdgeDeviceOptions) (resp azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse])
-
-	// BeginRefresh is the fake for method SharesClient.BeginRefresh
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRefresh func(ctx context.Context, deviceName string, name string, resourceGroupName string, options *armdataboxedge.SharesClientBeginRefreshOptions) (resp azfake.PollerResponder[armdataboxedge.SharesClientRefreshResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSharesServerTransport creates a new instance of SharesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewSharesServerTransport(srv *SharesServer) *SharesServerTransport {
 		srv:                             srv,
 		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armdataboxedge.SharesClientCreateOrUpdateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armdataboxedge.SharesClientDeleteResponse]](),
-		newListByDataBoxEdgeDevicePager: newTracker[azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse]](),
 		beginRefresh:                    newTracker[azfake.PollerResponder[armdataboxedge.SharesClientRefreshResponse]](),
+		newListByDataBoxEdgeDevicePager: newTracker[azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type SharesServerTransport struct {
 	srv                             *SharesServer
 	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armdataboxedge.SharesClientCreateOrUpdateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armdataboxedge.SharesClientDeleteResponse]]
-	newListByDataBoxEdgeDevicePager *tracker[azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse]]
 	beginRefresh                    *tracker[azfake.PollerResponder[armdataboxedge.SharesClientRefreshResponse]]
+	newListByDataBoxEdgeDevicePager *tracker[azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse]]
 }
 
 // Do implements the policy.Transporter interface for SharesServerTransport.
@@ -90,12 +90,12 @@ func (s *SharesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SharesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SharesClient.BeginRefresh":
+				res.resp, res.err = s.dispatchBeginRefresh(req)
 			case "SharesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SharesClient.NewListByDataBoxEdgeDevicePager":
 				res.resp, res.err = s.dispatchNewListByDataBoxEdgeDevicePager(req)
-			case "SharesClient.BeginRefresh":
-				res.resp, res.err = s.dispatchBeginRefresh(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (s *SharesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (s *SharesServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRefresh == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefresh not implemented")}
+	}
+	beginRefresh := s.beginRefresh.get(req)
+	if beginRefresh == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/shares/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refresh`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRefresh(req.Context(), deviceNameParam, nameParam, resourceGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefresh = &respr
+		s.beginRefresh.add(req, beginRefresh)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefresh, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginRefresh.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefresh) {
+		s.beginRefresh.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SharesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,54 +335,6 @@ func (s *SharesServerTransport) dispatchNewListByDataBoxEdgeDevicePager(req *htt
 	if !server.PagerResponderMore(newListByDataBoxEdgeDevicePager) {
 		s.newListByDataBoxEdgeDevicePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SharesServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRefresh == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRefresh not implemented")}
-	}
-	beginRefresh := s.beginRefresh.get(req)
-	if beginRefresh == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/shares/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refresh`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRefresh(req.Context(), deviceNameParam, nameParam, resourceGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRefresh = &respr
-		s.beginRefresh.add(req, beginRefresh)
-	}
-
-	resp, err := server.PollerResponderNext(beginRefresh, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginRefresh.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRefresh) {
-		s.beginRefresh.remove(req)
-	}
-
 	return resp, nil
 }
 

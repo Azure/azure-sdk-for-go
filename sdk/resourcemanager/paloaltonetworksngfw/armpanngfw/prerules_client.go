@@ -62,7 +62,7 @@ func (client *PreRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRul
 	}
 }
 
-// CreateOrUpdate - Create a PreRulesResource
+// createOrUpdate - Create a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestackName string, priority string, resource PreRulesResource, options *PreRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestac
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PreRulesClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, priority string, resource PreRulesResource, _ *PreRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules/{priority}"
 	if globalRulestackName == "" {
@@ -132,7 +132,7 @@ func (client *PreRulesClient) BeginDelete(ctx context.Context, globalRulestackNa
 	}
 }
 
-// Delete - Delete a PreRulesResource
+// deleteOperation - Delete a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulestackName string, priority string, options *PreRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -154,7 +154,7 @@ func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulesta
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PreRulesClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, priority string, _ *PreRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules/{priority}"
 	if globalRulestackName == "" {

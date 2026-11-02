@@ -21,10 +21,6 @@ import (
 
 // ClusterPrincipalAssignmentsServer is a fake server for instances of the armkusto.ClusterPrincipalAssignmentsClient type.
 type ClusterPrincipalAssignmentsServer struct {
-	// CheckNameAvailability is the fake for method ClusterPrincipalAssignmentsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName armkusto.ClusterPrincipalAssignmentCheckNameRequest, options *armkusto.ClusterPrincipalAssignmentsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, parameters armkusto.ClusterPrincipalAssignment, options *armkusto.ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.ClusterPrincipalAssignmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,10 @@ type ClusterPrincipalAssignmentsServer struct {
 	// BeginDelete is the fake for method ClusterPrincipalAssignmentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, options *armkusto.ClusterPrincipalAssignmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.ClusterPrincipalAssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ClusterPrincipalAssignmentsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName armkusto.ClusterPrincipalAssignmentCheckNameRequest, options *armkusto.ClusterPrincipalAssignmentsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ClusterPrincipalAssignmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -84,12 +84,12 @@ func (c *ClusterPrincipalAssignmentsServerTransport) dispatchToMethodFake(req *h
 		}
 		if !intercepted {
 			switch method {
-			case "ClusterPrincipalAssignmentsClient.CheckNameAvailability":
-				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ClusterPrincipalAssignmentsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ClusterPrincipalAssignmentsClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "ClusterPrincipalAssignmentsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ClusterPrincipalAssignmentsClient.NewListPager":
@@ -108,43 +108,6 @@ func (c *ClusterPrincipalAssignmentsServerTransport) dispatchToMethodFake(req *h
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ClusterPrincipalAssignmentsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkPrincipalAssignmentNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.ClusterPrincipalAssignmentCheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *ClusterPrincipalAssignmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -244,6 +207,43 @@ func (c *ClusterPrincipalAssignmentsServerTransport) dispatchBeginDelete(req *ht
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ClusterPrincipalAssignmentsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkPrincipalAssignmentNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.ClusterPrincipalAssignmentCheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

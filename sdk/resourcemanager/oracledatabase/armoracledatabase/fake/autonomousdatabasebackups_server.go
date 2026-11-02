@@ -29,6 +29,10 @@ type AutonomousDatabaseBackupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, options *armoracledatabase.AutonomousDatabaseBackupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AutonomousDatabaseBackupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties armoracledatabase.AutonomousDatabaseBackupUpdate, options *armoracledatabase.AutonomousDatabaseBackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AutonomousDatabaseBackupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, options *armoracledatabase.AutonomousDatabaseBackupsClientGetOptions) (resp azfake.Responder[armoracledatabase.AutonomousDatabaseBackupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type AutonomousDatabaseBackupsServer struct {
 	// NewListByAutonomousDatabasePager is the fake for method AutonomousDatabaseBackupsClient.NewListByAutonomousDatabasePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAutonomousDatabasePager func(resourceGroupName string, autonomousdatabasename string, options *armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse])
-
-	// BeginUpdate is the fake for method AutonomousDatabaseBackupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties armoracledatabase.AutonomousDatabaseBackupUpdate, options *armoracledatabase.AutonomousDatabaseBackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAutonomousDatabaseBackupsServerTransport creates a new instance of AutonomousDatabaseBackupsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewAutonomousDatabaseBackupsServerTransport(srv *AutonomousDatabaseBackupsS
 		srv:                              srv,
 		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientCreateOrUpdateResponse]](),
 		beginDelete:                      newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientDeleteResponse]](),
-		newListByAutonomousDatabasePager: newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientUpdateResponse]](),
+		newListByAutonomousDatabasePager: newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type AutonomousDatabaseBackupsServerTransport struct {
 	srv                              *AutonomousDatabaseBackupsServer
 	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientCreateOrUpdateResponse]]
 	beginDelete                      *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientDeleteResponse]]
-	newListByAutonomousDatabasePager *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabaseBackupsClientUpdateResponse]]
+	newListByAutonomousDatabasePager *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse]]
 }
 
 // Do implements the policy.Transporter interface for AutonomousDatabaseBackupsServerTransport.
@@ -90,12 +90,12 @@ func (a *AutonomousDatabaseBackupsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AutonomousDatabaseBackupsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AutonomousDatabaseBackupsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AutonomousDatabaseBackupsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AutonomousDatabaseBackupsClient.NewListByAutonomousDatabasePager":
 				res.resp, res.err = a.dispatchNewListByAutonomousDatabasePager(req)
-			case "AutonomousDatabaseBackupsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (a *AutonomousDatabaseBackupsServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
+func (a *AutonomousDatabaseBackupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autonomousDatabaseBackups/(?P<adbbackupid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.AutonomousDatabaseBackupUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+		if err != nil {
+			return nil, err
+		}
+		adbbackupidParam, err := url.PathUnescape(matches[regex.SubexpIndex("adbbackupid")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, adbbackupidParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AutonomousDatabaseBackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (a *AutonomousDatabaseBackupsServerTransport) dispatchNewListByAutonomousDa
 	if !server.PagerResponderMore(newListByAutonomousDatabasePager) {
 		a.newListByAutonomousDatabasePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AutonomousDatabaseBackupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autonomousDatabaseBackups/(?P<adbbackupid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.AutonomousDatabaseBackupUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
-		if err != nil {
-			return nil, err
-		}
-		adbbackupidParam, err := url.PathUnescape(matches[regex.SubexpIndex("adbbackupid")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, adbbackupidParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

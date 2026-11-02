@@ -26,10 +26,6 @@ type AmlFilesystemsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Archive func(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *armstoragecache.AmlFilesystemsClientArchiveOptions) (resp azfake.Responder[armstoragecache.AmlFilesystemsClientArchiveResponse], errResp azfake.ErrorResponder)
 
-	// CancelArchive is the fake for method AmlFilesystemsClient.CancelArchive
-	// HTTP status codes to indicate success: http.StatusOK
-	CancelArchive func(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *armstoragecache.AmlFilesystemsClientCancelArchiveOptions) (resp azfake.Responder[armstoragecache.AmlFilesystemsClientCancelArchiveResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method AmlFilesystemsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem armstoragecache.AmlFilesystem, options *armstoragecache.AmlFilesystemsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armstoragecache.AmlFilesystemsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -38,21 +34,25 @@ type AmlFilesystemsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *armstoragecache.AmlFilesystemsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragecache.AmlFilesystemsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AmlFilesystemsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem armstoragecache.AmlFilesystemUpdate, options *armstoragecache.AmlFilesystemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.AmlFilesystemsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CancelArchive is the fake for method AmlFilesystemsClient.CancelArchive
+	// HTTP status codes to indicate success: http.StatusOK
+	CancelArchive func(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *armstoragecache.AmlFilesystemsClientCancelArchiveOptions) (resp azfake.Responder[armstoragecache.AmlFilesystemsClientCancelArchiveResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AmlFilesystemsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *armstoragecache.AmlFilesystemsClientGetOptions) (resp azfake.Responder[armstoragecache.AmlFilesystemsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method AmlFilesystemsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armstoragecache.AmlFilesystemsClientListOptions) (resp azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method AmlFilesystemsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armstoragecache.AmlFilesystemsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method AmlFilesystemsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem armstoragecache.AmlFilesystemUpdate, options *armstoragecache.AmlFilesystemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.AmlFilesystemsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method AmlFilesystemsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armstoragecache.AmlFilesystemsClientListOptions) (resp azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse])
 }
 
 // NewAmlFilesystemsServerTransport creates a new instance of AmlFilesystemsServerTransport with the provided implementation.
@@ -63,9 +63,9 @@ func NewAmlFilesystemsServerTransport(srv *AmlFilesystemsServer) *AmlFilesystems
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse]](),
 	}
 }
 
@@ -75,9 +75,9 @@ type AmlFilesystemsServerTransport struct {
 	srv                         *AmlFilesystemsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragecache.AmlFilesystemsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armstoragecache.AmlFilesystemsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AmlFilesystemsServerTransport.
@@ -103,20 +103,20 @@ func (a *AmlFilesystemsServerTransport) dispatchToMethodFake(req *http.Request, 
 			switch method {
 			case "AmlFilesystemsClient.Archive":
 				res.resp, res.err = a.dispatchArchive(req)
-			case "AmlFilesystemsClient.CancelArchive":
-				res.resp, res.err = a.dispatchCancelArchive(req)
 			case "AmlFilesystemsClient.BeginCreateOrUpdate":
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AmlFilesystemsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AmlFilesystemsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AmlFilesystemsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
-			case "AmlFilesystemsClient.NewListByResourceGroupPager":
-				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AmlFilesystemsClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AmlFilesystemsClient.CancelArchive":
+				res.resp, res.err = a.dispatchCancelArchive(req)
+			case "AmlFilesystemsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AmlFilesystemsClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AmlFilesystemsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -162,39 +162,6 @@ func (a *AmlFilesystemsServerTransport) dispatchArchive(req *http.Request) (*htt
 		}
 	}
 	respr, errRespr := a.srv.Archive(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AmlFilesystemsServerTransport) dispatchCancelArchive(req *http.Request) (*http.Response, error) {
-	if a.srv.CancelArchive == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelArchive not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelArchive`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CancelArchive(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -301,109 +268,6 @@ func (a *AmlFilesystemsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (a *AmlFilesystemsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AmlFilesystem, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AmlFilesystemsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListPager(nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstoragecache.AmlFilesystemsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AmlFilesystemsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armstoragecache.AmlFilesystemsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		a.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AmlFilesystemsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -449,6 +313,142 @@ func (a *AmlFilesystemsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AmlFilesystemsServerTransport) dispatchCancelArchive(req *http.Request) (*http.Response, error) {
+	if a.srv.CancelArchive == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelArchive not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelArchive`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CancelArchive(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AmlFilesystemsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AmlFilesystem, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AmlFilesystemsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armstoragecache.AmlFilesystemsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AmlFilesystemsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListPager(nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstoragecache.AmlFilesystemsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

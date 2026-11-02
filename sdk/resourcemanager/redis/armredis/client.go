@@ -45,51 +45,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - parameters - The request body
-//   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
-func (client *Client) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
-	var err error
-	const operationName = "Client.CheckNameAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
-	if err != nil {
-		return ClientCheckNameAvailabilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientCheckNameAvailabilityResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ClientCheckNameAvailabilityResponse{}, nil
-}
-
-// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameters, _ *ClientCheckNameAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -113,7 +68,7 @@ func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string,
 	}
 }
 
-// Create - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
+// create - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) create(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -135,7 +90,7 @@ func (client *Client) create(ctx context.Context, resourceGroupName string, name
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, _ *ClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
 	if client.subscriptionID == "" {
@@ -187,7 +142,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 	}
 }
 
-// Delete - Deletes a Redis cache.
+// deleteOperation - Deletes a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -209,7 +164,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
 	if client.subscriptionID == "" {
@@ -257,7 +212,7 @@ func (client *Client) BeginExportData(ctx context.Context, resourceGroupName str
 	}
 }
 
-// ExportData - Export data from the redis cache to blobs in a container.
+// exportData - Export data from the redis cache to blobs in a container.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) exportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*http.Response, error) {
 	var err error
@@ -279,7 +234,7 @@ func (client *Client) exportData(ctx context.Context, resourceGroupName string, 
 	return httpResp, nil
 }
 
-// exportDataCreateRequest creates the ExportData request.
+// exportDataCreateRequest creates the exportData request.
 func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, _ *ClientBeginExportDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/export"
 	if client.subscriptionID == "" {
@@ -330,7 +285,7 @@ func (client *Client) BeginFlushCache(ctx context.Context, resourceGroupName str
 	}
 }
 
-// FlushCache - Deletes all of the keys in a cache.
+// flushCache - Deletes all of the keys in a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) flushCache(ctx context.Context, resourceGroupName string, cacheName string, options *ClientBeginFlushCacheOptions) (*http.Response, error) {
 	var err error
@@ -352,7 +307,7 @@ func (client *Client) flushCache(ctx context.Context, resourceGroupName string, 
 	return httpResp, nil
 }
 
-// flushCacheCreateRequest creates the FlushCache request.
+// flushCacheCreateRequest creates the flushCache request.
 func (client *Client) flushCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, _ *ClientBeginFlushCacheOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/flush"
 	if client.subscriptionID == "" {
@@ -375,6 +330,200 @@ func (client *Client) flushCacheCreateRequest(ctx context.Context, resourceGroup
 	reqQP.Set("api-version", version20241101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginImportData - Import data into Redis cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - The name of the RedisResource
+//   - parameters - Parameters for Redis import operation.
+//   - options - ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
+func (client *Client) BeginImportData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*runtime.Poller[ClientImportDataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.importData(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientImportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientImportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// importData - Import data into Redis cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) importData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginImportData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.importDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// importDataCreateRequest creates the importData request.
+func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, _ *ClientBeginImportDataOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/import"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update an existing Redis cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - The name of the RedisResource
+//   - parameters - Parameters supplied to the Update Redis operation.
+//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an existing Redis cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) update(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - parameters - The request body
+//   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
+func (client *Client) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
+	var err error
+	const operationName = "Client.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return ClientCheckNameAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientCheckNameAvailabilityResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return ClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(httpResp)
+	}
+	return ClientCheckNameAvailabilityResponse{}, nil
+}
+
+// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
+func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameters, _ *ClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/checkNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -504,54 +653,31 @@ func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int
 	return result, nil
 }
 
-// BeginImportData - Import data into Redis cache.
+// ListKeys - Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
-//   - parameters - Parameters for Redis import operation.
-//   - options - ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
-func (client *Client) BeginImportData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*runtime.Poller[ClientImportDataResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.importData(ctx, resourceGroupName, name, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientImportDataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientImportDataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ImportData - Import data into Redis cache.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) importData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*http.Response, error) {
+//   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
+func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, name string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
 	var err error
-	const operationName = "Client.BeginImportData"
+	const operationName = "Client.ListKeys"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.importDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return ClientListKeysResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
-// importDataCreateRequest creates the ImportData request.
-func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, _ *ClientBeginImportDataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/import"
+// listKeysCreateRequest creates the ListKeys request.
+func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -571,11 +697,20 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20241101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *Client) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ClientListKeysResponse, error) {
+	result := ClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
+		return ClientListKeysResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListByResourceGroupPager - Lists all Redis caches in a resource group.
@@ -712,66 +847,6 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return ClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// ListKeys - Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - The name of the RedisResource
-//   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
-func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, name string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
-	var err error
-	const operationName = "Client.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return ClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *Client) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ClientListKeysResponse, error) {
-	result := ClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return ClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -918,79 +993,4 @@ func (client *Client) regenerateKeyHandleResponse(resp *http.Response, successCo
 		return ClientRegenerateKeyResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an existing Redis cache.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - The name of the RedisResource
-//   - parameters - Parameters supplied to the Update Redis operation.
-//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, name, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an existing Redis cache.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) update(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

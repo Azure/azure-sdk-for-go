@@ -20,13 +20,13 @@ import (
 
 // MonitorResourcesServer is a fake server for instances of the armdatadog.MonitorResourcesClient type.
 type MonitorResourcesServer struct {
-	// LatestLinkedSaaS is the fake for method MonitorResourcesClient.LatestLinkedSaaS
-	// HTTP status codes to indicate success: http.StatusOK
-	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorResourcesClientLatestLinkedSaaSOptions) (resp azfake.Responder[armdatadog.MonitorResourcesClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
-
 	// BeginLinkSaaS is the fake for method MonitorResourcesClient.BeginLinkSaaS
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, monitorName string, body armdatadog.SaaSData, options *armdatadog.MonitorResourcesClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armdatadog.MonitorResourcesClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+
+	// LatestLinkedSaaS is the fake for method MonitorResourcesClient.LatestLinkedSaaS
+	// HTTP status codes to indicate success: http.StatusOK
+	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorResourcesClientLatestLinkedSaaSOptions) (resp azfake.Responder[armdatadog.MonitorResourcesClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitorResourcesServerTransport creates a new instance of MonitorResourcesServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func (m *MonitorResourcesServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "MonitorResourcesClient.LatestLinkedSaaS":
-				res.resp, res.err = m.dispatchLatestLinkedSaaS(req)
 			case "MonitorResourcesClient.BeginLinkSaaS":
 				res.resp, res.err = m.dispatchBeginLinkSaaS(req)
+			case "MonitorResourcesClient.LatestLinkedSaaS":
+				res.resp, res.err = m.dispatchLatestLinkedSaaS(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,39 +85,6 @@ func (m *MonitorResourcesServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *MonitorResourcesServerTransport) dispatchLatestLinkedSaaS(req *http.Request) (*http.Response, error) {
-	if m.srv.LatestLinkedSaaS == nil {
-		return nil, &nonRetriableError{errors.New("fake for method LatestLinkedSaaS not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/latestLinkedSaaS`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.LatestLinkedSaaS(req.Context(), resourceGroupNameParam, monitorNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LatestLinkedSaaSResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *MonitorResourcesServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
@@ -165,6 +132,39 @@ func (m *MonitorResourcesServerTransport) dispatchBeginLinkSaaS(req *http.Reques
 		m.beginLinkSaaS.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *MonitorResourcesServerTransport) dispatchLatestLinkedSaaS(req *http.Request) (*http.Response, error) {
+	if m.srv.LatestLinkedSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method LatestLinkedSaaS not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/latestLinkedSaaS`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.LatestLinkedSaaS(req.Context(), resourceGroupNameParam, monitorNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LatestLinkedSaaSResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -76,7 +76,7 @@ func (client *PriceSheetClient) BeginDownloadByBillingAccount(ctx context.Contex
 	}
 }
 
-// DownloadByBillingAccount - Generates the pricesheet for the provided billing period asynchronously based on the Enrollment
+// downloadByBillingAccount - Generates the pricesheet for the provided billing period asynchronously based on the Enrollment
 // ID. This is for Enterprise Agreement customers.
 // **Migrate to version 2025-03-01**
 // You can use the 2025-03-01 API version with the new URI:
@@ -113,7 +113,7 @@ func (client *PriceSheetClient) downloadByBillingAccount(ctx context.Context, bi
 	return httpResp, nil
 }
 
-// downloadByBillingAccountCreateRequest creates the DownloadByBillingAccount request.
+// downloadByBillingAccountCreateRequest creates the downloadByBillingAccount request.
 func (client *PriceSheetClient) downloadByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, billingPeriodName string, _ *PriceSheetClientBeginDownloadByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.CostManagement/pricesheets/default/download"
 	if billingAccountID == "" {
@@ -163,7 +163,7 @@ func (client *PriceSheetClient) BeginDownloadByBillingProfile(ctx context.Contex
 	}
 }
 
-// DownloadByBillingProfile - Gets a URL to download the current month's pricesheet for a billing profile. The operation is
+// downloadByBillingProfile - Gets a URL to download the current month's pricesheet for a billing profile. The operation is
 // supported for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // You can use the new 2023-09-01 API version for billing periods January 2023 onwards. Azure Reserved Instance (RI) pricing
 // is only available through the new version of the API.
@@ -190,7 +190,7 @@ func (client *PriceSheetClient) downloadByBillingProfile(ctx context.Context, bi
 	return httpResp, nil
 }
 
-// downloadByBillingProfileCreateRequest creates the DownloadByBillingProfile request.
+// downloadByBillingProfileCreateRequest creates the downloadByBillingProfile request.
 func (client *PriceSheetClient) downloadByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *PriceSheetClientBeginDownloadByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.CostManagement/pricesheets/default/download"
 	if billingAccountName == "" {
@@ -237,7 +237,7 @@ func (client *PriceSheetClient) BeginDownloadByInvoice(ctx context.Context, bill
 	}
 }
 
-// DownloadByInvoice - Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts
+// downloadByInvoice - Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts
 // with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PriceSheetClient) downloadByInvoice(ctx context.Context, billingAccountName string, billingProfileName string, invoiceName string, options *PriceSheetClientBeginDownloadByInvoiceOptions) (*http.Response, error) {
@@ -260,7 +260,7 @@ func (client *PriceSheetClient) downloadByInvoice(ctx context.Context, billingAc
 	return httpResp, nil
 }
 
-// downloadByInvoiceCreateRequest creates the DownloadByInvoice request.
+// downloadByInvoiceCreateRequest creates the downloadByInvoice request.
 func (client *PriceSheetClient) downloadByInvoiceCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceName string, _ *PriceSheetClientBeginDownloadByInvoiceOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}/providers/Microsoft.CostManagement/pricesheets/default/download"
 	if billingAccountName == "" {

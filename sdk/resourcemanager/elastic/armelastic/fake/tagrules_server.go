@@ -21,13 +21,13 @@ import (
 
 // TagRulesServer is a fake server for instances of the armelastic.TagRulesClient type.
 type TagRulesServer struct {
-	// CreateOrUpdate is the fake for method TagRulesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body armelastic.MonitoringTagRules, options *armelastic.TagRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armelastic.TagRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method TagRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *armelastic.TagRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armelastic.TagRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method TagRulesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body armelastic.MonitoringTagRules, options *armelastic.TagRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armelastic.TagRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TagRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (t *TagRulesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "TagRulesClient.CreateOrUpdate":
-				res.resp, res.err = t.dispatchCreateOrUpdate(req)
 			case "TagRulesClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TagRulesClient.CreateOrUpdate":
+				res.resp, res.err = t.dispatchCreateOrUpdate(req)
 			case "TagRulesClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TagRulesClient.NewListPager":
@@ -100,47 +100,6 @@ func (t *TagRulesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (t *TagRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagRules/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armelastic.MonitoringTagRules](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, ruleSetNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MonitoringTagRules, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (t *TagRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -188,6 +147,47 @@ func (t *TagRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		t.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TagRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagRules/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armelastic.MonitoringTagRules](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, ruleSetNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MonitoringTagRules, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

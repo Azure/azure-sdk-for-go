@@ -70,7 +70,7 @@ func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create or update a Container App.
+// createOrUpdate - Create or update a Container App.
 //
 // Create or update a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *ContainerAppsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ContainerAppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, _ *ContainerAppsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a Container App.
+// deleteOperation - Delete a Container App.
 //
 // Delete a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -173,7 +173,7 @@ func (client *ContainerAppsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ContainerAppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}"
 	if client.subscriptionID == "" {
@@ -195,6 +195,235 @@ func (client *ContainerAppsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Start a container app
+//
+// Start a container app
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - options - ContainerAppsClientBeginStartOptions contains the optional parameters for the ContainerAppsClient.BeginStart
+//     method.
+func (client *ContainerAppsClient) BeginStart(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStartOptions) (*runtime.Poller[ContainerAppsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, containerAppName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Start a container app
+//
+// Start a container app
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerAppsClient) start(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContainerAppsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, containerAppName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ContainerAppsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStop - Stop a container app
+//
+// Stop a container app
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - options - ContainerAppsClientBeginStopOptions contains the optional parameters for the ContainerAppsClient.BeginStop method.
+func (client *ContainerAppsClient) BeginStop(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStopOptions) (*runtime.Poller[ContainerAppsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, containerAppName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stop a container app
+//
+// Stop a container app
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerAppsClient) stop(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContainerAppsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, containerAppName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ContainerAppsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Update properties of a Container App
+//
+// Patches a Container App using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - containerAppEnvelope - Properties of a Container App that need to be updated
+//   - options - ContainerAppsClientBeginUpdateOptions contains the optional parameters for the ContainerAppsClient.BeginUpdate
+//     method.
+func (client *ContainerAppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginUpdateOptions) (*runtime.Poller[ContainerAppsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update properties of a Container App
+//
+// Patches a Container App using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerAppsClient) update(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContainerAppsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ContainerAppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, _ *ContainerAppsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, containerAppEnvelope); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -319,6 +548,135 @@ func (client *ContainerAppsClient) getAuthTokenHandleResponse(resp *http.Respons
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppAuthToken); err != nil {
 		return ContainerAppsClientGetAuthTokenResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCustomHostNameAnalysis - Analyzes a custom hostname for a Container App
+//
+// Analyzes a custom hostname for a Container App
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - options - ContainerAppsClientListCustomHostNameAnalysisOptions contains the optional parameters for the ContainerAppsClient.ListCustomHostNameAnalysis
+//     method.
+func (client *ContainerAppsClient) ListCustomHostNameAnalysis(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListCustomHostNameAnalysisOptions) (ContainerAppsClientListCustomHostNameAnalysisResponse, error) {
+	var err error
+	const operationName = "ContainerAppsClient.ListCustomHostNameAnalysis"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCustomHostNameAnalysisCreateRequest(ctx, resourceGroupName, containerAppName, options)
+	if err != nil {
+		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
+	}
+	return client.listCustomHostNameAnalysisHandleResponse(httpResp, http.StatusOK)
+}
+
+// listCustomHostNameAnalysisCreateRequest creates the ListCustomHostNameAnalysis request.
+func (client *ContainerAppsClient) listCustomHostNameAnalysisCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListCustomHostNameAnalysisOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listCustomHostNameAnalysis"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	if options != nil && options.CustomHostname != nil {
+		reqQP.Set("customHostname", *options.CustomHostname)
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCustomHostNameAnalysisHandleResponse handles the ListCustomHostNameAnalysis response.
+func (client *ContainerAppsClient) listCustomHostNameAnalysisHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsClientListCustomHostNameAnalysisResponse, error) {
+	result := ContainerAppsClientListCustomHostNameAnalysisResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomHostnameAnalysisResult); err != nil {
+		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSecrets - List secrets for a container app
+//
+// List secrets for a container app
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - options - ContainerAppsClientListSecretsOptions contains the optional parameters for the ContainerAppsClient.ListSecrets
+//     method.
+func (client *ContainerAppsClient) ListSecrets(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListSecretsOptions) (ContainerAppsClientListSecretsResponse, error) {
+	var err error
+	const operationName = "ContainerAppsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, containerAppName, options)
+	if err != nil {
+		return ContainerAppsClientListSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerAppsClientListSecretsResponse{}, err
+	}
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *ContainerAppsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientListSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listSecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *ContainerAppsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsClientListSecretsResponse, error) {
+	result := ContainerAppsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecretsCollection); err != nil {
+		return ContainerAppsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
@@ -464,362 +822,4 @@ func (client *ContainerAppsClient) listBySubscriptionHandleResponse(resp *http.R
 		return ContainerAppsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// ListCustomHostNameAnalysis - Analyzes a custom hostname for a Container App
-//
-// Analyzes a custom hostname for a Container App
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - options - ContainerAppsClientListCustomHostNameAnalysisOptions contains the optional parameters for the ContainerAppsClient.ListCustomHostNameAnalysis
-//     method.
-func (client *ContainerAppsClient) ListCustomHostNameAnalysis(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListCustomHostNameAnalysisOptions) (ContainerAppsClientListCustomHostNameAnalysisResponse, error) {
-	var err error
-	const operationName = "ContainerAppsClient.ListCustomHostNameAnalysis"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCustomHostNameAnalysisCreateRequest(ctx, resourceGroupName, containerAppName, options)
-	if err != nil {
-		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
-	}
-	return client.listCustomHostNameAnalysisHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCustomHostNameAnalysisCreateRequest creates the ListCustomHostNameAnalysis request.
-func (client *ContainerAppsClient) listCustomHostNameAnalysisCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListCustomHostNameAnalysisOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listCustomHostNameAnalysis"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	if options != nil && options.CustomHostname != nil {
-		reqQP.Set("customHostname", *options.CustomHostname)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCustomHostNameAnalysisHandleResponse handles the ListCustomHostNameAnalysis response.
-func (client *ContainerAppsClient) listCustomHostNameAnalysisHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsClientListCustomHostNameAnalysisResponse, error) {
-	result := ContainerAppsClientListCustomHostNameAnalysisResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CustomHostnameAnalysisResult); err != nil {
-		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSecrets - List secrets for a container app
-//
-// List secrets for a container app
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - options - ContainerAppsClientListSecretsOptions contains the optional parameters for the ContainerAppsClient.ListSecrets
-//     method.
-func (client *ContainerAppsClient) ListSecrets(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListSecretsOptions) (ContainerAppsClientListSecretsResponse, error) {
-	var err error
-	const operationName = "ContainerAppsClient.ListSecrets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, containerAppName, options)
-	if err != nil {
-		return ContainerAppsClientListSecretsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ContainerAppsClientListSecretsResponse{}, err
-	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSecretsCreateRequest creates the ListSecrets request.
-func (client *ContainerAppsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientListSecretsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listSecrets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecretsHandleResponse handles the ListSecrets response.
-func (client *ContainerAppsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsClientListSecretsResponse, error) {
-	result := ContainerAppsClientListSecretsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretsCollection); err != nil {
-		return ContainerAppsClientListSecretsResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginStart - Start a container app
-//
-// Start a container app
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - options - ContainerAppsClientBeginStartOptions contains the optional parameters for the ContainerAppsClient.BeginStart
-//     method.
-func (client *ContainerAppsClient) BeginStart(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStartOptions) (*runtime.Poller[ContainerAppsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, containerAppName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Start a container app
-//
-// Start a container app
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContainerAppsClient) start(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ContainerAppsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, containerAppName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ContainerAppsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginStop - Stop a container app
-//
-// Stop a container app
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - options - ContainerAppsClientBeginStopOptions contains the optional parameters for the ContainerAppsClient.BeginStop method.
-func (client *ContainerAppsClient) BeginStop(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStopOptions) (*runtime.Poller[ContainerAppsClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, containerAppName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stop a container app
-//
-// Stop a container app
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContainerAppsClient) stop(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ContainerAppsClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, containerAppName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ContainerAppsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Update properties of a Container App
-//
-// Patches a Container App using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - containerAppEnvelope - Properties of a Container App that need to be updated
-//   - options - ContainerAppsClientBeginUpdateOptions contains the optional parameters for the ContainerAppsClient.BeginUpdate
-//     method.
-func (client *ContainerAppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginUpdateOptions) (*runtime.Poller[ContainerAppsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update properties of a Container App
-//
-// Patches a Container App using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContainerAppsClient) update(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ContainerAppsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ContainerAppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, _ *ContainerAppsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, containerAppEnvelope); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

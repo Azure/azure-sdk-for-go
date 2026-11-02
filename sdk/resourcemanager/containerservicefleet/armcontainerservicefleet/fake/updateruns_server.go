@@ -30,14 +30,6 @@ type UpdateRunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *armcontainerservicefleet.UpdateRunsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method UpdateRunsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *armcontainerservicefleet.UpdateRunsClientGetOptions) (resp azfake.Responder[armcontainerservicefleet.UpdateRunsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByFleetPager is the fake for method UpdateRunsClient.NewListByFleetPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse])
-
 	// BeginSkip is the fake for method UpdateRunsClient.BeginSkip
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSkip func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, body armcontainerservicefleet.SkipProperties, options *armcontainerservicefleet.UpdateRunsClientBeginSkipOptions) (resp azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse], errResp azfake.ErrorResponder)
@@ -49,6 +41,14 @@ type UpdateRunsServer struct {
 	// BeginStop is the fake for method UpdateRunsClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStop func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *armcontainerservicefleet.UpdateRunsClientBeginStopOptions) (resp azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStopResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method UpdateRunsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *armcontainerservicefleet.UpdateRunsClientGetOptions) (resp azfake.Responder[armcontainerservicefleet.UpdateRunsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByFleetPager is the fake for method UpdateRunsClient.NewListByFleetPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse])
 }
 
 // NewUpdateRunsServerTransport creates a new instance of UpdateRunsServerTransport with the provided implementation.
@@ -59,10 +59,10 @@ func NewUpdateRunsServerTransport(srv *UpdateRunsServer) *UpdateRunsServerTransp
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientDeleteResponse]](),
-		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]](),
 		beginSkip:           newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStopResponse]](),
+		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]](),
 	}
 }
 
@@ -72,10 +72,10 @@ type UpdateRunsServerTransport struct {
 	srv                 *UpdateRunsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientDeleteResponse]]
-	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]]
 	beginSkip           *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStopResponse]]
+	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]]
 }
 
 // Do implements the policy.Transporter interface for UpdateRunsServerTransport.
@@ -103,16 +103,16 @@ func (u *UpdateRunsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = u.dispatchBeginCreateOrUpdate(req)
 			case "UpdateRunsClient.BeginDelete":
 				res.resp, res.err = u.dispatchBeginDelete(req)
-			case "UpdateRunsClient.Get":
-				res.resp, res.err = u.dispatchGet(req)
-			case "UpdateRunsClient.NewListByFleetPager":
-				res.resp, res.err = u.dispatchNewListByFleetPager(req)
 			case "UpdateRunsClient.BeginSkip":
 				res.resp, res.err = u.dispatchBeginSkip(req)
 			case "UpdateRunsClient.BeginStart":
 				res.resp, res.err = u.dispatchBeginStart(req)
 			case "UpdateRunsClient.BeginStop":
 				res.resp, res.err = u.dispatchBeginStop(req)
+			case "UpdateRunsClient.Get":
+				res.resp, res.err = u.dispatchGet(req)
+			case "UpdateRunsClient.NewListByFleetPager":
+				res.resp, res.err = u.dispatchNewListByFleetPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -242,103 +242,6 @@ func (u *UpdateRunsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		u.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (u *UpdateRunsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if u.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRuns/(?P<updateRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-	if err != nil {
-		return nil, err
-	}
-	updateRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateRunName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.Get(req.Context(), resourceGroupNameParam, fleetNameParam, updateRunNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UpdateRun, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (u *UpdateRunsServerTransport) dispatchNewListByFleetPager(req *http.Request) (*http.Response, error) {
-	if u.srv.NewListByFleetPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByFleetPager not implemented")}
-	}
-	newListByFleetPager := u.newListByFleetPager.get(req)
-	if newListByFleetPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRuns`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armcontainerservicefleet.UpdateRunsClientListByFleetOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := u.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, options)
-		newListByFleetPager = &resp
-		u.newListByFleetPager.add(req, newListByFleetPager)
-		server.PagerResponderInjectNextLinks(newListByFleetPager, req, func(page *armcontainerservicefleet.UpdateRunsClientListByFleetResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByFleetPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		u.newListByFleetPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByFleetPager) {
-		u.newListByFleetPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -508,6 +411,103 @@ func (u *UpdateRunsServerTransport) dispatchBeginStop(req *http.Request) (*http.
 		u.beginStop.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (u *UpdateRunsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if u.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRuns/(?P<updateRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+	if err != nil {
+		return nil, err
+	}
+	updateRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateRunName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := u.srv.Get(req.Context(), resourceGroupNameParam, fleetNameParam, updateRunNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UpdateRun, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (u *UpdateRunsServerTransport) dispatchNewListByFleetPager(req *http.Request) (*http.Response, error) {
+	if u.srv.NewListByFleetPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByFleetPager not implemented")}
+	}
+	newListByFleetPager := u.newListByFleetPager.get(req)
+	if newListByFleetPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRuns`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armcontainerservicefleet.UpdateRunsClientListByFleetOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := u.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, options)
+		newListByFleetPager = &resp
+		u.newListByFleetPager.add(req, newListByFleetPager)
+		server.PagerResponderInjectNextLinks(newListByFleetPager, req, func(page *armcontainerservicefleet.UpdateRunsClientListByFleetResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByFleetPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		u.newListByFleetPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByFleetPager) {
+		u.newListByFleetPager.remove(req)
+	}
 	return resp, nil
 }
 

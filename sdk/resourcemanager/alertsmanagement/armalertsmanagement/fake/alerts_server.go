@@ -31,14 +31,6 @@ type AlertsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ChangeStateTenant func(ctx context.Context, alertID string, newState armalertsmanagement.AlertState, options *armalertsmanagement.AlertsClientChangeStateTenantOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientChangeStateTenantResponse], errResp azfake.ErrorResponder)
 
-	// NewGetAllPager is the fake for method AlertsClient.NewGetAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAllPager func(options *armalertsmanagement.AlertsClientGetAllOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllResponse])
-
-	// NewGetAllTenantPager is the fake for method AlertsClient.NewGetAllTenantPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAllTenantPager func(options *armalertsmanagement.AlertsClientGetAllTenantOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllTenantResponse])
-
 	// GetByID is the fake for method AlertsClient.GetByID
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByID func(ctx context.Context, alertID string, options *armalertsmanagement.AlertsClientGetByIDOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientGetByIDResponse], errResp azfake.ErrorResponder)
@@ -46,10 +38,6 @@ type AlertsServer struct {
 	// GetByIDTenant is the fake for method AlertsClient.GetByIDTenant
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByIDTenant func(ctx context.Context, alertID string, options *armalertsmanagement.AlertsClientGetByIDTenantOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientGetByIDTenantResponse], errResp azfake.ErrorResponder)
-
-	// NewGetEnrichmentsPager is the fake for method AlertsClient.NewGetEnrichmentsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetEnrichmentsPager func(alertID string, options *armalertsmanagement.AlertsClientGetEnrichmentsOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetEnrichmentsResponse])
 
 	// GetHistory is the fake for method AlertsClient.GetHistory
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,6 +54,18 @@ type AlertsServer struct {
 	// MetaData is the fake for method AlertsClient.MetaData
 	// HTTP status codes to indicate success: http.StatusOK
 	MetaData func(ctx context.Context, identifier armalertsmanagement.Identifier, options *armalertsmanagement.AlertsClientMetaDataOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientMetaDataResponse], errResp azfake.ErrorResponder)
+
+	// NewGetAllPager is the fake for method AlertsClient.NewGetAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAllPager func(options *armalertsmanagement.AlertsClientGetAllOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllResponse])
+
+	// NewGetAllTenantPager is the fake for method AlertsClient.NewGetAllTenantPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAllTenantPager func(options *armalertsmanagement.AlertsClientGetAllTenantOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllTenantResponse])
+
+	// NewGetEnrichmentsPager is the fake for method AlertsClient.NewGetEnrichmentsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetEnrichmentsPager func(alertID string, options *armalertsmanagement.AlertsClientGetEnrichmentsOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetEnrichmentsResponse])
 }
 
 // NewAlertsServerTransport creates a new instance of AlertsServerTransport with the provided implementation.
@@ -114,16 +114,10 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = a.dispatchChangeState(req)
 			case "AlertsClient.ChangeStateTenant":
 				res.resp, res.err = a.dispatchChangeStateTenant(req)
-			case "AlertsClient.NewGetAllPager":
-				res.resp, res.err = a.dispatchNewGetAllPager(req)
-			case "AlertsClient.NewGetAllTenantPager":
-				res.resp, res.err = a.dispatchNewGetAllTenantPager(req)
 			case "AlertsClient.GetByID":
 				res.resp, res.err = a.dispatchGetByID(req)
 			case "AlertsClient.GetByIDTenant":
 				res.resp, res.err = a.dispatchGetByIDTenant(req)
-			case "AlertsClient.NewGetEnrichmentsPager":
-				res.resp, res.err = a.dispatchNewGetEnrichmentsPager(req)
 			case "AlertsClient.GetHistory":
 				res.resp, res.err = a.dispatchGetHistory(req)
 			case "AlertsClient.GetHistoryTenant":
@@ -132,6 +126,12 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = a.dispatchGetSummary(req)
 			case "AlertsClient.MetaData":
 				res.resp, res.err = a.dispatchMetaData(req)
+			case "AlertsClient.NewGetAllPager":
+				res.resp, res.err = a.dispatchNewGetAllPager(req)
+			case "AlertsClient.NewGetAllTenantPager":
+				res.resp, res.err = a.dispatchNewGetAllTenantPager(req)
+			case "AlertsClient.NewGetEnrichmentsPager":
+				res.resp, res.err = a.dispatchNewGetEnrichmentsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -222,6 +222,198 @@ func (a *AlertsServerTransport) dispatchChangeStateTenant(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
+	if a.srv.GetByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetByID(req.Context(), alertIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchGetByIDTenant(req *http.Request) (*http.Response, error) {
+	if a.srv.GetByIDTenant == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByIDTenant not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetByIDTenant(req.Context(), alertIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchGetHistory(req *http.Request) (*http.Response, error) {
+	if a.srv.GetHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetHistory(req.Context(), alertIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchGetHistoryTenant(req *http.Request) (*http.Response, error) {
+	if a.srv.GetHistoryTenant == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetHistoryTenant not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetHistoryTenant(req.Context(), alertIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchGetSummary(req *http.Request) (*http.Response, error) {
+	if a.srv.GetSummary == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSummary not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alertsSummary`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	includeSmartGroupsCountParam, err := parseOptional(qp.Get("includeSmartGroupsCount"), strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	targetResourceParam := getOptional(qp.Get("targetResource"))
+	targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+	targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+	monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+	monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+	severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+	alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+	alertRuleParam := getOptional(qp.Get("alertRule"))
+	timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+	customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
+	var options *armalertsmanagement.AlertsClientGetSummaryOptions
+	if includeSmartGroupsCountParam != nil || targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
+		options = &armalertsmanagement.AlertsClientGetSummaryOptions{
+			IncludeSmartGroupsCount: includeSmartGroupsCountParam,
+			TargetResource:          targetResourceParam,
+			TargetResourceType:      targetResourceTypeParam,
+			TargetResourceGroup:     targetResourceGroupParam,
+			MonitorService:          monitorServiceParam,
+			MonitorCondition:        monitorConditionParam,
+			Severity:                severityParam,
+			AlertState:              alertStateParam,
+			AlertRule:               alertRuleParam,
+			TimeRange:               timeRangeParam,
+			CustomTimeRange:         customTimeRangeParam,
+		}
+	}
+	respr, errRespr := a.srv.GetSummary(req.Context(), armalertsmanagement.AlertsSummaryGroupByFields(qp.Get("groupby")), options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsSummary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchMetaData(req *http.Request) (*http.Response, error) {
+	if a.srv.MetaData == nil {
+		return nil, &nonRetriableError{errors.New("fake for method MetaData not implemented")}
+	}
+	qp := req.URL.Query()
+	respr, errRespr := a.srv.MetaData(req.Context(), armalertsmanagement.Identifier(qp.Get("identifier")), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsMetaData, req)
 	if err != nil {
 		return nil, err
 	}
@@ -398,64 +590,6 @@ func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) 
 	return resp, nil
 }
 
-func (a *AlertsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
-	if a.srv.GetByID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GetByID(req.Context(), alertIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchGetByIDTenant(req *http.Request) (*http.Response, error) {
-	if a.srv.GetByIDTenant == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetByIDTenant not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GetByIDTenant(req.Context(), alertIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewGetEnrichmentsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewGetEnrichmentsPager not implemented")}
@@ -489,140 +623,6 @@ func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newGetEnrichmentsPager) {
 		a.newGetEnrichmentsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchGetHistory(req *http.Request) (*http.Response, error) {
-	if a.srv.GetHistory == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GetHistory(req.Context(), alertIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchGetHistoryTenant(req *http.Request) (*http.Response, error) {
-	if a.srv.GetHistoryTenant == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetHistoryTenant not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GetHistoryTenant(req.Context(), alertIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchGetSummary(req *http.Request) (*http.Response, error) {
-	if a.srv.GetSummary == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetSummary not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alertsSummary`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	includeSmartGroupsCountParam, err := parseOptional(qp.Get("includeSmartGroupsCount"), strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	targetResourceParam := getOptional(qp.Get("targetResource"))
-	targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
-	targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
-	monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
-	monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
-	severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
-	alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
-	alertRuleParam := getOptional(qp.Get("alertRule"))
-	timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
-	customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
-	var options *armalertsmanagement.AlertsClientGetSummaryOptions
-	if includeSmartGroupsCountParam != nil || targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
-		options = &armalertsmanagement.AlertsClientGetSummaryOptions{
-			IncludeSmartGroupsCount: includeSmartGroupsCountParam,
-			TargetResource:          targetResourceParam,
-			TargetResourceType:      targetResourceTypeParam,
-			TargetResourceGroup:     targetResourceGroupParam,
-			MonitorService:          monitorServiceParam,
-			MonitorCondition:        monitorConditionParam,
-			Severity:                severityParam,
-			AlertState:              alertStateParam,
-			AlertRule:               alertRuleParam,
-			TimeRange:               timeRangeParam,
-			CustomTimeRange:         customTimeRangeParam,
-		}
-	}
-	respr, errRespr := a.srv.GetSummary(req.Context(), armalertsmanagement.AlertsSummaryGroupByFields(qp.Get("groupby")), options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsSummary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchMetaData(req *http.Request) (*http.Response, error) {
-	if a.srv.MetaData == nil {
-		return nil, &nonRetriableError{errors.New("fake for method MetaData not implemented")}
-	}
-	qp := req.URL.Query()
-	respr, errRespr := a.srv.MetaData(req.Context(), armalertsmanagement.Identifier(qp.Get("identifier")), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsMetaData, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

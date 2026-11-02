@@ -30,13 +30,13 @@ type DNSForwardingRulesetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *armdnsresolver.DNSForwardingRulesetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DNSForwardingRulesetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters armdnsresolver.DNSForwardingRulesetPatch, options *armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DNSForwardingRulesetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *armdnsresolver.DNSForwardingRulesetsClientGetOptions) (resp azfake.Responder[armdnsresolver.DNSForwardingRulesetsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DNSForwardingRulesetsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdnsresolver.DNSForwardingRulesetsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method DNSForwardingRulesetsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,9 +46,9 @@ type DNSForwardingRulesetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVirtualNetworkPager func(resourceGroupName string, virtualNetworkName string, options *armdnsresolver.DNSForwardingRulesetsClientListByVirtualNetworkOptions) (resp azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListByVirtualNetworkResponse])
 
-	// BeginUpdate is the fake for method DNSForwardingRulesetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters armdnsresolver.DNSForwardingRulesetPatch, options *armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method DNSForwardingRulesetsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdnsresolver.DNSForwardingRulesetsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse])
 }
 
 // NewDNSForwardingRulesetsServerTransport creates a new instance of DNSForwardingRulesetsServerTransport with the provided implementation.
@@ -59,10 +59,10 @@ func NewDNSForwardingRulesetsServerTransport(srv *DNSForwardingRulesetsServer) *
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientDeleteResponse]](),
-		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse]](),
 		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListByResourceGroupResponse]](),
 		newListByVirtualNetworkPager: newTracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListByVirtualNetworkResponse]](),
-		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse]](),
 	}
 }
 
@@ -72,10 +72,10 @@ type DNSForwardingRulesetsServerTransport struct {
 	srv                          *DNSForwardingRulesetsServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientDeleteResponse]]
-	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse]]
 	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListByResourceGroupResponse]]
 	newListByVirtualNetworkPager *tracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListByVirtualNetworkResponse]]
-	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.DNSForwardingRulesetsClientUpdateResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.DNSForwardingRulesetsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DNSForwardingRulesetsServerTransport.
@@ -103,16 +103,16 @@ func (d *DNSForwardingRulesetsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DNSForwardingRulesetsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DNSForwardingRulesetsClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DNSForwardingRulesetsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DNSForwardingRulesetsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DNSForwardingRulesetsClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DNSForwardingRulesetsClient.NewListByVirtualNetworkPager":
 				res.resp, res.err = d.dispatchNewListByVirtualNetworkPager(req)
-			case "DNSForwardingRulesetsClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DNSForwardingRulesetsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -237,6 +237,61 @@ func (d *DNSForwardingRulesetsServerTransport) dispatchBeginDelete(req *http.Req
 	return resp, nil
 }
 
+func (d *DNSForwardingRulesetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSForwardingRulesetPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsForwardingRulesetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsForwardingRulesetName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsForwardingRulesetNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DNSForwardingRulesetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -266,56 +321,6 @@ func (d *DNSForwardingRulesetsServerTransport) dispatchGet(req *http.Request) (*
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSForwardingRuleset, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DNSForwardingRulesetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdnsresolver.DNSForwardingRulesetsClientListOptions
-		if topParam != nil {
-			options = &armdnsresolver.DNSForwardingRulesetsClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := d.srv.NewListPager(options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSForwardingRulesetsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -432,58 +437,53 @@ func (d *DNSForwardingRulesetsServerTransport) dispatchNewListByVirtualNetworkPa
 	return resp, nil
 }
 
-func (d *DNSForwardingRulesetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (d *DNSForwardingRulesetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSForwardingRulesetPatch](req)
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsForwardingRulesetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsForwardingRulesetName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdnsresolver.DNSForwardingRulesetsClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
+		var options *armdnsresolver.DNSForwardingRulesetsClientListOptions
+		if topParam != nil {
+			options = &armdnsresolver.DNSForwardingRulesetsClientListOptions{
+				Top: topParam,
 			}
 		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsForwardingRulesetNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
+		resp := d.srv.NewListPager(options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSForwardingRulesetsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

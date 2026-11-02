@@ -25,6 +25,10 @@ type ManagedBackupShortTermRetentionPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName armsql.ManagedShortTermRetentionPolicyName, parameters armsql.ManagedBackupShortTermRetentionPolicy, options *armsql.ManagedBackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ManagedBackupShortTermRetentionPoliciesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName armsql.ManagedShortTermRetentionPolicyName, parameters armsql.ManagedBackupShortTermRetentionPolicy, options *armsql.ManagedBackupShortTermRetentionPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedBackupShortTermRetentionPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName armsql.ManagedShortTermRetentionPolicyName, options *armsql.ManagedBackupShortTermRetentionPoliciesClientGetOptions) (resp azfake.Responder[armsql.ManagedBackupShortTermRetentionPoliciesClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type ManagedBackupShortTermRetentionPoliciesServer struct {
 	// NewListByDatabasePager is the fake for method ManagedBackupShortTermRetentionPoliciesClient.NewListByDatabasePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDatabasePager func(resourceGroupName string, managedInstanceName string, databaseName string, options *armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) (resp azfake.PagerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse])
-
-	// BeginUpdate is the fake for method ManagedBackupShortTermRetentionPoliciesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName armsql.ManagedShortTermRetentionPolicyName, parameters armsql.ManagedBackupShortTermRetentionPolicy, options *armsql.ManagedBackupShortTermRetentionPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedBackupShortTermRetentionPoliciesServerTransport creates a new instance of ManagedBackupShortTermRetentionPoliciesServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewManagedBackupShortTermRetentionPoliciesServerTransport(srv *ManagedBacku
 	return &ManagedBackupShortTermRetentionPoliciesServerTransport{
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse]](),
-		newListByDatabasePager: newTracker[azfake.PagerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientUpdateResponse]](),
+		newListByDatabasePager: newTracker[azfake.PagerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewManagedBackupShortTermRetentionPoliciesServerTransport(srv *ManagedBacku
 type ManagedBackupShortTermRetentionPoliciesServerTransport struct {
 	srv                    *ManagedBackupShortTermRetentionPoliciesServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse]]
-	newListByDatabasePager *tracker[azfake.PagerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientUpdateResponse]]
+	newListByDatabasePager *tracker[azfake.PagerResponder[armsql.ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedBackupShortTermRetentionPoliciesServerTransport.
@@ -82,12 +82,12 @@ func (m *ManagedBackupShortTermRetentionPoliciesServerTransport) dispatchToMetho
 			switch method {
 			case "ManagedBackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
+			case "ManagedBackupShortTermRetentionPoliciesClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "ManagedBackupShortTermRetentionPoliciesClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedBackupShortTermRetentionPoliciesClient.NewListByDatabasePager":
 				res.resp, res.err = m.dispatchNewListByDatabasePager(req)
-			case "ManagedBackupShortTermRetentionPoliciesClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -161,6 +161,68 @@ func (m *ManagedBackupShortTermRetentionPoliciesServerTransport) dispatchBeginCr
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		m.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedBackupShortTermRetentionPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ManagedBackupShortTermRetentionPolicy](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		policyNameParam, err := parseWithCast(matches[regex.SubexpIndex("policyName")], func(v string) (armsql.ManagedShortTermRetentionPolicyName, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsql.ManagedShortTermRetentionPolicyName(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, policyNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -255,68 +317,6 @@ func (m *ManagedBackupShortTermRetentionPoliciesServerTransport) dispatchNewList
 	if !server.PagerResponderMore(newListByDatabasePager) {
 		m.newListByDatabasePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedBackupShortTermRetentionPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.ManagedBackupShortTermRetentionPolicy](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		policyNameParam, err := parseWithCast(matches[regex.SubexpIndex("policyName")], func(v string) (armsql.ManagedShortTermRetentionPolicyName, error) {
-			p, unescapeErr := url.PathUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return armsql.ManagedShortTermRetentionPolicyName(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, policyNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

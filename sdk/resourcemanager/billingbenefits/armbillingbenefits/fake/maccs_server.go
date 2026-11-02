@@ -37,6 +37,14 @@ type MaccsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, maccName string, options *armbillingbenefits.MaccsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbillingbenefits.MaccsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MaccsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, maccName string, body armbillingbenefits.MaccPatchRequest, options *armbillingbenefits.MaccsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.MaccsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginWriteOff is the fake for method MaccsClient.BeginWriteOff
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWriteOff func(ctx context.Context, resourceGroupName string, maccName string, options *armbillingbenefits.MaccsClientBeginWriteOffOptions) (resp azfake.PollerResponder[armbillingbenefits.MaccsClientWriteOffResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MaccsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, maccName string, options *armbillingbenefits.MaccsClientGetOptions) (resp azfake.Responder[armbillingbenefits.MaccsClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,14 +56,6 @@ type MaccsServer struct {
 	// NewListBySubscriptionPager is the fake for method MaccsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armbillingbenefits.MaccsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armbillingbenefits.MaccsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method MaccsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, maccName string, body armbillingbenefits.MaccPatchRequest, options *armbillingbenefits.MaccsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.MaccsClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginWriteOff is the fake for method MaccsClient.BeginWriteOff
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWriteOff func(ctx context.Context, resourceGroupName string, maccName string, options *armbillingbenefits.MaccsClientBeginWriteOffOptions) (resp azfake.PollerResponder[armbillingbenefits.MaccsClientWriteOffResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMaccsServerTransport creates a new instance of MaccsServerTransport with the provided implementation.
@@ -68,10 +68,10 @@ func NewMaccsServerTransport(srv *MaccsServer) *MaccsServerTransport {
 		beginChargeShortfall:        newTracker[azfake.PollerResponder[armbillingbenefits.MaccsClientChargeShortfallResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armbillingbenefits.MaccsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armbillingbenefits.MaccsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListBySubscriptionResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.MaccsClientUpdateResponse]](),
 		beginWriteOff:               newTracker[azfake.PollerResponder[armbillingbenefits.MaccsClientWriteOffResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -83,10 +83,10 @@ type MaccsServerTransport struct {
 	beginChargeShortfall        *tracker[azfake.PollerResponder[armbillingbenefits.MaccsClientChargeShortfallResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armbillingbenefits.MaccsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armbillingbenefits.MaccsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListBySubscriptionResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.MaccsClientUpdateResponse]]
 	beginWriteOff               *tracker[azfake.PollerResponder[armbillingbenefits.MaccsClientWriteOffResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbillingbenefits.MaccsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for MaccsServerTransport.
@@ -118,16 +118,16 @@ func (m *MaccsServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = m.dispatchBeginCreate(req)
 			case "MaccsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MaccsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "MaccsClient.BeginWriteOff":
+				res.resp, res.err = m.dispatchBeginWriteOff(req)
 			case "MaccsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MaccsClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
 			case "MaccsClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
-			case "MaccsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
-			case "MaccsClient.BeginWriteOff":
-				res.resp, res.err = m.dispatchBeginWriteOff(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -328,6 +328,98 @@ func (m *MaccsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
+func (m *MaccsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.MaccPatchRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		maccNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maccName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, maccNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MaccsServerTransport) dispatchBeginWriteOff(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginWriteOff == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginWriteOff not implemented")}
+	}
+	beginWriteOff := m.beginWriteOff.get(req)
+	if beginWriteOff == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/writeOff`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		maccNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maccName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginWriteOff(req.Context(), resourceGroupNameParam, maccNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginWriteOff = &respr
+		m.beginWriteOff.add(req, beginWriteOff)
+	}
+
+	resp, err := server.PollerResponderNext(beginWriteOff, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginWriteOff.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginWriteOff) {
+		m.beginWriteOff.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MaccsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -428,98 +520,6 @@ func (m *MaccsServerTransport) dispatchNewListBySubscriptionPager(req *http.Requ
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		m.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MaccsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.MaccPatchRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		maccNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maccName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, maccNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MaccsServerTransport) dispatchBeginWriteOff(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginWriteOff == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginWriteOff not implemented")}
-	}
-	beginWriteOff := m.beginWriteOff.get(req)
-	if beginWriteOff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/writeOff`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		maccNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maccName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginWriteOff(req.Context(), resourceGroupNameParam, maccNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginWriteOff = &respr
-		m.beginWriteOff.add(req, beginWriteOff)
-	}
-
-	resp, err := server.PollerResponderNext(beginWriteOff, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginWriteOff.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginWriteOff) {
-		m.beginWriteOff.remove(req)
-	}
-
 	return resp, nil
 }
 

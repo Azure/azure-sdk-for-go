@@ -30,6 +30,10 @@ type KubernetesClusterFeaturesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, options *armnetworkcloud.KubernetesClusterFeaturesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method KubernetesClusterFeaturesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, kubernetesClusterFeatureUpdateParameters armnetworkcloud.KubernetesClusterFeaturePatchParameters, options *armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method KubernetesClusterFeaturesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, options *armnetworkcloud.KubernetesClusterFeaturesClientGetOptions) (resp azfake.Responder[armnetworkcloud.KubernetesClusterFeaturesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type KubernetesClusterFeaturesServer struct {
 	// NewListByKubernetesClusterPager is the fake for method KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByKubernetesClusterPager func(resourceGroupName string, kubernetesClusterName string, options *armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterOptions) (resp azfake.PagerResponder[armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterResponse])
-
-	// BeginUpdate is the fake for method KubernetesClusterFeaturesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, kubernetesClusterFeatureUpdateParameters armnetworkcloud.KubernetesClusterFeaturePatchParameters, options *armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKubernetesClusterFeaturesServerTransport creates a new instance of KubernetesClusterFeaturesServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewKubernetesClusterFeaturesServerTransport(srv *KubernetesClusterFeaturesS
 		srv:                             srv,
 		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientCreateOrUpdateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientDeleteResponse]](),
-		newListByKubernetesClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterResponse]](),
 		beginUpdate:                     newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse]](),
+		newListByKubernetesClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type KubernetesClusterFeaturesServerTransport struct {
 	srv                             *KubernetesClusterFeaturesServer
 	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientCreateOrUpdateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientDeleteResponse]]
-	newListByKubernetesClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterResponse]]
 	beginUpdate                     *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse]]
+	newListByKubernetesClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClusterFeaturesClientListByKubernetesClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for KubernetesClusterFeaturesServerTransport.
@@ -91,12 +91,12 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = k.dispatchBeginCreateOrUpdate(req)
 			case "KubernetesClusterFeaturesClient.BeginDelete":
 				res.resp, res.err = k.dispatchBeginDelete(req)
+			case "KubernetesClusterFeaturesClient.BeginUpdate":
+				res.resp, res.err = k.dispatchBeginUpdate(req)
 			case "KubernetesClusterFeaturesClient.Get":
 				res.resp, res.err = k.dispatchGet(req)
 			case "KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager":
 				res.resp, res.err = k.dispatchNewListByKubernetesClusterPager(req)
-			case "KubernetesClusterFeaturesClient.BeginUpdate":
-				res.resp, res.err = k.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
+func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := k.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterFeaturePatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		featureNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("featureName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		k.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		k.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (k *KubernetesClusterFeaturesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if k.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchNewListByKubernetesCl
 	if !server.PagerResponderMore(newListByKubernetesClusterPager) {
 		k.newListByKubernetesClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if k.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := k.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterFeaturePatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		featureNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("featureName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		k.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		k.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		k.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

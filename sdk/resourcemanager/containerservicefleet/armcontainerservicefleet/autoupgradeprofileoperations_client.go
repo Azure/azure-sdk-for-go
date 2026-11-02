@@ -69,7 +69,7 @@ func (client *AutoUpgradeProfileOperationsClient) BeginGenerateUpdateRun(ctx con
 	}
 }
 
-// GenerateUpdateRun - Generates an update run for a given auto upgrade profile.
+// generateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.
 	return httpResp, nil
 }
 
-// generateUpdateRunCreateRequest creates the GenerateUpdateRun request.
+// generateUpdateRunCreateRequest creates the generateUpdateRun request.
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, _ *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}/generateUpdateRun"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *AssetEndpointProfilesClient) BeginCreateOrReplace(ctx context.Cont
 	}
 }
 
-// CreateOrReplace - Create a AssetEndpointProfile
+// createOrReplace - Create a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssetEndpointProfilesClient) createOrReplace(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, resource AssetEndpointProfile, options *AssetEndpointProfilesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *AssetEndpointProfilesClient) createOrReplace(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *AssetEndpointProfilesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, resource AssetEndpointProfile, _ *AssetEndpointProfilesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *AssetEndpointProfilesClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a AssetEndpointProfile
+// deleteOperation - Delete a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssetEndpointProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, options *AssetEndpointProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *AssetEndpointProfilesClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AssetEndpointProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, _ *AssetEndpointProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *AssetEndpointProfilesClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a AssetEndpointProfile
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
+//   - properties - The resource properties to be updated.
+//   - options - AssetEndpointProfilesClientBeginUpdateOptions contains the optional parameters for the AssetEndpointProfilesClient.BeginUpdate
+//     method.
+func (client *AssetEndpointProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, options *AssetEndpointProfilesClientBeginUpdateOptions) (*runtime.Poller[AssetEndpointProfilesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, assetEndpointProfileName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssetEndpointProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssetEndpointProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a AssetEndpointProfile
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AssetEndpointProfilesClient) update(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, options *AssetEndpointProfilesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AssetEndpointProfilesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, assetEndpointProfileName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AssetEndpointProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, _ *AssetEndpointProfilesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if assetEndpointProfileName == "" {
+		return nil, errors.New("parameter assetEndpointProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{assetEndpointProfileName}", url.PathEscape(assetEndpointProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -388,80 +464,4 @@ func (client *AssetEndpointProfilesClient) listBySubscriptionHandleResponse(resp
 		return AssetEndpointProfilesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a AssetEndpointProfile
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
-//   - properties - The resource properties to be updated.
-//   - options - AssetEndpointProfilesClientBeginUpdateOptions contains the optional parameters for the AssetEndpointProfilesClient.BeginUpdate
-//     method.
-func (client *AssetEndpointProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, options *AssetEndpointProfilesClientBeginUpdateOptions) (*runtime.Poller[AssetEndpointProfilesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, assetEndpointProfileName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssetEndpointProfilesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssetEndpointProfilesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a AssetEndpointProfile
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AssetEndpointProfilesClient) update(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, options *AssetEndpointProfilesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AssetEndpointProfilesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, assetEndpointProfileName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AssetEndpointProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, _ *AssetEndpointProfilesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if assetEndpointProfileName == "" {
-		return nil, errors.New("parameter assetEndpointProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetEndpointProfileName}", url.PathEscape(assetEndpointProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

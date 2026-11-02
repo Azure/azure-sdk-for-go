@@ -134,7 +134,7 @@ func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceG
 //   - options - ProjectsClientBeginDeleteOptions contains the optional parameters for the ProjectsClient.BeginDelete method.
 func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*runtime.Poller[ProjectsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes a Cognitive Services project from the resource group.
+// deleteOperation - Deletes a Cognitive Services project from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProjectsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -38,71 +38,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	return client, nil
 }
 
-// BeginAcceptOwnership - Accept subscription ownership.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - subscriptionID - Subscription Id.
-//   - body - The request body
-//   - options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
-func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*runtime.Poller[ClientAcceptOwnershipResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.acceptOwnership(ctx, subscriptionID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientAcceptOwnershipResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientAcceptOwnershipResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// AcceptOwnership - Accept subscription ownership.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginAcceptOwnership"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.acceptOwnershipCreateRequest(ctx, subscriptionID, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// acceptOwnershipCreateRequest creates the AcceptOwnership request.
-func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, _ *ClientBeginAcceptOwnershipOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnership"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // AcceptOwnershipStatus - Accept subscription ownership status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - subscriptionID - Subscription Id.
@@ -152,6 +87,71 @@ func (client *Client) acceptOwnershipStatusHandleResponse(resp *http.Response, s
 		return ClientAcceptOwnershipStatusResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginAcceptOwnership - Accept subscription ownership.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - subscriptionID - Subscription Id.
+//   - body - The request body
+//   - options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
+func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*runtime.Poller[ClientAcceptOwnershipResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.acceptOwnership(ctx, subscriptionID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientAcceptOwnershipResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientAcceptOwnershipResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// acceptOwnership - Accept subscription ownership.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginAcceptOwnership"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.acceptOwnershipCreateRequest(ctx, subscriptionID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// acceptOwnershipCreateRequest creates the acceptOwnership request.
+func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, _ *ClientBeginAcceptOwnershipOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnership"
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // Cancel - The operation to cancel a subscription

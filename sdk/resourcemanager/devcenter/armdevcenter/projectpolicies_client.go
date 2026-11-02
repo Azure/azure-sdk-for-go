@@ -70,7 +70,7 @@ func (client *ProjectPoliciesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates an project policy.
+// createOrUpdate - Creates or updates an project policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicy, options *ProjectPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ProjectPoliciesClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProjectPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicy, _ *ProjectPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/projectPolicies/{projectPolicyName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *ProjectPoliciesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes an project policy.
+// deleteOperation - Deletes an project policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, options *ProjectPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *ProjectPoliciesClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProjectPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, _ *ProjectPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/projectPolicies/{projectPolicyName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,87 @@ func (client *ProjectPoliciesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Partially updates an project policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - projectPolicyName - The name of the project policy.
+//   - body - Updatable project policy properties.
+//   - options - ProjectPoliciesClientBeginUpdateOptions contains the optional parameters for the ProjectPoliciesClient.BeginUpdate
+//     method.
+func (client *ProjectPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, options *ProjectPoliciesClientBeginUpdateOptions) (*runtime.Poller[ProjectPoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, devCenterName, projectPolicyName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProjectPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProjectPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Partially updates an project policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProjectPoliciesClient) update(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, options *ProjectPoliciesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProjectPoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, projectPolicyName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ProjectPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, _ *ProjectPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/projectPolicies/{projectPolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if devCenterName == "" {
+		return nil, errors.New("parameter devCenterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+	if projectPolicyName == "" {
+		return nil, errors.New("parameter projectPolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectPolicyName}", url.PathEscape(projectPolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -344,85 +425,4 @@ func (client *ProjectPoliciesClient) listByDevCenterHandleResponse(resp *http.Re
 		return ProjectPoliciesClientListByDevCenterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Partially updates an project policy.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - devCenterName - The name of the devcenter.
-//   - projectPolicyName - The name of the project policy.
-//   - body - Updatable project policy properties.
-//   - options - ProjectPoliciesClientBeginUpdateOptions contains the optional parameters for the ProjectPoliciesClient.BeginUpdate
-//     method.
-func (client *ProjectPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, options *ProjectPoliciesClientBeginUpdateOptions) (*runtime.Poller[ProjectPoliciesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, devCenterName, projectPolicyName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProjectPoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProjectPoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Partially updates an project policy.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProjectPoliciesClient) update(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, options *ProjectPoliciesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProjectPoliciesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, projectPolicyName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ProjectPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body ProjectPolicyUpdate, _ *ProjectPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/projectPolicies/{projectPolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if projectPolicyName == "" {
-		return nil, errors.New("parameter projectPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectPolicyName}", url.PathEscape(projectPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

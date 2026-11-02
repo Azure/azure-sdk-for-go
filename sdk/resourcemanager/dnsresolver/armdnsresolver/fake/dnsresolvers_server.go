@@ -30,13 +30,13 @@ type DNSResolversServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverName string, options *armdnsresolver.DNSResolversClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolversClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DNSResolversClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters armdnsresolver.Patch, options *armdnsresolver.DNSResolversClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DNSResolversClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dnsResolverName string, options *armdnsresolver.DNSResolversClientGetOptions) (resp azfake.Responder[armdnsresolver.DNSResolversClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DNSResolversClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdnsresolver.DNSResolversClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method DNSResolversClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,9 +46,9 @@ type DNSResolversServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVirtualNetworkPager func(resourceGroupName string, virtualNetworkName string, options *armdnsresolver.DNSResolversClientListByVirtualNetworkOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolversClientListByVirtualNetworkResponse])
 
-	// BeginUpdate is the fake for method DNSResolversClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters armdnsresolver.Patch, options *armdnsresolver.DNSResolversClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method DNSResolversClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdnsresolver.DNSResolversClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse])
 }
 
 // NewDNSResolversServerTransport creates a new instance of DNSResolversServerTransport with the provided implementation.
@@ -59,10 +59,10 @@ func NewDNSResolversServerTransport(srv *DNSResolversServer) *DNSResolversServer
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientDeleteResponse]](),
-		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse]](),
 		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListByResourceGroupResponse]](),
 		newListByVirtualNetworkPager: newTracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListByVirtualNetworkResponse]](),
-		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse]](),
 	}
 }
 
@@ -72,10 +72,10 @@ type DNSResolversServerTransport struct {
 	srv                          *DNSResolversServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientDeleteResponse]]
-	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse]]
 	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListByResourceGroupResponse]]
 	newListByVirtualNetworkPager *tracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListByVirtualNetworkResponse]]
-	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.DNSResolversClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DNSResolversServerTransport.
@@ -103,16 +103,16 @@ func (d *DNSResolversServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DNSResolversClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DNSResolversClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DNSResolversClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DNSResolversClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DNSResolversClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DNSResolversClient.NewListByVirtualNetworkPager":
 				res.resp, res.err = d.dispatchNewListByVirtualNetworkPager(req)
-			case "DNSResolversClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DNSResolversClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -237,6 +237,61 @@ func (d *DNSResolversServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (d *DNSResolversServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers/(?P<dnsResolverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.Patch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsResolverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armdnsresolver.DNSResolversClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdnsresolver.DNSResolversClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DNSResolversServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -266,56 +321,6 @@ func (d *DNSResolversServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSResolver, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DNSResolversServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdnsresolver.DNSResolversClientListOptions
-		if topParam != nil {
-			options = &armdnsresolver.DNSResolversClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := d.srv.NewListPager(options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSResolversClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -432,58 +437,53 @@ func (d *DNSResolversServerTransport) dispatchNewListByVirtualNetworkPager(req *
 	return resp, nil
 }
 
-func (d *DNSResolversServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (d *DNSResolversServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers/(?P<dnsResolverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.Patch](req)
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsResolverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DNSResolversClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdnsresolver.DNSResolversClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
+		var options *armdnsresolver.DNSResolversClientListOptions
+		if topParam != nil {
+			options = &armdnsresolver.DNSResolversClientListOptions{
+				Top: topParam,
 			}
 		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
+		resp := d.srv.NewListPager(options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSResolversClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

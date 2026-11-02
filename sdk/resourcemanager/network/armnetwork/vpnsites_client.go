@@ -127,7 +127,7 @@ func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - VPNSitesClientBeginDeleteOptions contains the optional parameters for the VPNSitesClient.BeginDelete method.
 func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*runtime.Poller[VPNSitesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, vpnSiteName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vpnSiteName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +142,9 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes a VpnSite.
+// deleteOperation - Deletes a VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNSitesClient) delete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNSitesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -135,7 +135,7 @@ func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, res
 //     method.
 func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*runtime.Poller[PacketCapturesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +150,9 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Deletes the specified packet capture session.
+// deleteOperation - Deletes the specified packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PacketCapturesClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PacketCapturesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PacketCapturesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

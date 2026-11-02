@@ -283,72 +283,6 @@ func (client *QueryPacksClient) getHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
-// NewListPager - Gets a list of all Log Analytics QueryPacks within a subscription.
-//   - options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.NewListPager method.
-func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[QueryPacksClientListResponse]{
-		More: func(page QueryPacksClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *QueryPacksClientListResponse) (QueryPacksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "QueryPacksClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return QueryPacksClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return QueryPacksClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *QueryPacksClient) listCreateRequest(ctx context.Context, nextLink string, _ *QueryPacksClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/queryPacks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *QueryPacksClient) listHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientListResponse, error) {
-	result := QueryPacksClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackListResult); err != nil {
-		return QueryPacksClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Gets a list of Log Analytics QueryPacks within a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.NewListByResourceGroupPager
@@ -417,6 +351,72 @@ func (client *QueryPacksClient) listByResourceGroupHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackListResult); err != nil {
 		return QueryPacksClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of all Log Analytics QueryPacks within a subscription.
+//   - options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.NewListPager method.
+func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[QueryPacksClientListResponse]{
+		More: func(page QueryPacksClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *QueryPacksClientListResponse) (QueryPacksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "QueryPacksClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return QueryPacksClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return QueryPacksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *QueryPacksClient) listCreateRequest(ctx context.Context, nextLink string, _ *QueryPacksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/queryPacks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *QueryPacksClient) listHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientListResponse, error) {
+	result := QueryPacksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackListResult); err != nil {
+		return QueryPacksClientListResponse{}, err
 	}
 	return result, nil
 }

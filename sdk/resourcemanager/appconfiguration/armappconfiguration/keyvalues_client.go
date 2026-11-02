@@ -44,6 +44,82 @@ func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
+// BeginDelete - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+// scenarios involving App Configuration key-values the data plane API should be used instead.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configStoreName - The name of the configuration store.
+//   - keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
+//   - options - KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
+func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*runtime.Poller[KeyValuesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, configStoreName, keyValueName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KeyValuesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KeyValuesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+// scenarios involving App Configuration key-values the data plane API should be used instead.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KeyValuesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, _ *KeyValuesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configStoreName == "" {
+		return nil, errors.New("parameter configStoreName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
+	if keyValueName == "" {
+		return nil, errors.New("parameter keyValueName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyValueName}", url.PathEscape(keyValueName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
 // scenarios involving App Configuration key-values the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -114,82 +190,6 @@ func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response,
 		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-// scenarios involving App Configuration key-values the data plane API should be used instead.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - configStoreName - The name of the configuration store.
-//   - keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
-//   - options - KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
-func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*runtime.Poller[KeyValuesClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, configStoreName, keyValueName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KeyValuesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KeyValuesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
-// involving App Configuration key-values the data plane API should be used instead.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "KeyValuesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, _ *KeyValuesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configStoreName == "" {
-		return nil, errors.New("parameter configStoreName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	if keyValueName == "" {
-		return nil, errors.New("parameter keyValueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyValueName}", url.PathEscape(keyValueName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template deployments.

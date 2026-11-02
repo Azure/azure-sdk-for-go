@@ -137,7 +137,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginDeleteOptions) (*runtime.Poller[ConnectionMonitorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -152,9 +152,9 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes the specified connection monitor.
+// deleteOperation - Deletes the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectionMonitorsClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionMonitorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -41,6 +41,75 @@ func NewTransactionsClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
+// BeginTransactionsDownloadByInvoice - Gets a URL to download the transactions document for an invoice. The operation is
+// supported for billing accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - invoiceName - The ID that uniquely identifies an invoice.
+//   - options - TransactionsClientBeginTransactionsDownloadByInvoiceOptions contains the optional parameters for the TransactionsClient.BeginTransactionsDownloadByInvoice
+//     method.
+func (client *TransactionsClient) BeginTransactionsDownloadByInvoice(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*runtime.Poller[TransactionsClientTransactionsDownloadByInvoiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.transactionsDownloadByInvoice(ctx, billingAccountName, invoiceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransactionsClientTransactionsDownloadByInvoiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransactionsClientTransactionsDownloadByInvoiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// transactionsDownloadByInvoice - Gets a URL to download the transactions document for an invoice. The operation is supported
+// for billing accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransactionsClient) transactionsDownloadByInvoice(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TransactionsClient.BeginTransactionsDownloadByInvoice"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.transactionsDownloadByInvoiceCreateRequest(ctx, billingAccountName, invoiceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// transactionsDownloadByInvoiceCreateRequest creates the transactionsDownloadByInvoice request.
+func (client *TransactionsClient) transactionsDownloadByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactionsDownload"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if invoiceName == "" {
+		return nil, errors.New("parameter invoiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{invoiceName}", url.PathEscape(invoiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // GetTransactionSummaryByInvoice - Gets the transaction summary for an invoice. Transactions include purchases, refunds and
 // Azure usage charges.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -502,73 +571,4 @@ func (client *TransactionsClient) listByInvoiceSectionHandleResponse(resp *http.
 		return TransactionsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginTransactionsDownloadByInvoice - Gets a URL to download the transactions document for an invoice. The operation is
-// supported for billing accounts with agreement type Enterprise Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - invoiceName - The ID that uniquely identifies an invoice.
-//   - options - TransactionsClientBeginTransactionsDownloadByInvoiceOptions contains the optional parameters for the TransactionsClient.BeginTransactionsDownloadByInvoice
-//     method.
-func (client *TransactionsClient) BeginTransactionsDownloadByInvoice(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*runtime.Poller[TransactionsClientTransactionsDownloadByInvoiceResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.transactionsDownloadByInvoice(ctx, billingAccountName, invoiceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransactionsClientTransactionsDownloadByInvoiceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransactionsClientTransactionsDownloadByInvoiceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TransactionsDownloadByInvoice - Gets a URL to download the transactions document for an invoice. The operation is supported
-// for billing accounts with agreement type Enterprise Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TransactionsClient) transactionsDownloadByInvoice(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TransactionsClient.BeginTransactionsDownloadByInvoice"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.transactionsDownloadByInvoiceCreateRequest(ctx, billingAccountName, invoiceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// transactionsDownloadByInvoiceCreateRequest creates the TransactionsDownloadByInvoice request.
-func (client *TransactionsClient) transactionsDownloadByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactionsDownload"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if invoiceName == "" {
-		return nil, errors.New("parameter invoiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceName}", url.PathEscape(invoiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

@@ -53,7 +53,7 @@ func NewSecurityPerimetersClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *SecurityPerimetersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimetersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *SecurityPerimetersClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes a network security perimeter.
+// deleteOperation - Deletes a network security perimeter.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimetersClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimetersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimetersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

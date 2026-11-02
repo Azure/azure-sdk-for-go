@@ -67,7 +67,7 @@ func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string
 	}
 }
 
-// ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region
+// manualFailover - Manually initiate a failover for the IoT Hub to its secondary region
 //
 // Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,7 +91,7 @@ func (client *Client) manualFailover(ctx context.Context, iotHubName string, res
 	return httpResp, nil
 }
 
-// manualFailoverCreateRequest creates the ManualFailover request.
+// manualFailoverCreateRequest creates the manualFailover request.
 func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, _ *ClientBeginManualFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover"
 	if client.subscriptionID == "" {

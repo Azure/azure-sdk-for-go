@@ -71,7 +71,7 @@ func (client *BmcKeySetsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a new baseboard management controller key set or update the existing one for the provided cluster.
+// createOrUpdate - Create a new baseboard management controller key set or update the existing one for the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BmcKeySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetParameters BmcKeySet, options *BmcKeySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *BmcKeySetsClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BmcKeySetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetParameters BmcKeySet, options *BmcKeySetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *BmcKeySetsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete the baseboard management controller key set of the provided cluster.
+// deleteOperation - Delete the baseboard management controller key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BmcKeySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *BmcKeySetsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BmcKeySetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}"
 	if client.subscriptionID == "" {
@@ -209,6 +209,94 @@ func (client *BmcKeySetsClient) deleteCreateRequest(ctx context.Context, resourc
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+// associated with it. Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - bmcKeySetName - The name of the baseboard management controller key set.
+//   - bmcKeySetUpdateParameters - The request body.
+//   - options - BmcKeySetsClientBeginUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginUpdate method.
+func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*runtime.Poller[BmcKeySetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BmcKeySetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BmcKeySetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch properties of baseboard management controller key set for the provided cluster, or update the tags associated
+// with it. Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BmcKeySetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if bmcKeySetName == "" {
+		return nil, errors.New("parameter bmcKeySetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bmcKeySetName}", url.PathEscape(bmcKeySetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bmcKeySetUpdateParameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -359,92 +447,4 @@ func (client *BmcKeySetsClient) listByClusterHandleResponse(resp *http.Response,
 		return BmcKeySetsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch properties of baseboard management controller key set for the provided cluster, or update the tags
-// associated with it. Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - bmcKeySetName - The name of the baseboard management controller key set.
-//   - bmcKeySetUpdateParameters - The request body.
-//   - options - BmcKeySetsClientBeginUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginUpdate method.
-func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*runtime.Poller[BmcKeySetsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BmcKeySetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BmcKeySetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch properties of baseboard management controller key set for the provided cluster, or update the tags associated
-// with it. Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BmcKeySetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if bmcKeySetName == "" {
-		return nil, errors.New("parameter bmcKeySetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bmcKeySetName}", url.PathEscape(bmcKeySetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bmcKeySetUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

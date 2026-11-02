@@ -69,7 +69,7 @@ func (client *ReplicationExtensionClient) BeginCreate(ctx context.Context, resou
 	}
 }
 
-// Create - Creates the replication extension in the given vault.
+// create - Creates the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicationExtensionClient) create(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, resource ReplicationExtensionModel, options *ReplicationExtensionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ReplicationExtensionClient) create(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationExtensionClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, resource ReplicationExtensionModel, _ *ReplicationExtensionClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ReplicationExtensionClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Deletes the replication extension in the given vault.
+// deleteOperation - Deletes the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicationExtensionClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, options *ReplicationExtensionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ReplicationExtensionClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicationExtensionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, _ *ReplicationExtensionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}"
 	if client.subscriptionID == "" {

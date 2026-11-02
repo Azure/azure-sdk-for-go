@@ -33,6 +33,10 @@ type CreditsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, creditName string, options *armbillingbenefits.CreditsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbillingbenefits.CreditsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CreditsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, creditName string, body armbillingbenefits.CreditPatchRequest, options *armbillingbenefits.CreditsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CreditsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, creditName string, options *armbillingbenefits.CreditsClientGetOptions) (resp azfake.Responder[armbillingbenefits.CreditsClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type CreditsServer struct {
 	// NewListBySubscriptionPager is the fake for method CreditsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armbillingbenefits.CreditsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armbillingbenefits.CreditsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CreditsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, creditName string, body armbillingbenefits.CreditPatchRequest, options *armbillingbenefits.CreditsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCreditsServerTransport creates a new instance of CreditsServerTransport with the provided implementation.
@@ -63,10 +63,10 @@ func NewCreditsServerTransport(srv *CreditsServer) *CreditsServerTransport {
 		beginCancel:                 newTracker[azfake.PollerResponder[armbillingbenefits.CreditsClientCancelResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armbillingbenefits.CreditsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armbillingbenefits.CreditsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse]](),
 		newListApplicablePager:      newTracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListApplicableResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse]](),
 	}
 }
 
@@ -77,10 +77,10 @@ type CreditsServerTransport struct {
 	beginCancel                 *tracker[azfake.PollerResponder[armbillingbenefits.CreditsClientCancelResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armbillingbenefits.CreditsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armbillingbenefits.CreditsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse]]
 	newListApplicablePager      *tracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListApplicableResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbillingbenefits.CreditsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.CreditsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CreditsServerTransport.
@@ -110,6 +110,8 @@ func (c *CreditsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "CreditsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CreditsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CreditsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CreditsClient.NewListApplicablePager":
@@ -118,8 +120,6 @@ func (c *CreditsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CreditsClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CreditsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -272,6 +272,54 @@ func (c *CreditsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
+func (c *CreditsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/credits/(?P<creditName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.CreditPatchRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		creditNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("creditName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, creditNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *CreditsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -409,54 +457,6 @@ func (c *CreditsServerTransport) dispatchNewListBySubscriptionPager(req *http.Re
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CreditsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/credits/(?P<creditName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.CreditPatchRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		creditNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("creditName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, creditNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -70,7 +70,7 @@ func (client *NGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - NGroup PUT REST API
+// createOrUpdate - NGroup PUT REST API
 //
 // Create or update a NGroups resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *NGroupsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroup, _ *NGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *NGroupsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - NGroups Delete REST API
+// deleteOperation - NGroups Delete REST API
 //
 // Deletes the NGroups resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -172,7 +172,7 @@ func (client *NGroupsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, _ *NGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}"
 	if client.subscriptionID == "" {
@@ -194,6 +194,233 @@ func (client *NGroupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestart - Restarts all container groups in the specified NGroups resource.
+//
+// Restarts all container groups in the specified NGroups resource in place. If container image has updates, new image will
+// be downloaded.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ngroupsName - The NGroups name.
+//   - options - NGroupsClientBeginRestartOptions contains the optional parameters for the NGroupsClient.BeginRestart method.
+func (client *NGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginRestartOptions) (*runtime.Poller[NGroupsClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, ngroupsName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts all container groups in the specified NGroups resource.
+//
+// Restarts all container groups in the specified NGroups resource in place. If container image has updates, new image will
+// be downloaded.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NGroupsClient) restart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NGroupsClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, ngroupsName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *NGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, _ *NGroupsClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ngroupsName == "" {
+		return nil, errors.New("parameter ngroupsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts all container groups in the specified NGroups resource.
+//
+// Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing will start.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ngroupsName - The NGroups name.
+//   - options - NGroupsClientBeginStartOptions contains the optional parameters for the NGroupsClient.BeginStart method.
+func (client *NGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginStartOptions) (*runtime.Poller[NGroupsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, ngroupsName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts all container groups in the specified NGroups resource.
+//
+// Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing will start.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NGroupsClient) start(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NGroupsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, ngroupsName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *NGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, _ *NGroupsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ngroupsName == "" {
+		return nil, errors.New("parameter ngroupsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - NGroups PATCH REST API
+//
+// Update a specified NGroups resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ngroupsName - The NGroups name.
+//   - nGroup - The NGroup object.
+//   - options - NGroupsClientBeginUpdateOptions contains the optional parameters for the NGroupsClient.BeginUpdate method.
+func (client *NGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, options *NGroupsClientBeginUpdateOptions) (*runtime.Poller[NGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, ngroupsName, nGroup, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - NGroups PATCH REST API
+//
+// Update a specified NGroups resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NGroupsClient) update(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, options *NGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, ngroupsName, nGroup, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, _ *NGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ngroupsName == "" {
+		return nil, errors.New("parameter ngroupsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, nGroup); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -255,74 +482,6 @@ func (client *NGroupsClient) getHandleResponse(resp *http.Response, successCodes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NGroup); err != nil {
 		return NGroupsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List NGroups in a subscription.
-//
-// Gets a list of all NGroups resources under a subscription.
-//   - options - NGroupsClientListOptions contains the optional parameters for the NGroupsClient.NewListPager method.
-func (client *NGroupsClient) NewListPager(options *NGroupsClientListOptions) *runtime.Pager[NGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NGroupsClientListResponse]{
-		More: func(page NGroupsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NGroupsClientListResponse) (NGroupsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NGroupsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return NGroupsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NGroupsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *NGroupsClient) listCreateRequest(ctx context.Context, nextLink string, _ *NGroupsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/ngroups"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *NGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (NGroupsClientListResponse, error) {
-	result := NGroupsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NGroupsListResult); err != nil {
-		return NGroupsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -401,152 +560,72 @@ func (client *NGroupsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginRestart - Restarts all container groups in the specified NGroups resource.
+// NewListPager - List NGroups in a subscription.
 //
-// Restarts all container groups in the specified NGroups resource in place. If container image has updates, new image will
-// be downloaded.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ngroupsName - The NGroups name.
-//   - options - NGroupsClientBeginRestartOptions contains the optional parameters for the NGroupsClient.BeginRestart method.
-func (client *NGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginRestartOptions) (*runtime.Poller[NGroupsClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, ngroupsName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+// Gets a list of all NGroups resources under a subscription.
+//   - options - NGroupsClientListOptions contains the optional parameters for the NGroupsClient.NewListPager method.
+func (client *NGroupsClient) NewListPager(options *NGroupsClientListOptions) *runtime.Pager[NGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NGroupsClientListResponse]{
+		More: func(page NGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NGroupsClientListResponse) (NGroupsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NGroupsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return NGroupsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NGroupsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Restart - Restarts all container groups in the specified NGroups resource.
-//
-// Restarts all container groups in the specified NGroups resource in place. If container image has updates, new image will
-// be downloaded.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NGroupsClient) restart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginRestartOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *NGroupsClient) listCreateRequest(ctx context.Context, nextLink string, _ *NGroupsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "NGroupsClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, ngroupsName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/ngroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *NGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, _ *NGroupsClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ngroupsName == "" {
-		return nil, errors.New("parameter ngroupsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginStart - Starts all container groups in the specified NGroups resource.
-//
-// Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing will start.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ngroupsName - The NGroups name.
-//   - options - NGroupsClientBeginStartOptions contains the optional parameters for the NGroupsClient.BeginStart method.
-func (client *NGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginStartOptions) (*runtime.Poller[NGroupsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, ngroupsName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// listHandleResponse handles the List response.
+func (client *NGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (NGroupsClientListResponse, error) {
+	result := NGroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-}
-
-// Start - Starts all container groups in the specified NGroups resource.
-//
-// Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing will start.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NGroupsClient) start(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NGroupsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, ngroupsName, options)
-	if err != nil {
-		return nil, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.NGroupsListResult); err != nil {
+		return NGroupsClientListResponse{}, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *NGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, _ *NGroupsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ngroupsName == "" {
-		return nil, errors.New("parameter ngroupsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
+	return result, nil
 }
 
 // Stop - Stops all container groups in the specified NGroups resource.
@@ -598,84 +677,5 @@ func (client *NGroupsClient) stopCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - NGroups PATCH REST API
-//
-// Update a specified NGroups resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ngroupsName - The NGroups name.
-//   - nGroup - The NGroup object.
-//   - options - NGroupsClientBeginUpdateOptions contains the optional parameters for the NGroupsClient.BeginUpdate method.
-func (client *NGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, options *NGroupsClientBeginUpdateOptions) (*runtime.Poller[NGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, ngroupsName, nGroup, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - NGroups PATCH REST API
-//
-// Update a specified NGroups resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NGroupsClient) update(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, options *NGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, ngroupsName, nGroup, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, _ *NGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/ngroups/{ngroupsName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ngroupsName == "" {
-		return nil, errors.New("parameter ngroupsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ngroupsName}", url.PathEscape(ngroupsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, nGroup); err != nil {
-		return nil, err
-	}
 	return req, nil
 }

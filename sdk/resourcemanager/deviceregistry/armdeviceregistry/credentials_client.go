@@ -68,7 +68,7 @@ func (client *CredentialsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create a Credential
+// createOrUpdate - Create a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CredentialsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, options *CredentialsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *CredentialsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, _ *CredentialsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *CredentialsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete a Credential
+// deleteOperation - Delete a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CredentialsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *CredentialsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
@@ -186,6 +186,149 @@ func (client *CredentialsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - options - CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize
+//     method.
+func (client *CredentialsClient) BeginSynchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*runtime.Poller[CredentialsClientSynchronizeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.synchronize(ctx, resourceGroupName, namespaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientSynchronizeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientSynchronizeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// synchronize -
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CredentialsClient) synchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CredentialsClient.BeginSynchronize"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.synchronizeCreateRequest(ctx, resourceGroupName, namespaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// synchronizeCreateRequest creates the synchronize request.
+func (client *CredentialsClient) synchronizeCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientBeginSynchronizeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/synchronize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a Credential
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - properties - The resource properties to be updated.
+//   - options - CredentialsClientBeginUpdateOptions contains the optional parameters for the CredentialsClient.BeginUpdate method.
+func (client *CredentialsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*runtime.Poller[CredentialsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Credential
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CredentialsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CredentialsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CredentialsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, _ *CredentialsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -324,147 +467,4 @@ func (client *CredentialsClient) listByResourceGroupHandleResponse(resp *http.Re
 		return CredentialsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - options - CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize
-//     method.
-func (client *CredentialsClient) BeginSynchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*runtime.Poller[CredentialsClientSynchronizeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.synchronize(ctx, resourceGroupName, namespaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientSynchronizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientSynchronizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Synchronize -
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CredentialsClient) synchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CredentialsClient.BeginSynchronize"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.synchronizeCreateRequest(ctx, resourceGroupName, namespaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// synchronizeCreateRequest creates the Synchronize request.
-func (client *CredentialsClient) synchronizeCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientBeginSynchronizeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/synchronize"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update a Credential
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - properties - The resource properties to be updated.
-//   - options - CredentialsClientBeginUpdateOptions contains the optional parameters for the CredentialsClient.BeginUpdate method.
-func (client *CredentialsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*runtime.Poller[CredentialsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Credential
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CredentialsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CredentialsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CredentialsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, _ *CredentialsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

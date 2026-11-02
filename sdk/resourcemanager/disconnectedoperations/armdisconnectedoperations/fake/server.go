@@ -33,6 +33,10 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, options *armdisconnectedoperations.ClientGetOptions) (resp azfake.Responder[armdisconnectedoperations.ClientGetResponse], errResp azfake.ErrorResponder)
 
+	// ListDeploymentManifest is the fake for method Client.ListDeploymentManifest
+	// HTTP status codes to indicate success: http.StatusOK
+	ListDeploymentManifest func(ctx context.Context, resourceGroupName string, name string, options *armdisconnectedoperations.ClientListDeploymentManifestOptions) (resp azfake.Responder[armdisconnectedoperations.ClientListDeploymentManifestResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdisconnectedoperations.ClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ClientListByResourceGroupResponse])
@@ -40,10 +44,6 @@ type Server struct {
 	// NewListBySubscriptionPager is the fake for method Client.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdisconnectedoperations.ClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ClientListBySubscriptionResponse])
-
-	// ListDeploymentManifest is the fake for method Client.ListDeploymentManifest
-	// HTTP status codes to indicate success: http.StatusOK
-	ListDeploymentManifest func(ctx context.Context, resourceGroupName string, name string, options *armdisconnectedoperations.ClientListDeploymentManifestOptions) (resp azfake.Responder[armdisconnectedoperations.ClientListDeploymentManifestResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method Client.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -100,12 +100,12 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
+			case "Client.ListDeploymentManifest":
+				res.resp, res.err = s.dispatchListDeploymentManifest(req)
 			case "Client.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "Client.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "Client.ListDeploymentManifest":
-				res.resp, res.err = s.dispatchListDeploymentManifest(req)
 			case "Client.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -249,6 +249,39 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchListDeploymentManifest(req *http.Request) (*http.Response, error) {
+	if s.srv.ListDeploymentManifest == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentManifest not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDeploymentManifest`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListDeploymentManifest(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DisconnectedOperationDeploymentManifest, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -315,39 +348,6 @@ func (s *ServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchListDeploymentManifest(req *http.Request) (*http.Response, error) {
-	if s.srv.ListDeploymentManifest == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentManifest not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDeploymentManifest`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListDeploymentManifest(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DisconnectedOperationDeploymentManifest, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

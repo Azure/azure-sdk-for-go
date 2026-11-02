@@ -73,7 +73,7 @@ func (client *OnlineEndpointsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update Online Endpoint (asynchronous).
+// createOrUpdate - Create or update Online Endpoint (asynchronous).
 //
 // Create or update Online Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *OnlineEndpointsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OnlineEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body OnlineEndpoint, _ *OnlineEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *OnlineEndpointsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete Online Endpoint (asynchronous).
+// deleteOperation - Delete Online Endpoint (asynchronous).
 //
 // Delete Online Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -181,7 +181,7 @@ func (client *OnlineEndpointsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OnlineEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, _ *OnlineEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -207,6 +207,175 @@ func (client *OnlineEndpointsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRegenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
+//
+// Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - endpointName - Online Endpoint name.
+//   - body - RegenerateKeys request .
+//   - options - OnlineEndpointsClientBeginRegenerateKeysOptions contains the optional parameters for the OnlineEndpointsClient.BeginRegenerateKeys
+//     method.
+func (client *OnlineEndpointsClient) BeginRegenerateKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, options *OnlineEndpointsClientBeginRegenerateKeysOptions) (*runtime.Poller[OnlineEndpointsClientRegenerateKeysResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.regenerateKeys(ctx, resourceGroupName, workspaceName, endpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineEndpointsClientRegenerateKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineEndpointsClientRegenerateKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// regenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
+//
+// Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OnlineEndpointsClient) regenerateKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, options *OnlineEndpointsClientBeginRegenerateKeysOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OnlineEndpointsClient.BeginRegenerateKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// regenerateKeysCreateRequest creates the regenerateKeys request.
+func (client *OnlineEndpointsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, _ *OnlineEndpointsClientBeginRegenerateKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/regenerateKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update Online Endpoint (asynchronous).
+//
+// Update Online Endpoint (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - endpointName - Online Endpoint name.
+//   - body - Online Endpoint entity to apply during operation.
+//   - options - OnlineEndpointsClientBeginUpdateOptions contains the optional parameters for the OnlineEndpointsClient.BeginUpdate
+//     method.
+func (client *OnlineEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, options *OnlineEndpointsClientBeginUpdateOptions) (*runtime.Poller[OnlineEndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, endpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update Online Endpoint (asynchronous).
+//
+// Update Online Endpoint (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OnlineEndpointsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, options *OnlineEndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OnlineEndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OnlineEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, _ *OnlineEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -345,6 +514,74 @@ func (client *OnlineEndpointsClient) getTokenHandleResponse(resp *http.Response,
 	return result, nil
 }
 
+// ListKeys - List EndpointAuthKeys for an Endpoint using Key-based authentication.
+//
+// List EndpointAuthKeys for an Endpoint using Key-based authentication.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - endpointName - Online Endpoint name.
+//   - options - OnlineEndpointsClientListKeysOptions contains the optional parameters for the OnlineEndpointsClient.ListKeys
+//     method.
+func (client *OnlineEndpointsClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *OnlineEndpointsClientListKeysOptions) (OnlineEndpointsClientListKeysResponse, error) {
+	var err error
+	const operationName = "OnlineEndpointsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, options)
+	if err != nil {
+		return OnlineEndpointsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OnlineEndpointsClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *OnlineEndpointsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, _ *OnlineEndpointsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *OnlineEndpointsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (OnlineEndpointsClientListKeysResponse, error) {
+	result := OnlineEndpointsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAuthKeys); err != nil {
+		return OnlineEndpointsClientListKeysResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Online Endpoints.
 //
 // List Online Endpoints.
@@ -443,241 +680,4 @@ func (client *OnlineEndpointsClient) listHandleResponse(resp *http.Response, suc
 		return OnlineEndpointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// ListKeys - List EndpointAuthKeys for an Endpoint using Key-based authentication.
-//
-// List EndpointAuthKeys for an Endpoint using Key-based authentication.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - endpointName - Online Endpoint name.
-//   - options - OnlineEndpointsClientListKeysOptions contains the optional parameters for the OnlineEndpointsClient.ListKeys
-//     method.
-func (client *OnlineEndpointsClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *OnlineEndpointsClientListKeysOptions) (OnlineEndpointsClientListKeysResponse, error) {
-	var err error
-	const operationName = "OnlineEndpointsClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, options)
-	if err != nil {
-		return OnlineEndpointsClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OnlineEndpointsClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *OnlineEndpointsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, _ *OnlineEndpointsClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *OnlineEndpointsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (OnlineEndpointsClientListKeysResponse, error) {
-	result := OnlineEndpointsClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAuthKeys); err != nil {
-		return OnlineEndpointsClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRegenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-//
-// Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - endpointName - Online Endpoint name.
-//   - body - RegenerateKeys request .
-//   - options - OnlineEndpointsClientBeginRegenerateKeysOptions contains the optional parameters for the OnlineEndpointsClient.BeginRegenerateKeys
-//     method.
-func (client *OnlineEndpointsClient) BeginRegenerateKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, options *OnlineEndpointsClientBeginRegenerateKeysOptions) (*runtime.Poller[OnlineEndpointsClientRegenerateKeysResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.regenerateKeys(ctx, resourceGroupName, workspaceName, endpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineEndpointsClientRegenerateKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineEndpointsClientRegenerateKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RegenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-//
-// Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OnlineEndpointsClient) regenerateKeys(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, options *OnlineEndpointsClientBeginRegenerateKeysOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OnlineEndpointsClient.BeginRegenerateKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *OnlineEndpointsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body RegenerateEndpointKeysRequest, _ *OnlineEndpointsClientBeginRegenerateKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/regenerateKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update Online Endpoint (asynchronous).
-//
-// Update Online Endpoint (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - endpointName - Online Endpoint name.
-//   - body - Online Endpoint entity to apply during operation.
-//   - options - OnlineEndpointsClientBeginUpdateOptions contains the optional parameters for the OnlineEndpointsClient.BeginUpdate
-//     method.
-func (client *OnlineEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, options *OnlineEndpointsClientBeginUpdateOptions) (*runtime.Poller[OnlineEndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, endpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update Online Endpoint (asynchronous).
-//
-// Update Online Endpoint (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OnlineEndpointsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, options *OnlineEndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OnlineEndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OnlineEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, body PartialMinimalTrackedResourceWithIdentity, _ *OnlineEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

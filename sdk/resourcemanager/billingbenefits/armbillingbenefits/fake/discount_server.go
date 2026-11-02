@@ -20,13 +20,13 @@ import (
 
 // DiscountServer is a fake server for instances of the armbillingbenefits.DiscountClient type.
 type DiscountServer struct {
-	// Get is the fake for method DiscountClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, discountName string, options *armbillingbenefits.DiscountClientGetOptions) (resp azfake.Responder[armbillingbenefits.DiscountClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method DiscountClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, discountName string, body armbillingbenefits.DiscountPatchRequest, options *armbillingbenefits.DiscountClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.DiscountClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DiscountClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, discountName string, options *armbillingbenefits.DiscountClientGetOptions) (resp azfake.Responder[armbillingbenefits.DiscountClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiscountServerTransport creates a new instance of DiscountServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func (d *DiscountServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "DiscountClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
 			case "DiscountClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DiscountClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,39 +85,6 @@ func (d *DiscountServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DiscountServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/discounts/(?P<discountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	discountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, discountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Discount, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DiscountServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
@@ -165,6 +132,39 @@ func (d *DiscountServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		d.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DiscountServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/discounts/(?P<discountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	discountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, discountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Discount, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

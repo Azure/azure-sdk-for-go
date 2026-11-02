@@ -58,17 +58,17 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPnsCredentials func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, options *armnotificationhubs.ClientGetPnsCredentialsOptions) (resp azfake.Responder[armnotificationhubs.ClientGetPnsCredentialsResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method Client.NewListPager
+	// ListKeys is the fake for method Client.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.ClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.ClientListResponse])
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, options *armnotificationhubs.ClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.ClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListAuthorizationRulesPager is the fake for method Client.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, notificationHubName string, options *armnotificationhubs.ClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armnotificationhubs.ClientListAuthorizationRulesResponse])
 
-	// ListKeys is the fake for method Client.ListKeys
+	// NewListPager is the fake for method Client.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, options *armnotificationhubs.ClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.ClientListKeysResponse], errResp azfake.ErrorResponder)
+	NewListPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.ClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.ClientListResponse])
 
 	// RegenerateKeys is the fake for method Client.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -85,8 +85,8 @@ type Server struct {
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
 		srv:                            srv,
-		newListPager:                   newTracker[azfake.PagerResponder[armnotificationhubs.ClientListResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armnotificationhubs.ClientListAuthorizationRulesResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armnotificationhubs.ClientListResponse]](),
 	}
 }
 
@@ -94,8 +94,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                            *Server
-	newListPager                   *tracker[azfake.PagerResponder[armnotificationhubs.ClientListResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armnotificationhubs.ClientListAuthorizationRulesResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armnotificationhubs.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -137,12 +137,12 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchGetAuthorizationRule(req)
 			case "Client.GetPnsCredentials":
 				res.resp, res.err = s.dispatchGetPnsCredentials(req)
-			case "Client.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "Client.NewListAuthorizationRulesPager":
-				res.resp, res.err = s.dispatchNewListAuthorizationRulesPager(req)
 			case "Client.ListKeys":
 				res.resp, res.err = s.dispatchListKeys(req)
+			case "Client.NewListAuthorizationRulesPager":
+				res.resp, res.err = s.dispatchNewListAuthorizationRulesPager(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "Client.RegenerateKeys":
 				res.resp, res.err = s.dispatchRegenerateKeys(req)
 			case "Client.Update":
@@ -516,6 +516,92 @@ func (s *ServerTransport) dispatchGetPnsCredentials(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if s.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notificationHubs/(?P<notificationHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListAuthorizationRulesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
+	}
+	newListAuthorizationRulesPager := s.newListAuthorizationRulesPager.get(req)
+	if newListAuthorizationRulesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notificationHubs/(?P<notificationHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListAuthorizationRulesPager(resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, nil)
+		newListAuthorizationRulesPager = &resp
+		s.newListAuthorizationRulesPager.add(req, newListAuthorizationRulesPager)
+		server.PagerResponderInjectNextLinks(newListAuthorizationRulesPager, req, func(page *armnotificationhubs.ClientListAuthorizationRulesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAuthorizationRulesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListAuthorizationRulesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAuthorizationRulesPager) {
+		s.newListAuthorizationRulesPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -572,92 +658,6 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	}
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAuthorizationRulesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
-	}
-	newListAuthorizationRulesPager := s.newListAuthorizationRulesPager.get(req)
-	if newListAuthorizationRulesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notificationHubs/(?P<notificationHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListAuthorizationRulesPager(resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, nil)
-		newListAuthorizationRulesPager = &resp
-		s.newListAuthorizationRulesPager.add(req, newListAuthorizationRulesPager)
-		server.PagerResponderInjectNextLinks(newListAuthorizationRulesPager, req, func(page *armnotificationhubs.ClientListAuthorizationRulesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAuthorizationRulesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAuthorizationRulesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAuthorizationRulesPager) {
-		s.newListAuthorizationRulesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if s.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notificationHubs/(?P<notificationHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

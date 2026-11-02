@@ -74,7 +74,7 @@ func (client *InferenceGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update InferenceGroup (asynchronous).
+// createOrUpdate - Create or update InferenceGroup (asynchronous).
 //
 // Create or update InferenceGroup (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -98,7 +98,7 @@ func (client *InferenceGroupsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InferenceGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body InferenceGroup, _ *InferenceGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}"
 	if client.subscriptionID == "" {
@@ -163,7 +163,7 @@ func (client *InferenceGroupsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete InferenceGroup (asynchronous).
+// deleteOperation - Delete InferenceGroup (asynchronous).
 //
 // Delete InferenceGroup (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -187,7 +187,7 @@ func (client *InferenceGroupsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InferenceGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, _ *InferenceGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}"
 	if client.subscriptionID == "" {
@@ -217,6 +217,185 @@ func (client *InferenceGroupsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginModifyDeltaModelsAsync - Modify delta models associated with the InferenceGroup and the target base model.
+//
+// Modify delta models associated with the InferenceGroup and the target base model.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - poolName - Pool name.
+//   - groupName - Inference Group name.
+//   - body - DeltaModelModifyRequest.
+//   - options - InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.BeginModifyDeltaModelsAsync
+//     method.
+func (client *InferenceGroupsClient) BeginModifyDeltaModelsAsync(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, options *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*runtime.Poller[InferenceGroupsClientModifyDeltaModelsAsyncResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.modifyDeltaModelsAsync(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferenceGroupsClientModifyDeltaModelsAsyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferenceGroupsClientModifyDeltaModelsAsyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// modifyDeltaModelsAsync - Modify delta models associated with the InferenceGroup and the target base model.
+//
+// Modify delta models associated with the InferenceGroup and the target base model.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InferenceGroupsClient) modifyDeltaModelsAsync(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, options *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*http.Response, error) {
+	var err error
+	const operationName = "InferenceGroupsClient.BeginModifyDeltaModelsAsync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.modifyDeltaModelsAsyncCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// modifyDeltaModelsAsyncCreateRequest creates the modifyDeltaModelsAsync request.
+func (client *InferenceGroupsClient) modifyDeltaModelsAsyncCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, _ *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}/deltaModels/modify"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if groupName == "" {
+		return nil, errors.New("parameter groupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update InferenceGroup (asynchronous).
+//
+// Update InferenceGroup (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - poolName - Pool name.
+//   - groupName - Inference Group name.
+//   - body - Online Endpoint entity to apply during operation.
+//   - options - InferenceGroupsClientBeginUpdateOptions contains the optional parameters for the InferenceGroupsClient.BeginUpdate
+//     method.
+func (client *InferenceGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, options *InferenceGroupsClientBeginUpdateOptions) (*runtime.Poller[InferenceGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferenceGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferenceGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update InferenceGroup (asynchronous).
+//
+// Update InferenceGroup (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InferenceGroupsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, options *InferenceGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "InferenceGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *InferenceGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, _ *InferenceGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if groupName == "" {
+		return nil, errors.New("parameter groupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -443,6 +622,100 @@ func (client *InferenceGroupsClient) getStatusHandleResponse(resp *http.Response
 	return result, nil
 }
 
+// NewListDeltaModelsAsyncPager - List delta models associated with the InferenceGroup and the target base model.
+//
+// List delta models associated with the InferenceGroup and the target base model.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - poolName - Pool name.
+//   - groupName - Inference Group name.
+//   - body - DeltaModelBaseRequest.
+//   - options - InferenceGroupsClientListDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.NewListDeltaModelsAsyncPager
+//     method.
+func (client *InferenceGroupsClient) NewListDeltaModelsAsyncPager(resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelListRequest, options *InferenceGroupsClientListDeltaModelsAsyncOptions) *runtime.Pager[InferenceGroupsClientListDeltaModelsAsyncResponse] {
+	return runtime.NewPager(runtime.PagingHandler[InferenceGroupsClientListDeltaModelsAsyncResponse]{
+		More: func(page InferenceGroupsClientListDeltaModelsAsyncResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *InferenceGroupsClientListDeltaModelsAsyncResponse) (InferenceGroupsClientListDeltaModelsAsyncResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InferenceGroupsClient.NewListDeltaModelsAsyncPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listDeltaModelsAsyncCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, nextLink, options)
+			if err != nil {
+				return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
+			}
+			return client.listDeltaModelsAsyncHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listDeltaModelsAsyncCreateRequest creates the ListDeltaModelsAsync request.
+func (client *InferenceGroupsClient) listDeltaModelsAsyncCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelListRequest, nextLink string, _ *InferenceGroupsClientListDeltaModelsAsyncOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}/deltaModels/list"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if poolName == "" {
+			return nil, errors.New("parameter poolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+		if groupName == "" {
+			return nil, errors.New("parameter groupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, body); err != nil {
+			return nil, err
+		}
+	}
+	return req, nil
+}
+
+// listDeltaModelsAsyncHandleResponse handles the ListDeltaModelsAsync response.
+func (client *InferenceGroupsClient) listDeltaModelsAsyncHandleResponse(resp *http.Response, successCodes ...int) (InferenceGroupsClientListDeltaModelsAsyncResponse, error) {
+	result := InferenceGroupsClientListDeltaModelsAsyncResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StringArmPaginatedResult); err != nil {
+		return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Inference Groups.
 //
 // List Inference Groups.
@@ -542,100 +815,6 @@ func (client *InferenceGroupsClient) listHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// NewListDeltaModelsAsyncPager - List delta models associated with the InferenceGroup and the target base model.
-//
-// List delta models associated with the InferenceGroup and the target base model.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Name of Azure Machine Learning workspace.
-//   - poolName - Pool name.
-//   - groupName - Inference Group name.
-//   - body - DeltaModelBaseRequest.
-//   - options - InferenceGroupsClientListDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.NewListDeltaModelsAsyncPager
-//     method.
-func (client *InferenceGroupsClient) NewListDeltaModelsAsyncPager(resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelListRequest, options *InferenceGroupsClientListDeltaModelsAsyncOptions) *runtime.Pager[InferenceGroupsClientListDeltaModelsAsyncResponse] {
-	return runtime.NewPager(runtime.PagingHandler[InferenceGroupsClientListDeltaModelsAsyncResponse]{
-		More: func(page InferenceGroupsClientListDeltaModelsAsyncResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *InferenceGroupsClientListDeltaModelsAsyncResponse) (InferenceGroupsClientListDeltaModelsAsyncResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InferenceGroupsClient.NewListDeltaModelsAsyncPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listDeltaModelsAsyncCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, nextLink, options)
-			if err != nil {
-				return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
-			}
-			return client.listDeltaModelsAsyncHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listDeltaModelsAsyncCreateRequest creates the ListDeltaModelsAsync request.
-func (client *InferenceGroupsClient) listDeltaModelsAsyncCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelListRequest, nextLink string, _ *InferenceGroupsClientListDeltaModelsAsyncOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}/deltaModels/list"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if workspaceName == "" {
-			return nil, errors.New("parameter workspaceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-		if poolName == "" {
-			return nil, errors.New("parameter poolName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-		if groupName == "" {
-			return nil, errors.New("parameter groupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, body); err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
-}
-
-// listDeltaModelsAsyncHandleResponse handles the ListDeltaModelsAsync response.
-func (client *InferenceGroupsClient) listDeltaModelsAsyncHandleResponse(resp *http.Response, successCodes ...int) (InferenceGroupsClientListDeltaModelsAsyncResponse, error) {
-	result := InferenceGroupsClientListDeltaModelsAsyncResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StringArmPaginatedResult); err != nil {
-		return InferenceGroupsClientListDeltaModelsAsyncResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListSKUsPager - List Inference Group Skus.
 //
 // List Inference Group Skus.
@@ -729,183 +908,4 @@ func (client *InferenceGroupsClient) listSKUsHandleResponse(resp *http.Response,
 		return InferenceGroupsClientListSKUsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginModifyDeltaModelsAsync - Modify delta models associated with the InferenceGroup and the target base model.
-//
-// Modify delta models associated with the InferenceGroup and the target base model.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Name of Azure Machine Learning workspace.
-//   - poolName - Pool name.
-//   - groupName - Inference Group name.
-//   - body - DeltaModelModifyRequest.
-//   - options - InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.BeginModifyDeltaModelsAsync
-//     method.
-func (client *InferenceGroupsClient) BeginModifyDeltaModelsAsync(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, options *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*runtime.Poller[InferenceGroupsClientModifyDeltaModelsAsyncResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.modifyDeltaModelsAsync(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferenceGroupsClientModifyDeltaModelsAsyncResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferenceGroupsClientModifyDeltaModelsAsyncResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ModifyDeltaModelsAsync - Modify delta models associated with the InferenceGroup and the target base model.
-//
-// Modify delta models associated with the InferenceGroup and the target base model.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *InferenceGroupsClient) modifyDeltaModelsAsync(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, options *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*http.Response, error) {
-	var err error
-	const operationName = "InferenceGroupsClient.BeginModifyDeltaModelsAsync"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.modifyDeltaModelsAsyncCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// modifyDeltaModelsAsyncCreateRequest creates the ModifyDeltaModelsAsync request.
-func (client *InferenceGroupsClient) modifyDeltaModelsAsyncCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body DeltaModelModifyRequest, _ *InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}/deltaModels/modify"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if groupName == "" {
-		return nil, errors.New("parameter groupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update InferenceGroup (asynchronous).
-//
-// Update InferenceGroup (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Name of Azure Machine Learning workspace.
-//   - poolName - Pool name.
-//   - groupName - Inference Group name.
-//   - body - Online Endpoint entity to apply during operation.
-//   - options - InferenceGroupsClientBeginUpdateOptions contains the optional parameters for the InferenceGroupsClient.BeginUpdate
-//     method.
-func (client *InferenceGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, options *InferenceGroupsClientBeginUpdateOptions) (*runtime.Poller[InferenceGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferenceGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferenceGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update InferenceGroup (asynchronous).
-//
-// Update InferenceGroup (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *InferenceGroupsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, options *InferenceGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "InferenceGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, poolName, groupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *InferenceGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body PartialMinimalTrackedResourceWithSKU, _ *InferenceGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{poolName}/groups/{groupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if groupName == "" {
-		return nil, errors.New("parameter groupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

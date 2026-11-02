@@ -71,7 +71,7 @@ func (client *DomainsClient) BeginCancelVerification(ctx context.Context, resour
 	}
 }
 
-// CancelVerification - Cancel Verification
+// cancelVerification - Cancel Verification
 //
 // Cancel verification of DNS record.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *DomainsClient) cancelVerification(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// cancelVerificationCreateRequest creates the CancelVerification request.
+// cancelVerificationCreateRequest creates the cancelVerification request.
 func (client *DomainsClient) cancelVerificationCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, _ *DomainsClientBeginCancelVerificationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/cancelVerification"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create Or Update
+// createOrUpdate - Create Or Update
 //
 // Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters DomainResource, _ *DomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}"
 	if client.subscriptionID == "" {
@@ -238,7 +238,7 @@ func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete
+// deleteOperation - Delete
 //
 // Operation to delete a Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -262,7 +262,7 @@ func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, _ *DomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}"
 	if client.subscriptionID == "" {
@@ -288,6 +288,174 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginInitiateVerification - Initiate Verification
+//
+// Initiate verification of DNS record.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - emailServiceName - The name of the EmailService resource.
+//   - domainName - The name of the Domains resource.
+//   - parameters - Type of verification to be initiated.
+//   - options - DomainsClientBeginInitiateVerificationOptions contains the optional parameters for the DomainsClient.BeginInitiateVerification
+//     method.
+func (client *DomainsClient) BeginInitiateVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginInitiateVerificationOptions) (*runtime.Poller[DomainsClientInitiateVerificationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.initiateVerification(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientInitiateVerificationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientInitiateVerificationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// initiateVerification - Initiate Verification
+//
+// Initiate verification of DNS record.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) initiateVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginInitiateVerificationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DomainsClient.BeginInitiateVerification"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.initiateVerificationCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// initiateVerificationCreateRequest creates the initiateVerification request.
+func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, _ *DomainsClientBeginInitiateVerificationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if emailServiceName == "" {
+		return nil, errors.New("parameter emailServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
+	if domainName == "" {
+		return nil, errors.New("parameter domainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update
+//
+// Operation to update an existing Domains resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - emailServiceName - The name of the EmailService resource.
+//   - domainName - The name of the Domains resource.
+//   - parameters - Parameters for the update operation
+//   - options - DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
+func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, options *DomainsClientBeginUpdateOptions) (*runtime.Poller[DomainsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update
+//
+// Operation to update an existing Domains resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, options *DomainsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DomainsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, _ *DomainsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if emailServiceName == "" {
+		return nil, errors.New("parameter emailServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
+	if domainName == "" {
+		return nil, errors.New("parameter domainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -356,90 +524,6 @@ func (client *DomainsClient) getHandleResponse(resp *http.Response, successCodes
 		return DomainsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginInitiateVerification - Initiate Verification
-//
-// Initiate verification of DNS record.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - emailServiceName - The name of the EmailService resource.
-//   - domainName - The name of the Domains resource.
-//   - parameters - Type of verification to be initiated.
-//   - options - DomainsClientBeginInitiateVerificationOptions contains the optional parameters for the DomainsClient.BeginInitiateVerification
-//     method.
-func (client *DomainsClient) BeginInitiateVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginInitiateVerificationOptions) (*runtime.Poller[DomainsClientInitiateVerificationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.initiateVerification(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientInitiateVerificationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientInitiateVerificationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InitiateVerification - Initiate Verification
-//
-// Initiate verification of DNS record.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainsClient) initiateVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginInitiateVerificationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DomainsClient.BeginInitiateVerification"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.initiateVerificationCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// initiateVerificationCreateRequest creates the InitiateVerification request.
-func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, _ *DomainsClientBeginInitiateVerificationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if emailServiceName == "" {
-		return nil, errors.New("parameter emailServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
-	if domainName == "" {
-		return nil, errors.New("parameter domainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByEmailServiceResourcePager - List by EmailService
@@ -519,88 +603,4 @@ func (client *DomainsClient) listByEmailServiceResourceHandleResponse(resp *http
 		return DomainsClientListByEmailServiceResourceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update
-//
-// Operation to update an existing Domains resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - emailServiceName - The name of the EmailService resource.
-//   - domainName - The name of the Domains resource.
-//   - parameters - Parameters for the update operation
-//   - options - DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
-func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, options *DomainsClientBeginUpdateOptions) (*runtime.Poller[DomainsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update
-//
-// Operation to update an existing Domains resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, options *DomainsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DomainsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, _ *DomainsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if emailServiceName == "" {
-		return nil, errors.New("parameter emailServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
-	if domainName == "" {
-		return nil, errors.New("parameter domainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

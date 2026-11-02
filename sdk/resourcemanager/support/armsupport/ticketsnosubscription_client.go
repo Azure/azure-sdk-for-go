@@ -39,6 +39,88 @@ func NewTicketsNoSubscriptionClient(credential azcore.TokenCredential, options *
 	return client, nil
 }
 
+// BeginCreate - Creates a new support ticket for Billing, and Subscription Management issues. Learn the [prerequisites](https://aka.ms/supportAPI)
+// required to create a support ticket.<br/><br/>Always call the Services and ProblemClassifications API to get the most recent
+// set of services and problem categories required for support ticket creation.<br/><br/>Adding attachments is not currently
+// supported via the API. To add a file to an existing support ticket, visit the [Manage support ticket](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest)
+// page in the Azure portal, select the support ticket, and use the file upload control to add a new file.<br/><br/>Providing
+// consent to share diagnostic information with Azure support is currently not supported via the API. The Azure support engineer
+// working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
+// Azure resources.<br/><br/>
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - supportTicketName - The name of the SupportTicketDetails
+//   - createSupportTicketParameters - Support ticket request payload.
+//   - options - TicketsNoSubscriptionClientBeginCreateOptions contains the optional parameters for the TicketsNoSubscriptionClient.BeginCreate
+//     method.
+func (client *TicketsNoSubscriptionClient) BeginCreate(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*runtime.Poller[TicketsNoSubscriptionClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, supportTicketName, createSupportTicketParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TicketsNoSubscriptionClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TicketsNoSubscriptionClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// create - Creates a new support ticket for Billing, and Subscription Management issues. Learn the [prerequisites](https://aka.ms/supportAPI)
+// required to create a support ticket.<br/><br/>Always call the Services and ProblemClassifications API to get the most recent
+// set of services and problem categories required for support ticket creation.<br/><br/>Adding attachments is not currently
+// supported via the API. To add a file to an existing support ticket, visit the [Manage support ticket](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest)
+// page in the Azure portal, select the support ticket, and use the file upload control to add a new file.<br/><br/>Providing
+// consent to share diagnostic information with Azure support is currently not supported via the API. The Azure support engineer
+// working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
+// Azure resources.<br/><br/>
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TicketsNoSubscriptionClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TicketsNoSubscriptionClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createCreateRequest(ctx, supportTicketName, createSupportTicketParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createCreateRequest creates the create request.
+func (client *TicketsNoSubscriptionClient) createCreateRequest(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, _ *TicketsNoSubscriptionClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Support/supportTickets/{supportTicketName}"
+	if supportTicketName == "" {
+		return nil, errors.New("parameter supportTicketName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createSupportTicketParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the
 // name for support ticket creation for the selected subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,88 +172,6 @@ func (client *TicketsNoSubscriptionClient) checkNameAvailabilityHandleResponse(r
 		return TicketsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreate - Creates a new support ticket for Billing, and Subscription Management issues. Learn the [prerequisites](https://aka.ms/supportAPI)
-// required to create a support ticket.<br/><br/>Always call the Services and ProblemClassifications API to get the most recent
-// set of services and problem categories required for support ticket creation.<br/><br/>Adding attachments is not currently
-// supported via the API. To add a file to an existing support ticket, visit the [Manage support ticket](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest)
-// page in the Azure portal, select the support ticket, and use the file upload control to add a new file.<br/><br/>Providing
-// consent to share diagnostic information with Azure support is currently not supported via the API. The Azure support engineer
-// working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
-// Azure resources.<br/><br/>
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - supportTicketName - The name of the SupportTicketDetails
-//   - createSupportTicketParameters - Support ticket request payload.
-//   - options - TicketsNoSubscriptionClientBeginCreateOptions contains the optional parameters for the TicketsNoSubscriptionClient.BeginCreate
-//     method.
-func (client *TicketsNoSubscriptionClient) BeginCreate(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*runtime.Poller[TicketsNoSubscriptionClientCreateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, supportTicketName, createSupportTicketParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TicketsNoSubscriptionClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TicketsNoSubscriptionClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Create - Creates a new support ticket for Billing, and Subscription Management issues. Learn the [prerequisites](https://aka.ms/supportAPI)
-// required to create a support ticket.<br/><br/>Always call the Services and ProblemClassifications API to get the most recent
-// set of services and problem categories required for support ticket creation.<br/><br/>Adding attachments is not currently
-// supported via the API. To add a file to an existing support ticket, visit the [Manage support ticket](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest)
-// page in the Azure portal, select the support ticket, and use the file upload control to add a new file.<br/><br/>Providing
-// consent to share diagnostic information with Azure support is currently not supported via the API. The Azure support engineer
-// working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
-// Azure resources.<br/><br/>
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TicketsNoSubscriptionClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TicketsNoSubscriptionClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, supportTicketName, createSupportTicketParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createCreateRequest creates the Create request.
-func (client *TicketsNoSubscriptionClient) createCreateRequest(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, _ *TicketsNoSubscriptionClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Support/supportTickets/{supportTicketName}"
-	if supportTicketName == "" {
-		return nil, errors.New("parameter supportTicketName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, createSupportTicketParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Get - Gets details for a specific support ticket. Support ticket data is available for 18 months after ticket creation.

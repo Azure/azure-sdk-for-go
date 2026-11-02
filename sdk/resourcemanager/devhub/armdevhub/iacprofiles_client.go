@@ -291,74 +291,6 @@ func (client *IacProfilesClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
-// NewListPager - Gets a list of IacProfiles associated with the specified subscription.
-//
-// Gets a list of IacProfiles associated with the specified subscription.
-//   - options - IacProfilesClientListOptions contains the optional parameters for the IacProfilesClient.NewListPager method.
-func (client *IacProfilesClient) NewListPager(options *IacProfilesClientListOptions) *runtime.Pager[IacProfilesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IacProfilesClientListResponse]{
-		More: func(page IacProfilesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *IacProfilesClientListResponse) (IacProfilesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IacProfilesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return IacProfilesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IacProfilesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *IacProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *IacProfilesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/iacProfiles"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250301Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *IacProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientListResponse, error) {
-	result := IacProfilesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfileListResult); err != nil {
-		return IacProfilesClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Gets a list of iacProfiles within a resource group.
 //
 // Gets a list of iacProfiles within a resource group.
@@ -429,6 +361,74 @@ func (client *IacProfilesClient) listByResourceGroupHandleResponse(resp *http.Re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfileListResult); err != nil {
 		return IacProfilesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of IacProfiles associated with the specified subscription.
+//
+// Gets a list of IacProfiles associated with the specified subscription.
+//   - options - IacProfilesClientListOptions contains the optional parameters for the IacProfilesClient.NewListPager method.
+func (client *IacProfilesClient) NewListPager(options *IacProfilesClientListOptions) *runtime.Pager[IacProfilesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IacProfilesClientListResponse]{
+		More: func(page IacProfilesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *IacProfilesClientListResponse) (IacProfilesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IacProfilesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return IacProfilesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IacProfilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *IacProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *IacProfilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/iacProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *IacProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientListResponse, error) {
+	result := IacProfilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfileListResult); err != nil {
+		return IacProfilesClientListResponse{}, err
 	}
 	return result, nil
 }

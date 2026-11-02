@@ -70,7 +70,7 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+// createOrUpdate - Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource FirewallRule, _ *FirewallRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Deletes a mongo cluster firewall rule.
+// deleteOperation - Deletes a mongo cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, _ *FirewallRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {

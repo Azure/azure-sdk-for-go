@@ -67,7 +67,7 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 	}
 }
 
-// Create - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
+// create - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
 // from discovery solutions. <br/> Azure solutions comprise a comprehensive library of self-help resources that have been
 // thoughtfully curated by Azure engineers to aid customers in resolving typical troubleshooting issues. These solutions encompass:
 // <br/> (1.) Dynamic and context-aware diagnostics, guided troubleshooting wizards, and data visualizations. <br/> (2.) Rich
@@ -95,7 +95,7 @@ func (client *SolutionClient) create(ctx context.Context, scope string, solution
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SolutionClient) createCreateRequest(ctx context.Context, scope string, solutionResourceName string, solutionRequestBody SolutionResource, _ *SolutionClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}"
 	if scope == "" {
@@ -116,6 +116,77 @@ func (client *SolutionClient) createCreateRequest(ctx context.Context, scope str
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, solutionRequestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update the requiredInputs or additional information needed to execute the solution
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//   - solutionResourceName - Solution resource Name.
+//   - solutionPatchRequestBody - The required request body for updating a solution resource.
+//   - options - SolutionClientBeginUpdateOptions contains the optional parameters for the SolutionClient.BeginUpdate method.
+func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*runtime.Poller[SolutionClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update the requiredInputs or additional information needed to execute the solution
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SolutionClient) update(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SolutionClient) updateCreateRequest(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, _ *SolutionClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if solutionResourceName == "" {
+		return nil, errors.New("parameter solutionResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionResourceName}", url.PathEscape(solutionResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, solutionPatchRequestBody); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -175,77 +246,6 @@ func (client *SolutionClient) getHandleResponse(resp *http.Response, successCode
 		return SolutionClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update the requiredInputs or additional information needed to execute the solution
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//   - solutionResourceName - Solution resource Name.
-//   - solutionPatchRequestBody - The required request body for updating a solution resource.
-//   - options - SolutionClientBeginUpdateOptions contains the optional parameters for the SolutionClient.BeginUpdate method.
-func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*runtime.Poller[SolutionClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update the requiredInputs or additional information needed to execute the solution
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SolutionClient) update(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SolutionClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SolutionClient) updateCreateRequest(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, _ *SolutionClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if solutionResourceName == "" {
-		return nil, errors.New("parameter solutionResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionResourceName}", url.PathEscape(solutionResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, solutionPatchRequestBody); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // WarmUp - Warm up the solution resource by preloading asynchronous diagnostics results into cache

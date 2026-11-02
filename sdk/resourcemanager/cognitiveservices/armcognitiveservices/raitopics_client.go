@@ -52,7 +52,7 @@ func NewRaiTopicsClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - RaiTopicsClientBeginDeleteOptions contains the optional parameters for the RaiTopicsClient.BeginDelete method.
 func (client *RaiTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*runtime.Poller[RaiTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiTopicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiTopicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *RaiTopicsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Deletes the specified custom topic associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified custom topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiTopicsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

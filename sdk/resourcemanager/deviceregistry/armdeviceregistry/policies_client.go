@@ -70,7 +70,7 @@ func (client *PoliciesClient) BeginActivateBringYourOwnRoot(ctx context.Context,
 	}
 }
 
-// ActivateBringYourOwnRoot - Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate.
+// activateBringYourOwnRoot - Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate.
 // This is a long-running operation that returns no content upon completion.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) activateBringYourOwnRoot(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, body ActivateBringYourOwnRootRequest, options *PoliciesClientBeginActivateBringYourOwnRootOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *PoliciesClient) activateBringYourOwnRoot(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// activateBringYourOwnRootCreateRequest creates the ActivateBringYourOwnRoot request.
+// activateBringYourOwnRootCreateRequest creates the activateBringYourOwnRoot request.
 func (client *PoliciesClient) activateBringYourOwnRootCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, body ActivateBringYourOwnRootRequest, _ *PoliciesClientBeginActivateBringYourOwnRootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/activateBringYourOwnRoot"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Policy
+// createOrUpdate - Create a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, resource Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, resource Policy, _ *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
@@ -230,7 +230,7 @@ func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Policy
+// deleteOperation - Delete a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -252,7 +252,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
@@ -278,6 +278,159 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - policyName - The name of the Policy proxy resource.
+//   - options - PoliciesClientBeginRevokeIssuerOptions contains the optional parameters for the PoliciesClient.BeginRevokeIssuer
+//     method.
+func (client *PoliciesClient) BeginRevokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*runtime.Poller[PoliciesClientRevokeIssuerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revokeIssuer(ctx, resourceGroupName, namespaceName, policyName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientRevokeIssuerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientRevokeIssuerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// revokeIssuer -
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginRevokeIssuer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.revokeIssuerCreateRequest(ctx, resourceGroupName, namespaceName, policyName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// revokeIssuerCreateRequest creates the revokeIssuer request.
+func (client *PoliciesClient) revokeIssuerCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientBeginRevokeIssuerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/revokeIssuer"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if policyName == "" {
+		return nil, errors.New("parameter policyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a Policy
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - policyName - The name of the Policy proxy resource.
+//   - properties - The resource properties to be updated.
+//   - options - PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
+func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*runtime.Poller[PoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, policyName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Policy
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, policyName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, _ *PoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if policyName == "" {
+		return nil, errors.New("parameter policyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -421,157 +574,4 @@ func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Respo
 		return PoliciesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - policyName - The name of the Policy proxy resource.
-//   - options - PoliciesClientBeginRevokeIssuerOptions contains the optional parameters for the PoliciesClient.BeginRevokeIssuer
-//     method.
-func (client *PoliciesClient) BeginRevokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*runtime.Poller[PoliciesClientRevokeIssuerResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revokeIssuer(ctx, resourceGroupName, namespaceName, policyName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientRevokeIssuerResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientRevokeIssuerResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RevokeIssuer -
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PoliciesClient.BeginRevokeIssuer"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.revokeIssuerCreateRequest(ctx, resourceGroupName, namespaceName, policyName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// revokeIssuerCreateRequest creates the RevokeIssuer request.
-func (client *PoliciesClient) revokeIssuerCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientBeginRevokeIssuerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/revokeIssuer"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if policyName == "" {
-		return nil, errors.New("parameter policyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update a Policy
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - policyName - The name of the Policy proxy resource.
-//   - properties - The resource properties to be updated.
-//   - options - PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
-func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*runtime.Poller[PoliciesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, policyName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Policy
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PoliciesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, policyName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, _ *PoliciesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if policyName == "" {
-		return nil, errors.New("parameter policyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

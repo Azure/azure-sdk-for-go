@@ -29,6 +29,10 @@ type TransitHubServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, options *armenclave.TransitHubClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.TransitHubClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method TransitHubClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties armenclave.TransitHubPatchModel, options *armenclave.TransitHubClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method TransitHubClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, options *armenclave.TransitHubClientGetOptions) (resp azfake.Responder[armenclave.TransitHubClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type TransitHubServer struct {
 	// NewListBySubscriptionPager is the fake for method TransitHubClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(communityName string, options *armenclave.TransitHubClientListBySubscriptionOptions) (resp azfake.PagerResponder[armenclave.TransitHubClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method TransitHubClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties armenclave.TransitHubPatchModel, options *armenclave.TransitHubClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTransitHubServerTransport creates a new instance of TransitHubServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewTransitHubServerTransport(srv *TransitHubServer) *TransitHubServerTransp
 		srv:                             srv,
 		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armenclave.TransitHubClientCreateOrUpdateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armenclave.TransitHubClientDeleteResponse]](),
+		beginUpdate:                     newTracker[azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse]](),
 		newListByCommunityResourcePager: newTracker[azfake.PagerResponder[armenclave.TransitHubClientListByCommunityResourceResponse]](),
 		newListBySubscriptionPager:      newTracker[azfake.PagerResponder[armenclave.TransitHubClientListBySubscriptionResponse]](),
-		beginUpdate:                     newTracker[azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type TransitHubServerTransport struct {
 	srv                             *TransitHubServer
 	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armenclave.TransitHubClientCreateOrUpdateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armenclave.TransitHubClientDeleteResponse]]
+	beginUpdate                     *tracker[azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse]]
 	newListByCommunityResourcePager *tracker[azfake.PagerResponder[armenclave.TransitHubClientListByCommunityResourceResponse]]
 	newListBySubscriptionPager      *tracker[azfake.PagerResponder[armenclave.TransitHubClientListBySubscriptionResponse]]
-	beginUpdate                     *tracker[azfake.PollerResponder[armenclave.TransitHubClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TransitHubServerTransport.
@@ -96,14 +96,14 @@ func (t *TransitHubServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "TransitHubClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TransitHubClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TransitHubClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TransitHubClient.NewListByCommunityResourcePager":
 				res.resp, res.err = t.dispatchNewListByCommunityResourcePager(req)
 			case "TransitHubClient.NewListBySubscriptionPager":
 				res.resp, res.err = t.dispatchNewListBySubscriptionPager(req)
-			case "TransitHubClient.BeginUpdate":
-				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -215,6 +215,58 @@ func (t *TransitHubServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		t.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TransitHubServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transitHubs/(?P<transitHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armenclave.TransitHubPatchModel](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+		if err != nil {
+			return nil, err
+		}
+		transitHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("transitHubName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, transitHubNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -332,58 +384,6 @@ func (t *TransitHubServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		t.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TransitHubServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := t.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transitHubs/(?P<transitHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armenclave.TransitHubPatchModel](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
-		if err != nil {
-			return nil, err
-		}
-		transitHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("transitHubName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, transitHubNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		t.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		t.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

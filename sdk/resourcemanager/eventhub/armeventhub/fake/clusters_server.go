@@ -29,6 +29,10 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, options *armeventhub.ClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventhub.ClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, parameters armeventhub.Cluster, options *armeventhub.ClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armeventhub.ClustersClientGetOptions) (resp azfake.Responder[armeventhub.ClustersClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,6 +41,10 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailableClusterRegion func(ctx context.Context, options *armeventhub.ClustersClientListAvailableClusterRegionOptions) (resp azfake.Responder[armeventhub.ClustersClientListAvailableClusterRegionResponse], errResp azfake.ErrorResponder)
 
+	// ListNamespaces is the fake for method ClustersClient.ListNamespaces
+	// HTTP status codes to indicate success: http.StatusOK
+	ListNamespaces func(ctx context.Context, resourceGroupName string, clusterName string, options *armeventhub.ClustersClientListNamespacesOptions) (resp azfake.Responder[armeventhub.ClustersClientListNamespacesResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armeventhub.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armeventhub.ClustersClientListByResourceGroupResponse])
@@ -44,14 +52,6 @@ type ClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armeventhub.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armeventhub.ClustersClientListBySubscriptionResponse])
-
-	// ListNamespaces is the fake for method ClustersClient.ListNamespaces
-	// HTTP status codes to indicate success: http.StatusOK
-	ListNamespaces func(ctx context.Context, resourceGroupName string, clusterName string, options *armeventhub.ClustersClientListNamespacesOptions) (resp azfake.Responder[armeventhub.ClustersClientListNamespacesResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, parameters armeventhub.Cluster, options *armeventhub.ClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClustersServerTransport creates a new instance of ClustersServerTransport with the provided implementation.
@@ -62,9 +62,9 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armeventhub.ClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armeventhub.ClustersClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armeventhub.ClustersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armeventhub.ClustersClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse]](),
 	}
 }
 
@@ -74,9 +74,9 @@ type ClustersServerTransport struct {
 	srv                         *ClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armeventhub.ClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armeventhub.ClustersClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armeventhub.ClustersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armeventhub.ClustersClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armeventhub.ClustersClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClustersServerTransport.
@@ -104,18 +104,18 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ClustersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ClustersClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ClustersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ClustersClient.ListAvailableClusterRegion":
 				res.resp, res.err = c.dispatchListAvailableClusterRegion(req)
+			case "ClustersClient.ListNamespaces":
+				res.resp, res.err = c.dispatchListNamespaces(req)
 			case "ClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ClustersClient.ListNamespaces":
-				res.resp, res.err = c.dispatchListNamespaces(req)
-			case "ClustersClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -224,6 +224,54 @@ func (c *ClustersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventhub.Cluster](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -276,6 +324,39 @@ func (c *ClustersServerTransport) dispatchListAvailableClusterRegion(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailableClustersList, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchListNamespaces(req *http.Request) (*http.Response, error) {
+	if c.srv.ListNamespaces == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListNamespaces not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/namespaces`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListNamespaces(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EHNamespaceIDListResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -349,87 +430,6 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchListNamespaces(req *http.Request) (*http.Response, error) {
-	if c.srv.ListNamespaces == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNamespaces not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/namespaces`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListNamespaces(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EHNamespaceIDListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventhub.Cluster](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

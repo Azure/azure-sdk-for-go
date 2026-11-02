@@ -68,7 +68,7 @@ func (client *ResourceActionsClient) BeginDeleteResources(ctx context.Context, p
 	}
 }
 
-// DeleteResources - Deletes resources.
+// deleteResources - Deletes resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceActionsClient) deleteResources(ctx context.Context, providerNamespace string, resourceActionName string, properties ResourceManagementAction, options *ResourceActionsClientBeginDeleteResourcesOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ResourceActionsClient) deleteResources(ctx context.Context, provid
 	return httpResp, nil
 }
 
-// deleteResourcesCreateRequest creates the DeleteResources request.
+// deleteResourcesCreateRequest creates the deleteResources request.
 func (client *ResourceActionsClient) deleteResourcesCreateRequest(ctx context.Context, providerNamespace string, resourceActionName string, properties ResourceManagementAction, _ *ResourceActionsClientBeginDeleteResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourceActions/{resourceActionName}/deleteResources"
 	if client.subscriptionID == "" {

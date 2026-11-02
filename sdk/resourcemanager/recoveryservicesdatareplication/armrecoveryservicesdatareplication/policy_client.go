@@ -68,7 +68,7 @@ func (client *PolicyClient) BeginCreate(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Create - Creates the policy.
+// create - Creates the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PolicyClient) create(ctx context.Context, resourceGroupName string, vaultName string, policyName string, resource PolicyModel, options *PolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *PolicyClient) create(ctx context.Context, resourceGroupName string
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *PolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, resource PolicyModel, _ *PolicyClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *PolicyClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Removes the policy.
+// deleteOperation - Removes the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *PolicyClient) deleteOperation(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, _ *PolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}"
 	if client.subscriptionID == "" {

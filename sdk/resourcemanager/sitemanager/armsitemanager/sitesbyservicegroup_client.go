@@ -62,7 +62,7 @@ func (client *SitesByServiceGroupClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - create or update Site at SG scope
+// createOrUpdate - create or update Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SitesByServiceGroupClient) createOrUpdate(ctx context.Context, servicegroupName string, siteName string, resource Site, options *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *SitesByServiceGroupClient) createOrUpdate(ctx context.Context, ser
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context.Context, servicegroupName string, siteName string, resource Site, _ *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}"
 	if servicegroupName == "" {

@@ -30,6 +30,10 @@ type BareMetalMachineKeySetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *armnetworkcloud.BareMetalMachineKeySetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BareMetalMachineKeySetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters armnetworkcloud.BareMetalMachineKeySetPatchParameters, options *armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BareMetalMachineKeySetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *armnetworkcloud.BareMetalMachineKeySetsClientGetOptions) (resp azfake.Responder[armnetworkcloud.BareMetalMachineKeySetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type BareMetalMachineKeySetsServer struct {
 	// NewListByClusterPager is the fake for method BareMetalMachineKeySetsClient.NewListByClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armnetworkcloud.BareMetalMachineKeySetsClientListByClusterOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachineKeySetsClientListByClusterResponse])
-
-	// BeginUpdate is the fake for method BareMetalMachineKeySetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters armnetworkcloud.BareMetalMachineKeySetPatchParameters, options *armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBareMetalMachineKeySetsServerTransport creates a new instance of BareMetalMachineKeySetsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewBareMetalMachineKeySetsServerTransport(srv *BareMetalMachineKeySetsServe
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientDeleteResponse]](),
-		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachineKeySetsClientListByClusterResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientUpdateResponse]](),
+		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachineKeySetsClientListByClusterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type BareMetalMachineKeySetsServerTransport struct {
 	srv                   *BareMetalMachineKeySetsServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientDeleteResponse]]
-	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachineKeySetsClientListByClusterResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachineKeySetsClientUpdateResponse]]
+	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachineKeySetsClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for BareMetalMachineKeySetsServerTransport.
@@ -91,12 +91,12 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BareMetalMachineKeySetsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BareMetalMachineKeySetsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
 			case "BareMetalMachineKeySetsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BareMetalMachineKeySetsClient.NewListByClusterPager":
 				res.resp, res.err = b.dispatchNewListByClusterPager(req)
-			case "BareMetalMachineKeySetsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
+func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := b.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bareMetalMachineKeySets/(?P<bareMetalMachineKeySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineKeySetPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		bareMetalMachineKeySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bareMetalMachineKeySetName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		b.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		b.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BareMetalMachineKeySetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchNewListByClusterPager(r
 	if !server.PagerResponderMore(newListByClusterPager) {
 		b.newListByClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := b.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bareMetalMachineKeySets/(?P<bareMetalMachineKeySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineKeySetPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		bareMetalMachineKeySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bareMetalMachineKeySetName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		b.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		b.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		b.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

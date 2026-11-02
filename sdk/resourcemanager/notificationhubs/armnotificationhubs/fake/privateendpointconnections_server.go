@@ -25,6 +25,10 @@ type PrivateEndpointConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, options *armnotificationhubs.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PrivateEndpointConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, parameters armnotificationhubs.PrivateEndpointConnectionResource, options *armnotificationhubs.PrivateEndpointConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, options *armnotificationhubs.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armnotificationhubs.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -33,17 +37,13 @@ type PrivateEndpointConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetGroupID func(ctx context.Context, resourceGroupName string, namespaceName string, subResourceName string, options *armnotificationhubs.PrivateEndpointConnectionsClientGetGroupIDOptions) (resp azfake.Responder[armnotificationhubs.PrivateEndpointConnectionsClientGetGroupIDResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse])
-
 	// NewListGroupIDsPager is the fake for method PrivateEndpointConnectionsClient.NewListGroupIDsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGroupIDsPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsOptions) (resp azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse])
 
-	// BeginUpdate is the fake for method PrivateEndpointConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, parameters armnotificationhubs.PrivateEndpointConnectionResource, options *armnotificationhubs.PrivateEndpointConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse])
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -53,9 +53,9 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 	return &PrivateEndpointConnectionsServerTransport{
 		srv:                  srv,
 		beginDelete:          newTracker[azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListPager:         newTracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse]](),
-		newListGroupIDsPager: newTracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse]](),
+		newListGroupIDsPager: newTracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse]](),
 	}
 }
 
@@ -64,9 +64,9 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 type PrivateEndpointConnectionsServerTransport struct {
 	srv                  *PrivateEndpointConnectionsServer
 	beginDelete          *tracker[azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListPager         *tracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse]]
-	newListGroupIDsPager *tracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse]]
+	newListGroupIDsPager *tracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armnotificationhubs.PrivateEndpointConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -92,16 +92,16 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "PrivateEndpointConnectionsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PrivateEndpointConnectionsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateEndpointConnectionsClient.GetGroupID":
 				res.resp, res.err = p.dispatchGetGroupID(req)
-			case "PrivateEndpointConnectionsClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateEndpointConnectionsClient.NewListGroupIDsPager":
 				res.resp, res.err = p.dispatchNewListGroupIDsPager(req)
-			case "PrivateEndpointConnectionsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "PrivateEndpointConnectionsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -161,6 +161,58 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PrivateEndpointConnectionResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, privateEndpointConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -240,47 +292,6 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGetGroupID(req *http
 	return resp, nil
 }
 
-func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.PrivateEndpointConnectionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListGroupIDsPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListGroupIDsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListGroupIDsPager not implemented")}
@@ -322,21 +333,17 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListGroupIDsPager
 	return resp, nil
 }
 
-func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PrivateEndpointConnectionResource](req)
-		if err != nil {
-			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -346,31 +353,24 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginUpdate(req *htt
 		if err != nil {
 			return nil, err
 		}
-		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, privateEndpointConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
+		resp := p.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.PrivateEndpointConnectionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

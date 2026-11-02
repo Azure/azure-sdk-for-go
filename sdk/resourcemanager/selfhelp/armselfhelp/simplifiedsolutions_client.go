@@ -65,7 +65,7 @@ func (client *SimplifiedSolutionsClient) BeginCreate(ctx context.Context, scope 
 	}
 }
 
-// Create - Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
+// create - Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
 // <br/><br/> Simplified Solutions API makes the consumption of solutions APIs easier while still providing access to the
 // same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't have to worry about stitching
 // together the article using replacement maps and can use the content in the API response to directly render as HTML content.<br/>
@@ -90,7 +90,7 @@ func (client *SimplifiedSolutionsClient) create(ctx context.Context, scope strin
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SimplifiedSolutionsClient) createCreateRequest(ctx context.Context, scope string, simplifiedSolutionsResourceName string, simplifiedSolutionsRequestBody SimplifiedSolutionsResource, _ *SimplifiedSolutionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}"
 	if scope == "" {

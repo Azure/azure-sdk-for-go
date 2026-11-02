@@ -21,10 +21,6 @@ import (
 
 // ServicesServer is a fake server for instances of the armstoragesync.ServicesClient type.
 type ServicesServer struct {
-	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, locationName string, parameters armstoragesync.CheckNameAvailabilityParameters, options *armstoragesync.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armstoragesync.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method ServicesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters armstoragesync.ServiceCreateParameters, options *armstoragesync.ServicesClientBeginCreateOptions) (resp azfake.PollerResponder[armstoragesync.ServicesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type ServicesServer struct {
 	// BeginDelete is the fake for method ServicesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *armstoragesync.ServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragesync.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters armstoragesync.ServiceUpdateParameters, options *armstoragesync.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, locationName string, parameters armstoragesync.CheckNameAvailabilityParameters, options *armstoragesync.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armstoragesync.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type ServicesServer struct {
 	// NewListBySubscriptionPager is the fake for method ServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armstoragesync.ServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armstoragesync.ServicesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters armstoragesync.ServiceUpdateParameters, options *armstoragesync.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armstoragesync.ServicesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragesync.ServicesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstoragesync.ServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armstoragesync.ServicesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type ServicesServerTransport struct {
 	srv                         *ServicesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armstoragesync.ServicesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragesync.ServicesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstoragesync.ServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armstoragesync.ServicesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armstoragesync.ServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServicesServerTransport.
@@ -96,20 +96,20 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ServicesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.BeginCreate":
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "ServicesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "ServicesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServicesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ServicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "ServicesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,39 +124,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragesync.CheckNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServicesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -248,6 +215,87 @@ func (s *ServicesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstoragesync.ServiceUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armstoragesync.CheckNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -357,54 +405,6 @@ func (s *ServicesServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armstoragesync.ServiceUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

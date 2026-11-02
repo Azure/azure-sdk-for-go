@@ -69,7 +69,7 @@ func (client *DiscoverySourcesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a DiscoverySourceResource
+// createOrUpdate - Create a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoverySourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mapName string, sourceName string, resource DiscoverySourceResource, options *DiscoverySourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DiscoverySourcesClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DiscoverySourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, sourceName string, resource DiscoverySourceResource, _ *DiscoverySourcesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *DiscoverySourcesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a DiscoverySourceResource
+// deleteOperation - Delete a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoverySourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, mapName string, sourceName string, options *DiscoverySourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *DiscoverySourcesClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DiscoverySourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mapName string, sourceName string, _ *DiscoverySourcesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *DiscoverySourcesClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250131Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a DiscoverySourceResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mapName - Maps resource name
+//   - sourceName - discovery source resource
+//   - properties - The resource properties to be updated.
+//   - options - DiscoverySourcesClientBeginUpdateOptions contains the optional parameters for the DiscoverySourcesClient.BeginUpdate
+//     method.
+func (client *DiscoverySourcesClient) BeginUpdate(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, options *DiscoverySourcesClientBeginUpdateOptions) (*runtime.Poller[DiscoverySourcesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, mapName, sourceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiscoverySourcesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiscoverySourcesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a DiscoverySourceResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiscoverySourcesClient) update(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, options *DiscoverySourcesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DiscoverySourcesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, mapName, sourceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DiscoverySourcesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, _ *DiscoverySourcesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mapName == "" {
+		return nil, errors.New("parameter mapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
+	if sourceName == "" {
+		return nil, errors.New("parameter sourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sourceName}", url.PathEscape(sourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,85 +421,4 @@ func (client *DiscoverySourcesClient) listByMapsResourceHandleResponse(resp *htt
 		return DiscoverySourcesClientListByMapsResourceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a DiscoverySourceResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mapName - Maps resource name
-//   - sourceName - discovery source resource
-//   - properties - The resource properties to be updated.
-//   - options - DiscoverySourcesClientBeginUpdateOptions contains the optional parameters for the DiscoverySourcesClient.BeginUpdate
-//     method.
-func (client *DiscoverySourcesClient) BeginUpdate(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, options *DiscoverySourcesClientBeginUpdateOptions) (*runtime.Poller[DiscoverySourcesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, mapName, sourceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiscoverySourcesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiscoverySourcesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a DiscoverySourceResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DiscoverySourcesClient) update(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, options *DiscoverySourcesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DiscoverySourcesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, mapName, sourceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DiscoverySourcesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, _ *DiscoverySourcesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mapName == "" {
-		return nil, errors.New("parameter mapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	if sourceName == "" {
-		return nil, errors.New("parameter sourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceName}", url.PathEscape(sourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

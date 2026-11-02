@@ -69,7 +69,7 @@ func (client *IntegrationRuntimeClient) BeginDisableInteractiveQuery(ctx context
 	}
 }
 
-// DisableInteractiveQuery - Disable interactive authoring of Managed Virtual Network integration runtime.
+// disableInteractiveQuery - Disable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IntegrationRuntimeClient) disableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeClientBeginDisableInteractiveQueryOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *IntegrationRuntimeClient) disableInteractiveQuery(ctx context.Cont
 	return httpResp, nil
 }
 
-// disableInteractiveQueryCreateRequest creates the DisableInteractiveQuery request.
+// disableInteractiveQueryCreateRequest creates the disableInteractiveQuery request.
 func (client *IntegrationRuntimeClient) disableInteractiveQueryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, _ *IntegrationRuntimeClientBeginDisableInteractiveQueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/disableInteractiveQuery"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *IntegrationRuntimeClient) BeginEnableInteractiveQuery(ctx context.
 	}
 }
 
-// EnableInteractiveQuery - Enable interactive authoring of Managed Virtual Network integration runtime.
+// enableInteractiveQuery - Enable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IntegrationRuntimeClient) enableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryRequest EnableInteractiveQueryRequest, options *IntegrationRuntimeClientBeginEnableInteractiveQueryOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *IntegrationRuntimeClient) enableInteractiveQuery(ctx context.Conte
 	return httpResp, nil
 }
 
-// enableInteractiveQueryCreateRequest creates the EnableInteractiveQuery request.
+// enableInteractiveQueryCreateRequest creates the enableInteractiveQuery request.
 func (client *IntegrationRuntimeClient) enableInteractiveQueryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryRequest EnableInteractiveQueryRequest, _ *IntegrationRuntimeClientBeginEnableInteractiveQueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery"
 	if client.subscriptionID == "" {

@@ -29,6 +29,10 @@ type StorageAssetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageContainerName string, storageAssetName string, options *armdiscovery.StorageAssetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdiscovery.StorageAssetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method StorageAssetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storageContainerName string, storageAssetName string, properties armdiscovery.StorageAsset, options *armdiscovery.StorageAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.StorageAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method StorageAssetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storageContainerName string, storageAssetName string, options *armdiscovery.StorageAssetsClientGetOptions) (resp azfake.Responder[armdiscovery.StorageAssetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type StorageAssetsServer struct {
 	// NewListByStorageContainerPager is the fake for method StorageAssetsClient.NewListByStorageContainerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByStorageContainerPager func(resourceGroupName string, storageContainerName string, options *armdiscovery.StorageAssetsClientListByStorageContainerOptions) (resp azfake.PagerResponder[armdiscovery.StorageAssetsClientListByStorageContainerResponse])
-
-	// BeginUpdate is the fake for method StorageAssetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, storageContainerName string, storageAssetName string, properties armdiscovery.StorageAsset, options *armdiscovery.StorageAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.StorageAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageAssetsServerTransport creates a new instance of StorageAssetsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewStorageAssetsServerTransport(srv *StorageAssetsServer) *StorageAssetsSer
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientDeleteResponse]](),
-		newListByStorageContainerPager: newTracker[azfake.PagerResponder[armdiscovery.StorageAssetsClientListByStorageContainerResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientUpdateResponse]](),
+		newListByStorageContainerPager: newTracker[azfake.PagerResponder[armdiscovery.StorageAssetsClientListByStorageContainerResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type StorageAssetsServerTransport struct {
 	srv                            *StorageAssetsServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientDeleteResponse]]
-	newListByStorageContainerPager *tracker[azfake.PagerResponder[armdiscovery.StorageAssetsClientListByStorageContainerResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armdiscovery.StorageAssetsClientUpdateResponse]]
+	newListByStorageContainerPager *tracker[azfake.PagerResponder[armdiscovery.StorageAssetsClientListByStorageContainerResponse]]
 }
 
 // Do implements the policy.Transporter interface for StorageAssetsServerTransport.
@@ -90,12 +90,12 @@ func (s *StorageAssetsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "StorageAssetsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StorageAssetsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "StorageAssetsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StorageAssetsClient.NewListByStorageContainerPager":
 				res.resp, res.err = s.dispatchNewListByStorageContainerPager(req)
-			case "StorageAssetsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (s *StorageAssetsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (s *StorageAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdiscovery.StorageAsset](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageContainerName")])
+		if err != nil {
+			return nil, err
+		}
+		storageAssetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageAssetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageContainerNameParam, storageAssetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *StorageAssetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (s *StorageAssetsServerTransport) dispatchNewListByStorageContainerPager(re
 	if !server.PagerResponderMore(newListByStorageContainerPager) {
 		s.newListByStorageContainerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *StorageAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdiscovery.StorageAsset](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageContainerName")])
-		if err != nil {
-			return nil, err
-		}
-		storageAssetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageAssetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageContainerNameParam, storageAssetNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

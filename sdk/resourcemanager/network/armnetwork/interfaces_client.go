@@ -127,7 +127,7 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - InterfacesClientBeginDeleteOptions contains the optional parameters for the InterfacesClient.BeginDelete method.
 func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*runtime.Poller[InterfacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkInterfaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkInterfaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +142,9 @@ func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// delete - Deletes the specified network interface.
+// deleteOperation - Deletes the specified network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *InterfacesClient) delete(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *InterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InterfacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

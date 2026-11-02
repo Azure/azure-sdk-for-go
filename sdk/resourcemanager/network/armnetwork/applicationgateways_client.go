@@ -283,7 +283,7 @@ func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*runtime.Poller[ApplicationGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -298,9 +298,9 @@ func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// delete - Deletes the specified application gateway.
+// deleteOperation - Deletes the specified application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationGatewaysClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

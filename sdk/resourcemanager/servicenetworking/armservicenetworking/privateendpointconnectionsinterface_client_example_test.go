@@ -33,6 +33,54 @@ func ExamplePrivateEndpointConnectionsInterfaceClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-03-01/PrivateEndpointConnectionPut.json
+func ExamplePrivateEndpointConnectionsInterfaceClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicenetworking.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsInterfaceClient().BeginUpdate(ctx, "rg1", "tc1", "pec1", armservicenetworking.PrivateEndpointConnection{
+		Properties: &armservicenetworking.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armservicenetworking.PrivateLinkServiceConnectionState{
+				Status:      to.Ptr(armservicenetworking.PrivateLinkServiceConnectionStatusApproved),
+				Description: to.Ptr("Approved by admin"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicenetworking.PrivateEndpointConnectionsInterfaceClientUpdateResponse{
+	// 	PrivateEndpointConnection: armservicenetworking.PrivateEndpointConnection{
+	// 		Name: to.Ptr("pec1"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/privateEndpointConnections/pec1"),
+	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/privateEndpointConnections"),
+	// 		Properties: &armservicenetworking.PrivateEndpointConnectionProperties{
+	// 			PrivateEndpoint: &armservicenetworking.PrivateEndpointReference{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armservicenetworking.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armservicenetworking.PrivateLinkServiceConnectionStatusApproved),
+	// 				Description: to.Ptr("Approved by admin"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -114,52 +162,4 @@ func ExamplePrivateEndpointConnectionsInterfaceClient_NewListByTrafficController
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01/PrivateEndpointConnectionPut.json
-func ExamplePrivateEndpointConnectionsInterfaceClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicenetworking.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsInterfaceClient().BeginUpdate(ctx, "rg1", "tc1", "pec1", armservicenetworking.PrivateEndpointConnection{
-		Properties: &armservicenetworking.PrivateEndpointConnectionProperties{
-			PrivateLinkServiceConnectionState: &armservicenetworking.PrivateLinkServiceConnectionState{
-				Status:      to.Ptr(armservicenetworking.PrivateLinkServiceConnectionStatusApproved),
-				Description: to.Ptr("Approved by admin"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicenetworking.PrivateEndpointConnectionsInterfaceClientUpdateResponse{
-	// 	PrivateEndpointConnection: armservicenetworking.PrivateEndpointConnection{
-	// 		Name: to.Ptr("pec1"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/privateEndpointConnections/pec1"),
-	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/privateEndpointConnections"),
-	// 		Properties: &armservicenetworking.PrivateEndpointConnectionProperties{
-	// 			PrivateEndpoint: &armservicenetworking.PrivateEndpointReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armservicenetworking.PrivateLinkServiceConnectionState{
-	// 				Status: to.Ptr(armservicenetworking.PrivateLinkServiceConnectionStatusApproved),
-	// 				Description: to.Ptr("Approved by admin"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

@@ -250,76 +250,6 @@ func (client *QueriesClient) listHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// Put - Adds or Updates a specific Query within a Log Analytics QueryPack.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - queryPackName - The name of the Log Analytics QueryPack resource.
-//   - id - The id of a specific query defined in the Log Analytics QueryPack
-//   - queryPayload - Properties that need to be specified to create a new query and add it to a Log Analytics QueryPack.
-//   - options - QueriesClientPutOptions contains the optional parameters for the QueriesClient.Put method.
-func (client *QueriesClient) Put(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload LogAnalyticsQueryPackQuery, options *QueriesClientPutOptions) (QueriesClientPutResponse, error) {
-	var err error
-	const operationName = "QueriesClient.Put"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.putCreateRequest(ctx, resourceGroupName, queryPackName, id, queryPayload, options)
-	if err != nil {
-		return QueriesClientPutResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return QueriesClientPutResponse{}, err
-	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
-}
-
-// putCreateRequest creates the Put request.
-func (client *QueriesClient) putCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload LogAnalyticsQueryPackQuery, _ *QueriesClientPutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if queryPackName == "" {
-		return nil, errors.New("parameter queryPackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
-	if id == "" {
-		return nil, errors.New("parameter id cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, queryPayload); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// putHandleResponse handles the Put response.
-func (client *QueriesClient) putHandleResponse(resp *http.Response, successCodes ...int) (QueriesClientPutResponse, error) {
-	result := QueriesClientPutResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackQuery); err != nil {
-		return QueriesClientPutResponse{}, err
-	}
-	return result, nil
-}
-
 // NewSearchPager - Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - queryPackName - The name of the Log Analytics QueryPack resource.
@@ -406,6 +336,76 @@ func (client *QueriesClient) searchHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackQueryListResult); err != nil {
 		return QueriesClientSearchResponse{}, err
+	}
+	return result, nil
+}
+
+// Put - Adds or Updates a specific Query within a Log Analytics QueryPack.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - queryPackName - The name of the Log Analytics QueryPack resource.
+//   - id - The id of a specific query defined in the Log Analytics QueryPack
+//   - queryPayload - Properties that need to be specified to create a new query and add it to a Log Analytics QueryPack.
+//   - options - QueriesClientPutOptions contains the optional parameters for the QueriesClient.Put method.
+func (client *QueriesClient) Put(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload LogAnalyticsQueryPackQuery, options *QueriesClientPutOptions) (QueriesClientPutResponse, error) {
+	var err error
+	const operationName = "QueriesClient.Put"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.putCreateRequest(ctx, resourceGroupName, queryPackName, id, queryPayload, options)
+	if err != nil {
+		return QueriesClientPutResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return QueriesClientPutResponse{}, err
+	}
+	return client.putHandleResponse(httpResp, http.StatusOK)
+}
+
+// putCreateRequest creates the Put request.
+func (client *QueriesClient) putCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload LogAnalyticsQueryPackQuery, _ *QueriesClientPutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if queryPackName == "" {
+		return nil, errors.New("parameter queryPackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
+	if id == "" {
+		return nil, errors.New("parameter id cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, queryPayload); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// putHandleResponse handles the Put response.
+func (client *QueriesClient) putHandleResponse(resp *http.Response, successCodes ...int) (QueriesClientPutResponse, error) {
+	result := QueriesClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackQuery); err != nil {
+		return QueriesClientPutResponse{}, err
 	}
 	return result, nil
 }

@@ -68,7 +68,7 @@ func (client *MonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a MonitorResource
+// createOrUpdate - Create a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, options *MonitorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, _ *MonitorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a MonitorResource
+// deleteOperation - Delete a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,81 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20240424)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpgradePlan - Upgrades the billing Plan for Dynatrace monitor resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - request - The details of the upgrade plan request.
+//   - options - MonitorsClientBeginUpgradePlanOptions contains the optional parameters for the MonitorsClient.BeginUpgradePlan
+//     method.
+func (client *MonitorsClient) BeginUpgradePlan(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, options *MonitorsClientBeginUpgradePlanOptions) (*runtime.Poller[MonitorsClientUpgradePlanResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgradePlan(ctx, resourceGroupName, monitorName, request, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientUpgradePlanResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientUpgradePlanResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgradePlan - Upgrades the billing Plan for Dynatrace monitor resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MonitorsClient) upgradePlan(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, options *MonitorsClientBeginUpgradePlanOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MonitorsClient.BeginUpgradePlan"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradePlanCreateRequest(ctx, resourceGroupName, monitorName, request, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradePlanCreateRequest creates the upgradePlan request.
+func (client *MonitorsClient) upgradePlanCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, _ *MonitorsClientBeginUpgradePlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/upgradePlan"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, request); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -557,6 +632,63 @@ func (client *MonitorsClient) getVMHostPayloadHandleResponse(resp *http.Response
 		return MonitorsClientGetVMHostPayloadResponse{}, err
 	}
 	return result, nil
+}
+
+// ManageAgentInstallation - Performs Dynatrace agent install/uninstall action through the Azure Dynatrace resource on the
+// provided list of resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - request - List of resources and action
+//   - options - MonitorsClientManageAgentInstallationOptions contains the optional parameters for the MonitorsClient.ManageAgentInstallation
+//     method.
+func (client *MonitorsClient) ManageAgentInstallation(ctx context.Context, resourceGroupName string, monitorName string, request ManageAgentInstallationRequest, options *MonitorsClientManageAgentInstallationOptions) (MonitorsClientManageAgentInstallationResponse, error) {
+	var err error
+	const operationName = "MonitorsClient.ManageAgentInstallation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.manageAgentInstallationCreateRequest(ctx, resourceGroupName, monitorName, request, options)
+	if err != nil {
+		return MonitorsClientManageAgentInstallationResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MonitorsClientManageAgentInstallationResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		return MonitorsClientManageAgentInstallationResponse{}, runtime.NewResponseError(httpResp)
+	}
+	return MonitorsClientManageAgentInstallationResponse{}, nil
+}
+
+// manageAgentInstallationCreateRequest creates the ManageAgentInstallation request.
+func (client *MonitorsClient) manageAgentInstallationCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request ManageAgentInstallationRequest, _ *MonitorsClientManageAgentInstallationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/manageAgentInstallation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, request); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // NewListAppServicesPager - Gets list of App Services with Dynatrace PaaS OneAgent enabled
@@ -1017,63 +1149,6 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ManageAgentInstallation - Performs Dynatrace agent install/uninstall action through the Azure Dynatrace resource on the
-// provided list of resources.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Monitor resource name
-//   - request - List of resources and action
-//   - options - MonitorsClientManageAgentInstallationOptions contains the optional parameters for the MonitorsClient.ManageAgentInstallation
-//     method.
-func (client *MonitorsClient) ManageAgentInstallation(ctx context.Context, resourceGroupName string, monitorName string, request ManageAgentInstallationRequest, options *MonitorsClientManageAgentInstallationOptions) (MonitorsClientManageAgentInstallationResponse, error) {
-	var err error
-	const operationName = "MonitorsClient.ManageAgentInstallation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.manageAgentInstallationCreateRequest(ctx, resourceGroupName, monitorName, request, options)
-	if err != nil {
-		return MonitorsClientManageAgentInstallationResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return MonitorsClientManageAgentInstallationResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return MonitorsClientManageAgentInstallationResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return MonitorsClientManageAgentInstallationResponse{}, nil
-}
-
-// manageAgentInstallationCreateRequest creates the ManageAgentInstallation request.
-func (client *MonitorsClient) manageAgentInstallationCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request ManageAgentInstallationRequest, _ *MonitorsClientManageAgentInstallationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/manageAgentInstallation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // Update - Update a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -1137,79 +1212,4 @@ func (client *MonitorsClient) updateHandleResponse(resp *http.Response, successC
 		return MonitorsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpgradePlan - Upgrades the billing Plan for Dynatrace monitor resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Monitor resource name
-//   - request - The details of the upgrade plan request.
-//   - options - MonitorsClientBeginUpgradePlanOptions contains the optional parameters for the MonitorsClient.BeginUpgradePlan
-//     method.
-func (client *MonitorsClient) BeginUpgradePlan(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, options *MonitorsClientBeginUpgradePlanOptions) (*runtime.Poller[MonitorsClientUpgradePlanResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgradePlan(ctx, resourceGroupName, monitorName, request, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientUpgradePlanResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientUpgradePlanResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpgradePlan - Upgrades the billing Plan for Dynatrace monitor resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitorsClient) upgradePlan(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, options *MonitorsClientBeginUpgradePlanOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MonitorsClient.BeginUpgradePlan"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradePlanCreateRequest(ctx, resourceGroupName, monitorName, request, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradePlanCreateRequest creates the UpgradePlan request.
-func (client *MonitorsClient) upgradePlanCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, _ *MonitorsClientBeginUpgradePlanOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/upgradePlan"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -44,6 +44,170 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginUpdateOnCoordinator - Updates configuration of coordinator in a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - configurationName - The name of the cluster configuration.
+//   - parameters - The required parameters for updating a cluster configuration.
+//   - options - ConfigurationsClientBeginUpdateOnCoordinatorOptions contains the optional parameters for the ConfigurationsClient.BeginUpdateOnCoordinator
+//     method.
+func (client *ConfigurationsClient) BeginUpdateOnCoordinator(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*runtime.Poller[ConfigurationsClientUpdateOnCoordinatorResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateOnCoordinator(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationsClientUpdateOnCoordinatorResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigurationsClientUpdateOnCoordinatorResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateOnCoordinator - Updates configuration of coordinator in a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigurationsClient) updateOnCoordinator(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigurationsClient.BeginUpdateOnCoordinator"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateOnCoordinatorCreateRequest(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateOnCoordinatorCreateRequest creates the updateOnCoordinator request.
+func (client *ConfigurationsClient) updateOnCoordinatorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, _ *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/coordinatorConfigurations/{configurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if configurationName == "" {
+		return nil, errors.New("parameter configurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateOnNode - Updates configuration of worker nodes in a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - configurationName - The name of the cluster configuration.
+//   - parameters - The required parameters for updating a cluster configuration.
+//   - options - ConfigurationsClientBeginUpdateOnNodeOptions contains the optional parameters for the ConfigurationsClient.BeginUpdateOnNode
+//     method.
+func (client *ConfigurationsClient) BeginUpdateOnNode(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnNodeOptions) (*runtime.Poller[ConfigurationsClientUpdateOnNodeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateOnNode(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationsClientUpdateOnNodeResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigurationsClientUpdateOnNodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateOnNode - Updates configuration of worker nodes in a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigurationsClient) updateOnNode(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnNodeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigurationsClient.BeginUpdateOnNode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateOnNodeCreateRequest(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateOnNodeCreateRequest creates the updateOnNode request.
+func (client *ConfigurationsClient) updateOnNodeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, _ *ConfigurationsClientBeginUpdateOnNodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/nodeConfigurations/{configurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if configurationName == "" {
+		return nil, errors.New("parameter configurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets information of a configuration for coordinator and nodes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -397,168 +561,4 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 		return ConfigurationsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateOnCoordinator - Updates configuration of coordinator in a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - configurationName - The name of the cluster configuration.
-//   - parameters - The required parameters for updating a cluster configuration.
-//   - options - ConfigurationsClientBeginUpdateOnCoordinatorOptions contains the optional parameters for the ConfigurationsClient.BeginUpdateOnCoordinator
-//     method.
-func (client *ConfigurationsClient) BeginUpdateOnCoordinator(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*runtime.Poller[ConfigurationsClientUpdateOnCoordinatorResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateOnCoordinator(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationsClientUpdateOnCoordinatorResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigurationsClientUpdateOnCoordinatorResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateOnCoordinator - Updates configuration of coordinator in a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConfigurationsClient) updateOnCoordinator(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConfigurationsClient.BeginUpdateOnCoordinator"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateOnCoordinatorCreateRequest(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateOnCoordinatorCreateRequest creates the UpdateOnCoordinator request.
-func (client *ConfigurationsClient) updateOnCoordinatorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, _ *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/coordinatorConfigurations/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if configurationName == "" {
-		return nil, errors.New("parameter configurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateOnNode - Updates configuration of worker nodes in a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - configurationName - The name of the cluster configuration.
-//   - parameters - The required parameters for updating a cluster configuration.
-//   - options - ConfigurationsClientBeginUpdateOnNodeOptions contains the optional parameters for the ConfigurationsClient.BeginUpdateOnNode
-//     method.
-func (client *ConfigurationsClient) BeginUpdateOnNode(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnNodeOptions) (*runtime.Poller[ConfigurationsClientUpdateOnNodeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateOnNode(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationsClientUpdateOnNodeResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigurationsClientUpdateOnNodeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateOnNode - Updates configuration of worker nodes in a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConfigurationsClient) updateOnNode(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnNodeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConfigurationsClient.BeginUpdateOnNode"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateOnNodeCreateRequest(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateOnNodeCreateRequest creates the UpdateOnNode request.
-func (client *ConfigurationsClient) updateOnNodeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, _ *ConfigurationsClientBeginUpdateOnNodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/nodeConfigurations/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if configurationName == "" {
-		return nil, errors.New("parameter configurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

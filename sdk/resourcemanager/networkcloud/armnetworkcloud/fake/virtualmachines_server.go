@@ -35,18 +35,6 @@ type VirtualMachinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualMachinesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientGetOptions) (resp azfake.Responder[armnetworkcloud.VirtualMachinesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method VirtualMachinesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method VirtualMachinesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse])
-
 	// BeginPowerOff is the fake for method VirtualMachinesClient.BeginPowerOff
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPowerOff func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientPowerOffResponse], errResp azfake.ErrorResponder)
@@ -66,6 +54,18 @@ type VirtualMachinesServer struct {
 	// BeginUpdate is the fake for method VirtualMachinesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineUpdateParameters armnetworkcloud.VirtualMachinePatchParameters, options *armnetworkcloud.VirtualMachinesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualMachinesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientGetOptions) (resp azfake.Responder[armnetworkcloud.VirtualMachinesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method VirtualMachinesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method VirtualMachinesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse])
 }
 
 // NewVirtualMachinesServerTransport creates a new instance of VirtualMachinesServerTransport with the provided implementation.
@@ -77,13 +77,13 @@ func NewVirtualMachinesServerTransport(srv *VirtualMachinesServer) *VirtualMachi
 		beginAssignRelay:            newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientAssignRelayResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse]](),
 		beginPowerOff:               newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientPowerOffResponse]](),
 		beginReimage:                newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientReimageResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientRestartResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientStartResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -94,13 +94,13 @@ type VirtualMachinesServerTransport struct {
 	beginAssignRelay            *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientAssignRelayResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse]]
 	beginPowerOff               *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientPowerOffResponse]]
 	beginReimage                *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientReimageResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientRestartResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientStartResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachinesServerTransport.
@@ -130,12 +130,6 @@ func (v *VirtualMachinesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualMachinesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualMachinesClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualMachinesClient.NewListByResourceGroupPager":
-				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
-			case "VirtualMachinesClient.NewListBySubscriptionPager":
-				res.resp, res.err = v.dispatchNewListBySubscriptionPager(req)
 			case "VirtualMachinesClient.BeginPowerOff":
 				res.resp, res.err = v.dispatchBeginPowerOff(req)
 			case "VirtualMachinesClient.BeginReimage":
@@ -146,6 +140,12 @@ func (v *VirtualMachinesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = v.dispatchBeginStart(req)
 			case "VirtualMachinesClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualMachinesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualMachinesClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualMachinesClient.NewListBySubscriptionPager":
+				res.resp, res.err = v.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -323,147 +323,6 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDelete(req *http.Request) 
 		v.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (v *VirtualMachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines/(?P<virtualMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualMachineNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachine, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		v.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachinesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := v.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := v.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		v.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		v.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -707,6 +566,147 @@ func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) 
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualMachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines/(?P<virtualMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualMachineNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachine, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.VirtualMachinesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachinesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := v.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := v.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		v.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		v.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

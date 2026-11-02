@@ -29,14 +29,6 @@ type SummaryLogsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *armoperationalinsights.SummaryLogsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoperationalinsights.SummaryLogsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SummaryLogsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *armoperationalinsights.SummaryLogsClientGetOptions) (resp azfake.Responder[armoperationalinsights.SummaryLogsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByWorkspacePager is the fake for method SummaryLogsClient.NewListByWorkspacePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.SummaryLogsClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse])
-
 	// BeginRetryBin is the fake for method SummaryLogsClient.BeginRetryBin
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRetryBin func(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters armoperationalinsights.SummaryLogsRetryBin, options *armoperationalinsights.SummaryLogsClientBeginRetryBinOptions) (resp azfake.PollerResponder[armoperationalinsights.SummaryLogsClientRetryBinResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type SummaryLogsServer struct {
 	// BeginStart is the fake for method SummaryLogsClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStart func(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *armoperationalinsights.SummaryLogsClientBeginStartOptions) (resp azfake.PollerResponder[armoperationalinsights.SummaryLogsClientStartResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SummaryLogsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *armoperationalinsights.SummaryLogsClientGetOptions) (resp azfake.Responder[armoperationalinsights.SummaryLogsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByWorkspacePager is the fake for method SummaryLogsClient.NewListByWorkspacePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.SummaryLogsClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse])
 
 	// Stop is the fake for method SummaryLogsClient.Stop
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,9 +58,9 @@ func NewSummaryLogsServerTransport(srv *SummaryLogsServer) *SummaryLogsServerTra
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse]](),
 		beginRetryBin:           newTracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientRetryBinResponse]](),
 		beginStart:              newTracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientStartResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type SummaryLogsServerTransport struct {
 	srv                     *SummaryLogsServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse]]
 	beginRetryBin           *tracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientRetryBinResponse]]
 	beginStart              *tracker[azfake.PollerResponder[armoperationalinsights.SummaryLogsClientStartResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.SummaryLogsClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for SummaryLogsServerTransport.
@@ -100,14 +100,14 @@ func (s *SummaryLogsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SummaryLogsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SummaryLogsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "SummaryLogsClient.NewListByWorkspacePager":
-				res.resp, res.err = s.dispatchNewListByWorkspacePager(req)
 			case "SummaryLogsClient.BeginRetryBin":
 				res.resp, res.err = s.dispatchBeginRetryBin(req)
 			case "SummaryLogsClient.BeginStart":
 				res.resp, res.err = s.dispatchBeginStart(req)
+			case "SummaryLogsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SummaryLogsClient.NewListByWorkspacePager":
+				res.resp, res.err = s.dispatchNewListByWorkspacePager(req)
 			case "SummaryLogsClient.Stop":
 				res.resp, res.err = s.dispatchStop(req)
 			default:
@@ -226,84 +226,6 @@ func (s *SummaryLogsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *SummaryLogsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/summaryLogs/(?P<summaryLogsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	summaryLogsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("summaryLogsName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, summaryLogsNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummaryLogs, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SummaryLogsServerTransport) dispatchNewListByWorkspacePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByWorkspacePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByWorkspacePager not implemented")}
-	}
-	newListByWorkspacePager := s.newListByWorkspacePager.get(req)
-	if newListByWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/summaryLogs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByWorkspacePager(resourceGroupNameParam, workspaceNameParam, nil)
-		newListByWorkspacePager = &resp
-		s.newListByWorkspacePager.add(req, newListByWorkspacePager)
-		server.PagerResponderInjectNextLinks(newListByWorkspacePager, req, func(page *armoperationalinsights.SummaryLogsClientListByWorkspaceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByWorkspacePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByWorkspacePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByWorkspacePager) {
-		s.newListByWorkspacePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SummaryLogsServerTransport) dispatchBeginRetryBin(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRetryBin == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRetryBin not implemented")}
@@ -401,6 +323,84 @@ func (s *SummaryLogsServerTransport) dispatchBeginStart(req *http.Request) (*htt
 		s.beginStart.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SummaryLogsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/summaryLogs/(?P<summaryLogsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	summaryLogsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("summaryLogsName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, summaryLogsNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummaryLogs, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SummaryLogsServerTransport) dispatchNewListByWorkspacePager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByWorkspacePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByWorkspacePager not implemented")}
+	}
+	newListByWorkspacePager := s.newListByWorkspacePager.get(req)
+	if newListByWorkspacePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/summaryLogs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByWorkspacePager(resourceGroupNameParam, workspaceNameParam, nil)
+		newListByWorkspacePager = &resp
+		s.newListByWorkspacePager.add(req, newListByWorkspacePager)
+		server.PagerResponderInjectNextLinks(newListByWorkspacePager, req, func(page *armoperationalinsights.SummaryLogsClientListByWorkspaceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByWorkspacePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByWorkspacePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByWorkspacePager) {
+		s.newListByWorkspacePager.remove(req)
+	}
 	return resp, nil
 }
 

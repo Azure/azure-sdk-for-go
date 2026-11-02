@@ -67,7 +67,7 @@ func (client *CreateAndAssociatePLFilterClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
+// create - Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CreateAndAssociatePLFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociatePLFilterClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *CreateAndAssociatePLFilterClient) create(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *CreateAndAssociatePLFilterClient) createCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociatePLFilterClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createAndAssociatePLFilter"
 	if client.subscriptionID == "" {

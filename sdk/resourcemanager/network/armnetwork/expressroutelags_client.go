@@ -128,7 +128,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified ExpressRouteLag resource.
+// deleteOperation - Deletes the specified ExpressRouteLag resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

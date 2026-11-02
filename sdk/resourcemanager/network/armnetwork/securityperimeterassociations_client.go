@@ -135,7 +135,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterAssociationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +150,9 @@ func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Deletes an NSP association resource.
+// deleteOperation - Deletes an NSP association resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterAssociationsClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterAssociationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

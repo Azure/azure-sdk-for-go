@@ -363,7 +363,7 @@ func (client *WatchersClient) connectionAnalyzersQueryCreateRequest(ctx context.
 //   - options - WatchersClientBeginDeleteOptions contains the optional parameters for the WatchersClient.BeginDelete method.
 func (client *WatchersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientBeginDeleteOptions) (*runtime.Poller[WatchersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkWatcherName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -378,9 +378,9 @@ func (client *WatchersClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes the specified network watcher resource.
+// deleteOperation - Deletes the specified network watcher resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *WatchersClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WatchersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

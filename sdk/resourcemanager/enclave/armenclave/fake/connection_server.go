@@ -29,10 +29,6 @@ type ConnectionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *armenclave.ConnectionClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.ConnectionClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ConnectionClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *armenclave.ConnectionClientGetOptions) (resp azfake.Responder[armenclave.ConnectionClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginHandleApprovalCreation is the fake for method ConnectionClient.BeginHandleApprovalCreation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalCreation func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body armenclave.ApprovalCallbackRequest, options *armenclave.ConnectionClientBeginHandleApprovalCreationOptions) (resp azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalCreationResponse], errResp azfake.ErrorResponder)
@@ -41,6 +37,14 @@ type ConnectionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalDeletion func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body armenclave.ApprovalDeletionCallbackRequest, options *armenclave.ConnectionClientBeginHandleApprovalDeletionOptions) (resp azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalDeletionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConnectionClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties armenclave.ConnectionPatchModel, options *armenclave.ConnectionClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ConnectionClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *armenclave.ConnectionClientGetOptions) (resp azfake.Responder[armenclave.ConnectionClientGetResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ConnectionClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armenclave.ConnectionClientListByResourceGroupOptions) (resp azfake.PagerResponder[armenclave.ConnectionClientListByResourceGroupResponse])
@@ -48,10 +52,6 @@ type ConnectionServer struct {
 	// NewListBySubscriptionPager is the fake for method ConnectionClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armenclave.ConnectionClientListBySubscriptionOptions) (resp azfake.PagerResponder[armenclave.ConnectionClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ConnectionClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties armenclave.ConnectionPatchModel, options *armenclave.ConnectionClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConnectionServerTransport creates a new instance of ConnectionServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewConnectionServerTransport(srv *ConnectionServer) *ConnectionServerTransp
 		beginDelete:                 newTracker[azfake.PollerResponder[armenclave.ConnectionClientDeleteResponse]](),
 		beginHandleApprovalCreation: newTracker[azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalCreationResponse]](),
 		beginHandleApprovalDeletion: newTracker[azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalDeletionResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armenclave.ConnectionClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armenclave.ConnectionClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type ConnectionServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armenclave.ConnectionClientDeleteResponse]]
 	beginHandleApprovalCreation *tracker[azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalCreationResponse]]
 	beginHandleApprovalDeletion *tracker[azfake.PollerResponder[armenclave.ConnectionClientHandleApprovalDeletionResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armenclave.ConnectionClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armenclave.ConnectionClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.ConnectionClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectionServerTransport.
@@ -108,18 +108,18 @@ func (c *ConnectionServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConnectionClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "ConnectionClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectionClient.BeginHandleApprovalCreation":
 				res.resp, res.err = c.dispatchBeginHandleApprovalCreation(req)
 			case "ConnectionClient.BeginHandleApprovalDeletion":
 				res.resp, res.err = c.dispatchBeginHandleApprovalDeletion(req)
+			case "ConnectionClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "ConnectionClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectionClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ConnectionClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ConnectionClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,39 +228,6 @@ func (c *ConnectionServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (c *ConnectionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/enclaveConnections/(?P<enclaveConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	enclaveConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enclaveConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, enclaveConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *ConnectionServerTransport) dispatchBeginHandleApprovalCreation(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginHandleApprovalCreation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginHandleApprovalCreation not implemented")}
@@ -357,6 +324,87 @@ func (c *ConnectionServerTransport) dispatchBeginHandleApprovalDeletion(req *htt
 	return resp, nil
 }
 
+func (c *ConnectionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/enclaveConnections/(?P<enclaveConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armenclave.ConnectionPatchModel](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		enclaveConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enclaveConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, enclaveConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConnectionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/enclaveConnections/(?P<enclaveConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	enclaveConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enclaveConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, enclaveConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *ConnectionServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -424,54 +472,6 @@ func (c *ConnectionServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConnectionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/enclaveConnections/(?P<enclaveConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armenclave.ConnectionPatchModel](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		enclaveConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enclaveConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, enclaveConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

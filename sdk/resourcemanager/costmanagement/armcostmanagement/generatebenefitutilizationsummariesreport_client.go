@@ -63,7 +63,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateByBi
 	}
 }
 
-// GenerateByBillingAccount - Triggers generation of a benefit utilization summaries report for the provided billing account.
+// generateByBillingAccount - Triggers generation of a benefit utilization summaries report for the provided billing account.
 // This API supports only enrollment accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBillingAccount(ctx context.Context, billingAccountID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingAccountOptions) (*http.Response, error) {
@@ -86,7 +86,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBilling
 	return httpResp, nil
 }
 
-// generateByBillingAccountCreateRequest creates the GenerateByBillingAccount request.
+// generateByBillingAccountCreateRequest creates the generateByBillingAccount request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if billingAccountID == "" {
@@ -133,7 +133,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateByBi
 	}
 }
 
-// GenerateByBillingProfile - Triggers generation of a benefit utilization summaries report for the provided billing account
+// generateByBillingProfile - Triggers generation of a benefit utilization summaries report for the provided billing account
 // and billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingProfileOptions) (*http.Response, error) {
@@ -156,7 +156,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBilling
 	return httpResp, nil
 }
 
-// generateByBillingProfileCreateRequest creates the GenerateByBillingProfile request.
+// generateByBillingProfileCreateRequest creates the generateByBillingProfile request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if billingAccountID == "" {
@@ -206,7 +206,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateByRe
 	}
 }
 
-// GenerateByReservationID - Triggers generation of a benefit utilization summaries report for the provided reservation.
+// generateByReservationID - Triggers generation of a benefit utilization summaries report for the provided reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReservationID(ctx context.Context, reservationOrderID string, reservationID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationIDOptions) (*http.Response, error) {
 	var err error
@@ -228,7 +228,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReserva
 	return httpResp, nil
 }
 
-// generateByReservationIDCreateRequest creates the GenerateByReservationID request.
+// generateByReservationIDCreateRequest creates the generateByReservationID request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReservationIDCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if reservationOrderID == "" {
@@ -278,7 +278,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateByRe
 	}
 }
 
-// GenerateByReservationOrderID - Triggers generation of a benefit utilization summaries report for the provided reservation
+// generateByReservationOrderID - Triggers generation of a benefit utilization summaries report for the provided reservation
 // order.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReservationOrderID(ctx context.Context, reservationOrderID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationOrderIDOptions) (*http.Response, error) {
@@ -301,7 +301,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReserva
 	return httpResp, nil
 }
 
-// generateByReservationOrderIDCreateRequest creates the GenerateByReservationOrderID request.
+// generateByReservationOrderIDCreateRequest creates the generateByReservationOrderID request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateByReservationOrderIDCreateRequest(ctx context.Context, reservationOrderID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationOrderIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if reservationOrderID == "" {
@@ -347,7 +347,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateBySa
 	}
 }
 
-// GenerateBySavingsPlanID - Triggers generation of a benefit utilization summaries report for the provided savings plan.
+// generateBySavingsPlanID - Triggers generation of a benefit utilization summaries report for the provided savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavingsPlanID(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanIDOptions) (*http.Response, error) {
 	var err error
@@ -369,7 +369,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavings
 	return httpResp, nil
 }
 
-// generateBySavingsPlanIDCreateRequest creates the GenerateBySavingsPlanID request.
+// generateBySavingsPlanIDCreateRequest creates the generateBySavingsPlanID request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavingsPlanIDCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if savingsPlanOrderID == "" {
@@ -419,7 +419,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) BeginGenerateBySa
 	}
 }
 
-// GenerateBySavingsPlanOrderID - Triggers generation of a benefit utilization summaries report for the provided savings plan
+// generateBySavingsPlanOrderID - Triggers generation of a benefit utilization summaries report for the provided savings plan
 // order.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavingsPlanOrderID(ctx context.Context, savingsPlanOrderID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, options *GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanOrderIDOptions) (*http.Response, error) {
@@ -442,7 +442,7 @@ func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavings
 	return httpResp, nil
 }
 
-// generateBySavingsPlanOrderIDCreateRequest creates the GenerateBySavingsPlanOrderID request.
+// generateBySavingsPlanOrderIDCreateRequest creates the generateBySavingsPlanOrderID request.
 func (client *GenerateBenefitUtilizationSummariesReportClient) generateBySavingsPlanOrderIDCreateRequest(ctx context.Context, savingsPlanOrderID string, benefitUtilizationSummariesRequest BenefitUtilizationSummariesRequest, _ *GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanOrderIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/generateBenefitUtilizationSummariesReport"
 	if savingsPlanOrderID == "" {

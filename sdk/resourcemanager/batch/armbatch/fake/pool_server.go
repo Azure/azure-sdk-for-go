@@ -22,13 +22,13 @@ import (
 
 // PoolServer is a fake server for instances of the armbatch.PoolClient type.
 type PoolServer struct {
-	// Create is the fake for method PoolClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters armbatch.Pool, options *armbatch.PoolClientCreateOptions) (resp azfake.Responder[armbatch.PoolClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method PoolClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *armbatch.PoolClientBeginDeleteOptions) (resp azfake.PollerResponder[armbatch.PoolClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method PoolClient.Create
+	// HTTP status codes to indicate success: http.StatusOK
+	Create func(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters armbatch.Pool, options *armbatch.PoolClientCreateOptions) (resp azfake.Responder[armbatch.PoolClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// DisableAutoScale is the fake for method PoolClient.DisableAutoScale
 	// HTTP status codes to indicate success: http.StatusOK
@@ -91,10 +91,10 @@ func (p *PoolServerTransport) dispatchToMethodFake(req *http.Request, method str
 		}
 		if !intercepted {
 			switch method {
-			case "PoolClient.Create":
-				res.resp, res.err = p.dispatchCreate(req)
 			case "PoolClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PoolClient.Create":
+				res.resp, res.err = p.dispatchCreate(req)
 			case "PoolClient.DisableAutoScale":
 				res.resp, res.err = p.dispatchDisableAutoScale(req)
 			case "PoolClient.Get":
@@ -119,6 +119,54 @@ func (p *PoolServerTransport) dispatchToMethodFake(req *http.Request, method str
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *PoolServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/batchAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (p *PoolServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -171,54 +219,6 @@ func (p *PoolServerTransport) dispatchCreate(req *http.Request) (*http.Response,
 	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
-	return resp, nil
-}
-
-func (p *PoolServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := p.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/batchAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		p.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		p.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		p.beginDelete.remove(req)
-	}
-
 	return resp, nil
 }
 

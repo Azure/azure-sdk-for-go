@@ -128,7 +128,7 @@ func (client *BastionHostsClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsClientBeginDeleteOptions) (*runtime.Poller[BastionHostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, bastionHostName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, bastionHostName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Deletes the specified Bastion Host.
+// deleteOperation - Deletes the specified Bastion Host.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BastionHostsClient) delete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BastionHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BastionHostsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

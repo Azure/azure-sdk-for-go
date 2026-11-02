@@ -29,18 +29,6 @@ type ServerlessEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.ServerlessEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ServerlessEndpointsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.ServerlessEndpointsClientGetOptions) (resp azfake.Responder[armmachinelearning.ServerlessEndpointsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ServerlessEndpointsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.ServerlessEndpointsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse])
-
-	// ListKeys is the fake for method ServerlessEndpointsClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.ServerlessEndpointsClientListKeysOptions) (resp azfake.Responder[armmachinelearning.ServerlessEndpointsClientListKeysResponse], errResp azfake.ErrorResponder)
-
 	// BeginRegenerateKeys is the fake for method ServerlessEndpointsClient.BeginRegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRegenerateKeys func(ctx context.Context, resourceGroupName string, workspaceName string, name string, body armmachinelearning.RegenerateEndpointKeysRequest, options *armmachinelearning.ServerlessEndpointsClientBeginRegenerateKeysOptions) (resp azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
@@ -48,6 +36,18 @@ type ServerlessEndpointsServer struct {
 	// BeginUpdate is the fake for method ServerlessEndpointsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, name string, body armmachinelearning.PartialMinimalTrackedResourceWithSKUAndIdentity, options *armmachinelearning.ServerlessEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ServerlessEndpointsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.ServerlessEndpointsClientGetOptions) (resp azfake.Responder[armmachinelearning.ServerlessEndpointsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListKeys is the fake for method ServerlessEndpointsClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.ServerlessEndpointsClientListKeysOptions) (resp azfake.Responder[armmachinelearning.ServerlessEndpointsClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ServerlessEndpointsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.ServerlessEndpointsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse])
 }
 
 // NewServerlessEndpointsServerTransport creates a new instance of ServerlessEndpointsServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewServerlessEndpointsServerTransport(srv *ServerlessEndpointsServer) *Serv
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse]](),
 		beginRegenerateKeys: newTracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientRegenerateKeysResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type ServerlessEndpointsServerTransport struct {
 	srv                 *ServerlessEndpointsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse]]
 	beginRegenerateKeys *tracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientRegenerateKeysResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armmachinelearning.ServerlessEndpointsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.ServerlessEndpointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerlessEndpointsServerTransport.
@@ -100,16 +100,16 @@ func (s *ServerlessEndpointsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServerlessEndpointsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ServerlessEndpointsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "ServerlessEndpointsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ServerlessEndpointsClient.ListKeys":
-				res.resp, res.err = s.dispatchListKeys(req)
 			case "ServerlessEndpointsClient.BeginRegenerateKeys":
 				res.resp, res.err = s.dispatchBeginRegenerateKeys(req)
 			case "ServerlessEndpointsClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServerlessEndpointsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServerlessEndpointsClient.ListKeys":
+				res.resp, res.err = s.dispatchListKeys(req)
+			case "ServerlessEndpointsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -226,129 +226,6 @@ func (s *ServerlessEndpointsServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
-func (s *ServerlessEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerlessEndpoint, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerlessEndpointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(qp.Get("$skip"))
-		var options *armmachinelearning.ServerlessEndpointsClientListOptions
-		if skipParam != nil {
-			options = &armmachinelearning.ServerlessEndpointsClientListOptions{
-				Skip: skipParam,
-			}
-		}
-		resp := s.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.ServerlessEndpointsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerlessEndpointsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if s.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EndpointAuthKeys, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *ServerlessEndpointsServerTransport) dispatchBeginRegenerateKeys(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRegenerateKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRegenerateKeys not implemented")}
@@ -450,6 +327,129 @@ func (s *ServerlessEndpointsServerTransport) dispatchBeginUpdate(req *http.Reque
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServerlessEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerlessEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerlessEndpointsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if s.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EndpointAuthKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerlessEndpointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverlessEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		skipParam := getOptional(qp.Get("$skip"))
+		var options *armmachinelearning.ServerlessEndpointsClientListOptions
+		if skipParam != nil {
+			options = &armmachinelearning.ServerlessEndpointsClientListOptions{
+				Skip: skipParam,
+			}
+		}
+		resp := s.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.ServerlessEndpointsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

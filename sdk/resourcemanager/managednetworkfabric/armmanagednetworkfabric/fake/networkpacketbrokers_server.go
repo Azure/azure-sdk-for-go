@@ -29,6 +29,10 @@ type NetworkPacketBrokersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, options *armmanagednetworkfabric.NetworkPacketBrokersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkPacketBrokersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body armmanagednetworkfabric.NetworkPacketBrokerPatch, options *armmanagednetworkfabric.NetworkPacketBrokersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkPacketBrokersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, options *armmanagednetworkfabric.NetworkPacketBrokersClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkPacketBrokersClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type NetworkPacketBrokersServer struct {
 	// NewListBySubscriptionPager is the fake for method NetworkPacketBrokersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkPacketBrokersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method NetworkPacketBrokersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body armmanagednetworkfabric.NetworkPacketBrokerPatch, options *armmanagednetworkfabric.NetworkPacketBrokersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkPacketBrokersServerTransport creates a new instance of NetworkPacketBrokersServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkPacketBrokersServerTransport(srv *NetworkPacketBrokersServer) *Ne
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkPacketBrokersServerTransport struct {
 	srv                         *NetworkPacketBrokersServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkPacketBrokersServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkPacketBrokersServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkPacketBrokersClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkPacketBrokersClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkPacketBrokersClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkPacketBrokersClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkPacketBrokersClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NetworkPacketBrokersClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (n *NetworkPacketBrokersServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
+func (n *NetworkPacketBrokersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkPacketBrokers/(?P<networkPacketBrokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkPacketBrokerPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkPacketBrokerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkPacketBrokerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkPacketBrokerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NetworkPacketBrokersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (n *NetworkPacketBrokersServerTransport) dispatchNewListBySubscriptionPager
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkPacketBrokersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkPacketBrokers/(?P<networkPacketBrokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkPacketBrokerPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkPacketBrokerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkPacketBrokerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkPacketBrokerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

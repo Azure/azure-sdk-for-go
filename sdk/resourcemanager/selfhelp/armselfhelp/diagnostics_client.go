@@ -63,7 +63,7 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 	}
 }
 
-// Create - Creates a diagnostic for the specific resource using solutionId from discovery solutions. <br/>Diagnostics are
+// create - Creates a diagnostic for the specific resource using solutionId from discovery solutions. <br/>Diagnostics are
 // powerful solutions that access product resources or other relevant data and provide the root cause of the issue and the
 // steps to address the issue.<br/><br/>
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -87,7 +87,7 @@ func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagn
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, _ *DiagnosticsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}"
 	if scope == "" {

@@ -477,72 +477,6 @@ func (client *ScheduledActionsClient) getByScopeHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListPager - List all private scheduled actions.
-//   - options - ScheduledActionsClientListOptions contains the optional parameters for the ScheduledActionsClient.NewListPager
-//     method.
-func (client *ScheduledActionsClient) NewListPager(options *ScheduledActionsClientListOptions) *runtime.Pager[ScheduledActionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScheduledActionsClientListResponse]{
-		More: func(page ScheduledActionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ScheduledActionsClientListResponse) (ScheduledActionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledActionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ScheduledActionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScheduledActionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ScheduledActionsClient) listCreateRequest(ctx context.Context, nextLink string, options *ScheduledActionsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.CostManagement/scheduledActions"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20250301)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ScheduledActionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientListResponse, error) {
-	result := ScheduledActionsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionListResult); err != nil {
-		return ScheduledActionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByScopePager - List all shared scheduled actions within the given scope.
 //   - scope - undefined
 //   - options - ScheduledActionsClientListByScopeOptions contains the optional parameters for the ScheduledActionsClient.NewListByScopePager
@@ -610,6 +544,72 @@ func (client *ScheduledActionsClient) listByScopeHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionListResult); err != nil {
 		return ScheduledActionsClientListByScopeResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List all private scheduled actions.
+//   - options - ScheduledActionsClientListOptions contains the optional parameters for the ScheduledActionsClient.NewListPager
+//     method.
+func (client *ScheduledActionsClient) NewListPager(options *ScheduledActionsClientListOptions) *runtime.Pager[ScheduledActionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ScheduledActionsClientListResponse]{
+		More: func(page ScheduledActionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ScheduledActionsClientListResponse) (ScheduledActionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledActionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ScheduledActionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ScheduledActionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ScheduledActionsClient) listCreateRequest(ctx context.Context, nextLink string, options *ScheduledActionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.CostManagement/scheduledActions"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ScheduledActionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientListResponse, error) {
+	result := ScheduledActionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionListResult); err != nil {
+		return ScheduledActionsClientListResponse{}, err
 	}
 	return result, nil
 }

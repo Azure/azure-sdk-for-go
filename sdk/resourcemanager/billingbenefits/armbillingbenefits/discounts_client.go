@@ -67,7 +67,7 @@ func (client *DiscountsClient) BeginCancel(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Cancel - Cancel discount. Stops applying the benefit.
+// cancel - Cancel discount. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscountsClient) cancel(ctx context.Context, resourceGroupName string, discountName string, options *DiscountsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *DiscountsClient) cancel(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *DiscountsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, discountName string, _ *DiscountsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/discounts/{discountName}/cancel"
 	if client.subscriptionID == "" {
@@ -138,7 +138,7 @@ func (client *DiscountsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Create discount.
+// create - Create discount.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscountsClient) create(ctx context.Context, resourceGroupName string, discountName string, body Discount, options *DiscountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -160,7 +160,7 @@ func (client *DiscountsClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *DiscountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, discountName string, body Discount, _ *DiscountsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/discounts/{discountName}"
 	if client.subscriptionID == "" {
@@ -213,7 +213,7 @@ func (client *DiscountsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete discount. Clears the metadata from the user's view.
+// deleteOperation - Delete discount. Clears the metadata from the user's view.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscountsClient) deleteOperation(ctx context.Context, resourceGroupName string, discountName string, options *DiscountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -235,7 +235,7 @@ func (client *DiscountsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DiscountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, discountName string, _ *DiscountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/discounts/{discountName}"
 	if client.subscriptionID == "" {

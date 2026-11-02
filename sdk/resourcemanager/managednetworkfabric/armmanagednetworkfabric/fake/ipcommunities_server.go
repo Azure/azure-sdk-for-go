@@ -29,6 +29,10 @@ type IPCommunitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, ipCommunityName string, options *armmanagednetworkfabric.IPCommunitiesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method IPCommunitiesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, ipCommunityName string, body armmanagednetworkfabric.IPCommunityPatch, options *armmanagednetworkfabric.IPCommunitiesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method IPCommunitiesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ipCommunityName string, options *armmanagednetworkfabric.IPCommunitiesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.IPCommunitiesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type IPCommunitiesServer struct {
 	// NewListBySubscriptionPager is the fake for method IPCommunitiesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.IPCommunitiesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.IPCommunitiesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method IPCommunitiesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, ipCommunityName string, body armmanagednetworkfabric.IPCommunityPatch, options *armmanagednetworkfabric.IPCommunitiesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIPCommunitiesServerTransport creates a new instance of IPCommunitiesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewIPCommunitiesServerTransport(srv *IPCommunitiesServer) *IPCommunitiesSer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.IPCommunitiesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.IPCommunitiesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type IPCommunitiesServerTransport struct {
 	srv                         *IPCommunitiesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.IPCommunitiesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.IPCommunitiesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPCommunitiesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for IPCommunitiesServerTransport.
@@ -96,14 +96,14 @@ func (i *IPCommunitiesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = i.dispatchBeginCreate(req)
 			case "IPCommunitiesClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "IPCommunitiesClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "IPCommunitiesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "IPCommunitiesClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "IPCommunitiesClient.NewListBySubscriptionPager":
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
-			case "IPCommunitiesClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (i *IPCommunitiesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (i *IPCommunitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/ipCommunities/(?P<ipCommunityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.IPCommunityPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ipCommunityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipCommunityName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, ipCommunityNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *IPCommunitiesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (i *IPCommunitiesServerTransport) dispatchNewListBySubscriptionPager(req *h
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		i.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *IPCommunitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/ipCommunities/(?P<ipCommunityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.IPCommunityPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ipCommunityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipCommunityName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, ipCommunityNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

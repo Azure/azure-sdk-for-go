@@ -29,6 +29,10 @@ type ContextsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, contextName string, options *armworkloadorchestration.ContextsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.ContextsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ContextsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, properties armworkloadorchestration.ContextUpdate, options *armworkloadorchestration.ContextsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ContextsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, contextName string, options *armworkloadorchestration.ContextsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.ContextsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ContextsServer struct {
 	// NewListBySubscriptionPager is the fake for method ContextsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armworkloadorchestration.ContextsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadorchestration.ContextsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ContextsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, properties armworkloadorchestration.ContextUpdate, options *armworkloadorchestration.ContextsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewContextsServerTransport creates a new instance of ContextsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewContextsServerTransport(srv *ContextsServer) *ContextsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadorchestration.ContextsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armworkloadorchestration.ContextsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ContextsServerTransport struct {
 	srv                         *ContextsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadorchestration.ContextsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armworkloadorchestration.ContextsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ContextsServerTransport.
@@ -96,14 +96,14 @@ func (c *ContextsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ContextsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ContextsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ContextsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ContextsClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ContextsClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ContextsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (c *ContextsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (c *ContextsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ContextUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ContextsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (c *ContextsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ContextsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ContextUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

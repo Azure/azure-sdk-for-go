@@ -37,18 +37,6 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFailover func(ctx context.Context, resourceGroupName string, serverName string, options *armmysqlflexibleservers.ServersClientBeginFailoverOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ServersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, options *armmysqlflexibleservers.ServersClientGetOptions) (resp azfake.Responder[armmysqlflexibleservers.ServersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ServersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armmysqlflexibleservers.ServersClientListOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method ServersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmysqlflexibleservers.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse])
-
 	// BeginResetGtid is the fake for method ServersClient.BeginResetGtid
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResetGtid func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerGtidSetParameter, options *armmysqlflexibleservers.ServersClientBeginResetGtidOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse], errResp azfake.ErrorResponder)
@@ -69,6 +57,18 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerForUpdate, options *armmysqlflexibleservers.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
 
+	// Get is the fake for method ServersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, options *armmysqlflexibleservers.ServersClientGetOptions) (resp azfake.Responder[armmysqlflexibleservers.ServersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ServersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmysqlflexibleservers.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ServersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armmysqlflexibleservers.ServersClientListOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse])
+
 	// ValidateEstimateHighAvailability is the fake for method ServersClient.ValidateEstimateHighAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	ValidateEstimateHighAvailability func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.HighAvailabilityValidationEstimation, options *armmysqlflexibleservers.ServersClientValidateEstimateHighAvailabilityOptions) (resp azfake.Responder[armmysqlflexibleservers.ServersClientValidateEstimateHighAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -84,13 +84,13 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 		beginDelete:                 newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDeleteResponse]](),
 		beginDetachVNet:             newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDetachVNetResponse]](),
 		beginFailover:               newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]](),
 		beginResetGtid:              newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientRestartResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStopResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]](),
 	}
 }
 
@@ -102,13 +102,13 @@ type ServersServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDeleteResponse]]
 	beginDetachVNet             *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDetachVNetResponse]]
 	beginFailover               *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]]
 	beginResetGtid              *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientRestartResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStopResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServersServerTransport.
@@ -140,12 +140,6 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = s.dispatchBeginDetachVNet(req)
 			case "ServersClient.BeginFailover":
 				res.resp, res.err = s.dispatchBeginFailover(req)
-			case "ServersClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "ServersClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ServersClient.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServersClient.BeginResetGtid":
 				res.resp, res.err = s.dispatchBeginResetGtid(req)
 			case "ServersClient.BeginRestart":
@@ -156,6 +150,12 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = s.dispatchBeginStop(req)
 			case "ServersClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServersClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServersClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServersClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServersClient.ValidateEstimateHighAvailability":
 				res.resp, res.err = s.dispatchValidateEstimateHighAvailability(req)
 			default:
@@ -355,109 +355,6 @@ func (s *ServersServerTransport) dispatchBeginFailover(req *http.Request) (*http
 		s.beginFailover.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Server, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmysqlflexibleservers.ServersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmysqlflexibleservers.ServersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -690,6 +587,109 @@ func (s *ServersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Server, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmysqlflexibleservers.ServersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmysqlflexibleservers.ServersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

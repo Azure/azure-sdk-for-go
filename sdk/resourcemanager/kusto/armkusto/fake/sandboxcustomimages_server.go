@@ -21,10 +21,6 @@ import (
 
 // SandboxCustomImagesServer is a fake server for instances of the armkusto.SandboxCustomImagesClient type.
 type SandboxCustomImagesServer struct {
-	// CheckNameAvailability is the fake for method SandboxCustomImagesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.SandboxCustomImagesCheckNameRequest, options *armkusto.SandboxCustomImagesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.SandboxCustomImagesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method SandboxCustomImagesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters armkusto.SandboxCustomImage, options *armkusto.SandboxCustomImagesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.SandboxCustomImagesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,14 @@ type SandboxCustomImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *armkusto.SandboxCustomImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.SandboxCustomImagesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SandboxCustomImagesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters armkusto.SandboxCustomImage, options *armkusto.SandboxCustomImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.SandboxCustomImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method SandboxCustomImagesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.SandboxCustomImagesCheckNameRequest, options *armkusto.SandboxCustomImagesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.SandboxCustomImagesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SandboxCustomImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *armkusto.SandboxCustomImagesClientGetOptions) (resp azfake.Responder[armkusto.SandboxCustomImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type SandboxCustomImagesServer struct {
 	// NewListByClusterPager is the fake for method SandboxCustomImagesClient.NewListByClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armkusto.SandboxCustomImagesClientListByClusterOptions) (resp azfake.PagerResponder[armkusto.SandboxCustomImagesClientListByClusterResponse])
-
-	// BeginUpdate is the fake for method SandboxCustomImagesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters armkusto.SandboxCustomImage, options *armkusto.SandboxCustomImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.SandboxCustomImagesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSandboxCustomImagesServerTransport creates a new instance of SandboxCustomImagesServerTransport with the provided implementation.
@@ -54,8 +54,8 @@ func NewSandboxCustomImagesServerTransport(srv *SandboxCustomImagesServer) *Sand
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientDeleteResponse]](),
-		newListByClusterPager: newTracker[azfake.PagerResponder[armkusto.SandboxCustomImagesClientListByClusterResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientUpdateResponse]](),
+		newListByClusterPager: newTracker[azfake.PagerResponder[armkusto.SandboxCustomImagesClientListByClusterResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type SandboxCustomImagesServerTransport struct {
 	srv                   *SandboxCustomImagesServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientDeleteResponse]]
-	newListByClusterPager *tracker[azfake.PagerResponder[armkusto.SandboxCustomImagesClientListByClusterResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armkusto.SandboxCustomImagesClientUpdateResponse]]
+	newListByClusterPager *tracker[azfake.PagerResponder[armkusto.SandboxCustomImagesClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for SandboxCustomImagesServerTransport.
@@ -90,18 +90,18 @@ func (s *SandboxCustomImagesServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "SandboxCustomImagesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "SandboxCustomImagesClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SandboxCustomImagesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SandboxCustomImagesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SandboxCustomImagesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "SandboxCustomImagesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SandboxCustomImagesClient.NewListByClusterPager":
 				res.resp, res.err = s.dispatchNewListByClusterPager(req)
-			case "SandboxCustomImagesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -116,43 +116,6 @@ func (s *SandboxCustomImagesServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SandboxCustomImagesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sandboxCustomImagesCheckNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.SandboxCustomImagesCheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SandboxCustomImagesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -255,6 +218,95 @@ func (s *SandboxCustomImagesServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
+func (s *SandboxCustomImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sandboxCustomImages/(?P<sandboxCustomImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armkusto.SandboxCustomImage](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		sandboxCustomImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxCustomImageName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, sandboxCustomImageNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SandboxCustomImagesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sandboxCustomImagesCheckNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.SandboxCustomImagesCheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *SandboxCustomImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -330,58 +382,6 @@ func (s *SandboxCustomImagesServerTransport) dispatchNewListByClusterPager(req *
 	if !server.PagerResponderMore(newListByClusterPager) {
 		s.newListByClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SandboxCustomImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sandboxCustomImages/(?P<sandboxCustomImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armkusto.SandboxCustomImage](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		sandboxCustomImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxCustomImageName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, sandboxCustomImageNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -53,49 +53,9 @@ type MongoDBResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteMongoUserDefinition func(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions) (resp azfake.PollerResponder[armcosmos.MongoDBResourcesClientDeleteMongoUserDefinitionResponse], errResp azfake.ErrorResponder)
 
-	// GetMongoDBCollection is the fake for method MongoDBResourcesClient.GetMongoDBCollection
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoDBCollection func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *armcosmos.MongoDBResourcesClientGetMongoDBCollectionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBCollectionResponse], errResp azfake.ErrorResponder)
-
-	// GetMongoDBCollectionThroughput is the fake for method MongoDBResourcesClient.GetMongoDBCollectionThroughput
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoDBCollectionThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputResponse], errResp azfake.ErrorResponder)
-
-	// GetMongoDBDatabase is the fake for method MongoDBResourcesClient.GetMongoDBDatabase
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoDBDatabase func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientGetMongoDBDatabaseOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBDatabaseResponse], errResp azfake.ErrorResponder)
-
-	// GetMongoDBDatabaseThroughput is the fake for method MongoDBResourcesClient.GetMongoDBDatabaseThroughput
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoDBDatabaseThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse], errResp azfake.ErrorResponder)
-
-	// GetMongoRoleDefinition is the fake for method MongoDBResourcesClient.GetMongoRoleDefinition
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoRoleDefinition func(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionResponse], errResp azfake.ErrorResponder)
-
-	// GetMongoUserDefinition is the fake for method MongoDBResourcesClient.GetMongoUserDefinition
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMongoUserDefinition func(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientGetMongoUserDefinitionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoUserDefinitionResponse], errResp azfake.ErrorResponder)
-
 	// BeginListMongoDBCollectionPartitionMerge is the fake for method MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListMongoDBCollectionPartitionMerge func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, mergeParameters armcosmos.MergeParameters, options *armcosmos.MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions) (resp azfake.PollerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse], errResp azfake.ErrorResponder)
-
-	// NewListMongoDBCollectionsPager is the fake for method MongoDBResourcesClient.NewListMongoDBCollectionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMongoDBCollectionsPager func(resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientListMongoDBCollectionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse])
-
-	// NewListMongoDBDatabasesPager is the fake for method MongoDBResourcesClient.NewListMongoDBDatabasesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMongoDBDatabasesPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoDBDatabasesOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse])
-
-	// NewListMongoRoleDefinitionsPager is the fake for method MongoDBResourcesClient.NewListMongoRoleDefinitionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMongoRoleDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse])
-
-	// NewListMongoUserDefinitionsPager is the fake for method MongoDBResourcesClient.NewListMongoUserDefinitionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMongoUserDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoUserDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse])
 
 	// BeginMigrateMongoDBCollectionToAutoscale is the fake for method MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -144,6 +104,46 @@ type MongoDBResourcesServer struct {
 	// BeginUpdateMongoDBDatabaseThroughput is the fake for method MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateMongoDBDatabaseThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions) (resp azfake.PollerResponder[armcosmos.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoDBCollection is the fake for method MongoDBResourcesClient.GetMongoDBCollection
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoDBCollection func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *armcosmos.MongoDBResourcesClientGetMongoDBCollectionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBCollectionResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoDBCollectionThroughput is the fake for method MongoDBResourcesClient.GetMongoDBCollectionThroughput
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoDBCollectionThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoDBDatabase is the fake for method MongoDBResourcesClient.GetMongoDBDatabase
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoDBDatabase func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientGetMongoDBDatabaseOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBDatabaseResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoDBDatabaseThroughput is the fake for method MongoDBResourcesClient.GetMongoDBDatabaseThroughput
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoDBDatabaseThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoRoleDefinition is the fake for method MongoDBResourcesClient.GetMongoRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoRoleDefinition func(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionResponse], errResp azfake.ErrorResponder)
+
+	// GetMongoUserDefinition is the fake for method MongoDBResourcesClient.GetMongoUserDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMongoUserDefinition func(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientGetMongoUserDefinitionOptions) (resp azfake.Responder[armcosmos.MongoDBResourcesClientGetMongoUserDefinitionResponse], errResp azfake.ErrorResponder)
+
+	// NewListMongoDBCollectionsPager is the fake for method MongoDBResourcesClient.NewListMongoDBCollectionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMongoDBCollectionsPager func(resourceGroupName string, accountName string, databaseName string, options *armcosmos.MongoDBResourcesClientListMongoDBCollectionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse])
+
+	// NewListMongoDBDatabasesPager is the fake for method MongoDBResourcesClient.NewListMongoDBDatabasesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMongoDBDatabasesPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoDBDatabasesOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse])
+
+	// NewListMongoRoleDefinitionsPager is the fake for method MongoDBResourcesClient.NewListMongoRoleDefinitionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMongoRoleDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse])
+
+	// NewListMongoUserDefinitionsPager is the fake for method MongoDBResourcesClient.NewListMongoUserDefinitionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMongoUserDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.MongoDBResourcesClientListMongoUserDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse])
 }
 
 // NewMongoDBResourcesServerTransport creates a new instance of MongoDBResourcesServerTransport with the provided implementation.
@@ -161,10 +161,6 @@ func NewMongoDBResourcesServerTransport(srv *MongoDBResourcesServer) *MongoDBRes
 		beginDeleteMongoRoleDefinition:                      newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientDeleteMongoRoleDefinitionResponse]](),
 		beginDeleteMongoUserDefinition:                      newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientDeleteMongoUserDefinitionResponse]](),
 		beginListMongoDBCollectionPartitionMerge:            newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse]](),
-		newListMongoDBCollectionsPager:                      newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse]](),
-		newListMongoDBDatabasesPager:                        newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse]](),
-		newListMongoRoleDefinitionsPager:                    newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse]](),
-		newListMongoUserDefinitionsPager:                    newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse]](),
 		beginMigrateMongoDBCollectionToAutoscale:            newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse]](),
 		beginMigrateMongoDBCollectionToManualThroughput:     newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse]](),
 		beginMigrateMongoDBDatabaseToAutoscale:              newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse]](),
@@ -177,6 +173,10 @@ func NewMongoDBResourcesServerTransport(srv *MongoDBResourcesServer) *MongoDBRes
 		beginRetrieveContinuousBackupInformation:            newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientRetrieveContinuousBackupInformationResponse]](),
 		beginUpdateMongoDBCollectionThroughput:              newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse]](),
 		beginUpdateMongoDBDatabaseThroughput:                newTracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse]](),
+		newListMongoDBCollectionsPager:                      newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse]](),
+		newListMongoDBDatabasesPager:                        newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse]](),
+		newListMongoRoleDefinitionsPager:                    newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse]](),
+		newListMongoUserDefinitionsPager:                    newTracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse]](),
 	}
 }
 
@@ -193,10 +193,6 @@ type MongoDBResourcesServerTransport struct {
 	beginDeleteMongoRoleDefinition                      *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientDeleteMongoRoleDefinitionResponse]]
 	beginDeleteMongoUserDefinition                      *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientDeleteMongoUserDefinitionResponse]]
 	beginListMongoDBCollectionPartitionMerge            *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse]]
-	newListMongoDBCollectionsPager                      *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse]]
-	newListMongoDBDatabasesPager                        *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse]]
-	newListMongoRoleDefinitionsPager                    *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse]]
-	newListMongoUserDefinitionsPager                    *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse]]
 	beginMigrateMongoDBCollectionToAutoscale            *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse]]
 	beginMigrateMongoDBCollectionToManualThroughput     *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse]]
 	beginMigrateMongoDBDatabaseToAutoscale              *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse]]
@@ -209,6 +205,10 @@ type MongoDBResourcesServerTransport struct {
 	beginRetrieveContinuousBackupInformation            *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientRetrieveContinuousBackupInformationResponse]]
 	beginUpdateMongoDBCollectionThroughput              *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse]]
 	beginUpdateMongoDBDatabaseThroughput                *tracker[azfake.PollerResponder[armcosmos.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse]]
+	newListMongoDBCollectionsPager                      *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBCollectionsResponse]]
+	newListMongoDBDatabasesPager                        *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoDBDatabasesResponse]]
+	newListMongoRoleDefinitionsPager                    *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoRoleDefinitionsResponse]]
+	newListMongoUserDefinitionsPager                    *tracker[azfake.PagerResponder[armcosmos.MongoDBResourcesClientListMongoUserDefinitionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for MongoDBResourcesServerTransport.
@@ -248,28 +248,8 @@ func (m *MongoDBResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = m.dispatchBeginDeleteMongoRoleDefinition(req)
 			case "MongoDBResourcesClient.BeginDeleteMongoUserDefinition":
 				res.resp, res.err = m.dispatchBeginDeleteMongoUserDefinition(req)
-			case "MongoDBResourcesClient.GetMongoDBCollection":
-				res.resp, res.err = m.dispatchGetMongoDBCollection(req)
-			case "MongoDBResourcesClient.GetMongoDBCollectionThroughput":
-				res.resp, res.err = m.dispatchGetMongoDBCollectionThroughput(req)
-			case "MongoDBResourcesClient.GetMongoDBDatabase":
-				res.resp, res.err = m.dispatchGetMongoDBDatabase(req)
-			case "MongoDBResourcesClient.GetMongoDBDatabaseThroughput":
-				res.resp, res.err = m.dispatchGetMongoDBDatabaseThroughput(req)
-			case "MongoDBResourcesClient.GetMongoRoleDefinition":
-				res.resp, res.err = m.dispatchGetMongoRoleDefinition(req)
-			case "MongoDBResourcesClient.GetMongoUserDefinition":
-				res.resp, res.err = m.dispatchGetMongoUserDefinition(req)
 			case "MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge":
 				res.resp, res.err = m.dispatchBeginListMongoDBCollectionPartitionMerge(req)
-			case "MongoDBResourcesClient.NewListMongoDBCollectionsPager":
-				res.resp, res.err = m.dispatchNewListMongoDBCollectionsPager(req)
-			case "MongoDBResourcesClient.NewListMongoDBDatabasesPager":
-				res.resp, res.err = m.dispatchNewListMongoDBDatabasesPager(req)
-			case "MongoDBResourcesClient.NewListMongoRoleDefinitionsPager":
-				res.resp, res.err = m.dispatchNewListMongoRoleDefinitionsPager(req)
-			case "MongoDBResourcesClient.NewListMongoUserDefinitionsPager":
-				res.resp, res.err = m.dispatchNewListMongoUserDefinitionsPager(req)
 			case "MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale":
 				res.resp, res.err = m.dispatchBeginMigrateMongoDBCollectionToAutoscale(req)
 			case "MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput":
@@ -294,6 +274,26 @@ func (m *MongoDBResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = m.dispatchBeginUpdateMongoDBCollectionThroughput(req)
 			case "MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput":
 				res.resp, res.err = m.dispatchBeginUpdateMongoDBDatabaseThroughput(req)
+			case "MongoDBResourcesClient.GetMongoDBCollection":
+				res.resp, res.err = m.dispatchGetMongoDBCollection(req)
+			case "MongoDBResourcesClient.GetMongoDBCollectionThroughput":
+				res.resp, res.err = m.dispatchGetMongoDBCollectionThroughput(req)
+			case "MongoDBResourcesClient.GetMongoDBDatabase":
+				res.resp, res.err = m.dispatchGetMongoDBDatabase(req)
+			case "MongoDBResourcesClient.GetMongoDBDatabaseThroughput":
+				res.resp, res.err = m.dispatchGetMongoDBDatabaseThroughput(req)
+			case "MongoDBResourcesClient.GetMongoRoleDefinition":
+				res.resp, res.err = m.dispatchGetMongoRoleDefinition(req)
+			case "MongoDBResourcesClient.GetMongoUserDefinition":
+				res.resp, res.err = m.dispatchGetMongoUserDefinition(req)
+			case "MongoDBResourcesClient.NewListMongoDBCollectionsPager":
+				res.resp, res.err = m.dispatchNewListMongoDBCollectionsPager(req)
+			case "MongoDBResourcesClient.NewListMongoDBDatabasesPager":
+				res.resp, res.err = m.dispatchNewListMongoDBDatabasesPager(req)
+			case "MongoDBResourcesClient.NewListMongoRoleDefinitionsPager":
+				res.resp, res.err = m.dispatchNewListMongoRoleDefinitionsPager(req)
+			case "MongoDBResourcesClient.NewListMongoUserDefinitionsPager":
+				res.resp, res.err = m.dispatchNewListMongoUserDefinitionsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -718,6 +718,694 @@ func (m *MongoDBResourcesServerTransport) dispatchBeginDeleteMongoUserDefinition
 	return resp, nil
 }
 
+func (m *MongoDBResourcesServerTransport) dispatchBeginListMongoDBCollectionPartitionMerge(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginListMongoDBCollectionPartitionMerge == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListMongoDBCollectionPartitionMerge not implemented")}
+	}
+	beginListMongoDBCollectionPartitionMerge := m.beginListMongoDBCollectionPartitionMerge.get(req)
+	if beginListMongoDBCollectionPartitionMerge == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/partitionMerge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginListMongoDBCollectionPartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListMongoDBCollectionPartitionMerge = &respr
+		m.beginListMongoDBCollectionPartitionMerge.add(req, beginListMongoDBCollectionPartitionMerge)
+	}
+
+	resp, err := server.PollerResponderNext(beginListMongoDBCollectionPartitionMerge, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginListMongoDBCollectionPartitionMerge.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListMongoDBCollectionPartitionMerge) {
+		m.beginListMongoDBCollectionPartitionMerge.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBCollectionToAutoscale(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMigrateMongoDBCollectionToAutoscale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBCollectionToAutoscale not implemented")}
+	}
+	beginMigrateMongoDBCollectionToAutoscale := m.beginMigrateMongoDBCollectionToAutoscale.get(req)
+	if beginMigrateMongoDBCollectionToAutoscale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMigrateMongoDBCollectionToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateMongoDBCollectionToAutoscale = &respr
+		m.beginMigrateMongoDBCollectionToAutoscale.add(req, beginMigrateMongoDBCollectionToAutoscale)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateMongoDBCollectionToAutoscale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMigrateMongoDBCollectionToAutoscale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateMongoDBCollectionToAutoscale) {
+		m.beginMigrateMongoDBCollectionToAutoscale.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBCollectionToManualThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMigrateMongoDBCollectionToManualThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBCollectionToManualThroughput not implemented")}
+	}
+	beginMigrateMongoDBCollectionToManualThroughput := m.beginMigrateMongoDBCollectionToManualThroughput.get(req)
+	if beginMigrateMongoDBCollectionToManualThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMigrateMongoDBCollectionToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateMongoDBCollectionToManualThroughput = &respr
+		m.beginMigrateMongoDBCollectionToManualThroughput.add(req, beginMigrateMongoDBCollectionToManualThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateMongoDBCollectionToManualThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMigrateMongoDBCollectionToManualThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateMongoDBCollectionToManualThroughput) {
+		m.beginMigrateMongoDBCollectionToManualThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBDatabaseToAutoscale(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMigrateMongoDBDatabaseToAutoscale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBDatabaseToAutoscale not implemented")}
+	}
+	beginMigrateMongoDBDatabaseToAutoscale := m.beginMigrateMongoDBDatabaseToAutoscale.get(req)
+	if beginMigrateMongoDBDatabaseToAutoscale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMigrateMongoDBDatabaseToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateMongoDBDatabaseToAutoscale = &respr
+		m.beginMigrateMongoDBDatabaseToAutoscale.add(req, beginMigrateMongoDBDatabaseToAutoscale)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateMongoDBDatabaseToAutoscale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMigrateMongoDBDatabaseToAutoscale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateMongoDBDatabaseToAutoscale) {
+		m.beginMigrateMongoDBDatabaseToAutoscale.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBDatabaseToManualThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMigrateMongoDBDatabaseToManualThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBDatabaseToManualThroughput not implemented")}
+	}
+	beginMigrateMongoDBDatabaseToManualThroughput := m.beginMigrateMongoDBDatabaseToManualThroughput.get(req)
+	if beginMigrateMongoDBDatabaseToManualThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMigrateMongoDBDatabaseToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateMongoDBDatabaseToManualThroughput = &respr
+		m.beginMigrateMongoDBDatabaseToManualThroughput.add(req, beginMigrateMongoDBDatabaseToManualThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateMongoDBDatabaseToManualThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMigrateMongoDBDatabaseToManualThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateMongoDBDatabaseToManualThroughput) {
+		m.beginMigrateMongoDBDatabaseToManualThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBContainerRedistributeThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMongoDBContainerRedistributeThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBContainerRedistributeThroughput not implemented")}
+	}
+	beginMongoDBContainerRedistributeThroughput := m.beginMongoDBContainerRedistributeThroughput.get(req)
+	if beginMongoDBContainerRedistributeThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/redistributeThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMongoDBContainerRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMongoDBContainerRedistributeThroughput = &respr
+		m.beginMongoDBContainerRedistributeThroughput.add(req, beginMongoDBContainerRedistributeThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMongoDBContainerRedistributeThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMongoDBContainerRedistributeThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMongoDBContainerRedistributeThroughput) {
+		m.beginMongoDBContainerRedistributeThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBContainerRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMongoDBContainerRetrieveThroughputDistribution == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBContainerRetrieveThroughputDistribution not implemented")}
+	}
+	beginMongoDBContainerRetrieveThroughputDistribution := m.beginMongoDBContainerRetrieveThroughputDistribution.get(req)
+	if beginMongoDBContainerRetrieveThroughputDistribution == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/retrieveThroughputDistribution`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMongoDBContainerRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMongoDBContainerRetrieveThroughputDistribution = &respr
+		m.beginMongoDBContainerRetrieveThroughputDistribution.add(req, beginMongoDBContainerRetrieveThroughputDistribution)
+	}
+
+	resp, err := server.PollerResponderNext(beginMongoDBContainerRetrieveThroughputDistribution, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMongoDBContainerRetrieveThroughputDistribution.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMongoDBContainerRetrieveThroughputDistribution) {
+		m.beginMongoDBContainerRetrieveThroughputDistribution.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabasePartitionMerge(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMongoDBDatabasePartitionMerge == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabasePartitionMerge not implemented")}
+	}
+	beginMongoDBDatabasePartitionMerge := m.beginMongoDBDatabasePartitionMerge.get(req)
+	if beginMongoDBDatabasePartitionMerge == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/partitionMerge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMongoDBDatabasePartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMongoDBDatabasePartitionMerge = &respr
+		m.beginMongoDBDatabasePartitionMerge.add(req, beginMongoDBDatabasePartitionMerge)
+	}
+
+	resp, err := server.PollerResponderNext(beginMongoDBDatabasePartitionMerge, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMongoDBDatabasePartitionMerge.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMongoDBDatabasePartitionMerge) {
+		m.beginMongoDBDatabasePartitionMerge.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabaseRedistributeThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMongoDBDatabaseRedistributeThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabaseRedistributeThroughput not implemented")}
+	}
+	beginMongoDBDatabaseRedistributeThroughput := m.beginMongoDBDatabaseRedistributeThroughput.get(req)
+	if beginMongoDBDatabaseRedistributeThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/redistributeThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMongoDBDatabaseRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMongoDBDatabaseRedistributeThroughput = &respr
+		m.beginMongoDBDatabaseRedistributeThroughput.add(req, beginMongoDBDatabaseRedistributeThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMongoDBDatabaseRedistributeThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMongoDBDatabaseRedistributeThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMongoDBDatabaseRedistributeThroughput) {
+		m.beginMongoDBDatabaseRedistributeThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabaseRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginMongoDBDatabaseRetrieveThroughputDistribution == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabaseRetrieveThroughputDistribution not implemented")}
+	}
+	beginMongoDBDatabaseRetrieveThroughputDistribution := m.beginMongoDBDatabaseRetrieveThroughputDistribution.get(req)
+	if beginMongoDBDatabaseRetrieveThroughputDistribution == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/retrieveThroughputDistribution`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginMongoDBDatabaseRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMongoDBDatabaseRetrieveThroughputDistribution = &respr
+		m.beginMongoDBDatabaseRetrieveThroughputDistribution.add(req, beginMongoDBDatabaseRetrieveThroughputDistribution)
+	}
+
+	resp, err := server.PollerResponderNext(beginMongoDBDatabaseRetrieveThroughputDistribution, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginMongoDBDatabaseRetrieveThroughputDistribution.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMongoDBDatabaseRetrieveThroughputDistribution) {
+		m.beginMongoDBDatabaseRetrieveThroughputDistribution.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginRetrieveContinuousBackupInformation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
+	}
+	beginRetrieveContinuousBackupInformation := m.beginRetrieveContinuousBackupInformation.get(req)
+	if beginRetrieveContinuousBackupInformation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRetrieveContinuousBackupInformation = &respr
+		m.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
+	}
+
+	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginRetrieveContinuousBackupInformation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
+		m.beginRetrieveContinuousBackupInformation.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginUpdateMongoDBCollectionThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdateMongoDBCollectionThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateMongoDBCollectionThroughput not implemented")}
+	}
+	beginUpdateMongoDBCollectionThroughput := m.beginUpdateMongoDBCollectionThroughput.get(req)
+	if beginUpdateMongoDBCollectionThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdateMongoDBCollectionThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateMongoDBCollectionThroughput = &respr
+		m.beginUpdateMongoDBCollectionThroughput.add(req, beginUpdateMongoDBCollectionThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateMongoDBCollectionThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdateMongoDBCollectionThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateMongoDBCollectionThroughput) {
+		m.beginUpdateMongoDBCollectionThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MongoDBResourcesServerTransport) dispatchBeginUpdateMongoDBDatabaseThroughput(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdateMongoDBDatabaseThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateMongoDBDatabaseThroughput not implemented")}
+	}
+	beginUpdateMongoDBDatabaseThroughput := m.beginUpdateMongoDBDatabaseThroughput.get(req)
+	if beginUpdateMongoDBDatabaseThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdateMongoDBDatabaseThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateMongoDBDatabaseThroughput = &respr
+		m.beginUpdateMongoDBDatabaseThroughput.add(req, beginUpdateMongoDBDatabaseThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateMongoDBDatabaseThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdateMongoDBDatabaseThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateMongoDBDatabaseThroughput) {
+		m.beginUpdateMongoDBDatabaseThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MongoDBResourcesServerTransport) dispatchGetMongoDBCollection(req *http.Request) (*http.Response, error) {
 	if m.srv.GetMongoDBCollection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMongoDBCollection not implemented")}
@@ -948,62 +1636,6 @@ func (m *MongoDBResourcesServerTransport) dispatchGetMongoUserDefinition(req *ht
 	return resp, nil
 }
 
-func (m *MongoDBResourcesServerTransport) dispatchBeginListMongoDBCollectionPartitionMerge(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginListMongoDBCollectionPartitionMerge == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListMongoDBCollectionPartitionMerge not implemented")}
-	}
-	beginListMongoDBCollectionPartitionMerge := m.beginListMongoDBCollectionPartitionMerge.get(req)
-	if beginListMongoDBCollectionPartitionMerge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitionMerge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginListMongoDBCollectionPartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListMongoDBCollectionPartitionMerge = &respr
-		m.beginListMongoDBCollectionPartitionMerge.add(req, beginListMongoDBCollectionPartitionMerge)
-	}
-
-	resp, err := server.PollerResponderNext(beginListMongoDBCollectionPartitionMerge, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginListMongoDBCollectionPartitionMerge.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginListMongoDBCollectionPartitionMerge) {
-		m.beginListMongoDBCollectionPartitionMerge.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (m *MongoDBResourcesServerTransport) dispatchNewListMongoDBCollectionsPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListMongoDBCollectionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListMongoDBCollectionsPager not implemented")}
@@ -1169,638 +1801,6 @@ func (m *MongoDBResourcesServerTransport) dispatchNewListMongoUserDefinitionsPag
 	if !server.PagerResponderMore(newListMongoUserDefinitionsPager) {
 		m.newListMongoUserDefinitionsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBCollectionToAutoscale(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMigrateMongoDBCollectionToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBCollectionToAutoscale not implemented")}
-	}
-	beginMigrateMongoDBCollectionToAutoscale := m.beginMigrateMongoDBCollectionToAutoscale.get(req)
-	if beginMigrateMongoDBCollectionToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMigrateMongoDBCollectionToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateMongoDBCollectionToAutoscale = &respr
-		m.beginMigrateMongoDBCollectionToAutoscale.add(req, beginMigrateMongoDBCollectionToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateMongoDBCollectionToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMigrateMongoDBCollectionToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateMongoDBCollectionToAutoscale) {
-		m.beginMigrateMongoDBCollectionToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBCollectionToManualThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMigrateMongoDBCollectionToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBCollectionToManualThroughput not implemented")}
-	}
-	beginMigrateMongoDBCollectionToManualThroughput := m.beginMigrateMongoDBCollectionToManualThroughput.get(req)
-	if beginMigrateMongoDBCollectionToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMigrateMongoDBCollectionToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateMongoDBCollectionToManualThroughput = &respr
-		m.beginMigrateMongoDBCollectionToManualThroughput.add(req, beginMigrateMongoDBCollectionToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateMongoDBCollectionToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMigrateMongoDBCollectionToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateMongoDBCollectionToManualThroughput) {
-		m.beginMigrateMongoDBCollectionToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBDatabaseToAutoscale(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMigrateMongoDBDatabaseToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBDatabaseToAutoscale not implemented")}
-	}
-	beginMigrateMongoDBDatabaseToAutoscale := m.beginMigrateMongoDBDatabaseToAutoscale.get(req)
-	if beginMigrateMongoDBDatabaseToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMigrateMongoDBDatabaseToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateMongoDBDatabaseToAutoscale = &respr
-		m.beginMigrateMongoDBDatabaseToAutoscale.add(req, beginMigrateMongoDBDatabaseToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateMongoDBDatabaseToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMigrateMongoDBDatabaseToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateMongoDBDatabaseToAutoscale) {
-		m.beginMigrateMongoDBDatabaseToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMigrateMongoDBDatabaseToManualThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMigrateMongoDBDatabaseToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMongoDBDatabaseToManualThroughput not implemented")}
-	}
-	beginMigrateMongoDBDatabaseToManualThroughput := m.beginMigrateMongoDBDatabaseToManualThroughput.get(req)
-	if beginMigrateMongoDBDatabaseToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMigrateMongoDBDatabaseToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateMongoDBDatabaseToManualThroughput = &respr
-		m.beginMigrateMongoDBDatabaseToManualThroughput.add(req, beginMigrateMongoDBDatabaseToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateMongoDBDatabaseToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMigrateMongoDBDatabaseToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateMongoDBDatabaseToManualThroughput) {
-		m.beginMigrateMongoDBDatabaseToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBContainerRedistributeThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMongoDBContainerRedistributeThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBContainerRedistributeThroughput not implemented")}
-	}
-	beginMongoDBContainerRedistributeThroughput := m.beginMongoDBContainerRedistributeThroughput.get(req)
-	if beginMongoDBContainerRedistributeThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/redistributeThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMongoDBContainerRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMongoDBContainerRedistributeThroughput = &respr
-		m.beginMongoDBContainerRedistributeThroughput.add(req, beginMongoDBContainerRedistributeThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMongoDBContainerRedistributeThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMongoDBContainerRedistributeThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMongoDBContainerRedistributeThroughput) {
-		m.beginMongoDBContainerRedistributeThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBContainerRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMongoDBContainerRetrieveThroughputDistribution == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBContainerRetrieveThroughputDistribution not implemented")}
-	}
-	beginMongoDBContainerRetrieveThroughputDistribution := m.beginMongoDBContainerRetrieveThroughputDistribution.get(req)
-	if beginMongoDBContainerRetrieveThroughputDistribution == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/retrieveThroughputDistribution`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMongoDBContainerRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMongoDBContainerRetrieveThroughputDistribution = &respr
-		m.beginMongoDBContainerRetrieveThroughputDistribution.add(req, beginMongoDBContainerRetrieveThroughputDistribution)
-	}
-
-	resp, err := server.PollerResponderNext(beginMongoDBContainerRetrieveThroughputDistribution, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMongoDBContainerRetrieveThroughputDistribution.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMongoDBContainerRetrieveThroughputDistribution) {
-		m.beginMongoDBContainerRetrieveThroughputDistribution.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabasePartitionMerge(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMongoDBDatabasePartitionMerge == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabasePartitionMerge not implemented")}
-	}
-	beginMongoDBDatabasePartitionMerge := m.beginMongoDBDatabasePartitionMerge.get(req)
-	if beginMongoDBDatabasePartitionMerge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitionMerge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMongoDBDatabasePartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMongoDBDatabasePartitionMerge = &respr
-		m.beginMongoDBDatabasePartitionMerge.add(req, beginMongoDBDatabasePartitionMerge)
-	}
-
-	resp, err := server.PollerResponderNext(beginMongoDBDatabasePartitionMerge, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMongoDBDatabasePartitionMerge.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMongoDBDatabasePartitionMerge) {
-		m.beginMongoDBDatabasePartitionMerge.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabaseRedistributeThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMongoDBDatabaseRedistributeThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabaseRedistributeThroughput not implemented")}
-	}
-	beginMongoDBDatabaseRedistributeThroughput := m.beginMongoDBDatabaseRedistributeThroughput.get(req)
-	if beginMongoDBDatabaseRedistributeThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/redistributeThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMongoDBDatabaseRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMongoDBDatabaseRedistributeThroughput = &respr
-		m.beginMongoDBDatabaseRedistributeThroughput.add(req, beginMongoDBDatabaseRedistributeThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMongoDBDatabaseRedistributeThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMongoDBDatabaseRedistributeThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMongoDBDatabaseRedistributeThroughput) {
-		m.beginMongoDBDatabaseRedistributeThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginMongoDBDatabaseRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginMongoDBDatabaseRetrieveThroughputDistribution == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMongoDBDatabaseRetrieveThroughputDistribution not implemented")}
-	}
-	beginMongoDBDatabaseRetrieveThroughputDistribution := m.beginMongoDBDatabaseRetrieveThroughputDistribution.get(req)
-	if beginMongoDBDatabaseRetrieveThroughputDistribution == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mongodbDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/retrieveThroughputDistribution`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginMongoDBDatabaseRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMongoDBDatabaseRetrieveThroughputDistribution = &respr
-		m.beginMongoDBDatabaseRetrieveThroughputDistribution.add(req, beginMongoDBDatabaseRetrieveThroughputDistribution)
-	}
-
-	resp, err := server.PollerResponderNext(beginMongoDBDatabaseRetrieveThroughputDistribution, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginMongoDBDatabaseRetrieveThroughputDistribution.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMongoDBDatabaseRetrieveThroughputDistribution) {
-		m.beginMongoDBDatabaseRetrieveThroughputDistribution.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginRetrieveContinuousBackupInformation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
-	}
-	beginRetrieveContinuousBackupInformation := m.beginRetrieveContinuousBackupInformation.get(req)
-	if beginRetrieveContinuousBackupInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRetrieveContinuousBackupInformation = &respr
-		m.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
-	}
-
-	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginRetrieveContinuousBackupInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
-		m.beginRetrieveContinuousBackupInformation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginUpdateMongoDBCollectionThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdateMongoDBCollectionThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateMongoDBCollectionThroughput not implemented")}
-	}
-	beginUpdateMongoDBCollectionThroughput := m.beginUpdateMongoDBCollectionThroughput.get(req)
-	if beginUpdateMongoDBCollectionThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		collectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdateMongoDBCollectionThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, collectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateMongoDBCollectionThroughput = &respr
-		m.beginUpdateMongoDBCollectionThroughput.add(req, beginUpdateMongoDBCollectionThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateMongoDBCollectionThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdateMongoDBCollectionThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateMongoDBCollectionThroughput) {
-		m.beginUpdateMongoDBCollectionThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *MongoDBResourcesServerTransport) dispatchBeginUpdateMongoDBDatabaseThroughput(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdateMongoDBDatabaseThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateMongoDBDatabaseThroughput not implemented")}
-	}
-	beginUpdateMongoDBDatabaseThroughput := m.beginUpdateMongoDBDatabaseThroughput.get(req)
-	if beginUpdateMongoDBDatabaseThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/mongodbDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdateMongoDBDatabaseThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateMongoDBDatabaseThroughput = &respr
-		m.beginUpdateMongoDBDatabaseThroughput.add(req, beginUpdateMongoDBDatabaseThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateMongoDBDatabaseThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdateMongoDBDatabaseThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateMongoDBDatabaseThroughput) {
-		m.beginUpdateMongoDBDatabaseThroughput.remove(req)
-	}
-
 	return resp, nil
 }
 

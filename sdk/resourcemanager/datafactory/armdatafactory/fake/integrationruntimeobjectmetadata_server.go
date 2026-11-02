@@ -21,13 +21,13 @@ import (
 
 // IntegrationRuntimeObjectMetadataServer is a fake server for instances of the armdatafactory.IntegrationRuntimeObjectMetadataClient type.
 type IntegrationRuntimeObjectMetadataServer struct {
-	// Get is the fake for method IntegrationRuntimeObjectMetadataClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimeObjectMetadataClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginRefresh is the fake for method IntegrationRuntimeObjectMetadataClient.BeginRefresh
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRefresh func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (resp azfake.PollerResponder[armdatafactory.IntegrationRuntimeObjectMetadataClientRefreshResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method IntegrationRuntimeObjectMetadataClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimeObjectMetadataClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIntegrationRuntimeObjectMetadataServerTransport creates a new instance of IntegrationRuntimeObjectMetadataServerTransport with the provided implementation.
@@ -68,10 +68,10 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchToMethodFake(r
 		}
 		if !intercepted {
 			switch method {
-			case "IntegrationRuntimeObjectMetadataClient.Get":
-				res.resp, res.err = i.dispatchGet(req)
 			case "IntegrationRuntimeObjectMetadataClient.BeginRefresh":
 				res.resp, res.err = i.dispatchBeginRefresh(req)
+			case "IntegrationRuntimeObjectMetadataClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -86,53 +86,6 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchToMethodFake(r
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if i.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getObjectMetadata`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatafactory.GetSsisObjectMetadataRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-	if err != nil {
-		return nil, err
-	}
-	integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{
-			GetMetadataRequest: &body,
-		}
-	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SsisObjectMetadataListResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
@@ -180,6 +133,53 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchBeginRefresh(r
 		i.beginRefresh.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if i.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getObjectMetadata`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatafactory.GetSsisObjectMetadataRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+	if err != nil {
+		return nil, err
+	}
+	integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{
+			GetMetadataRequest: &body,
+		}
+	}
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SsisObjectMetadataListResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

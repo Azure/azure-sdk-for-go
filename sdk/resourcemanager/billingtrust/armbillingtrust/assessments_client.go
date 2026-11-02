@@ -62,7 +62,7 @@ func (client *AssessmentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
+// createOrUpdate - Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
 // `Azure-AsyncOperation` polling header on both responses.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssessmentsClient) createOrUpdate(ctx context.Context, resourceURI string, resource Assessment, options *AssessmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -85,7 +85,7 @@ func (client *AssessmentsClient) createOrUpdate(ctx context.Context, resourceURI
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, resource Assessment, _ *AssessmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default"
 	if resourceURI == "" {
@@ -130,8 +130,8 @@ func (client *AssessmentsClient) BeginDelete(ctx context.Context, resourceURI st
 	}
 }
 
-// Delete - Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation` (preferred)
-// and `Location` polling headers.
+// deleteOperation - Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation`
+// (preferred) and `Location` polling headers.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssessmentsClient) deleteOperation(ctx context.Context, resourceURI string, options *AssessmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -153,7 +153,7 @@ func (client *AssessmentsClient) deleteOperation(ctx context.Context, resourceUR
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *AssessmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default"
 	if resourceURI == "" {
@@ -221,6 +221,58 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
+// ListUploadToken - Request a time-bound, principal-bound upload token for supplemental document uploads.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - AssessmentsClientListUploadTokenOptions contains the optional parameters for the AssessmentsClient.ListUploadToken
+//     method.
+func (client *AssessmentsClient) ListUploadToken(ctx context.Context, resourceURI string, options *AssessmentsClientListUploadTokenOptions) (AssessmentsClientListUploadTokenResponse, error) {
+	var err error
+	const operationName = "AssessmentsClient.ListUploadToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listUploadTokenCreateRequest(ctx, resourceURI, options)
+	if err != nil {
+		return AssessmentsClientListUploadTokenResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssessmentsClientListUploadTokenResponse{}, err
+	}
+	return client.listUploadTokenHandleResponse(httpResp, http.StatusOK)
+}
+
+// listUploadTokenCreateRequest creates the ListUploadToken request.
+func (client *AssessmentsClient) listUploadTokenCreateRequest(ctx context.Context, resourceURI string, _ *AssessmentsClientListUploadTokenOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/listUploadToken"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260317Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listUploadTokenHandleResponse handles the ListUploadToken response.
+func (client *AssessmentsClient) listUploadTokenHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsClientListUploadTokenResponse, error) {
+	result := AssessmentsClientListUploadTokenResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateUploadTokenResponse); err != nil {
+		return AssessmentsClientListUploadTokenResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Assessment resources by parent
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.NewListPager method.
@@ -284,58 +336,6 @@ func (client *AssessmentsClient) listHandleResponse(resp *http.Response, success
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentListResult); err != nil {
 		return AssessmentsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListUploadToken - Request a time-bound, principal-bound upload token for supplemental document uploads.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - AssessmentsClientListUploadTokenOptions contains the optional parameters for the AssessmentsClient.ListUploadToken
-//     method.
-func (client *AssessmentsClient) ListUploadToken(ctx context.Context, resourceURI string, options *AssessmentsClientListUploadTokenOptions) (AssessmentsClientListUploadTokenResponse, error) {
-	var err error
-	const operationName = "AssessmentsClient.ListUploadToken"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listUploadTokenCreateRequest(ctx, resourceURI, options)
-	if err != nil {
-		return AssessmentsClientListUploadTokenResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AssessmentsClientListUploadTokenResponse{}, err
-	}
-	return client.listUploadTokenHandleResponse(httpResp, http.StatusOK)
-}
-
-// listUploadTokenCreateRequest creates the ListUploadToken request.
-func (client *AssessmentsClient) listUploadTokenCreateRequest(ctx context.Context, resourceURI string, _ *AssessmentsClientListUploadTokenOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/listUploadToken"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260317Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listUploadTokenHandleResponse handles the ListUploadToken response.
-func (client *AssessmentsClient) listUploadTokenHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsClientListUploadTokenResponse, error) {
-	result := AssessmentsClientListUploadTokenResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateUploadTokenResponse); err != nil {
-		return AssessmentsClientListUploadTokenResponse{}, err
 	}
 	return result, nil
 }

@@ -157,6 +157,72 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Respons
 	return result, nil
 }
 
+// NewListAtTenantScopePager - Gets all resource providers for the tenant.
+//   - options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.NewListAtTenantScopePager
+//     method.
+func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProvidersClientListAtTenantScopeResponse]{
+		More: func(page ProvidersClientListAtTenantScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProvidersClientListAtTenantScopeResponse) (ProvidersClientListAtTenantScopeResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProvidersClient.NewListAtTenantScopePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAtTenantScopeCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ProvidersClientListAtTenantScopeResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProvidersClientListAtTenantScopeResponse{}, err
+			}
+			return client.listAtTenantScopeHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
+func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, nextLink string, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
+func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListAtTenantScopeResponse, error) {
+	result := ProvidersClientListAtTenantScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
+		return ProvidersClientListAtTenantScopeResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all resource providers for a subscription.
 //   - options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.NewListPager method.
 func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
@@ -222,72 +288,6 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAtTenantScopePager - Gets all resource providers for the tenant.
-//   - options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.NewListAtTenantScopePager
-//     method.
-func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProvidersClientListAtTenantScopeResponse]{
-		More: func(page ProvidersClientListAtTenantScopeResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ProvidersClientListAtTenantScopeResponse) (ProvidersClientListAtTenantScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProvidersClient.NewListAtTenantScopePager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAtTenantScopeCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ProvidersClientListAtTenantScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProvidersClientListAtTenantScopeResponse{}, err
-			}
-			return client.listAtTenantScopeHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, nextLink string, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		reqQP.Set("api-version", version20250401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListAtTenantScopeResponse, error) {
-	result := ProvidersClientListAtTenantScopeResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
-		return ProvidersClientListAtTenantScopeResponse{}, err
 	}
 	return result, nil
 }

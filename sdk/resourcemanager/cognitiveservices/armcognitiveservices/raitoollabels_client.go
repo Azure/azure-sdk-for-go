@@ -53,7 +53,7 @@ func NewRaiToolLabelsClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*runtime.Poller[RaiToolLabelsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiToolLabelsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiToolLabelsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiToolLabelsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

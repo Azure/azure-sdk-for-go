@@ -29,6 +29,10 @@ type SandboxGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, sandboxGroupName string, options *armappcontainers.SandboxGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.SandboxGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SandboxGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, sandboxGroupName string, properties armappcontainers.SandboxGroupPatch, options *armappcontainers.SandboxGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SandboxGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, sandboxGroupName string, options *armappcontainers.SandboxGroupsClientGetOptions) (resp azfake.Responder[armappcontainers.SandboxGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type SandboxGroupsServer struct {
 	// NewListBySubscriptionPager is the fake for method SandboxGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armappcontainers.SandboxGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.SandboxGroupsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method SandboxGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, sandboxGroupName string, properties armappcontainers.SandboxGroupPatch, options *armappcontainers.SandboxGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSandboxGroupsServerTransport creates a new instance of SandboxGroupsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewSandboxGroupsServerTransport(srv *SandboxGroupsServer) *SandboxGroupsSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.SandboxGroupsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.SandboxGroupsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type SandboxGroupsServerTransport struct {
 	srv                         *SandboxGroupsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.SandboxGroupsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.SandboxGroupsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SandboxGroupsServerTransport.
@@ -96,14 +96,14 @@ func (s *SandboxGroupsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SandboxGroupsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SandboxGroupsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SandboxGroupsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SandboxGroupsClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "SandboxGroupsClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "SandboxGroupsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (s *SandboxGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (s *SandboxGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/sandboxGroups/(?P<sandboxGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.SandboxGroupPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		sandboxGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, sandboxGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SandboxGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (s *SandboxGroupsServerTransport) dispatchNewListBySubscriptionPager(req *h
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SandboxGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/sandboxGroups/(?P<sandboxGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappcontainers.SandboxGroupPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		sandboxGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, sandboxGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

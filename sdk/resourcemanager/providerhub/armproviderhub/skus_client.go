@@ -903,83 +903,6 @@ func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListByResourceTypeRegistrationsPager - Gets the list of skus for the given resource type.
-//   - providerNamespace - The name of the resource provider hosted within ProviderHub.
-//   - resourceType - The resource type.
-//   - options - SKUsClientListByResourceTypeRegistrationsOptions contains the optional parameters for the SKUsClient.NewListByResourceTypeRegistrationsPager
-//     method.
-func (client *SKUsClient) NewListByResourceTypeRegistrationsPager(providerNamespace string, resourceType string, options *SKUsClientListByResourceTypeRegistrationsOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SKUsClientListByResourceTypeRegistrationsResponse]{
-		More: func(page SKUsClientListByResourceTypeRegistrationsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SKUsClientListByResourceTypeRegistrationsResponse) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListByResourceTypeRegistrationsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByResourceTypeRegistrationsCreateRequest(ctx, providerNamespace, resourceType, nextLink, options)
-			if err != nil {
-				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
-			}
-			return client.listByResourceTypeRegistrationsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceTypeRegistrationsCreateRequest creates the ListByResourceTypeRegistrations request.
-func (client *SKUsClient) listByResourceTypeRegistrationsCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if providerNamespace == "" {
-			return nil, errors.New("parameter providerNamespace cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-		if resourceType == "" {
-			return nil, errors.New("parameter resourceType cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251001)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByResourceTypeRegistrationsHandleResponse handles the ListByResourceTypeRegistrations response.
-func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
-	result := SKUsClientListByResourceTypeRegistrationsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
-		return SKUsClientListByResourceTypeRegistrationsResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager - Gets the list of skus for the given resource type.
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
@@ -1237,6 +1160,83 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThird
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
 		return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceTypeRegistrationsPager - Gets the list of skus for the given resource type.
+//   - providerNamespace - The name of the resource provider hosted within ProviderHub.
+//   - resourceType - The resource type.
+//   - options - SKUsClientListByResourceTypeRegistrationsOptions contains the optional parameters for the SKUsClient.NewListByResourceTypeRegistrationsPager
+//     method.
+func (client *SKUsClient) NewListByResourceTypeRegistrationsPager(providerNamespace string, resourceType string, options *SKUsClientListByResourceTypeRegistrationsOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SKUsClientListByResourceTypeRegistrationsResponse]{
+		More: func(page SKUsClientListByResourceTypeRegistrationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SKUsClientListByResourceTypeRegistrationsResponse) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListByResourceTypeRegistrationsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceTypeRegistrationsCreateRequest(ctx, providerNamespace, resourceType, nextLink, options)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
+			}
+			return client.listByResourceTypeRegistrationsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceTypeRegistrationsCreateRequest creates the ListByResourceTypeRegistrations request.
+func (client *SKUsClient) listByResourceTypeRegistrationsCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceTypeRegistrationsHandleResponse handles the ListByResourceTypeRegistrations response.
+func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
+	result := SKUsClientListByResourceTypeRegistrationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
+		return SKUsClientListByResourceTypeRegistrationsResponse{}, err
 	}
 	return result, nil
 }

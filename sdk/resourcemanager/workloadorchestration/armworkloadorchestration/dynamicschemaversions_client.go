@@ -70,7 +70,7 @@ func (client *DynamicSchemaVersionsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create or update a Dynamic Schema Version Resource
+// createOrUpdate - Create or update a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, _ *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *DynamicSchemaVersionsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a Dynamic Schema Version Resource
+// deleteOperation - Delete a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, _ *DynamicSchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {

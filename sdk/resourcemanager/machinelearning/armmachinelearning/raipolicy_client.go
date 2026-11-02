@@ -70,7 +70,7 @@ func (client *RaiPolicyClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Update the state of specified Content Filters associated with the Azure OpenAI account.
+// create - Update the state of specified Content Filters associated with the Azure OpenAI account.
 //
 // Update the state of specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *RaiPolicyClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RaiPolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, raiPolicyName string, body RaiPolicyPropertiesBasicResource, options *RaiPolicyClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
@@ -161,7 +161,7 @@ func (client *RaiPolicyClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes the specified Content Filters associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified Content Filters associated with the Azure OpenAI account.
 //
 // Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -185,7 +185,7 @@ func (client *RaiPolicyClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RaiPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, raiPolicyName string, options *RaiPolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {

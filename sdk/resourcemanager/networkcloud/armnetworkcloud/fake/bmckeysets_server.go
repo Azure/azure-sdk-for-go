@@ -30,6 +30,10 @@ type BmcKeySetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *armnetworkcloud.BmcKeySetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BmcKeySetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters armnetworkcloud.BmcKeySetPatchParameters, options *armnetworkcloud.BmcKeySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BmcKeySetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *armnetworkcloud.BmcKeySetsClientGetOptions) (resp azfake.Responder[armnetworkcloud.BmcKeySetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type BmcKeySetsServer struct {
 	// NewListByClusterPager is the fake for method BmcKeySetsClient.NewListByClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armnetworkcloud.BmcKeySetsClientListByClusterOptions) (resp azfake.PagerResponder[armnetworkcloud.BmcKeySetsClientListByClusterResponse])
-
-	// BeginUpdate is the fake for method BmcKeySetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters armnetworkcloud.BmcKeySetPatchParameters, options *armnetworkcloud.BmcKeySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBmcKeySetsServerTransport creates a new instance of BmcKeySetsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewBmcKeySetsServerTransport(srv *BmcKeySetsServer) *BmcKeySetsServerTransp
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientDeleteResponse]](),
-		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.BmcKeySetsClientListByClusterResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientUpdateResponse]](),
+		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.BmcKeySetsClientListByClusterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type BmcKeySetsServerTransport struct {
 	srv                   *BmcKeySetsServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientDeleteResponse]]
-	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.BmcKeySetsClientListByClusterResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armnetworkcloud.BmcKeySetsClientUpdateResponse]]
+	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.BmcKeySetsClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for BmcKeySetsServerTransport.
@@ -91,12 +91,12 @@ func (b *BmcKeySetsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BmcKeySetsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BmcKeySetsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
 			case "BmcKeySetsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BmcKeySetsClient.NewListByClusterPager":
 				res.resp, res.err = b.dispatchNewListByClusterPager(req)
-			case "BmcKeySetsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (b *BmcKeySetsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (b *BmcKeySetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := b.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bmcKeySets/(?P<bmcKeySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BmcKeySetPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		bmcKeySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bmcKeySetName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BmcKeySetsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BmcKeySetsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		b.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		b.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BmcKeySetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (b *BmcKeySetsServerTransport) dispatchNewListByClusterPager(req *http.Requ
 	if !server.PagerResponderMore(newListByClusterPager) {
 		b.newListByClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (b *BmcKeySetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := b.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bmcKeySets/(?P<bmcKeySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BmcKeySetPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		bmcKeySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bmcKeySetName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.BmcKeySetsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.BmcKeySetsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		b.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		b.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		b.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

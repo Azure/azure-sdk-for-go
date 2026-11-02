@@ -21,25 +21,25 @@ import (
 
 // StorageMoversServer is a fake server for instances of the armstoragemover.StorageMoversClient type.
 type StorageMoversServer struct {
-	// CreateOrUpdate is the fake for method StorageMoversClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover armstoragemover.StorageMover, options *armstoragemover.StorageMoversClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.StorageMoversClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method StorageMoversClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageMoverName string, options *armstoragemover.StorageMoversClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragemover.StorageMoversClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method StorageMoversClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover armstoragemover.StorageMover, options *armstoragemover.StorageMoversClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.StorageMoversClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method StorageMoversClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storageMoverName string, options *armstoragemover.StorageMoversClientGetOptions) (resp azfake.Responder[armstoragemover.StorageMoversClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method StorageMoversClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armstoragemover.StorageMoversClientListOptions) (resp azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method StorageMoversClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armstoragemover.StorageMoversClientListBySubscriptionOptions) (resp azfake.PagerResponder[armstoragemover.StorageMoversClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method StorageMoversClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armstoragemover.StorageMoversClientListOptions) (resp azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse])
 
 	// Update is the fake for method StorageMoversClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ func NewStorageMoversServerTransport(srv *StorageMoversServer) *StorageMoversSer
 	return &StorageMoversServerTransport{
 		srv:                        srv,
 		beginDelete:                newTracker[azfake.PollerResponder[armstoragemover.StorageMoversClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse]](),
 	}
 }
 
@@ -63,8 +63,8 @@ func NewStorageMoversServerTransport(srv *StorageMoversServer) *StorageMoversSer
 type StorageMoversServerTransport struct {
 	srv                        *StorageMoversServer
 	beginDelete                *tracker[azfake.PollerResponder[armstoragemover.StorageMoversClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armstoragemover.StorageMoversClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for StorageMoversServerTransport.
@@ -88,16 +88,16 @@ func (s *StorageMoversServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
-			case "StorageMoversClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "StorageMoversClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StorageMoversClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "StorageMoversClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "StorageMoversClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "StorageMoversClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "StorageMoversClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "StorageMoversClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -114,43 +114,6 @@ func (s *StorageMoversServerTransport) dispatchToMethodFake(req *http.Request, m
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *StorageMoversServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragemover.StorageMover](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StorageMover, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *StorageMoversServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -197,6 +160,43 @@ func (s *StorageMoversServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (s *StorageMoversServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armstoragemover.StorageMover](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StorageMover, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *StorageMoversServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -226,6 +226,39 @@ func (s *StorageMoversServerTransport) dispatchGet(req *http.Request) (*http.Res
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StorageMover, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StorageMoversServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armstoragemover.StorageMoversClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -263,39 +296,6 @@ func (s *StorageMoversServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StorageMoversServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armstoragemover.StorageMoversClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

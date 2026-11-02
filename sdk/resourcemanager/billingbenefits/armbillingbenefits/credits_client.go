@@ -67,7 +67,7 @@ func (client *CreditsClient) BeginCancel(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Cancel - Cancels a credit.
+// cancel - Cancels a credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CreditsClient) cancel(ctx context.Context, resourceGroupName string, creditName string, options *CreditsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *CreditsClient) cancel(ctx context.Context, resourceGroupName strin
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *CreditsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, creditName string, _ *CreditsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}/cancel"
 	if client.subscriptionID == "" {
@@ -139,7 +139,7 @@ func (client *CreditsClient) BeginCreate(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Create - Create a credit.
+// create - Create a credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CreditsClient) create(ctx context.Context, resourceGroupName string, creditName string, body Credit, options *CreditsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *CreditsClient) create(ctx context.Context, resourceGroupName strin
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *CreditsClient) createCreateRequest(ctx context.Context, resourceGroupName string, creditName string, body Credit, _ *CreditsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}"
 	if client.subscriptionID == "" {
@@ -213,7 +213,7 @@ func (client *CreditsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a credit.
+// deleteOperation - Delete a credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CreditsClient) deleteOperation(ctx context.Context, resourceGroupName string, creditName string, options *CreditsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -235,7 +235,7 @@ func (client *CreditsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CreditsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, creditName string, _ *CreditsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}"
 	if client.subscriptionID == "" {
@@ -257,6 +257,81 @@ func (client *CreditsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a credit.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - creditName - Name of the credit
+//   - body - Credit patch request
+//   - options - CreditsClientBeginUpdateOptions contains the optional parameters for the CreditsClient.BeginUpdate method.
+func (client *CreditsClient) BeginUpdate(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, options *CreditsClientBeginUpdateOptions) (*runtime.Poller[CreditsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, creditName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CreditsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CreditsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a credit.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CreditsClient) update(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, options *CreditsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CreditsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, creditName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CreditsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, _ *CreditsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if creditName == "" {
+		return nil, errors.New("parameter creditName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{creditName}", url.PathEscape(creditName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -525,79 +600,4 @@ func (client *CreditsClient) listBySubscriptionHandleResponse(resp *http.Respons
 		return CreditsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a credit.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - creditName - Name of the credit
-//   - body - Credit patch request
-//   - options - CreditsClientBeginUpdateOptions contains the optional parameters for the CreditsClient.BeginUpdate method.
-func (client *CreditsClient) BeginUpdate(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, options *CreditsClientBeginUpdateOptions) (*runtime.Poller[CreditsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, creditName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CreditsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CreditsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a credit.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CreditsClient) update(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, options *CreditsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CreditsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, creditName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CreditsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, creditName string, body CreditPatchRequest, _ *CreditsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if creditName == "" {
-		return nil, errors.New("parameter creditName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{creditName}", url.PathEscape(creditName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

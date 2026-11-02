@@ -129,7 +129,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualNetworkName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +144,9 @@ func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes the specified virtual network.
+// deleteOperation - Deletes the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualNetworksClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

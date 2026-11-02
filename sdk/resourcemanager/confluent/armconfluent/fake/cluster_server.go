@@ -20,13 +20,13 @@ import (
 
 // ClusterServer is a fake server for instances of the armconfluent.ClusterClient type.
 type ClusterServer struct {
-	// CreateOrUpdate is the fake for method ClusterClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body armconfluent.SCClusterRecord, options *armconfluent.ClusterClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.ClusterClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ClusterClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, options *armconfluent.ClusterClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfluent.ClusterClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ClusterClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body armconfluent.SCClusterRecord, options *armconfluent.ClusterClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.ClusterClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClusterServerTransport creates a new instance of ClusterServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func (c *ClusterServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "ClusterClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "ClusterClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ClusterClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,51 +85,6 @@ func (c *ClusterServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ClusterServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armconfluent.SCClusterRecord](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
-	if err != nil {
-		return nil, err
-	}
-	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SCClusterRecord, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *ClusterServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -181,6 +136,51 @@ func (c *ClusterServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ClusterServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.SCClusterRecord](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
+	if err != nil {
+		return nil, err
+	}
+	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SCClusterRecord, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

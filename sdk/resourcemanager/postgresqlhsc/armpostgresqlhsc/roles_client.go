@@ -69,7 +69,7 @@ func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Create - Creates a new role or updates an existing role.
+// create - Creates a new role or updates an existing role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RolesClient) create(ctx context.Context, resourceGroupName string, clusterName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RolesClient) create(ctx context.Context, resourceGroupName string,
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, roleName string, parameters Role, _ *RolesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Delete - Deletes a cluster role.
+// deleteOperation - Deletes a cluster role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, roleName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, roleName string, _ *RolesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}"
 	if client.subscriptionID == "" {

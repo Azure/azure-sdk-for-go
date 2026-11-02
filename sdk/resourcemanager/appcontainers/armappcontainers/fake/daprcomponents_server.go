@@ -33,13 +33,13 @@ type DaprComponentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *armappcontainers.DaprComponentsClientGetOptions) (resp azfake.Responder[armappcontainers.DaprComponentsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DaprComponentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, environmentName string, options *armappcontainers.DaprComponentsClientListOptions) (resp azfake.PagerResponder[armappcontainers.DaprComponentsClientListResponse])
-
 	// ListSecrets is the fake for method DaprComponentsClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *armappcontainers.DaprComponentsClientListSecretsOptions) (resp azfake.Responder[armappcontainers.DaprComponentsClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method DaprComponentsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, environmentName string, options *armappcontainers.DaprComponentsClientListOptions) (resp azfake.PagerResponder[armappcontainers.DaprComponentsClientListResponse])
 }
 
 // NewDaprComponentsServerTransport creates a new instance of DaprComponentsServerTransport with the provided implementation.
@@ -86,10 +86,10 @@ func (d *DaprComponentsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = d.dispatchDelete(req)
 			case "DaprComponentsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DaprComponentsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DaprComponentsClient.ListSecrets":
 				res.resp, res.err = d.dispatchListSecrets(req)
+			case "DaprComponentsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -221,6 +221,43 @@ func (d *DaprComponentsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (d *DaprComponentsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
+	if d.srv.ListSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/daprComponents/(?P<componentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListSecrets(req.Context(), resourceGroupNameParam, environmentNameParam, componentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DaprSecretsCollection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (d *DaprComponentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -258,43 +295,6 @@ func (d *DaprComponentsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DaprComponentsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
-	if d.srv.ListSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/daprComponents/(?P<componentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListSecrets(req.Context(), resourceGroupNameParam, environmentNameParam, componentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DaprSecretsCollection, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

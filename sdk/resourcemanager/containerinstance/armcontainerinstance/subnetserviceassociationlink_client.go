@@ -71,7 +71,7 @@ func (client *SubnetServiceAssociationLinkClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Delete container group virtual network association links.
+// deleteOperation - Delete container group virtual network association links.
 //
 // Delete container group virtual network association links. The operation does not delete other resources provided by the
 // user.
@@ -96,7 +96,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, _ *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default"
 	if client.subscriptionID == "" {

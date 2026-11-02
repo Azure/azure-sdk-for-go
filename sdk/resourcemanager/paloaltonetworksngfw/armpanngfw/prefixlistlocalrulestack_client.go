@@ -69,7 +69,7 @@ func (client *PrefixListLocalRulestackClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Create a PrefixListResource
+// createOrUpdate - Create a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrefixListLocalRulestackClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource PrefixListResource, options *PrefixListLocalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *PrefixListLocalRulestackClient) createOrUpdate(ctx context.Context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrefixListLocalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource PrefixListResource, _ *PrefixListLocalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *PrefixListLocalRulestackClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Delete a PrefixListResource
+// deleteOperation - Delete a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrefixListLocalRulestackClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *PrefixListLocalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *PrefixListLocalRulestackClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrefixListLocalRulestackClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, _ *PrefixListLocalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}"
 	if client.subscriptionID == "" {

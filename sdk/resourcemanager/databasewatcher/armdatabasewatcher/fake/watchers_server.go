@@ -29,18 +29,6 @@ type WatchersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, watcherName string, options *armdatabasewatcher.WatchersClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatabasewatcher.WatchersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method WatchersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, watcherName string, options *armdatabasewatcher.WatchersClientGetOptions) (resp azfake.Responder[armdatabasewatcher.WatchersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method WatchersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdatabasewatcher.WatchersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method WatchersClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armdatabasewatcher.WatchersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse])
-
 	// BeginStart is the fake for method WatchersClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStart func(ctx context.Context, resourceGroupName string, watcherName string, options *armdatabasewatcher.WatchersClientBeginStartOptions) (resp azfake.PollerResponder[armdatabasewatcher.WatchersClientStartResponse], errResp azfake.ErrorResponder)
@@ -52,6 +40,18 @@ type WatchersServer struct {
 	// BeginUpdate is the fake for method WatchersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, watcherName string, properties armdatabasewatcher.WatcherUpdate, options *armdatabasewatcher.WatchersClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatabasewatcher.WatchersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method WatchersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, watcherName string, options *armdatabasewatcher.WatchersClientGetOptions) (resp azfake.Responder[armdatabasewatcher.WatchersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method WatchersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdatabasewatcher.WatchersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method WatchersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armdatabasewatcher.WatchersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse])
 }
 
 // NewWatchersServerTransport creates a new instance of WatchersServerTransport with the provided implementation.
@@ -62,11 +62,11 @@ func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientStopResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -76,11 +76,11 @@ type WatchersServerTransport struct {
 	srv                         *WatchersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientStopResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdatabasewatcher.WatchersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdatabasewatcher.WatchersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for WatchersServerTransport.
@@ -108,18 +108,18 @@ func (w *WatchersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
 			case "WatchersClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
-			case "WatchersClient.Get":
-				res.resp, res.err = w.dispatchGet(req)
-			case "WatchersClient.NewListByResourceGroupPager":
-				res.resp, res.err = w.dispatchNewListByResourceGroupPager(req)
-			case "WatchersClient.NewListBySubscriptionPager":
-				res.resp, res.err = w.dispatchNewListBySubscriptionPager(req)
 			case "WatchersClient.BeginStart":
 				res.resp, res.err = w.dispatchBeginStart(req)
 			case "WatchersClient.BeginStop":
 				res.resp, res.err = w.dispatchBeginStop(req)
 			case "WatchersClient.BeginUpdate":
 				res.resp, res.err = w.dispatchBeginUpdate(req)
+			case "WatchersClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WatchersClient.NewListByResourceGroupPager":
+				res.resp, res.err = w.dispatchNewListByResourceGroupPager(req)
+			case "WatchersClient.NewListBySubscriptionPager":
+				res.resp, res.err = w.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -225,109 +225,6 @@ func (w *WatchersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		w.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if w.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	watcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("watcherName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, watcherNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := w.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		w.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdatabasewatcher.WatchersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		w.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := w.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := w.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		w.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdatabasewatcher.WatchersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		w.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -464,6 +361,109 @@ func (w *WatchersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		w.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if w.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	watcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("watcherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, watcherNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := w.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		w.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdatabasewatcher.WatchersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		w.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := w.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := w.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		w.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdatabasewatcher.WatchersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		w.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

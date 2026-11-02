@@ -29,6 +29,10 @@ type SchemaRegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *armdeviceregistry.SchemaRegistriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SchemaRegistriesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties armdeviceregistry.SchemaRegistryUpdate, options *armdeviceregistry.SchemaRegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SchemaRegistriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *armdeviceregistry.SchemaRegistriesClientGetOptions) (resp azfake.Responder[armdeviceregistry.SchemaRegistriesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type SchemaRegistriesServer struct {
 	// NewListBySubscriptionPager is the fake for method SchemaRegistriesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdeviceregistry.SchemaRegistriesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdeviceregistry.SchemaRegistriesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method SchemaRegistriesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties armdeviceregistry.SchemaRegistryUpdate, options *armdeviceregistry.SchemaRegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchemaRegistriesServerTransport creates a new instance of SchemaRegistriesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewSchemaRegistriesServerTransport(srv *SchemaRegistriesServer) *SchemaRegi
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.SchemaRegistriesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdeviceregistry.SchemaRegistriesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type SchemaRegistriesServerTransport struct {
 	srv                         *SchemaRegistriesServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.SchemaRegistriesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdeviceregistry.SchemaRegistriesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.SchemaRegistriesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SchemaRegistriesServerTransport.
@@ -96,14 +96,14 @@ func (s *SchemaRegistriesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchBeginCreateOrReplace(req)
 			case "SchemaRegistriesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SchemaRegistriesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SchemaRegistriesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SchemaRegistriesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "SchemaRegistriesClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "SchemaRegistriesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (s *SchemaRegistriesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (s *SchemaRegistriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/schemaRegistries/(?P<schemaRegistryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.SchemaRegistryUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		schemaRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaRegistryName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, schemaRegistryNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SchemaRegistriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (s *SchemaRegistriesServerTransport) dispatchNewListBySubscriptionPager(req
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SchemaRegistriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/schemaRegistries/(?P<schemaRegistryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.SchemaRegistryUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		schemaRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaRegistryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, schemaRegistryNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -29,6 +29,10 @@ type MigrationServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, migrationServiceName string, options *armdatamigration.MigrationServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatamigration.MigrationServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MigrationServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, migrationServiceName string, parameters armdatamigration.MigrationServiceUpdate, options *armdatamigration.MigrationServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MigrationServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, migrationServiceName string, options *armdatamigration.MigrationServicesClientGetOptions) (resp azfake.Responder[armdatamigration.MigrationServicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,10 +48,6 @@ type MigrationServicesServer struct {
 	// NewListMigrationsPager is the fake for method MigrationServicesClient.NewListMigrationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListMigrationsPager func(resourceGroupName string, migrationServiceName string, options *armdatamigration.MigrationServicesClientListMigrationsOptions) (resp azfake.PagerResponder[armdatamigration.MigrationServicesClientListMigrationsResponse])
-
-	// BeginUpdate is the fake for method MigrationServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, migrationServiceName string, parameters armdatamigration.MigrationServiceUpdate, options *armdatamigration.MigrationServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMigrationServicesServerTransport creates a new instance of MigrationServicesServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewMigrationServicesServerTransport(srv *MigrationServicesServer) *Migratio
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListBySubscriptionResponse]](),
 		newListMigrationsPager:      newTracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListMigrationsResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type MigrationServicesServerTransport struct {
 	srv                         *MigrationServicesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListBySubscriptionResponse]]
 	newListMigrationsPager      *tracker[azfake.PagerResponder[armdatamigration.MigrationServicesClientListMigrationsResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdatamigration.MigrationServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for MigrationServicesServerTransport.
@@ -102,6 +102,8 @@ func (m *MigrationServicesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "MigrationServicesClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MigrationServicesClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MigrationServicesClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MigrationServicesClient.NewListByResourceGroupPager":
@@ -110,8 +112,6 @@ func (m *MigrationServicesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
 			case "MigrationServicesClient.NewListMigrationsPager":
 				res.resp, res.err = m.dispatchNewListMigrationsPager(req)
-			case "MigrationServicesClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -215,6 +215,54 @@ func (m *MigrationServicesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		m.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MigrationServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/migrationServices/(?P<migrationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatamigration.MigrationServiceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		migrationServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("migrationServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, migrationServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -361,54 +409,6 @@ func (m *MigrationServicesServerTransport) dispatchNewListMigrationsPager(req *h
 	if !server.PagerResponderMore(newListMigrationsPager) {
 		m.newListMigrationsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MigrationServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/migrationServices/(?P<migrationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdatamigration.MigrationServiceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		migrationServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("migrationServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, migrationServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

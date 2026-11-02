@@ -68,7 +68,7 @@ func (client *ManagementClient) BeginSetupExtensions(ctx context.Context, resour
 	}
 }
 
-// SetupExtensions - The operation to Setup Machine Extensions.
+// setupExtensions - The operation to Setup Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) setupExtensions(ctx context.Context, resourceGroupName string, machineName string, extensions SetupExtensionRequest, options *ManagementClientBeginSetupExtensionsOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ManagementClient) setupExtensions(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// setupExtensionsCreateRequest creates the SetupExtensions request.
+// setupExtensionsCreateRequest creates the setupExtensions request.
 func (client *ManagementClient) setupExtensionsCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensions SetupExtensionRequest, _ *ManagementClientBeginSetupExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/addExtensions"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *ManagementClient) BeginUpgradeExtensions(ctx context.Context, reso
 	}
 }
 
-// UpgradeExtensions - The operation to Upgrade Machine Extensions.
+// upgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// upgradeExtensionsCreateRequest creates the UpgradeExtensions request.
+// upgradeExtensionsCreateRequest creates the upgradeExtensions request.
 func (client *ManagementClient) upgradeExtensionsCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, _ *ManagementClientBeginUpgradeExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions"
 	if client.subscriptionID == "" {

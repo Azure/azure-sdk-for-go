@@ -68,7 +68,7 @@ func (client *AvsStorageContainersClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete an AVS storage container
+// deleteOperation - Delete an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AvsStorageContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, options *AvsStorageContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *AvsStorageContainersClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, _ *AvsStorageContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}"
 	if client.subscriptionID == "" {

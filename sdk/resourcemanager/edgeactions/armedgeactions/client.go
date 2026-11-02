@@ -126,7 +126,7 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -141,9 +141,9 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 	}
 }
 
-// delete - Delete a EdgeAction
+// deleteOperation - Delete a EdgeAction
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) delete(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
+func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -563,6 +563,529 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01-preview/ServersMigrateNetworkMode.json
+func ExampleServersClient_BeginMigrateNetworkMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginMigrateNetworkMode(ctx, "exampleresourcegroup", "exampleserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse{
+	// 	MigrateNetworkStatus: armpostgresqlflexibleservers.MigrateNetworkStatus{
+	// 		SubscriptionID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 		ResourceGroupName: to.Ptr("exampleresourcegroup"),
+	// 		ServerName: to.Ptr("exampleserver"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersRestart.json
+func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "exampleresourcegroup", "exampleserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersRestartWithFailover.json
+func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServerWithAForcedFailoverToStandbyServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "exampleresourcegroup", "exampleserver", &armpostgresqlflexibleservers.ServersClientBeginRestartOptions{
+		Parameters: &armpostgresqlflexibleservers.RestartParameter{
+			FailoverMode:        to.Ptr(armpostgresqlflexibleservers.FailoverModeForcedFailover),
+			RestartWithFailover: to.Ptr(true),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersStart.json
+func ExampleServersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginStart(ctx, "exampleresourcegroup", "exampleserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersStartMajorVersionUpgradePrecheck.json
+func ExampleServersClient_BeginStartMajorVersionUpgradePrecheck() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginStartMajorVersionUpgradePrecheck(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckRequest{
+		TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEighteen),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse{
+	// 	StartMajorVersionUpgradePrecheckResponse: armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckResponse{
+	// 		Name: to.Ptr("pppppppp-pppp-pppp-pppp-pppppppppppp"),
+	// 		CreateTime: to.Ptr(time.Date(2026, time.April, 15, 10, 0, 0, 0, time.UTC)),
+	// 		Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersStop.json
+func ExampleServersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginStop(ctx, "exampleresourcegroup", "exampleserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
+func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionForced),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
+func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionForced),
+			},
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
+func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionPlanned),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
+func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionPlanned),
+			},
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdate.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
+			Backup: &armpostgresqlflexibleservers.BackupForPatch{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			Storage: &armpostgresqlflexibleservers.Storage{
+				AutoGrow:      to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
+				StorageSizeGB: to.Ptr[int32](1024),
+				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP30),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKUForPatch{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateFIPS.json
+func ExampleServersClient_BeginUpdate_enableOrDisableFipsModeOnAnExistingServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			FipsMode: to.Ptr(armpostgresqlflexibleservers.FipsModeDisabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServerWithCustomMaintenanceWindow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindowForPatch{
+				CustomWindow: to.Ptr("Enabled"),
+				DayOfWeek:    to.Ptr[int32](0),
+				StartHour:    to.Ptr[int32](8),
+				StartMinute:  to.Ptr[int32](0),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabled.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity": {},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity":      {},
+			},
+		},
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
+			Backup: &armpostgresqlflexibleservers.BackupForPatch{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+				Type:                            to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeAzureKeyVault),
+				GeoBackupKeyURI:                 to.Ptr("https://examplegeoredundantkeyvault.vault.azure.net/keys/examplekey/yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"),
+				GeoBackupUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity"),
+				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKUForPatch{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity": {},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity":      {},
+			},
+		},
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
+			Backup: &armpostgresqlflexibleservers.BackupForPatch{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+				Type:                            to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeAzureKeyVault),
+				GeoBackupKeyURI:                 to.Ptr("https://examplegeoredundantkeyvault.vault.azure.net/keys/examplekey"),
+				GeoBackupUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity"),
+				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey"),
+				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKUForPatch{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMajorVersionUpgrade.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServerToUpgradeTheMajorVersionOfPostgreSqlDatabaseEngine() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			Version:    to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
+func ExampleServersClient_BeginUpdate_updateAnExistingServerWithMicrosoftEntraAuthenticationEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
+			AuthConfig: &armpostgresqlflexibleservers.AuthConfigForPatch{
+				ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.MicrosoftEntraAuthEnabled),
+				PasswordAuth:        to.Ptr(armpostgresqlflexibleservers.PasswordBasedAuthEnabled),
+				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+			},
+			Backup: &armpostgresqlflexibleservers.BackupForPatch{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
+			Storage: &armpostgresqlflexibleservers.Storage{
+				AutoGrow:      to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
+				StorageSizeGB: to.Ptr[int32](1024),
+				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP30),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKUForPatch{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-07-01-preview/ServersGet.json
 func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1308,528 +1831,5 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersMigrateNetworkMode.json
-func ExampleServersClient_BeginMigrateNetworkMode() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginMigrateNetworkMode(ctx, "exampleresourcegroup", "exampleserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse{
-	// 	MigrateNetworkStatus: armpostgresqlflexibleservers.MigrateNetworkStatus{
-	// 		SubscriptionID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-	// 		ResourceGroupName: to.Ptr("exampleresourcegroup"),
-	// 		ServerName: to.Ptr("exampleserver"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersRestart.json
-func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "exampleresourcegroup", "exampleserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersRestartWithFailover.json
-func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServerWithAForcedFailoverToStandbyServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "exampleresourcegroup", "exampleserver", &armpostgresqlflexibleservers.ServersClientBeginRestartOptions{
-		Parameters: &armpostgresqlflexibleservers.RestartParameter{
-			FailoverMode:        to.Ptr(armpostgresqlflexibleservers.FailoverModeForcedFailover),
-			RestartWithFailover: to.Ptr(true),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersStart.json
-func ExampleServersClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginStart(ctx, "exampleresourcegroup", "exampleserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersStartMajorVersionUpgradePrecheck.json
-func ExampleServersClient_BeginStartMajorVersionUpgradePrecheck() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginStartMajorVersionUpgradePrecheck(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckRequest{
-		TargetVersion: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionEighteen),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse{
-	// 	StartMajorVersionUpgradePrecheckResponse: armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckResponse{
-	// 		Name: to.Ptr("pppppppp-pppp-pppp-pppp-pppppppppppp"),
-	// 		CreateTime: to.Ptr(time.Date(2026, time.April, 15, 10, 0, 0, 0, time.UTC)),
-	// 		Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusSucceeded),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersStop.json
-func ExampleServersClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginStop(ctx, "exampleresourcegroup", "exampleserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
-func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			Replica: &armpostgresqlflexibleservers.Replica{
-				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
-				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionForced),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
-func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			Replica: &armpostgresqlflexibleservers.Replica{
-				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
-				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionForced),
-			},
-			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
-func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			Replica: &armpostgresqlflexibleservers.Replica{
-				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
-				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionPlanned),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
-func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			Replica: &armpostgresqlflexibleservers.Replica{
-				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
-				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionPlanned),
-			},
-			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdate.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-			Backup: &armpostgresqlflexibleservers.BackupForPatch{
-				BackupRetentionDays: to.Ptr[int32](20),
-			},
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			Storage: &armpostgresqlflexibleservers.Storage{
-				AutoGrow:      to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
-				StorageSizeGB: to.Ptr[int32](1024),
-				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP30),
-			},
-		},
-		SKU: &armpostgresqlflexibleservers.SKUForPatch{
-			Name: to.Ptr("Standard_D8s_v3"),
-			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateFIPS.json
-func ExampleServersClient_BeginUpdate_enableOrDisableFipsModeOnAnExistingServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			FipsMode: to.Ptr(armpostgresqlflexibleservers.FipsModeDisabled),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServerWithCustomMaintenanceWindow() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindowForPatch{
-				CustomWindow: to.Ptr("Enabled"),
-				DayOfWeek:    to.Ptr[int32](0),
-				StartHour:    to.Ptr[int32](8),
-				StartMinute:  to.Ptr[int32](0),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabled.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
-			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity": {},
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity":      {},
-			},
-		},
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-			Backup: &armpostgresqlflexibleservers.BackupForPatch{
-				BackupRetentionDays: to.Ptr[int32](20),
-			},
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
-				Type:                            to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeAzureKeyVault),
-				GeoBackupKeyURI:                 to.Ptr("https://examplegeoredundantkeyvault.vault.azure.net/keys/examplekey/yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"),
-				GeoBackupUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity"),
-				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
-			},
-		},
-		SKU: &armpostgresqlflexibleservers.SKUForPatch{
-			Name: to.Ptr("Standard_D8s_v3"),
-			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
-			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity": {},
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity":      {},
-			},
-		},
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-			Backup: &armpostgresqlflexibleservers.BackupForPatch{
-				BackupRetentionDays: to.Ptr[int32](20),
-			},
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
-				Type:                            to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeAzureKeyVault),
-				GeoBackupKeyURI:                 to.Ptr("https://examplegeoredundantkeyvault.vault.azure.net/keys/examplekey"),
-				GeoBackupUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity"),
-				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey"),
-				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
-			},
-		},
-		SKU: &armpostgresqlflexibleservers.SKUForPatch{
-			Name: to.Ptr("Standard_D8s_v3"),
-			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMajorVersionUpgrade.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServerToUpgradeTheMajorVersionOfPostgreSqlDatabaseEngine() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			Version:    to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
-func ExampleServersClient_BeginUpdate_updateAnExistingServerWithMicrosoftEntraAuthenticationEnabled() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
-		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-			AuthConfig: &armpostgresqlflexibleservers.AuthConfigForPatch{
-				ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.MicrosoftEntraAuthEnabled),
-				PasswordAuth:        to.Ptr(armpostgresqlflexibleservers.PasswordBasedAuthEnabled),
-				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
-			},
-			Backup: &armpostgresqlflexibleservers.BackupForPatch{
-				BackupRetentionDays: to.Ptr[int32](20),
-			},
-			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			Storage: &armpostgresqlflexibleservers.Storage{
-				AutoGrow:      to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
-				StorageSizeGB: to.Ptr[int32](1024),
-				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP30),
-			},
-		},
-		SKU: &armpostgresqlflexibleservers.SKUForPatch{
-			Name: to.Ptr("Standard_D8s_v3"),
-			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

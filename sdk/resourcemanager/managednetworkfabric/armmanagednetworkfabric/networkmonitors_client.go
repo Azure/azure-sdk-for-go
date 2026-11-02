@@ -68,7 +68,7 @@ func (client *NetworkMonitorsClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Creates NetworkMonitor resource.
+// create - Creates NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, options *NetworkMonitorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, _ *NetworkMonitorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *NetworkMonitorsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
+// deleteOperation - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkMonitorName string, options *NetworkMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkMonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, _ *NetworkMonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,158 @@ func (client *NetworkMonitorsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - API to update certain properties of the NetworkMonitor resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkMonitorName - Name of the Network Monitor.
+//   - body - The resource properties to be updated.
+//   - options - NetworkMonitorsClientBeginUpdateOptions contains the optional parameters for the NetworkMonitorsClient.BeginUpdate
+//     method.
+func (client *NetworkMonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, networkMonitorName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkMonitorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkMonitorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - API to update certain properties of the NetworkMonitor resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkMonitorsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkMonitorName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, _ *NetworkMonitorsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkMonitorName == "" {
+		return nil, errors.New("parameter networkMonitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkMonitorName}", url.PathEscape(networkMonitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkMonitorName - Name of the Network Monitor.
+//   - body - Request payload.
+//   - options - NetworkMonitorsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkMonitorsClient.BeginUpdateAdministrativeState
+//     method.
+func (client *NetworkMonitorsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, networkMonitorName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkMonitorsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkMonitorsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkMonitorsClient.BeginUpdateAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkMonitorName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateAdministrativeStateCreateRequest creates the updateAdministrativeState request.
+func (client *NetworkMonitorsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, _ *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}/updateAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkMonitorName == "" {
+		return nil, errors.New("parameter networkMonitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkMonitorName}", url.PathEscape(networkMonitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -387,156 +539,4 @@ func (client *NetworkMonitorsClient) listBySubscriptionHandleResponse(resp *http
 		return NetworkMonitorsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - API to update certain properties of the NetworkMonitor resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkMonitorName - Name of the Network Monitor.
-//   - body - The resource properties to be updated.
-//   - options - NetworkMonitorsClientBeginUpdateOptions contains the optional parameters for the NetworkMonitorsClient.BeginUpdate
-//     method.
-func (client *NetworkMonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, networkMonitorName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkMonitorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkMonitorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - API to update certain properties of the NetworkMonitor resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkMonitorsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkMonitorName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, _ *NetworkMonitorsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkMonitorName == "" {
-		return nil, errors.New("parameter networkMonitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkMonitorName}", url.PathEscape(networkMonitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkMonitorName - Name of the Network Monitor.
-//   - body - Request payload.
-//   - options - NetworkMonitorsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkMonitorsClient.BeginUpdateAdministrativeState
-//     method.
-func (client *NetworkMonitorsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, networkMonitorName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkMonitorsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkMonitorsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkMonitorsClient.BeginUpdateAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkMonitorName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
-func (client *NetworkMonitorsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, _ *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkMonitorName == "" {
-		return nil, errors.New("parameter networkMonitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkMonitorName}", url.PathEscape(networkMonitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

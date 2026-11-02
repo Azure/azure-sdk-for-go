@@ -29,6 +29,10 @@ type MonitoredSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitoredSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MonitoredSubscriptionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, body armdynatrace.MonitoredSubscriptionProperties, options *armdynatrace.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MonitoredSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitoredSubscriptionsClientGetOptions) (resp azfake.Responder[armdynatrace.MonitoredSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type MonitoredSubscriptionsServer struct {
 	// NewListPager is the fake for method MonitoredSubscriptionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, monitorName string, options *armdynatrace.MonitoredSubscriptionsClientListOptions) (resp azfake.PagerResponder[armdynatrace.MonitoredSubscriptionsClientListResponse])
-
-	// BeginUpdate is the fake for method MonitoredSubscriptionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, body armdynatrace.MonitoredSubscriptionProperties, options *armdynatrace.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitoredSubscriptionsServerTransport creates a new instance of MonitoredSubscriptionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewMonitoredSubscriptionsServerTransport(srv *MonitoredSubscriptionsServer)
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdynatrace.MonitoredSubscriptionsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdynatrace.MonitoredSubscriptionsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type MonitoredSubscriptionsServerTransport struct {
 	srv                 *MonitoredSubscriptionsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdynatrace.MonitoredSubscriptionsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armdynatrace.MonitoredSubscriptionsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdynatrace.MonitoredSubscriptionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitoredSubscriptionsServerTransport.
@@ -90,12 +90,12 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "MonitoredSubscriptionsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MonitoredSubscriptionsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MonitoredSubscriptionsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MonitoredSubscriptionsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MonitoredSubscriptionsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -204,6 +204,54 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (m *MonitoredSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/monitoredSubscriptions/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdynatrace.MonitoredSubscriptionProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MonitoredSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -275,54 +323,6 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchNewListPager(req *http.R
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MonitoredSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/monitoredSubscriptions/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdynatrace.MonitoredSubscriptionProperties](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -128,7 +128,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*runtime.Poller[SecurityPartnerProvidersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, securityPartnerProviderName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, securityPartnerProviderName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Deletes the specified Security Partner Provider.
+// deleteOperation - Deletes the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPartnerProvidersClient) delete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPartnerProvidersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

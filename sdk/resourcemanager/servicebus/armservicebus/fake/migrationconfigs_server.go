@@ -21,13 +21,13 @@ import (
 
 // MigrationConfigsServer is a fake server for instances of the armservicebus.MigrationConfigsClient type.
 type MigrationConfigsServer struct {
-	// CompleteMigration is the fake for method MigrationConfigsClient.CompleteMigration
-	// HTTP status codes to indicate success: http.StatusOK
-	CompleteMigration func(ctx context.Context, resourceGroupName string, namespaceName string, configName armservicebus.MigrationConfigurationName, options *armservicebus.MigrationConfigsClientCompleteMigrationOptions) (resp azfake.Responder[armservicebus.MigrationConfigsClientCompleteMigrationResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateAndStartMigration is the fake for method MigrationConfigsClient.BeginCreateAndStartMigration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateAndStartMigration func(ctx context.Context, resourceGroupName string, namespaceName string, configName armservicebus.MigrationConfigurationName, parameters armservicebus.MigrationConfigProperties, options *armservicebus.MigrationConfigsClientBeginCreateAndStartMigrationOptions) (resp azfake.PollerResponder[armservicebus.MigrationConfigsClientCreateAndStartMigrationResponse], errResp azfake.ErrorResponder)
+
+	// CompleteMigration is the fake for method MigrationConfigsClient.CompleteMigration
+	// HTTP status codes to indicate success: http.StatusOK
+	CompleteMigration func(ctx context.Context, resourceGroupName string, namespaceName string, configName armservicebus.MigrationConfigurationName, options *armservicebus.MigrationConfigsClientCompleteMigrationOptions) (resp azfake.Responder[armservicebus.MigrationConfigsClientCompleteMigrationResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method MigrationConfigsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -86,10 +86,10 @@ func (m *MigrationConfigsServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "MigrationConfigsClient.CompleteMigration":
-				res.resp, res.err = m.dispatchCompleteMigration(req)
 			case "MigrationConfigsClient.BeginCreateAndStartMigration":
 				res.resp, res.err = m.dispatchBeginCreateAndStartMigration(req)
+			case "MigrationConfigsClient.CompleteMigration":
+				res.resp, res.err = m.dispatchCompleteMigration(req)
 			case "MigrationConfigsClient.Delete":
 				res.resp, res.err = m.dispatchDelete(req)
 			case "MigrationConfigsClient.Get":
@@ -112,49 +112,6 @@ func (m *MigrationConfigsServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *MigrationConfigsServerTransport) dispatchCompleteMigration(req *http.Request) (*http.Response, error) {
-	if m.srv.CompleteMigration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CompleteMigration not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceBus/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrationConfigurations/(?P<configName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	configNameParam, err := parseWithCast(matches[regex.SubexpIndex("configName")], func(v string) (armservicebus.MigrationConfigurationName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armservicebus.MigrationConfigurationName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.CompleteMigration(req.Context(), resourceGroupNameParam, namespaceNameParam, configNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *MigrationConfigsServerTransport) dispatchBeginCreateAndStartMigration(req *http.Request) (*http.Response, error) {
@@ -212,6 +169,49 @@ func (m *MigrationConfigsServerTransport) dispatchBeginCreateAndStartMigration(r
 		m.beginCreateAndStartMigration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *MigrationConfigsServerTransport) dispatchCompleteMigration(req *http.Request) (*http.Response, error) {
+	if m.srv.CompleteMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CompleteMigration not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceBus/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrationConfigurations/(?P<configName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	configNameParam, err := parseWithCast(matches[regex.SubexpIndex("configName")], func(v string) (armservicebus.MigrationConfigurationName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armservicebus.MigrationConfigurationName(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CompleteMigration(req.Context(), resourceGroupNameParam, namespaceNameParam, configNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

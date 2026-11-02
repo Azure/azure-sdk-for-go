@@ -44,6 +44,177 @@ func NewCustomAIModelsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted
+// from the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
+// (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
+// header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - aiManagerName - The name of the AI Manager resource.
+//   - customAIModelName - The name of the custom AI model resource.
+//   - resource - Resource create parameters.
+//   - options - CustomAIModelsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomAIModelsClient.BeginCreateOrUpdate
+//     method.
+func (client *CustomAIModelsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomAIModelsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, aiManagerName, customAIModelName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomAIModelsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomAIModelsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from
+// the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields (e.g.
+// `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
+// header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CustomAIModelsClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CustomAIModelsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *CustomAIModelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	if customAIModelName == "" {
+		return nil, errors.New("parameter customAIModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260902Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a CustomAIModel
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - aiManagerName - The name of the AI Manager resource.
+//   - customAIModelName - The name of the custom AI model resource.
+//   - options - CustomAIModelsClientBeginDeleteOptions contains the optional parameters for the CustomAIModelsClient.BeginDelete
+//     method.
+func (client *CustomAIModelsClient) BeginDelete(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*runtime.Poller[CustomAIModelsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomAIModelsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomAIModelsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete a CustomAIModel
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CustomAIModelsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CustomAIModelsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *CustomAIModelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	if customAIModelName == "" {
+		return nil, errors.New("parameter customAIModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260902Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
 // CalculateCost - Returns a ranked list of GPU SKU pricing plans for deploying this custom model in the target region, each
 // annotated with feasibility and per-replica hourly cost. Feasibility is determined by region availability, GPU quota, and
 // model architecture fit (verified at registration time). `servingPerformanceEstimation` is omitted for custom models. No
@@ -111,177 +282,6 @@ func (client *CustomAIModelsClient) calculateCostHandleResponse(resp *http.Respo
 		return CustomAIModelsClientCalculateCostResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted
-// from the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
-// (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
-// header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - aiManagerName - The name of the AI Manager resource.
-//   - customAIModelName - The name of the custom AI model resource.
-//   - resource - Resource create parameters.
-//   - options - CustomAIModelsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomAIModelsClient.BeginCreateOrUpdate
-//     method.
-func (client *CustomAIModelsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomAIModelsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, aiManagerName, customAIModelName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomAIModelsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomAIModelsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from
-// the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields (e.g.
-// `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
-// header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CustomAIModelsClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CustomAIModelsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomAIModelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if aiManagerName == "" {
-		return nil, errors.New("parameter aiManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-	if customAIModelName == "" {
-		return nil, errors.New("parameter customAIModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260902Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete a CustomAIModel
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - aiManagerName - The name of the AI Manager resource.
-//   - customAIModelName - The name of the custom AI model resource.
-//   - options - CustomAIModelsClientBeginDeleteOptions contains the optional parameters for the CustomAIModelsClient.BeginDelete
-//     method.
-func (client *CustomAIModelsClient) BeginDelete(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*runtime.Poller[CustomAIModelsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomAIModelsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomAIModelsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete a CustomAIModel
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CustomAIModelsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CustomAIModelsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *CustomAIModelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if aiManagerName == "" {
-		return nil, errors.New("parameter aiManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-	if customAIModelName == "" {
-		return nil, errors.New("parameter customAIModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260902Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	return req, nil
 }
 
 // Get - Get a CustomAIModel

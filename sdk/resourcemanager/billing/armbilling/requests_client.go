@@ -63,7 +63,7 @@ func (client *RequestsClient) BeginCreateOrUpdate(ctx context.Context, billingRe
 	}
 }
 
-// CreateOrUpdate - Create or update a billing request.
+// createOrUpdate - Create or update a billing request.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RequestsClient) createOrUpdate(ctx context.Context, billingRequestName string, parameters Request, options *RequestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *RequestsClient) createOrUpdate(ctx context.Context, billingRequest
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RequestsClient) createOrUpdateCreateRequest(ctx context.Context, billingRequestName string, parameters Request, _ *RequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingRequests/{billingRequestName}"
 	if billingRequestName == "" {

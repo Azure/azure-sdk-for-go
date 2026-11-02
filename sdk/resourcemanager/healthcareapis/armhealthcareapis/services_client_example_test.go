@@ -12,36 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/CheckNameAvailabilityPost.json
-func ExampleServicesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armhealthcareapis.CheckNameAvailabilityParameters{
-		Name: to.Ptr("serviceName"),
-		Type: to.Ptr("Microsoft.HealthcareApis/services"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhealthcareapis.ServicesClientCheckNameAvailabilityResponse{
-	// 	ServicesNameAvailabilityInfo: armhealthcareapis.ServicesNameAvailabilityInfo{
-	// 		Message: to.Ptr("Service name is not available."),
-	// 		NameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr(armhealthcareapis.ServiceNameUnavailabilityReasonAlreadyExists),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-04-01-preview/legacy/ServiceCreate.json
 func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateAServiceWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -408,6 +378,120 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-04-01-preview/legacy/ServicePatch.json
+func ExampleServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "rg1", "service1", armhealthcareapis.ServicesPatchDescription{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhealthcareapis.ServicesClientUpdateResponse{
+	// 	ServicesDescription: armhealthcareapis.ServicesDescription{
+	// 		Name: to.Ptr("service1"),
+	// 		Type: to.Ptr("Microsoft.HealthcareApis/services"),
+	// 		Etag: to.Ptr("etagvalue"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1"),
+	// 		Kind: to.Ptr(armhealthcareapis.KindFhirR4),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armhealthcareapis.ServicesProperties{
+	// 			AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
+	// 				{
+	// 					ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
+	// 				},
+	// 				{
+	// 					ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
+	// 				},
+	// 			},
+	// 			AuthenticationConfiguration: &armhealthcareapis.ServiceAuthenticationConfigurationInfo{
+	// 				Audience: to.Ptr("https://azurehealthcareapis.com"),
+	// 				Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+	// 				SmartProxyEnabled: to.Ptr(true),
+	// 			},
+	// 			CorsConfiguration: &armhealthcareapis.ServiceCorsConfigurationInfo{
+	// 				AllowCredentials: to.Ptr(false),
+	// 				Headers: []*string{
+	// 					to.Ptr("*"),
+	// 				},
+	// 				MaxAge: to.Ptr[int32](1440),
+	// 				Methods: []*string{
+	// 					to.Ptr("DELETE"),
+	// 					to.Ptr("GET"),
+	// 					to.Ptr("OPTIONS"),
+	// 					to.Ptr("PATCH"),
+	// 					to.Ptr("POST"),
+	// 					to.Ptr("PUT"),
+	// 				},
+	// 				Origins: []*string{
+	// 					to.Ptr("*"),
+	// 				},
+	// 			},
+	// 			CosmosDbConfiguration: &armhealthcareapis.ServiceCosmosDbConfigurationInfo{
+	// 				KeyVaultKeyURI: to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
+	// 				OfferThroughput: to.Ptr[int32](1000),
+	// 			},
+	// 			PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
+	// 			PublicNetworkAccess: to.Ptr(armhealthcareapis.PublicNetworkAccessDisabled),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-04-01-preview/CheckNameAvailabilityPost.json
+func ExampleServicesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armhealthcareapis.CheckNameAvailabilityParameters{
+		Name: to.Ptr("serviceName"),
+		Type: to.Ptr("Microsoft.HealthcareApis/services"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhealthcareapis.ServicesClientCheckNameAvailabilityResponse{
+	// 	ServicesNameAvailabilityInfo: armhealthcareapis.ServicesNameAvailabilityInfo{
+	// 		Message: to.Ptr("Service name is not available."),
+	// 		NameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr(armhealthcareapis.ServiceNameUnavailabilityReasonAlreadyExists),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-04-01-preview/legacy/ServiceGet.json
 func ExampleServicesClient_Get_getMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -554,89 +638,6 @@ func ExampleServicesClient_Get_getMetadataForCmkEnabledServiceInDataSovereignReg
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/legacy/ServiceList.json
-func ExampleServicesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServicesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armhealthcareapis.ServicesClientListResponse{
-		// 	ServicesDescriptionListResult: armhealthcareapis.ServicesDescriptionListResult{
-		// 		NextLink: to.Ptr("https://host/subscriptions/subid/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d"),
-		// 		Value: []*armhealthcareapis.ServicesDescription{
-		// 			{
-		// 				Name: to.Ptr("service1"),
-		// 				Type: to.Ptr("Microsoft.HealthcareApis/services"),
-		// 				Etag: to.Ptr("etag"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1"),
-		// 				Kind: to.Ptr(armhealthcareapis.KindFhirR4),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armhealthcareapis.ServicesProperties{
-		// 					AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
-		// 						{
-		// 							ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
-		// 						},
-		// 						{
-		// 							ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
-		// 						},
-		// 					},
-		// 					AuthenticationConfiguration: &armhealthcareapis.ServiceAuthenticationConfigurationInfo{
-		// 						Audience: to.Ptr("https://azurehealthcareapis.com"),
-		// 						Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
-		// 						SmartProxyEnabled: to.Ptr(true),
-		// 					},
-		// 					CorsConfiguration: &armhealthcareapis.ServiceCorsConfigurationInfo{
-		// 						AllowCredentials: to.Ptr(false),
-		// 						Headers: []*string{
-		// 							to.Ptr("*"),
-		// 						},
-		// 						MaxAge: to.Ptr[int32](1440),
-		// 						Methods: []*string{
-		// 							to.Ptr("DELETE"),
-		// 							to.Ptr("GET"),
-		// 							to.Ptr("OPTIONS"),
-		// 							to.Ptr("PATCH"),
-		// 							to.Ptr("POST"),
-		// 							to.Ptr("PUT"),
-		// 						},
-		// 						Origins: []*string{
-		// 							to.Ptr("*"),
-		// 						},
-		// 					},
-		// 					CosmosDbConfiguration: &armhealthcareapis.ServiceCosmosDbConfigurationInfo{
-		// 						KeyVaultKeyURI: to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
-		// 						OfferThroughput: to.Ptr[int32](1000),
-		// 					},
-		// 					PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
-		// 					PublicNetworkAccess: to.Ptr(armhealthcareapis.PublicNetworkAccessDisabled),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-04-01-preview/legacy/ServiceListByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -720,8 +721,8 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/legacy/ServicePatch.json
-func ExampleServicesClient_BeginUpdate() {
+// Generated from example definition: 2025-04-01-preview/legacy/ServiceList.json
+func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -731,75 +732,74 @@ func ExampleServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "rg1", "service1", armhealthcareapis.ServicesPatchDescription{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewServicesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhealthcareapis.ServicesClientListResponse{
+		// 	ServicesDescriptionListResult: armhealthcareapis.ServicesDescriptionListResult{
+		// 		NextLink: to.Ptr("https://host/subscriptions/subid/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d"),
+		// 		Value: []*armhealthcareapis.ServicesDescription{
+		// 			{
+		// 				Name: to.Ptr("service1"),
+		// 				Type: to.Ptr("Microsoft.HealthcareApis/services"),
+		// 				Etag: to.Ptr("etag"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1"),
+		// 				Kind: to.Ptr(armhealthcareapis.KindFhirR4),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armhealthcareapis.ServicesProperties{
+		// 					AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
+		// 						{
+		// 							ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
+		// 						},
+		// 						{
+		// 							ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
+		// 						},
+		// 					},
+		// 					AuthenticationConfiguration: &armhealthcareapis.ServiceAuthenticationConfigurationInfo{
+		// 						Audience: to.Ptr("https://azurehealthcareapis.com"),
+		// 						Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+		// 						SmartProxyEnabled: to.Ptr(true),
+		// 					},
+		// 					CorsConfiguration: &armhealthcareapis.ServiceCorsConfigurationInfo{
+		// 						AllowCredentials: to.Ptr(false),
+		// 						Headers: []*string{
+		// 							to.Ptr("*"),
+		// 						},
+		// 						MaxAge: to.Ptr[int32](1440),
+		// 						Methods: []*string{
+		// 							to.Ptr("DELETE"),
+		// 							to.Ptr("GET"),
+		// 							to.Ptr("OPTIONS"),
+		// 							to.Ptr("PATCH"),
+		// 							to.Ptr("POST"),
+		// 							to.Ptr("PUT"),
+		// 						},
+		// 						Origins: []*string{
+		// 							to.Ptr("*"),
+		// 						},
+		// 					},
+		// 					CosmosDbConfiguration: &armhealthcareapis.ServiceCosmosDbConfigurationInfo{
+		// 						KeyVaultKeyURI: to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
+		// 						OfferThroughput: to.Ptr[int32](1000),
+		// 					},
+		// 					PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
+		// 					PublicNetworkAccess: to.Ptr(armhealthcareapis.PublicNetworkAccessDisabled),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhealthcareapis.ServicesClientUpdateResponse{
-	// 	ServicesDescription: armhealthcareapis.ServicesDescription{
-	// 		Name: to.Ptr("service1"),
-	// 		Type: to.Ptr("Microsoft.HealthcareApis/services"),
-	// 		Etag: to.Ptr("etagvalue"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1"),
-	// 		Kind: to.Ptr(armhealthcareapis.KindFhirR4),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armhealthcareapis.ServicesProperties{
-	// 			AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
-	// 				{
-	// 					ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
-	// 				},
-	// 				{
-	// 					ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
-	// 				},
-	// 			},
-	// 			AuthenticationConfiguration: &armhealthcareapis.ServiceAuthenticationConfigurationInfo{
-	// 				Audience: to.Ptr("https://azurehealthcareapis.com"),
-	// 				Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
-	// 				SmartProxyEnabled: to.Ptr(true),
-	// 			},
-	// 			CorsConfiguration: &armhealthcareapis.ServiceCorsConfigurationInfo{
-	// 				AllowCredentials: to.Ptr(false),
-	// 				Headers: []*string{
-	// 					to.Ptr("*"),
-	// 				},
-	// 				MaxAge: to.Ptr[int32](1440),
-	// 				Methods: []*string{
-	// 					to.Ptr("DELETE"),
-	// 					to.Ptr("GET"),
-	// 					to.Ptr("OPTIONS"),
-	// 					to.Ptr("PATCH"),
-	// 					to.Ptr("POST"),
-	// 					to.Ptr("PUT"),
-	// 				},
-	// 				Origins: []*string{
-	// 					to.Ptr("*"),
-	// 				},
-	// 			},
-	// 			CosmosDbConfiguration: &armhealthcareapis.ServiceCosmosDbConfigurationInfo{
-	// 				KeyVaultKeyURI: to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
-	// 				OfferThroughput: to.Ptr[int32](1000),
-	// 			},
-	// 			PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
-	// 			PublicNetworkAccess: to.Ptr(armhealthcareapis.PublicNetworkAccessDisabled),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
 }

@@ -68,7 +68,7 @@ func (client *InstancesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Create a InstanceResource
+// createOrUpdate - Create a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, instancename string, resource InstanceResource, options *InstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *InstancesClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instancename string, resource InstanceResource, _ *InstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WeightsAndBiases/instances/{instancename}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete a InstanceResource
+// deleteOperation - Delete a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, instancename string, options *InstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instancename string, _ *InstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WeightsAndBiases/instances/{instancename}"
 	if client.subscriptionID == "" {

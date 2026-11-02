@@ -33,9 +33,21 @@ type CloudVMClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudvmclustername string, options *armoracledatabase.CloudVMClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.CloudVMClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRemoveVMs is the fake for method CloudVMClustersClient.BeginRemoveVMs
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRemoveVMs func(ctx context.Context, resourceGroupName string, cloudvmclustername string, body armoracledatabase.AddRemoveDbNode, options *armoracledatabase.CloudVMClustersClientBeginRemoveVMsOptions) (resp azfake.PollerResponder[armoracledatabase.CloudVMClustersClientRemoveVMsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method CloudVMClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties armoracledatabase.CloudVMClusterUpdate, options *armoracledatabase.CloudVMClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.CloudVMClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CloudVMClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudvmclustername string, options *armoracledatabase.CloudVMClustersClientGetOptions) (resp azfake.Responder[armoracledatabase.CloudVMClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListPrivateIPAddresses is the fake for method CloudVMClustersClient.ListPrivateIPAddresses
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPrivateIPAddresses func(ctx context.Context, resourceGroupName string, cloudvmclustername string, body armoracledatabase.PrivateIPAddressesFilter, options *armoracledatabase.CloudVMClustersClientListPrivateIPAddressesOptions) (resp azfake.Responder[armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method CloudVMClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,18 +56,6 @@ type CloudVMClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method CloudVMClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.CloudVMClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListBySubscriptionResponse])
-
-	// ListPrivateIPAddresses is the fake for method CloudVMClustersClient.ListPrivateIPAddresses
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPrivateIPAddresses func(ctx context.Context, resourceGroupName string, cloudvmclustername string, body armoracledatabase.PrivateIPAddressesFilter, options *armoracledatabase.CloudVMClustersClientListPrivateIPAddressesOptions) (resp azfake.Responder[armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse], errResp azfake.ErrorResponder)
-
-	// BeginRemoveVMs is the fake for method CloudVMClustersClient.BeginRemoveVMs
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRemoveVMs func(ctx context.Context, resourceGroupName string, cloudvmclustername string, body armoracledatabase.AddRemoveDbNode, options *armoracledatabase.CloudVMClustersClientBeginRemoveVMsOptions) (resp azfake.PollerResponder[armoracledatabase.CloudVMClustersClientRemoveVMsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method CloudVMClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties armoracledatabase.CloudVMClusterUpdate, options *armoracledatabase.CloudVMClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.CloudVMClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudVMClustersServerTransport creates a new instance of CloudVMClustersServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func NewCloudVMClustersServerTransport(srv *CloudVMClustersServer) *CloudVMClust
 		beginAddVMs:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientAddVMsResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListBySubscriptionResponse]](),
 		beginRemoveVMs:              newTracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientRemoveVMsResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -81,10 +81,10 @@ type CloudVMClustersServerTransport struct {
 	beginAddVMs                 *tracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientAddVMsResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListBySubscriptionResponse]]
 	beginRemoveVMs              *tracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientRemoveVMsResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.CloudVMClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.CloudVMClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudVMClustersServerTransport.
@@ -114,18 +114,18 @@ func (c *CloudVMClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CloudVMClustersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CloudVMClustersClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CloudVMClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "CloudVMClustersClient.NewListBySubscriptionPager":
-				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CloudVMClustersClient.ListPrivateIPAddresses":
-				res.resp, res.err = c.dispatchListPrivateIPAddresses(req)
 			case "CloudVMClustersClient.BeginRemoveVMs":
 				res.resp, res.err = c.dispatchBeginRemoveVMs(req)
 			case "CloudVMClustersClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CloudVMClustersClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CloudVMClustersClient.ListPrivateIPAddresses":
+				res.resp, res.err = c.dispatchListPrivateIPAddresses(req)
+			case "CloudVMClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CloudVMClustersClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -282,146 +282,6 @@ func (c *CloudVMClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (c *CloudVMClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudvmclusternameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudvmclustername")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudvmclusternameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudVMCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CloudVMClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armoracledatabase.CloudVMClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CloudVMClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.CloudVMClustersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		c.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CloudVMClustersServerTransport) dispatchListPrivateIPAddresses(req *http.Request) (*http.Response, error) {
-	if c.srv.ListPrivateIPAddresses == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPrivateIPAddresses not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPrivateIpAddresses`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armoracledatabase.PrivateIPAddressesFilter](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudvmclusternameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudvmclustername")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListPrivateIPAddresses(req.Context(), resourceGroupNameParam, cloudvmclusternameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateIPAddressPropertiesArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *CloudVMClustersServerTransport) dispatchBeginRemoveVMs(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginRemoveVMs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveVMs not implemented")}
@@ -515,6 +375,146 @@ func (c *CloudVMClustersServerTransport) dispatchBeginUpdate(req *http.Request) 
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CloudVMClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudvmclusternameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudvmclustername")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudvmclusternameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudVMCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CloudVMClustersServerTransport) dispatchListPrivateIPAddresses(req *http.Request) (*http.Response, error) {
+	if c.srv.ListPrivateIPAddresses == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPrivateIPAddresses not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPrivateIpAddresses`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armoracledatabase.PrivateIPAddressesFilter](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudvmclusternameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudvmclustername")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListPrivateIPAddresses(req.Context(), resourceGroupNameParam, cloudvmclusternameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateIPAddressPropertiesArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CloudVMClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armoracledatabase.CloudVMClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CloudVMClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.CloudVMClustersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		c.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -67,7 +67,7 @@ func (client *LedgerClient) BeginBackup(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Backup - Copies the ledger files and the service certificate to a customer's storage account of choice.
+// backup - Copies the ledger files and the service certificate to a customer's storage account of choice.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LedgerClient) backup(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Backup, options *LedgerClientBeginBackupOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *LedgerClient) backup(ctx context.Context, resourceGroupName string
 	return httpResp, nil
 }
 
-// backupCreateRequest creates the Backup request.
+// backupCreateRequest creates the backup request.
 func (client *LedgerClient) backupCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Backup, _ *LedgerClientBeginBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}/backup"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Create - Creates a Confidential Ledger with the specified ledger parameters.
+// create - Creates a Confidential Ledger with the specified ledger parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LedgerClient) create(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *LedgerClient) create(ctx context.Context, resourceGroupName string
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, _ *LedgerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
 	if client.subscriptionID == "" {
@@ -216,7 +216,7 @@ func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Deletes an existing Confidential Ledger.
+// deleteOperation - Deletes an existing Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -238,7 +238,7 @@ func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, _ *LedgerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
 	if client.subscriptionID == "" {
@@ -260,6 +260,156 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250610Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestore - Restores a Confidential Ledger Resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ledgerName - Name of the Confidential Ledger
+//   - confidentialLedger - Confidential Ledger Restore Request Body
+//   - options - LedgerClientBeginRestoreOptions contains the optional parameters for the LedgerClient.BeginRestore method.
+func (client *LedgerClient) BeginRestore(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, options *LedgerClientBeginRestoreOptions) (*runtime.Poller[LedgerClientRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restore(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restore - Restores a Confidential Ledger Resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LedgerClient) restore(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, options *LedgerClientBeginRestoreOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LedgerClient.BeginRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restoreCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restoreCreateRequest creates the restore request.
+func (client *LedgerClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, _ *LedgerClientBeginRestoreOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}/restore"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ledgerName == "" {
+		return nil, errors.New("parameter ledgerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates properties of Confidential Ledger
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ledgerName - Name of the Confidential Ledger
+//   - confidentialLedger - Confidential Ledger request body for Updating Ledger
+//   - options - LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
+func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*runtime.Poller[LedgerClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates properties of Confidential Ledger
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LedgerClient) update(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LedgerClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, _ *LedgerClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ledgerName == "" {
+		return nil, errors.New("parameter ledgerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -466,154 +616,4 @@ func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response
 		return LedgerClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestore - Restores a Confidential Ledger Resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - confidentialLedger - Confidential Ledger Restore Request Body
-//   - options - LedgerClientBeginRestoreOptions contains the optional parameters for the LedgerClient.BeginRestore method.
-func (client *LedgerClient) BeginRestore(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, options *LedgerClientBeginRestoreOptions) (*runtime.Poller[LedgerClientRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restore(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restore - Restores a Confidential Ledger Resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LedgerClient) restore(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, options *LedgerClientBeginRestoreOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LedgerClient.BeginRestore"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restoreCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restoreCreateRequest creates the Restore request.
-func (client *LedgerClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger Restore, _ *LedgerClientBeginRestoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}/restore"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250610Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates properties of Confidential Ledger
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - confidentialLedger - Confidential Ledger request body for Updating Ledger
-//   - options - LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
-func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*runtime.Poller[LedgerClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates properties of Confidential Ledger
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LedgerClient) update(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LedgerClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, _ *LedgerClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250610Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

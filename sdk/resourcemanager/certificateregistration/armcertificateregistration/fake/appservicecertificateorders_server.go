@@ -45,10 +45,6 @@ type AppServiceCertificateOrdersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCertificate func(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *armcertificateregistration.AppServiceCertificateOrdersClientGetCertificateOptions) (resp azfake.Responder[armcertificateregistration.AppServiceCertificateOrdersClientGetCertificateResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AppServiceCertificateOrdersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcertificateregistration.AppServiceCertificateOrdersClientListOptions) (resp azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AppServiceCertificateOrdersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcertificateregistration.AppServiceCertificateOrdersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListByResourceGroupResponse])
@@ -56,6 +52,10 @@ type AppServiceCertificateOrdersServer struct {
 	// NewListCertificatesPager is the fake for method AppServiceCertificateOrdersClient.NewListCertificatesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCertificatesPager func(resourceGroupName string, certificateOrderName string, options *armcertificateregistration.AppServiceCertificateOrdersClientListCertificatesOptions) (resp azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListCertificatesResponse])
+
+	// NewListPager is the fake for method AppServiceCertificateOrdersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcertificateregistration.AppServiceCertificateOrdersClientListOptions) (resp azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse])
 
 	// Reissue is the fake for method AppServiceCertificateOrdersClient.Reissue
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -110,9 +110,9 @@ func NewAppServiceCertificateOrdersServerTransport(srv *AppServiceCertificateOrd
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateResponse]](),
 		beginCreateOrUpdateCertificate: newTracker[azfake.PollerResponder[armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateCertificateResponse]](),
-		newListPager:                   newTracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse]](),
 		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListByResourceGroupResponse]](),
 		newListCertificatesPager:       newTracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListCertificatesResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse]](),
 	}
 }
 
@@ -122,9 +122,9 @@ type AppServiceCertificateOrdersServerTransport struct {
 	srv                            *AppServiceCertificateOrdersServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateResponse]]
 	beginCreateOrUpdateCertificate *tracker[azfake.PollerResponder[armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateCertificateResponse]]
-	newListPager                   *tracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse]]
 	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListByResourceGroupResponse]]
 	newListCertificatesPager       *tracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListCertificatesResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armcertificateregistration.AppServiceCertificateOrdersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AppServiceCertificateOrdersServerTransport.
@@ -160,12 +160,12 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchToMethodFake(req *h
 				res.resp, res.err = a.dispatchGet(req)
 			case "AppServiceCertificateOrdersClient.GetCertificate":
 				res.resp, res.err = a.dispatchGetCertificate(req)
-			case "AppServiceCertificateOrdersClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AppServiceCertificateOrdersClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AppServiceCertificateOrdersClient.NewListCertificatesPager":
 				res.resp, res.err = a.dispatchNewListCertificatesPager(req)
+			case "AppServiceCertificateOrdersClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AppServiceCertificateOrdersClient.Reissue":
 				res.resp, res.err = a.dispatchReissue(req)
 			case "AppServiceCertificateOrdersClient.Renew":
@@ -444,39 +444,6 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchGetCertificate(req 
 	return resp, nil
 }
 
-func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListPager(nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcertificateregistration.AppServiceCertificateOrdersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -551,6 +518,39 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListCertificates
 	}
 	if !server.PagerResponderMore(newListCertificatesPager) {
 		a.newListCertificatesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListPager(nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcertificateregistration.AppServiceCertificateOrdersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

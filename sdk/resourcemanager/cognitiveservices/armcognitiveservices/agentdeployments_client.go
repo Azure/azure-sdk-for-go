@@ -153,7 +153,7 @@ func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *AgentDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AgentDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, appName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -168,11 +168,11 @@ func (client *AgentDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Delete Agent Deployment.
+// deleteOperation - Delete Agent Deployment.
 //
 // Delete Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AgentDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AgentDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -67,7 +67,7 @@ func (client *CloudExadataInfrastructuresClient) BeginAddStorageCapacity(ctx con
 	}
 }
 
-// AddStorageCapacity - Perform add storage capacity on exadata infra
+// addStorageCapacity - Perform add storage capacity on exadata infra
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudExadataInfrastructuresClient) addStorageCapacity(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *CloudExadataInfrastructuresClient) addStorageCapacity(ctx context.
 	return httpResp, nil
 }
 
-// addStorageCapacityCreateRequest creates the AddStorageCapacity request.
+// addStorageCapacityCreateRequest creates the addStorageCapacity request.
 func (client *CloudExadataInfrastructuresClient) addStorageCapacityCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, _ *CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/addStorageCapacity"
 	if client.subscriptionID == "" {
@@ -139,7 +139,7 @@ func (client *CloudExadataInfrastructuresClient) BeginConfigureExascale(ctx cont
 	}
 }
 
-// ConfigureExascale - Configures Exascale on Cloud exadata infrastructure resource
+// configureExascale - Configures Exascale on Cloud exadata infrastructure resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudExadataInfrastructuresClient) configureExascale(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, body ConfigureExascaleCloudExadataInfrastructureDetails, options *CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *CloudExadataInfrastructuresClient) configureExascale(ctx context.C
 	return httpResp, nil
 }
 
-// configureExascaleCreateRequest creates the ConfigureExascale request.
+// configureExascaleCreateRequest creates the configureExascale request.
 func (client *CloudExadataInfrastructuresClient) configureExascaleCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, body ConfigureExascaleCloudExadataInfrastructureDetails, _ *CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale"
 	if client.subscriptionID == "" {
@@ -215,7 +215,7 @@ func (client *CloudExadataInfrastructuresClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create a CloudExadataInfrastructure
+// createOrUpdate - Create a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudExadataInfrastructuresClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, resource CloudExadataInfrastructure, options *CloudExadataInfrastructuresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -237,7 +237,7 @@ func (client *CloudExadataInfrastructuresClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CloudExadataInfrastructuresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, resource CloudExadataInfrastructure, _ *CloudExadataInfrastructuresClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
 	if client.subscriptionID == "" {
@@ -290,7 +290,7 @@ func (client *CloudExadataInfrastructuresClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Delete a CloudExadataInfrastructure
+// deleteOperation - Delete a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudExadataInfrastructuresClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *CloudExadataInfrastructuresClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -312,7 +312,7 @@ func (client *CloudExadataInfrastructuresClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CloudExadataInfrastructuresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, _ *CloudExadataInfrastructuresClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
 	if client.subscriptionID == "" {
@@ -334,6 +334,82 @@ func (client *CloudExadataInfrastructuresClient) deleteCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a CloudExadataInfrastructure
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
+//   - properties - The resource properties to be updated.
+//   - options - CloudExadataInfrastructuresClientBeginUpdateOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginUpdate
+//     method.
+func (client *CloudExadataInfrastructuresClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, options *CloudExadataInfrastructuresClientBeginUpdateOptions) (*runtime.Poller[CloudExadataInfrastructuresClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, cloudexadatainfrastructurename, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudExadataInfrastructuresClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudExadataInfrastructuresClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CloudExadataInfrastructure
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudExadataInfrastructuresClient) update(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, options *CloudExadataInfrastructuresClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudExadataInfrastructuresClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudexadatainfrastructurename, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CloudExadataInfrastructuresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, _ *CloudExadataInfrastructuresClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudexadatainfrastructurename == "" {
+		return nil, errors.New("parameter cloudexadatainfrastructurename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudexadatainfrastructurename}", url.PathEscape(cloudexadatainfrastructurename))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -535,80 +611,4 @@ func (client *CloudExadataInfrastructuresClient) listBySubscriptionHandleRespons
 		return CloudExadataInfrastructuresClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a CloudExadataInfrastructure
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
-//   - properties - The resource properties to be updated.
-//   - options - CloudExadataInfrastructuresClientBeginUpdateOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginUpdate
-//     method.
-func (client *CloudExadataInfrastructuresClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, options *CloudExadataInfrastructuresClientBeginUpdateOptions) (*runtime.Poller[CloudExadataInfrastructuresClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudexadatainfrastructurename, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudExadataInfrastructuresClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudExadataInfrastructuresClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CloudExadataInfrastructure
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudExadataInfrastructuresClient) update(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, options *CloudExadataInfrastructuresClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudExadataInfrastructuresClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudexadatainfrastructurename, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CloudExadataInfrastructuresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, _ *CloudExadataInfrastructuresClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudexadatainfrastructurename == "" {
-		return nil, errors.New("parameter cloudexadatainfrastructurename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudexadatainfrastructurename}", url.PathEscape(cloudexadatainfrastructurename))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -21,6 +21,10 @@ import (
 
 // NetworkSecurityPerimeterServer is a fake server for instances of the armbatch.NetworkSecurityPerimeterClient type.
 type NetworkSecurityPerimeterServer struct {
+	// BeginReconcileConfiguration is the fake for method NetworkSecurityPerimeterClient.BeginReconcileConfiguration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReconcileConfiguration func(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *armbatch.NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (resp azfake.PollerResponder[armbatch.NetworkSecurityPerimeterClientReconcileConfigurationResponse], errResp azfake.ErrorResponder)
+
 	// GetConfiguration is the fake for method NetworkSecurityPerimeterClient.GetConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
 	GetConfiguration func(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *armbatch.NetworkSecurityPerimeterClientGetConfigurationOptions) (resp azfake.Responder[armbatch.NetworkSecurityPerimeterClientGetConfigurationResponse], errResp azfake.ErrorResponder)
@@ -28,10 +32,6 @@ type NetworkSecurityPerimeterServer struct {
 	// NewListConfigurationsPager is the fake for method NetworkSecurityPerimeterClient.NewListConfigurationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListConfigurationsPager func(resourceGroupName string, accountName string, options *armbatch.NetworkSecurityPerimeterClientListConfigurationsOptions) (resp azfake.PagerResponder[armbatch.NetworkSecurityPerimeterClientListConfigurationsResponse])
-
-	// BeginReconcileConfiguration is the fake for method NetworkSecurityPerimeterClient.BeginReconcileConfiguration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReconcileConfiguration func(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *armbatch.NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (resp azfake.PollerResponder[armbatch.NetworkSecurityPerimeterClientReconcileConfigurationResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkSecurityPerimeterServerTransport creates a new instance of NetworkSecurityPerimeterServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type NetworkSecurityPerimeterServer struct {
 func NewNetworkSecurityPerimeterServerTransport(srv *NetworkSecurityPerimeterServer) *NetworkSecurityPerimeterServerTransport {
 	return &NetworkSecurityPerimeterServerTransport{
 		srv:                         srv,
-		newListConfigurationsPager:  newTracker[azfake.PagerResponder[armbatch.NetworkSecurityPerimeterClientListConfigurationsResponse]](),
 		beginReconcileConfiguration: newTracker[azfake.PollerResponder[armbatch.NetworkSecurityPerimeterClientReconcileConfigurationResponse]](),
+		newListConfigurationsPager:  newTracker[azfake.PagerResponder[armbatch.NetworkSecurityPerimeterClientListConfigurationsResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewNetworkSecurityPerimeterServerTransport(srv *NetworkSecurityPerimeterSer
 // Don't use this type directly, use NewNetworkSecurityPerimeterServerTransport instead.
 type NetworkSecurityPerimeterServerTransport struct {
 	srv                         *NetworkSecurityPerimeterServer
-	newListConfigurationsPager  *tracker[azfake.PagerResponder[armbatch.NetworkSecurityPerimeterClientListConfigurationsResponse]]
 	beginReconcileConfiguration *tracker[azfake.PollerResponder[armbatch.NetworkSecurityPerimeterClientReconcileConfigurationResponse]]
+	newListConfigurationsPager  *tracker[azfake.PagerResponder[armbatch.NetworkSecurityPerimeterClientListConfigurationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkSecurityPerimeterServerTransport.
@@ -74,12 +74,12 @@ func (n *NetworkSecurityPerimeterServerTransport) dispatchToMethodFake(req *http
 		}
 		if !intercepted {
 			switch method {
+			case "NetworkSecurityPerimeterClient.BeginReconcileConfiguration":
+				res.resp, res.err = n.dispatchBeginReconcileConfiguration(req)
 			case "NetworkSecurityPerimeterClient.GetConfiguration":
 				res.resp, res.err = n.dispatchGetConfiguration(req)
 			case "NetworkSecurityPerimeterClient.NewListConfigurationsPager":
 				res.resp, res.err = n.dispatchNewListConfigurationsPager(req)
-			case "NetworkSecurityPerimeterClient.BeginReconcileConfiguration":
-				res.resp, res.err = n.dispatchBeginReconcileConfiguration(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -94,6 +94,54 @@ func (n *NetworkSecurityPerimeterServerTransport) dispatchToMethodFake(req *http
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (n *NetworkSecurityPerimeterServerTransport) dispatchBeginReconcileConfiguration(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginReconcileConfiguration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReconcileConfiguration not implemented")}
+	}
+	beginReconcileConfiguration := n.beginReconcileConfiguration.get(req)
+	if beginReconcileConfiguration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/batchAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginReconcileConfiguration(req.Context(), resourceGroupNameParam, accountNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReconcileConfiguration = &respr
+		n.beginReconcileConfiguration.add(req, beginReconcileConfiguration)
+	}
+
+	resp, err := server.PollerResponderNext(beginReconcileConfiguration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginReconcileConfiguration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReconcileConfiguration) {
+		n.beginReconcileConfiguration.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (n *NetworkSecurityPerimeterServerTransport) dispatchGetConfiguration(req *http.Request) (*http.Response, error) {
@@ -171,54 +219,6 @@ func (n *NetworkSecurityPerimeterServerTransport) dispatchNewListConfigurationsP
 	if !server.PagerResponderMore(newListConfigurationsPager) {
 		n.newListConfigurationsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkSecurityPerimeterServerTransport) dispatchBeginReconcileConfiguration(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginReconcileConfiguration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginReconcileConfiguration not implemented")}
-	}
-	beginReconcileConfiguration := n.beginReconcileConfiguration.get(req)
-	if beginReconcileConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/batchAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginReconcileConfiguration(req.Context(), resourceGroupNameParam, accountNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginReconcileConfiguration = &respr
-		n.beginReconcileConfiguration.add(req, beginReconcileConfiguration)
-	}
-
-	resp, err := server.PollerResponderNext(beginReconcileConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		n.beginReconcileConfiguration.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginReconcileConfiguration) {
-		n.beginReconcileConfiguration.remove(req)
-	}
-
 	return resp, nil
 }
 

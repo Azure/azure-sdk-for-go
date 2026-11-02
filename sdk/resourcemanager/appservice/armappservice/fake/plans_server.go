@@ -78,14 +78,6 @@ type PlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVnetGateway func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *armappservice.PlansClientGetVnetGatewayOptions) (resp azfake.Responder[armappservice.PlansClientGetVnetGatewayResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PlansClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.PlansClientListOptions) (resp azfake.PagerResponder[armappservice.PlansClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method PlansClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.PlansClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.PlansClientListByResourceGroupResponse])
-
 	// ListCapabilities is the fake for method PlansClient.ListCapabilities
 	// HTTP status codes to indicate success: http.StatusOK
 	ListCapabilities func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientListCapabilitiesOptions) (resp azfake.Responder[armappservice.PlansClientListCapabilitiesResponse], errResp azfake.ErrorResponder)
@@ -94,29 +86,37 @@ type PlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListHybridConnectionKeys func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.PlansClientListHybridConnectionKeysOptions) (resp azfake.Responder[armappservice.PlansClientListHybridConnectionKeysResponse], errResp azfake.ErrorResponder)
 
-	// NewListHybridConnectionsPager is the fake for method PlansClient.NewListHybridConnectionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListHybridConnectionsPager func(resourceGroupName string, name string, options *armappservice.PlansClientListHybridConnectionsOptions) (resp azfake.PagerResponder[armappservice.PlansClientListHybridConnectionsResponse])
-
 	// ListRoutesForVnet is the fake for method PlansClient.ListRoutesForVnet
 	// HTTP status codes to indicate success: http.StatusOK
 	ListRoutesForVnet func(ctx context.Context, resourceGroupName string, name string, vnetName string, options *armappservice.PlansClientListRoutesForVnetOptions) (resp azfake.Responder[armappservice.PlansClientListRoutesForVnetResponse], errResp azfake.ErrorResponder)
-
-	// NewListUsagesPager is the fake for method PlansClient.NewListUsagesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListUsagesPager func(resourceGroupName string, name string, options *armappservice.PlansClientListUsagesOptions) (resp azfake.PagerResponder[armappservice.PlansClientListUsagesResponse])
 
 	// ListVnets is the fake for method PlansClient.ListVnets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListVnets func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientListVnetsOptions) (resp azfake.Responder[armappservice.PlansClientListVnetsResponse], errResp azfake.ErrorResponder)
 
-	// NewListWebAppsPager is the fake for method PlansClient.NewListWebAppsPager
+	// NewListByResourceGroupPager is the fake for method PlansClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListWebAppsPager func(resourceGroupName string, name string, options *armappservice.PlansClientListWebAppsOptions) (resp azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.PlansClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.PlansClientListByResourceGroupResponse])
+
+	// NewListHybridConnectionsPager is the fake for method PlansClient.NewListHybridConnectionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListHybridConnectionsPager func(resourceGroupName string, name string, options *armappservice.PlansClientListHybridConnectionsOptions) (resp azfake.PagerResponder[armappservice.PlansClientListHybridConnectionsResponse])
+
+	// NewListPager is the fake for method PlansClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.PlansClientListOptions) (resp azfake.PagerResponder[armappservice.PlansClientListResponse])
+
+	// NewListUsagesPager is the fake for method PlansClient.NewListUsagesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListUsagesPager func(resourceGroupName string, name string, options *armappservice.PlansClientListUsagesOptions) (resp azfake.PagerResponder[armappservice.PlansClientListUsagesResponse])
 
 	// NewListWebAppsByHybridConnectionPager is the fake for method PlansClient.NewListWebAppsByHybridConnectionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListWebAppsByHybridConnectionPager func(resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.PlansClientListWebAppsByHybridConnectionOptions) (resp azfake.PagerResponder[armappservice.PlansClientListWebAppsByHybridConnectionResponse])
+
+	// NewListWebAppsPager is the fake for method PlansClient.NewListWebAppsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListWebAppsPager func(resourceGroupName string, name string, options *armappservice.PlansClientListWebAppsOptions) (resp azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse])
 
 	// RebootWorker is the fake for method PlansClient.RebootWorker
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -150,12 +150,12 @@ func NewPlansServerTransport(srv *PlansServer) *PlansServerTransport {
 	return &PlansServerTransport{
 		srv:                                   srv,
 		beginCreateOrUpdate:                   newTracker[azfake.PollerResponder[armappservice.PlansClientCreateOrUpdateResponse]](),
-		newListPager:                          newTracker[azfake.PagerResponder[armappservice.PlansClientListResponse]](),
 		newListByResourceGroupPager:           newTracker[azfake.PagerResponder[armappservice.PlansClientListByResourceGroupResponse]](),
 		newListHybridConnectionsPager:         newTracker[azfake.PagerResponder[armappservice.PlansClientListHybridConnectionsResponse]](),
+		newListPager:                          newTracker[azfake.PagerResponder[armappservice.PlansClientListResponse]](),
 		newListUsagesPager:                    newTracker[azfake.PagerResponder[armappservice.PlansClientListUsagesResponse]](),
-		newListWebAppsPager:                   newTracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse]](),
 		newListWebAppsByHybridConnectionPager: newTracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsByHybridConnectionResponse]](),
+		newListWebAppsPager:                   newTracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse]](),
 	}
 }
 
@@ -164,12 +164,12 @@ func NewPlansServerTransport(srv *PlansServer) *PlansServerTransport {
 type PlansServerTransport struct {
 	srv                                   *PlansServer
 	beginCreateOrUpdate                   *tracker[azfake.PollerResponder[armappservice.PlansClientCreateOrUpdateResponse]]
-	newListPager                          *tracker[azfake.PagerResponder[armappservice.PlansClientListResponse]]
 	newListByResourceGroupPager           *tracker[azfake.PagerResponder[armappservice.PlansClientListByResourceGroupResponse]]
 	newListHybridConnectionsPager         *tracker[azfake.PagerResponder[armappservice.PlansClientListHybridConnectionsResponse]]
+	newListPager                          *tracker[azfake.PagerResponder[armappservice.PlansClientListResponse]]
 	newListUsagesPager                    *tracker[azfake.PagerResponder[armappservice.PlansClientListUsagesResponse]]
-	newListWebAppsPager                   *tracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse]]
 	newListWebAppsByHybridConnectionPager *tracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsByHybridConnectionResponse]]
+	newListWebAppsPager                   *tracker[azfake.PagerResponder[armappservice.PlansClientListWebAppsResponse]]
 }
 
 // Do implements the policy.Transporter interface for PlansServerTransport.
@@ -221,26 +221,26 @@ func (p *PlansServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = p.dispatchGetVnetFromServerFarm(req)
 			case "PlansClient.GetVnetGateway":
 				res.resp, res.err = p.dispatchGetVnetGateway(req)
-			case "PlansClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PlansClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PlansClient.ListCapabilities":
 				res.resp, res.err = p.dispatchListCapabilities(req)
 			case "PlansClient.ListHybridConnectionKeys":
 				res.resp, res.err = p.dispatchListHybridConnectionKeys(req)
-			case "PlansClient.NewListHybridConnectionsPager":
-				res.resp, res.err = p.dispatchNewListHybridConnectionsPager(req)
 			case "PlansClient.ListRoutesForVnet":
 				res.resp, res.err = p.dispatchListRoutesForVnet(req)
-			case "PlansClient.NewListUsagesPager":
-				res.resp, res.err = p.dispatchNewListUsagesPager(req)
 			case "PlansClient.ListVnets":
 				res.resp, res.err = p.dispatchListVnets(req)
-			case "PlansClient.NewListWebAppsPager":
-				res.resp, res.err = p.dispatchNewListWebAppsPager(req)
+			case "PlansClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "PlansClient.NewListHybridConnectionsPager":
+				res.resp, res.err = p.dispatchNewListHybridConnectionsPager(req)
+			case "PlansClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "PlansClient.NewListUsagesPager":
+				res.resp, res.err = p.dispatchNewListUsagesPager(req)
 			case "PlansClient.NewListWebAppsByHybridConnectionPager":
 				res.resp, res.err = p.dispatchNewListWebAppsByHybridConnectionPager(req)
+			case "PlansClient.NewListWebAppsPager":
+				res.resp, res.err = p.dispatchNewListWebAppsPager(req)
 			case "PlansClient.RebootWorker":
 				res.resp, res.err = p.dispatchRebootWorker(req)
 			case "PlansClient.RecycleManagedInstanceWorker":
@@ -802,87 +802,6 @@ func (p *PlansServerTransport) dispatchGetVnetGateway(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (p *PlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		detailedParam, err := parseOptional(qp.Get("detailed"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armappservice.PlansClientListOptions
-		if detailedParam != nil {
-			options = &armappservice.PlansClientListOptions{
-				Detailed: detailedParam,
-			}
-		}
-		resp := p.srv.NewListPager(options)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.PlansClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PlansServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.PlansClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PlansServerTransport) dispatchListCapabilities(req *http.Request) (*http.Response, error) {
 	if p.srv.ListCapabilities == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListCapabilities not implemented")}
@@ -957,6 +876,113 @@ func (p *PlansServerTransport) dispatchListHybridConnectionKeys(req *http.Reques
 	return resp, nil
 }
 
+func (p *PlansServerTransport) dispatchListRoutesForVnet(req *http.Request) (*http.Response, error) {
+	if p.srv.ListRoutesForVnet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRoutesForVnet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	vnetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vnetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ListRoutesForVnet(req.Context(), resourceGroupNameParam, nameParam, vnetNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetRouteArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PlansServerTransport) dispatchListVnets(req *http.Request) (*http.Response, error) {
+	if p.srv.ListVnets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListVnets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ListVnets(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PlansServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.PlansClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PlansServerTransport) dispatchNewListHybridConnectionsPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListHybridConnectionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListHybridConnectionsPager not implemented")}
@@ -998,39 +1024,46 @@ func (p *PlansServerTransport) dispatchNewListHybridConnectionsPager(req *http.R
 	return resp, nil
 }
 
-func (p *PlansServerTransport) dispatchListRoutesForVnet(req *http.Request) (*http.Response, error) {
-	if p.srv.ListRoutesForVnet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRoutesForVnet not implemented")}
+func (p *PlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		detailedParam, err := parseOptional(qp.Get("detailed"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armappservice.PlansClientListOptions
+		if detailedParam != nil {
+			options = &armappservice.PlansClientListOptions{
+				Detailed: detailedParam,
+			}
+		}
+		resp := p.srv.NewListPager(options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.PlansClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	vnetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vnetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.ListRoutesForVnet(req.Context(), resourceGroupNameParam, nameParam, vnetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetRouteArray, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1084,35 +1117,51 @@ func (p *PlansServerTransport) dispatchNewListUsagesPager(req *http.Request) (*h
 	return resp, nil
 }
 
-func (p *PlansServerTransport) dispatchListVnets(req *http.Request) (*http.Response, error) {
-	if p.srv.ListVnets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListVnets not implemented")}
+func (p *PlansServerTransport) dispatchNewListWebAppsByHybridConnectionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListWebAppsByHybridConnectionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListWebAppsByHybridConnectionPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListWebAppsByHybridConnectionPager := p.newListWebAppsByHybridConnectionPager.get(req)
+	if newListWebAppsByHybridConnectionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		relayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relayName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListWebAppsByHybridConnectionPager(resourceGroupNameParam, nameParam, namespaceNameParam, relayNameParam, nil)
+		newListWebAppsByHybridConnectionPager = &resp
+		p.newListWebAppsByHybridConnectionPager.add(req, newListWebAppsByHybridConnectionPager)
+		server.PagerResponderInjectNextLinks(newListWebAppsByHybridConnectionPager, req, func(page *armappservice.PlansClientListWebAppsByHybridConnectionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListWebAppsByHybridConnectionPager, req)
 	if err != nil {
 		return nil, err
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListWebAppsByHybridConnectionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := p.srv.ListVnets(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListWebAppsByHybridConnectionPager) {
+		p.newListWebAppsByHybridConnectionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1166,55 +1215,6 @@ func (p *PlansServerTransport) dispatchNewListWebAppsPager(req *http.Request) (*
 	}
 	if !server.PagerResponderMore(newListWebAppsPager) {
 		p.newListWebAppsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PlansServerTransport) dispatchNewListWebAppsByHybridConnectionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListWebAppsByHybridConnectionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListWebAppsByHybridConnectionPager not implemented")}
-	}
-	newListWebAppsByHybridConnectionPager := p.newListWebAppsByHybridConnectionPager.get(req)
-	if newListWebAppsByHybridConnectionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		relayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relayName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListWebAppsByHybridConnectionPager(resourceGroupNameParam, nameParam, namespaceNameParam, relayNameParam, nil)
-		newListWebAppsByHybridConnectionPager = &resp
-		p.newListWebAppsByHybridConnectionPager.add(req, newListWebAppsByHybridConnectionPager)
-		server.PagerResponderInjectNextLinks(newListWebAppsByHybridConnectionPager, req, func(page *armappservice.PlansClientListWebAppsByHybridConnectionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListWebAppsByHybridConnectionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListWebAppsByHybridConnectionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListWebAppsByHybridConnectionPager) {
-		p.newListWebAppsByHybridConnectionPager.remove(req)
 	}
 	return resp, nil
 }

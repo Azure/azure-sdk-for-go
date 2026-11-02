@@ -21,6 +21,10 @@ import (
 
 // RunbookServer is a fake server for instances of the armautomation.RunbookClient type.
 type RunbookServer struct {
+	// BeginPublish is the fake for method RunbookClient.BeginPublish
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPublish func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *armautomation.RunbookClientBeginPublishOptions) (resp azfake.PollerResponder[armautomation.RunbookClientPublishResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method RunbookClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters armautomation.RunbookCreateOrUpdateParameters, options *armautomation.RunbookClientCreateOrUpdateOptions) (resp azfake.Responder[armautomation.RunbookClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type RunbookServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAutomationAccountPager func(resourceGroupName string, automationAccountName string, options *armautomation.RunbookClientListByAutomationAccountOptions) (resp azfake.PagerResponder[armautomation.RunbookClientListByAutomationAccountResponse])
 
-	// BeginPublish is the fake for method RunbookClient.BeginPublish
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPublish func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *armautomation.RunbookClientBeginPublishOptions) (resp azfake.PollerResponder[armautomation.RunbookClientPublishResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method RunbookClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters armautomation.RunbookUpdateParameters, options *armautomation.RunbookClientUpdateOptions) (resp azfake.Responder[armautomation.RunbookClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -56,8 +56,8 @@ type RunbookServer struct {
 func NewRunbookServerTransport(srv *RunbookServer) *RunbookServerTransport {
 	return &RunbookServerTransport{
 		srv:                             srv,
-		newListByAutomationAccountPager: newTracker[azfake.PagerResponder[armautomation.RunbookClientListByAutomationAccountResponse]](),
 		beginPublish:                    newTracker[azfake.PollerResponder[armautomation.RunbookClientPublishResponse]](),
+		newListByAutomationAccountPager: newTracker[azfake.PagerResponder[armautomation.RunbookClientListByAutomationAccountResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ func NewRunbookServerTransport(srv *RunbookServer) *RunbookServerTransport {
 // Don't use this type directly, use NewRunbookServerTransport instead.
 type RunbookServerTransport struct {
 	srv                             *RunbookServer
-	newListByAutomationAccountPager *tracker[azfake.PagerResponder[armautomation.RunbookClientListByAutomationAccountResponse]]
 	beginPublish                    *tracker[azfake.PollerResponder[armautomation.RunbookClientPublishResponse]]
+	newListByAutomationAccountPager *tracker[azfake.PagerResponder[armautomation.RunbookClientListByAutomationAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for RunbookServerTransport.
@@ -90,6 +90,8 @@ func (r *RunbookServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
+			case "RunbookClient.BeginPublish":
+				res.resp, res.err = r.dispatchBeginPublish(req)
 			case "RunbookClient.CreateOrUpdate":
 				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "RunbookClient.Delete":
@@ -100,8 +102,6 @@ func (r *RunbookServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = r.dispatchGetContent(req)
 			case "RunbookClient.NewListByAutomationAccountPager":
 				res.resp, res.err = r.dispatchNewListByAutomationAccountPager(req)
-			case "RunbookClient.BeginPublish":
-				res.resp, res.err = r.dispatchBeginPublish(req)
 			case "RunbookClient.Update":
 				res.resp, res.err = r.dispatchUpdate(req)
 			default:
@@ -118,6 +118,54 @@ func (r *RunbookServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (r *RunbookServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginPublish == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
+	}
+	beginPublish := r.beginPublish.get(req)
+	if beginPublish == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		runbookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runbookName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginPublish(req.Context(), resourceGroupNameParam, automationAccountNameParam, runbookNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPublish = &respr
+		r.beginPublish.add(req, beginPublish)
+	}
+
+	resp, err := server.PollerResponderNext(beginPublish, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginPublish.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPublish) {
+		r.beginPublish.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (r *RunbookServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -310,54 +358,6 @@ func (r *RunbookServerTransport) dispatchNewListByAutomationAccountPager(req *ht
 	if !server.PagerResponderMore(newListByAutomationAccountPager) {
 		r.newListByAutomationAccountPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *RunbookServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginPublish == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
-	}
-	beginPublish := r.beginPublish.get(req)
-	if beginPublish == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		runbookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runbookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginPublish(req.Context(), resourceGroupNameParam, automationAccountNameParam, runbookNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPublish = &respr
-		r.beginPublish.add(req, beginPublish)
-	}
-
-	resp, err := server.PollerResponderNext(beginPublish, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginPublish.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPublish) {
-		r.beginPublish.remove(req)
-	}
-
 	return resp, nil
 }
 

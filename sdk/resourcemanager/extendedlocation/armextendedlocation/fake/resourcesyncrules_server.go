@@ -25,6 +25,10 @@ type ResourceSyncRulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters armextendedlocation.ResourceSyncRule, options *armextendedlocation.ResourceSyncRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ResourceSyncRulesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters armextendedlocation.PatchableResourceSyncRule, options *armextendedlocation.ResourceSyncRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method ResourceSyncRulesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *armextendedlocation.ResourceSyncRulesClientDeleteOptions) (resp azfake.Responder[armextendedlocation.ResourceSyncRulesClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ResourceSyncRulesServer struct {
 	// NewListByCustomLocationIDPager is the fake for method ResourceSyncRulesClient.NewListByCustomLocationIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCustomLocationIDPager func(resourceGroupName string, resourceName string, options *armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDOptions) (resp azfake.PagerResponder[armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDResponse])
-
-	// BeginUpdate is the fake for method ResourceSyncRulesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters armextendedlocation.PatchableResourceSyncRule, options *armextendedlocation.ResourceSyncRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewResourceSyncRulesServerTransport creates a new instance of ResourceSyncRulesServerTransport with the provided implementation.
@@ -49,8 +49,8 @@ func NewResourceSyncRulesServerTransport(srv *ResourceSyncRulesServer) *Resource
 	return &ResourceSyncRulesServerTransport{
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientCreateOrUpdateResponse]](),
-		newListByCustomLocationIDPager: newTracker[azfake.PagerResponder[armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientUpdateResponse]](),
+		newListByCustomLocationIDPager: newTracker[azfake.PagerResponder[armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDResponse]](),
 	}
 }
 
@@ -59,8 +59,8 @@ func NewResourceSyncRulesServerTransport(srv *ResourceSyncRulesServer) *Resource
 type ResourceSyncRulesServerTransport struct {
 	srv                            *ResourceSyncRulesServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientCreateOrUpdateResponse]]
-	newListByCustomLocationIDPager *tracker[azfake.PagerResponder[armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armextendedlocation.ResourceSyncRulesClientUpdateResponse]]
+	newListByCustomLocationIDPager *tracker[azfake.PagerResponder[armextendedlocation.ResourceSyncRulesClientListByCustomLocationIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceSyncRulesServerTransport.
@@ -86,14 +86,14 @@ func (r *ResourceSyncRulesServerTransport) dispatchToMethodFake(req *http.Reques
 			switch method {
 			case "ResourceSyncRulesClient.BeginCreateOrUpdate":
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
+			case "ResourceSyncRulesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ResourceSyncRulesClient.Delete":
 				res.resp, res.err = r.dispatchDelete(req)
 			case "ResourceSyncRulesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ResourceSyncRulesClient.NewListByCustomLocationIDPager":
 				res.resp, res.err = r.dispatchNewListByCustomLocationIDPager(req)
-			case "ResourceSyncRulesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -157,6 +157,58 @@ func (r *ResourceSyncRulesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		r.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ResourceSyncRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceSyncRules/(?P<childResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armextendedlocation.PatchableResourceSyncRule](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		childResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("childResourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, childResourceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -274,58 +326,6 @@ func (r *ResourceSyncRulesServerTransport) dispatchNewListByCustomLocationIDPage
 	if !server.PagerResponderMore(newListByCustomLocationIDPager) {
 		r.newListByCustomLocationIDPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ResourceSyncRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceSyncRules/(?P<childResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armextendedlocation.PatchableResourceSyncRule](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		childResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("childResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, childResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

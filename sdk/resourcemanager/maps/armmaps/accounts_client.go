@@ -219,6 +219,138 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
+// ListKeys - Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST
+// APIs. Only one key is needed at a time; two are given to provide seamless key regeneration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the Maps Account.
+//   - options - AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
+func (client *AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientListKeysOptions) (AccountsClientListKeysResponse, error) {
+	var err error
+	const operationName = "AccountsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return AccountsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *AccountsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListKeysResponse, error) {
+	result := AccountsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
+		return AccountsClientListKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSas - Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+// REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+// Prerequisites:
+//
+//  1. Create or have an existing User Assigned Managed Identity in the same Azure region as the account.
+//  2. Create or update an Azure Maps account with the same Azure region as the User Assigned Managed Identity is placed.
+//
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the Maps Account.
+//   - mapsAccountSasParameters - The updated parameters for the Maps Account.
+//   - options - AccountsClientListSasOptions contains the optional parameters for the AccountsClient.ListSas method.
+func (client *AccountsClient) ListSas(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters AccountSasParameters, options *AccountsClientListSasOptions) (AccountsClientListSasResponse, error) {
+	var err error
+	const operationName = "AccountsClient.ListSas"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSasCreateRequest(ctx, resourceGroupName, accountName, mapsAccountSasParameters, options)
+	if err != nil {
+		return AccountsClientListSasResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientListSasResponse{}, err
+	}
+	return client.listSasHandleResponse(httpResp, http.StatusOK)
+}
+
+// listSasCreateRequest creates the ListSas request.
+func (client *AccountsClient) listSasCreateRequest(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters AccountSasParameters, _ *AccountsClientListSasOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listSas"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, mapsAccountSasParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listSasHandleResponse handles the ListSas response.
+func (client *AccountsClient) listSasHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListSasResponse, error) {
+	result := AccountsClientListSasResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountSasToken); err != nil {
+		return AccountsClientListSasResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - Get all Maps Accounts in a Resource Group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
@@ -354,138 +486,6 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Accounts); err != nil {
 		return AccountsClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// ListKeys - Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST
-// APIs. Only one key is needed at a time; two are given to provide seamless key regeneration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the Maps Account.
-//   - options - AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
-func (client *AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientListKeysOptions) (AccountsClientListKeysResponse, error) {
-	var err error
-	const operationName = "AccountsClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return AccountsClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AccountsClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *AccountsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListKeysResponse, error) {
-	result := AccountsClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
-		return AccountsClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSas - Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
-// REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
-// Prerequisites:
-//
-//  1. Create or have an existing User Assigned Managed Identity in the same Azure region as the account.
-//  2. Create or update an Azure Maps account with the same Azure region as the User Assigned Managed Identity is placed.
-//
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the Maps Account.
-//   - mapsAccountSasParameters - The updated parameters for the Maps Account.
-//   - options - AccountsClientListSasOptions contains the optional parameters for the AccountsClient.ListSas method.
-func (client *AccountsClient) ListSas(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters AccountSasParameters, options *AccountsClientListSasOptions) (AccountsClientListSasResponse, error) {
-	var err error
-	const operationName = "AccountsClient.ListSas"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSasCreateRequest(ctx, resourceGroupName, accountName, mapsAccountSasParameters, options)
-	if err != nil {
-		return AccountsClientListSasResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AccountsClientListSasResponse{}, err
-	}
-	return client.listSasHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSasCreateRequest creates the ListSas request.
-func (client *AccountsClient) listSasCreateRequest(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters AccountSasParameters, _ *AccountsClientListSasOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listSas"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, mapsAccountSasParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listSasHandleResponse handles the ListSas response.
-func (client *AccountsClient) listSasHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListSasResponse, error) {
-	result := AccountsClientListSasResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountSasToken); err != nil {
-		return AccountsClientListSasResponse{}, err
 	}
 	return result, nil
 }

@@ -29,14 +29,6 @@ type ServerEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *armstoragesync.ServerEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragesync.ServerEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ServerEndpointsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *armstoragesync.ServerEndpointsClientGetOptions) (resp azfake.Responder[armstoragesync.ServerEndpointsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListBySyncGroupPager is the fake for method ServerEndpointsClient.NewListBySyncGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySyncGroupPager func(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *armstoragesync.ServerEndpointsClientListBySyncGroupOptions) (resp azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse])
-
 	// BeginRecallAction is the fake for method ServerEndpointsClient.BeginRecallAction
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRecallAction func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters armstoragesync.RecallActionParameters, options *armstoragesync.ServerEndpointsClientBeginRecallActionOptions) (resp azfake.PollerResponder[armstoragesync.ServerEndpointsClientRecallActionResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type ServerEndpointsServer struct {
 	// BeginUpdate is the fake for method ServerEndpointsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters armstoragesync.ServerEndpointUpdateParameters, options *armstoragesync.ServerEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragesync.ServerEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ServerEndpointsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *armstoragesync.ServerEndpointsClientGetOptions) (resp azfake.Responder[armstoragesync.ServerEndpointsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListBySyncGroupPager is the fake for method ServerEndpointsClient.NewListBySyncGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySyncGroupPager func(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *armstoragesync.ServerEndpointsClientListBySyncGroupOptions) (resp azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse])
 }
 
 // NewServerEndpointsServerTransport creates a new instance of ServerEndpointsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewServerEndpointsServerTransport(srv *ServerEndpointsServer) *ServerEndpoi
 		srv:                     srv,
 		beginCreate:             newTracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientCreateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientDeleteResponse]](),
-		newListBySyncGroupPager: newTracker[azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse]](),
 		beginRecallAction:       newTracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientRecallActionResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientUpdateResponse]](),
+		newListBySyncGroupPager: newTracker[azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ServerEndpointsServerTransport struct {
 	srv                     *ServerEndpointsServer
 	beginCreate             *tracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientCreateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientDeleteResponse]]
-	newListBySyncGroupPager *tracker[azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse]]
 	beginRecallAction       *tracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientRecallActionResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armstoragesync.ServerEndpointsClientUpdateResponse]]
+	newListBySyncGroupPager *tracker[azfake.PagerResponder[armstoragesync.ServerEndpointsClientListBySyncGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerEndpointsServerTransport.
@@ -96,14 +96,14 @@ func (s *ServerEndpointsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "ServerEndpointsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ServerEndpointsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "ServerEndpointsClient.NewListBySyncGroupPager":
-				res.resp, res.err = s.dispatchNewListBySyncGroupPager(req)
 			case "ServerEndpointsClient.BeginRecallAction":
 				res.resp, res.err = s.dispatchBeginRecallAction(req)
 			case "ServerEndpointsClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServerEndpointsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServerEndpointsClient.NewListBySyncGroupPager":
+				res.resp, res.err = s.dispatchNewListBySyncGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,98 +228,6 @@ func (s *ServerEndpointsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (s *ServerEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverEndpoints/(?P<serverEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, serverEndpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerEndpoint, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
-	}
-	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("X-Ms-Request-Id", *val)
-	}
-	return resp, nil
-}
-
-func (s *ServerEndpointsServerTransport) dispatchNewListBySyncGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBySyncGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySyncGroupPager not implemented")}
-	}
-	newListBySyncGroupPager := s.newListBySyncGroupPager.get(req)
-	if newListBySyncGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListBySyncGroupPager(resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, nil)
-		newListBySyncGroupPager = &resp
-		s.newListBySyncGroupPager.add(req, newListBySyncGroupPager)
-		server.PagerResponderInjectNextLinks(newListBySyncGroupPager, req, func(page *armstoragesync.ServerEndpointsClientListBySyncGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySyncGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBySyncGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySyncGroupPager) {
-		s.newListBySyncGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServerEndpointsServerTransport) dispatchBeginRecallAction(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRecallAction == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRecallAction not implemented")}
@@ -429,6 +337,98 @@ func (s *ServerEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) 
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServerEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverEndpoints/(?P<serverEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, serverEndpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
+	}
+	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+		resp.Header.Set("X-Ms-Request-Id", *val)
+	}
+	return resp, nil
+}
+
+func (s *ServerEndpointsServerTransport) dispatchNewListBySyncGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySyncGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySyncGroupPager not implemented")}
+	}
+	newListBySyncGroupPager := s.newListBySyncGroupPager.get(req)
+	if newListBySyncGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListBySyncGroupPager(resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, nil)
+		newListBySyncGroupPager = &resp
+		s.newListBySyncGroupPager.add(req, newListBySyncGroupPager)
+		server.PagerResponderInjectNextLinks(newListBySyncGroupPager, req, func(page *armstoragesync.ServerEndpointsClientListBySyncGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySyncGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySyncGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySyncGroupPager) {
+		s.newListBySyncGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

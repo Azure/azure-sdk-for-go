@@ -67,7 +67,7 @@ func (client *BotsClient) BeginCreate(ctx context.Context, resourceGroupName str
 	}
 }
 
-// Create - Create a new Azure Health Bot.
+// create - Create a new Azure Health Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BotsClient) create(ctx context.Context, resourceGroupName string, botName string, parameters HealthBot, options *BotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *BotsClient) create(ctx context.Context, resourceGroupName string, 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, botName string, parameters HealthBot, _ *BotsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}"
 	if client.subscriptionID == "" {
@@ -141,7 +141,7 @@ func (client *BotsClient) BeginDelete(ctx context.Context, resourceGroupName str
 	}
 }
 
-// Delete - Delete a HealthBot.
+// deleteOperation - Delete a HealthBot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BotsClient) deleteOperation(ctx context.Context, resourceGroupName string, botName string, options *BotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -163,7 +163,7 @@ func (client *BotsClient) deleteOperation(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, botName string, _ *BotsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}"
 	if client.subscriptionID == "" {
@@ -185,6 +185,81 @@ func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20251101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Patch a HealthBot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - botName - The name of the Bot resource.
+//   - parameters - The parameters to provide for the required Azure Health Bot.
+//   - options - BotsClientBeginUpdateOptions contains the optional parameters for the BotsClient.BeginUpdate method.
+func (client *BotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, options *BotsClientBeginUpdateOptions) (*runtime.Poller[BotsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, botName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BotsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BotsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch a HealthBot.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BotsClient) update(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, options *BotsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BotsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, botName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, _ *BotsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if botName == "" {
+		return nil, errors.New("parameter botName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{botName}", url.PathEscape(botName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -248,68 +323,62 @@ func (client *BotsClient) getHandleResponse(resp *http.Response, successCodes ..
 	return result, nil
 }
 
-// NewListPager - Returns all the resources of a particular type belonging to a subscription.
-//   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
-func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
-		More: func(page BotsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *BotsClientListResponse) (BotsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BotsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return BotsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BotsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+// ListSecrets - List all secrets of a HealthBot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - botName - The name of the Bot resource.
+//   - options - BotsClientListSecretsOptions contains the optional parameters for the BotsClient.ListSecrets method.
+func (client *BotsClient) ListSecrets(ctx context.Context, resourceGroupName string, botName string, options *BotsClientListSecretsOptions) (BotsClientListSecretsResponse, error) {
+	var err error
+	const operationName = "BotsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, botName, options)
+	if err != nil {
+		return BotsClientListSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BotsClientListSecretsResponse{}, err
+	}
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
-// listCreateRequest creates the List request.
-func (client *BotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *BotsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *BotsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, botName string, _ *BotsClientListSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}/listSecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if botName == "" {
+		return nil, errors.New("parameter botName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{botName}", url.PathEscape(botName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *BotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListResponse, error) {
-	result := BotsClientListResponse{}
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *BotsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListSecretsResponse, error) {
+	result := BotsClientListSecretsResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
-		return BotsClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeysResponse); err != nil {
+		return BotsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
@@ -386,62 +455,68 @@ func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response,
 	return result, nil
 }
 
-// ListSecrets - List all secrets of a HealthBot.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - botName - The name of the Bot resource.
-//   - options - BotsClientListSecretsOptions contains the optional parameters for the BotsClient.ListSecrets method.
-func (client *BotsClient) ListSecrets(ctx context.Context, resourceGroupName string, botName string, options *BotsClientListSecretsOptions) (BotsClientListSecretsResponse, error) {
-	var err error
-	const operationName = "BotsClient.ListSecrets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, botName, options)
-	if err != nil {
-		return BotsClientListSecretsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return BotsClientListSecretsResponse{}, err
-	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
+// NewListPager - Returns all the resources of a particular type belonging to a subscription.
+//   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
+func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
+		More: func(page BotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *BotsClientListResponse) (BotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BotsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return BotsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BotsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listSecretsCreateRequest creates the ListSecrets request.
-func (client *BotsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, botName string, _ *BotsClientListSecretsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}/listSecrets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *BotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *BotsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if botName == "" {
-		return nil, errors.New("parameter botName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{botName}", url.PathEscape(botName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// listSecretsHandleResponse handles the ListSecrets response.
-func (client *BotsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListSecretsResponse, error) {
-	result := BotsClientListSecretsResponse{}
+// listHandleResponse handles the List response.
+func (client *BotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListResponse, error) {
+	result := BotsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeysResponse); err != nil {
-		return BotsClientListSecretsResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
+		return BotsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -505,79 +580,4 @@ func (client *BotsClient) regenerateAPIJwtSecretHandleResponse(resp *http.Respon
 		return BotsClientRegenerateAPIJwtSecretResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch a HealthBot.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - botName - The name of the Bot resource.
-//   - parameters - The parameters to provide for the required Azure Health Bot.
-//   - options - BotsClientBeginUpdateOptions contains the optional parameters for the BotsClient.BeginUpdate method.
-func (client *BotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, options *BotsClientBeginUpdateOptions) (*runtime.Poller[BotsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, botName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BotsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BotsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch a HealthBot.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BotsClient) update(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, options *BotsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BotsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, botName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, botName string, parameters UpdateParameters, _ *BotsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if botName == "" {
-		return nil, errors.New("parameter botName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{botName}", url.PathEscape(botName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

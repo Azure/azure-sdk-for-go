@@ -68,7 +68,7 @@ func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName 
 	}
 }
 
-// CreateOrUpdate - Creates or updates an order.
+// createOrUpdate - Creates or updates an order.
 //
 // Creates or updates an order.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,7 +92,7 @@ func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName strin
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, order Order, _ *OrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if client.subscriptionID == "" {
@@ -145,7 +145,7 @@ func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, 
 	}
 }
 
-// Delete - Deletes the order related to the device.
+// deleteOperation - Deletes the order related to the device.
 //
 // Deletes the order related to the device.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -169,7 +169,7 @@ func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName stri
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if client.subscriptionID == "" {
@@ -255,6 +255,67 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response, successCodes 
 	return result, nil
 }
 
+// ListDCAccessCode - Gets the DCAccess Code
+//
+// Gets the DCAccess Code
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
+func (client *OrdersClient) ListDCAccessCode(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListDCAccessCodeOptions) (OrdersClientListDCAccessCodeResponse, error) {
+	var err error
+	const operationName = "OrdersClient.ListDCAccessCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDCAccessCodeCreateRequest(ctx, deviceName, resourceGroupName, options)
+	if err != nil {
+		return OrdersClientListDCAccessCodeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrdersClientListDCAccessCodeResponse{}, err
+	}
+	return client.listDCAccessCodeHandleResponse(httpResp, http.StatusOK)
+}
+
+// listDCAccessCodeCreateRequest creates the ListDCAccessCode request.
+func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientListDCAccessCodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default/listDCAccessCode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if deviceName == "" {
+		return nil, errors.New("parameter deviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20231201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDCAccessCodeHandleResponse handles the ListDCAccessCode response.
+func (client *OrdersClient) listDCAccessCodeHandleResponse(resp *http.Response, successCodes ...int) (OrdersClientListDCAccessCodeResponse, error) {
+	result := OrdersClientListDCAccessCodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DCAccessCode); err != nil {
+		return OrdersClientListDCAccessCodeResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByDataBoxEdgeDevicePager - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
 //
 // Lists all the orders related to a Data Box Edge/Data Box Gateway device.
@@ -329,67 +390,6 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrderList); err != nil {
 		return OrdersClientListByDataBoxEdgeDeviceResponse{}, err
-	}
-	return result, nil
-}
-
-// ListDCAccessCode - Gets the DCAccess Code
-//
-// Gets the DCAccess Code
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
-func (client *OrdersClient) ListDCAccessCode(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListDCAccessCodeOptions) (OrdersClientListDCAccessCodeResponse, error) {
-	var err error
-	const operationName = "OrdersClient.ListDCAccessCode"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDCAccessCodeCreateRequest(ctx, deviceName, resourceGroupName, options)
-	if err != nil {
-		return OrdersClientListDCAccessCodeResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OrdersClientListDCAccessCodeResponse{}, err
-	}
-	return client.listDCAccessCodeHandleResponse(httpResp, http.StatusOK)
-}
-
-// listDCAccessCodeCreateRequest creates the ListDCAccessCode request.
-func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientListDCAccessCodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default/listDCAccessCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDCAccessCodeHandleResponse handles the ListDCAccessCode response.
-func (client *OrdersClient) listDCAccessCodeHandleResponse(resp *http.Response, successCodes ...int) (OrdersClientListDCAccessCodeResponse, error) {
-	result := OrdersClientListDCAccessCodeResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DCAccessCode); err != nil {
-		return OrdersClientListDCAccessCodeResponse{}, err
 	}
 	return result, nil
 }

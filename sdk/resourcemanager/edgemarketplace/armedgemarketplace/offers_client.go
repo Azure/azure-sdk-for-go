@@ -69,7 +69,7 @@ func (client *OffersClient) BeginGenerateAccessToken(ctx context.Context, resour
 	}
 }
 
-// GenerateAccessToken - A long-running resource action.
+// generateAccessToken - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OffersClient) generateAccessToken(ctx context.Context, resourceURI string, offerID string, body AccessTokenRequest, options *OffersClientBeginGenerateAccessTokenOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *OffersClient) generateAccessToken(ctx context.Context, resourceURI
 	return httpResp, nil
 }
 
-// generateAccessTokenCreateRequest creates the GenerateAccessToken request.
+// generateAccessTokenCreateRequest creates the generateAccessToken request.
 func (client *OffersClient) generateAccessTokenCreateRequest(ctx context.Context, resourceURI string, offerID string, body AccessTokenRequest, _ *OffersClientBeginGenerateAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.EdgeMarketplace/offers/{offerId}/generateAccessToken"
 	if resourceURI == "" {
@@ -234,6 +234,73 @@ func (client *OffersClient) getAccessTokenHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
+// NewListBySubscriptionPager - List Offer resources by subscription ID
+//   - options - OffersClientListBySubscriptionOptions contains the optional parameters for the OffersClient.NewListBySubscriptionPager
+//     method.
+func (client *OffersClient) NewListBySubscriptionPager(options *OffersClientListBySubscriptionOptions) *runtime.Pager[OffersClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OffersClientListBySubscriptionResponse]{
+		More: func(page OffersClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OffersClientListBySubscriptionResponse) (OffersClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OffersClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return OffersClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OffersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *OffersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *OffersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/offers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *OffersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (OffersClientListBySubscriptionResponse, error) {
+	result := OffersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OfferListResult); err != nil {
+		return OffersClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Offer resources by parent
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - OffersClientListOptions contains the optional parameters for the OffersClient.NewListPager method.
@@ -312,73 +379,6 @@ func (client *OffersClient) listHandleResponse(resp *http.Response, successCodes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferListResult); err != nil {
 		return OffersClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - List Offer resources by subscription ID
-//   - options - OffersClientListBySubscriptionOptions contains the optional parameters for the OffersClient.NewListBySubscriptionPager
-//     method.
-func (client *OffersClient) NewListBySubscriptionPager(options *OffersClientListBySubscriptionOptions) *runtime.Pager[OffersClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OffersClientListBySubscriptionResponse]{
-		More: func(page OffersClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *OffersClientListBySubscriptionResponse) (OffersClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OffersClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return OffersClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return OffersClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *OffersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *OffersClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/offers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251001Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *OffersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (OffersClientListBySubscriptionResponse, error) {
-	result := OffersClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OfferListResult); err != nil {
-		return OffersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

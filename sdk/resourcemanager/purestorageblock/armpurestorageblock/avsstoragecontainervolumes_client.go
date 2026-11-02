@@ -69,7 +69,7 @@ func (client *AvsStorageContainerVolumesClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a volume in an AVS storage container
+// deleteOperation - Delete a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AvsStorageContainerVolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, options *AvsStorageContainerVolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AvsStorageContainerVolumesClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, _ *AvsStorageContainerVolumesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
 	if client.subscriptionID == "" {
@@ -121,6 +121,92 @@ func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a volume in an AVS storage container
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - storageContainerName - Name of the storage container
+//   - volumeID - ID of the volume in the storage container
+//   - properties - The resource properties to be updated.
+//   - options - AvsStorageContainerVolumesClientBeginUpdateOptions contains the optional parameters for the AvsStorageContainerVolumesClient.BeginUpdate
+//     method.
+func (client *AvsStorageContainerVolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, options *AvsStorageContainerVolumesClientBeginUpdateOptions) (*runtime.Poller[AvsStorageContainerVolumesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, storagePoolName, storageContainerName, volumeID, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AvsStorageContainerVolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AvsStorageContainerVolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a volume in an AVS storage container
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AvsStorageContainerVolumesClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, options *AvsStorageContainerVolumesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AvsStorageContainerVolumesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, storageContainerName, volumeID, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AvsStorageContainerVolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, _ *AvsStorageContainerVolumesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if storageContainerName == "" {
+		return nil, errors.New("parameter storageContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
+	if volumeID == "" {
+		return nil, errors.New("parameter volumeID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeId}", url.PathEscape(volumeID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -275,90 +361,4 @@ func (client *AvsStorageContainerVolumesClient) listByAvsStorageContainerHandleR
 		return AvsStorageContainerVolumesClientListByAvsStorageContainerResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a volume in an AVS storage container
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - storageContainerName - Name of the storage container
-//   - volumeID - ID of the volume in the storage container
-//   - properties - The resource properties to be updated.
-//   - options - AvsStorageContainerVolumesClientBeginUpdateOptions contains the optional parameters for the AvsStorageContainerVolumesClient.BeginUpdate
-//     method.
-func (client *AvsStorageContainerVolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, options *AvsStorageContainerVolumesClientBeginUpdateOptions) (*runtime.Poller[AvsStorageContainerVolumesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, storagePoolName, storageContainerName, volumeID, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AvsStorageContainerVolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AvsStorageContainerVolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a volume in an AVS storage container
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AvsStorageContainerVolumesClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, options *AvsStorageContainerVolumesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AvsStorageContainerVolumesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, storageContainerName, volumeID, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AvsStorageContainerVolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, _ *AvsStorageContainerVolumesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if storageContainerName == "" {
-		return nil, errors.New("parameter storageContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
-	if volumeID == "" {
-		return nil, errors.New("parameter volumeID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeId}", url.PathEscape(volumeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

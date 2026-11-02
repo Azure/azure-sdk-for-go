@@ -21,10 +21,6 @@ import (
 
 // CapacitiesServer is a fake server for instances of the armpowerbidedicated.CapacitiesClient type.
 type CapacitiesServer struct {
-	// CheckNameAvailability is the fake for method CapacitiesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, location string, capacityParameters armpowerbidedicated.CheckCapacityNameAvailabilityParameters, options *armpowerbidedicated.CapacitiesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method CapacitiesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters armpowerbidedicated.DedicatedCapacity, options *armpowerbidedicated.CapacitiesClientBeginCreateOptions) (resp azfake.PollerResponder[armpowerbidedicated.CapacitiesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -32,26 +28,6 @@ type CapacitiesServer struct {
 	// BeginDelete is the fake for method CapacitiesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *armpowerbidedicated.CapacitiesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpowerbidedicated.CapacitiesClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// GetDetails is the fake for method CapacitiesClient.GetDetails
-	// HTTP status codes to indicate success: http.StatusOK
-	GetDetails func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *armpowerbidedicated.CapacitiesClientGetDetailsOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientGetDetailsResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method CapacitiesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpowerbidedicated.CapacitiesClientListOptions) (resp azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method CapacitiesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armpowerbidedicated.CapacitiesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse])
-
-	// ListSKUs is the fake for method CapacitiesClient.ListSKUs
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUs func(ctx context.Context, options *armpowerbidedicated.CapacitiesClientListSKUsOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientListSKUsResponse], errResp azfake.ErrorResponder)
-
-	// ListSKUsForCapacity is the fake for method CapacitiesClient.ListSKUsForCapacity
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUsForCapacity func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *armpowerbidedicated.CapacitiesClientListSKUsForCapacityOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientListSKUsForCapacityResponse], errResp azfake.ErrorResponder)
 
 	// BeginResume is the fake for method CapacitiesClient.BeginResume
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -64,6 +40,30 @@ type CapacitiesServer struct {
 	// BeginUpdate is the fake for method CapacitiesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters armpowerbidedicated.DedicatedCapacityUpdateParameters, options *armpowerbidedicated.CapacitiesClientBeginUpdateOptions) (resp azfake.PollerResponder[armpowerbidedicated.CapacitiesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method CapacitiesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, location string, capacityParameters armpowerbidedicated.CheckCapacityNameAvailabilityParameters, options *armpowerbidedicated.CapacitiesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// GetDetails is the fake for method CapacitiesClient.GetDetails
+	// HTTP status codes to indicate success: http.StatusOK
+	GetDetails func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *armpowerbidedicated.CapacitiesClientGetDetailsOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientGetDetailsResponse], errResp azfake.ErrorResponder)
+
+	// ListSKUs is the fake for method CapacitiesClient.ListSKUs
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSKUs func(ctx context.Context, options *armpowerbidedicated.CapacitiesClientListSKUsOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientListSKUsResponse], errResp azfake.ErrorResponder)
+
+	// ListSKUsForCapacity is the fake for method CapacitiesClient.ListSKUsForCapacity
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSKUsForCapacity func(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *armpowerbidedicated.CapacitiesClientListSKUsForCapacityOptions) (resp azfake.Responder[armpowerbidedicated.CapacitiesClientListSKUsForCapacityResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method CapacitiesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armpowerbidedicated.CapacitiesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method CapacitiesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armpowerbidedicated.CapacitiesClientListOptions) (resp azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse])
 }
 
 // NewCapacitiesServerTransport creates a new instance of CapacitiesServerTransport with the provided implementation.
@@ -74,11 +74,11 @@ func NewCapacitiesServerTransport(srv *CapacitiesServer) *CapacitiesServerTransp
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse]](),
 		beginResume:                 newTracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientResumeResponse]](),
 		beginSuspend:                newTracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientSuspendResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse]](),
 	}
 }
 
@@ -88,11 +88,11 @@ type CapacitiesServerTransport struct {
 	srv                         *CapacitiesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse]]
 	beginResume                 *tracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientResumeResponse]]
 	beginSuspend                *tracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientSuspendResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armpowerbidedicated.CapacitiesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armpowerbidedicated.CapacitiesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacitiesServerTransport.
@@ -116,28 +116,28 @@ func (c *CapacitiesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "CapacitiesClient.CheckNameAvailability":
-				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "CapacitiesClient.BeginCreate":
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "CapacitiesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CapacitiesClient.GetDetails":
-				res.resp, res.err = c.dispatchGetDetails(req)
-			case "CapacitiesClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
-			case "CapacitiesClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "CapacitiesClient.ListSKUs":
-				res.resp, res.err = c.dispatchListSKUs(req)
-			case "CapacitiesClient.ListSKUsForCapacity":
-				res.resp, res.err = c.dispatchListSKUsForCapacity(req)
 			case "CapacitiesClient.BeginResume":
 				res.resp, res.err = c.dispatchBeginResume(req)
 			case "CapacitiesClient.BeginSuspend":
 				res.resp, res.err = c.dispatchBeginSuspend(req)
 			case "CapacitiesClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CapacitiesClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
+			case "CapacitiesClient.GetDetails":
+				res.resp, res.err = c.dispatchGetDetails(req)
+			case "CapacitiesClient.ListSKUs":
+				res.resp, res.err = c.dispatchListSKUs(req)
+			case "CapacitiesClient.ListSKUsForCapacity":
+				res.resp, res.err = c.dispatchListSKUsForCapacity(req)
+			case "CapacitiesClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CapacitiesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -152,39 +152,6 @@ func (c *CapacitiesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CapacitiesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armpowerbidedicated.CheckCapacityNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckCapacityNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CapacitiesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -276,167 +243,6 @@ func (c *CapacitiesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		c.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *CapacitiesServerTransport) dispatchGetDetails(req *http.Request) (*http.Response, error) {
-	if c.srv.GetDetails == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetDetails not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities/(?P<dedicatedCapacityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	dedicatedCapacityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dedicatedCapacityName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetDetails(req.Context(), resourceGroupNameParam, dedicatedCapacityNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedCapacity, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CapacitiesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpowerbidedicated.CapacitiesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CapacitiesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armpowerbidedicated.CapacitiesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CapacitiesServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
-	if c.srv.ListSKUs == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/skus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := c.srv.ListSKUs(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUEnumerationForNewResourceResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CapacitiesServerTransport) dispatchListSKUsForCapacity(req *http.Request) (*http.Response, error) {
-	if c.srv.ListSKUsForCapacity == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSKUsForCapacity not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities/(?P<dedicatedCapacityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	dedicatedCapacityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dedicatedCapacityName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListSKUsForCapacity(req.Context(), resourceGroupNameParam, dedicatedCapacityNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUEnumerationForExistingResourceResult, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -573,6 +379,200 @@ func (c *CapacitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpowerbidedicated.CheckCapacityNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckCapacityNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchGetDetails(req *http.Request) (*http.Response, error) {
+	if c.srv.GetDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities/(?P<dedicatedCapacityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	dedicatedCapacityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dedicatedCapacityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetDetails(req.Context(), resourceGroupNameParam, dedicatedCapacityNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedCapacity, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
+	if c.srv.ListSKUs == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := c.srv.ListSKUs(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUEnumerationForNewResourceResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchListSKUsForCapacity(req *http.Request) (*http.Response, error) {
+	if c.srv.ListSKUsForCapacity == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSKUsForCapacity not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities/(?P<dedicatedCapacityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	dedicatedCapacityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dedicatedCapacityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListSKUsForCapacity(req.Context(), resourceGroupNameParam, dedicatedCapacityNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUEnumerationForExistingResourceResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armpowerbidedicated.CapacitiesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PowerBIDedicated/capacities`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPager(nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpowerbidedicated.CapacitiesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

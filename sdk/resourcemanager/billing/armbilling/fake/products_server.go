@@ -22,6 +22,10 @@ import (
 
 // ProductsServer is a fake server for instances of the armbilling.ProductsClient type.
 type ProductsServer struct {
+	// BeginMove is the fake for method ProductsClient.BeginMove
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMove func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.MoveProductRequest, options *armbilling.ProductsClientBeginMoveOptions) (resp azfake.PollerResponder[armbilling.ProductsClientMoveResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProductsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, billingAccountName string, productName string, options *armbilling.ProductsClientGetOptions) (resp azfake.Responder[armbilling.ProductsClientGetResponse], errResp azfake.ErrorResponder)
@@ -42,10 +46,6 @@ type ProductsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.ProductsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse])
 
-	// BeginMove is the fake for method ProductsClient.BeginMove
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMove func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.MoveProductRequest, options *armbilling.ProductsClientBeginMoveOptions) (resp azfake.PollerResponder[armbilling.ProductsClientMoveResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method ProductsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.ProductPatch, options *armbilling.ProductsClientUpdateOptions) (resp azfake.Responder[armbilling.ProductsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -61,11 +61,11 @@ type ProductsServer struct {
 func NewProductsServerTransport(srv *ProductsServer) *ProductsServerTransport {
 	return &ProductsServerTransport{
 		srv:                          srv,
+		beginMove:                    newTracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]](),
 		newListByBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingAccountResponse]](),
 		newListByBillingProfilePager: newTracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingProfileResponse]](),
 		newListByCustomerPager:       newTracker[azfake.PagerResponder[armbilling.ProductsClientListByCustomerResponse]](),
 		newListByInvoiceSectionPager: newTracker[azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse]](),
-		beginMove:                    newTracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]](),
 	}
 }
 
@@ -73,11 +73,11 @@ func NewProductsServerTransport(srv *ProductsServer) *ProductsServerTransport {
 // Don't use this type directly, use NewProductsServerTransport instead.
 type ProductsServerTransport struct {
 	srv                          *ProductsServer
+	beginMove                    *tracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]]
 	newListByBillingAccountPager *tracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingAccountResponse]]
 	newListByBillingProfilePager *tracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingProfileResponse]]
 	newListByCustomerPager       *tracker[azfake.PagerResponder[armbilling.ProductsClientListByCustomerResponse]]
 	newListByInvoiceSectionPager *tracker[azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse]]
-	beginMove                    *tracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProductsServerTransport.
@@ -101,6 +101,8 @@ func (p *ProductsServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "ProductsClient.BeginMove":
+				res.resp, res.err = p.dispatchBeginMove(req)
 			case "ProductsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProductsClient.NewListByBillingAccountPager":
@@ -111,8 +113,6 @@ func (p *ProductsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchNewListByCustomerPager(req)
 			case "ProductsClient.NewListByInvoiceSectionPager":
 				res.resp, res.err = p.dispatchNewListByInvoiceSectionPager(req)
-			case "ProductsClient.BeginMove":
-				res.resp, res.err = p.dispatchBeginMove(req)
 			case "ProductsClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			case "ProductsClient.ValidateMoveEligibility":
@@ -131,6 +131,54 @@ func (p *ProductsServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *ProductsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
+	}
+	beginMove := p.beginMove.get(req)
+	if beginMove == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.MoveProductRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		productNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("productName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginMove(req.Context(), billingAccountNameParam, productNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMove = &respr
+		p.beginMove.add(req, beginMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMove) {
+		p.beginMove.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (p *ProductsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -483,54 +531,6 @@ func (p *ProductsServerTransport) dispatchNewListByInvoiceSectionPager(req *http
 	if !server.PagerResponderMore(newListByInvoiceSectionPager) {
 		p.newListByInvoiceSectionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *ProductsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginMove == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
-	}
-	beginMove := p.beginMove.get(req)
-	if beginMove == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.MoveProductRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		productNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("productName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginMove(req.Context(), billingAccountNameParam, productNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMove = &respr
-		p.beginMove.add(req, beginMove)
-	}
-
-	resp, err := server.PollerResponderNext(beginMove, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginMove.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMove) {
-		p.beginMove.remove(req)
-	}
-
 	return resp, nil
 }
 

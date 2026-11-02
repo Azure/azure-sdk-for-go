@@ -72,7 +72,7 @@ func (client *ModelSourcesClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from
+// createOrUpdate - Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from
 // the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields, perform
 // a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to avoid concurrent
 // overwrites.
@@ -97,7 +97,7 @@ func (client *ModelSourcesClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ModelSourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, modelSourceName string, resource ModelSource, options *ModelSourcesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/modelSources/{modelSourceName}"
 	if client.subscriptionID == "" {
@@ -161,7 +161,7 @@ func (client *ModelSourcesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a ModelSource
+// deleteOperation - Delete a ModelSource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ModelSourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, modelSourceName string, options *ModelSourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -183,7 +183,7 @@ func (client *ModelSourcesClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ModelSourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, modelSourceName string, options *ModelSourcesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/modelSources/{modelSourceName}"
 	if client.subscriptionID == "" {

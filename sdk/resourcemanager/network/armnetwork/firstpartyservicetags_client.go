@@ -128,7 +128,7 @@ func (client *FirstPartyServiceTagsClient) createOrUpdateCreateRequest(ctx conte
 //     method.
 func (client *FirstPartyServiceTagsClient) BeginDelete(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*runtime.Poller[FirstPartyServiceTagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, firstPartyServiceTagName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, firstPartyServiceTagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *FirstPartyServiceTagsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// delete - Deletes the specified first party service tag.
+// deleteOperation - Deletes the specified first party service tag.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirstPartyServiceTagsClient) delete(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FirstPartyServiceTagsClient) deleteOperation(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirstPartyServiceTagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -29,6 +29,14 @@ type ConfigurationStoresServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginPurgeDeleted is the fake for method ConfigurationStoresClient.BeginPurgeDeleted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPurgeDeleted func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ConfigurationStoresClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters armappconfiguration.ConfigurationStoreUpdateParameters, options *armappconfiguration.ConfigurationStoresClientBeginUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConfigurationStoresClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +44,6 @@ type ConfigurationStoresServer struct {
 	// GetDeleted is the fake for method ConfigurationStoresClient.GetDeleted
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDeleted func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetDeletedOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetDeletedResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ConfigurationStoresClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappconfiguration.ConfigurationStoresClientListOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ConfigurationStoresClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,17 +57,13 @@ type ConfigurationStoresServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListKeysPager func(resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientListKeysOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse])
 
-	// BeginPurgeDeleted is the fake for method ConfigurationStoresClient.BeginPurgeDeleted
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method ConfigurationStoresClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappconfiguration.ConfigurationStoresClientListOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse])
 
 	// RegenerateKey is the fake for method ConfigurationStoresClient.RegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateKey func(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters armappconfiguration.RegenerateKeyParameters, options *armappconfiguration.ConfigurationStoresClientRegenerateKeyOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ConfigurationStoresClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters armappconfiguration.ConfigurationStoreUpdateParameters, options *armappconfiguration.ConfigurationStoresClientBeginUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationStoresServerTransport creates a new instance of ConfigurationStoresServerTransport with the provided implementation.
@@ -74,12 +74,12 @@ func NewConfigurationStoresServerTransport(srv *ConfigurationStoresServer) *Conf
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]](),
+		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]](),
 		newListDeletedPager:         newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]](),
 		newListKeysPager:            newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]](),
-		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]](),
 	}
 }
 
@@ -89,12 +89,12 @@ type ConfigurationStoresServerTransport struct {
 	srv                         *ConfigurationStoresServer
 	beginCreate                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]]
+	beginPurgeDeleted           *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]]
 	newListDeletedPager         *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]]
 	newListKeysPager            *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]]
-	beginPurgeDeleted           *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationStoresServerTransport.
@@ -122,24 +122,24 @@ func (c *ConfigurationStoresServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "ConfigurationStoresClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConfigurationStoresClient.BeginPurgeDeleted":
+				res.resp, res.err = c.dispatchBeginPurgeDeleted(req)
+			case "ConfigurationStoresClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConfigurationStoresClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConfigurationStoresClient.GetDeleted":
 				res.resp, res.err = c.dispatchGetDeleted(req)
-			case "ConfigurationStoresClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ConfigurationStoresClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ConfigurationStoresClient.NewListDeletedPager":
 				res.resp, res.err = c.dispatchNewListDeletedPager(req)
 			case "ConfigurationStoresClient.NewListKeysPager":
 				res.resp, res.err = c.dispatchNewListKeysPager(req)
-			case "ConfigurationStoresClient.BeginPurgeDeleted":
-				res.resp, res.err = c.dispatchBeginPurgeDeleted(req)
+			case "ConfigurationStoresClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ConfigurationStoresClient.RegenerateKey":
 				res.resp, res.err = c.dispatchRegenerateKey(req)
-			case "ConfigurationStoresClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -248,6 +248,98 @@ func (c *ConfigurationStoresServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
+func (c *ConfigurationStoresServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginPurgeDeleted == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
+	}
+	beginPurgeDeleted := c.beginPurgeDeleted.get(req)
+	if beginPurgeDeleted == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedConfigurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginPurgeDeleted(req.Context(), locationParam, configStoreNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPurgeDeleted = &respr
+		c.beginPurgeDeleted.add(req, beginPurgeDeleted)
+	}
+
+	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginPurgeDeleted.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPurgeDeleted) {
+		c.beginPurgeDeleted.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConfigurationStoresServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappconfiguration.ConfigurationStoreUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, configStoreNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConfigurationStoresServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -310,47 +402,6 @@ func (c *ConfigurationStoresServerTransport) dispatchGetDeleted(req *http.Reques
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedConfigurationStore, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ConfigurationStoresServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armappconfiguration.ConfigurationStoresClientListOptions
-		if skipTokenParam != nil {
-			options = &armappconfiguration.ConfigurationStoresClientListOptions{
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := c.srv.NewListPager(options)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappconfiguration.ConfigurationStoresClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -482,47 +533,44 @@ func (c *ConfigurationStoresServerTransport) dispatchNewListKeysPager(req *http.
 	return resp, nil
 }
 
-func (c *ConfigurationStoresServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginPurgeDeleted == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
+func (c *ConfigurationStoresServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginPurgeDeleted := c.beginPurgeDeleted.get(req)
-	if beginPurgeDeleted == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedConfigurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
+		qp := req.URL.Query()
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armappconfiguration.ConfigurationStoresClientListOptions
+		if skipTokenParam != nil {
+			options = &armappconfiguration.ConfigurationStoresClientListOptions{
+				SkipToken: skipTokenParam,
+			}
 		}
-		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginPurgeDeleted(req.Context(), locationParam, configStoreNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPurgeDeleted = &respr
-		c.beginPurgeDeleted.add(req, beginPurgeDeleted)
+		resp := c.srv.NewListPager(options)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappconfiguration.ConfigurationStoresClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginPurgeDeleted.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginPurgeDeleted) {
-		c.beginPurgeDeleted.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 
@@ -560,54 +608,6 @@ func (c *ConfigurationStoresServerTransport) dispatchRegenerateKey(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (c *ConfigurationStoresServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappconfiguration.ConfigurationStoreUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, configStoreNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

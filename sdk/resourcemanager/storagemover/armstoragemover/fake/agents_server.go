@@ -21,13 +21,13 @@ import (
 
 // AgentsServer is a fake server for instances of the armstoragemover.AgentsClient type.
 type AgentsServer struct {
-	// CreateOrUpdate is the fake for method AgentsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, agent armstoragemover.Agent, options *armstoragemover.AgentsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.AgentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method AgentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, options *armstoragemover.AgentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragemover.AgentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method AgentsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, agent armstoragemover.Agent, options *armstoragemover.AgentsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.AgentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AgentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,10 +82,10 @@ func (a *AgentsServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "AgentsClient.CreateOrUpdate":
-				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AgentsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AgentsClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AgentsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AgentsClient.NewListPager":
@@ -106,47 +106,6 @@ func (a *AgentsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AgentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agents/(?P<agentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragemover.Agent](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
-	if err != nil {
-		return nil, err
-	}
-	agentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, agentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Agent, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (a *AgentsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -194,6 +153,47 @@ func (a *AgentsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		a.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AgentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agents/(?P<agentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armstoragemover.Agent](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
+	if err != nil {
+		return nil, err
+	}
+	agentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, agentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Agent, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

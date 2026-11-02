@@ -29,6 +29,10 @@ type WorkflowsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, contextName string, workflowName string, options *armworkloadorchestration.WorkflowsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.WorkflowsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method WorkflowsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, workflowName string, properties armworkloadorchestration.Workflow, options *armworkloadorchestration.WorkflowsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.WorkflowsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WorkflowsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, contextName string, workflowName string, options *armworkloadorchestration.WorkflowsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.WorkflowsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type WorkflowsServer struct {
 	// NewListByContextPager is the fake for method WorkflowsClient.NewListByContextPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByContextPager func(resourceGroupName string, contextName string, options *armworkloadorchestration.WorkflowsClientListByContextOptions) (resp azfake.PagerResponder[armworkloadorchestration.WorkflowsClientListByContextResponse])
-
-	// BeginUpdate is the fake for method WorkflowsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, workflowName string, properties armworkloadorchestration.Workflow, options *armworkloadorchestration.WorkflowsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.WorkflowsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkflowsServerTransport creates a new instance of WorkflowsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewWorkflowsServerTransport(srv *WorkflowsServer) *WorkflowsServerTransport
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientDeleteResponse]](),
-		newListByContextPager: newTracker[azfake.PagerResponder[armworkloadorchestration.WorkflowsClientListByContextResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientUpdateResponse]](),
+		newListByContextPager: newTracker[azfake.PagerResponder[armworkloadorchestration.WorkflowsClientListByContextResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type WorkflowsServerTransport struct {
 	srv                   *WorkflowsServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientDeleteResponse]]
-	newListByContextPager *tracker[azfake.PagerResponder[armworkloadorchestration.WorkflowsClientListByContextResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armworkloadorchestration.WorkflowsClientUpdateResponse]]
+	newListByContextPager *tracker[azfake.PagerResponder[armworkloadorchestration.WorkflowsClientListByContextResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowsServerTransport.
@@ -90,12 +90,12 @@ func (w *WorkflowsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
 			case "WorkflowsClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WorkflowsClient.BeginUpdate":
+				res.resp, res.err = w.dispatchBeginUpdate(req)
 			case "WorkflowsClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WorkflowsClient.NewListByContextPager":
 				res.resp, res.err = w.dispatchNewListByContextPager(req)
-			case "WorkflowsClient.BeginUpdate":
-				res.resp, res.err = w.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (w *WorkflowsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (w *WorkflowsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := w.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Workflow](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
+		if err != nil {
+			return nil, err
+		}
+		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, workflowNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		w.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		w.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (w *WorkflowsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (w *WorkflowsServerTransport) dispatchNewListByContextPager(req *http.Reque
 	if !server.PagerResponderMore(newListByContextPager) {
 		w.newListByContextPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WorkflowsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := w.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Workflow](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
-		if err != nil {
-			return nil, err
-		}
-		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, workflowNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		w.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		w.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

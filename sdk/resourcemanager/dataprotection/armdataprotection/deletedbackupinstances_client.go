@@ -44,6 +44,81 @@ func NewDeletedBackupInstancesClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
+// BeginUndelete - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the deleted backup instance
+//   - options - DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
+//     method.
+func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*runtime.Poller[DeletedBackupInstancesClientUndeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.undelete(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedBackupInstancesClientUndeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedBackupInstancesClientUndeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// undelete - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DeletedBackupInstancesClient.BeginUndelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.undeleteCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// undeleteCreateRequest creates the undelete request.
+func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, _ *DeletedBackupInstancesClientBeginUndeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/deletedBackupInstances/{backupInstanceName}/undelete"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Gets a deleted backup instance with name in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -185,79 +260,4 @@ func (client *DeletedBackupInstancesClient) listHandleResponse(resp *http.Respon
 		return DeletedBackupInstancesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUndelete - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the backup vault.
-//   - backupInstanceName - The name of the deleted backup instance
-//   - options - DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
-//     method.
-func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*runtime.Poller[DeletedBackupInstancesClientUndeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.undelete(ctx, resourceGroupName, vaultName, backupInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedBackupInstancesClientUndeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedBackupInstancesClientUndeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Undelete - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DeletedBackupInstancesClient.BeginUndelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.undeleteCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// undeleteCreateRequest creates the Undelete request.
-func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, _ *DeletedBackupInstancesClientBeginUndeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/deletedBackupInstances/{backupInstanceName}/undelete"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if backupInstanceName == "" {
-		return nil, errors.New("parameter backupInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

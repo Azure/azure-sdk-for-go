@@ -69,7 +69,7 @@ func (client *TargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update a Target Resource
+// createOrUpdate - Create or update a Target Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, targetName string, resource Target, options *TargetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *TargetsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, targetName string, resource Target, _ *TargetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *TargetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a Target Resource
+// deleteOperation - Delete a Target Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, targetName string, options *TargetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *TargetsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, targetName string, options *TargetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}"
 	if client.subscriptionID == "" {
@@ -190,6 +190,610 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginInstallSolution - Post request to deploy
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginInstallSolutionOptions contains the optional parameters for the TargetsClient.BeginInstallSolution
+//     method.
+func (client *TargetsClient) BeginInstallSolution(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, options *TargetsClientBeginInstallSolutionOptions) (*runtime.Poller[TargetsClientInstallSolutionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.installSolution(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientInstallSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientInstallSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// installSolution - Post request to deploy
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) installSolution(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, options *TargetsClientBeginInstallSolutionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginInstallSolution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.installSolutionCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// installSolutionCreateRequest creates the installSolution request.
+func (client *TargetsClient) installSolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, _ *TargetsClientBeginInstallSolutionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/installSolution"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPublishSolutionVersion - Post request to publish
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginPublishSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginPublishSolutionVersion
+//     method.
+func (client *TargetsClient) BeginPublishSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, options *TargetsClientBeginPublishSolutionVersionOptions) (*runtime.Poller[TargetsClientPublishSolutionVersionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.publishSolutionVersion(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientPublishSolutionVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientPublishSolutionVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// publishSolutionVersion - Post request to publish
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) publishSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, options *TargetsClientBeginPublishSolutionVersionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginPublishSolutionVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.publishSolutionVersionCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// publishSolutionVersionCreateRequest creates the publishSolutionVersion request.
+func (client *TargetsClient) publishSolutionVersionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, _ *TargetsClientBeginPublishSolutionVersionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/publishSolutionVersion"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRemoveRevision - Post request to remove solution version revision
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginRemoveRevisionOptions contains the optional parameters for the TargetsClient.BeginRemoveRevision
+//     method.
+func (client *TargetsClient) BeginRemoveRevision(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, options *TargetsClientBeginRemoveRevisionOptions) (*runtime.Poller[TargetsClientRemoveRevisionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeRevision(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientRemoveRevisionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientRemoveRevisionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeRevision - Post request to remove solution version revision
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) removeRevision(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, options *TargetsClientBeginRemoveRevisionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginRemoveRevision"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeRevisionCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeRevisionCreateRequest creates the removeRevision request.
+func (client *TargetsClient) removeRevisionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, _ *TargetsClientBeginRemoveRevisionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/removeRevision"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginResolveConfiguration - Post request to resolve configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginResolveConfigurationOptions contains the optional parameters for the TargetsClient.BeginResolveConfiguration
+//     method.
+func (client *TargetsClient) BeginResolveConfiguration(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginResolveConfigurationOptions) (*runtime.Poller[TargetsClientResolveConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveConfiguration(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientResolveConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientResolveConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resolveConfiguration - Post request to resolve configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) resolveConfiguration(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginResolveConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginResolveConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resolveConfigurationCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resolveConfigurationCreateRequest creates the resolveConfiguration request.
+func (client *TargetsClient) resolveConfigurationCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, _ *TargetsClientBeginResolveConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/resolveConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginReviewSolutionVersion - Post request to review configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginReviewSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginReviewSolutionVersion
+//     method.
+func (client *TargetsClient) BeginReviewSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginReviewSolutionVersionOptions) (*runtime.Poller[TargetsClientReviewSolutionVersionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reviewSolutionVersion(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientReviewSolutionVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientReviewSolutionVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reviewSolutionVersion - Post request to review configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) reviewSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginReviewSolutionVersionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginReviewSolutionVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reviewSolutionVersionCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reviewSolutionVersionCreateRequest creates the reviewSolutionVersion request.
+func (client *TargetsClient) reviewSolutionVersionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, _ *TargetsClientBeginReviewSolutionVersionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/reviewSolutionVersion"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUninstallSolution - Post request to uninstall
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginUninstallSolutionOptions contains the optional parameters for the TargetsClient.BeginUninstallSolution
+//     method.
+func (client *TargetsClient) BeginUninstallSolution(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, options *TargetsClientBeginUninstallSolutionOptions) (*runtime.Poller[TargetsClientUninstallSolutionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.uninstallSolution(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUninstallSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUninstallSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// uninstallSolution - Post request to uninstall
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) uninstallSolution(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, options *TargetsClientBeginUninstallSolutionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginUninstallSolution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.uninstallSolutionCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// uninstallSolutionCreateRequest creates the uninstallSolution request.
+func (client *TargetsClient) uninstallSolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, _ *TargetsClientBeginUninstallSolutionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/uninstallSolution"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - update a Target Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - properties - The resource properties to be updated.
+//   - options - TargetsClientBeginUpdateOptions contains the optional parameters for the TargetsClient.BeginUpdate method.
+func (client *TargetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, options *TargetsClientBeginUpdateOptions) (*runtime.Poller[TargetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, targetName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - update a Target Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) update(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, options *TargetsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, targetName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *TargetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, _ *TargetsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateExternalValidationStatus - Post request to update external validation status
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - targetName - Name of the target
+//   - body - The content of the action request
+//   - options - TargetsClientBeginUpdateExternalValidationStatusOptions contains the optional parameters for the TargetsClient.BeginUpdateExternalValidationStatus
+//     method.
+func (client *TargetsClient) BeginUpdateExternalValidationStatus(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, options *TargetsClientBeginUpdateExternalValidationStatusOptions) (*runtime.Poller[TargetsClientUpdateExternalValidationStatusResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateExternalValidationStatus(ctx, resourceGroupName, targetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUpdateExternalValidationStatusResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUpdateExternalValidationStatusResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateExternalValidationStatus - Post request to update external validation status
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TargetsClient) updateExternalValidationStatus(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, options *TargetsClientBeginUpdateExternalValidationStatusOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TargetsClient.BeginUpdateExternalValidationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateExternalValidationStatusCreateRequest(ctx, resourceGroupName, targetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateExternalValidationStatusCreateRequest creates the updateExternalValidationStatus request.
+func (client *TargetsClient) updateExternalValidationStatusCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, _ *TargetsClientBeginUpdateExternalValidationStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/updateExternalValidationStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if targetName == "" {
+		return nil, errors.New("parameter targetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -251,81 +855,6 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response, successCodes
 		return TargetsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginInstallSolution - Post request to deploy
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginInstallSolutionOptions contains the optional parameters for the TargetsClient.BeginInstallSolution
-//     method.
-func (client *TargetsClient) BeginInstallSolution(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, options *TargetsClientBeginInstallSolutionOptions) (*runtime.Poller[TargetsClientInstallSolutionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.installSolution(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientInstallSolutionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientInstallSolutionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InstallSolution - Post request to deploy
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) installSolution(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, options *TargetsClientBeginInstallSolutionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginInstallSolution"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.installSolutionCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// installSolutionCreateRequest creates the InstallSolution request.
-func (client *TargetsClient) installSolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body InstallSolutionParameter, _ *TargetsClientBeginInstallSolutionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/installSolution"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List by specified resource group
@@ -465,533 +994,4 @@ func (client *TargetsClient) listBySubscriptionHandleResponse(resp *http.Respons
 		return TargetsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPublishSolutionVersion - Post request to publish
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginPublishSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginPublishSolutionVersion
-//     method.
-func (client *TargetsClient) BeginPublishSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, options *TargetsClientBeginPublishSolutionVersionOptions) (*runtime.Poller[TargetsClientPublishSolutionVersionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.publishSolutionVersion(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientPublishSolutionVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientPublishSolutionVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PublishSolutionVersion - Post request to publish
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) publishSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, options *TargetsClientBeginPublishSolutionVersionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginPublishSolutionVersion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.publishSolutionVersionCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// publishSolutionVersionCreateRequest creates the PublishSolutionVersion request.
-func (client *TargetsClient) publishSolutionVersionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionVersionParameter, _ *TargetsClientBeginPublishSolutionVersionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/publishSolutionVersion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRemoveRevision - Post request to remove solution version revision
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginRemoveRevisionOptions contains the optional parameters for the TargetsClient.BeginRemoveRevision
-//     method.
-func (client *TargetsClient) BeginRemoveRevision(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, options *TargetsClientBeginRemoveRevisionOptions) (*runtime.Poller[TargetsClientRemoveRevisionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeRevision(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientRemoveRevisionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientRemoveRevisionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveRevision - Post request to remove solution version revision
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) removeRevision(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, options *TargetsClientBeginRemoveRevisionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginRemoveRevision"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeRevisionCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeRevisionCreateRequest creates the RemoveRevision request.
-func (client *TargetsClient) removeRevisionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body RemoveRevisionParameter, _ *TargetsClientBeginRemoveRevisionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/removeRevision"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginResolveConfiguration - Post request to resolve configuration
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginResolveConfigurationOptions contains the optional parameters for the TargetsClient.BeginResolveConfiguration
-//     method.
-func (client *TargetsClient) BeginResolveConfiguration(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginResolveConfigurationOptions) (*runtime.Poller[TargetsClientResolveConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resolveConfiguration(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientResolveConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientResolveConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResolveConfiguration - Post request to resolve configuration
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) resolveConfiguration(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginResolveConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginResolveConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resolveConfigurationCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resolveConfigurationCreateRequest creates the ResolveConfiguration request.
-func (client *TargetsClient) resolveConfigurationCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, _ *TargetsClientBeginResolveConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/resolveConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginReviewSolutionVersion - Post request to review configuration
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginReviewSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginReviewSolutionVersion
-//     method.
-func (client *TargetsClient) BeginReviewSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginReviewSolutionVersionOptions) (*runtime.Poller[TargetsClientReviewSolutionVersionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reviewSolutionVersion(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientReviewSolutionVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientReviewSolutionVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReviewSolutionVersion - Post request to review configuration
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) reviewSolutionVersion(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, options *TargetsClientBeginReviewSolutionVersionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginReviewSolutionVersion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reviewSolutionVersionCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reviewSolutionVersionCreateRequest creates the ReviewSolutionVersion request.
-func (client *TargetsClient) reviewSolutionVersionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body SolutionTemplateParameter, _ *TargetsClientBeginReviewSolutionVersionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/reviewSolutionVersion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUninstallSolution - Post request to uninstall
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginUninstallSolutionOptions contains the optional parameters for the TargetsClient.BeginUninstallSolution
-//     method.
-func (client *TargetsClient) BeginUninstallSolution(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, options *TargetsClientBeginUninstallSolutionOptions) (*runtime.Poller[TargetsClientUninstallSolutionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.uninstallSolution(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUninstallSolutionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUninstallSolutionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UninstallSolution - Post request to uninstall
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) uninstallSolution(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, options *TargetsClientBeginUninstallSolutionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginUninstallSolution"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.uninstallSolutionCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// uninstallSolutionCreateRequest creates the UninstallSolution request.
-func (client *TargetsClient) uninstallSolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body UninstallSolutionParameter, _ *TargetsClientBeginUninstallSolutionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/uninstallSolution"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - update a Target Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - properties - The resource properties to be updated.
-//   - options - TargetsClientBeginUpdateOptions contains the optional parameters for the TargetsClient.BeginUpdate method.
-func (client *TargetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, options *TargetsClientBeginUpdateOptions) (*runtime.Poller[TargetsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, targetName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - update a Target Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) update(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, options *TargetsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, targetName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *TargetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, targetName string, properties TargetUpdate, _ *TargetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateExternalValidationStatus - Post request to update external validation status
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - targetName - Name of the target
-//   - body - The content of the action request
-//   - options - TargetsClientBeginUpdateExternalValidationStatusOptions contains the optional parameters for the TargetsClient.BeginUpdateExternalValidationStatus
-//     method.
-func (client *TargetsClient) BeginUpdateExternalValidationStatus(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, options *TargetsClientBeginUpdateExternalValidationStatusOptions) (*runtime.Poller[TargetsClientUpdateExternalValidationStatusResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateExternalValidationStatus(ctx, resourceGroupName, targetName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TargetsClientUpdateExternalValidationStatusResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TargetsClientUpdateExternalValidationStatusResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateExternalValidationStatus - Post request to update external validation status
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TargetsClient) updateExternalValidationStatus(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, options *TargetsClientBeginUpdateExternalValidationStatusOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TargetsClient.BeginUpdateExternalValidationStatus"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateExternalValidationStatusCreateRequest(ctx, resourceGroupName, targetName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateExternalValidationStatusCreateRequest creates the UpdateExternalValidationStatus request.
-func (client *TargetsClient) updateExternalValidationStatusCreateRequest(ctx context.Context, resourceGroupName string, targetName string, body UpdateExternalValidationStatusParameter, _ *TargetsClientBeginUpdateExternalValidationStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/updateExternalValidationStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

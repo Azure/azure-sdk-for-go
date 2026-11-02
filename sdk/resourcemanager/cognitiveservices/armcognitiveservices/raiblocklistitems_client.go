@@ -186,7 +186,7 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 //     method.
 func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistItemsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -201,9 +201,9 @@ func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes the specified blocklist Item associated with the custom blocklist.
+// deleteOperation - Deletes the specified blocklist Item associated with the custom blocklist.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiBlocklistItemsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiBlocklistItemsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

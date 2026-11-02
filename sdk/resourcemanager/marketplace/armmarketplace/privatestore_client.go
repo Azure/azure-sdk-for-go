@@ -789,71 +789,6 @@ func (client *PrivateStoreClient) getRequestApprovalHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListPager - Gets the list of available private stores.
-//   - options - PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.NewListPager method.
-func (client *PrivateStoreClient) NewListPager(options *PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateStoreClientListResponse]{
-		More: func(page PrivateStoreClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateStoreClientListResponse) (PrivateStoreClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateStoreClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PrivateStoreClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateStoreClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, nextLink string, options *PrivateStoreClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Marketplace/privateStores"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250101)
-		if options != nil && options.UseCache != nil {
-			reqQP.Set("use-cache", *options.UseCache)
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *PrivateStoreClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateStoreClientListResponse, error) {
-	result := PrivateStoreClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateStoreList); err != nil {
-		return PrivateStoreClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // ListNewPlansNotifications - List new plans notifications
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - privateStoreID - The store ID - must use the tenant ID
@@ -1013,6 +948,71 @@ func (client *PrivateStoreClient) listSubscriptionsContextHandleResponse(resp *h
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsContextList); err != nil {
 		return PrivateStoreClientListSubscriptionsContextResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets the list of available private stores.
+//   - options - PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.NewListPager method.
+func (client *PrivateStoreClient) NewListPager(options *PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateStoreClientListResponse]{
+		More: func(page PrivateStoreClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateStoreClientListResponse) (PrivateStoreClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateStoreClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PrivateStoreClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateStoreClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, nextLink string, options *PrivateStoreClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Marketplace/privateStores"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250101)
+		if options != nil && options.UseCache != nil {
+			reqQP.Set("use-cache", *options.UseCache)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PrivateStoreClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateStoreClientListResponse, error) {
+	result := PrivateStoreClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateStoreList); err != nil {
+		return PrivateStoreClientListResponse{}, err
 	}
 	return result, nil
 }

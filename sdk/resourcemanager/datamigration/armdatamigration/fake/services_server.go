@@ -22,18 +22,6 @@ import (
 
 // ServicesServer is a fake server for instances of the armdatamigration.ServicesClient type.
 type ServicesServer struct {
-	// CheckChildrenNameAvailability is the fake for method ServicesClient.CheckChildrenNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckChildrenNameAvailability func(ctx context.Context, groupName string, serviceName string, parameters armdatamigration.NameAvailabilityRequest, options *armdatamigration.ServicesClientCheckChildrenNameAvailabilityOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckChildrenNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
-	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, location string, parameters armdatamigration.NameAvailabilityRequest, options *armdatamigration.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
-	// CheckStatus is the fake for method ServicesClient.CheckStatus
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckStatus func(ctx context.Context, groupName string, serviceName string, options *armdatamigration.ServicesClientCheckStatusOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckStatusResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, groupName string, serviceName string, parameters armdatamigration.Service, options *armdatamigration.ServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdatamigration.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -41,22 +29,6 @@ type ServicesServer struct {
 	// BeginDelete is the fake for method ServicesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, groupName string, serviceName string, options *armdatamigration.ServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatamigration.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method ServicesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, groupName string, serviceName string, options *armdatamigration.ServicesClientGetOptions) (resp azfake.Responder[armdatamigration.ServicesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ServicesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdatamigration.ServicesClientListOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method ServicesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(groupName string, options *armdatamigration.ServicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse])
-
-	// NewListSKUsPager is the fake for method ServicesClient.NewListSKUsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListSKUsPager func(groupName string, serviceName string, options *armdatamigration.ServicesClientListSKUsOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse])
 
 	// BeginStart is the fake for method ServicesClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -69,6 +41,34 @@ type ServicesServer struct {
 	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, groupName string, serviceName string, parameters armdatamigration.Service, options *armdatamigration.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatamigration.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckChildrenNameAvailability is the fake for method ServicesClient.CheckChildrenNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckChildrenNameAvailability func(ctx context.Context, groupName string, serviceName string, parameters armdatamigration.NameAvailabilityRequest, options *armdatamigration.ServicesClientCheckChildrenNameAvailabilityOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckChildrenNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, location string, parameters armdatamigration.NameAvailabilityRequest, options *armdatamigration.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// CheckStatus is the fake for method ServicesClient.CheckStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckStatus func(ctx context.Context, groupName string, serviceName string, options *armdatamigration.ServicesClientCheckStatusOptions) (resp azfake.Responder[armdatamigration.ServicesClientCheckStatusResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ServicesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, groupName string, serviceName string, options *armdatamigration.ServicesClientGetOptions) (resp azfake.Responder[armdatamigration.ServicesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ServicesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(groupName string, options *armdatamigration.ServicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ServicesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdatamigration.ServicesClientListOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListResponse])
+
+	// NewListSKUsPager is the fake for method ServicesClient.NewListSKUsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListSKUsPager func(groupName string, serviceName string, options *armdatamigration.ServicesClientListSKUsOptions) (resp azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse])
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -79,12 +79,12 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdatamigration.ServicesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatamigration.ServicesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse]](),
-		newListSKUsPager:            newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armdatamigration.ServicesClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armdatamigration.ServicesClientStopResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdatamigration.ServicesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListResponse]](),
+		newListSKUsPager:            newTracker[azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse]](),
 	}
 }
 
@@ -94,12 +94,12 @@ type ServicesServerTransport struct {
 	srv                         *ServicesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdatamigration.ServicesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatamigration.ServicesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse]]
-	newListSKUsPager            *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armdatamigration.ServicesClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armdatamigration.ServicesClientStopResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdatamigration.ServicesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListResponse]]
+	newListSKUsPager            *tracker[azfake.PagerResponder[armdatamigration.ServicesClientListSKUsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServicesServerTransport.
@@ -123,30 +123,30 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ServicesClient.CheckChildrenNameAvailability":
-				res.resp, res.err = s.dispatchCheckChildrenNameAvailability(req)
-			case "ServicesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
-			case "ServicesClient.CheckStatus":
-				res.resp, res.err = s.dispatchCheckStatus(req)
 			case "ServicesClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServicesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ServicesClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "ServicesClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ServicesClient.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
-			case "ServicesClient.NewListSKUsPager":
-				res.resp, res.err = s.dispatchNewListSKUsPager(req)
 			case "ServicesClient.BeginStart":
 				res.resp, res.err = s.dispatchBeginStart(req)
 			case "ServicesClient.BeginStop":
 				res.resp, res.err = s.dispatchBeginStop(req)
 			case "ServicesClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServicesClient.CheckChildrenNameAvailability":
+				res.resp, res.err = s.dispatchCheckChildrenNameAvailability(req)
+			case "ServicesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
+			case "ServicesClient.CheckStatus":
+				res.resp, res.err = s.dispatchCheckStatus(req)
+			case "ServicesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServicesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "ServicesClient.NewListSKUsPager":
+				res.resp, res.err = s.dispatchNewListSKUsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -161,109 +161,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServicesServerTransport) dispatchCheckChildrenNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckChildrenNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckChildrenNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatamigration.NameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-	if err != nil {
-		return nil, err
-	}
-	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckChildrenNameAvailability(req.Context(), groupNameParam, serviceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatamigration.NameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchCheckStatus(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkStatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-	if err != nil {
-		return nil, err
-	}
-	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckStatus(req.Context(), groupNameParam, serviceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceStatusResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -366,150 +263,6 @@ func (s *ServicesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		s.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-	if err != nil {
-		return nil, err
-	}
-	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), groupNameParam, serviceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Service, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatamigration.ServicesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(groupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdatamigration.ServicesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchNewListSKUsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListSKUsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListSKUsPager not implemented")}
-	}
-	newListSKUsPager := s.newListSKUsPager.get(req)
-	if newListSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListSKUsPager(groupNameParam, serviceNameParam, nil)
-		newListSKUsPager = &resp
-		s.newListSKUsPager.add(req, newListSKUsPager)
-		server.PagerResponderInjectNextLinks(newListSKUsPager, req, func(page *armdatamigration.ServicesClientListSKUsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListSKUsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListSKUsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListSKUsPager) {
-		s.newListSKUsPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -646,6 +399,253 @@ func (s *ServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckChildrenNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckChildrenNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckChildrenNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatamigration.NameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckChildrenNameAvailability(req.Context(), groupNameParam, serviceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatamigration.NameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkStatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckStatus(req.Context(), groupNameParam, serviceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceStatusResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), groupNameParam, serviceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Service, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(groupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdatamigration.ServicesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatamigration.ServicesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchNewListSKUsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListSKUsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListSKUsPager not implemented")}
+	}
+	newListSKUsPager := s.newListSKUsPager.get(req)
+	if newListSKUsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/services/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListSKUsPager(groupNameParam, serviceNameParam, nil)
+		newListSKUsPager = &resp
+		s.newListSKUsPager.add(req, newListSKUsPager)
+		server.PagerResponderInjectNextLinks(newListSKUsPager, req, func(page *armdatamigration.ServicesClientListSKUsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListSKUsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListSKUsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListSKUsPager) {
+		s.newListSKUsPager.remove(req)
+	}
 	return resp, nil
 }
 

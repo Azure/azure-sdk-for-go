@@ -68,7 +68,7 @@ func (client *ClusterMeshProfilesClient) BeginApply(ctx context.Context, resourc
 	}
 }
 
-// Apply - Applies the cluster mesh profile to selected fleet members.
+// apply - Applies the cluster mesh profile to selected fleet members.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClusterMeshProfilesClient) apply(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginApplyOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ClusterMeshProfilesClient) apply(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// applyCreateRequest creates the Apply request.
+// applyCreateRequest creates the apply request.
 func (client *ClusterMeshProfilesClient) applyCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginApplyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}/apply"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *ClusterMeshProfilesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a ClusterMeshProfile
+// createOrUpdate - Create a ClusterMeshProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClusterMeshProfilesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, resource ClusterMeshProfile, options *ClusterMeshProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *ClusterMeshProfilesClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ClusterMeshProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, resource ClusterMeshProfile, options *ClusterMeshProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}"
 	if client.subscriptionID == "" {
@@ -234,7 +234,7 @@ func (client *ClusterMeshProfilesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a ClusterMeshProfile
+// deleteOperation - Delete a ClusterMeshProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClusterMeshProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -256,7 +256,7 @@ func (client *ClusterMeshProfilesClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClusterMeshProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}"
 	if client.subscriptionID == "" {

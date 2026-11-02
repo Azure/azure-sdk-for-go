@@ -150,7 +150,7 @@ func (client *OutboundRuleClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *OutboundRuleClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientBeginDeleteOptions) (*runtime.Poller[OutboundRuleClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, managedNetworkName, ruleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, managedNetworkName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -165,12 +165,12 @@ func (client *OutboundRuleClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-// account.
+// deleteOperation - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive
+// services account.
 //
 // The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *OutboundRuleClient) delete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientBeginDeleteOptions) (*http.Response, error) {
+func (client *OutboundRuleClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundRuleClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

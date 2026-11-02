@@ -30,6 +30,10 @@ type ConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armmysqlflexibleservers.Configuration, options *armmysqlflexibleservers.ConfigurationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConfigurationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armmysqlflexibleservers.Configuration, options *armmysqlflexibleservers.ConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *armmysqlflexibleservers.ConfigurationsClientGetOptions) (resp azfake.Responder[armmysqlflexibleservers.ConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type ConfigurationsServer struct {
 	// NewListByServerPager is the fake for method ConfigurationsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armmysqlflexibleservers.ConfigurationsClientListByServerOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ConfigurationsClientListByServerResponse])
-
-	// BeginUpdate is the fake for method ConfigurationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armmysqlflexibleservers.Configuration, options *armmysqlflexibleservers.ConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationsServerTransport creates a new instance of ConfigurationsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewConfigurationsServerTransport(srv *ConfigurationsServer) *Configurations
 		srv:                  srv,
 		beginBatchUpdate:     newTracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientBatchUpdateResponse]](),
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientCreateOrUpdateResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ConfigurationsClientListByServerResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ConfigurationsClientListByServerResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type ConfigurationsServerTransport struct {
 	srv                  *ConfigurationsServer
 	beginBatchUpdate     *tracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientBatchUpdateResponse]]
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientCreateOrUpdateResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ConfigurationsClientListByServerResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armmysqlflexibleservers.ConfigurationsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ConfigurationsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationsServerTransport.
@@ -91,12 +91,12 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchBeginBatchUpdate(req)
 			case "ConfigurationsClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ConfigurationsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConfigurationsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConfigurationsClient.NewListByServerPager":
 				res.resp, res.err = c.dispatchNewListByServerPager(req)
-			case "ConfigurationsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -213,6 +213,58 @@ func (c *ConfigurationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	return resp, nil
 }
 
+func (c *ConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.Configuration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -320,58 +372,6 @@ func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.R
 	if !server.PagerResponderMore(newListByServerPager) {
 		c.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.Configuration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

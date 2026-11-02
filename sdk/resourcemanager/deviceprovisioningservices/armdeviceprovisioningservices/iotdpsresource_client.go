@@ -214,7 +214,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 //     method.
 func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, provisioningServiceName, resourceGroupName, options)
+		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -229,9 +229,9 @@ func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisionin
 	}
 }
 
-// delete - Deletes the Provisioning Service.
+// deleteOperation - Deletes the Provisioning Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) delete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

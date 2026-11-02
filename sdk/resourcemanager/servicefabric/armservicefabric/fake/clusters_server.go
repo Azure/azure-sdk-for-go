@@ -26,6 +26,10 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabric.Cluster, options *armservicefabric.ClustersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armservicefabric.ClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabric.ClusterUpdateParameters, options *armservicefabric.ClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armservicefabric.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method ClustersClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, clusterName string, options *armservicefabric.ClustersClientDeleteOptions) (resp azfake.Responder[armservicefabric.ClustersClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -34,21 +38,17 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armservicefabric.ClustersClientGetOptions) (resp azfake.Responder[armservicefabric.ClustersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ClustersClient.NewListPager
+	// ListUpgradableVersions is the fake for method ClustersClient.ListUpgradableVersions
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armservicefabric.ClustersClientListOptions) (resp azfake.PagerResponder[armservicefabric.ClustersClientListResponse])
+	ListUpgradableVersions func(ctx context.Context, resourceGroupName string, clusterName string, options *armservicefabric.ClustersClientListUpgradableVersionsOptions) (resp azfake.Responder[armservicefabric.ClustersClientListUpgradableVersionsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armservicefabric.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armservicefabric.ClustersClientListByResourceGroupResponse])
 
-	// ListUpgradableVersions is the fake for method ClustersClient.ListUpgradableVersions
+	// NewListPager is the fake for method ClustersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListUpgradableVersions func(ctx context.Context, resourceGroupName string, clusterName string, options *armservicefabric.ClustersClientListUpgradableVersionsOptions) (resp azfake.Responder[armservicefabric.ClustersClientListUpgradableVersionsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabric.ClusterUpdateParameters, options *armservicefabric.ClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armservicefabric.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armservicefabric.ClustersClientListOptions) (resp azfake.PagerResponder[armservicefabric.ClustersClientListResponse])
 }
 
 // NewClustersServerTransport creates a new instance of ClustersServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 	return &ClustersServerTransport{
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armservicefabric.ClustersClientCreateOrUpdateResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armservicefabric.ClustersClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armservicefabric.ClustersClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armservicefabric.ClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armservicefabric.ClustersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armservicefabric.ClustersClientListResponse]](),
 	}
 }
 
@@ -69,9 +69,9 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 type ClustersServerTransport struct {
 	srv                         *ClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armservicefabric.ClustersClientCreateOrUpdateResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armservicefabric.ClustersClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armservicefabric.ClustersClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armservicefabric.ClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armservicefabric.ClustersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armservicefabric.ClustersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClustersServerTransport.
@@ -97,18 +97,18 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "ClustersClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ClustersClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ClustersClient.Delete":
 				res.resp, res.err = c.dispatchDelete(req)
 			case "ClustersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
-			case "ClustersClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
-			case "ClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ClustersClient.ListUpgradableVersions":
 				res.resp, res.err = c.dispatchListUpgradableVersions(req)
-			case "ClustersClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "ClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ClustersClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -168,6 +168,54 @@ func (c *ClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		c.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabric.ClusterUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -239,76 +287,6 @@ func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (c *ClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armservicefabric.ClustersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armservicefabric.ClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ClustersServerTransport) dispatchListUpgradableVersions(req *http.Request) (*http.Response, error) {
 	if c.srv.ListUpgradableVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListUpgradableVersions not implemented")}
@@ -352,51 +330,73 @@ func (c *ClustersServerTransport) dispatchListUpgradableVersions(req *http.Reque
 	return resp, nil
 }
 
-func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armservicefabric.ClusterUpdateParameters](req)
-		if err != nil {
-			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armservicefabric.ClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
 	}
+	return resp, nil
+}
 
+func (c *ClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/clusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPager(nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armservicefabric.ClustersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

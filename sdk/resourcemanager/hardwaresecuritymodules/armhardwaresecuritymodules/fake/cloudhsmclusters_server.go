@@ -34,18 +34,6 @@ type CloudHsmClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CloudHsmClustersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClustersClientGetOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClustersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method CloudHsmClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method CloudHsmClustersClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse])
-
 	// BeginRestore is the fake for method CloudHsmClustersClient.BeginRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestore func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, restoreRequestProperties armhardwaresecuritymodules.RestoreRequestProperties, options *armhardwaresecuritymodules.CloudHsmClustersClientBeginRestoreOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse], errResp azfake.ErrorResponder)
@@ -61,6 +49,18 @@ type CloudHsmClustersServer struct {
 	// BeginValidateRestoreProperties is the fake for method CloudHsmClustersClient.BeginValidateRestoreProperties
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateRestoreProperties func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClustersClientBeginValidateRestorePropertiesOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CloudHsmClustersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClustersClientGetOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method CloudHsmClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method CloudHsmClustersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse])
 }
 
 // NewCloudHsmClustersServerTransport creates a new instance of CloudHsmClustersServerTransport with the provided implementation.
@@ -72,12 +72,12 @@ func NewCloudHsmClustersServerTransport(srv *CloudHsmClustersServer) *CloudHsmCl
 		beginBackup:                    newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientBackupResponse]](),
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse]](),
 		beginRestore:                   newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientUpdateResponse]](),
 		beginValidateBackupProperties:  newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientValidateBackupPropertiesResponse]](),
 		beginValidateRestoreProperties: newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -88,12 +88,12 @@ type CloudHsmClustersServerTransport struct {
 	beginBackup                    *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientBackupResponse]]
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse]]
 	beginRestore                   *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientUpdateResponse]]
 	beginValidateBackupProperties  *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientValidateBackupPropertiesResponse]]
 	beginValidateRestoreProperties *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudHsmClustersServerTransport.
@@ -123,12 +123,6 @@ func (c *CloudHsmClustersServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CloudHsmClustersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CloudHsmClustersClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CloudHsmClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "CloudHsmClustersClient.NewListBySubscriptionPager":
-				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "CloudHsmClustersClient.BeginRestore":
 				res.resp, res.err = c.dispatchBeginRestore(req)
 			case "CloudHsmClustersClient.BeginUpdate":
@@ -137,6 +131,12 @@ func (c *CloudHsmClustersServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = c.dispatchBeginValidateBackupProperties(req)
 			case "CloudHsmClustersClient.BeginValidateRestoreProperties":
 				res.resp, res.err = c.dispatchBeginValidateRestoreProperties(req)
+			case "CloudHsmClustersClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CloudHsmClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CloudHsmClustersClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -296,125 +296,6 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginDelete(req *http.Request)
 		c.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *CloudHsmClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudHsmCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CloudHsmClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		var options *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions
-		if skiptokenParam != nil {
-			options = &armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions{
-				Skiptoken: skiptokenParam,
-			}
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CloudHsmClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		var options *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions
-		if skiptokenParam != nil {
-			options = &armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions{
-				Skiptoken: skiptokenParam,
-			}
-		}
-		resp := c.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		c.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -619,6 +500,125 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginValidateRestoreProperties
 		c.beginValidateRestoreProperties.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CloudHsmClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudHsmCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CloudHsmClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		var options *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions
+		if skiptokenParam != nil {
+			options = &armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions{
+				Skiptoken: skiptokenParam,
+			}
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CloudHsmClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		var options *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions
+		if skiptokenParam != nil {
+			options = &armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions{
+				Skiptoken: skiptokenParam,
+			}
+		}
+		resp := c.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		c.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

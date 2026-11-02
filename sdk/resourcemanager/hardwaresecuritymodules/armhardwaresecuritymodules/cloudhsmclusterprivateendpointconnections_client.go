@@ -45,6 +45,82 @@ func NewCloudHsmClusterPrivateEndpointConnectionsClient(subscriptionID string, c
 	return client, nil
 }
 
+// BeginDelete - Deletes the private endpoint connection for the Cloud Hsm Cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
+//     be between 3 and 23 characters in length.
+//   - peConnectionName - Name of the private endpoint connection associated with the Cloud HSM Cluster.
+//   - options - CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete
+//     method.
+func (client *CloudHsmClusterPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, options *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudHsmClusterName, peConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes the private endpoint connection for the Cloud Hsm Cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, options *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, peConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, _ *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections/{peConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudHsmClusterName == "" {
+		return nil, errors.New("parameter cloudHsmClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudHsmClusterName}", url.PathEscape(cloudHsmClusterName))
+	if peConnectionName == "" {
+		return nil, errors.New("parameter peConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peConnectionName}", url.PathEscape(peConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Create - Creates or updates the private endpoint connection for the Cloud Hsm Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -115,82 +191,6 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) createHandleRespo
 		return CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the private endpoint connection for the Cloud Hsm Cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
-//     be between 3 and 23 characters in length.
-//   - peConnectionName - Name of the private endpoint connection associated with the Cloud HSM Cluster.
-//   - options - CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete
-//     method.
-func (client *CloudHsmClusterPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, options *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudHsmClusterName, peConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the private endpoint connection for the Cloud Hsm Cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, options *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, peConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, _ *CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections/{peConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudHsmClusterName == "" {
-		return nil, errors.New("parameter cloudHsmClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudHsmClusterName}", url.PathEscape(cloudHsmClusterName))
-	if peConnectionName == "" {
-		return nil, errors.New("parameter peConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{peConnectionName}", url.PathEscape(peConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the private endpoint connection for the Cloud Hsm Cluster.

@@ -29,6 +29,10 @@ type AppLinksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, appLinkName string, options *armappnetwork.AppLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armappnetwork.AppLinksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AppLinksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, appLinkName string, properties armappnetwork.AppLinkUpdate, options *armappnetwork.AppLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AppLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, appLinkName string, options *armappnetwork.AppLinksClientGetOptions) (resp azfake.Responder[armappnetwork.AppLinksClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type AppLinksServer struct {
 	// NewListBySubscriptionPager is the fake for method AppLinksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armappnetwork.AppLinksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappnetwork.AppLinksClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AppLinksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, appLinkName string, properties armappnetwork.AppLinkUpdate, options *armappnetwork.AppLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAppLinksServerTransport creates a new instance of AppLinksServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewAppLinksServerTransport(srv *AppLinksServer) *AppLinksServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappnetwork.AppLinksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armappnetwork.AppLinksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappnetwork.AppLinksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappnetwork.AppLinksClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type AppLinksServerTransport struct {
 	srv                         *AppLinksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappnetwork.AppLinksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armappnetwork.AppLinksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappnetwork.AppLinksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappnetwork.AppLinksClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armappnetwork.AppLinksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AppLinksServerTransport.
@@ -96,14 +96,14 @@ func (a *AppLinksServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AppLinksClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AppLinksClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AppLinksClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AppLinksClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AppLinksClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AppLinksClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (a *AppLinksServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (a *AppLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppLink/appLinks/(?P<appLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappnetwork.AppLinkUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		appLinkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appLinkName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, appLinkNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AppLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (a *AppLinksServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AppLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppLink/appLinks/(?P<appLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappnetwork.AppLinkUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		appLinkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appLinkName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, appLinkNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

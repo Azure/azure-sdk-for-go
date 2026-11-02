@@ -61,7 +61,7 @@ func (client *ReservationOrderAliasClient) BeginCreate(ctx context.Context, rese
 	}
 }
 
-// Create - Create a reservation order alias.
+// create - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReservationOrderAliasClient) create(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -83,7 +83,7 @@ func (client *ReservationOrderAliasClient) create(ctx context.Context, reservati
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, _ *ReservationOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/reservationOrderAliases/{reservationOrderAliasName}"
 	if reservationOrderAliasName == "" {

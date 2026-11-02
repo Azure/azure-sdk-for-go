@@ -21,13 +21,13 @@ import (
 
 // WorkspacesServer is a fake server for instances of the armiotfirmwaredefense.WorkspacesClient type.
 type WorkspacesServer struct {
-	// Create is the fake for method WorkspacesClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, workspaceName string, resource armiotfirmwaredefense.Workspace, options *armiotfirmwaredefense.WorkspacesClientCreateOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method WorkspacesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, options *armiotfirmwaredefense.WorkspacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armiotfirmwaredefense.WorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method WorkspacesClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, workspaceName string, resource armiotfirmwaredefense.Workspace, options *armiotfirmwaredefense.WorkspacesClientCreateOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// GenerateUploadURL is the fake for method WorkspacesClient.GenerateUploadURL
 	// HTTP status codes to indicate success: http.StatusOK
@@ -92,10 +92,10 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "WorkspacesClient.Create":
-				res.resp, res.err = w.dispatchCreate(req)
 			case "WorkspacesClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WorkspacesClient.Create":
+				res.resp, res.err = w.dispatchCreate(req)
 			case "WorkspacesClient.GenerateUploadURL":
 				res.resp, res.err = w.dispatchGenerateUploadURL(req)
 			case "WorkspacesClient.Get":
@@ -120,43 +120,6 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (w *WorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if w.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armiotfirmwaredefense.Workspace](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workspace, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -200,6 +163,43 @@ func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		w.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if w.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armiotfirmwaredefense.Workspace](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workspace, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -68,7 +68,7 @@ func (client *WorkloadSpacesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates or replaces a workload space.
+// createOrUpdate - Creates or replaces a workload space.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadSpacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, spaceName string, resource WorkloadSpace, options *WorkloadSpacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *WorkloadSpacesClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkloadSpacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, resource WorkloadSpace, _ *WorkloadSpacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *WorkloadSpacesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a workload space and its owned resources.
+// deleteOperation - Deletes a workload space and its owned resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadSpacesClient) deleteOperation(ctx context.Context, resourceGroupName string, spaceName string, options *WorkloadSpacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *WorkloadSpacesClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkloadSpacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, _ *WorkloadSpacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *WorkloadSpacesClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates mutable workload space properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - spaceName - The name of the WorkloadSpace
+//   - properties - The resource properties to be updated.
+//   - options - WorkloadSpacesClientBeginUpdateOptions contains the optional parameters for the WorkloadSpacesClient.BeginUpdate
+//     method.
+func (client *WorkloadSpacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, options *WorkloadSpacesClientBeginUpdateOptions) (*runtime.Poller[WorkloadSpacesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, spaceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadSpacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadSpacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates mutable workload space properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkloadSpacesClient) update(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, options *WorkloadSpacesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkloadSpacesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *WorkloadSpacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, _ *WorkloadSpacesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if spaceName == "" {
+		return nil, errors.New("parameter spaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -387,80 +463,4 @@ func (client *WorkloadSpacesClient) listBySubscriptionHandleResponse(resp *http.
 		return WorkloadSpacesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates mutable workload space properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - spaceName - The name of the WorkloadSpace
-//   - properties - The resource properties to be updated.
-//   - options - WorkloadSpacesClientBeginUpdateOptions contains the optional parameters for the WorkloadSpacesClient.BeginUpdate
-//     method.
-func (client *WorkloadSpacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, options *WorkloadSpacesClientBeginUpdateOptions) (*runtime.Poller[WorkloadSpacesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, spaceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadSpacesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadSpacesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates mutable workload space properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkloadSpacesClient) update(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, options *WorkloadSpacesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkloadSpacesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *WorkloadSpacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, properties WorkloadSpaceUpdate, _ *WorkloadSpacesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if spaceName == "" {
-		return nil, errors.New("parameter spaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

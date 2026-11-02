@@ -34,13 +34,13 @@ type VolumeGroupSnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, options *armpurestorageblock.VolumeGroupSnapshotsClientGetOptions) (resp azfake.Responder[armpurestorageblock.VolumeGroupSnapshotsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByVolumeGroupPager is the fake for method VolumeGroupSnapshotsClient.NewListByVolumeGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVolumeGroupPager func(resourceGroupName string, storagePoolName string, volumeGroupName string, options *armpurestorageblock.VolumeGroupSnapshotsClientListByVolumeGroupOptions) (resp azfake.PagerResponder[armpurestorageblock.VolumeGroupSnapshotsClientListByVolumeGroupResponse])
-
 	// ListSnapshots is the fake for method VolumeGroupSnapshotsClient.ListSnapshots
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSnapshots func(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties armpurestorageblock.VolumeGroupSnapshotListRequest, options *armpurestorageblock.VolumeGroupSnapshotsClientListSnapshotsOptions) (resp azfake.Responder[armpurestorageblock.VolumeGroupSnapshotsClientListSnapshotsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByVolumeGroupPager is the fake for method VolumeGroupSnapshotsClient.NewListByVolumeGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByVolumeGroupPager func(resourceGroupName string, storagePoolName string, volumeGroupName string, options *armpurestorageblock.VolumeGroupSnapshotsClientListByVolumeGroupOptions) (resp azfake.PagerResponder[armpurestorageblock.VolumeGroupSnapshotsClientListByVolumeGroupResponse])
 }
 
 // NewVolumeGroupSnapshotsServerTransport creates a new instance of VolumeGroupSnapshotsServerTransport with the provided implementation.
@@ -91,10 +91,10 @@ func (v *VolumeGroupSnapshotsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VolumeGroupSnapshotsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VolumeGroupSnapshotsClient.NewListByVolumeGroupPager":
-				res.resp, res.err = v.dispatchNewListByVolumeGroupPager(req)
 			case "VolumeGroupSnapshotsClient.ListSnapshots":
 				res.resp, res.err = v.dispatchListSnapshots(req)
+			case "VolumeGroupSnapshotsClient.NewListByVolumeGroupPager":
+				res.resp, res.err = v.dispatchNewListByVolumeGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -260,6 +260,47 @@ func (v *VolumeGroupSnapshotsServerTransport) dispatchGet(req *http.Request) (*h
 	return resp, nil
 }
 
+func (v *VolumeGroupSnapshotsServerTransport) dispatchListSnapshots(req *http.Request) (*http.Response, error) {
+	if v.srv.ListSnapshots == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSnapshots not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSnapshots`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.VolumeGroupSnapshotListRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.ListSnapshots(req.Context(), resourceGroupNameParam, storagePoolNameParam, volumeGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VolumeGroupSnapshotPostListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VolumeGroupSnapshotsServerTransport) dispatchNewListByVolumeGroupPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByVolumeGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumeGroupPager not implemented")}
@@ -333,47 +374,6 @@ func (v *VolumeGroupSnapshotsServerTransport) dispatchNewListByVolumeGroupPager(
 	}
 	if !server.PagerResponderMore(newListByVolumeGroupPager) {
 		v.newListByVolumeGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VolumeGroupSnapshotsServerTransport) dispatchListSnapshots(req *http.Request) (*http.Response, error) {
-	if v.srv.ListSnapshots == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSnapshots not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSnapshots`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.VolumeGroupSnapshotListRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.ListSnapshots(req.Context(), resourceGroupNameParam, storagePoolNameParam, volumeGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VolumeGroupSnapshotPostListResult, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

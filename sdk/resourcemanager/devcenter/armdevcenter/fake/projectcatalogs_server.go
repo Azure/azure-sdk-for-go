@@ -34,6 +34,14 @@ type ProjectCatalogsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginPatch is the fake for method ProjectCatalogsClient.BeginPatch
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPatch func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, body armdevcenter.CatalogUpdate, options *armdevcenter.ProjectCatalogsClientBeginPatchOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientPatchResponse], errResp azfake.ErrorResponder)
+
+	// BeginSync is the fake for method ProjectCatalogsClient.BeginSync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginSync func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginSyncOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientSyncResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProjectCatalogsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientGetOptions) (resp azfake.Responder[armdevcenter.ProjectCatalogsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,14 +53,6 @@ type ProjectCatalogsServer struct {
 	// NewListPager is the fake for method ProjectCatalogsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, projectName string, options *armdevcenter.ProjectCatalogsClientListOptions) (resp azfake.PagerResponder[armdevcenter.ProjectCatalogsClientListResponse])
-
-	// BeginPatch is the fake for method ProjectCatalogsClient.BeginPatch
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginPatch func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, body armdevcenter.CatalogUpdate, options *armdevcenter.ProjectCatalogsClientBeginPatchOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientPatchResponse], errResp azfake.ErrorResponder)
-
-	// BeginSync is the fake for method ProjectCatalogsClient.BeginSync
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSync func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginSyncOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientSyncResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProjectCatalogsServerTransport creates a new instance of ProjectCatalogsServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewProjectCatalogsServerTransport(srv *ProjectCatalogsServer) *ProjectCatal
 		beginConnect:        newTracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientConnectResponse]](),
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdevcenter.ProjectCatalogsClientListResponse]](),
 		beginPatch:          newTracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientPatchResponse]](),
 		beginSync:           newTracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientSyncResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdevcenter.ProjectCatalogsClientListResponse]](),
 	}
 }
 
@@ -77,9 +77,9 @@ type ProjectCatalogsServerTransport struct {
 	beginConnect        *tracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientConnectResponse]]
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdevcenter.ProjectCatalogsClientListResponse]]
 	beginPatch          *tracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientPatchResponse]]
 	beginSync           *tracker[azfake.PollerResponder[armdevcenter.ProjectCatalogsClientSyncResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdevcenter.ProjectCatalogsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProjectCatalogsServerTransport.
@@ -109,16 +109,16 @@ func (p *ProjectCatalogsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "ProjectCatalogsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProjectCatalogsClient.BeginPatch":
+				res.resp, res.err = p.dispatchBeginPatch(req)
+			case "ProjectCatalogsClient.BeginSync":
+				res.resp, res.err = p.dispatchBeginSync(req)
 			case "ProjectCatalogsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProjectCatalogsClient.GetSyncErrorDetails":
 				res.resp, res.err = p.dispatchGetSyncErrorDetails(req)
 			case "ProjectCatalogsClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
-			case "ProjectCatalogsClient.BeginPatch":
-				res.resp, res.err = p.dispatchBeginPatch(req)
-			case "ProjectCatalogsClient.BeginSync":
-				res.resp, res.err = p.dispatchBeginSync(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -283,6 +283,106 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (p *ProjectCatalogsServerTransport) dispatchBeginPatch(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginPatch == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPatch not implemented")}
+	}
+	beginPatch := p.beginPatch.get(req)
+	if beginPatch == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdevcenter.CatalogUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginPatch(req.Context(), resourceGroupNameParam, projectNameParam, catalogNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPatch = &respr
+		p.beginPatch.add(req, beginPatch)
+	}
+
+	resp, err := server.PollerResponderNext(beginPatch, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginPatch.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPatch) {
+		p.beginPatch.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *ProjectCatalogsServerTransport) dispatchBeginSync(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginSync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSync not implemented")}
+	}
+	beginSync := p.beginSync.get(req)
+	if beginSync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sync`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginSync(req.Context(), resourceGroupNameParam, projectNameParam, catalogNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSync = &respr
+		p.beginSync.add(req, beginSync)
+	}
+
+	resp, err := server.PollerResponderNext(beginSync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginSync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSync) {
+		p.beginSync.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *ProjectCatalogsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -412,106 +512,6 @@ func (p *ProjectCatalogsServerTransport) dispatchNewListPager(req *http.Request)
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *ProjectCatalogsServerTransport) dispatchBeginPatch(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginPatch == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPatch not implemented")}
-	}
-	beginPatch := p.beginPatch.get(req)
-	if beginPatch == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdevcenter.CatalogUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-		if err != nil {
-			return nil, err
-		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginPatch(req.Context(), resourceGroupNameParam, projectNameParam, catalogNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPatch = &respr
-		p.beginPatch.add(req, beginPatch)
-	}
-
-	resp, err := server.PollerResponderNext(beginPatch, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginPatch.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPatch) {
-		p.beginPatch.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (p *ProjectCatalogsServerTransport) dispatchBeginSync(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginSync == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSync not implemented")}
-	}
-	beginSync := p.beginSync.get(req)
-	if beginSync == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sync`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-		if err != nil {
-			return nil, err
-		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginSync(req.Context(), resourceGroupNameParam, projectNameParam, catalogNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSync = &respr
-		p.beginSync.add(req, beginSync)
-	}
-
-	resp, err := server.PollerResponderNext(beginSync, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		p.beginSync.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSync) {
-		p.beginSync.remove(req)
-	}
-
 	return resp, nil
 }
 

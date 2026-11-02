@@ -62,7 +62,7 @@ func (client *SchemaReferencesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create or update a Schema Reference Resource
+// createOrUpdate - Create or update a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaReferencesClient) createOrUpdate(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, options *SchemaReferencesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *SchemaReferencesClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchemaReferencesClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, _ *SchemaReferencesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
 	if resourceURI == "" {
@@ -133,7 +133,7 @@ func (client *SchemaReferencesClient) BeginDelete(ctx context.Context, resourceU
 	}
 }
 
-// Delete - Delete a Schema Reference Resource
+// deleteOperation - Delete a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaReferencesClient) deleteOperation(ctx context.Context, resourceURI string, schemaReferenceName string, options *SchemaReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -155,7 +155,7 @@ func (client *SchemaReferencesClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchemaReferencesClient) deleteCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, _ *SchemaReferencesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
 	if resourceURI == "" {

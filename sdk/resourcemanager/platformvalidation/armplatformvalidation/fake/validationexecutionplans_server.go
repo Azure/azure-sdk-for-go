@@ -29,6 +29,10 @@ type ValidationExecutionPlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, options *armplatformvalidation.ValidationExecutionPlansClientBeginDeleteOptions) (resp azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ValidationExecutionPlansClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, properties armplatformvalidation.ValidationExecutionPlanUpdate, options *armplatformvalidation.ValidationExecutionPlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ValidationExecutionPlansClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, options *armplatformvalidation.ValidationExecutionPlansClientGetOptions) (resp azfake.Responder[armplatformvalidation.ValidationExecutionPlansClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ValidationExecutionPlansServer struct {
 	// NewListByResourceGroupPager is the fake for method ValidationExecutionPlansClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, cloudValidationName string, options *armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupOptions) (resp azfake.PagerResponder[armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method ValidationExecutionPlansClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, properties armplatformvalidation.ValidationExecutionPlanUpdate, options *armplatformvalidation.ValidationExecutionPlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewValidationExecutionPlansServerTransport creates a new instance of ValidationExecutionPlansServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewValidationExecutionPlansServerTransport(srv *ValidationExecutionPlansSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ValidationExecutionPlansServerTransport struct {
 	srv                         *ValidationExecutionPlansServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armplatformvalidation.ValidationExecutionPlansClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armplatformvalidation.ValidationExecutionPlansClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for ValidationExecutionPlansServerTransport.
@@ -90,12 +90,12 @@ func (v *ValidationExecutionPlansServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "ValidationExecutionPlansClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "ValidationExecutionPlansClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
 			case "ValidationExecutionPlansClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "ValidationExecutionPlansClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
-			case "ValidationExecutionPlansClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (v *ValidationExecutionPlansServerTransport) dispatchBeginDelete(req *http.
 	return resp, nil
 }
 
+func (v *ValidationExecutionPlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armplatformvalidation.ValidationExecutionPlanUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudValidationName")])
+		if err != nil {
+			return nil, err
+		}
+		validationExecutionPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationExecutionPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudValidationNameParam, validationExecutionPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *ValidationExecutionPlansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -295,58 +347,6 @@ func (v *ValidationExecutionPlansServerTransport) dispatchNewListByResourceGroup
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (v *ValidationExecutionPlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := v.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armplatformvalidation.ValidationExecutionPlanUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudValidationName")])
-		if err != nil {
-			return nil, err
-		}
-		validationExecutionPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationExecutionPlanName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudValidationNameParam, validationExecutionPlanNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		v.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		v.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

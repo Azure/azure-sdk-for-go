@@ -71,7 +71,7 @@ func (client *ConnectedEnvironmentsStoragesClient) BeginCreateOrUpdate(ctx conte
 	}
 }
 
-// CreateOrUpdate - Create or update storage for a connectedEnvironment.
+// createOrUpdate - Create or update storage for a connectedEnvironment.
 //
 // Create or update storage for a connectedEnvironment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ConnectedEnvironmentsStoragesClient) createOrUpdate(ctx context.Co
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectedEnvironmentsStoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, storageEnvelope ConnectedEnvironmentStorage, _ *ConnectedEnvironmentsStoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ConnectedEnvironmentsStoragesClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Delete storage for a connectedEnvironment.
+// deleteOperation - Delete storage for a connectedEnvironment.
 //
 // Delete storage for a connectedEnvironment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ConnectedEnvironmentsStoragesClient) deleteOperation(ctx context.C
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectedEnvironmentsStoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, _ *ConnectedEnvironmentsStoragesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {

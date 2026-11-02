@@ -68,7 +68,7 @@ func (client *DetachTrafficFilterClient) BeginUpdate(ctx context.Context, resour
 	}
 }
 
-// Update - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control capabilities.
+// update - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DetachTrafficFilterClient) update(ctx context.Context, resourceGroupName string, monitorName string, options *DetachTrafficFilterClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *DetachTrafficFilterClient) update(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *DetachTrafficFilterClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *DetachTrafficFilterClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachTrafficFilter"
 	if client.subscriptionID == "" {

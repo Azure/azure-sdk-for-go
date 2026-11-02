@@ -69,7 +69,7 @@ func (client *HardwareSettingsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create or update hardware settings
+// createOrUpdate - Create or update hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HardwareSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, resource HardwareSetting, options *HardwareSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *HardwareSettingsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HardwareSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, resource HardwareSetting, _ *HardwareSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *HardwareSettingsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete hardware settings
+// deleteOperation - Delete hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HardwareSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, options *HardwareSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *HardwareSettingsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HardwareSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, _ *HardwareSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}"
 	if client.subscriptionID == "" {

@@ -70,7 +70,7 @@ func (client *KubernetesVersionsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create the Kubernetes version resource or update its tags. This resource is system managed and should
+// createOrUpdate - Create the Kubernetes version resource or update its tags. This resource is system managed and should
 // only be created with the name "default".
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubernetesVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionParameters KubernetesVersion, options *KubernetesVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *KubernetesVersionsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *KubernetesVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionParameters KubernetesVersion, options *KubernetesVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}"
 	if client.subscriptionID == "" {
@@ -152,7 +152,7 @@ func (client *KubernetesVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete the specified Kubernetes version resource.
+// deleteOperation - Delete the specified Kubernetes version resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubernetesVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *KubernetesVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *KubernetesVersionsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *KubernetesVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *KubernetesVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}"
 	if client.subscriptionID == "" {
@@ -201,6 +201,88 @@ func (client *KubernetesVersionsClient) deleteCreateRequest(ctx context.Context,
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - kubernetesVersionName - The name of the Kubernetes version resource.
+//   - kubernetesVersionPatchParameters - The request body.
+//   - options - KubernetesVersionsClientBeginUpdateOptions contains the optional parameters for the KubernetesVersionsClient.BeginUpdate
+//     method.
+func (client *KubernetesVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*runtime.Poller[KubernetesVersionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, kubernetesVersionName, kubernetesVersionPatchParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KubernetesVersionsClient) update(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KubernetesVersionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesVersionName, kubernetesVersionPatchParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *KubernetesVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if kubernetesVersionName == "" {
+		return nil, errors.New("parameter kubernetesVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{kubernetesVersionName}", url.PathEscape(kubernetesVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, kubernetesVersionPatchParameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -414,86 +496,4 @@ func (client *KubernetesVersionsClient) listBySubscriptionHandleResponse(resp *h
 		return KubernetesVersionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - kubernetesVersionName - The name of the Kubernetes version resource.
-//   - kubernetesVersionPatchParameters - The request body.
-//   - options - KubernetesVersionsClientBeginUpdateOptions contains the optional parameters for the KubernetesVersionsClient.BeginUpdate
-//     method.
-func (client *KubernetesVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*runtime.Poller[KubernetesVersionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, kubernetesVersionName, kubernetesVersionPatchParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *KubernetesVersionsClient) update(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "KubernetesVersionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesVersionName, kubernetesVersionPatchParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *KubernetesVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if kubernetesVersionName == "" {
-		return nil, errors.New("parameter kubernetesVersionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{kubernetesVersionName}", url.PathEscape(kubernetesVersionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, kubernetesVersionPatchParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

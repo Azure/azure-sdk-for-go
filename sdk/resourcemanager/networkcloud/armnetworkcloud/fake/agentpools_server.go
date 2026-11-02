@@ -30,6 +30,10 @@ type AgentPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *armnetworkcloud.AgentPoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.AgentPoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AgentPoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters armnetworkcloud.AgentPoolPatchParameters, options *armnetworkcloud.AgentPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.AgentPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AgentPoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *armnetworkcloud.AgentPoolsClientGetOptions) (resp azfake.Responder[armnetworkcloud.AgentPoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type AgentPoolsServer struct {
 	// NewListByKubernetesClusterPager is the fake for method AgentPoolsClient.NewListByKubernetesClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByKubernetesClusterPager func(resourceGroupName string, kubernetesClusterName string, options *armnetworkcloud.AgentPoolsClientListByKubernetesClusterOptions) (resp azfake.PagerResponder[armnetworkcloud.AgentPoolsClientListByKubernetesClusterResponse])
-
-	// BeginUpdate is the fake for method AgentPoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters armnetworkcloud.AgentPoolPatchParameters, options *armnetworkcloud.AgentPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.AgentPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAgentPoolsServerTransport creates a new instance of AgentPoolsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewAgentPoolsServerTransport(srv *AgentPoolsServer) *AgentPoolsServerTransp
 		srv:                             srv,
 		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientDeleteResponse]](),
-		newListByKubernetesClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.AgentPoolsClientListByKubernetesClusterResponse]](),
 		beginUpdate:                     newTracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientUpdateResponse]](),
+		newListByKubernetesClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.AgentPoolsClientListByKubernetesClusterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type AgentPoolsServerTransport struct {
 	srv                             *AgentPoolsServer
 	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientCreateOrUpdateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientDeleteResponse]]
-	newListByKubernetesClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.AgentPoolsClientListByKubernetesClusterResponse]]
 	beginUpdate                     *tracker[azfake.PollerResponder[armnetworkcloud.AgentPoolsClientUpdateResponse]]
+	newListByKubernetesClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.AgentPoolsClientListByKubernetesClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for AgentPoolsServerTransport.
@@ -91,12 +91,12 @@ func (a *AgentPoolsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AgentPoolsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AgentPoolsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AgentPoolsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AgentPoolsClient.NewListByKubernetesClusterPager":
 				res.resp, res.err = a.dispatchNewListByKubernetesClusterPager(req)
-			case "AgentPoolsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (a *AgentPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.AgentPoolPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.AgentPoolsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.AgentPoolsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, agentPoolNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AgentPoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (a *AgentPoolsServerTransport) dispatchNewListByKubernetesClusterPager(req 
 	if !server.PagerResponderMore(newListByKubernetesClusterPager) {
 		a.newListByKubernetesClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AgentPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.AgentPoolPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.AgentPoolsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.AgentPoolsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, agentPoolNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

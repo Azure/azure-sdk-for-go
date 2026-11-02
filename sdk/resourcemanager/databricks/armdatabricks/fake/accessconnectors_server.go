@@ -29,6 +29,10 @@ type AccessConnectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, connectorName string, options *armdatabricks.AccessConnectorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatabricks.AccessConnectorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AccessConnectorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, connectorName string, parameters armdatabricks.AccessConnectorUpdate, options *armdatabricks.AccessConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AccessConnectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, connectorName string, options *armdatabricks.AccessConnectorsClientGetOptions) (resp azfake.Responder[armdatabricks.AccessConnectorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type AccessConnectorsServer struct {
 	// NewListBySubscriptionPager is the fake for method AccessConnectorsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdatabricks.AccessConnectorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdatabricks.AccessConnectorsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AccessConnectorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, connectorName string, parameters armdatabricks.AccessConnectorUpdate, options *armdatabricks.AccessConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAccessConnectorsServerTransport creates a new instance of AccessConnectorsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewAccessConnectorsServerTransport(srv *AccessConnectorsServer) *AccessConn
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatabricks.AccessConnectorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdatabricks.AccessConnectorsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type AccessConnectorsServerTransport struct {
 	srv                         *AccessConnectorsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatabricks.AccessConnectorsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdatabricks.AccessConnectorsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdatabricks.AccessConnectorsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccessConnectorsServerTransport.
@@ -96,14 +96,14 @@ func (a *AccessConnectorsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AccessConnectorsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AccessConnectorsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AccessConnectorsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AccessConnectorsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AccessConnectorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AccessConnectorsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (a *AccessConnectorsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (a *AccessConnectorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/accessConnectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatabricks.AccessConnectorUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, connectorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AccessConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (a *AccessConnectorsServerTransport) dispatchNewListBySubscriptionPager(req
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AccessConnectorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/accessConnectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdatabricks.AccessConnectorUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		connectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, connectorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

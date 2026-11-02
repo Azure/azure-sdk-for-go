@@ -70,7 +70,7 @@ func (client *WorkflowVersionsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create or update a Workflow Version Resource
+// createOrUpdate - Create or update a Workflow Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkflowVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, resource WorkflowVersion, options *WorkflowVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *WorkflowVersionsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkflowVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, resource WorkflowVersion, _ *WorkflowVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *WorkflowVersionsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a Workflow Version Resource
+// deleteOperation - Delete a Workflow Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkflowVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, options *WorkflowVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *WorkflowVersionsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkflowVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, _ *WorkflowVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}"
 	if client.subscriptionID == "" {
@@ -207,6 +207,92 @@ func (client *WorkflowVersionsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - update an WorkflowVersion Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - contextName - The name of the Context.
+//   - workflowName - Name of the workflow
+//   - versionName - The name of the workflowVersion.
+//   - properties - The resource properties to be updated.
+//   - options - WorkflowVersionsClientBeginUpdateOptions contains the optional parameters for the WorkflowVersionsClient.BeginUpdate
+//     method.
+func (client *WorkflowVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, options *WorkflowVersionsClientBeginUpdateOptions) (*runtime.Poller[WorkflowVersionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, contextName, workflowName, versionName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - update an WorkflowVersion Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkflowVersionsClient) update(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, options *WorkflowVersionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkflowVersionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextName, workflowName, versionName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *WorkflowVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, _ *WorkflowVersionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if contextName == "" {
+		return nil, errors.New("parameter contextName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
+	if workflowName == "" {
+		return nil, errors.New("parameter workflowName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	if versionName == "" {
+		return nil, errors.New("parameter versionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -360,90 +446,4 @@ func (client *WorkflowVersionsClient) listByWorkflowHandleResponse(resp *http.Re
 		return WorkflowVersionsClientListByWorkflowResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - update an WorkflowVersion Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - contextName - The name of the Context.
-//   - workflowName - Name of the workflow
-//   - versionName - The name of the workflowVersion.
-//   - properties - The resource properties to be updated.
-//   - options - WorkflowVersionsClientBeginUpdateOptions contains the optional parameters for the WorkflowVersionsClient.BeginUpdate
-//     method.
-func (client *WorkflowVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, options *WorkflowVersionsClientBeginUpdateOptions) (*runtime.Poller[WorkflowVersionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, contextName, workflowName, versionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - update an WorkflowVersion Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkflowVersionsClient) update(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, options *WorkflowVersionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkflowVersionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextName, workflowName, versionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *WorkflowVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, versionName string, properties WorkflowVersion, _ *WorkflowVersionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if contextName == "" {
-		return nil, errors.New("parameter contextName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	if versionName == "" {
-		return nil, errors.New("parameter versionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

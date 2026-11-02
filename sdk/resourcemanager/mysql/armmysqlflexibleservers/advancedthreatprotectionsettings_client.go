@@ -44,6 +44,168 @@ func NewAdvancedThreatProtectionSettingsClient(subscriptionID string, credential
 	return client, nil
 }
 
+// BeginUpdate - Updates a server's Advanced Threat Protection state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
+//   - parameters - The server's Advanced Threat Protection body to update.
+//   - options - AdvancedThreatProtectionSettingsClientBeginUpdateOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdate
+//     method.
+func (client *AdvancedThreatProtectionSettingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdvancedThreatProtectionSettingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdvancedThreatProtectionSettingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a server's Advanced Threat Protection state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AdvancedThreatProtectionSettingsClient) update(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, _ *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if advancedThreatProtectionName == "" {
+		return nil, errors.New("parameter advancedThreatProtectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{advancedThreatProtectionName}", url.PathEscape(string(advancedThreatProtectionName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdatePut - Updates a server's Advanced Threat Protection state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
+//   - parameters - The server's Advanced Threat Protection body to update.
+//   - options - AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdatePut
+//     method.
+func (client *AdvancedThreatProtectionSettingsClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdatePutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePut(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdvancedThreatProtectionSettingsClientUpdatePutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdvancedThreatProtectionSettingsClientUpdatePutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updatePut - Updates a server's Advanced Threat Protection state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AdvancedThreatProtectionSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdatePut"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updatePutCreateRequest creates the updatePut request.
+func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, _ *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if advancedThreatProtectionName == "" {
+		return nil, errors.New("parameter advancedThreatProtectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{advancedThreatProtectionName}", url.PathEscape(string(advancedThreatProtectionName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a server's Advanced Threat Protection state
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -185,166 +347,4 @@ func (client *AdvancedThreatProtectionSettingsClient) listHandleResponse(resp *h
 		return AdvancedThreatProtectionSettingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a server's Advanced Threat Protection state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
-//   - parameters - The server's Advanced Threat Protection body to update.
-//   - options - AdvancedThreatProtectionSettingsClientBeginUpdateOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdate
-//     method.
-func (client *AdvancedThreatProtectionSettingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdvancedThreatProtectionSettingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdvancedThreatProtectionSettingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a server's Advanced Threat Protection state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdvancedThreatProtectionSettingsClient) update(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, _ *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if advancedThreatProtectionName == "" {
-		return nil, errors.New("parameter advancedThreatProtectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{advancedThreatProtectionName}", url.PathEscape(string(advancedThreatProtectionName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241230)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdatePut - Updates a server's Advanced Threat Protection state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
-//   - parameters - The server's Advanced Threat Protection body to update.
-//   - options - AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdatePut
-//     method.
-func (client *AdvancedThreatProtectionSettingsClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdatePutResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updatePut(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdvancedThreatProtectionSettingsClientUpdatePutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdvancedThreatProtectionSettingsClientUpdatePutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdatePut - Updates a server's Advanced Threat Protection state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdvancedThreatProtectionSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdatePut"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serverName, advancedThreatProtectionName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updatePutCreateRequest creates the UpdatePut request.
-func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, _ *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if advancedThreatProtectionName == "" {
-		return nil, errors.New("parameter advancedThreatProtectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{advancedThreatProtectionName}", url.PathEscape(string(advancedThreatProtectionName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241230)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

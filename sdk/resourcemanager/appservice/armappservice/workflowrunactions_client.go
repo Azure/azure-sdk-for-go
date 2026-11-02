@@ -120,6 +120,98 @@ func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
+// NewListExpressionTracesPager - Lists a workflow run expression trace.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.NewListExpressionTracesPager
+//     method.
+func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListExpressionTracesResponse]{
+		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WorkflowRunActionsClientListExpressionTracesResponse) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowRunActionsClient.NewListExpressionTracesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listExpressionTracesCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, nextLink, options)
+			if err != nil {
+				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
+			}
+			return client.listExpressionTracesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listExpressionTracesCreateRequest creates the ListExpressionTraces request.
+func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, nextLink string, _ *WorkflowRunActionsClientListExpressionTracesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if workflowName == "" {
+			return nil, errors.New("parameter workflowName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+		if runName == "" {
+			return nil, errors.New("parameter runName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
+		if actionName == "" {
+			return nil, errors.New("parameter actionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listExpressionTracesHandleResponse handles the ListExpressionTraces response.
+func (client *WorkflowRunActionsClient) listExpressionTracesHandleResponse(resp *http.Response, successCodes ...int) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
+	result := WorkflowRunActionsClientListExpressionTracesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
+		return WorkflowRunActionsClientListExpressionTracesResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets a list of workflow run actions.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
@@ -209,98 +301,6 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionListResult); err != nil {
 		return WorkflowRunActionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListExpressionTracesPager - Lists a workflow run expression trace.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Site name.
-//   - workflowName - The workflow name.
-//   - runName - The workflow run name.
-//   - actionName - The workflow action name.
-//   - options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.NewListExpressionTracesPager
-//     method.
-func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListExpressionTracesResponse]{
-		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *WorkflowRunActionsClientListExpressionTracesResponse) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowRunActionsClient.NewListExpressionTracesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listExpressionTracesCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, nextLink, options)
-			if err != nil {
-				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
-			}
-			return client.listExpressionTracesHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listExpressionTracesCreateRequest creates the ListExpressionTraces request.
-func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, nextLink string, _ *WorkflowRunActionsClientListExpressionTracesOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		if workflowName == "" {
-			return nil, errors.New("parameter workflowName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-		if runName == "" {
-			return nil, errors.New("parameter runName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-		if actionName == "" {
-			return nil, errors.New("parameter actionName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listExpressionTracesHandleResponse handles the ListExpressionTraces response.
-func (client *WorkflowRunActionsClient) listExpressionTracesHandleResponse(resp *http.Response, successCodes ...int) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
-	result := WorkflowRunActionsClientListExpressionTracesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
-		return WorkflowRunActionsClientListExpressionTracesResponse{}, err
 	}
 	return result, nil
 }

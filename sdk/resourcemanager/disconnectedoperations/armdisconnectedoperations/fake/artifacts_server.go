@@ -25,13 +25,13 @@ type ArtifactsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, options *armdisconnectedoperations.ArtifactsClientGetOptions) (resp azfake.Responder[armdisconnectedoperations.ArtifactsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByParentPager is the fake for method ArtifactsClient.NewListByParentPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByParentPager func(resourceGroupName string, name string, imageName string, options *armdisconnectedoperations.ArtifactsClientListByParentOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ArtifactsClientListByParentResponse])
-
 	// ListDownloadURI is the fake for method ArtifactsClient.ListDownloadURI
 	// HTTP status codes to indicate success: http.StatusOK
 	ListDownloadURI func(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, options *armdisconnectedoperations.ArtifactsClientListDownloadURIOptions) (resp azfake.Responder[armdisconnectedoperations.ArtifactsClientListDownloadURIResponse], errResp azfake.ErrorResponder)
+
+	// NewListByParentPager is the fake for method ArtifactsClient.NewListByParentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByParentPager func(resourceGroupName string, name string, imageName string, options *armdisconnectedoperations.ArtifactsClientListByParentOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ArtifactsClientListByParentResponse])
 }
 
 // NewArtifactsServerTransport creates a new instance of ArtifactsServerTransport with the provided implementation.
@@ -74,10 +74,10 @@ func (a *ArtifactsServerTransport) dispatchToMethodFake(req *http.Request, metho
 			switch method {
 			case "ArtifactsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "ArtifactsClient.NewListByParentPager":
-				res.resp, res.err = a.dispatchNewListByParentPager(req)
 			case "ArtifactsClient.ListDownloadURI":
 				res.resp, res.err = a.dispatchListDownloadURI(req)
+			case "ArtifactsClient.NewListByParentPager":
+				res.resp, res.err = a.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -135,6 +135,47 @@ func (a *ArtifactsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
+func (a *ArtifactsServerTransport) dispatchListDownloadURI(req *http.Request) (*http.Response, error) {
+	if a.srv.ListDownloadURI == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDownloadURI not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacts/(?P<artifactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDownloadUri`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	artifactNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("artifactName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListDownloadURI(req.Context(), resourceGroupNameParam, nameParam, imageNameParam, artifactNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArtifactDownloadResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *ArtifactsServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByParentPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
@@ -176,47 +217,6 @@ func (a *ArtifactsServerTransport) dispatchNewListByParentPager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListByParentPager) {
 		a.newListByParentPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *ArtifactsServerTransport) dispatchListDownloadURI(req *http.Request) (*http.Response, error) {
-	if a.srv.ListDownloadURI == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDownloadURI not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacts/(?P<artifactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDownloadUri`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-	if err != nil {
-		return nil, err
-	}
-	artifactNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("artifactName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ListDownloadURI(req.Context(), resourceGroupNameParam, nameParam, imageNameParam, artifactNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArtifactDownloadResult, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

@@ -30,6 +30,10 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdynatrace.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpgradePlan is the fake for method MonitorsClient.BeginUpgradePlan
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpgradePlan func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.UpgradePlanRequest, options *armdynatrace.MonitorsClientBeginUpgradePlanOptions) (resp azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MonitorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientGetOptions) (resp azfake.Responder[armdynatrace.MonitorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -53,6 +57,10 @@ type MonitorsServer struct {
 	// GetVMHostPayload is the fake for method MonitorsClient.GetVMHostPayload
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVMHostPayload func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientGetVMHostPayloadOptions) (resp azfake.Responder[armdynatrace.MonitorsClientGetVMHostPayloadResponse], errResp azfake.ErrorResponder)
+
+	// ManageAgentInstallation is the fake for method MonitorsClient.ManageAgentInstallation
+	// HTTP status codes to indicate success: http.StatusNoContent
+	ManageAgentInstallation func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.ManageAgentInstallationRequest, options *armdynatrace.MonitorsClientManageAgentInstallationOptions) (resp azfake.Responder[armdynatrace.MonitorsClientManageAgentInstallationResponse], errResp azfake.ErrorResponder)
 
 	// NewListAppServicesPager is the fake for method MonitorsClient.NewListAppServicesPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,17 +86,9 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListMonitoredResourcesPager func(resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientListMonitoredResourcesOptions) (resp azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse])
 
-	// ManageAgentInstallation is the fake for method MonitorsClient.ManageAgentInstallation
-	// HTTP status codes to indicate success: http.StatusNoContent
-	ManageAgentInstallation func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.ManageAgentInstallationRequest, options *armdynatrace.MonitorsClientManageAgentInstallationOptions) (resp azfake.Responder[armdynatrace.MonitorsClientManageAgentInstallationResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method MonitorsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, monitorName string, resource armdynatrace.MonitorResourceUpdate, options *armdynatrace.MonitorsClientUpdateOptions) (resp azfake.Responder[armdynatrace.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpgradePlan is the fake for method MonitorsClient.BeginUpgradePlan
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpgradePlan func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.UpgradePlanRequest, options *armdynatrace.MonitorsClientBeginUpgradePlanOptions) (resp azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitorsServerTransport creates a new instance of MonitorsServerTransport with the provided implementation.
@@ -99,13 +99,13 @@ func NewMonitorsServerTransport(srv *MonitorsServer) *MonitorsServerTransport {
 		srv:                              srv,
 		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armdynatrace.MonitorsClientCreateOrUpdateResponse]](),
 		beginDelete:                      newTracker[azfake.PollerResponder[armdynatrace.MonitorsClientDeleteResponse]](),
+		beginUpgradePlan:                 newTracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]](),
 		newListAppServicesPager:          newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListAppServicesResponse]](),
 		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionIDPager:     newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListBySubscriptionIDResponse]](),
 		newListHostsPager:                newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListHostsResponse]](),
 		newListLinkableEnvironmentsPager: newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListLinkableEnvironmentsResponse]](),
 		newListMonitoredResourcesPager:   newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse]](),
-		beginUpgradePlan:                 newTracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]](),
 	}
 }
 
@@ -115,13 +115,13 @@ type MonitorsServerTransport struct {
 	srv                              *MonitorsServer
 	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armdynatrace.MonitorsClientCreateOrUpdateResponse]]
 	beginDelete                      *tracker[azfake.PollerResponder[armdynatrace.MonitorsClientDeleteResponse]]
+	beginUpgradePlan                 *tracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]]
 	newListAppServicesPager          *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListAppServicesResponse]]
 	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListByResourceGroupResponse]]
 	newListBySubscriptionIDPager     *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListBySubscriptionIDResponse]]
 	newListHostsPager                *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListHostsResponse]]
 	newListLinkableEnvironmentsPager *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListLinkableEnvironmentsResponse]]
 	newListMonitoredResourcesPager   *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse]]
-	beginUpgradePlan                 *tracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitorsServerTransport.
@@ -149,6 +149,8 @@ func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "MonitorsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MonitorsClient.BeginUpgradePlan":
+				res.resp, res.err = m.dispatchBeginUpgradePlan(req)
 			case "MonitorsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MonitorsClient.GetAllConnectedResourcesCount":
@@ -161,6 +163,8 @@ func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = m.dispatchGetSSODetails(req)
 			case "MonitorsClient.GetVMHostPayload":
 				res.resp, res.err = m.dispatchGetVMHostPayload(req)
+			case "MonitorsClient.ManageAgentInstallation":
+				res.resp, res.err = m.dispatchManageAgentInstallation(req)
 			case "MonitorsClient.NewListAppServicesPager":
 				res.resp, res.err = m.dispatchNewListAppServicesPager(req)
 			case "MonitorsClient.NewListByResourceGroupPager":
@@ -173,12 +177,8 @@ func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = m.dispatchNewListLinkableEnvironmentsPager(req)
 			case "MonitorsClient.NewListMonitoredResourcesPager":
 				res.resp, res.err = m.dispatchNewListMonitoredResourcesPager(req)
-			case "MonitorsClient.ManageAgentInstallation":
-				res.resp, res.err = m.dispatchManageAgentInstallation(req)
 			case "MonitorsClient.Update":
 				res.resp, res.err = m.dispatchUpdate(req)
-			case "MonitorsClient.BeginUpgradePlan":
-				res.resp, res.err = m.dispatchBeginUpgradePlan(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -282,6 +282,54 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		m.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MonitorsServerTransport) dispatchBeginUpgradePlan(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpgradePlan == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradePlan not implemented")}
+	}
+	beginUpgradePlan := m.beginUpgradePlan.get(req)
+	if beginUpgradePlan == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradePlan`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdynatrace.UpgradePlanRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpgradePlan(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgradePlan = &respr
+		m.beginUpgradePlan.add(req, beginUpgradePlan)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgradePlan, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginUpgradePlan.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgradePlan) {
+		m.beginUpgradePlan.remove(req)
 	}
 
 	return resp, nil
@@ -491,6 +539,43 @@ func (m *MonitorsServerTransport) dispatchGetVMHostPayload(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMExtensionPayload, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *MonitorsServerTransport) dispatchManageAgentInstallation(req *http.Request) (*http.Response, error) {
+	if m.srv.ManageAgentInstallation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ManageAgentInstallation not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/manageAgentInstallation`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdynatrace.ManageAgentInstallationRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ManageAgentInstallation(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -745,43 +830,6 @@ func (m *MonitorsServerTransport) dispatchNewListMonitoredResourcesPager(req *ht
 	return resp, nil
 }
 
-func (m *MonitorsServerTransport) dispatchManageAgentInstallation(req *http.Request) (*http.Response, error) {
-	if m.srv.ManageAgentInstallation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ManageAgentInstallation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/manageAgentInstallation`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdynatrace.ManageAgentInstallationRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.ManageAgentInstallation(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (m *MonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -816,54 +864,6 @@ func (m *MonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (m *MonitorsServerTransport) dispatchBeginUpgradePlan(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpgradePlan == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradePlan not implemented")}
-	}
-	beginUpgradePlan := m.beginUpgradePlan.get(req)
-	if beginUpgradePlan == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradePlan`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdynatrace.UpgradePlanRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpgradePlan(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpgradePlan = &respr
-		m.beginUpgradePlan.add(req, beginUpgradePlan)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpgradePlan, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		m.beginUpgradePlan.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpgradePlan) {
-		m.beginUpgradePlan.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -33,14 +33,6 @@ type PoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *armdeviceregistry.PoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.PoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method PoliciesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *armdeviceregistry.PoliciesClientGetOptions) (resp azfake.Responder[armdeviceregistry.PoliciesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method PoliciesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.PoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse])
-
 	// BeginRevokeIssuer is the fake for method PoliciesClient.BeginRevokeIssuer
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRevokeIssuer func(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *armdeviceregistry.PoliciesClientBeginRevokeIssuerOptions) (resp azfake.PollerResponder[armdeviceregistry.PoliciesClientRevokeIssuerResponse], errResp azfake.ErrorResponder)
@@ -48,6 +40,14 @@ type PoliciesServer struct {
 	// BeginUpdate is the fake for method PoliciesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties armdeviceregistry.PolicyUpdate, options *armdeviceregistry.PoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.PoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method PoliciesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *armdeviceregistry.PoliciesClientGetOptions) (resp azfake.Responder[armdeviceregistry.PoliciesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method PoliciesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.PoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse])
 }
 
 // NewPoliciesServerTransport creates a new instance of PoliciesServerTransport with the provided implementation.
@@ -59,9 +59,9 @@ func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
 		beginActivateBringYourOwnRoot: newTracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientActivateBringYourOwnRootResponse]](),
 		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientCreateOrUpdateResponse]](),
 		beginDelete:                   newTracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientDeleteResponse]](),
-		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse]](),
 		beginRevokeIssuer:             newTracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientRevokeIssuerResponse]](),
 		beginUpdate:                   newTracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientUpdateResponse]](),
+		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -72,9 +72,9 @@ type PoliciesServerTransport struct {
 	beginActivateBringYourOwnRoot *tracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientActivateBringYourOwnRootResponse]]
 	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientCreateOrUpdateResponse]]
 	beginDelete                   *tracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientDeleteResponse]]
-	newListByResourceGroupPager   *tracker[azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse]]
 	beginRevokeIssuer             *tracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientRevokeIssuerResponse]]
 	beginUpdate                   *tracker[azfake.PollerResponder[armdeviceregistry.PoliciesClientUpdateResponse]]
+	newListByResourceGroupPager   *tracker[azfake.PagerResponder[armdeviceregistry.PoliciesClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for PoliciesServerTransport.
@@ -104,14 +104,14 @@ func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PoliciesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PoliciesClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "PoliciesClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PoliciesClient.BeginRevokeIssuer":
 				res.resp, res.err = p.dispatchBeginRevokeIssuer(req)
 			case "PoliciesClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "PoliciesClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PoliciesClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -280,84 +280,6 @@ func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default/policies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, policyNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Policy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default/policies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.PoliciesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PoliciesServerTransport) dispatchBeginRevokeIssuer(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginRevokeIssuer == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRevokeIssuer not implemented")}
@@ -455,6 +377,84 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default/policies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, policyNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Policy, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default/policies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.PoliciesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

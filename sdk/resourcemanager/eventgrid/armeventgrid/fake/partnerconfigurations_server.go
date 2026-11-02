@@ -34,6 +34,10 @@ type PartnerConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, options *armeventgrid.PartnerConfigurationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PartnerConfigurationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters armeventgrid.PartnerConfigurationUpdateParameters, options *armeventgrid.PartnerConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PartnerConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, options *armeventgrid.PartnerConfigurationsClientGetOptions) (resp azfake.Responder[armeventgrid.PartnerConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -49,10 +53,6 @@ type PartnerConfigurationsServer struct {
 	// UnauthorizePartner is the fake for method PartnerConfigurationsClient.UnauthorizePartner
 	// HTTP status codes to indicate success: http.StatusOK
 	UnauthorizePartner func(ctx context.Context, resourceGroupName string, partnerInfo armeventgrid.Partner, options *armeventgrid.PartnerConfigurationsClientUnauthorizePartnerOptions) (resp azfake.Responder[armeventgrid.PartnerConfigurationsClientUnauthorizePartnerResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method PartnerConfigurationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters armeventgrid.PartnerConfigurationUpdateParameters, options *armeventgrid.PartnerConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPartnerConfigurationsServerTransport creates a new instance of PartnerConfigurationsServerTransport with the provided implementation.
@@ -63,9 +63,9 @@ func NewPartnerConfigurationsServerTransport(srv *PartnerConfigurationsServer) *
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armeventgrid.PartnerConfigurationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armeventgrid.PartnerConfigurationsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse]](),
 	}
 }
 
@@ -75,9 +75,9 @@ type PartnerConfigurationsServerTransport struct {
 	srv                         *PartnerConfigurationsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armeventgrid.PartnerConfigurationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armeventgrid.PartnerConfigurationsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.PartnerConfigurationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for PartnerConfigurationsServerTransport.
@@ -107,6 +107,8 @@ func (p *PartnerConfigurationsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PartnerConfigurationsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PartnerConfigurationsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PartnerConfigurationsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PartnerConfigurationsClient.NewListByResourceGroupPager":
@@ -115,8 +117,6 @@ func (p *PartnerConfigurationsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
 			case "PartnerConfigurationsClient.UnauthorizePartner":
 				res.resp, res.err = p.dispatchUnauthorizePartner(req)
-			case "PartnerConfigurationsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -245,6 +245,50 @@ func (p *PartnerConfigurationsServerTransport) dispatchBeginDelete(req *http.Req
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PartnerConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerConfigurations/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.PartnerConfigurationUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -398,50 +442,6 @@ func (p *PartnerConfigurationsServerTransport) dispatchUnauthorizePartner(req *h
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (p *PartnerConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerConfigurations/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.PartnerConfigurationUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

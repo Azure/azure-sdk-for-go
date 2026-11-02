@@ -30,21 +30,9 @@ type TargetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, targetName string, options *armworkloadorchestration.TargetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method TargetsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, targetName string, options *armworkloadorchestration.TargetsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.TargetsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginInstallSolution is the fake for method TargetsClient.BeginInstallSolution
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginInstallSolution func(ctx context.Context, resourceGroupName string, targetName string, body armworkloadorchestration.InstallSolutionParameter, options *armworkloadorchestration.TargetsClientBeginInstallSolutionOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientInstallSolutionResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method TargetsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armworkloadorchestration.TargetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method TargetsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armworkloadorchestration.TargetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse])
 
 	// BeginPublishSolutionVersion is the fake for method TargetsClient.BeginPublishSolutionVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -73,6 +61,18 @@ type TargetsServer struct {
 	// BeginUpdateExternalValidationStatus is the fake for method TargetsClient.BeginUpdateExternalValidationStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateExternalValidationStatus func(ctx context.Context, resourceGroupName string, targetName string, body armworkloadorchestration.UpdateExternalValidationStatusParameter, options *armworkloadorchestration.TargetsClientBeginUpdateExternalValidationStatusOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateExternalValidationStatusResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method TargetsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, targetName string, options *armworkloadorchestration.TargetsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.TargetsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method TargetsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armworkloadorchestration.TargetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method TargetsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armworkloadorchestration.TargetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse])
 }
 
 // NewTargetsServerTransport creates a new instance of TargetsServerTransport with the provided implementation.
@@ -84,8 +84,6 @@ func NewTargetsServerTransport(srv *TargetsServer) *TargetsServerTransport {
 		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientCreateOrUpdateResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientDeleteResponse]](),
 		beginInstallSolution:                newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientInstallSolutionResponse]](),
-		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse]](),
 		beginPublishSolutionVersion:         newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientPublishSolutionVersionResponse]](),
 		beginRemoveRevision:                 newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientRemoveRevisionResponse]](),
 		beginResolveConfiguration:           newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientResolveConfigurationResponse]](),
@@ -93,6 +91,8 @@ func NewTargetsServerTransport(srv *TargetsServer) *TargetsServerTransport {
 		beginUninstallSolution:              newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUninstallSolutionResponse]](),
 		beginUpdate:                         newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse]](),
 		beginUpdateExternalValidationStatus: newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateExternalValidationStatusResponse]](),
+		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -103,8 +103,6 @@ type TargetsServerTransport struct {
 	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientCreateOrUpdateResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientDeleteResponse]]
 	beginInstallSolution                *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientInstallSolutionResponse]]
-	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse]]
 	beginPublishSolutionVersion         *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientPublishSolutionVersionResponse]]
 	beginRemoveRevision                 *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientRemoveRevisionResponse]]
 	beginResolveConfiguration           *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientResolveConfigurationResponse]]
@@ -112,6 +110,8 @@ type TargetsServerTransport struct {
 	beginUninstallSolution              *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUninstallSolutionResponse]]
 	beginUpdate                         *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse]]
 	beginUpdateExternalValidationStatus *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateExternalValidationStatusResponse]]
+	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armworkloadorchestration.TargetsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for TargetsServerTransport.
@@ -139,14 +139,8 @@ func (t *TargetsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "TargetsClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
-			case "TargetsClient.Get":
-				res.resp, res.err = t.dispatchGet(req)
 			case "TargetsClient.BeginInstallSolution":
 				res.resp, res.err = t.dispatchBeginInstallSolution(req)
-			case "TargetsClient.NewListByResourceGroupPager":
-				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
-			case "TargetsClient.NewListBySubscriptionPager":
-				res.resp, res.err = t.dispatchNewListBySubscriptionPager(req)
 			case "TargetsClient.BeginPublishSolutionVersion":
 				res.resp, res.err = t.dispatchBeginPublishSolutionVersion(req)
 			case "TargetsClient.BeginRemoveRevision":
@@ -161,6 +155,12 @@ func (t *TargetsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TargetsClient.BeginUpdateExternalValidationStatus":
 				res.resp, res.err = t.dispatchBeginUpdateExternalValidationStatus(req)
+			case "TargetsClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
+			case "TargetsClient.NewListByResourceGroupPager":
+				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
+			case "TargetsClient.NewListBySubscriptionPager":
+				res.resp, res.err = t.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -280,39 +280,6 @@ func (t *TargetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (t *TargetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if t.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, targetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Target, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (t *TargetsServerTransport) dispatchBeginInstallSolution(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginInstallSolution == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginInstallSolution not implemented")}
@@ -358,76 +325,6 @@ func (t *TargetsServerTransport) dispatchBeginInstallSolution(req *http.Request)
 		t.beginInstallSolution.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (t *TargetsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := t.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := t.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		t.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armworkloadorchestration.TargetsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		t.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (t *TargetsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := t.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := t.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		t.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armworkloadorchestration.TargetsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		t.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -764,6 +661,109 @@ func (t *TargetsServerTransport) dispatchBeginUpdateExternalValidationStatus(req
 		t.beginUpdateExternalValidationStatus.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TargetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if t.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, targetNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Target, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TargetsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := t.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := t.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		t.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armworkloadorchestration.TargetsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		t.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TargetsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := t.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := t.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		t.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armworkloadorchestration.TargetsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		t.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

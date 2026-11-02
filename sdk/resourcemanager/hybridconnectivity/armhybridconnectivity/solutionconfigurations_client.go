@@ -38,6 +38,73 @@ func NewSolutionConfigurationsClient(credential azcore.TokenCredential, options 
 	return client, nil
 }
 
+// BeginSyncNow - Trigger immediate sync with source cloud
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - solutionConfiguration - Represent Solution Configuration Resource.
+//   - options - SolutionConfigurationsClientBeginSyncNowOptions contains the optional parameters for the SolutionConfigurationsClient.BeginSyncNow
+//     method.
+func (client *SolutionConfigurationsClient) BeginSyncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*runtime.Poller[SolutionConfigurationsClientSyncNowResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.syncNow(ctx, resourceURI, solutionConfiguration, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionConfigurationsClientSyncNowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionConfigurationsClientSyncNowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// syncNow - Trigger immediate sync with source cloud
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionConfigurationsClient.BeginSyncNow"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.syncNowCreateRequest(ctx, resourceURI, solutionConfiguration, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// syncNowCreateRequest creates the syncNow request.
+func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *SolutionConfigurationsClientBeginSyncNowOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/syncNow"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if solutionConfiguration == "" {
+		return nil, errors.New("parameter solutionConfiguration cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionConfiguration}", url.PathEscape(solutionConfiguration))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // CreateOrUpdate - Create a SolutionConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
@@ -270,73 +337,6 @@ func (client *SolutionConfigurationsClient) listHandleResponse(resp *http.Respon
 		return SolutionConfigurationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginSyncNow - Trigger immediate sync with source cloud
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - solutionConfiguration - Represent Solution Configuration Resource.
-//   - options - SolutionConfigurationsClientBeginSyncNowOptions contains the optional parameters for the SolutionConfigurationsClient.BeginSyncNow
-//     method.
-func (client *SolutionConfigurationsClient) BeginSyncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*runtime.Poller[SolutionConfigurationsClientSyncNowResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.syncNow(ctx, resourceURI, solutionConfiguration, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionConfigurationsClientSyncNowResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionConfigurationsClientSyncNowResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SyncNow - Trigger immediate sync with source cloud
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SolutionConfigurationsClient.BeginSyncNow"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.syncNowCreateRequest(ctx, resourceURI, solutionConfiguration, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// syncNowCreateRequest creates the SyncNow request.
-func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *SolutionConfigurationsClientBeginSyncNowOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/syncNow"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if solutionConfiguration == "" {
-		return nil, errors.New("parameter solutionConfiguration cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionConfiguration}", url.PathEscape(solutionConfiguration))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // Update - Update a SolutionConfiguration

@@ -29,6 +29,10 @@ type ExpansionJobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *armstoragecache.ExpansionJobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragecache.ExpansionJobsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ExpansionJobsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob armstoragecache.ExpansionJobUpdate, options *armstoragecache.ExpansionJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.ExpansionJobsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ExpansionJobsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *armstoragecache.ExpansionJobsClientGetOptions) (resp azfake.Responder[armstoragecache.ExpansionJobsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ExpansionJobsServer struct {
 	// NewListByAmlFilesystemPager is the fake for method ExpansionJobsClient.NewListByAmlFilesystemPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAmlFilesystemPager func(resourceGroupName string, amlFilesystemName string, options *armstoragecache.ExpansionJobsClientListByAmlFilesystemOptions) (resp azfake.PagerResponder[armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse])
-
-	// BeginUpdate is the fake for method ExpansionJobsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob armstoragecache.ExpansionJobUpdate, options *armstoragecache.ExpansionJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.ExpansionJobsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExpansionJobsServerTransport creates a new instance of ExpansionJobsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewExpansionJobsServerTransport(srv *ExpansionJobsServer) *ExpansionJobsSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientDeleteResponse]](),
-		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientUpdateResponse]](),
+		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ExpansionJobsServerTransport struct {
 	srv                         *ExpansionJobsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientDeleteResponse]]
-	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragecache.ExpansionJobsClientUpdateResponse]]
+	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpansionJobsServerTransport.
@@ -90,12 +90,12 @@ func (e *ExpansionJobsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExpansionJobsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ExpansionJobsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExpansionJobsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ExpansionJobsClient.NewListByAmlFilesystemPager":
 				res.resp, res.err = e.dispatchNewListByAmlFilesystemPager(req)
-			case "ExpansionJobsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (e *ExpansionJobsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (e *ExpansionJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/expansionJobs/(?P<expansionJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstoragecache.ExpansionJobUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+		if err != nil {
+			return nil, err
+		}
+		expansionJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expansionJobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, expansionJobNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExpansionJobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (e *ExpansionJobsServerTransport) dispatchNewListByAmlFilesystemPager(req *
 	if !server.PagerResponderMore(newListByAmlFilesystemPager) {
 		e.newListByAmlFilesystemPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ExpansionJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/expansionJobs/(?P<expansionJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armstoragecache.ExpansionJobUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-		if err != nil {
-			return nil, err
-		}
-		expansionJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expansionJobName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, expansionJobNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

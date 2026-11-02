@@ -61,7 +61,7 @@ func (client *GenerateDetailedCostReportOperationResultsClient) BeginGet(ctx con
 	}
 }
 
-// Get - Gets the result of the specified operation. The link with this operationId is provided as a response header of the
+// get - Gets the result of the specified operation. The link with this operationId is provided as a response header of the
 // initial request.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateDetailedCostReportOperationResultsClient) get(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationResultsClientBeginGetOptions) (*http.Response, error) {
@@ -84,7 +84,7 @@ func (client *GenerateDetailedCostReportOperationResultsClient) get(ctx context.
 	return httpResp, nil
 }
 
-// getCreateRequest creates the Get request.
+// getCreateRequest creates the get request.
 func (client *GenerateDetailedCostReportOperationResultsClient) getCreateRequest(ctx context.Context, operationID string, scope string, _ *GenerateDetailedCostReportOperationResultsClientBeginGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/operationResults/{operationId}"
 	if operationID == "" {

@@ -66,7 +66,7 @@ func (client *DeviceCapacityCheckClient) BeginCheckResourceCreationFeasibility(c
 	}
 }
 
-// CheckResourceCreationFeasibility - Posts the device capacity request info to check feasibility.
+// checkResourceCreationFeasibility - Posts the device capacity request info to check feasibility.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibility(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibility(ctx co
 	return httpResp, nil
 }
 
-// checkResourceCreationFeasibilityCreateRequest creates the CheckResourceCreationFeasibility request.
+// checkResourceCreationFeasibilityCreateRequest creates the checkResourceCreationFeasibility request.
 func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibilityCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/deviceCapacityCheck"
 	if client.subscriptionID == "" {

@@ -28,13 +28,13 @@ type ThroughputPoolServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, throughputPoolName string, options *armcosmos.ThroughputPoolClientBeginDeleteOptions) (resp azfake.PollerResponder[armcosmos.ThroughputPoolClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ThroughputPoolClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, throughputPoolName string, options *armcosmos.ThroughputPoolClientGetOptions) (resp azfake.Responder[armcosmos.ThroughputPoolClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method ThroughputPoolClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, throughputPoolName string, body armcosmos.ThroughputPoolUpdate, options *armcosmos.ThroughputPoolClientBeginUpdateOptions) (resp azfake.PollerResponder[armcosmos.ThroughputPoolClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ThroughputPoolClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, throughputPoolName string, options *armcosmos.ThroughputPoolClientGetOptions) (resp azfake.Responder[armcosmos.ThroughputPoolClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewThroughputPoolServerTransport creates a new instance of ThroughputPoolServerTransport with the provided implementation.
@@ -83,10 +83,10 @@ func (t *ThroughputPoolServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "ThroughputPoolClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
-			case "ThroughputPoolClient.Get":
-				res.resp, res.err = t.dispatchGet(req)
 			case "ThroughputPoolClient.BeginUpdate":
 				res.resp, res.err = t.dispatchBeginUpdate(req)
+			case "ThroughputPoolClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -109,7 +109,7 @@ func (t *ThroughputPoolServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -157,7 +157,7 @@ func (t *ThroughputPoolServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := t.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -195,46 +195,13 @@ func (t *ThroughputPoolServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (t *ThroughputPoolServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if t.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	throughputPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("throughputPoolName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, throughputPoolNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputPoolResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (t *ThroughputPoolServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := t.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -273,6 +240,39 @@ func (t *ThroughputPoolServerTransport) dispatchBeginUpdate(req *http.Request) (
 		t.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *ThroughputPoolServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if t.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	throughputPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("throughputPoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, throughputPoolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputPoolResource, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

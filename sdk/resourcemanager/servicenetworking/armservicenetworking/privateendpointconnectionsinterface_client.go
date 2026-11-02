@@ -68,7 +68,7 @@ func (client *PrivateEndpointConnectionsInterfaceClient) BeginDelete(ctx context
 	}
 }
 
-// Delete - Delete a PrivateEndpointConnection
+// deleteOperation - Delete a PrivateEndpointConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *PrivateEndpointConnectionsInterfaceClient) deleteOperation(ctx con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointConnectionsInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -116,6 +116,87 @@ func (client *PrivateEndpointConnectionsInterfaceClient) deleteCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Create a PrivateEndpointConnection
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - privateEndpointConnectionName - Private Endpoint Connection
+//   - resource - Resource create parameters.
+//   - options - PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.BeginUpdate
+//     method.
+func (client *PrivateEndpointConnectionsInterfaceClient) BeginUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsInterfaceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsInterfaceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionsInterfaceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Create a PrivateEndpointConnection
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionsInterfaceClient) update(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PrivateEndpointConnectionsInterfaceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PrivateEndpointConnectionsInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, _ *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if trafficControllerName == "" {
+		return nil, errors.New("parameter trafficControllerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -260,85 +341,4 @@ func (client *PrivateEndpointConnectionsInterfaceClient) listByTrafficController
 		return PrivateEndpointConnectionsInterfaceClientListByTrafficControllerResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Create a PrivateEndpointConnection
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - trafficControllerName - traffic controller name for path
-//   - privateEndpointConnectionName - Private Endpoint Connection
-//   - resource - Resource create parameters.
-//   - options - PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.BeginUpdate
-//     method.
-func (client *PrivateEndpointConnectionsInterfaceClient) BeginUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsInterfaceClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsInterfaceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionsInterfaceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Create a PrivateEndpointConnection
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionsInterfaceClient) update(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PrivateEndpointConnectionsInterfaceClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PrivateEndpointConnectionsInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, _ *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if trafficControllerName == "" {
-		return nil, errors.New("parameter trafficControllerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

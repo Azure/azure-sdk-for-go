@@ -69,7 +69,7 @@ func (client *SchemaVersionsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update a Schema Version Resource
+// createOrUpdate - Create or update a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, resource SchemaVersion, options *SchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *SchemaVersionsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, resource SchemaVersion, _ *SchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *SchemaVersionsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a Schema Version Resource
+// deleteOperation - Delete a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, options *SchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *SchemaVersionsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, _ *SchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}"
 	if client.subscriptionID == "" {

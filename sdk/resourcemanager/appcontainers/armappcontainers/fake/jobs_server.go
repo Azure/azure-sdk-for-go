@@ -30,34 +30,6 @@ type JobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method JobsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientGetOptions) (resp azfake.Responder[armappcontainers.JobsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetDetector is the fake for method JobsClient.GetDetector
-	// HTTP status codes to indicate success: http.StatusOK
-	GetDetector func(ctx context.Context, resourceGroupName string, jobName string, detectorName string, options *armappcontainers.JobsClientGetDetectorOptions) (resp azfake.Responder[armappcontainers.JobsClientGetDetectorResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method JobsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armappcontainers.JobsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method JobsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armappcontainers.JobsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse])
-
-	// NewListDetectorsPager is the fake for method JobsClient.NewListDetectorsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListDetectorsPager func(resourceGroupName string, jobName string, options *armappcontainers.JobsClientListDetectorsOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse])
-
-	// ListSecrets is the fake for method JobsClient.ListSecrets
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSecrets func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientListSecretsOptions) (resp azfake.Responder[armappcontainers.JobsClientListSecretsResponse], errResp azfake.ErrorResponder)
-
-	// ProxyGet is the fake for method JobsClient.ProxyGet
-	// HTTP status codes to indicate success: http.StatusOK
-	ProxyGet func(ctx context.Context, resourceGroupName string, jobName string, apiName string, options *armappcontainers.JobsClientProxyGetOptions) (resp azfake.Responder[armappcontainers.JobsClientProxyGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginResume is the fake for method JobsClient.BeginResume
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginResume func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginResumeOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientResumeResponse], errResp azfake.ErrorResponder)
@@ -81,6 +53,34 @@ type JobsServer struct {
 	// BeginUpdate is the fake for method JobsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, jobName string, jobEnvelope armappcontainers.JobPatchProperties, options *armappcontainers.JobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method JobsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientGetOptions) (resp azfake.Responder[armappcontainers.JobsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetDetector is the fake for method JobsClient.GetDetector
+	// HTTP status codes to indicate success: http.StatusOK
+	GetDetector func(ctx context.Context, resourceGroupName string, jobName string, detectorName string, options *armappcontainers.JobsClientGetDetectorOptions) (resp azfake.Responder[armappcontainers.JobsClientGetDetectorResponse], errResp azfake.ErrorResponder)
+
+	// ListSecrets is the fake for method JobsClient.ListSecrets
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSecrets func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientListSecretsOptions) (resp azfake.Responder[armappcontainers.JobsClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method JobsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappcontainers.JobsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method JobsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armappcontainers.JobsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse])
+
+	// NewListDetectorsPager is the fake for method JobsClient.NewListDetectorsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDetectorsPager func(resourceGroupName string, jobName string, options *armappcontainers.JobsClientListDetectorsOptions) (resp azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse])
+
+	// ProxyGet is the fake for method JobsClient.ProxyGet
+	// HTTP status codes to indicate success: http.StatusOK
+	ProxyGet func(ctx context.Context, resourceGroupName string, jobName string, apiName string, options *armappcontainers.JobsClientProxyGetOptions) (resp azfake.Responder[armappcontainers.JobsClientProxyGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewJobsServerTransport creates a new instance of JobsServerTransport with the provided implementation.
@@ -91,15 +91,15 @@ func NewJobsServerTransport(srv *JobsServer) *JobsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappcontainers.JobsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armappcontainers.JobsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]](),
-		newListDetectorsPager:       newTracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]](),
 		beginResume:                 newTracker[azfake.PollerResponder[armappcontainers.JobsClientResumeResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armappcontainers.JobsClientStartResponse]](),
 		beginStopExecution:          newTracker[azfake.PollerResponder[armappcontainers.JobsClientStopExecutionResponse]](),
 		beginStopMultipleExecutions: newTracker[azfake.PollerResponder[armappcontainers.JobsClientStopMultipleExecutionsResponse]](),
 		beginSuspend:                newTracker[azfake.PollerResponder[armappcontainers.JobsClientSuspendResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armappcontainers.JobsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]](),
+		newListDetectorsPager:       newTracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]](),
 	}
 }
 
@@ -109,15 +109,15 @@ type JobsServerTransport struct {
 	srv                         *JobsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappcontainers.JobsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armappcontainers.JobsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]]
-	newListDetectorsPager       *tracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]]
 	beginResume                 *tracker[azfake.PollerResponder[armappcontainers.JobsClientResumeResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armappcontainers.JobsClientStartResponse]]
 	beginStopExecution          *tracker[azfake.PollerResponder[armappcontainers.JobsClientStopExecutionResponse]]
 	beginStopMultipleExecutions *tracker[azfake.PollerResponder[armappcontainers.JobsClientStopMultipleExecutionsResponse]]
 	beginSuspend                *tracker[azfake.PollerResponder[armappcontainers.JobsClientSuspendResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armappcontainers.JobsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]]
+	newListDetectorsPager       *tracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]]
 }
 
 // Do implements the policy.Transporter interface for JobsServerTransport.
@@ -145,20 +145,6 @@ func (j *JobsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = j.dispatchBeginCreateOrUpdate(req)
 			case "JobsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
-			case "JobsClient.Get":
-				res.resp, res.err = j.dispatchGet(req)
-			case "JobsClient.GetDetector":
-				res.resp, res.err = j.dispatchGetDetector(req)
-			case "JobsClient.NewListByResourceGroupPager":
-				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
-			case "JobsClient.NewListBySubscriptionPager":
-				res.resp, res.err = j.dispatchNewListBySubscriptionPager(req)
-			case "JobsClient.NewListDetectorsPager":
-				res.resp, res.err = j.dispatchNewListDetectorsPager(req)
-			case "JobsClient.ListSecrets":
-				res.resp, res.err = j.dispatchListSecrets(req)
-			case "JobsClient.ProxyGet":
-				res.resp, res.err = j.dispatchProxyGet(req)
 			case "JobsClient.BeginResume":
 				res.resp, res.err = j.dispatchBeginResume(req)
 			case "JobsClient.BeginStart":
@@ -171,6 +157,20 @@ func (j *JobsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = j.dispatchBeginSuspend(req)
 			case "JobsClient.BeginUpdate":
 				res.resp, res.err = j.dispatchBeginUpdate(req)
+			case "JobsClient.Get":
+				res.resp, res.err = j.dispatchGet(req)
+			case "JobsClient.GetDetector":
+				res.resp, res.err = j.dispatchGetDetector(req)
+			case "JobsClient.ListSecrets":
+				res.resp, res.err = j.dispatchListSecrets(req)
+			case "JobsClient.NewListByResourceGroupPager":
+				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
+			case "JobsClient.NewListBySubscriptionPager":
+				res.resp, res.err = j.dispatchNewListBySubscriptionPager(req)
+			case "JobsClient.NewListDetectorsPager":
+				res.resp, res.err = j.dispatchNewListDetectorsPager(req)
+			case "JobsClient.ProxyGet":
+				res.resp, res.err = j.dispatchProxyGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -276,257 +276,6 @@ func (j *JobsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 		j.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if j.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.Get(req.Context(), resourceGroupNameParam, jobNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Job, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchGetDetector(req *http.Request) (*http.Response, error) {
-	if j.srv.GetDetector == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetDetector not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	detectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("detectorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.GetDetector(req.Context(), resourceGroupNameParam, jobNameParam, detectorNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Diagnostics, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := j.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := j.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		j.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappcontainers.JobsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		j.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := j.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := j.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		j.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappcontainers.JobsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		j.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchNewListDetectorsPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListDetectorsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListDetectorsPager not implemented")}
-	}
-	newListDetectorsPager := j.newListDetectorsPager.get(req)
-	if newListDetectorsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := j.srv.NewListDetectorsPager(resourceGroupNameParam, jobNameParam, nil)
-		newListDetectorsPager = &resp
-		j.newListDetectorsPager.add(req, newListDetectorsPager)
-		server.PagerResponderInjectNextLinks(newListDetectorsPager, req, func(page *armappcontainers.JobsClientListDetectorsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListDetectorsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListDetectorsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListDetectorsPager) {
-		j.newListDetectorsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
-	if j.srv.ListSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.ListSecrets(req.Context(), resourceGroupNameParam, jobNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobSecretsCollection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchProxyGet(req *http.Request) (*http.Response, error) {
-	if j.srv.ProxyGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ProxyGet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/(?P<apiName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	apiNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("apiName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.ProxyGet(req.Context(), resourceGroupNameParam, jobNameParam, apiNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Job, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -809,6 +558,257 @@ func (j *JobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 		j.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if j.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.Get(req.Context(), resourceGroupNameParam, jobNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Job, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchGetDetector(req *http.Request) (*http.Response, error) {
+	if j.srv.GetDetector == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetDetector not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	detectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("detectorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.GetDetector(req.Context(), resourceGroupNameParam, jobNameParam, detectorNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Diagnostics, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
+	if j.srv.ListSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.ListSecrets(req.Context(), resourceGroupNameParam, jobNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobSecretsCollection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := j.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := j.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		j.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappcontainers.JobsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		j.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := j.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := j.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		j.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappcontainers.JobsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		j.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchNewListDetectorsPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListDetectorsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDetectorsPager not implemented")}
+	}
+	newListDetectorsPager := j.newListDetectorsPager.get(req)
+	if newListDetectorsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := j.srv.NewListDetectorsPager(resourceGroupNameParam, jobNameParam, nil)
+		newListDetectorsPager = &resp
+		j.newListDetectorsPager.add(req, newListDetectorsPager)
+		server.PagerResponderInjectNextLinks(newListDetectorsPager, req, func(page *armappcontainers.JobsClientListDetectorsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDetectorsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListDetectorsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDetectorsPager) {
+		j.newListDetectorsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchProxyGet(req *http.Request) (*http.Response, error) {
+	if j.srv.ProxyGet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ProxyGet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/(?P<apiName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	apiNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("apiName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.ProxyGet(req.Context(), resourceGroupNameParam, jobNameParam, apiNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Job, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

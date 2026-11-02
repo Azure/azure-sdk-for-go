@@ -45,6 +45,625 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Creates a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
+//   - resourceProviderNamespace - The resource provider of the resource to check.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type.
+//   - resourceName - The name of the resource to check whether it exists.
+//   - apiVersion - The API version to use for this operation.
+//   - parameters - Resource create parameters.
+//   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByID - Create a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - apiVersion - The API version to use for this operation.
+//   - parameters - Resource create parameters.
+//   - options - ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID
+//     method.
+func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*runtime.Poller[ClientCreateOrUpdateByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdateByID - Create a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginCreateOrUpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByIDCreateRequest creates the createOrUpdateByID request.
+func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, _ *ClientBeginCreateOrUpdateByIDOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
+//   - resourceProviderNamespace - The resource provider of the resource to check.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type.
+//   - resourceName - The name of the resource to check whether it exists.
+//   - apiVersion - The API version to use for this operation.
+//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginDeleteByID - Deletes a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - apiVersion - The API version to use for this operation.
+//   - options - ClientBeginDeleteByIDOptions contains the optional parameters for the Client.BeginDeleteByID method.
+func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*runtime.Poller[ClientDeleteByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteByID - Deletes a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginDeleteByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteByIDCreateRequest(ctx, resourceID, apiVersion, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteByIDCreateRequest creates the deleteByID request.
+func (client *Client) deleteByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, _ *ClientBeginDeleteByIDOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginMoveResources - Moves resources from one resource group to another resource group.
+//
+// The resources to be moved must be in the same source resource group in the source subscription being used. The target resource
+// group may be in a different subscription. When moving resources, both the source group and the target group are locked
+// for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - sourceResourceGroupName - The name of the resource group to get. The name is case insensitive.
+//   - parameters - Parameters for moving resources.
+//   - options - ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
+func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*runtime.Poller[ClientMoveResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientMoveResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientMoveResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// moveResources - Moves resources from one resource group to another resource group.
+//
+// The resources to be moved must be in the same source resource group in the source subscription being used. The target resource
+// group may be in a different subscription. When moving resources, both the source group and the target group are locked
+// for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) moveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginMoveResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.moveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// moveResourcesCreateRequest creates the moveResources request.
+func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, _ *ClientBeginMoveResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{sourceResourceGroupName}/moveResources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
+//   - resourceProviderNamespace - The resource provider of the resource to check.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type.
+//   - resourceName - The name of the resource to check whether it exists.
+//   - apiVersion - The API version to use for this operation.
+//   - parameters - Resource create parameters.
+//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateByID - Update a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - apiVersion - The API version to use for this operation.
+//   - parameters - Resource create parameters.
+//   - options - ClientBeginUpdateByIDOptions contains the optional parameters for the Client.BeginUpdateByID method.
+func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*runtime.Poller[ClientUpdateByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateByID - Update a resource by ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginUpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateByIDCreateRequest creates the updateByID request.
+func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, _ *ClientBeginUpdateByIDOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateMoveResources - Validates whether resources can be moved from one resource group to another resource group.
+//
+// This operation checks whether the specified resources can be moved to the target. The resources to be moved must be in
+// the same source resource group in the source subscription being used. The target resource group may be in a different subscription.
+// If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code
+// 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - sourceResourceGroupName - The name of the resource group to get. The name is case insensitive.
+//   - parameters - Parameters for moving resources.
+//   - options - ClientBeginValidateMoveResourcesOptions contains the optional parameters for the Client.BeginValidateMoveResources
+//     method.
+func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*runtime.Poller[ClientValidateMoveResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientValidateMoveResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientValidateMoveResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateMoveResources - Validates whether resources can be moved from one resource group to another resource group.
+//
+// This operation checks whether the specified resources can be moved to the target. The resources to be moved must be in
+// the same source resource group in the source subscription being used. The target resource group may be in a different subscription.
+// If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code
+// 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) validateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginValidateMoveResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateMoveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateMoveResourcesCreateRequest creates the validateMoveResources request.
+func (client *Client) validateMoveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, _ *ClientBeginValidateMoveResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{sourceResourceGroupName}/validateMoveResources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckExistence - Checks whether a resource exists.
 //   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
 //   - resourceProviderNamespace - The resource provider of the resource to check.
@@ -143,309 +762,6 @@ func (client *Client) checkExistenceByIDCreateRequest(ctx context.Context, resou
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginCreateOrUpdate - Creates a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
-//   - resourceProviderNamespace - The resource provider of the resource to check.
-//   - parentResourcePath - The parent resource identity.
-//   - resourceType - The resource type.
-//   - resourceName - The name of the resource to check whether it exists.
-//   - apiVersion - The API version to use for this operation.
-//   - parameters - Resource create parameters.
-//   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginCreateOrUpdateByID - Create a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - apiVersion - The API version to use for this operation.
-//   - parameters - Resource create parameters.
-//   - options - ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID
-//     method.
-func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*runtime.Poller[ClientCreateOrUpdateByIDResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdateByID - Create a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginCreateOrUpdateByID"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, _ *ClientBeginCreateOrUpdateByIDOptions) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Deletes a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
-//   - resourceProviderNamespace - The resource provider of the resource to check.
-//   - parentResourcePath - The parent resource identity.
-//   - resourceType - The resource type.
-//   - resourceName - The name of the resource to check whether it exists.
-//   - apiVersion - The API version to use for this operation.
-//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginDeleteByID - Deletes a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - apiVersion - The API version to use for this operation.
-//   - options - ClientBeginDeleteByIDOptions contains the optional parameters for the Client.BeginDeleteByID method.
-func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*runtime.Poller[ClientDeleteByIDResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// DeleteByID - Deletes a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginDeleteByID"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteByIDCreateRequest(ctx, resourceID, apiVersion, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteByIDCreateRequest creates the DeleteByID request.
-func (client *Client) deleteByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, _ *ClientBeginDeleteByIDOptions) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -582,81 +898,6 @@ func (client *Client) getByIDHandleResponse(resp *http.Response, successCodes ..
 	return result, nil
 }
 
-// NewListPager - Get all the resources in a subscription.
-//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
-func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
-		More: func(page ClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, nextLink string, options *ClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resources"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20250401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
-	result := ClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
-		return ClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Get all the resources for a resource group.
 //   - resourceGroupName - The name of the resource group to get. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
@@ -738,318 +979,77 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// BeginMoveResources - Moves resources from one resource group to another resource group.
-//
-// The resources to be moved must be in the same source resource group in the source subscription being used. The target resource
-// group may be in a different subscription. When moving resources, both the source group and the target group are locked
-// for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - sourceResourceGroupName - The name of the resource group to get. The name is case insensitive.
-//   - parameters - Parameters for moving resources.
-//   - options - ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
-func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*runtime.Poller[ClientMoveResourcesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientMoveResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientMoveResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+// NewListPager - Get all the resources in a subscription.
+//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
+func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// MoveResources - Moves resources from one resource group to another resource group.
-//
-// The resources to be moved must be in the same source resource group in the source subscription being used. The target resource
-// group may be in a different subscription. When moving resources, both the source group and the target group are locked
-// for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) moveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *Client) listCreateRequest(ctx context.Context, nextLink string, options *ClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "Client.BeginMoveResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.moveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// moveResourcesCreateRequest creates the MoveResources request.
-func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, _ *ClientBeginMoveResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{sourceResourceGroupName}/moveResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if sourceResourceGroupName == "" {
-		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// BeginUpdate - Updates a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
-//   - resourceProviderNamespace - The resource provider of the resource to check.
-//   - parentResourcePath - The parent resource identity.
-//   - resourceType - The resource type.
-//   - resourceName - The name of the resource to check whether it exists.
-//   - apiVersion - The API version to use for this operation.
-//   - parameters - Resource create parameters.
-//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// listHandleResponse handles the List response.
+func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
+	result := ClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-}
-
-// Update - Updates a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-	if err != nil {
-		return nil, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
+		return ClientListResponse{}, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateByID - Update a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - apiVersion - The API version to use for this operation.
-//   - parameters - Resource create parameters.
-//   - options - ClientBeginUpdateByIDOptions contains the optional parameters for the Client.BeginUpdateByID method.
-func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*runtime.Poller[ClientUpdateByIDResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateByIDResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateByID - Update a resource by ID.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginUpdateByID"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateByIDCreateRequest creates the UpdateByID request.
-func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, _ *ClientBeginUpdateByIDOptions) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginValidateMoveResources - Validates whether resources can be moved from one resource group to another resource group.
-//
-// This operation checks whether the specified resources can be moved to the target. The resources to be moved must be in
-// the same source resource group in the source subscription being used. The target resource group may be in a different subscription.
-// If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code
-// 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - sourceResourceGroupName - The name of the resource group to get. The name is case insensitive.
-//   - parameters - Parameters for moving resources.
-//   - options - ClientBeginValidateMoveResourcesOptions contains the optional parameters for the Client.BeginValidateMoveResources
-//     method.
-func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*runtime.Poller[ClientValidateMoveResourcesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientValidateMoveResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientValidateMoveResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ValidateMoveResources - Validates whether resources can be moved from one resource group to another resource group.
-//
-// This operation checks whether the specified resources can be moved to the target. The resources to be moved must be in
-// the same source resource group in the source subscription being used. The target resource group may be in a different subscription.
-// If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code
-// 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) validateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "Client.BeginValidateMoveResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateMoveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateMoveResourcesCreateRequest creates the ValidateMoveResources request.
-func (client *Client) validateMoveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, _ *ClientBeginValidateMoveResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{sourceResourceGroupName}/validateMoveResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if sourceResourceGroupName == "" {
-		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return result, nil
 }

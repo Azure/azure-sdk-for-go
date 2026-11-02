@@ -68,7 +68,7 @@ func (client *GoldenGateDeploymentsClient) BeginAssignConnection(ctx context.Con
 	}
 }
 
-// AssignConnection - Assign a GoldenGate connection to a deployment.
+// assignConnection - Assign a GoldenGate connection to a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoldenGateDeploymentsClient) assignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginAssignConnectionOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *GoldenGateDeploymentsClient) assignConnection(ctx context.Context,
 	return httpResp, nil
 }
 
-// assignConnectionCreateRequest creates the AssignConnection request.
+// assignConnectionCreateRequest creates the assignConnection request.
 func (client *GoldenGateDeploymentsClient) assignConnectionCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, _ *GoldenGateDeploymentsClientBeginAssignConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}/assignConnection"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *GoldenGateDeploymentsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a GoldenGateDeployment
+// createOrUpdate - Create a GoldenGateDeployment
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoldenGateDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, resource GoldenGateDeployment, options *GoldenGateDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *GoldenGateDeploymentsClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GoldenGateDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, resource GoldenGateDeployment, _ *GoldenGateDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}"
 	if client.subscriptionID == "" {
@@ -219,7 +219,7 @@ func (client *GoldenGateDeploymentsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a GoldenGateDeployment
+// deleteOperation - Delete a GoldenGateDeployment
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoldenGateDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, options *GoldenGateDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -241,7 +241,7 @@ func (client *GoldenGateDeploymentsClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GoldenGateDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, _ *GoldenGateDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}"
 	if client.subscriptionID == "" {
@@ -263,6 +263,158 @@ func (client *GoldenGateDeploymentsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUnassignConnection - Unassign a GoldenGate connection from a deployment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - goldenGateDeploymentName - The name of the GoldenGateDeployment
+//   - body - The content of the action request
+//   - options - GoldenGateDeploymentsClientBeginUnassignConnectionOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUnassignConnection
+//     method.
+func (client *GoldenGateDeploymentsClient) BeginUnassignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*runtime.Poller[GoldenGateDeploymentsClientUnassignConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unassignConnection(ctx, resourceGroupName, goldenGateDeploymentName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoldenGateDeploymentsClientUnassignConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoldenGateDeploymentsClientUnassignConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// unassignConnection - Unassign a GoldenGate connection from a deployment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoldenGateDeploymentsClient) unassignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoldenGateDeploymentsClient.BeginUnassignConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.unassignConnectionCreateRequest(ctx, resourceGroupName, goldenGateDeploymentName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// unassignConnectionCreateRequest creates the unassignConnection request.
+func (client *GoldenGateDeploymentsClient) unassignConnectionCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, _ *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}/unassignConnection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if goldenGateDeploymentName == "" {
+		return nil, errors.New("parameter goldenGateDeploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goldenGateDeploymentName}", url.PathEscape(goldenGateDeploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a GoldenGateDeployment
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - goldenGateDeploymentName - The name of the GoldenGateDeployment
+//   - properties - The resource properties to be updated.
+//   - options - GoldenGateDeploymentsClientBeginUpdateOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUpdate
+//     method.
+func (client *GoldenGateDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, options *GoldenGateDeploymentsClientBeginUpdateOptions) (*runtime.Poller[GoldenGateDeploymentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, goldenGateDeploymentName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoldenGateDeploymentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoldenGateDeploymentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a GoldenGateDeployment
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoldenGateDeploymentsClient) update(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, options *GoldenGateDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoldenGateDeploymentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, goldenGateDeploymentName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GoldenGateDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, _ *GoldenGateDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if goldenGateDeploymentName == "" {
+		return nil, errors.New("parameter goldenGateDeploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goldenGateDeploymentName}", url.PathEscape(goldenGateDeploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -607,156 +759,4 @@ func (client *GoldenGateDeploymentsClient) listBySubscriptionHandleResponse(resp
 		return GoldenGateDeploymentsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUnassignConnection - Unassign a GoldenGate connection from a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - goldenGateDeploymentName - The name of the GoldenGateDeployment
-//   - body - The content of the action request
-//   - options - GoldenGateDeploymentsClientBeginUnassignConnectionOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUnassignConnection
-//     method.
-func (client *GoldenGateDeploymentsClient) BeginUnassignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*runtime.Poller[GoldenGateDeploymentsClientUnassignConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.unassignConnection(ctx, resourceGroupName, goldenGateDeploymentName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoldenGateDeploymentsClientUnassignConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoldenGateDeploymentsClientUnassignConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UnassignConnection - Unassign a GoldenGate connection from a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoldenGateDeploymentsClient) unassignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoldenGateDeploymentsClient.BeginUnassignConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.unassignConnectionCreateRequest(ctx, resourceGroupName, goldenGateDeploymentName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// unassignConnectionCreateRequest creates the UnassignConnection request.
-func (client *GoldenGateDeploymentsClient) unassignConnectionCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, _ *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}/unassignConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if goldenGateDeploymentName == "" {
-		return nil, errors.New("parameter goldenGateDeploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goldenGateDeploymentName}", url.PathEscape(goldenGateDeploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a GoldenGateDeployment
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - goldenGateDeploymentName - The name of the GoldenGateDeployment
-//   - properties - The resource properties to be updated.
-//   - options - GoldenGateDeploymentsClientBeginUpdateOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUpdate
-//     method.
-func (client *GoldenGateDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, options *GoldenGateDeploymentsClientBeginUpdateOptions) (*runtime.Poller[GoldenGateDeploymentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, goldenGateDeploymentName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoldenGateDeploymentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoldenGateDeploymentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a GoldenGateDeployment
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoldenGateDeploymentsClient) update(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, options *GoldenGateDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoldenGateDeploymentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, goldenGateDeploymentName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GoldenGateDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, _ *GoldenGateDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if goldenGateDeploymentName == "" {
-		return nil, errors.New("parameter goldenGateDeploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goldenGateDeploymentName}", url.PathEscape(goldenGateDeploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

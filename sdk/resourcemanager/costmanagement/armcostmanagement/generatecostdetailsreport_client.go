@@ -70,7 +70,7 @@ func (client *GenerateCostDetailsReportClient) BeginCreateOperation(ctx context.
 	}
 }
 
-// CreateOperation - This API is the replacement for all previously release Usage Details APIs. Request to generate a cost
+// createOperation - This API is the replacement for all previously release Usage Details APIs. Request to generate a cost
 // details report for the provided date range, billing period (Only enterprise customers) or Invoice Id asynchronously at
 // a certain scope. The initial call to request a report will return a 202 with a 'Location' and 'Retry-After' header. The
 // 'Location' header will provide the endpoint to poll to get the result of the report generation. The 'Retry-After' provides
@@ -100,7 +100,7 @@ func (client *GenerateCostDetailsReportClient) createOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOperationCreateRequest creates the CreateOperation request.
+// createOperationCreateRequest creates the createOperation request.
 func (client *GenerateCostDetailsReportClient) createOperationCreateRequest(ctx context.Context, scope string, parameters GenerateCostDetailsReportRequestDefinition, _ *GenerateCostDetailsReportClientBeginCreateOperationOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/generateCostDetailsReport"
 	if scope == "" {
@@ -147,7 +147,7 @@ func (client *GenerateCostDetailsReportClient) BeginGetOperationResults(ctx cont
 	}
 }
 
-// GetOperationResults - Get the result of the specified operation. This link is provided in the CostDetails creation request
+// getOperationResults - Get the result of the specified operation. This link is provided in the CostDetails creation request
 // response Location header.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GenerateCostDetailsReportClient) getOperationResults(ctx context.Context, scope string, operationID string, options *GenerateCostDetailsReportClientBeginGetOperationResultsOptions) (*http.Response, error) {
@@ -170,7 +170,7 @@ func (client *GenerateCostDetailsReportClient) getOperationResults(ctx context.C
 	return httpResp, nil
 }
 
-// getOperationResultsCreateRequest creates the GetOperationResults request.
+// getOperationResultsCreateRequest creates the getOperationResults request.
 func (client *GenerateCostDetailsReportClient) getOperationResultsCreateRequest(ctx context.Context, scope string, operationID string, _ *GenerateCostDetailsReportClientBeginGetOperationResultsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/costDetailsOperationResults/{operationId}"
 	if scope == "" {

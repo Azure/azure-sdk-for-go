@@ -68,7 +68,7 @@ func (client *InternetGatewayRulesClient) BeginCreate(ctx context.Context, resou
 	}
 }
 
-// Create - Creates an Internet Gateway rule resource.
+// create - Creates an Internet Gateway rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InternetGatewayRulesClient) create(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRule, options *InternetGatewayRulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *InternetGatewayRulesClient) create(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *InternetGatewayRulesClient) createCreateRequest(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRule, _ *InternetGatewayRulesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *InternetGatewayRulesClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Implements Internet Gateway Rules DELETE method.
+// deleteOperation - Implements Internet Gateway Rules DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InternetGatewayRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, options *InternetGatewayRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *InternetGatewayRulesClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InternetGatewayRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, _ *InternetGatewayRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *InternetGatewayRulesClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - API to update certain properties of the Internet Gateway Rule resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - internetGatewayRuleName - Name of the Internet Gateway rule.
+//   - body - Internet Gateway Rule properties to update.
+//   - options - InternetGatewayRulesClientBeginUpdateOptions contains the optional parameters for the InternetGatewayRulesClient.BeginUpdate
+//     method.
+func (client *InternetGatewayRulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, options *InternetGatewayRulesClientBeginUpdateOptions) (*runtime.Poller[InternetGatewayRulesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, internetGatewayRuleName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternetGatewayRulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InternetGatewayRulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - API to update certain properties of the Internet Gateway Rule resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InternetGatewayRulesClient) update(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, options *InternetGatewayRulesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "InternetGatewayRulesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, internetGatewayRuleName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *InternetGatewayRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, _ *InternetGatewayRulesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if internetGatewayRuleName == "" {
+		return nil, errors.New("parameter internetGatewayRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{internetGatewayRuleName}", url.PathEscape(internetGatewayRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -388,80 +464,4 @@ func (client *InternetGatewayRulesClient) listBySubscriptionHandleResponse(resp 
 		return InternetGatewayRulesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - API to update certain properties of the Internet Gateway Rule resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - internetGatewayRuleName - Name of the Internet Gateway rule.
-//   - body - Internet Gateway Rule properties to update.
-//   - options - InternetGatewayRulesClientBeginUpdateOptions contains the optional parameters for the InternetGatewayRulesClient.BeginUpdate
-//     method.
-func (client *InternetGatewayRulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, options *InternetGatewayRulesClientBeginUpdateOptions) (*runtime.Poller[InternetGatewayRulesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, internetGatewayRuleName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternetGatewayRulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InternetGatewayRulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - API to update certain properties of the Internet Gateway Rule resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *InternetGatewayRulesClient) update(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, options *InternetGatewayRulesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "InternetGatewayRulesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, internetGatewayRuleName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *InternetGatewayRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, internetGatewayRuleName string, body InternetGatewayRulePatch, _ *InternetGatewayRulesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if internetGatewayRuleName == "" {
-		return nil, errors.New("parameter internetGatewayRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{internetGatewayRuleName}", url.PathEscape(internetGatewayRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

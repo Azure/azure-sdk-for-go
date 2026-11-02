@@ -34,13 +34,13 @@ type RecordSetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateZoneName string, recordType armprivatedns.RecordType, relativeRecordSetName string, options *armprivatedns.RecordSetsClientGetOptions) (resp azfake.Responder[armprivatedns.RecordSetsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RecordSetsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, privateZoneName string, options *armprivatedns.RecordSetsClientListOptions) (resp azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse])
-
 	// NewListByTypePager is the fake for method RecordSetsClient.NewListByTypePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByTypePager func(resourceGroupName string, privateZoneName string, recordType armprivatedns.RecordType, options *armprivatedns.RecordSetsClientListByTypeOptions) (resp azfake.PagerResponder[armprivatedns.RecordSetsClientListByTypeResponse])
+
+	// NewListPager is the fake for method RecordSetsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, privateZoneName string, options *armprivatedns.RecordSetsClientListOptions) (resp azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse])
 
 	// Update is the fake for method RecordSetsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ type RecordSetsServer struct {
 func NewRecordSetsServerTransport(srv *RecordSetsServer) *RecordSetsServerTransport {
 	return &RecordSetsServerTransport{
 		srv:                srv,
-		newListPager:       newTracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse]](),
 		newListByTypePager: newTracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListByTypeResponse]](),
+		newListPager:       newTracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ func NewRecordSetsServerTransport(srv *RecordSetsServer) *RecordSetsServerTransp
 // Don't use this type directly, use NewRecordSetsServerTransport instead.
 type RecordSetsServerTransport struct {
 	srv                *RecordSetsServer
-	newListPager       *tracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse]]
 	newListByTypePager *tracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListByTypeResponse]]
+	newListPager       *tracker[azfake.PagerResponder[armprivatedns.RecordSetsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecordSetsServerTransport.
@@ -93,10 +93,10 @@ func (r *RecordSetsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = r.dispatchDelete(req)
 			case "RecordSetsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "RecordSetsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecordSetsClient.NewListByTypePager":
 				res.resp, res.err = r.dispatchNewListByTypePager(req)
+			case "RecordSetsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecordSetsClient.Update":
 				res.resp, res.err = r.dispatchUpdate(req)
 			default:
@@ -267,66 +267,6 @@ func (r *RecordSetsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (r *RecordSetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/aLL`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		recordsetnamesuffixParam := getOptional(qp.Get("$recordsetnamesuffix"))
-		var options *armprivatedns.RecordSetsClientListOptions
-		if topParam != nil || recordsetnamesuffixParam != nil {
-			options = &armprivatedns.RecordSetsClientListOptions{
-				Top:                 topParam,
-				Recordsetnamesuffix: recordsetnamesuffixParam,
-			}
-		}
-		resp := r.srv.NewListPager(resourceGroupNameParam, privateZoneNameParam, options)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatedns.RecordSetsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RecordSetsServerTransport) dispatchNewListByTypePager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByTypePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByTypePager not implemented")}
@@ -393,6 +333,66 @@ func (r *RecordSetsServerTransport) dispatchNewListByTypePager(req *http.Request
 	}
 	if !server.PagerResponderMore(newListByTypePager) {
 		r.newListByTypePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RecordSetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/aLL`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		recordsetnamesuffixParam := getOptional(qp.Get("$recordsetnamesuffix"))
+		var options *armprivatedns.RecordSetsClientListOptions
+		if topParam != nil || recordsetnamesuffixParam != nil {
+			options = &armprivatedns.RecordSetsClientListOptions{
+				Top:                 topParam,
+				Recordsetnamesuffix: recordsetnamesuffixParam,
+			}
+		}
+		resp := r.srv.NewListPager(resourceGroupNameParam, privateZoneNameParam, options)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatedns.RecordSetsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

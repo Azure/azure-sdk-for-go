@@ -29,10 +29,6 @@ type VirtualEnclaveServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, options *armenclave.VirtualEnclaveClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.VirtualEnclaveClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualEnclaveClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, options *armenclave.VirtualEnclaveClientGetOptions) (resp azfake.Responder[armenclave.VirtualEnclaveClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginHandleApprovalCreation is the fake for method VirtualEnclaveClient.BeginHandleApprovalCreation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalCreation func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, body armenclave.ApprovalCallbackRequest, options *armenclave.VirtualEnclaveClientBeginHandleApprovalCreationOptions) (resp azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalCreationResponse], errResp azfake.ErrorResponder)
@@ -41,6 +37,14 @@ type VirtualEnclaveServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalDeletion func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, body armenclave.ApprovalDeletionCallbackRequest, options *armenclave.VirtualEnclaveClientBeginHandleApprovalDeletionOptions) (resp azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalDeletionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method VirtualEnclaveClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, properties armenclave.VirtualEnclavePatchModel, options *armenclave.VirtualEnclaveClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualEnclaveClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, options *armenclave.VirtualEnclaveClientGetOptions) (resp azfake.Responder[armenclave.VirtualEnclaveClientGetResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method VirtualEnclaveClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armenclave.VirtualEnclaveClientListByResourceGroupOptions) (resp azfake.PagerResponder[armenclave.VirtualEnclaveClientListByResourceGroupResponse])
@@ -48,10 +52,6 @@ type VirtualEnclaveServer struct {
 	// NewListBySubscriptionPager is the fake for method VirtualEnclaveClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armenclave.VirtualEnclaveClientListBySubscriptionOptions) (resp azfake.PagerResponder[armenclave.VirtualEnclaveClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method VirtualEnclaveClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualEnclaveName string, properties armenclave.VirtualEnclavePatchModel, options *armenclave.VirtualEnclaveClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualEnclaveServerTransport creates a new instance of VirtualEnclaveServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewVirtualEnclaveServerTransport(srv *VirtualEnclaveServer) *VirtualEnclave
 		beginDelete:                 newTracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientDeleteResponse]](),
 		beginHandleApprovalCreation: newTracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalCreationResponse]](),
 		beginHandleApprovalDeletion: newTracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalDeletionResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armenclave.VirtualEnclaveClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armenclave.VirtualEnclaveClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type VirtualEnclaveServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientDeleteResponse]]
 	beginHandleApprovalCreation *tracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalCreationResponse]]
 	beginHandleApprovalDeletion *tracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientHandleApprovalDeletionResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armenclave.VirtualEnclaveClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armenclave.VirtualEnclaveClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.VirtualEnclaveClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualEnclaveServerTransport.
@@ -108,18 +108,18 @@ func (v *VirtualEnclaveServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualEnclaveClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualEnclaveClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualEnclaveClient.BeginHandleApprovalCreation":
 				res.resp, res.err = v.dispatchBeginHandleApprovalCreation(req)
 			case "VirtualEnclaveClient.BeginHandleApprovalDeletion":
 				res.resp, res.err = v.dispatchBeginHandleApprovalDeletion(req)
+			case "VirtualEnclaveClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualEnclaveClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualEnclaveClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
 			case "VirtualEnclaveClient.NewListBySubscriptionPager":
 				res.resp, res.err = v.dispatchNewListBySubscriptionPager(req)
-			case "VirtualEnclaveClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,39 +228,6 @@ func (v *VirtualEnclaveServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (v *VirtualEnclaveServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualEnclaveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEnclaveName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualEnclaveNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Resource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualEnclaveServerTransport) dispatchBeginHandleApprovalCreation(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginHandleApprovalCreation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginHandleApprovalCreation not implemented")}
@@ -357,6 +324,87 @@ func (v *VirtualEnclaveServerTransport) dispatchBeginHandleApprovalDeletion(req 
 	return resp, nil
 }
 
+func (v *VirtualEnclaveServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armenclave.VirtualEnclavePatchModel](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualEnclaveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEnclaveName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, virtualEnclaveNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualEnclaveServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualEnclaveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEnclaveName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualEnclaveNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Resource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VirtualEnclaveServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -424,54 +472,6 @@ func (v *VirtualEnclaveServerTransport) dispatchNewListBySubscriptionPager(req *
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		v.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (v *VirtualEnclaveServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := v.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armenclave.VirtualEnclavePatchModel](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualEnclaveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEnclaveName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, virtualEnclaveNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		v.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		v.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

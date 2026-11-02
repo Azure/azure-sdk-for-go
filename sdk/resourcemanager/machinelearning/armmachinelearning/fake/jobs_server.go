@@ -25,13 +25,13 @@ type JobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCancel func(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *armmachinelearning.JobsClientBeginCancelOptions) (resp azfake.PollerResponder[armmachinelearning.JobsClientCancelResponse], errResp azfake.ErrorResponder)
 
-	// CreateOrUpdate is the fake for method JobsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, id string, body armmachinelearning.JobBase, options *armmachinelearning.JobsClientCreateOrUpdateOptions) (resp azfake.Responder[armmachinelearning.JobsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method JobsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *armmachinelearning.JobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.JobsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method JobsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, id string, body armmachinelearning.JobBase, options *armmachinelearning.JobsClientCreateOrUpdateOptions) (resp azfake.Responder[armmachinelearning.JobsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method JobsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -86,10 +86,10 @@ func (j *JobsServerTransport) dispatchToMethodFake(req *http.Request, method str
 			switch method {
 			case "JobsClient.BeginCancel":
 				res.resp, res.err = j.dispatchBeginCancel(req)
-			case "JobsClient.CreateOrUpdate":
-				res.resp, res.err = j.dispatchCreateOrUpdate(req)
 			case "JobsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
+			case "JobsClient.CreateOrUpdate":
+				res.resp, res.err = j.dispatchCreateOrUpdate(req)
 			case "JobsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			case "JobsClient.NewListPager":
@@ -158,47 +158,6 @@ func (j *JobsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (j *JobsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if j.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.JobBase](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, idParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobBase, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (j *JobsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if j.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
@@ -244,6 +203,47 @@ func (j *JobsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 		j.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if j.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.JobBase](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, idParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobBase, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

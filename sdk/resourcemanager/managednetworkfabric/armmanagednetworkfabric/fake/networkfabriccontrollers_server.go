@@ -29,6 +29,10 @@ type NetworkFabricControllersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *armmanagednetworkfabric.NetworkFabricControllersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkFabricControllersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body armmanagednetworkfabric.NetworkFabricControllerPatch, options *armmanagednetworkfabric.NetworkFabricControllersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkFabricControllersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *armmanagednetworkfabric.NetworkFabricControllersClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkFabricControllersClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type NetworkFabricControllersServer struct {
 	// NewListBySubscriptionPager is the fake for method NetworkFabricControllersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkFabricControllersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkFabricControllersClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method NetworkFabricControllersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body armmanagednetworkfabric.NetworkFabricControllerPatch, options *armmanagednetworkfabric.NetworkFabricControllersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkFabricControllersServerTransport creates a new instance of NetworkFabricControllersServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkFabricControllersServerTransport(srv *NetworkFabricControllersSer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkFabricControllersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkFabricControllersClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkFabricControllersServerTransport struct {
 	srv                         *NetworkFabricControllersServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkFabricControllersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkFabricControllersClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkFabricControllersClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkFabricControllersServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkFabricControllersServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkFabricControllersClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkFabricControllersClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkFabricControllersClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkFabricControllersClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkFabricControllersClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NetworkFabricControllersClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (n *NetworkFabricControllersServerTransport) dispatchBeginDelete(req *http.
 	return resp, nil
 }
 
+func (n *NetworkFabricControllersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricControllers/(?P<networkFabricControllerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkFabricControllerPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkFabricControllerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricControllerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkFabricControllerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NetworkFabricControllersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (n *NetworkFabricControllersServerTransport) dispatchNewListBySubscriptionP
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkFabricControllersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricControllers/(?P<networkFabricControllerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkFabricControllerPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkFabricControllerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricControllerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkFabricControllerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

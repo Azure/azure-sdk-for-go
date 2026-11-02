@@ -134,7 +134,7 @@ func (client *ManagedComputeDeploymentsClient) createOrUpdateCreateRequest(ctx c
 //     method.
 func (client *ManagedComputeDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ManagedComputeDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *ManagedComputeDeploymentsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Deletes the specified managed compute deployment associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified managed compute deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedComputeDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedComputeDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedComputeDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

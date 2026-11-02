@@ -24,13 +24,13 @@ type PrivateEndpointConnectionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *armrecoveryservicesbackup.PrivateEndpointConnectionClientBeginDeleteOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.PrivateEndpointConnectionClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method PrivateEndpointConnectionClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *armrecoveryservicesbackup.PrivateEndpointConnectionClientGetOptions) (resp azfake.Responder[armrecoveryservicesbackup.PrivateEndpointConnectionClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginPut is the fake for method PrivateEndpointConnectionClient.BeginPut
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginPut func(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters armrecoveryservicesbackup.PrivateEndpointConnectionResource, options *armrecoveryservicesbackup.PrivateEndpointConnectionClientBeginPutOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.PrivateEndpointConnectionClientPutResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method PrivateEndpointConnectionClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *armrecoveryservicesbackup.PrivateEndpointConnectionClientGetOptions) (resp azfake.Responder[armrecoveryservicesbackup.PrivateEndpointConnectionClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateEndpointConnectionServerTransport creates a new instance of PrivateEndpointConnectionServerTransport with the provided implementation.
@@ -75,10 +75,10 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchToMethodFake(req *htt
 			switch method {
 			case "PrivateEndpointConnectionClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PrivateEndpointConnectionClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateEndpointConnectionClient.BeginPut":
 				res.resp, res.err = p.dispatchBeginPut(req)
+			case "PrivateEndpointConnectionClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -143,43 +143,6 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
-func (p *PrivateEndpointConnectionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), vaultNameParam, resourceGroupNameParam, privateEndpointConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *PrivateEndpointConnectionServerTransport) dispatchBeginPut(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginPut == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPut not implemented")}
@@ -229,6 +192,43 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchBeginPut(req *http.Re
 		p.beginPut.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PrivateEndpointConnectionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), vaultNameParam, resourceGroupNameParam, privateEndpointConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionResource, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

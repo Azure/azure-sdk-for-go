@@ -69,7 +69,7 @@ func (client *LicensesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a License
+// createOrUpdate - Create a License
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, resource License, options *LicensesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, resource License, _ *LicensesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/licenses/{licenseName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *LicensesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a License
+// deleteOperation - Delete a License
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, options *LicensesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, _ *LicensesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/licenses/{licenseName}"
 	if client.subscriptionID == "" {

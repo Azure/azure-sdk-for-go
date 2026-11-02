@@ -20,6 +20,10 @@ import (
 
 // ProtectionContainersServer is a fake server for instances of the armrecoveryservicesbackup.ProtectionContainersClient type.
 type ProtectionContainersServer struct {
+	// BeginRegister is the fake for method ProtectionContainersClient.BeginRegister
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRegister func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters armrecoveryservicesbackup.ProtectionContainerResource, options *armrecoveryservicesbackup.ProtectionContainersClientBeginRegisterOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProtectionContainersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *armrecoveryservicesbackup.ProtectionContainersClientGetOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionContainersClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,10 +35,6 @@ type ProtectionContainersServer struct {
 	// Refresh is the fake for method ProtectionContainersClient.Refresh
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Refresh func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionContainersClientRefreshResponse], errResp azfake.ErrorResponder)
-
-	// BeginRegister is the fake for method ProtectionContainersClient.BeginRegister
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRegister func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters armrecoveryservicesbackup.ProtectionContainerResource, options *armrecoveryservicesbackup.ProtectionContainersClientBeginRegisterOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse], errResp azfake.ErrorResponder)
 
 	// Unregister is the fake for method ProtectionContainersClient.Unregister
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -79,14 +79,14 @@ func (p *ProtectionContainersServerTransport) dispatchToMethodFake(req *http.Req
 		}
 		if !intercepted {
 			switch method {
+			case "ProtectionContainersClient.BeginRegister":
+				res.resp, res.err = p.dispatchBeginRegister(req)
 			case "ProtectionContainersClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProtectionContainersClient.Inquire":
 				res.resp, res.err = p.dispatchInquire(req)
 			case "ProtectionContainersClient.Refresh":
 				res.resp, res.err = p.dispatchRefresh(req)
-			case "ProtectionContainersClient.BeginRegister":
-				res.resp, res.err = p.dispatchBeginRegister(req)
 			case "ProtectionContainersClient.Unregister":
 				res.resp, res.err = p.dispatchUnregister(req)
 			default:
@@ -103,6 +103,62 @@ func (p *ProtectionContainersServerTransport) dispatchToMethodFake(req *http.Req
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *ProtectionContainersServerTransport) dispatchBeginRegister(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginRegister == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRegister not implemented")}
+	}
+	beginRegister := p.beginRegister.get(req)
+	if beginRegister == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionContainerResource](req)
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+		if err != nil {
+			return nil, err
+		}
+		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginRegister(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRegister = &respr
+		p.beginRegister.add(req, beginRegister)
+	}
+
+	resp, err := server.PollerResponderNext(beginRegister, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginRegister.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRegister) {
+		p.beginRegister.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (p *ProtectionContainersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -237,62 +293,6 @@ func (p *ProtectionContainersServerTransport) dispatchRefresh(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (p *ProtectionContainersServerTransport) dispatchBeginRegister(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginRegister == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRegister not implemented")}
-	}
-	beginRegister := p.beginRegister.get(req)
-	if beginRegister == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionContainerResource](req)
-		if err != nil {
-			return nil, err
-		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginRegister(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRegister = &respr
-		p.beginRegister.add(req, beginRegister)
-	}
-
-	resp, err := server.PollerResponderNext(beginRegister, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginRegister.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRegister) {
-		p.beginRegister.remove(req)
-	}
-
 	return resp, nil
 }
 

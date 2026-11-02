@@ -291,6 +291,84 @@ func (client *LabsClient) getHandleResponse(resp *http.Response, successCodes ..
 	return result, nil
 }
 
+// NewListAllPager - Get a list of labs associated with the provided billing account name and billing profile name.
+//   - billingAccountName - The name of the billing account.
+//   - billingProfileName - The name of the billing profile.
+//   - options - LabsClientListAllOptions contains the optional parameters for the LabsClient.NewListAllPager method.
+func (client *LabsClient) NewListAllPager(billingAccountName string, billingProfileName string, options *LabsClientListAllOptions) *runtime.Pager[LabsClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LabsClientListAllResponse]{
+		More: func(page LabsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *LabsClientListAllResponse) (LabsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LabsClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
+			if err != nil {
+				return LabsClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LabsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *LabsClient) listAllCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, options *LabsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/labs"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211201Preview)
+		if options != nil && options.IncludeBudget != nil {
+			reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
+		}
+		if options != nil && options.IncludeDeleted != nil {
+			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *LabsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (LabsClientListAllResponse, error) {
+	result := LabsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LabListResult); err != nil {
+		return LabsClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Get the details for a specific lab associated with the provided billing account name, billing profile name,
 // and invoice section name.
 //   - billingAccountName - The name of the billing account.
@@ -368,84 +446,6 @@ func (client *LabsClient) listHandleResponse(resp *http.Response, successCodes .
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabListResult); err != nil {
 		return LabsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Get a list of labs associated with the provided billing account name and billing profile name.
-//   - billingAccountName - The name of the billing account.
-//   - billingProfileName - The name of the billing profile.
-//   - options - LabsClientListAllOptions contains the optional parameters for the LabsClient.NewListAllPager method.
-func (client *LabsClient) NewListAllPager(billingAccountName string, billingProfileName string, options *LabsClientListAllOptions) *runtime.Pager[LabsClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LabsClientListAllResponse]{
-		More: func(page LabsClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *LabsClientListAllResponse) (LabsClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LabsClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
-			if err != nil {
-				return LabsClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LabsClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *LabsClient) listAllCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, options *LabsClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/labs"
-		if billingAccountName == "" {
-			return nil, errors.New("parameter billingAccountName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-		if billingProfileName == "" {
-			return nil, errors.New("parameter billingProfileName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20211201Preview)
-		if options != nil && options.IncludeBudget != nil {
-			reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
-		}
-		if options != nil && options.IncludeDeleted != nil {
-			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *LabsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (LabsClientListAllResponse, error) {
-	result := LabsClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LabListResult); err != nil {
-		return LabsClientListAllResponse{}, err
 	}
 	return result, nil
 }

@@ -134,7 +134,7 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 //     method.
 func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*runtime.Poller[EdgeActionVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, version, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Delete a EdgeActionVersion
+// deleteOperation - Delete a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) delete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

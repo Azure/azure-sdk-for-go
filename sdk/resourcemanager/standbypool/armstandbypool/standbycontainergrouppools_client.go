@@ -69,7 +69,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Create a StandbyContainerGroupPoolResource
+// createOrUpdate - Create a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyContainerGroupPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource StandbyContainerGroupPoolResource, options *StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *StandbyContainerGroupPoolsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StandbyContainerGroupPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource StandbyContainerGroupPoolResource, _ *StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a StandbyContainerGroupPoolResource
+// deleteOperation - Delete a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyContainerGroupPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, options *StandbyContainerGroupPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *StandbyContainerGroupPoolsClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StandbyContainerGroupPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, _ *StandbyContainerGroupPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}"
 	if client.subscriptionID == "" {

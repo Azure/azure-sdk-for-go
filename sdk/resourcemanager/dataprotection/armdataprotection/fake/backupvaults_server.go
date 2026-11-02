@@ -21,10 +21,6 @@ import (
 
 // BackupVaultsServer is a fake server for instances of the armdataprotection.BackupVaultsClient type.
 type BackupVaultsServer struct {
-	// CheckNameAvailability is the fake for method BackupVaultsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, location string, parameters armdataprotection.CheckNameAvailabilityRequest, options *armdataprotection.BackupVaultsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdataprotection.BackupVaultsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method BackupVaultsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vaultName string, parameters armdataprotection.BackupVaultResource, options *armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdataprotection.BackupVaultsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type BackupVaultsServer struct {
 	// BeginDelete is the fake for method BackupVaultsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, vaultName string, options *armdataprotection.BackupVaultsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdataprotection.BackupVaultsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method BackupVaultsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, vaultName string, parameters armdataprotection.PatchResourceRequestInput, options *armdataprotection.BackupVaultsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method BackupVaultsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, location string, parameters armdataprotection.CheckNameAvailabilityRequest, options *armdataprotection.BackupVaultsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdataprotection.BackupVaultsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method BackupVaultsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type BackupVaultsServer struct {
 	// NewGetInSubscriptionPager is the fake for method BackupVaultsClient.NewGetInSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetInSubscriptionPager func(options *armdataprotection.BackupVaultsClientGetInSubscriptionOptions) (resp azfake.PagerResponder[armdataprotection.BackupVaultsClientGetInSubscriptionResponse])
-
-	// BeginUpdate is the fake for method BackupVaultsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vaultName string, parameters armdataprotection.PatchResourceRequestInput, options *armdataprotection.BackupVaultsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBackupVaultsServerTransport creates a new instance of BackupVaultsServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewBackupVaultsServerTransport(srv *BackupVaultsServer) *BackupVaultsServer
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientDeleteResponse]](),
+		beginUpdate:                newTracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse]](),
 		newGetInResourceGroupPager: newTracker[azfake.PagerResponder[armdataprotection.BackupVaultsClientGetInResourceGroupResponse]](),
 		newGetInSubscriptionPager:  newTracker[azfake.PagerResponder[armdataprotection.BackupVaultsClientGetInSubscriptionResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type BackupVaultsServerTransport struct {
 	srv                        *BackupVaultsServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientDeleteResponse]]
+	beginUpdate                *tracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse]]
 	newGetInResourceGroupPager *tracker[azfake.PagerResponder[armdataprotection.BackupVaultsClientGetInResourceGroupResponse]]
 	newGetInSubscriptionPager  *tracker[azfake.PagerResponder[armdataprotection.BackupVaultsClientGetInSubscriptionResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armdataprotection.BackupVaultsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupVaultsServerTransport.
@@ -96,20 +96,20 @@ func (b *BackupVaultsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
-			case "BackupVaultsClient.CheckNameAvailability":
-				res.resp, res.err = b.dispatchCheckNameAvailability(req)
 			case "BackupVaultsClient.BeginCreateOrUpdate":
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BackupVaultsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BackupVaultsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
+			case "BackupVaultsClient.CheckNameAvailability":
+				res.resp, res.err = b.dispatchCheckNameAvailability(req)
 			case "BackupVaultsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BackupVaultsClient.NewGetInResourceGroupPager":
 				res.resp, res.err = b.dispatchNewGetInResourceGroupPager(req)
 			case "BackupVaultsClient.NewGetInSubscriptionPager":
 				res.resp, res.err = b.dispatchNewGetInSubscriptionPager(req)
-			case "BackupVaultsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,43 +124,6 @@ func (b *BackupVaultsServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (b *BackupVaultsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if b.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdataprotection.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (b *BackupVaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -264,6 +227,98 @@ func (b *BackupVaultsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (b *BackupVaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := b.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdataprotection.PatchResourceRequestInput](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupVaultsClientBeginUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupVaultsClientBeginUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		b.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		b.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (b *BackupVaultsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if b.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdataprotection.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (b *BackupVaultsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -364,61 +419,6 @@ func (b *BackupVaultsServerTransport) dispatchNewGetInSubscriptionPager(req *htt
 	if !server.PagerResponderMore(newGetInSubscriptionPager) {
 		b.newGetInSubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (b *BackupVaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := b.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdataprotection.PatchResourceRequestInput](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
-		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
-		var options *armdataprotection.BackupVaultsClientBeginUpdateOptions
-		if xMSAuthorizationAuxiliaryParam != nil {
-			options = &armdataprotection.BackupVaultsClientBeginUpdateOptions{
-				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
-			}
-		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		b.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		b.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		b.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

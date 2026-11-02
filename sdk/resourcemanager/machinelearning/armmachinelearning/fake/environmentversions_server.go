@@ -22,6 +22,10 @@ import (
 
 // EnvironmentVersionsServer is a fake server for instances of the armmachinelearning.EnvironmentVersionsClient type.
 type EnvironmentVersionsServer struct {
+	// BeginPublish is the fake for method EnvironmentVersionsClient.BeginPublish
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPublish func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DestinationAsset, options *armmachinelearning.EnvironmentVersionsClientBeginPublishOptions) (resp azfake.PollerResponder[armmachinelearning.EnvironmentVersionsClientPublishResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method EnvironmentVersionsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.EnvironmentVersion, options *armmachinelearning.EnvironmentVersionsClientCreateOrUpdateOptions) (resp azfake.Responder[armmachinelearning.EnvironmentVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type EnvironmentVersionsServer struct {
 	// NewListPager is the fake for method EnvironmentVersionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, name string, options *armmachinelearning.EnvironmentVersionsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.EnvironmentVersionsClientListResponse])
-
-	// BeginPublish is the fake for method EnvironmentVersionsClient.BeginPublish
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPublish func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DestinationAsset, options *armmachinelearning.EnvironmentVersionsClientBeginPublishOptions) (resp azfake.PollerResponder[armmachinelearning.EnvironmentVersionsClientPublishResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEnvironmentVersionsServerTransport creates a new instance of EnvironmentVersionsServerTransport with the provided implementation.
@@ -49,8 +49,8 @@ type EnvironmentVersionsServer struct {
 func NewEnvironmentVersionsServerTransport(srv *EnvironmentVersionsServer) *EnvironmentVersionsServerTransport {
 	return &EnvironmentVersionsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.EnvironmentVersionsClientListResponse]](),
 		beginPublish: newTracker[azfake.PollerResponder[armmachinelearning.EnvironmentVersionsClientPublishResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.EnvironmentVersionsClientListResponse]](),
 	}
 }
 
@@ -58,8 +58,8 @@ func NewEnvironmentVersionsServerTransport(srv *EnvironmentVersionsServer) *Envi
 // Don't use this type directly, use NewEnvironmentVersionsServerTransport instead.
 type EnvironmentVersionsServerTransport struct {
 	srv          *EnvironmentVersionsServer
-	newListPager *tracker[azfake.PagerResponder[armmachinelearning.EnvironmentVersionsClientListResponse]]
 	beginPublish *tracker[azfake.PollerResponder[armmachinelearning.EnvironmentVersionsClientPublishResponse]]
+	newListPager *tracker[azfake.PagerResponder[armmachinelearning.EnvironmentVersionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnvironmentVersionsServerTransport.
@@ -83,6 +83,8 @@ func (e *EnvironmentVersionsServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
+			case "EnvironmentVersionsClient.BeginPublish":
+				res.resp, res.err = e.dispatchBeginPublish(req)
 			case "EnvironmentVersionsClient.CreateOrUpdate":
 				res.resp, res.err = e.dispatchCreateOrUpdate(req)
 			case "EnvironmentVersionsClient.Delete":
@@ -91,8 +93,6 @@ func (e *EnvironmentVersionsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = e.dispatchGet(req)
 			case "EnvironmentVersionsClient.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
-			case "EnvironmentVersionsClient.BeginPublish":
-				res.resp, res.err = e.dispatchBeginPublish(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -107,6 +107,62 @@ func (e *EnvironmentVersionsServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (e *EnvironmentVersionsServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginPublish == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
+	}
+	beginPublish := e.beginPublish.get(req)
+	if beginPublish == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DestinationAsset](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginPublish(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPublish = &respr
+		e.beginPublish.add(req, beginPublish)
+	}
+
+	resp, err := server.PollerResponderNext(beginPublish, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginPublish.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPublish) {
+		e.beginPublish.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (e *EnvironmentVersionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -301,62 +357,6 @@ func (e *EnvironmentVersionsServerTransport) dispatchNewListPager(req *http.Requ
 	if !server.PagerResponderMore(newListPager) {
 		e.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *EnvironmentVersionsServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginPublish == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
-	}
-	beginPublish := e.beginPublish.get(req)
-	if beginPublish == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DestinationAsset](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginPublish(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPublish = &respr
-		e.beginPublish.add(req, beginPublish)
-	}
-
-	resp, err := server.PollerResponderNext(beginPublish, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		e.beginPublish.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPublish) {
-		e.beginPublish.remove(req)
-	}
-
 	return resp, nil
 }
 

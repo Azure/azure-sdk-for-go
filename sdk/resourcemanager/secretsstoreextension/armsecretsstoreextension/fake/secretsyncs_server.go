@@ -29,6 +29,10 @@ type SecretSyncsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, secretSyncName string, options *armsecretsstoreextension.SecretSyncsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SecretSyncsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, secretSyncName string, properties armsecretsstoreextension.SecretSyncUpdate, options *armsecretsstoreextension.SecretSyncsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SecretSyncsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, secretSyncName string, options *armsecretsstoreextension.SecretSyncsClientGetOptions) (resp azfake.Responder[armsecretsstoreextension.SecretSyncsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type SecretSyncsServer struct {
 	// NewListBySubscriptionPager is the fake for method SecretSyncsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armsecretsstoreextension.SecretSyncsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armsecretsstoreextension.SecretSyncsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method SecretSyncsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, secretSyncName string, properties armsecretsstoreextension.SecretSyncUpdate, options *armsecretsstoreextension.SecretSyncsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSecretSyncsServerTransport creates a new instance of SecretSyncsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewSecretSyncsServerTransport(srv *SecretSyncsServer) *SecretSyncsServerTra
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsecretsstoreextension.SecretSyncsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armsecretsstoreextension.SecretSyncsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type SecretSyncsServerTransport struct {
 	srv                         *SecretSyncsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsecretsstoreextension.SecretSyncsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armsecretsstoreextension.SecretSyncsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armsecretsstoreextension.SecretSyncsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecretSyncsServerTransport.
@@ -96,14 +96,14 @@ func (s *SecretSyncsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SecretSyncsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SecretSyncsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SecretSyncsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SecretSyncsClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "SecretSyncsClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "SecretSyncsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (s *SecretSyncsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (s *SecretSyncsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecretSyncController/secretSyncs/(?P<secretSyncName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsecretsstoreextension.SecretSyncUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		secretSyncNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("secretSyncName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, secretSyncNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SecretSyncsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (s *SecretSyncsServerTransport) dispatchNewListBySubscriptionPager(req *htt
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SecretSyncsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecretSyncController/secretSyncs/(?P<secretSyncName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsecretsstoreextension.SecretSyncUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		secretSyncNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("secretSyncName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, secretSyncNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

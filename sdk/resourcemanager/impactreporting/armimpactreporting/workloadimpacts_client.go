@@ -67,7 +67,7 @@ func (client *WorkloadImpactsClient) BeginCreate(ctx context.Context, workloadIm
 	}
 }
 
-// Create - Create a WorkloadImpact
+// create - Create a WorkloadImpact
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactName string, resource WorkloadImpact, options *WorkloadImpactsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactN
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *WorkloadImpactsClient) createCreateRequest(ctx context.Context, workloadImpactName string, resource WorkloadImpact, _ *WorkloadImpactsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}"
 	if client.subscriptionID == "" {

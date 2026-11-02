@@ -69,7 +69,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCancel(ctx context.Context, re
 	}
 }
 
-// Cancel - Stop in-progress database migration to SQL VM.
+// cancel - Stop in-progress database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLVMClient) cancel(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DatabaseMigrationsSQLVMClient) cancel(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *DatabaseMigrationsSQLVMClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLVMClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cancel"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create a new database migration to a given SQL VM.
+// createOrUpdate - Create a new database migration to a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLVMClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters DatabaseMigrationSQLVM, options *DatabaseMigrationsSQLVMClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *DatabaseMigrationsSQLVMClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DatabaseMigrationsSQLVMClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters DatabaseMigrationSQLVM, _ *DatabaseMigrationsSQLVMClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
@@ -229,7 +229,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCutover(ctx context.Context, r
 	}
 }
 
-// Cutover - Initiate cutover for in-progress online database migration to SQL VM.
+// cutover - Initiate cutover for in-progress online database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLVMClient) cutover(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCutoverOptions) (*http.Response, error) {
 	var err error
@@ -251,7 +251,7 @@ func (client *DatabaseMigrationsSQLVMClient) cutover(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// cutoverCreateRequest creates the Cutover request.
+// cutoverCreateRequest creates the cutover request.
 func (client *DatabaseMigrationsSQLVMClient) cutoverCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLVMClientBeginCutoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cutover"
 	if client.subscriptionID == "" {
@@ -308,7 +308,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete Database Migration resource.
+// deleteOperation - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLVMClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -330,7 +330,7 @@ func (client *DatabaseMigrationsSQLVMClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatabaseMigrationsSQLVMClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {

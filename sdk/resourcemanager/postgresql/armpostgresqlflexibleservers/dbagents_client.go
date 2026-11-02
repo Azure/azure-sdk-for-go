@@ -69,7 +69,7 @@ func (client *DbAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Enables or disables the database agent for a flexible server.
+// createOrUpdate - Enables or disables the database agent for a flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DbAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, resource DbAgentForUpdate, options *DbAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DbAgentsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DbAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, resource DbAgentForUpdate, _ *DbAgentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/dbAgents/Default"
 	if client.subscriptionID == "" {

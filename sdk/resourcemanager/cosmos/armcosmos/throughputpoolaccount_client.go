@@ -30,6 +30,9 @@ type ThroughputPoolAccountClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThroughputPoolAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThroughputPoolAccountClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *ThroughputPoolAccountClient) BeginCreate(ctx context.Context, reso
 	}
 }
 
-// Create - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
+// create - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ThroughputPoolAccountClient) create(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, options *ThroughputPoolAccountClientBeginCreateOptions) (*http.Response, error) {
@@ -90,11 +93,11 @@ func (client *ThroughputPoolAccountClient) create(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ThroughputPoolAccountClient) createCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, _ *ThroughputPoolAccountClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}/throughputPoolAccounts/{throughputPoolAccountName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -148,7 +151,7 @@ func (client *ThroughputPoolAccountClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Removes an existing Azure Cosmos DB database account from a throughput pool.
+// deleteOperation - Removes an existing Azure Cosmos DB database account from a throughput pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ThroughputPoolAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *ThroughputPoolAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,11 +173,11 @@ func (client *ThroughputPoolAccountClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ThroughputPoolAccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, _ *ThroughputPoolAccountClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}/throughputPoolAccounts/{throughputPoolAccountName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -227,7 +230,7 @@ func (client *ThroughputPoolAccountClient) Get(ctx context.Context, resourceGrou
 func (client *ThroughputPoolAccountClient) getCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, _ *ThroughputPoolAccountClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}/throughputPoolAccounts/{throughputPoolAccountName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

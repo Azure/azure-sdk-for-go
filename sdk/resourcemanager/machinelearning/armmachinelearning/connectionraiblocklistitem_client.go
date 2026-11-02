@@ -72,7 +72,7 @@ func (client *ConnectionRaiBlocklistItemClient) BeginAddBulk(ctx context.Context
 	}
 }
 
-// AddBulk - Add multiple blocklist items to the specified blocklist associated with the Azure OpenAI connection.
+// addBulk - Add multiple blocklist items to the specified blocklist associated with the Azure OpenAI connection.
 //
 // Add multiple blocklist items to the specified blocklist associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *ConnectionRaiBlocklistItemClient) addBulk(ctx context.Context, res
 	return httpResp, nil
 }
 
-// addBulkCreateRequest creates the AddBulk request.
+// addBulkCreateRequest creates the addBulk request.
 func (client *ConnectionRaiBlocklistItemClient) addBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*RaiBlocklistItemBulkRequest, _ *ConnectionRaiBlocklistItemClientBeginAddBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/addRaiBlocklistItems"
 	if client.subscriptionID == "" {
@@ -162,7 +162,7 @@ func (client *ConnectionRaiBlocklistItemClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Update the state of specified blocklist item associated with the Azure OpenAI connection.
+// create - Update the state of specified blocklist item associated with the Azure OpenAI connection.
 //
 // Update the state of specified blocklist item associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -186,7 +186,7 @@ func (client *ConnectionRaiBlocklistItemClient) create(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ConnectionRaiBlocklistItemClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, body RaiBlocklistItemPropertiesBasicResource, options *ConnectionRaiBlocklistItemClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
@@ -259,7 +259,7 @@ func (client *ConnectionRaiBlocklistItemClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes the specified custom blocklist item associated with the Azure OpenAI connection.
+// deleteOperation - Deletes the specified custom blocklist item associated with the Azure OpenAI connection.
 //
 // Deletes the specified custom blocklist item associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -283,7 +283,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectionRaiBlocklistItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, options *ConnectionRaiBlocklistItemClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
@@ -351,7 +351,7 @@ func (client *ConnectionRaiBlocklistItemClient) BeginDeleteBulk(ctx context.Cont
 	}
 }
 
-// DeleteBulk - Delete multiple blocklist items from the specified blocklist associated with the Azure OpenAI connection.
+// deleteBulk - Delete multiple blocklist items from the specified blocklist associated with the Azure OpenAI connection.
 //
 // Delete multiple blocklist items from the specified blocklist associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -375,7 +375,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulk(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteBulkCreateRequest creates the DeleteBulk request.
+// deleteBulkCreateRequest creates the deleteBulk request.
 func (client *ConnectionRaiBlocklistItemClient) deleteBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*string, _ *ConnectionRaiBlocklistItemClientBeginDeleteBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems"
 	if client.subscriptionID == "" {

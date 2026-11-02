@@ -63,7 +63,7 @@ func (client *RecoveryPlanActionsClient) BeginCheckReadiness(ctx context.Context
 	}
 }
 
-// CheckReadiness - This action performs the necessary readiness check on the recovery orchestration plan to ensure it is
+// checkReadiness - This action performs the necessary readiness check on the recovery orchestration plan to ensure it is
 // in the desired state and eligible for all recovery actions, including all protected resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) checkReadiness(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginCheckReadinessOptions) (*http.Response, error) {
@@ -86,7 +86,7 @@ func (client *RecoveryPlanActionsClient) checkReadiness(ctx context.Context, ser
 	return httpResp, nil
 }
 
-// checkReadinessCreateRequest creates the CheckReadiness request.
+// checkReadinessCreateRequest creates the checkReadiness request.
 func (client *RecoveryPlanActionsClient) checkReadinessCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, _ *RecoveryPlanActionsClientBeginCheckReadinessOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/checkReadiness"
 	if serviceGroupName == "" {
@@ -134,7 +134,7 @@ func (client *RecoveryPlanActionsClient) BeginFailover(ctx context.Context, serv
 	}
 }
 
-// Failover - This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
+// failover - This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) failover(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, options *RecoveryPlanActionsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -156,7 +156,7 @@ func (client *RecoveryPlanActionsClient) failover(ctx context.Context, serviceGr
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *RecoveryPlanActionsClient) failoverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, _ *RecoveryPlanActionsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/failover"
 	if serviceGroupName == "" {
@@ -208,7 +208,7 @@ func (client *RecoveryPlanActionsClient) BeginFailoverCommit(ctx context.Context
 	}
 }
 
-// FailoverCommit - This action triggers the failover commit operation on the recovery orchestration plan for the qualified
+// failoverCommit - This action triggers the failover commit operation on the recovery orchestration plan for the qualified
 // resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) failoverCommit(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginFailoverCommitOptions) (*http.Response, error) {
@@ -231,7 +231,7 @@ func (client *RecoveryPlanActionsClient) failoverCommit(ctx context.Context, ser
 	return httpResp, nil
 }
 
-// failoverCommitCreateRequest creates the FailoverCommit request.
+// failoverCommitCreateRequest creates the failoverCommit request.
 func (client *RecoveryPlanActionsClient) failoverCommitCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, _ *RecoveryPlanActionsClientBeginFailoverCommitOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/failoverCommit"
 	if serviceGroupName == "" {
@@ -278,7 +278,7 @@ func (client *RecoveryPlanActionsClient) BeginFinalize(ctx context.Context, serv
 	}
 }
 
-// Finalize - This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
+// finalize - This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) finalize(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginFinalizeOptions) (*http.Response, error) {
 	var err error
@@ -300,7 +300,7 @@ func (client *RecoveryPlanActionsClient) finalize(ctx context.Context, serviceGr
 	return httpResp, nil
 }
 
-// finalizeCreateRequest creates the Finalize request.
+// finalizeCreateRequest creates the finalize request.
 func (client *RecoveryPlanActionsClient) finalizeCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, _ *RecoveryPlanActionsClientBeginFinalizeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/finalize"
 	if serviceGroupName == "" {
@@ -346,7 +346,7 @@ func (client *RecoveryPlanActionsClient) BeginReprotect(ctx context.Context, ser
 	}
 }
 
-// Reprotect - This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
+// reprotect - This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) reprotect(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginReprotectOptions) (*http.Response, error) {
 	var err error
@@ -368,7 +368,7 @@ func (client *RecoveryPlanActionsClient) reprotect(ctx context.Context, serviceG
 	return httpResp, nil
 }
 
-// reprotectCreateRequest creates the Reprotect request.
+// reprotectCreateRequest creates the reprotect request.
 func (client *RecoveryPlanActionsClient) reprotectCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginReprotectOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/reprotect"
 	if serviceGroupName == "" {
@@ -424,7 +424,7 @@ func (client *RecoveryPlanActionsClient) BeginTestFailover(ctx context.Context, 
 	}
 }
 
-// TestFailover - This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
+// testFailover - This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) testFailover(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, options *RecoveryPlanActionsClientBeginTestFailoverOptions) (*http.Response, error) {
 	var err error
@@ -446,7 +446,7 @@ func (client *RecoveryPlanActionsClient) testFailover(ctx context.Context, servi
 	return httpResp, nil
 }
 
-// testFailoverCreateRequest creates the TestFailover request.
+// testFailoverCreateRequest creates the testFailover request.
 func (client *RecoveryPlanActionsClient) testFailoverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, _ *RecoveryPlanActionsClientBeginTestFailoverOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/testFailover"
 	if serviceGroupName == "" {
@@ -499,7 +499,7 @@ func (client *RecoveryPlanActionsClient) BeginTestFailoverCleanup(ctx context.Co
 	}
 }
 
-// TestFailoverCleanup - This action triggers the test failover cleanup operation on the recovery orchestration plan for the
+// testFailoverCleanup - This action triggers the test failover cleanup operation on the recovery orchestration plan for the
 // qualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) testFailoverCleanup(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body TestFailoverCleanupRequest, options *RecoveryPlanActionsClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
@@ -522,7 +522,7 @@ func (client *RecoveryPlanActionsClient) testFailoverCleanup(ctx context.Context
 	return httpResp, nil
 }
 
-// testFailoverCleanupCreateRequest creates the TestFailoverCleanup request.
+// testFailoverCleanupCreateRequest creates the testFailoverCleanup request.
 func (client *RecoveryPlanActionsClient) testFailoverCleanupCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body TestFailoverCleanupRequest, _ *RecoveryPlanActionsClientBeginTestFailoverCleanupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/testFailoverCleanup"
 	if serviceGroupName == "" {
@@ -574,7 +574,7 @@ func (client *RecoveryPlanActionsClient) BeginUpdateResources(ctx context.Contex
 	}
 }
 
-// UpdateResources - This action adds or updates the resources to be included in the recovery orchestration plan.
+// updateResources - This action adds or updates the resources to be included in the recovery orchestration plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) updateResources(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body UpdateRecoveryResourcesRequest, options *RecoveryPlanActionsClientBeginUpdateResourcesOptions) (*http.Response, error) {
 	var err error
@@ -596,7 +596,7 @@ func (client *RecoveryPlanActionsClient) updateResources(ctx context.Context, se
 	return httpResp, nil
 }
 
-// updateResourcesCreateRequest creates the UpdateResources request.
+// updateResourcesCreateRequest creates the updateResources request.
 func (client *RecoveryPlanActionsClient) updateResourcesCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body UpdateRecoveryResourcesRequest, _ *RecoveryPlanActionsClientBeginUpdateResourcesOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/updateResources"
 	if serviceGroupName == "" {
@@ -649,7 +649,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForFailover(ctx context.Co
 	}
 }
 
-// ValidateForFailover - This action checks if the recovery orchestration plan is eligible for failover operation, ensuring
+// validateForFailover - This action checks if the recovery orchestration plan is eligible for failover operation, ensuring
 // it meets the necessary criteria and provides a list of qualified and unqualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForFailover(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, options *RecoveryPlanActionsClientBeginValidateForFailoverOptions) (*http.Response, error) {
@@ -672,7 +672,7 @@ func (client *RecoveryPlanActionsClient) validateForFailover(ctx context.Context
 	return httpResp, nil
 }
 
-// validateForFailoverCreateRequest creates the ValidateForFailover request.
+// validateForFailoverCreateRequest creates the validateForFailover request.
 func (client *RecoveryPlanActionsClient) validateForFailoverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, _ *RecoveryPlanActionsClientBeginValidateForFailoverOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForFailover"
 	if serviceGroupName == "" {
@@ -724,7 +724,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForFailoverCommit(ctx cont
 	}
 }
 
-// ValidateForFailoverCommit - This action checks if the recovery orchestration plan is eligible for failover commit operation,
+// validateForFailoverCommit - This action checks if the recovery orchestration plan is eligible for failover commit operation,
 // ensuring it meets the necessary criteria and provides a list of qualified and unqualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForFailoverCommit(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginValidateForFailoverCommitOptions) (*http.Response, error) {
@@ -747,7 +747,7 @@ func (client *RecoveryPlanActionsClient) validateForFailoverCommit(ctx context.C
 	return httpResp, nil
 }
 
-// validateForFailoverCommitCreateRequest creates the ValidateForFailoverCommit request.
+// validateForFailoverCommitCreateRequest creates the validateForFailoverCommit request.
 func (client *RecoveryPlanActionsClient) validateForFailoverCommitCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, _ *RecoveryPlanActionsClientBeginValidateForFailoverCommitOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForFailoverCommit"
 	if serviceGroupName == "" {
@@ -796,7 +796,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForOperation(ctx context.C
 	}
 }
 
-// ValidateForOperation - This action checks if the recovery orchestration plan is eligible for operations like failover and
+// validateForOperation - This action checks if the recovery orchestration plan is eligible for operations like failover and
 // reprotect, ensuring it meets the necessary criteria.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForOperation(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body ValidateForOperationRequest, options *RecoveryPlanActionsClientBeginValidateForOperationOptions) (*http.Response, error) {
@@ -819,7 +819,7 @@ func (client *RecoveryPlanActionsClient) validateForOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// validateForOperationCreateRequest creates the ValidateForOperation request.
+// validateForOperationCreateRequest creates the validateForOperation request.
 func (client *RecoveryPlanActionsClient) validateForOperationCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body ValidateForOperationRequest, _ *RecoveryPlanActionsClientBeginValidateForOperationOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForOperation"
 	if serviceGroupName == "" {
@@ -870,7 +870,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForReprotect(ctx context.C
 	}
 }
 
-// ValidateForReprotect - This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring
+// validateForReprotect - This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring
 // it meets the necessary criteria and provides a list of qualified and unqualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForReprotect(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginValidateForReprotectOptions) (*http.Response, error) {
@@ -893,7 +893,7 @@ func (client *RecoveryPlanActionsClient) validateForReprotect(ctx context.Contex
 	return httpResp, nil
 }
 
-// validateForReprotectCreateRequest creates the ValidateForReprotect request.
+// validateForReprotectCreateRequest creates the validateForReprotect request.
 func (client *RecoveryPlanActionsClient) validateForReprotectCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginValidateForReprotectOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForReprotect"
 	if serviceGroupName == "" {
@@ -949,7 +949,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForTestFailover(ctx contex
 	}
 }
 
-// ValidateForTestFailover - This action checks if the recovery orchestration plan is eligible for test failover operation,
+// validateForTestFailover - This action checks if the recovery orchestration plan is eligible for test failover operation,
 // ensuring it meets the necessary criteria and provides a list of qualified and unqualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForTestFailover(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, options *RecoveryPlanActionsClientBeginValidateForTestFailoverOptions) (*http.Response, error) {
@@ -972,7 +972,7 @@ func (client *RecoveryPlanActionsClient) validateForTestFailover(ctx context.Con
 	return httpResp, nil
 }
 
-// validateForTestFailoverCreateRequest creates the ValidateForTestFailover request.
+// validateForTestFailoverCreateRequest creates the validateForTestFailover request.
 func (client *RecoveryPlanActionsClient) validateForTestFailoverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, body FailoverRequest, _ *RecoveryPlanActionsClientBeginValidateForTestFailoverOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForTestFailover"
 	if serviceGroupName == "" {
@@ -1024,7 +1024,7 @@ func (client *RecoveryPlanActionsClient) BeginValidateForTestFailoverCleanup(ctx
 	}
 }
 
-// ValidateForTestFailoverCleanup - This action checks if the recovery orchestration plan is eligible for test failover cleanup
+// validateForTestFailoverCleanup - This action checks if the recovery orchestration plan is eligible for test failover cleanup
 // operation, ensuring it meets the necessary criteria and provides a list of qualified and unqualified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlanActionsClient) validateForTestFailoverCleanup(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *RecoveryPlanActionsClientBeginValidateForTestFailoverCleanupOptions) (*http.Response, error) {
@@ -1047,7 +1047,7 @@ func (client *RecoveryPlanActionsClient) validateForTestFailoverCleanup(ctx cont
 	return httpResp, nil
 }
 
-// validateForTestFailoverCleanupCreateRequest creates the ValidateForTestFailoverCleanup request.
+// validateForTestFailoverCleanupCreateRequest creates the validateForTestFailoverCleanup request.
 func (client *RecoveryPlanActionsClient) validateForTestFailoverCleanupCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, _ *RecoveryPlanActionsClientBeginValidateForTestFailoverCleanupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/validateForTestFailoverCleanup"
 	if serviceGroupName == "" {

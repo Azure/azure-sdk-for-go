@@ -21,13 +21,13 @@ import (
 
 // VnetConnectionsServer is a fake server for instances of the armappcontainers.VnetConnectionsClient type.
 type VnetConnectionsServer struct {
-	// CreateOrUpdate is the fake for method VnetConnectionsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, sandboxGroupName string, vnetConnectionName string, resource armappcontainers.VnetConnection, options *armappcontainers.VnetConnectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.VnetConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method VnetConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, sandboxGroupName string, vnetConnectionName string, options *armappcontainers.VnetConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.VnetConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method VnetConnectionsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, sandboxGroupName string, vnetConnectionName string, resource armappcontainers.VnetConnection, options *armappcontainers.VnetConnectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.VnetConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VnetConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (v *VnetConnectionsServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "VnetConnectionsClient.CreateOrUpdate":
-				res.resp, res.err = v.dispatchCreateOrUpdate(req)
 			case "VnetConnectionsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VnetConnectionsClient.CreateOrUpdate":
+				res.resp, res.err = v.dispatchCreateOrUpdate(req)
 			case "VnetConnectionsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VnetConnectionsClient.NewListBySandboxGroupPager":
@@ -100,47 +100,6 @@ func (v *VnetConnectionsServerTransport) dispatchToMethodFake(req *http.Request,
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (v *VnetConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/sandboxGroups/(?P<sandboxGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vnetConnections/(?P<vnetConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.VnetConnection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	sandboxGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vnetConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vnetConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, sandboxGroupNameParam, vnetConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (v *VnetConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -188,6 +147,47 @@ func (v *VnetConnectionsServerTransport) dispatchBeginDelete(req *http.Request) 
 		v.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VnetConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if v.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/sandboxGroups/(?P<sandboxGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vnetConnections/(?P<vnetConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappcontainers.VnetConnection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sandboxGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sandboxGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vnetConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vnetConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, sandboxGroupNameParam, vnetConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetConnection, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

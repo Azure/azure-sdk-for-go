@@ -128,7 +128,7 @@ func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersClientBeginDeleteOptions) (*runtime.Poller[RouteFiltersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, routeFilterName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +144,9 @@ func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Deletes the specified route filter.
+// deleteOperation - Deletes the specified route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RouteFiltersClient) delete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RouteFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RouteFiltersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

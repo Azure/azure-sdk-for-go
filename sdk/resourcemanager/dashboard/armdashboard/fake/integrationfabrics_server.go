@@ -29,6 +29,10 @@ type IntegrationFabricsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, options *armdashboard.IntegrationFabricsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdashboard.IntegrationFabricsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method IntegrationFabricsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters armdashboard.IntegrationFabricUpdateParameters, options *armdashboard.IntegrationFabricsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdashboard.IntegrationFabricsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method IntegrationFabricsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, options *armdashboard.IntegrationFabricsClientGetOptions) (resp azfake.Responder[armdashboard.IntegrationFabricsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type IntegrationFabricsServer struct {
 	// NewListPager is the fake for method IntegrationFabricsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, options *armdashboard.IntegrationFabricsClientListOptions) (resp azfake.PagerResponder[armdashboard.IntegrationFabricsClientListResponse])
-
-	// BeginUpdate is the fake for method IntegrationFabricsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, integrationFabricName string, requestBodyParameters armdashboard.IntegrationFabricUpdateParameters, options *armdashboard.IntegrationFabricsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdashboard.IntegrationFabricsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIntegrationFabricsServerTransport creates a new instance of IntegrationFabricsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewIntegrationFabricsServerTransport(srv *IntegrationFabricsServer) *Integr
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armdashboard.IntegrationFabricsClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdashboard.IntegrationFabricsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type IntegrationFabricsServerTransport struct {
 	srv          *IntegrationFabricsServer
 	beginCreate  *tracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armdashboard.IntegrationFabricsClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armdashboard.IntegrationFabricsClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armdashboard.IntegrationFabricsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IntegrationFabricsServerTransport.
@@ -90,12 +90,12 @@ func (i *IntegrationFabricsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = i.dispatchBeginCreate(req)
 			case "IntegrationFabricsClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "IntegrationFabricsClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "IntegrationFabricsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "IntegrationFabricsClient.NewListPager":
 				res.resp, res.err = i.dispatchNewListPager(req)
-			case "IntegrationFabricsClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (i *IntegrationFabricsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
+func (i *IntegrationFabricsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationFabrics/(?P<integrationFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdashboard.IntegrationFabricUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		integrationFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationFabricName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, integrationFabricNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *IntegrationFabricsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (i *IntegrationFabricsServerTransport) dispatchNewListPager(req *http.Reque
 	if !server.PagerResponderMore(newListPager) {
 		i.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *IntegrationFabricsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationFabrics/(?P<integrationFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdashboard.IntegrationFabricUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		integrationFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationFabricName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, integrationFabricNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -22,13 +22,13 @@ import (
 
 // TopicsServer is a fake server for instances of the armconfluent.TopicsClient type.
 type TopicsServer struct {
-	// Create is the fake for method TopicsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, topicName string, body armconfluent.TopicRecord, options *armconfluent.TopicsClientCreateOptions) (resp azfake.Responder[armconfluent.TopicsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method TopicsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, topicName string, options *armconfluent.TopicsClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfluent.TopicsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method TopicsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, topicName string, body armconfluent.TopicRecord, options *armconfluent.TopicsClientCreateOptions) (resp azfake.Responder[armconfluent.TopicsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TopicsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (t *TopicsServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "TopicsClient.Create":
-				res.resp, res.err = t.dispatchCreate(req)
 			case "TopicsClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TopicsClient.Create":
+				res.resp, res.err = t.dispatchCreate(req)
 			case "TopicsClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TopicsClient.NewListPager":
@@ -101,55 +101,6 @@ func (t *TopicsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (t *TopicsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if t.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armconfluent.TopicRecord](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
-	if err != nil {
-		return nil, err
-	}
-	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
-	if err != nil {
-		return nil, err
-	}
-	topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Create(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, topicNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TopicRecord, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (t *TopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -205,6 +156,55 @@ func (t *TopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		t.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TopicsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if t.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.TopicRecord](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
+	if err != nil {
+		return nil, err
+	}
+	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
+	if err != nil {
+		return nil, err
+	}
+	topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Create(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, topicNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TopicRecord, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

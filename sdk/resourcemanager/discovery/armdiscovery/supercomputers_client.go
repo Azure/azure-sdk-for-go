@@ -68,7 +68,7 @@ func (client *SupercomputersClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a Supercomputer
+// createOrUpdate - Create a Supercomputer
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SupercomputersClient) createOrUpdate(ctx context.Context, resourceGroupName string, supercomputerName string, resource Supercomputer, options *SupercomputersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SupercomputersClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SupercomputersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, supercomputerName string, resource Supercomputer, _ *SupercomputersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *SupercomputersClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a Supercomputer
+// deleteOperation - Delete a Supercomputer
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SupercomputersClient) deleteOperation(ctx context.Context, resourceGroupName string, supercomputerName string, options *SupercomputersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *SupercomputersClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SupercomputersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, supercomputerName string, _ *SupercomputersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *SupercomputersClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a Supercomputer
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - supercomputerName - The name of the Supercomputer
+//   - properties - The resource properties to be updated.
+//   - options - SupercomputersClientBeginUpdateOptions contains the optional parameters for the SupercomputersClient.BeginUpdate
+//     method.
+func (client *SupercomputersClient) BeginUpdate(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, options *SupercomputersClientBeginUpdateOptions) (*runtime.Poller[SupercomputersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, supercomputerName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SupercomputersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SupercomputersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Supercomputer
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SupercomputersClient) update(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, options *SupercomputersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SupercomputersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, supercomputerName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SupercomputersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, _ *SupercomputersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if supercomputerName == "" {
+		return nil, errors.New("parameter supercomputerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{supercomputerName}", url.PathEscape(supercomputerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -387,80 +463,4 @@ func (client *SupercomputersClient) listBySubscriptionHandleResponse(resp *http.
 		return SupercomputersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a Supercomputer
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - supercomputerName - The name of the Supercomputer
-//   - properties - The resource properties to be updated.
-//   - options - SupercomputersClientBeginUpdateOptions contains the optional parameters for the SupercomputersClient.BeginUpdate
-//     method.
-func (client *SupercomputersClient) BeginUpdate(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, options *SupercomputersClientBeginUpdateOptions) (*runtime.Poller[SupercomputersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, supercomputerName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SupercomputersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SupercomputersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Supercomputer
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SupercomputersClient) update(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, options *SupercomputersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SupercomputersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, supercomputerName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SupercomputersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, supercomputerName string, properties Supercomputer, _ *SupercomputersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if supercomputerName == "" {
-		return nil, errors.New("parameter supercomputerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{supercomputerName}", url.PathEscape(supercomputerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

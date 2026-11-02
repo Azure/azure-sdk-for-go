@@ -68,7 +68,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 	}
 }
 
-// CreateOrUpdate - Refreshes any information about the association.
+// createOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx c
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}/reconcile"
 	if client.subscriptionID == "" {

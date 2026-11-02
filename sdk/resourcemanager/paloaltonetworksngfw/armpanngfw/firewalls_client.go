@@ -68,7 +68,7 @@ func (client *FirewallsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Create a FirewallResource
+// createOrUpdate - Create a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, options *FirewallsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, _ *FirewallsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *FirewallsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete a FirewallResource
+// deleteOperation - Delete a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallName string, options *FirewallsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {

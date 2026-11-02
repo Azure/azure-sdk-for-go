@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Devices": "2026-11-01"
   },
-  "emitterVersion": "0.17.5"
+  "emitterVersion": "0.17.6"
 }

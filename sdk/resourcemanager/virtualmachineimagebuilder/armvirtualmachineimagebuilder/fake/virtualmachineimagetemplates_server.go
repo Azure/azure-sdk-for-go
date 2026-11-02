@@ -33,6 +33,14 @@ type VirtualMachineImageTemplatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRun is the fake for method VirtualMachineImageTemplatesClient.BeginRun
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRun func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginRunOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientRunResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method VirtualMachineImageTemplatesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters armvirtualmachineimagebuilder.ImageTemplateUpdateParameters, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method VirtualMachineImageTemplatesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetOptions) (resp azfake.Responder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,25 +49,17 @@ type VirtualMachineImageTemplatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetRunOutput func(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetRunOutputOptions) (resp azfake.Responder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetRunOutputResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualMachineImageTemplatesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListOptions) (resp azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method VirtualMachineImageTemplatesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse])
 
+	// NewListPager is the fake for method VirtualMachineImageTemplatesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListOptions) (resp azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse])
+
 	// NewListRunOutputsPager is the fake for method VirtualMachineImageTemplatesClient.NewListRunOutputsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListRunOutputsPager func(resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsOptions) (resp azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse])
-
-	// BeginRun is the fake for method VirtualMachineImageTemplatesClient.BeginRun
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRun func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginRunOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientRunResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method VirtualMachineImageTemplatesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters armvirtualmachineimagebuilder.ImageTemplateUpdateParameters, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineImageTemplatesServerTransport creates a new instance of VirtualMachineImageTemplatesServerTransport with the provided implementation.
@@ -71,11 +71,11 @@ func NewVirtualMachineImageTemplatesServerTransport(srv *VirtualMachineImageTemp
 		beginCancel:                 newTracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCancelResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse]](),
-		newListRunOutputsPager:      newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse]](),
 		beginRun:                    newTracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientRunResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse]](),
+		newListRunOutputsPager:      newTracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse]](),
 	}
 }
 
@@ -86,11 +86,11 @@ type VirtualMachineImageTemplatesServerTransport struct {
 	beginCancel                 *tracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCancelResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse]]
-	newListRunOutputsPager      *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse]]
 	beginRun                    *tracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientRunResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse]]
+	newListRunOutputsPager      *tracker[azfake.PagerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineImageTemplatesServerTransport.
@@ -120,20 +120,20 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualMachineImageTemplatesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualMachineImageTemplatesClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualMachineImageTemplatesClient.GetRunOutput":
-				res.resp, res.err = v.dispatchGetRunOutput(req)
-			case "VirtualMachineImageTemplatesClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VirtualMachineImageTemplatesClient.NewListByResourceGroupPager":
-				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
-			case "VirtualMachineImageTemplatesClient.NewListRunOutputsPager":
-				res.resp, res.err = v.dispatchNewListRunOutputsPager(req)
 			case "VirtualMachineImageTemplatesClient.BeginRun":
 				res.resp, res.err = v.dispatchBeginRun(req)
 			case "VirtualMachineImageTemplatesClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualMachineImageTemplatesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualMachineImageTemplatesClient.GetRunOutput":
+				res.resp, res.err = v.dispatchGetRunOutput(req)
+			case "VirtualMachineImageTemplatesClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualMachineImageTemplatesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
+			case "VirtualMachineImageTemplatesClient.NewListRunOutputsPager":
+				res.resp, res.err = v.dispatchNewListRunOutputsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -286,187 +286,6 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginDelete(req *h
 	return resp, nil
 }
 
-func (v *VirtualMachineImageTemplatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, imageTemplateNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImageTemplate, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineImageTemplatesServerTransport) dispatchGetRunOutput(req *http.Request) (*http.Response, error) {
-	if v.srv.GetRunOutput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetRunOutput not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runOutputs/(?P<runOutputName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
-	if err != nil {
-		return nil, err
-	}
-	runOutputNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runOutputName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.GetRunOutput(req.Context(), resourceGroupNameParam, imageTemplateNameParam, runOutputNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RunOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		v.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListRunOutputsPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListRunOutputsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListRunOutputsPager not implemented")}
-	}
-	newListRunOutputsPager := v.newListRunOutputsPager.get(req)
-	if newListRunOutputsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runOutputs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListRunOutputsPager(resourceGroupNameParam, imageTemplateNameParam, nil)
-		newListRunOutputsPager = &resp
-		v.newListRunOutputsPager.add(req, newListRunOutputsPager)
-		server.PagerResponderInjectNextLinks(newListRunOutputsPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListRunOutputsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListRunOutputsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListRunOutputsPager) {
-		v.newListRunOutputsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginRun(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginRun == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRun not implemented")}
@@ -556,6 +375,187 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginUpdate(req *h
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, imageTemplateNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImageTemplate, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchGetRunOutput(req *http.Request) (*http.Response, error) {
+	if v.srv.GetRunOutput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRunOutput not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runOutputs/(?P<runOutputName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
+	if err != nil {
+		return nil, err
+	}
+	runOutputNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runOutputName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.GetRunOutput(req.Context(), resourceGroupNameParam, imageTemplateNameParam, runOutputNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RunOutput, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListRunOutputsPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListRunOutputsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListRunOutputsPager not implemented")}
+	}
+	newListRunOutputsPager := v.newListRunOutputsPager.get(req)
+	if newListRunOutputsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runOutputs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		imageTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListRunOutputsPager(resourceGroupNameParam, imageTemplateNameParam, nil)
+		newListRunOutputsPager = &resp
+		v.newListRunOutputsPager.add(req, newListRunOutputsPager)
+		server.PagerResponderInjectNextLinks(newListRunOutputsPager, req, func(page *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListRunOutputsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListRunOutputsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListRunOutputsPager) {
+		v.newListRunOutputsPager.remove(req)
+	}
 	return resp, nil
 }
 

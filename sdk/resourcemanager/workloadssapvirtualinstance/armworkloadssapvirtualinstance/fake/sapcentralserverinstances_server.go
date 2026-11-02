@@ -30,14 +30,6 @@ type SAPCentralServerInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, centralInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SAPCentralServerInstancesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, centralInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method SAPCentralServerInstancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse])
-
 	// BeginStart is the fake for method SAPCentralServerInstancesClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, centralInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStartResponse], errResp azfake.ErrorResponder)
@@ -45,6 +37,14 @@ type SAPCentralServerInstancesServer struct {
 	// BeginStop is the fake for method SAPCentralServerInstancesClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStop func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, centralInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientBeginStopOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStopResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SAPCentralServerInstancesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, centralInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method SAPCentralServerInstancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse])
 
 	// Update is the fake for method SAPCentralServerInstancesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -59,9 +59,9 @@ func NewSAPCentralServerInstancesServerTransport(srv *SAPCentralServerInstancesS
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse]](),
 		beginStart:   newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStartResponse]](),
 		beginStop:    newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStopResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse]](),
 	}
 }
 
@@ -71,9 +71,9 @@ type SAPCentralServerInstancesServerTransport struct {
 	srv          *SAPCentralServerInstancesServer
 	beginCreate  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse]]
 	beginStart   *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStartResponse]]
 	beginStop    *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStopResponse]]
+	newListPager *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SAPCentralServerInstancesServerTransport.
@@ -101,14 +101,14 @@ func (s *SAPCentralServerInstancesServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "SAPCentralServerInstancesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SAPCentralServerInstancesClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "SAPCentralServerInstancesClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SAPCentralServerInstancesClient.BeginStart":
 				res.resp, res.err = s.dispatchBeginStart(req)
 			case "SAPCentralServerInstancesClient.BeginStop":
 				res.resp, res.err = s.dispatchBeginStop(req)
+			case "SAPCentralServerInstancesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SAPCentralServerInstancesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SAPCentralServerInstancesClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -227,84 +227,6 @@ func (s *SAPCentralServerInstancesServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
-func (s *SAPCentralServerInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/centralInstances/(?P<centralInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	sapVirtualInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapVirtualInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	centralInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("centralInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, centralInstanceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPCentralServerInstance, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SAPCentralServerInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/centralInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		sapVirtualInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapVirtualInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPager(resourceGroupNameParam, sapVirtualInstanceNameParam, nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SAPCentralServerInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
@@ -418,6 +340,84 @@ func (s *SAPCentralServerInstancesServerTransport) dispatchBeginStop(req *http.R
 		s.beginStop.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SAPCentralServerInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/centralInstances/(?P<centralInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sapVirtualInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapVirtualInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	centralInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("centralInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, centralInstanceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPCentralServerInstance, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SAPCentralServerInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/centralInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		sapVirtualInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapVirtualInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPager(resourceGroupNameParam, sapVirtualInstanceNameParam, nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -30,6 +30,9 @@ type RebalanceJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRebalanceJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RebalanceJobsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *RebalanceJobsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Schedules a rebalance job for deletion.
+// deleteOperation - Schedules a rebalance job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RebalanceJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, options *RebalanceJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +90,11 @@ func (client *RebalanceJobsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RebalanceJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, _ *RebalanceJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/rebalanceJobs/{rebalanceJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,6 +116,88 @@ func (client *RebalanceJobsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a rebalance job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - rebalanceJobName - Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - properties - Object containing the user-selectable properties of the rebalance job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - RebalanceJobsClientBeginUpdateOptions contains the optional parameters for the RebalanceJobsClient.BeginUpdate
+//     method.
+func (client *RebalanceJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, options *RebalanceJobsClientBeginUpdateOptions) (*runtime.Poller[RebalanceJobsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, rebalanceJobName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RebalanceJobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RebalanceJobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a rebalance job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RebalanceJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, options *RebalanceJobsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RebalanceJobsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, rebalanceJobName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RebalanceJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, _ *RebalanceJobsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/rebalanceJobs/{rebalanceJobName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if amlFilesystemName == "" {
+		return nil, errors.New("parameter amlFilesystemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
+	if rebalanceJobName == "" {
+		return nil, errors.New("parameter rebalanceJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{rebalanceJobName}", url.PathEscape(rebalanceJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -143,7 +228,7 @@ func (client *RebalanceJobsClient) Get(ctx context.Context, resourceGroupName st
 func (client *RebalanceJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, _ *RebalanceJobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/rebalanceJobs/{rebalanceJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -219,7 +304,7 @@ func (client *RebalanceJobsClient) listByAmlFilesystemCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/rebalanceJobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -256,86 +341,4 @@ func (client *RebalanceJobsClient) listByAmlFilesystemHandleResponse(resp *http.
 		return RebalanceJobsClientListByAmlFilesystemResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a rebalance job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - rebalanceJobName - Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - properties - Object containing the user-selectable properties of the rebalance job. If read-only properties are included,
-//     they must match the existing values of those properties.
-//   - options - RebalanceJobsClientBeginUpdateOptions contains the optional parameters for the RebalanceJobsClient.BeginUpdate
-//     method.
-func (client *RebalanceJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, options *RebalanceJobsClientBeginUpdateOptions) (*runtime.Poller[RebalanceJobsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, rebalanceJobName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RebalanceJobsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RebalanceJobsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a rebalance job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RebalanceJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, options *RebalanceJobsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RebalanceJobsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, rebalanceJobName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RebalanceJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, _ *RebalanceJobsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/rebalanceJobs/{rebalanceJobName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if amlFilesystemName == "" {
-		return nil, errors.New("parameter amlFilesystemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if rebalanceJobName == "" {
-		return nil, errors.New("parameter rebalanceJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{rebalanceJobName}", url.PathEscape(rebalanceJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -70,7 +70,7 @@ func (client *EndpointsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Create a EnclaveEndpointResource
+// createOrUpdate - Create a EnclaveEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, resource EndpointResource, options *EndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *EndpointsClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, resource EndpointResource, _ *EndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete a EnclaveEndpointResource
+// deleteOperation - Delete a EnclaveEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, _ *EndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,248 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginHandleApprovalCreation - Callback that triggers on approval state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualEnclaveName - The name of the enclaveResource Resource
+//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
+//   - body - The content of the action request
+//   - options - EndpointsClientBeginHandleApprovalCreationOptions contains the optional parameters for the EndpointsClient.BeginHandleApprovalCreation
+//     method.
+func (client *EndpointsClient) BeginHandleApprovalCreation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, options *EndpointsClientBeginHandleApprovalCreationOptions) (*runtime.Poller[EndpointsClientHandleApprovalCreationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.handleApprovalCreation(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientHandleApprovalCreationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientHandleApprovalCreationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// handleApprovalCreation - Callback that triggers on approval state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) handleApprovalCreation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, options *EndpointsClientBeginHandleApprovalCreationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginHandleApprovalCreation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.handleApprovalCreationCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// handleApprovalCreationCreateRequest creates the handleApprovalCreation request.
+func (client *EndpointsClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, _ *EndpointsClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}/handleApprovalCreation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualEnclaveName == "" {
+		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
+	if enclaveEndpointName == "" {
+		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginHandleApprovalDeletion - Callback that triggers on approval deletion state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualEnclaveName - The name of the enclaveResource Resource
+//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
+//   - body - The content of the action request
+//   - options - EndpointsClientBeginHandleApprovalDeletionOptions contains the optional parameters for the EndpointsClient.BeginHandleApprovalDeletion
+//     method.
+func (client *EndpointsClient) BeginHandleApprovalDeletion(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, options *EndpointsClientBeginHandleApprovalDeletionOptions) (*runtime.Poller[EndpointsClientHandleApprovalDeletionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.handleApprovalDeletion(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientHandleApprovalDeletionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientHandleApprovalDeletionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// handleApprovalDeletion - Callback that triggers on approval deletion state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) handleApprovalDeletion(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, options *EndpointsClientBeginHandleApprovalDeletionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginHandleApprovalDeletion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.handleApprovalDeletionCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// handleApprovalDeletionCreateRequest creates the handleApprovalDeletion request.
+func (client *EndpointsClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, _ *EndpointsClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}/handleApprovalDeletion"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualEnclaveName == "" {
+		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
+	if enclaveEndpointName == "" {
+		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a EnclaveEndpointResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualEnclaveName - The name of the enclaveResource Resource
+//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
+//   - properties - The resource properties to be updated.
+//   - options - EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
+func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, options *EndpointsClientBeginUpdateOptions) (*runtime.Poller[EndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a EnclaveEndpointResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, _ *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualEnclaveName == "" {
+		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
+	if enclaveEndpointName == "" {
+		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -263,168 +505,6 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response, successCod
 		return EndpointsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginHandleApprovalCreation - Callback that triggers on approval state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualEnclaveName - The name of the enclaveResource Resource
-//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
-//   - body - The content of the action request
-//   - options - EndpointsClientBeginHandleApprovalCreationOptions contains the optional parameters for the EndpointsClient.BeginHandleApprovalCreation
-//     method.
-func (client *EndpointsClient) BeginHandleApprovalCreation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, options *EndpointsClientBeginHandleApprovalCreationOptions) (*runtime.Poller[EndpointsClientHandleApprovalCreationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.handleApprovalCreation(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientHandleApprovalCreationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientHandleApprovalCreationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// HandleApprovalCreation - Callback that triggers on approval state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) handleApprovalCreation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, options *EndpointsClientBeginHandleApprovalCreationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginHandleApprovalCreation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.handleApprovalCreationCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// handleApprovalCreationCreateRequest creates the HandleApprovalCreation request.
-func (client *EndpointsClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalCallbackRequest, _ *EndpointsClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}/handleApprovalCreation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualEnclaveName == "" {
-		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
-	if enclaveEndpointName == "" {
-		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginHandleApprovalDeletion - Callback that triggers on approval deletion state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualEnclaveName - The name of the enclaveResource Resource
-//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
-//   - body - The content of the action request
-//   - options - EndpointsClientBeginHandleApprovalDeletionOptions contains the optional parameters for the EndpointsClient.BeginHandleApprovalDeletion
-//     method.
-func (client *EndpointsClient) BeginHandleApprovalDeletion(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, options *EndpointsClientBeginHandleApprovalDeletionOptions) (*runtime.Poller[EndpointsClientHandleApprovalDeletionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.handleApprovalDeletion(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientHandleApprovalDeletionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientHandleApprovalDeletionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// HandleApprovalDeletion - Callback that triggers on approval deletion state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) handleApprovalDeletion(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, options *EndpointsClientBeginHandleApprovalDeletionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginHandleApprovalDeletion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.handleApprovalDeletionCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// handleApprovalDeletionCreateRequest creates the HandleApprovalDeletion request.
-func (client *EndpointsClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, body ApprovalDeletionCallbackRequest, _ *EndpointsClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}/handleApprovalDeletion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualEnclaveName == "" {
-		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
-	if enclaveEndpointName == "" {
-		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByEnclaveResourcePager - List EnclaveEndpointResource resources by EnclaveResource
@@ -574,84 +654,4 @@ func (client *EndpointsClient) listBySubscriptionHandleResponse(resp *http.Respo
 		return EndpointsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a EnclaveEndpointResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualEnclaveName - The name of the enclaveResource Resource
-//   - enclaveEndpointName - The name of the Enclave Endpoint Resource
-//   - properties - The resource properties to be updated.
-//   - options - EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
-func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, options *EndpointsClientBeginUpdateOptions) (*runtime.Poller[EndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a EnclaveEndpointResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, enclaveEndpointName string, properties EndpointPatchModel, _ *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/enclaveEndpoints/{enclaveEndpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualEnclaveName == "" {
-		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
-	if enclaveEndpointName == "" {
-		return nil, errors.New("parameter enclaveEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enclaveEndpointName}", url.PathEscape(enclaveEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

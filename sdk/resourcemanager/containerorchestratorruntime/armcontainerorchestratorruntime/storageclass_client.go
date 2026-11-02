@@ -63,7 +63,7 @@ func (client *StorageClassClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Create a StorageClassResource
+// createOrUpdate - Create a StorageClassResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageClassClient) createOrUpdate(ctx context.Context, resourceURI string, storageClassName string, resource StorageClassResource, options *StorageClassClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *StorageClassClient) createOrUpdate(ctx context.Context, resourceUR
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StorageClassClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, storageClassName string, resource StorageClassResource, _ *StorageClassClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
 	if resourceURI == "" {
@@ -134,7 +134,7 @@ func (client *StorageClassClient) BeginDelete(ctx context.Context, resourceURI s
 	}
 }
 
-// Delete - Delete a StorageClassResource
+// deleteOperation - Delete a StorageClassResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageClassClient) deleteOperation(ctx context.Context, resourceURI string, storageClassName string, options *StorageClassClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -156,7 +156,7 @@ func (client *StorageClassClient) deleteOperation(ctx context.Context, resourceU
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageClassClient) deleteCreateRequest(ctx context.Context, resourceURI string, storageClassName string, _ *StorageClassClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
 	if resourceURI == "" {
@@ -174,6 +174,78 @@ func (client *StorageClassClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20240301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a StorageClassResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - storageClassName - The name of the the storage class
+//   - properties - The resource properties to be updated.
+//   - options - StorageClassClientBeginUpdateOptions contains the optional parameters for the StorageClassClient.BeginUpdate
+//     method.
+func (client *StorageClassClient) BeginUpdate(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, options *StorageClassClientBeginUpdateOptions) (*runtime.Poller[StorageClassClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceURI, storageClassName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageClassClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageClassClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a StorageClassResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageClassClient) update(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, options *StorageClassClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StorageClassClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceURI, storageClassName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *StorageClassClient) updateCreateRequest(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, _ *StorageClassClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if storageClassName == "" {
+		return nil, errors.New("parameter storageClassName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageClassName}", url.PathEscape(storageClassName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -298,76 +370,4 @@ func (client *StorageClassClient) listHandleResponse(resp *http.Response, succes
 		return StorageClassClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a StorageClassResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - storageClassName - The name of the the storage class
-//   - properties - The resource properties to be updated.
-//   - options - StorageClassClientBeginUpdateOptions contains the optional parameters for the StorageClassClient.BeginUpdate
-//     method.
-func (client *StorageClassClient) BeginUpdate(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, options *StorageClassClientBeginUpdateOptions) (*runtime.Poller[StorageClassClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceURI, storageClassName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageClassClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageClassClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a StorageClassResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StorageClassClient) update(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, options *StorageClassClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StorageClassClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceURI, storageClassName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *StorageClassClient) updateCreateRequest(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, _ *StorageClassClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if storageClassName == "" {
-		return nil, errors.New("parameter storageClassName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageClassName}", url.PathEscape(storageClassName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

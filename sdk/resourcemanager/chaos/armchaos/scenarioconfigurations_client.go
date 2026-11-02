@@ -70,7 +70,7 @@ func (client *ScenarioConfigurationsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update a scenario definition.
+// createOrUpdate - Create or update a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, resource ScenarioConfiguration, options *ScenarioConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ScenarioConfigurationsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ScenarioConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, resource ScenarioConfiguration, _ *ScenarioConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ScenarioConfigurationsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a scenario definition.
+// deleteOperation - Delete a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *ScenarioConfigurationsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ScenarioConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}"
 	if client.subscriptionID == "" {
@@ -236,7 +236,7 @@ func (client *ScenarioConfigurationsClient) BeginExecute(ctx context.Context, re
 	}
 }
 
-// Execute - Execute the scenario execution with the given scenario configuration.
+// execute - Execute the scenario execution with the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioConfigurationsClient) execute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginExecuteOptions) (*http.Response, error) {
 	var err error
@@ -258,7 +258,7 @@ func (client *ScenarioConfigurationsClient) execute(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// executeCreateRequest creates the Execute request.
+// executeCreateRequest creates the execute request.
 func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/execute"
 	if client.subscriptionID == "" {
@@ -317,7 +317,7 @@ func (client *ScenarioConfigurationsClient) BeginFixResourcePermissions(ctx cont
 	}
 }
 
-// FixResourcePermissions - Fixes resource permissions for the given scenario configuration.
+// fixResourcePermissions - Fixes resource permissions for the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioConfigurationsClient) fixResourcePermissions(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginFixResourcePermissionsOptions) (*http.Response, error) {
 	var err error
@@ -339,7 +339,7 @@ func (client *ScenarioConfigurationsClient) fixResourcePermissions(ctx context.C
 	return httpResp, nil
 }
 
-// fixResourcePermissionsCreateRequest creates the FixResourcePermissions request.
+// fixResourcePermissionsCreateRequest creates the fixResourcePermissions request.
 func (client *ScenarioConfigurationsClient) fixResourcePermissionsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginFixResourcePermissionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/fixResourcePermissions"
 	if client.subscriptionID == "" {
@@ -376,6 +376,87 @@ func (client *ScenarioConfigurationsClient) fixResourcePermissionsCreateRequest(
 		}
 		return req, nil
 	}
+	return req, nil
+}
+
+// BeginValidate - Validate the given scenario configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - String that represents a Workspace resource name.
+//   - scenarioName - Name of the scenario.
+//   - scenarioConfigurationName - Name of the scenario definition.
+//   - options - ScenarioConfigurationsClientBeginValidateOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginValidate
+//     method.
+func (client *ScenarioConfigurationsClient) BeginValidate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginValidateOptions) (*runtime.Poller[ScenarioConfigurationsClientValidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validate(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientValidateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScenarioConfigurationsClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validate - Validate the given scenario configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScenarioConfigurationsClient) validate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginValidateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScenarioConfigurationsClient.BeginValidate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateCreateRequest creates the validate request.
+func (client *ScenarioConfigurationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginValidateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/validate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if scenarioName == "" {
+		return nil, errors.New("parameter scenarioName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scenarioName}", url.PathEscape(scenarioName))
+	if scenarioConfigurationName == "" {
+		return nil, errors.New("parameter scenarioConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scenarioConfigurationName}", url.PathEscape(scenarioConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -530,85 +611,4 @@ func (client *ScenarioConfigurationsClient) listAllHandleResponse(resp *http.Res
 		return ScenarioConfigurationsClientListAllResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginValidate - Validate the given scenario configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - String that represents a Workspace resource name.
-//   - scenarioName - Name of the scenario.
-//   - scenarioConfigurationName - Name of the scenario definition.
-//   - options - ScenarioConfigurationsClientBeginValidateOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginValidate
-//     method.
-func (client *ScenarioConfigurationsClient) BeginValidate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginValidateOptions) (*runtime.Poller[ScenarioConfigurationsClientValidateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validate(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientValidateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScenarioConfigurationsClientValidateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Validate - Validate the given scenario configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScenarioConfigurationsClient) validate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginValidateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScenarioConfigurationsClient.BeginValidate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateCreateRequest creates the Validate request.
-func (client *ScenarioConfigurationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginValidateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/validate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if scenarioName == "" {
-		return nil, errors.New("parameter scenarioName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scenarioName}", url.PathEscape(scenarioName))
-	if scenarioConfigurationName == "" {
-		return nil, errors.New("parameter scenarioConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scenarioConfigurationName}", url.PathEscape(scenarioConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

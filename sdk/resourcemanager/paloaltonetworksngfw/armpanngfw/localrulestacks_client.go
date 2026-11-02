@@ -68,7 +68,7 @@ func (client *LocalRulestacksClient) BeginCommit(ctx context.Context, resourceGr
 	}
 }
 
-// Commit - Commit rulestack configuration
+// commit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulestacksClient) commit(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientBeginCommitOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *LocalRulestacksClient) commit(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// commitCreateRequest creates the Commit request.
+// commitCreateRequest creates the commit request.
 func (client *LocalRulestacksClient) commitCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientBeginCommitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/commit"
 	if client.subscriptionID == "" {
@@ -139,7 +139,7 @@ func (client *LocalRulestacksClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create a LocalRulestackResource
+// createOrUpdate - Create a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulestacksClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, resource LocalRulestackResource, options *LocalRulestacksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *LocalRulestacksClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LocalRulestacksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, resource LocalRulestackResource, _ *LocalRulestacksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
 	if client.subscriptionID == "" {
@@ -214,7 +214,7 @@ func (client *LocalRulestacksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a LocalRulestackResource
+// deleteOperation - Delete a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulestacksClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -236,7 +236,7 @@ func (client *LocalRulestacksClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LocalRulestacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
 	if client.subscriptionID == "" {
@@ -510,6 +510,135 @@ func (client *LocalRulestacksClient) listAdvancedSecurityObjectsHandleResponse(r
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvSecurityObjectListResponse); err != nil {
 		return LocalRulestacksClientListAdvancedSecurityObjectsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListFirewalls - List of Firewalls associated with Rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - localRulestackName - LocalRulestack resource name
+//   - options - LocalRulestacksClientListFirewallsOptions contains the optional parameters for the LocalRulestacksClient.ListFirewalls
+//     method.
+func (client *LocalRulestacksClient) ListFirewalls(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListFirewallsOptions) (LocalRulestacksClientListFirewallsResponse, error) {
+	var err error
+	const operationName = "LocalRulestacksClient.ListFirewalls"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listFirewallsCreateRequest(ctx, resourceGroupName, localRulestackName, options)
+	if err != nil {
+		return LocalRulestacksClientListFirewallsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalRulestacksClientListFirewallsResponse{}, err
+	}
+	return client.listFirewallsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listFirewallsCreateRequest creates the ListFirewalls request.
+func (client *LocalRulestacksClient) listFirewallsCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientListFirewallsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listFirewalls"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if localRulestackName == "" {
+		return nil, errors.New("parameter localRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listFirewallsHandleResponse handles the ListFirewalls response.
+func (client *LocalRulestacksClient) listFirewallsHandleResponse(resp *http.Response, successCodes ...int) (LocalRulestacksClientListFirewallsResponse, error) {
+	result := LocalRulestacksClientListFirewallsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
+		return LocalRulestacksClientListFirewallsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSecurityServices - List the security services for rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - localRulestackName - LocalRulestack resource name
+//   - options - LocalRulestacksClientListSecurityServicesOptions contains the optional parameters for the LocalRulestacksClient.ListSecurityServices
+//     method.
+func (client *LocalRulestacksClient) ListSecurityServices(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam SecurityServicesTypeEnum, options *LocalRulestacksClientListSecurityServicesOptions) (LocalRulestacksClientListSecurityServicesResponse, error) {
+	var err error
+	const operationName = "LocalRulestacksClient.ListSecurityServices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecurityServicesCreateRequest(ctx, resourceGroupName, localRulestackName, typeParam, options)
+	if err != nil {
+		return LocalRulestacksClientListSecurityServicesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalRulestacksClientListSecurityServicesResponse{}, err
+	}
+	return client.listSecurityServicesHandleResponse(httpResp, http.StatusOK)
+}
+
+// listSecurityServicesCreateRequest creates the ListSecurityServices request.
+func (client *LocalRulestacksClient) listSecurityServicesCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam SecurityServicesTypeEnum, options *LocalRulestacksClientListSecurityServicesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listSecurityServices"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if localRulestackName == "" {
+		return nil, errors.New("parameter localRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("type", string(typeParam))
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecurityServicesHandleResponse handles the ListSecurityServices response.
+func (client *LocalRulestacksClient) listSecurityServicesHandleResponse(resp *http.Response, successCodes ...int) (LocalRulestacksClientListSecurityServicesResponse, error) {
+	result := LocalRulestacksClientListSecurityServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
+		return LocalRulestacksClientListSecurityServicesResponse{}, err
 	}
 	return result, nil
 }
@@ -825,67 +954,6 @@ func (client *LocalRulestacksClient) listCountriesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListFirewalls - List of Firewalls associated with Rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - localRulestackName - LocalRulestack resource name
-//   - options - LocalRulestacksClientListFirewallsOptions contains the optional parameters for the LocalRulestacksClient.ListFirewalls
-//     method.
-func (client *LocalRulestacksClient) ListFirewalls(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListFirewallsOptions) (LocalRulestacksClientListFirewallsResponse, error) {
-	var err error
-	const operationName = "LocalRulestacksClient.ListFirewalls"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listFirewallsCreateRequest(ctx, resourceGroupName, localRulestackName, options)
-	if err != nil {
-		return LocalRulestacksClientListFirewallsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LocalRulestacksClientListFirewallsResponse{}, err
-	}
-	return client.listFirewallsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listFirewallsCreateRequest creates the ListFirewalls request.
-func (client *LocalRulestacksClient) listFirewallsCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientListFirewallsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listFirewalls"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if localRulestackName == "" {
-		return nil, errors.New("parameter localRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listFirewallsHandleResponse handles the ListFirewalls response.
-func (client *LocalRulestacksClient) listFirewallsHandleResponse(resp *http.Response, successCodes ...int) (LocalRulestacksClientListFirewallsResponse, error) {
-	result := LocalRulestacksClientListFirewallsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
-		return LocalRulestacksClientListFirewallsResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListPredefinedURLCategoriesPager - List predefined URL categories for rulestack
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
@@ -965,74 +1033,6 @@ func (client *LocalRulestacksClient) listPredefinedURLCategoriesHandleResponse(r
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PredefinedURLCategoriesResponse); err != nil {
 		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSecurityServices - List the security services for rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - localRulestackName - LocalRulestack resource name
-//   - options - LocalRulestacksClientListSecurityServicesOptions contains the optional parameters for the LocalRulestacksClient.ListSecurityServices
-//     method.
-func (client *LocalRulestacksClient) ListSecurityServices(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam SecurityServicesTypeEnum, options *LocalRulestacksClientListSecurityServicesOptions) (LocalRulestacksClientListSecurityServicesResponse, error) {
-	var err error
-	const operationName = "LocalRulestacksClient.ListSecurityServices"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecurityServicesCreateRequest(ctx, resourceGroupName, localRulestackName, typeParam, options)
-	if err != nil {
-		return LocalRulestacksClientListSecurityServicesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LocalRulestacksClientListSecurityServicesResponse{}, err
-	}
-	return client.listSecurityServicesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSecurityServicesCreateRequest creates the ListSecurityServices request.
-func (client *LocalRulestacksClient) listSecurityServicesCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam SecurityServicesTypeEnum, options *LocalRulestacksClientListSecurityServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listSecurityServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if localRulestackName == "" {
-		return nil, errors.New("parameter localRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecurityServicesHandleResponse handles the ListSecurityServices response.
-func (client *LocalRulestacksClient) listSecurityServicesHandleResponse(resp *http.Response, successCodes ...int) (LocalRulestacksClientListSecurityServicesResponse, error) {
-	result := LocalRulestacksClientListSecurityServicesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
-		return LocalRulestacksClientListSecurityServicesResponse{}, err
 	}
 	return result, nil
 }

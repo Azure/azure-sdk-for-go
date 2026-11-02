@@ -29,6 +29,10 @@ type InternetGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, internetGatewayName string, options *armmanagednetworkfabric.InternetGatewaysClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method InternetGatewaysClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, internetGatewayName string, body armmanagednetworkfabric.InternetGatewayPatch, options *armmanagednetworkfabric.InternetGatewaysClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InternetGatewaysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, internetGatewayName string, options *armmanagednetworkfabric.InternetGatewaysClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.InternetGatewaysClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type InternetGatewaysServer struct {
 	// NewListBySubscriptionPager is the fake for method InternetGatewaysClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.InternetGatewaysClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.InternetGatewaysClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method InternetGatewaysClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, internetGatewayName string, body armmanagednetworkfabric.InternetGatewayPatch, options *armmanagednetworkfabric.InternetGatewaysClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInternetGatewaysServerTransport creates a new instance of InternetGatewaysServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewInternetGatewaysServerTransport(srv *InternetGatewaysServer) *InternetGa
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.InternetGatewaysClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.InternetGatewaysClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type InternetGatewaysServerTransport struct {
 	srv                         *InternetGatewaysServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.InternetGatewaysClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.InternetGatewaysClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.InternetGatewaysClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for InternetGatewaysServerTransport.
@@ -96,14 +96,14 @@ func (i *InternetGatewaysServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = i.dispatchBeginCreate(req)
 			case "InternetGatewaysClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InternetGatewaysClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "InternetGatewaysClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InternetGatewaysClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "InternetGatewaysClient.NewListBySubscriptionPager":
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
-			case "InternetGatewaysClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (i *InternetGatewaysServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (i *InternetGatewaysServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/internetGateways/(?P<internetGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.InternetGatewayPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		internetGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("internetGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, internetGatewayNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *InternetGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (i *InternetGatewaysServerTransport) dispatchNewListBySubscriptionPager(req
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		i.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *InternetGatewaysServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/internetGateways/(?P<internetGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.InternetGatewayPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		internetGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("internetGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, internetGatewayNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

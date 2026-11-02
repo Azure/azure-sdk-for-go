@@ -56,7 +56,7 @@ func NewStaticCidrsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - options - StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
 func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Delete the Static CIDR resource.
+// deleteOperation - Delete the Static CIDR resource.
 //
 // Delete the Static CIDR resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StaticCidrsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *StaticCidrsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StaticCidrsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

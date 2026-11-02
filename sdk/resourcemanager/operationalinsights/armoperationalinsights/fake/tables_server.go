@@ -21,10 +21,6 @@ import (
 
 // TablesServer is a fake server for instances of the armoperationalinsights.TablesClient type.
 type TablesServer struct {
-	// CancelSearch is the fake for method TablesClient.CancelSearch
-	// HTTP status codes to indicate success: http.StatusOK
-	CancelSearch func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientCancelSearchOptions) (resp azfake.Responder[armoperationalinsights.TablesClientCancelSearchResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method TablesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,21 +29,25 @@ type TablesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientBeginDeleteOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method TablesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientBeginUpdateOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CancelSearch is the fake for method TablesClient.CancelSearch
+	// HTTP status codes to indicate success: http.StatusOK
+	CancelSearch func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientCancelSearchOptions) (resp azfake.Responder[armoperationalinsights.TablesClientCancelSearchResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method TablesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientGetOptions) (resp azfake.Responder[armoperationalinsights.TablesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByWorkspacePager is the fake for method TablesClient.NewListByWorkspacePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.TablesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse])
 
 	// Migrate is the fake for method TablesClient.Migrate
 	// HTTP status codes to indicate success: http.StatusOK
 	Migrate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientMigrateOptions) (resp azfake.Responder[armoperationalinsights.TablesClientMigrateResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method TablesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientBeginUpdateOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListByWorkspacePager is the fake for method TablesClient.NewListByWorkspacePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.TablesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse])
 }
 
 // NewTablesServerTransport creates a new instance of TablesServerTransport with the provided implementation.
@@ -58,8 +58,8 @@ func NewTablesServerTransport(srv *TablesServer) *TablesServerTransport {
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ type TablesServerTransport struct {
 	srv                     *TablesServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for TablesServerTransport.
@@ -94,20 +94,20 @@ func (t *TablesServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "TablesClient.CancelSearch":
-				res.resp, res.err = t.dispatchCancelSearch(req)
 			case "TablesClient.BeginCreateOrUpdate":
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "TablesClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
-			case "TablesClient.Get":
-				res.resp, res.err = t.dispatchGet(req)
-			case "TablesClient.NewListByWorkspacePager":
-				res.resp, res.err = t.dispatchNewListByWorkspacePager(req)
-			case "TablesClient.Migrate":
-				res.resp, res.err = t.dispatchMigrate(req)
 			case "TablesClient.BeginUpdate":
 				res.resp, res.err = t.dispatchBeginUpdate(req)
+			case "TablesClient.CancelSearch":
+				res.resp, res.err = t.dispatchCancelSearch(req)
+			case "TablesClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
+			case "TablesClient.Migrate":
+				res.resp, res.err = t.dispatchMigrate(req)
+			case "TablesClient.NewListByWorkspacePager":
+				res.resp, res.err = t.dispatchNewListByWorkspacePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -122,43 +122,6 @@ func (t *TablesServerTransport) dispatchToMethodFake(req *http.Request, method s
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (t *TablesServerTransport) dispatchCancelSearch(req *http.Request) (*http.Response, error) {
-	if t.srv.CancelSearch == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelSearch not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelSearch`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.CancelSearch(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (t *TablesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -261,121 +224,6 @@ func (t *TablesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (t *TablesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if t.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Table, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (t *TablesServerTransport) dispatchNewListByWorkspacePager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListByWorkspacePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByWorkspacePager not implemented")}
-	}
-	newListByWorkspacePager := t.newListByWorkspacePager.get(req)
-	if newListByWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := t.srv.NewListByWorkspacePager(resourceGroupNameParam, workspaceNameParam, nil)
-		newListByWorkspacePager = &resp
-		t.newListByWorkspacePager.add(req, newListByWorkspacePager)
-		server.PagerResponderInjectNextLinks(newListByWorkspacePager, req, func(page *armoperationalinsights.TablesClientListByWorkspaceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByWorkspacePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListByWorkspacePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByWorkspacePager) {
-		t.newListByWorkspacePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (t *TablesServerTransport) dispatchMigrate(req *http.Request) (*http.Response, error) {
-	if t.srv.Migrate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Migrate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Migrate(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (t *TablesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -425,6 +273,158 @@ func (t *TablesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		t.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchCancelSearch(req *http.Request) (*http.Response, error) {
+	if t.srv.CancelSearch == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelSearch not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelSearch`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CancelSearch(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if t.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Table, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchMigrate(req *http.Request) (*http.Response, error) {
+	if t.srv.Migrate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Migrate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Migrate(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchNewListByWorkspacePager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListByWorkspacePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByWorkspacePager not implemented")}
+	}
+	newListByWorkspacePager := t.newListByWorkspacePager.get(req)
+	if newListByWorkspacePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := t.srv.NewListByWorkspacePager(resourceGroupNameParam, workspaceNameParam, nil)
+		newListByWorkspacePager = &resp
+		t.newListByWorkspacePager.add(req, newListByWorkspacePager)
+		server.PagerResponderInjectNextLinks(newListByWorkspacePager, req, func(page *armoperationalinsights.TablesClientListByWorkspaceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByWorkspacePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListByWorkspacePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByWorkspacePager) {
+		t.newListByWorkspacePager.remove(req)
+	}
 	return resp, nil
 }
 

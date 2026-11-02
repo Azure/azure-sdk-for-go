@@ -68,7 +68,7 @@ func (client *SchemasClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update a Schema Resource
+// createOrUpdate - Create or update a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, resource Schema, options *SchemasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SchemasClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, resource Schema, _ *SchemasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *SchemasClient) BeginCreateVersion(ctx context.Context, resourceGro
 	}
 }
 
-// CreateVersion - Create a Schema Version Resource
+// createVersion - Create a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) createVersion(ctx context.Context, resourceGroupName string, schemaName string, body SchemaVersionWithUpdateType, options *SchemasClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *SchemasClient) createVersion(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// createVersionCreateRequest creates the CreateVersion request.
+// createVersionCreateRequest creates the createVersion request.
 func (client *SchemasClient) createVersionCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, body SchemaVersionWithUpdateType, _ *SchemasClientBeginCreateVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/createVersion"
 	if client.subscriptionID == "" {
@@ -218,7 +218,7 @@ func (client *SchemasClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a Schema Resource
+// deleteOperation - Delete a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -240,7 +240,7 @@ func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, _ *SchemasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}"
 	if client.subscriptionID == "" {

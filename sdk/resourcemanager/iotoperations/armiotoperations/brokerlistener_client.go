@@ -70,7 +70,7 @@ func (client *BrokerListenerClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a BrokerListenerResource
+// createOrUpdate - Create a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerListenerClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, resource BrokerListenerResource, options *BrokerListenerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *BrokerListenerClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BrokerListenerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, resource BrokerListenerResource, _ *BrokerListenerClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *BrokerListenerClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a BrokerListenerResource
+// deleteOperation - Delete a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerListenerClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, options *BrokerListenerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *BrokerListenerClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BrokerListenerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, _ *BrokerListenerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *SQLMigrationServicesClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Create or Update Database Migration Service.
+// createOrUpdate - Create or Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SQLMigrationServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationService, options *SQLMigrationServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SQLMigrationServicesClient) createOrUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SQLMigrationServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationService, _ *SQLMigrationServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *SQLMigrationServicesClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete Database Migration Service.
+// deleteOperation - Delete Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SQLMigrationServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, options *SQLMigrationServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *SQLMigrationServicesClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SQLMigrationServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *SQLMigrationServicesClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update Database Migration Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sqlMigrationServiceName - Name of the SQL Migration Service.
+//   - parameters - Details of SqlMigrationService resource.
+//   - options - SQLMigrationServicesClientBeginUpdateOptions contains the optional parameters for the SQLMigrationServicesClient.BeginUpdate
+//     method.
+func (client *SQLMigrationServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, options *SQLMigrationServicesClientBeginUpdateOptions) (*runtime.Poller[SQLMigrationServicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, sqlMigrationServiceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLMigrationServicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLMigrationServicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update Database Migration Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLMigrationServicesClient) update(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, options *SQLMigrationServicesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLMigrationServicesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SQLMigrationServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, _ *SQLMigrationServicesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlMigrationServiceName == "" {
+		return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -374,6 +450,68 @@ func (client *SQLMigrationServicesClient) listAuthKeysHandleResponse(resp *http.
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationKeys); err != nil {
 		return SQLMigrationServicesClientListAuthKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// ListMonitoringData - Retrieve the registered Integration Runtime nodes and their monitoring data for a given Database Migration
+// Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sqlMigrationServiceName - Name of the SQL Migration Service.
+//   - options - SQLMigrationServicesClientListMonitoringDataOptions contains the optional parameters for the SQLMigrationServicesClient.ListMonitoringData
+//     method.
+func (client *SQLMigrationServicesClient) ListMonitoringData(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, options *SQLMigrationServicesClientListMonitoringDataOptions) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
+	var err error
+	const operationName = "SQLMigrationServicesClient.ListMonitoringData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listMonitoringDataCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, options)
+	if err != nil {
+		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
+	}
+	return client.listMonitoringDataHandleResponse(httpResp, http.StatusOK)
+}
+
+// listMonitoringDataCreateRequest creates the ListMonitoringData request.
+func (client *SQLMigrationServicesClient) listMonitoringDataCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientListMonitoringDataOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listMonitoringData"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlMigrationServiceName == "" {
+		return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listMonitoringDataHandleResponse handles the ListMonitoringData response.
+func (client *SQLMigrationServicesClient) listMonitoringDataHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
+	result := SQLMigrationServicesClientListMonitoringDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
+		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
 	}
 	return result, nil
 }
@@ -594,68 +732,6 @@ func (client *SQLMigrationServicesClient) listMigrationsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListMonitoringData - Retrieve the registered Integration Runtime nodes and their monitoring data for a given Database Migration
-// Service.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sqlMigrationServiceName - Name of the SQL Migration Service.
-//   - options - SQLMigrationServicesClientListMonitoringDataOptions contains the optional parameters for the SQLMigrationServicesClient.ListMonitoringData
-//     method.
-func (client *SQLMigrationServicesClient) ListMonitoringData(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, options *SQLMigrationServicesClientListMonitoringDataOptions) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
-	var err error
-	const operationName = "SQLMigrationServicesClient.ListMonitoringData"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listMonitoringDataCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, options)
-	if err != nil {
-		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
-	}
-	return client.listMonitoringDataHandleResponse(httpResp, http.StatusOK)
-}
-
-// listMonitoringDataCreateRequest creates the ListMonitoringData request.
-func (client *SQLMigrationServicesClient) listMonitoringDataCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientListMonitoringDataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listMonitoringData"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sqlMigrationServiceName == "" {
-		return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listMonitoringDataHandleResponse handles the ListMonitoringData response.
-func (client *SQLMigrationServicesClient) listMonitoringDataHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
-	result := SQLMigrationServicesClientListMonitoringDataResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
-		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
-	}
-	return result, nil
-}
-
 // RegenerateAuthKeys - Regenerate a new set of Authentication Keys for Self Hosted Integration Runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -720,80 +796,4 @@ func (client *SQLMigrationServicesClient) regenerateAuthKeysHandleResponse(resp 
 		return SQLMigrationServicesClientRegenerateAuthKeysResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update Database Migration Service.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sqlMigrationServiceName - Name of the SQL Migration Service.
-//   - parameters - Details of SqlMigrationService resource.
-//   - options - SQLMigrationServicesClientBeginUpdateOptions contains the optional parameters for the SQLMigrationServicesClient.BeginUpdate
-//     method.
-func (client *SQLMigrationServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, options *SQLMigrationServicesClientBeginUpdateOptions) (*runtime.Poller[SQLMigrationServicesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, sqlMigrationServiceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLMigrationServicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLMigrationServicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update Database Migration Service.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SQLMigrationServicesClient) update(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, options *SQLMigrationServicesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SQLMigrationServicesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SQLMigrationServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, _ *SQLMigrationServicesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sqlMigrationServiceName == "" {
-		return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

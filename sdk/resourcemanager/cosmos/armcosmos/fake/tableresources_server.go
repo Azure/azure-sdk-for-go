@@ -45,6 +45,22 @@ type TableResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteTableRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.TableResourcesClientBeginDeleteTableRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
+	// BeginMigrateTableToAutoscale is the fake for method TableResourcesClient.BeginMigrateTableToAutoscale
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateTableToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientBeginMigrateTableToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateTableToManualThroughput is the fake for method TableResourcesClient.BeginMigrateTableToManualThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateTableToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientBeginMigrateTableToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse], errResp azfake.ErrorResponder)
+
+	// BeginRetrieveContinuousBackupInformation is the fake for method TableResourcesClient.BeginRetrieveContinuousBackupInformation
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRetrieveContinuousBackupInformation func(ctx context.Context, resourceGroupName string, accountName string, tableName string, location armcosmos.ContinuousBackupRestoreLocation, options *armcosmos.TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientRetrieveContinuousBackupInformationResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateTableThroughput is the fake for method TableResourcesClient.BeginUpdateTableThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateTableThroughput func(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.TableResourcesClientBeginUpdateTableThroughputOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientUpdateTableThroughputResponse], errResp azfake.ErrorResponder)
+
 	// GetTable is the fake for method TableResourcesClient.GetTable
 	// HTTP status codes to indicate success: http.StatusOK
 	GetTable func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientGetTableOptions) (resp azfake.Responder[armcosmos.TableResourcesClientGetTableResponse], errResp azfake.ErrorResponder)
@@ -72,22 +88,6 @@ type TableResourcesServer struct {
 	// NewListTablesPager is the fake for method TableResourcesClient.NewListTablesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListTablesPager func(resourceGroupName string, accountName string, options *armcosmos.TableResourcesClientListTablesOptions) (resp azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse])
-
-	// BeginMigrateTableToAutoscale is the fake for method TableResourcesClient.BeginMigrateTableToAutoscale
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateTableToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientBeginMigrateTableToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateTableToManualThroughput is the fake for method TableResourcesClient.BeginMigrateTableToManualThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateTableToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientBeginMigrateTableToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginRetrieveContinuousBackupInformation is the fake for method TableResourcesClient.BeginRetrieveContinuousBackupInformation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRetrieveContinuousBackupInformation func(ctx context.Context, resourceGroupName string, accountName string, tableName string, location armcosmos.ContinuousBackupRestoreLocation, options *armcosmos.TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientRetrieveContinuousBackupInformationResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateTableThroughput is the fake for method TableResourcesClient.BeginUpdateTableThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateTableThroughput func(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.TableResourcesClientBeginUpdateTableThroughputOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientUpdateTableThroughputResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTableResourcesServerTransport creates a new instance of TableResourcesServerTransport with the provided implementation.
@@ -102,13 +102,13 @@ func NewTableResourcesServerTransport(srv *TableResourcesServer) *TableResources
 		beginDeleteTable:                         newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableResponse]](),
 		beginDeleteTableRoleAssignment:           newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleAssignmentResponse]](),
 		beginDeleteTableRoleDefinition:           newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse]](),
-		newListTableRoleAssignmentsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]](),
-		newListTableRoleDefinitionsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]](),
-		newListTablesPager:                       newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]](),
 		beginMigrateTableToAutoscale:             newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse]](),
 		beginMigrateTableToManualThroughput:      newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse]](),
 		beginRetrieveContinuousBackupInformation: newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientRetrieveContinuousBackupInformationResponse]](),
 		beginUpdateTableThroughput:               newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientUpdateTableThroughputResponse]](),
+		newListTableRoleAssignmentsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]](),
+		newListTableRoleDefinitionsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]](),
+		newListTablesPager:                       newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]](),
 	}
 }
 
@@ -122,13 +122,13 @@ type TableResourcesServerTransport struct {
 	beginDeleteTable                         *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableResponse]]
 	beginDeleteTableRoleAssignment           *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleAssignmentResponse]]
 	beginDeleteTableRoleDefinition           *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse]]
-	newListTableRoleAssignmentsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]]
-	newListTableRoleDefinitionsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]]
-	newListTablesPager                       *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]]
 	beginMigrateTableToAutoscale             *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse]]
 	beginMigrateTableToManualThroughput      *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse]]
 	beginRetrieveContinuousBackupInformation *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientRetrieveContinuousBackupInformationResponse]]
 	beginUpdateTableThroughput               *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientUpdateTableThroughputResponse]]
+	newListTableRoleAssignmentsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]]
+	newListTableRoleDefinitionsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]]
+	newListTablesPager                       *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]]
 }
 
 // Do implements the policy.Transporter interface for TableResourcesServerTransport.
@@ -164,6 +164,14 @@ func (t *TableResourcesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = t.dispatchBeginDeleteTableRoleAssignment(req)
 			case "TableResourcesClient.BeginDeleteTableRoleDefinition":
 				res.resp, res.err = t.dispatchBeginDeleteTableRoleDefinition(req)
+			case "TableResourcesClient.BeginMigrateTableToAutoscale":
+				res.resp, res.err = t.dispatchBeginMigrateTableToAutoscale(req)
+			case "TableResourcesClient.BeginMigrateTableToManualThroughput":
+				res.resp, res.err = t.dispatchBeginMigrateTableToManualThroughput(req)
+			case "TableResourcesClient.BeginRetrieveContinuousBackupInformation":
+				res.resp, res.err = t.dispatchBeginRetrieveContinuousBackupInformation(req)
+			case "TableResourcesClient.BeginUpdateTableThroughput":
+				res.resp, res.err = t.dispatchBeginUpdateTableThroughput(req)
 			case "TableResourcesClient.GetTable":
 				res.resp, res.err = t.dispatchGetTable(req)
 			case "TableResourcesClient.GetTableRoleAssignment":
@@ -178,14 +186,6 @@ func (t *TableResourcesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = t.dispatchNewListTableRoleDefinitionsPager(req)
 			case "TableResourcesClient.NewListTablesPager":
 				res.resp, res.err = t.dispatchNewListTablesPager(req)
-			case "TableResourcesClient.BeginMigrateTableToAutoscale":
-				res.resp, res.err = t.dispatchBeginMigrateTableToAutoscale(req)
-			case "TableResourcesClient.BeginMigrateTableToManualThroughput":
-				res.resp, res.err = t.dispatchBeginMigrateTableToManualThroughput(req)
-			case "TableResourcesClient.BeginRetrieveContinuousBackupInformation":
-				res.resp, res.err = t.dispatchBeginRetrieveContinuousBackupInformation(req)
-			case "TableResourcesClient.BeginUpdateTableThroughput":
-				res.resp, res.err = t.dispatchBeginUpdateTableThroughput(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -502,6 +502,206 @@ func (t *TableResourcesServerTransport) dispatchBeginDeleteTableRoleDefinition(r
 	return resp, nil
 }
 
+func (t *TableResourcesServerTransport) dispatchBeginMigrateTableToAutoscale(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginMigrateTableToAutoscale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateTableToAutoscale not implemented")}
+	}
+	beginMigrateTableToAutoscale := t.beginMigrateTableToAutoscale.get(req)
+	if beginMigrateTableToAutoscale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginMigrateTableToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateTableToAutoscale = &respr
+		t.beginMigrateTableToAutoscale.add(req, beginMigrateTableToAutoscale)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateTableToAutoscale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginMigrateTableToAutoscale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateTableToAutoscale) {
+		t.beginMigrateTableToAutoscale.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchBeginMigrateTableToManualThroughput(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginMigrateTableToManualThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateTableToManualThroughput not implemented")}
+	}
+	beginMigrateTableToManualThroughput := t.beginMigrateTableToManualThroughput.get(req)
+	if beginMigrateTableToManualThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginMigrateTableToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateTableToManualThroughput = &respr
+		t.beginMigrateTableToManualThroughput.add(req, beginMigrateTableToManualThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateTableToManualThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginMigrateTableToManualThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateTableToManualThroughput) {
+		t.beginMigrateTableToManualThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginRetrieveContinuousBackupInformation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
+	}
+	beginRetrieveContinuousBackupInformation := t.beginRetrieveContinuousBackupInformation.get(req)
+	if beginRetrieveContinuousBackupInformation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRetrieveContinuousBackupInformation = &respr
+		t.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
+	}
+
+	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginRetrieveContinuousBackupInformation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
+		t.beginRetrieveContinuousBackupInformation.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchBeginUpdateTableThroughput(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdateTableThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTableThroughput not implemented")}
+	}
+	beginUpdateTableThroughput := t.beginUpdateTableThroughput.get(req)
+	if beginUpdateTableThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdateTableThroughput(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateTableThroughput = &respr
+		t.beginUpdateTableThroughput.add(req, beginUpdateTableThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateTableThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUpdateTableThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateTableThroughput) {
+		t.beginUpdateTableThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TableResourcesServerTransport) dispatchGetTable(req *http.Request) (*http.Response, error) {
 	if t.srv.GetTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTable not implemented")}
@@ -770,206 +970,6 @@ func (t *TableResourcesServerTransport) dispatchNewListTablesPager(req *http.Req
 	if !server.PagerResponderMore(newListTablesPager) {
 		t.newListTablesPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TableResourcesServerTransport) dispatchBeginMigrateTableToAutoscale(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginMigrateTableToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateTableToAutoscale not implemented")}
-	}
-	beginMigrateTableToAutoscale := t.beginMigrateTableToAutoscale.get(req)
-	if beginMigrateTableToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginMigrateTableToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateTableToAutoscale = &respr
-		t.beginMigrateTableToAutoscale.add(req, beginMigrateTableToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateTableToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginMigrateTableToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateTableToAutoscale) {
-		t.beginMigrateTableToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TableResourcesServerTransport) dispatchBeginMigrateTableToManualThroughput(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginMigrateTableToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateTableToManualThroughput not implemented")}
-	}
-	beginMigrateTableToManualThroughput := t.beginMigrateTableToManualThroughput.get(req)
-	if beginMigrateTableToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginMigrateTableToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateTableToManualThroughput = &respr
-		t.beginMigrateTableToManualThroughput.add(req, beginMigrateTableToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateTableToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginMigrateTableToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateTableToManualThroughput) {
-		t.beginMigrateTableToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TableResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginRetrieveContinuousBackupInformation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
-	}
-	beginRetrieveContinuousBackupInformation := t.beginRetrieveContinuousBackupInformation.get(req)
-	if beginRetrieveContinuousBackupInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRetrieveContinuousBackupInformation = &respr
-		t.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
-	}
-
-	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginRetrieveContinuousBackupInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
-		t.beginRetrieveContinuousBackupInformation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TableResourcesServerTransport) dispatchBeginUpdateTableThroughput(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdateTableThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTableThroughput not implemented")}
-	}
-	beginUpdateTableThroughput := t.beginUpdateTableThroughput.get(req)
-	if beginUpdateTableThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tables/(?P<tableName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdateTableThroughput(req.Context(), resourceGroupNameParam, accountNameParam, tableNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateTableThroughput = &respr
-		t.beginUpdateTableThroughput.add(req, beginUpdateTableThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateTableThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginUpdateTableThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateTableThroughput) {
-		t.beginUpdateTableThroughput.remove(req)
-	}
-
 	return resp, nil
 }
 

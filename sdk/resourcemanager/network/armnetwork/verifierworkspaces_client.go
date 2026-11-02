@@ -56,7 +56,7 @@ func NewVerifierWorkspacesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*runtime.Poller[VerifierWorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, workspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes Verifier Workspace.
+// deleteOperation - Deletes Verifier Workspace.
 //
 // Deletes Verifier Workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VerifierWorkspacesClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VerifierWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VerifierWorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

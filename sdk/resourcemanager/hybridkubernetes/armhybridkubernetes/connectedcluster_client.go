@@ -71,7 +71,7 @@ func (client *ConnectedClusterClient) BeginCreateOrReplace(ctx context.Context, 
 	}
 }
 
-// CreateOrReplace - Register a new Kubernetes cluster with Azure Resource Manager.
+// createOrReplace - Register a new Kubernetes cluster with Azure Resource Manager.
 //
 // API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure Resource Manager
 // (ARM).
@@ -96,7 +96,7 @@ func (client *ConnectedClusterClient) createOrReplace(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *ConnectedClusterClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, connectedCluster ConnectedCluster, _ *ConnectedClusterClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *ConnectedClusterClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a connected cluster.
+// deleteOperation - Delete a connected cluster.
 //
 // Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,7 +175,7 @@ func (client *ConnectedClusterClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectedClusterClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ConnectedClusterClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -259,6 +259,74 @@ func (client *ConnectedClusterClient) getHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedCluster); err != nil {
 		return ConnectedClusterClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListClusterUserCredential - Gets cluster user credentials of a connected cluster
+//
+// Gets cluster user credentials of the connected cluster with a specified resource group and name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Kubernetes cluster on which get is called.
+//   - properties - ListClusterUserCredential properties
+//   - options - ConnectedClusterClientListClusterUserCredentialOptions contains the optional parameters for the ConnectedClusterClient.ListClusterUserCredential
+//     method.
+func (client *ConnectedClusterClient) ListClusterUserCredential(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialProperties, options *ConnectedClusterClientListClusterUserCredentialOptions) (ConnectedClusterClientListClusterUserCredentialResponse, error) {
+	var err error
+	const operationName = "ConnectedClusterClient.ListClusterUserCredential"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listClusterUserCredentialCreateRequest(ctx, resourceGroupName, clusterName, properties, options)
+	if err != nil {
+		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
+	}
+	return client.listClusterUserCredentialHandleResponse(httpResp, http.StatusOK)
+}
+
+// listClusterUserCredentialCreateRequest creates the ListClusterUserCredential request.
+func (client *ConnectedClusterClient) listClusterUserCredentialCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialProperties, _ *ConnectedClusterClientListClusterUserCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}/listClusterUserCredential"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listClusterUserCredentialHandleResponse handles the ListClusterUserCredential response.
+func (client *ConnectedClusterClient) listClusterUserCredentialHandleResponse(resp *http.Response, successCodes ...int) (ConnectedClusterClientListClusterUserCredentialResponse, error) {
+	result := ConnectedClusterClientListClusterUserCredentialResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
+		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
 	}
 	return result, nil
 }
@@ -402,74 +470,6 @@ func (client *ConnectedClusterClient) listBySubscriptionHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedClusterList); err != nil {
 		return ConnectedClusterClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// ListClusterUserCredential - Gets cluster user credentials of a connected cluster
-//
-// Gets cluster user credentials of the connected cluster with a specified resource group and name.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Kubernetes cluster on which get is called.
-//   - properties - ListClusterUserCredential properties
-//   - options - ConnectedClusterClientListClusterUserCredentialOptions contains the optional parameters for the ConnectedClusterClient.ListClusterUserCredential
-//     method.
-func (client *ConnectedClusterClient) ListClusterUserCredential(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialProperties, options *ConnectedClusterClientListClusterUserCredentialOptions) (ConnectedClusterClientListClusterUserCredentialResponse, error) {
-	var err error
-	const operationName = "ConnectedClusterClient.ListClusterUserCredential"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listClusterUserCredentialCreateRequest(ctx, resourceGroupName, clusterName, properties, options)
-	if err != nil {
-		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
-	}
-	return client.listClusterUserCredentialHandleResponse(httpResp, http.StatusOK)
-}
-
-// listClusterUserCredentialCreateRequest creates the ListClusterUserCredential request.
-func (client *ConnectedClusterClient) listClusterUserCredentialCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialProperties, _ *ConnectedClusterClientListClusterUserCredentialOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}/listClusterUserCredential"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listClusterUserCredentialHandleResponse handles the ListClusterUserCredential response.
-func (client *ConnectedClusterClient) listClusterUserCredentialHandleResponse(resp *http.Response, successCodes ...int) (ConnectedClusterClientListClusterUserCredentialResponse, error) {
-	result := ConnectedClusterClientListClusterUserCredentialResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
-		return ConnectedClusterClientListClusterUserCredentialResponse{}, err
 	}
 	return result, nil
 }

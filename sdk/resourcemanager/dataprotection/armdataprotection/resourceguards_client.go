@@ -154,84 +154,6 @@ func (client *ResourceGuardsClient) getHandleResponse(resp *http.Response, succe
 	return result, nil
 }
 
-// NewGetBackupSecurityPINRequestsObjectsPager - Returns collection of operation request objects for a critical operation
-// protected by the given ResourceGuard resource.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - options - ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager
-//     method.
-func (client *ResourceGuardsClient) NewGetBackupSecurityPINRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse]{
-		More: func(page ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getBackupSecurityPINRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, nextLink, options)
-			if err != nil {
-				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
-			}
-			return client.getBackupSecurityPINRequestsObjectsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getBackupSecurityPINRequestsObjectsCreateRequest creates the GetBackupSecurityPINRequestsObjects request.
-func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, nextLink string, _ *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if resourceGuardsName == "" {
-			return nil, errors.New("parameter resourceGuardsName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getBackupSecurityPINRequestsObjectsHandleResponse handles the GetBackupSecurityPINRequestsObjects response.
-func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
-		return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
-	}
-	return result, nil
-}
-
 // GetDefaultBackupSecurityPINRequestsObject - Returns collection of operation request objects for a critical operation protected
 // by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -630,6 +552,84 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObje
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetBackupSecurityPINRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - options - ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager
+//     method.
+func (client *ResourceGuardsClient) NewGetBackupSecurityPINRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.getBackupSecurityPINRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, nextLink, options)
+			if err != nil {
+				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
+			}
+			return client.getBackupSecurityPINRequestsObjectsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getBackupSecurityPINRequestsObjectsCreateRequest creates the GetBackupSecurityPINRequestsObjects request.
+func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, nextLink string, _ *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceGuardsName == "" {
+			return nil, errors.New("parameter resourceGuardsName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// getBackupSecurityPINRequestsObjectsHandleResponse handles the GetBackupSecurityPINRequestsObjects response.
+func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
+	result := ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
+		return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
 	}
 	return result, nil
 }

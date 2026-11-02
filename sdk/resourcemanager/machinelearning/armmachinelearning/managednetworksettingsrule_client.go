@@ -71,7 +71,7 @@ func (client *ManagedNetworkSettingsRuleClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Creates or updates an outbound rule in the managed network of a machine learning workspace.
+// createOrUpdate - Creates or updates an outbound rule in the managed network of a machine learning workspace.
 //
 // Creates or updates an outbound rule in the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedNetworkSettingsRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, body OutboundRuleBasicResource, _ *ManagedNetworkSettingsRuleClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ManagedNetworkSettingsRuleClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes an outbound rule from the managed network of a machine learning workspace.
+// deleteOperation - Deletes an outbound rule from the managed network of a machine learning workspace.
 //
 // Deletes an outbound rule from the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ManagedNetworkSettingsRuleClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedNetworkSettingsRuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, _ *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {

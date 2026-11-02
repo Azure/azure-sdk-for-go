@@ -71,7 +71,7 @@ func (client *AccessPointResourcesClient) BeginCreateOrReplace(ctx context.Conte
 	}
 }
 
-// CreateOrReplace - Create or replace a confluent access point
+// createOrReplace - Create or replace a confluent access point
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPointResourcesClient) createOrReplace(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, resource AccessPointResource, options *AccessPointResourcesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *AccessPointResourcesClient) createOrReplace(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *AccessPointResourcesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, resource AccessPointResource, _ *AccessPointResourcesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}/accessPoints/{accessPointId}"
 	if client.subscriptionID == "" {
@@ -161,7 +161,7 @@ func (client *AccessPointResourcesClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete confluent access point by id
+// deleteOperation - Delete confluent access point by id
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPointResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, options *AccessPointResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -183,7 +183,7 @@ func (client *AccessPointResourcesClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessPointResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, _ *AccessPointResourcesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}/accessPoints/{accessPointId}"
 	if client.subscriptionID == "" {

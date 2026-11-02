@@ -63,7 +63,7 @@ func (client *BgpPeersClient) BeginCreateOrUpdate(ctx context.Context, resourceU
 	}
 }
 
-// CreateOrUpdate - Create a BgpPeer
+// createOrUpdate - Create a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, options *BgpPeersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI st
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, _ *BgpPeersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}"
 	if resourceURI == "" {

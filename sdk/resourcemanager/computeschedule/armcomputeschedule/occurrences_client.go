@@ -44,6 +44,84 @@ func NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
+// - resourceGroupName - The name of the resource group. The name is case insensitive.
+// - scheduledActionName - The name of the ScheduledAction
+// - occurrenceID - The name of the Occurrence
+// - body - The content of the action request
+// - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
+func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.delay(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OccurrencesClientDelayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OccurrencesClientDelayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// delay -
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OccurrencesClient.BeginDelay"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.delayCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// delayCreateRequest creates the delay request.
+func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, _ *OccurrencesClientBeginDelayOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/delay"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	if occurrenceID == "" {
+		return nil, errors.New("parameter occurrenceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{occurrenceId}", url.PathEscape(occurrenceID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Cancel - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -112,84 +190,6 @@ func (client *OccurrencesClient) cancelHandleResponse(resp *http.Response, succe
 		return OccurrencesClientCancelResponse{}, err
 	}
 	return result, nil
-}
-
-// - resourceGroupName - The name of the resource group. The name is case insensitive.
-// - scheduledActionName - The name of the ScheduledAction
-// - occurrenceID - The name of the Occurrence
-// - body - The content of the action request
-// - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
-func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delay(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OccurrencesClientDelayResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OccurrencesClientDelayResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delay -
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OccurrencesClient.BeginDelay"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.delayCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// delayCreateRequest creates the Delay request.
-func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, _ *OccurrencesClientBeginDelayOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/delay"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	if occurrenceID == "" {
-		return nil, errors.New("parameter occurrenceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{occurrenceId}", url.PathEscape(occurrenceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Get - Get a Occurrence

@@ -21,6 +21,14 @@ import (
 
 // IntegrationRuntimesServer is a fake server for instances of the armdatafactory.IntegrationRuntimesClient type.
 type IntegrationRuntimesServer struct {
+	// BeginStart is the fake for method IntegrationRuntimesClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStart func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientBeginStartOptions) (resp azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method IntegrationRuntimesClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStop func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientBeginStopOptions) (resp azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStopResponse], errResp azfake.ErrorResponder)
+
 	// CreateLinkedIntegrationRuntime is the fake for method IntegrationRuntimesClient.CreateLinkedIntegrationRuntime
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateLinkedIntegrationRuntime func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest armdatafactory.CreateLinkedIntegrationRuntimeRequest, options *armdatafactory.IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse], errResp azfake.ErrorResponder)
@@ -53,13 +61,13 @@ type IntegrationRuntimesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAuthKeys func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientListAuthKeysOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimesClientListAuthKeysResponse], errResp azfake.ErrorResponder)
 
-	// NewListByFactoryPager is the fake for method IntegrationRuntimesClient.NewListByFactoryPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByFactoryPager func(resourceGroupName string, factoryName string, options *armdatafactory.IntegrationRuntimesClientListByFactoryOptions) (resp azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse])
-
 	// ListOutboundNetworkDependenciesEndpoints is the fake for method IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints
 	// HTTP status codes to indicate success: http.StatusOK
 	ListOutboundNetworkDependenciesEndpoints func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByFactoryPager is the fake for method IntegrationRuntimesClient.NewListByFactoryPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByFactoryPager func(resourceGroupName string, factoryName string, options *armdatafactory.IntegrationRuntimesClientListByFactoryOptions) (resp azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse])
 
 	// RegenerateAuthKey is the fake for method IntegrationRuntimesClient.RegenerateAuthKey
 	// HTTP status codes to indicate success: http.StatusOK
@@ -68,14 +76,6 @@ type IntegrationRuntimesServer struct {
 	// RemoveLinks is the fake for method IntegrationRuntimesClient.RemoveLinks
 	// HTTP status codes to indicate success: http.StatusOK
 	RemoveLinks func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest armdatafactory.LinkedIntegrationRuntimeRequest, options *armdatafactory.IntegrationRuntimesClientRemoveLinksOptions) (resp azfake.Responder[armdatafactory.IntegrationRuntimesClientRemoveLinksResponse], errResp azfake.ErrorResponder)
-
-	// BeginStart is the fake for method IntegrationRuntimesClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStart func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientBeginStartOptions) (resp azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStartResponse], errResp azfake.ErrorResponder)
-
-	// BeginStop is the fake for method IntegrationRuntimesClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStop func(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *armdatafactory.IntegrationRuntimesClientBeginStopOptions) (resp azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStopResponse], errResp azfake.ErrorResponder)
 
 	// SyncCredentials is the fake for method IntegrationRuntimesClient.SyncCredentials
 	// HTTP status codes to indicate success: http.StatusOK
@@ -96,9 +96,9 @@ type IntegrationRuntimesServer struct {
 func NewIntegrationRuntimesServerTransport(srv *IntegrationRuntimesServer) *IntegrationRuntimesServerTransport {
 	return &IntegrationRuntimesServerTransport{
 		srv:                   srv,
-		newListByFactoryPager: newTracker[azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse]](),
 		beginStart:            newTracker[azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStartResponse]](),
 		beginStop:             newTracker[azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStopResponse]](),
+		newListByFactoryPager: newTracker[azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse]](),
 	}
 }
 
@@ -106,9 +106,9 @@ func NewIntegrationRuntimesServerTransport(srv *IntegrationRuntimesServer) *Inte
 // Don't use this type directly, use NewIntegrationRuntimesServerTransport instead.
 type IntegrationRuntimesServerTransport struct {
 	srv                   *IntegrationRuntimesServer
-	newListByFactoryPager *tracker[azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse]]
 	beginStart            *tracker[azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStartResponse]]
 	beginStop             *tracker[azfake.PollerResponder[armdatafactory.IntegrationRuntimesClientStopResponse]]
+	newListByFactoryPager *tracker[azfake.PagerResponder[armdatafactory.IntegrationRuntimesClientListByFactoryResponse]]
 }
 
 // Do implements the policy.Transporter interface for IntegrationRuntimesServerTransport.
@@ -132,6 +132,10 @@ func (i *IntegrationRuntimesServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
+			case "IntegrationRuntimesClient.BeginStart":
+				res.resp, res.err = i.dispatchBeginStart(req)
+			case "IntegrationRuntimesClient.BeginStop":
+				res.resp, res.err = i.dispatchBeginStop(req)
 			case "IntegrationRuntimesClient.CreateLinkedIntegrationRuntime":
 				res.resp, res.err = i.dispatchCreateLinkedIntegrationRuntime(req)
 			case "IntegrationRuntimesClient.CreateOrUpdate":
@@ -148,18 +152,14 @@ func (i *IntegrationRuntimesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = i.dispatchGetStatus(req)
 			case "IntegrationRuntimesClient.ListAuthKeys":
 				res.resp, res.err = i.dispatchListAuthKeys(req)
-			case "IntegrationRuntimesClient.NewListByFactoryPager":
-				res.resp, res.err = i.dispatchNewListByFactoryPager(req)
 			case "IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints":
 				res.resp, res.err = i.dispatchListOutboundNetworkDependenciesEndpoints(req)
+			case "IntegrationRuntimesClient.NewListByFactoryPager":
+				res.resp, res.err = i.dispatchNewListByFactoryPager(req)
 			case "IntegrationRuntimesClient.RegenerateAuthKey":
 				res.resp, res.err = i.dispatchRegenerateAuthKey(req)
 			case "IntegrationRuntimesClient.RemoveLinks":
 				res.resp, res.err = i.dispatchRemoveLinks(req)
-			case "IntegrationRuntimesClient.BeginStart":
-				res.resp, res.err = i.dispatchBeginStart(req)
-			case "IntegrationRuntimesClient.BeginStop":
-				res.resp, res.err = i.dispatchBeginStop(req)
 			case "IntegrationRuntimesClient.SyncCredentials":
 				res.resp, res.err = i.dispatchSyncCredentials(req)
 			case "IntegrationRuntimesClient.Update":
@@ -180,6 +180,102 @@ func (i *IntegrationRuntimesServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (i *IntegrationRuntimesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := i.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginStart(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		i.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		i.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *IntegrationRuntimesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
+	}
+	beginStop := i.beginStop.get(req)
+	if beginStop == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginStop(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStop = &respr
+		i.beginStop.add(req, beginStop)
+	}
+
+	resp, err := server.PollerResponderNext(beginStop, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginStop.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStop) {
+		i.beginStop.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (i *IntegrationRuntimesServerTransport) dispatchCreateLinkedIntegrationRuntime(req *http.Request) (*http.Response, error) {
@@ -500,6 +596,43 @@ func (i *IntegrationRuntimesServerTransport) dispatchListAuthKeys(req *http.Requ
 	return resp, nil
 }
 
+func (i *IntegrationRuntimesServerTransport) dispatchListOutboundNetworkDependenciesEndpoints(req *http.Request) (*http.Response, error) {
+	if i.srv.ListOutboundNetworkDependenciesEndpoints == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListOutboundNetworkDependenciesEndpoints not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+	if err != nil {
+		return nil, err
+	}
+	integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListOutboundNetworkDependenciesEndpoints(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *IntegrationRuntimesServerTransport) dispatchNewListByFactoryPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByFactoryPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByFactoryPager not implemented")}
@@ -537,43 +670,6 @@ func (i *IntegrationRuntimesServerTransport) dispatchNewListByFactoryPager(req *
 	}
 	if !server.PagerResponderMore(newListByFactoryPager) {
 		i.newListByFactoryPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *IntegrationRuntimesServerTransport) dispatchListOutboundNetworkDependenciesEndpoints(req *http.Request) (*http.Response, error) {
-	if i.srv.ListOutboundNetworkDependenciesEndpoints == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListOutboundNetworkDependenciesEndpoints not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-	if err != nil {
-		return nil, err
-	}
-	integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.ListOutboundNetworkDependenciesEndpoints(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -657,102 +753,6 @@ func (i *IntegrationRuntimesServerTransport) dispatchRemoveLinks(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (i *IntegrationRuntimesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := i.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginStart(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		i.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		i.beginStart.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (i *IntegrationRuntimesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginStop == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
-	}
-	beginStop := i.beginStop.get(req)
-	if beginStop == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		integrationRuntimeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("integrationRuntimeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginStop(req.Context(), resourceGroupNameParam, factoryNameParam, integrationRuntimeNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStop = &respr
-		i.beginStop.add(req, beginStop)
-	}
-
-	resp, err := server.PollerResponderNext(beginStop, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		i.beginStop.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStop) {
-		i.beginStop.remove(req)
-	}
-
 	return resp, nil
 }
 

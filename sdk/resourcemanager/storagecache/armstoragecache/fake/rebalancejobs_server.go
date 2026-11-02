@@ -25,6 +25,10 @@ type RebalanceJobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, options *armstoragecache.RebalanceJobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragecache.RebalanceJobsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RebalanceJobsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties armstoragecache.RebalanceJobUpdate, options *armstoragecache.RebalanceJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.RebalanceJobsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RebalanceJobsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, options *armstoragecache.RebalanceJobsClientGetOptions) (resp azfake.Responder[armstoragecache.RebalanceJobsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type RebalanceJobsServer struct {
 	// NewListByAmlFilesystemPager is the fake for method RebalanceJobsClient.NewListByAmlFilesystemPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAmlFilesystemPager func(resourceGroupName string, amlFilesystemName string, options *armstoragecache.RebalanceJobsClientListByAmlFilesystemOptions) (resp azfake.PagerResponder[armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse])
-
-	// BeginUpdate is the fake for method RebalanceJobsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties armstoragecache.RebalanceJobUpdate, options *armstoragecache.RebalanceJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.RebalanceJobsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRebalanceJobsServerTransport creates a new instance of RebalanceJobsServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewRebalanceJobsServerTransport(srv *RebalanceJobsServer) *RebalanceJobsSer
 	return &RebalanceJobsServerTransport{
 		srv:                         srv,
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragecache.RebalanceJobsClientDeleteResponse]](),
-		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragecache.RebalanceJobsClientUpdateResponse]](),
+		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewRebalanceJobsServerTransport(srv *RebalanceJobsServer) *RebalanceJobsSer
 type RebalanceJobsServerTransport struct {
 	srv                         *RebalanceJobsServer
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragecache.RebalanceJobsClientDeleteResponse]]
-	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragecache.RebalanceJobsClientUpdateResponse]]
+	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse]]
 }
 
 // Do implements the policy.Transporter interface for RebalanceJobsServerTransport.
@@ -82,12 +82,12 @@ func (r *RebalanceJobsServerTransport) dispatchToMethodFake(req *http.Request, m
 			switch method {
 			case "RebalanceJobsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RebalanceJobsClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RebalanceJobsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RebalanceJobsClient.NewListByAmlFilesystemPager":
 				res.resp, res.err = r.dispatchNewListByAmlFilesystemPager(req)
-			case "RebalanceJobsClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -110,7 +110,7 @@ func (r *RebalanceJobsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceJobs/(?P<rebalanceJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceJobs/(?P<rebalanceJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -152,91 +152,13 @@ func (r *RebalanceJobsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (r *RebalanceJobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceJobs/(?P<rebalanceJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-	if err != nil {
-		return nil, err
-	}
-	rebalanceJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("rebalanceJobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, rebalanceJobNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RebalanceJob, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *RebalanceJobsServerTransport) dispatchNewListByAmlFilesystemPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListByAmlFilesystemPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByAmlFilesystemPager not implemented")}
-	}
-	newListByAmlFilesystemPager := r.newListByAmlFilesystemPager.get(req)
-	if newListByAmlFilesystemPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceJobs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListByAmlFilesystemPager(resourceGroupNameParam, amlFilesystemNameParam, nil)
-		newListByAmlFilesystemPager = &resp
-		r.newListByAmlFilesystemPager.add(req, newListByAmlFilesystemPager)
-		server.PagerResponderInjectNextLinks(newListByAmlFilesystemPager, req, func(page *armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByAmlFilesystemPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListByAmlFilesystemPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByAmlFilesystemPager) {
-		r.newListByAmlFilesystemPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RebalanceJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceJobs/(?P<rebalanceJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceJobs/(?P<rebalanceJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -279,6 +201,84 @@ func (r *RebalanceJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		r.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RebalanceJobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceJobs/(?P<rebalanceJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+	if err != nil {
+		return nil, err
+	}
+	rebalanceJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("rebalanceJobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, rebalanceJobNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RebalanceJob, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RebalanceJobsServerTransport) dispatchNewListByAmlFilesystemPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByAmlFilesystemPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByAmlFilesystemPager not implemented")}
+	}
+	newListByAmlFilesystemPager := r.newListByAmlFilesystemPager.get(req)
+	if newListByAmlFilesystemPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceJobs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByAmlFilesystemPager(resourceGroupNameParam, amlFilesystemNameParam, nil)
+		newListByAmlFilesystemPager = &resp
+		r.newListByAmlFilesystemPager.add(req, newListByAmlFilesystemPager)
+		server.PagerResponderInjectNextLinks(newListByAmlFilesystemPager, req, func(page *armstoragecache.RebalanceJobsClientListByAmlFilesystemResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByAmlFilesystemPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByAmlFilesystemPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByAmlFilesystemPager) {
+		r.newListByAmlFilesystemPager.remove(req)
+	}
 	return resp, nil
 }
 

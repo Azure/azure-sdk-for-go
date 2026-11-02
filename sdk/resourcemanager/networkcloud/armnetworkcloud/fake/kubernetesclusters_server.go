@@ -30,6 +30,14 @@ type KubernetesClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *armnetworkcloud.KubernetesClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRestartNode is the fake for method KubernetesClustersClient.BeginRestartNode
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestartNode func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters armnetworkcloud.KubernetesClusterRestartNodeParameters, options *armnetworkcloud.KubernetesClustersClientBeginRestartNodeOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientRestartNodeResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method KubernetesClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters armnetworkcloud.KubernetesClusterPatchParameters, options *armnetworkcloud.KubernetesClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method KubernetesClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *armnetworkcloud.KubernetesClustersClientGetOptions) (resp azfake.Responder[armnetworkcloud.KubernetesClustersClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,14 +49,6 @@ type KubernetesClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method KubernetesClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.KubernetesClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse])
-
-	// BeginRestartNode is the fake for method KubernetesClustersClient.BeginRestartNode
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRestartNode func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters armnetworkcloud.KubernetesClusterRestartNodeParameters, options *armnetworkcloud.KubernetesClustersClientBeginRestartNodeOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientRestartNodeResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method KubernetesClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters armnetworkcloud.KubernetesClusterPatchParameters, options *armnetworkcloud.KubernetesClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKubernetesClustersServerTransport creates a new instance of KubernetesClustersServerTransport with the provided implementation.
@@ -59,10 +59,10 @@ func NewKubernetesClustersServerTransport(srv *KubernetesClustersServer) *Kubern
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse]](),
 		beginRestartNode:            newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientRestartNodeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -72,10 +72,10 @@ type KubernetesClustersServerTransport struct {
 	srv                         *KubernetesClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse]]
 	beginRestartNode            *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientRestartNodeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for KubernetesClustersServerTransport.
@@ -103,16 +103,16 @@ func (k *KubernetesClustersServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = k.dispatchBeginCreateOrUpdate(req)
 			case "KubernetesClustersClient.BeginDelete":
 				res.resp, res.err = k.dispatchBeginDelete(req)
+			case "KubernetesClustersClient.BeginRestartNode":
+				res.resp, res.err = k.dispatchBeginRestartNode(req)
+			case "KubernetesClustersClient.BeginUpdate":
+				res.resp, res.err = k.dispatchBeginUpdate(req)
 			case "KubernetesClustersClient.Get":
 				res.resp, res.err = k.dispatchGet(req)
 			case "KubernetesClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = k.dispatchNewListByResourceGroupPager(req)
 			case "KubernetesClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = k.dispatchNewListBySubscriptionPager(req)
-			case "KubernetesClustersClient.BeginRestartNode":
-				res.resp, res.err = k.dispatchBeginRestartNode(req)
-			case "KubernetesClustersClient.BeginUpdate":
-				res.resp, res.err = k.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -234,6 +234,111 @@ func (k *KubernetesClustersServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		k.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (k *KubernetesClustersServerTransport) dispatchBeginRestartNode(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginRestartNode == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestartNode not implemented")}
+	}
+	beginRestartNode := k.beginRestartNode.get(req)
+	if beginRestartNode == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restartNode`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterRestartNodeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := k.srv.BeginRestartNode(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestartNode = &respr
+		k.beginRestartNode.add(req, beginRestartNode)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestartNode, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginRestartNode.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestartNode) {
+		k.beginRestartNode.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (k *KubernetesClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := k.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesClustersClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesClustersClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		k.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		k.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -377,111 +482,6 @@ func (k *KubernetesClustersServerTransport) dispatchNewListBySubscriptionPager(r
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		k.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (k *KubernetesClustersServerTransport) dispatchBeginRestartNode(req *http.Request) (*http.Response, error) {
-	if k.srv.BeginRestartNode == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestartNode not implemented")}
-	}
-	beginRestartNode := k.beginRestartNode.get(req)
-	if beginRestartNode == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restartNode`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterRestartNodeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := k.srv.BeginRestartNode(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestartNode = &respr
-		k.beginRestartNode.add(req, beginRestartNode)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestartNode, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		k.beginRestartNode.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestartNode) {
-		k.beginRestartNode.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (k *KubernetesClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if k.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := k.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesClusterPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		kubernetesClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.KubernetesClustersClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.KubernetesClustersClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		k.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		k.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		k.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

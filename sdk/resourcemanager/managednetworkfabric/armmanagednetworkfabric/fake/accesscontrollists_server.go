@@ -29,18 +29,6 @@ type AccessControlListsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accessControlListName string, options *armmanagednetworkfabric.AccessControlListsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AccessControlListsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accessControlListName string, options *armmanagednetworkfabric.AccessControlListsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.AccessControlListsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method AccessControlListsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.AccessControlListsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method AccessControlListsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmanagednetworkfabric.AccessControlListsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse])
-
 	// BeginResync is the fake for method AccessControlListsClient.BeginResync
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginResync func(ctx context.Context, resourceGroupName string, accessControlListName string, options *armmanagednetworkfabric.AccessControlListsClientBeginResyncOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientResyncResponse], errResp azfake.ErrorResponder)
@@ -56,6 +44,18 @@ type AccessControlListsServer struct {
 	// BeginValidateConfiguration is the fake for method AccessControlListsClient.BeginValidateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateConfiguration func(ctx context.Context, resourceGroupName string, accessControlListName string, options *armmanagednetworkfabric.AccessControlListsClientBeginValidateConfigurationOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientValidateConfigurationResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AccessControlListsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accessControlListName string, options *armmanagednetworkfabric.AccessControlListsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.AccessControlListsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method AccessControlListsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.AccessControlListsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method AccessControlListsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmanagednetworkfabric.AccessControlListsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse])
 }
 
 // NewAccessControlListsServerTransport creates a new instance of AccessControlListsServerTransport with the provided implementation.
@@ -66,12 +66,12 @@ func NewAccessControlListsServerTransport(srv *AccessControlListsServer) *Access
 		srv:                            srv,
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse]](),
 		beginResync:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientResyncResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientUpdateAdministrativeStateResponse]](),
 		beginValidateConfiguration:     newTracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientValidateConfigurationResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -81,12 +81,12 @@ type AccessControlListsServerTransport struct {
 	srv                            *AccessControlListsServer
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse]]
 	beginResync                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientResyncResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientUpdateAdministrativeStateResponse]]
 	beginValidateConfiguration     *tracker[azfake.PollerResponder[armmanagednetworkfabric.AccessControlListsClientValidateConfigurationResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccessControlListsServerTransport.
@@ -114,12 +114,6 @@ func (a *AccessControlListsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AccessControlListsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AccessControlListsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AccessControlListsClient.NewListByResourceGroupPager":
-				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AccessControlListsClient.NewListBySubscriptionPager":
-				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AccessControlListsClient.BeginResync":
 				res.resp, res.err = a.dispatchBeginResync(req)
 			case "AccessControlListsClient.BeginUpdate":
@@ -128,6 +122,12 @@ func (a *AccessControlListsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = a.dispatchBeginUpdateAdministrativeState(req)
 			case "AccessControlListsClient.BeginValidateConfiguration":
 				res.resp, res.err = a.dispatchBeginValidateConfiguration(req)
+			case "AccessControlListsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AccessControlListsClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AccessControlListsClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -233,109 +233,6 @@ func (a *AccessControlListsServerTransport) dispatchBeginDelete(req *http.Reques
 		a.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (a *AccessControlListsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists/(?P<accessControlListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accessControlListNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accessControlListName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, accessControlListNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessControlList, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AccessControlListsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		a.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AccessControlListsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -520,6 +417,109 @@ func (a *AccessControlListsServerTransport) dispatchBeginValidateConfiguration(r
 		a.beginValidateConfiguration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AccessControlListsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists/(?P<accessControlListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accessControlListNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accessControlListName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, accessControlListNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessControlList, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccessControlListsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.AccessControlListsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AccessControlListsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/accessControlLists`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.AccessControlListsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

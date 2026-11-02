@@ -68,7 +68,7 @@ func (client *AppLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create an Azure Kubernetes Application Network resource.
+// createOrUpdate - Create an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, appLinkName string, resource AppLink, options *AppLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *AppLinksClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, resource AppLink, _ *AppLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *AppLinksClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete an Azure Kubernetes Application Network resource.
+// deleteOperation - Delete an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, appLinkName string, options *AppLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *AppLinksClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AppLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, _ *AppLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
@@ -186,6 +186,82 @@ func (client *AppLinksClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an Azure Kubernetes Application Network resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - appLinkName - The name of the AppLink
+//   - properties - The resource properties to be updated.
+//   - options - AppLinksClientBeginUpdateOptions contains the optional parameters for the AppLinksClient.BeginUpdate method.
+func (client *AppLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*runtime.Poller[AppLinksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, appLinkName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppLinksClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppLinksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an Azure Kubernetes Application Network resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppLinksClient) update(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AppLinksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, appLinkName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AppLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, _ *AppLinksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if appLinkName == "" {
+		return nil, errors.New("parameter appLinkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -386,80 +462,4 @@ func (client *AppLinksClient) listBySubscriptionHandleResponse(resp *http.Respon
 		return AppLinksClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an Azure Kubernetes Application Network resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - appLinkName - The name of the AppLink
-//   - properties - The resource properties to be updated.
-//   - options - AppLinksClientBeginUpdateOptions contains the optional parameters for the AppLinksClient.BeginUpdate method.
-func (client *AppLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*runtime.Poller[AppLinksClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, appLinkName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppLinksClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppLinksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an Azure Kubernetes Application Network resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AppLinksClient) update(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AppLinksClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, appLinkName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AppLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, _ *AppLinksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appLinkName == "" {
-		return nil, errors.New("parameter appLinkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

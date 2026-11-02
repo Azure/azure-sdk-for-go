@@ -67,7 +67,7 @@ func (client *NetworkFabricsClient) BeginArmConfigurationDiff(ctx context.Contex
 	}
 }
 
-// ArmConfigurationDiff - Post action: Triggers diff of NetworkFabric ARM Configuration.
+// armConfigurationDiff - Post action: Triggers diff of NetworkFabric ARM Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) armConfigurationDiff(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginArmConfigurationDiffOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *NetworkFabricsClient) armConfigurationDiff(ctx context.Context, re
 	return httpResp, nil
 }
 
-// armConfigurationDiffCreateRequest creates the ArmConfigurationDiff request.
+// armConfigurationDiffCreateRequest creates the armConfigurationDiff request.
 func (client *NetworkFabricsClient) armConfigurationDiffCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginArmConfigurationDiffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/armConfigurationDiff"
 	if client.subscriptionID == "" {
@@ -139,7 +139,7 @@ func (client *NetworkFabricsClient) BeginCommitBatchStatus(ctx context.Context, 
 	}
 }
 
-// CommitBatchStatus - Post action: Returns a status of commit batch operation.
+// commitBatchStatus - Post action: Returns a status of commit batch operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) commitBatchStatus(ctx context.Context, resourceGroupName string, networkFabricName string, body CommitBatchStatusRequest, options *NetworkFabricsClientBeginCommitBatchStatusOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *NetworkFabricsClient) commitBatchStatus(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// commitBatchStatusCreateRequest creates the CommitBatchStatus request.
+// commitBatchStatusCreateRequest creates the commitBatchStatus request.
 func (client *NetworkFabricsClient) commitBatchStatusCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body CommitBatchStatusRequest, _ *NetworkFabricsClientBeginCommitBatchStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/commitBatchStatus"
 	if client.subscriptionID == "" {
@@ -214,7 +214,7 @@ func (client *NetworkFabricsClient) BeginCommitConfiguration(ctx context.Context
 	}
 }
 
-// CommitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+// commitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) commitConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
@@ -236,7 +236,7 @@ func (client *NetworkFabricsClient) commitConfiguration(ctx context.Context, res
 	return httpResp, nil
 }
 
-// commitConfigurationCreateRequest creates the CommitConfiguration request.
+// commitConfigurationCreateRequest creates the commitConfiguration request.
 func (client *NetworkFabricsClient) commitConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/commitConfiguration"
 	if client.subscriptionID == "" {
@@ -293,7 +293,7 @@ func (client *NetworkFabricsClient) BeginCreate(ctx context.Context, resourceGro
 	}
 }
 
-// Create - Create Network Fabric resource.
+// create - Create Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabric, options *NetworkFabricsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -315,7 +315,7 @@ func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabric, _ *NetworkFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
 	if client.subscriptionID == "" {
@@ -368,7 +368,7 @@ func (client *NetworkFabricsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete Network Fabric resource.
+// deleteOperation - Delete Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -390,7 +390,7 @@ func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
 	if client.subscriptionID == "" {
@@ -438,7 +438,7 @@ func (client *NetworkFabricsClient) BeginDeprovision(ctx context.Context, resour
 	}
 }
 
-// Deprovision - Deprovisions the underlying resources in the given Network Fabric instance.
+// deprovision - Deprovisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeprovisionOptions) (*http.Response, error) {
 	var err error
@@ -460,7 +460,7 @@ func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deprovisionCreateRequest creates the Deprovision request.
+// deprovisionCreateRequest creates the deprovision request.
 func (client *NetworkFabricsClient) deprovisionCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginDeprovisionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/deprovision"
 	if client.subscriptionID == "" {
@@ -510,7 +510,7 @@ func (client *NetworkFabricsClient) BeginDiscardCommitBatch(ctx context.Context,
 	}
 }
 
-// DiscardCommitBatch - Post action: Discards a Batch operation in progress.
+// discardCommitBatch - Post action: Discards a Batch operation in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkFabricsClient) discardCommitBatch(ctx context.Context, resourceGroupName string, networkFabricName string, body DiscardCommitBatchRequest, options *NetworkFabricsClientBeginDiscardCommitBatchOptions) (*http.Response, error) {
 	var err error
@@ -532,7 +532,7 @@ func (client *NetworkFabricsClient) discardCommitBatch(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// discardCommitBatchCreateRequest creates the DiscardCommitBatch request.
+// discardCommitBatchCreateRequest creates the discardCommitBatch request.
 func (client *NetworkFabricsClient) discardCommitBatchCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body DiscardCommitBatchRequest, _ *NetworkFabricsClientBeginDiscardCommitBatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/discardCommitBatch"
 	if client.subscriptionID == "" {
@@ -559,6 +559,1062 @@ func (client *NetworkFabricsClient) discardCommitBatchCreateRequest(ctx context.
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginGetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginGetTopologyOptions contains the optional parameters for the NetworkFabricsClient.BeginGetTopology
+//     method.
+func (client *NetworkFabricsClient) BeginGetTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*runtime.Poller[NetworkFabricsClientGetTopologyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getTopology(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientGetTopologyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientGetTopologyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) getTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginGetTopology"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getTopologyCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getTopologyCreateRequest creates the getTopology request.
+func (client *NetworkFabricsClient) getTopologyCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginGetTopologyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/getTopology"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginLockFabric - Post action: Triggers network fabric lock operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Request payload.
+//   - options - NetworkFabricsClientBeginLockFabricOptions contains the optional parameters for the NetworkFabricsClient.BeginLockFabric
+//     method.
+func (client *NetworkFabricsClient) BeginLockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*runtime.Poller[NetworkFabricsClientLockFabricResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.lockFabric(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientLockFabricResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientLockFabricResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// lockFabric - Post action: Triggers network fabric lock operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) lockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginLockFabric"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.lockFabricCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// lockFabricCreateRequest creates the lockFabric request.
+func (client *NetworkFabricsClient) lockFabricCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, _ *NetworkFabricsClientBeginLockFabricOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/lockFabric"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginProvision - Provisions the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginProvisionOptions contains the optional parameters for the NetworkFabricsClient.BeginProvision
+//     method.
+func (client *NetworkFabricsClient) BeginProvision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*runtime.Poller[NetworkFabricsClientProvisionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.provision(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientProvisionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientProvisionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// provision - Provisions the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginProvision"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.provisionCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// provisionCreateRequest creates the provision request.
+func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginProvisionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/provision"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginRefreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkFabricsClientRefreshConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshConfiguration(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRefreshConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRefreshConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// refreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginRefreshConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// refreshConfigurationCreateRequest creates the refreshConfiguration request.
+func (client *NetworkFabricsClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResyncCertificates - Re-sync all certificates on Network Devices.
+//
+// Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
+// missed during a previous certificate rotation to be brought back into sync.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginResyncCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncCertificates
+//     method.
+func (client *NetworkFabricsClient) BeginResyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*runtime.Poller[NetworkFabricsClientResyncCertificatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resyncCertificates(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientResyncCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientResyncCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resyncCertificates - Re-sync all certificates on Network Devices.
+//
+// Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
+// missed during a previous certificate rotation to be brought back into sync.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) resyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginResyncCertificates"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncCertificatesCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resyncCertificatesCreateRequest creates the resyncCertificates request.
+func (client *NetworkFabricsClient) resyncCertificatesCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginResyncCertificatesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/resyncCertificates"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResyncPasswords - Resync the latest passwords to the Terminal Server and Network Devices.
+//
+// Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
+// Allows devices to be brought back in sync after a partially successful password rotation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginResyncPasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncPasswords
+//     method.
+func (client *NetworkFabricsClient) BeginResyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*runtime.Poller[NetworkFabricsClientResyncPasswordsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resyncPasswords(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientResyncPasswordsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientResyncPasswordsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resyncPasswords - Resync the latest passwords to the Terminal Server and Network Devices.
+//
+// Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
+// Allows devices to be brought back in sync after a partially successful password rotation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) resyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginResyncPasswords"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncPasswordsCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resyncPasswordsCreateRequest creates the resyncPasswords request.
+func (client *NetworkFabricsClient) resyncPasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginResyncPasswordsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/resyncPasswords"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRotateCertificates - Rotate all certificates on Network Devices.
+//
+// Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
+// be updated and must be resynchronized with the new certificates once they are enabled.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginRotateCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginRotateCertificates
+//     method.
+func (client *NetworkFabricsClient) BeginRotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*runtime.Poller[NetworkFabricsClientRotateCertificatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rotateCertificates(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRotateCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRotateCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rotateCertificates - Rotate all certificates on Network Devices.
+//
+// Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
+// be updated and must be resynchronized with the new certificates once they are enabled.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) rotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginRotateCertificates"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rotateCertificatesCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rotateCertificatesCreateRequest creates the rotateCertificates request.
+func (client *NetworkFabricsClient) rotateCertificatesCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRotateCertificatesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/rotateCertificates"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRotatePasswords - Rotate all passwords on the Terminal Server and Network Devices.
+//
+// Creates new passwords, then updates the Terminal Server and Network Devices to use the new passwords.
+// Note that disabled devices cannot be updated and must be resynchronized with the new passwords once they are enabled.
+// Fails if any of the devices could not be updated with the new password.
+// Failed devices should be resynchronized with the new passwords once possible.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginRotatePasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginRotatePasswords
+//     method.
+func (client *NetworkFabricsClient) BeginRotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*runtime.Poller[NetworkFabricsClientRotatePasswordsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rotatePasswords(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRotatePasswordsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRotatePasswordsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rotatePasswords - Rotate all passwords on the Terminal Server and Network Devices.
+//
+// Creates new passwords, then updates the Terminal Server and Network Devices to use the new passwords.
+// Note that disabled devices cannot be updated and must be resynchronized with the new passwords once they are enabled.
+// Fails if any of the devices could not be updated with the new password.
+// Failed devices should be resynchronized with the new passwords once possible.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) rotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginRotatePasswords"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rotatePasswordsCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rotatePasswordsCreateRequest creates the rotatePasswords request.
+func (client *NetworkFabricsClient) rotatePasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRotatePasswordsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/rotatePasswords"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Update certain properties of the Network Fabric resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Network Fabric properties to update.
+//   - options - NetworkFabricsClientBeginUpdateOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdate
+//     method.
+func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*runtime.Poller[NetworkFabricsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update certain properties of the Network Fabric resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, _ *NetworkFabricsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Request payload.
+//   - options - NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions contains the optional parameters for the
+//     NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration method.
+func (client *NetworkFabricsClient) BeginUpdateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateInfraManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources in the
+// given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) updateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateInfraManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateInfraManagementBfdConfigurationCreateRequest creates the updateInfraManagementBfdConfiguration request.
+func (client *NetworkFabricsClient) updateInfraManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, _ *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateInfraManagementBfdConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Request payload.
+//   - options - NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions contains the optional parameters for
+//     the NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration method.
+func (client *NetworkFabricsClient) BeginUpdateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateWorkloadManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateWorkloadManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateWorkloadManagementBfdConfigurationCreateRequest creates the updateWorkloadManagementBfdConfiguration request.
+func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, _ *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Network Fabric properties to update.
+//   - options - NetworkFabricsClientBeginUpgradeOptions contains the optional parameters for the NetworkFabricsClient.BeginUpgrade
+//     method.
+func (client *NetworkFabricsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions) (*runtime.Poller[NetworkFabricsClientUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgrade(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) upgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradeCreateRequest creates the upgrade request.
+func (client *NetworkFabricsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, _ *NetworkFabricsClientBeginUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/upgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Validate configuration properties.
+//   - options - NetworkFabricsClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginValidateConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*runtime.Poller[NetworkFabricsClientValidateConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) validateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginValidateConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateConfigurationCreateRequest creates the validateConfiguration request.
+func (client *NetworkFabricsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, _ *NetworkFabricsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/validateConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginViewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginViewDeviceConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginViewDeviceConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginViewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*runtime.Poller[NetworkFabricsClientViewDeviceConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.viewDeviceConfiguration(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientViewDeviceConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientViewDeviceConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// viewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFabricsClient) viewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkFabricsClient.BeginViewDeviceConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.viewDeviceConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// viewDeviceConfigurationCreateRequest creates the viewDeviceConfiguration request.
+func (client *NetworkFabricsClient) viewDeviceConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/viewDeviceConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -620,77 +1676,6 @@ func (client *NetworkFabricsClient) getHandleResponse(resp *http.Response, succe
 		return NetworkFabricsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginGetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginGetTopologyOptions contains the optional parameters for the NetworkFabricsClient.BeginGetTopology
-//     method.
-func (client *NetworkFabricsClient) BeginGetTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*runtime.Poller[NetworkFabricsClientGetTopologyResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getTopology(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientGetTopologyResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientGetTopologyResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) getTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginGetTopology"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getTopologyCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getTopologyCreateRequest creates the GetTopology request.
-func (client *NetworkFabricsClient) getTopologyCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginGetTopologyOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/getTopology"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List all the Network Fabric resources in the given resource group.
@@ -830,989 +1815,4 @@ func (client *NetworkFabricsClient) listBySubscriptionHandleResponse(resp *http.
 		return NetworkFabricsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLockFabric - Post action: Triggers network fabric lock operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Request payload.
-//   - options - NetworkFabricsClientBeginLockFabricOptions contains the optional parameters for the NetworkFabricsClient.BeginLockFabric
-//     method.
-func (client *NetworkFabricsClient) BeginLockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*runtime.Poller[NetworkFabricsClientLockFabricResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.lockFabric(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientLockFabricResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientLockFabricResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LockFabric - Post action: Triggers network fabric lock operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) lockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginLockFabric"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.lockFabricCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// lockFabricCreateRequest creates the LockFabric request.
-func (client *NetworkFabricsClient) lockFabricCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, _ *NetworkFabricsClientBeginLockFabricOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/lockFabric"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginProvision - Provisions the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginProvisionOptions contains the optional parameters for the NetworkFabricsClient.BeginProvision
-//     method.
-func (client *NetworkFabricsClient) BeginProvision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*runtime.Poller[NetworkFabricsClientProvisionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.provision(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientProvisionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientProvisionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Provision - Provisions the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginProvision"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.provisionCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// provisionCreateRequest creates the Provision request.
-func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginProvisionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/provision"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
-//     method.
-func (client *NetworkFabricsClient) BeginRefreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkFabricsClientRefreshConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.refreshConfiguration(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRefreshConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRefreshConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginRefreshConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.refreshConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// refreshConfigurationCreateRequest creates the RefreshConfiguration request.
-func (client *NetworkFabricsClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginResyncCertificates - Re-sync all certificates on Network Devices.
-//
-// Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
-// missed during a previous certificate rotation to be brought back into sync.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginResyncCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncCertificates
-//     method.
-func (client *NetworkFabricsClient) BeginResyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*runtime.Poller[NetworkFabricsClientResyncCertificatesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resyncCertificates(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientResyncCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientResyncCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResyncCertificates - Re-sync all certificates on Network Devices.
-//
-// Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
-// missed during a previous certificate rotation to be brought back into sync.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) resyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginResyncCertificates"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resyncCertificatesCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resyncCertificatesCreateRequest creates the ResyncCertificates request.
-func (client *NetworkFabricsClient) resyncCertificatesCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginResyncCertificatesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/resyncCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginResyncPasswords - Resync the latest passwords to the Terminal Server and Network Devices.
-//
-// Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
-// Allows devices to be brought back in sync after a partially successful password rotation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginResyncPasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncPasswords
-//     method.
-func (client *NetworkFabricsClient) BeginResyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*runtime.Poller[NetworkFabricsClientResyncPasswordsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resyncPasswords(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientResyncPasswordsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientResyncPasswordsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResyncPasswords - Resync the latest passwords to the Terminal Server and Network Devices.
-//
-// Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
-// Allows devices to be brought back in sync after a partially successful password rotation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) resyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginResyncPasswords"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resyncPasswordsCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resyncPasswordsCreateRequest creates the ResyncPasswords request.
-func (client *NetworkFabricsClient) resyncPasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginResyncPasswordsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/resyncPasswords"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRotateCertificates - Rotate all certificates on Network Devices.
-//
-// Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
-// be updated and must be resynchronized with the new certificates once they are enabled.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginRotateCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginRotateCertificates
-//     method.
-func (client *NetworkFabricsClient) BeginRotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*runtime.Poller[NetworkFabricsClientRotateCertificatesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.rotateCertificates(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRotateCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRotateCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RotateCertificates - Rotate all certificates on Network Devices.
-//
-// Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
-// be updated and must be resynchronized with the new certificates once they are enabled.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) rotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginRotateCertificates"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rotateCertificatesCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rotateCertificatesCreateRequest creates the RotateCertificates request.
-func (client *NetworkFabricsClient) rotateCertificatesCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRotateCertificatesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/rotateCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRotatePasswords - Rotate all passwords on the Terminal Server and Network Devices.
-//
-// Creates new passwords, then updates the Terminal Server and Network Devices to use the new passwords.
-// Note that disabled devices cannot be updated and must be resynchronized with the new passwords once they are enabled.
-// Fails if any of the devices could not be updated with the new password.
-// Failed devices should be resynchronized with the new passwords once possible.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginRotatePasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginRotatePasswords
-//     method.
-func (client *NetworkFabricsClient) BeginRotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*runtime.Poller[NetworkFabricsClientRotatePasswordsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.rotatePasswords(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRotatePasswordsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientRotatePasswordsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RotatePasswords - Rotate all passwords on the Terminal Server and Network Devices.
-//
-// Creates new passwords, then updates the Terminal Server and Network Devices to use the new passwords.
-// Note that disabled devices cannot be updated and must be resynchronized with the new passwords once they are enabled.
-// Fails if any of the devices could not be updated with the new password.
-// Failed devices should be resynchronized with the new passwords once possible.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) rotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginRotatePasswords"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rotatePasswordsCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rotatePasswordsCreateRequest creates the RotatePasswords request.
-func (client *NetworkFabricsClient) rotatePasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginRotatePasswordsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/rotatePasswords"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Update certain properties of the Network Fabric resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Network Fabric properties to update.
-//   - options - NetworkFabricsClientBeginUpdateOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdate
-//     method.
-func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*runtime.Poller[NetworkFabricsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update certain properties of the Network Fabric resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, _ *NetworkFabricsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources
-// in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Request payload.
-//   - options - NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions contains the optional parameters for the
-//     NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration method.
-func (client *NetworkFabricsClient) BeginUpdateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateInfraManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources in the
-// given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) updateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateInfraManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateInfraManagementBfdConfigurationCreateRequest creates the UpdateInfraManagementBfdConfiguration request.
-func (client *NetworkFabricsClient) updateInfraManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, _ *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateInfraManagementBfdConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
-// in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Request payload.
-//   - options - NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions contains the optional parameters for
-//     the NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration method.
-func (client *NetworkFabricsClient) BeginUpdateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateWorkloadManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
-// in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateWorkloadManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateWorkloadManagementBfdConfigurationCreateRequest creates the UpdateWorkloadManagementBfdConfiguration request.
-func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, _ *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Network Fabric properties to update.
-//   - options - NetworkFabricsClientBeginUpgradeOptions contains the optional parameters for the NetworkFabricsClient.BeginUpgrade
-//     method.
-func (client *NetworkFabricsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions) (*runtime.Poller[NetworkFabricsClientUpgradeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgrade(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Upgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) upgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginUpgrade"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradeCreateRequest creates the Upgrade request.
-func (client *NetworkFabricsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, _ *NetworkFabricsClientBeginUpgradeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - body - Validate configuration properties.
-//   - options - NetworkFabricsClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginValidateConfiguration
-//     method.
-func (client *NetworkFabricsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*runtime.Poller[NetworkFabricsClientValidateConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) validateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginValidateConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateConfigurationCreateRequest creates the ValidateConfiguration request.
-func (client *NetworkFabricsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, _ *NetworkFabricsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/validateConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginViewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - options - NetworkFabricsClientBeginViewDeviceConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginViewDeviceConfiguration
-//     method.
-func (client *NetworkFabricsClient) BeginViewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*runtime.Poller[NetworkFabricsClientViewDeviceConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.viewDeviceConfiguration(ctx, resourceGroupName, networkFabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientViewDeviceConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkFabricsClientViewDeviceConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ViewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkFabricsClient) viewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkFabricsClient.BeginViewDeviceConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.viewDeviceConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// viewDeviceConfigurationCreateRequest creates the ViewDeviceConfiguration request.
-func (client *NetworkFabricsClient) viewDeviceConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, _ *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/viewDeviceConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

@@ -60,7 +60,7 @@ func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, bo
 	}
 }
 
-// Create - Create Alias Subscription.
+// create - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AliasClient) create(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -82,7 +82,7 @@ func (client *AliasClient) create(ctx context.Context, aliasName string, body Pu
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName string, body PutAliasRequest, _ *AliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/aliases/{aliasName}"
 	if aliasName == "" {

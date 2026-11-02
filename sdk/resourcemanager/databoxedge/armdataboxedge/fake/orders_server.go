@@ -33,13 +33,13 @@ type OrdersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.OrdersClientGetOptions) (resp azfake.Responder[armdataboxedge.OrdersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByDataBoxEdgeDevicePager is the fake for method OrdersClient.NewListByDataBoxEdgeDevicePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByDataBoxEdgeDevicePager func(deviceName string, resourceGroupName string, options *armdataboxedge.OrdersClientListByDataBoxEdgeDeviceOptions) (resp azfake.PagerResponder[armdataboxedge.OrdersClientListByDataBoxEdgeDeviceResponse])
-
 	// ListDCAccessCode is the fake for method OrdersClient.ListDCAccessCode
 	// HTTP status codes to indicate success: http.StatusOK
 	ListDCAccessCode func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.OrdersClientListDCAccessCodeOptions) (resp azfake.Responder[armdataboxedge.OrdersClientListDCAccessCodeResponse], errResp azfake.ErrorResponder)
+
+	// NewListByDataBoxEdgeDevicePager is the fake for method OrdersClient.NewListByDataBoxEdgeDevicePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDataBoxEdgeDevicePager func(deviceName string, resourceGroupName string, options *armdataboxedge.OrdersClientListByDataBoxEdgeDeviceOptions) (resp azfake.PagerResponder[armdataboxedge.OrdersClientListByDataBoxEdgeDeviceResponse])
 }
 
 // NewOrdersServerTransport creates a new instance of OrdersServerTransport with the provided implementation.
@@ -90,10 +90,10 @@ func (o *OrdersServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = o.dispatchBeginDelete(req)
 			case "OrdersClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
-			case "OrdersClient.NewListByDataBoxEdgeDevicePager":
-				res.resp, res.err = o.dispatchNewListByDataBoxEdgeDevicePager(req)
 			case "OrdersClient.ListDCAccessCode":
 				res.resp, res.err = o.dispatchListDCAccessCode(req)
+			case "OrdersClient.NewListByDataBoxEdgeDevicePager":
+				res.resp, res.err = o.dispatchNewListByDataBoxEdgeDevicePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -235,6 +235,39 @@ func (o *OrdersServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	return resp, nil
 }
 
+func (o *OrdersServerTransport) dispatchListDCAccessCode(req *http.Request) (*http.Response, error) {
+	if o.srv.ListDCAccessCode == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDCAccessCode not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/orders/default/listDCAccessCode`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.ListDCAccessCode(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DCAccessCode, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (o *OrdersServerTransport) dispatchNewListByDataBoxEdgeDevicePager(req *http.Request) (*http.Response, error) {
 	if o.srv.NewListByDataBoxEdgeDevicePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByDataBoxEdgeDevicePager not implemented")}
@@ -272,39 +305,6 @@ func (o *OrdersServerTransport) dispatchNewListByDataBoxEdgeDevicePager(req *htt
 	}
 	if !server.PagerResponderMore(newListByDataBoxEdgeDevicePager) {
 		o.newListByDataBoxEdgeDevicePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OrdersServerTransport) dispatchListDCAccessCode(req *http.Request) (*http.Response, error) {
-	if o.srv.ListDCAccessCode == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDCAccessCode not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/orders/default/listDCAccessCode`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.ListDCAccessCode(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DCAccessCode, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

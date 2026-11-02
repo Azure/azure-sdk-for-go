@@ -70,7 +70,7 @@ func (client *EmailServicesClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create Or Update
+// createOrUpdate - Create Or Update
 //
 // Create a new EmailService or update an existing EmailService.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *EmailServicesClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EmailServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResource, _ *EmailServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *EmailServicesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete
+// deleteOperation - Delete
 //
 // Operation to delete a EmailService.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -173,7 +173,7 @@ func (client *EmailServicesClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EmailServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, _ *EmailServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}"
 	if client.subscriptionID == "" {
@@ -195,6 +195,86 @@ func (client *EmailServicesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update
+//
+// Operation to update an existing EmailService.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - emailServiceName - The name of the EmailService resource.
+//   - parameters - Parameters for the update operation
+//   - options - EmailServicesClientBeginUpdateOptions contains the optional parameters for the EmailServicesClient.BeginUpdate
+//     method.
+func (client *EmailServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, options *EmailServicesClientBeginUpdateOptions) (*runtime.Poller[EmailServicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, emailServiceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EmailServicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EmailServicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update
+//
+// Operation to update an existing EmailService.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EmailServicesClient) update(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, options *EmailServicesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EmailServicesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, emailServiceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EmailServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, _ *EmailServicesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if emailServiceName == "" {
+		return nil, errors.New("parameter emailServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -256,6 +336,59 @@ func (client *EmailServicesClient) getHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailServiceResource); err != nil {
 		return EmailServicesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListVerifiedExchangeOnlineDomains - List Verified Domains From Exchange Online
+//
+// Get a list of domains that are fully verified in Exchange Online.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - EmailServicesClientListVerifiedExchangeOnlineDomainsOptions contains the optional parameters for the EmailServicesClient.ListVerifiedExchangeOnlineDomains
+//     method.
+func (client *EmailServicesClient) ListVerifiedExchangeOnlineDomains(ctx context.Context, options *EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (EmailServicesClientListVerifiedExchangeOnlineDomainsResponse, error) {
+	var err error
+	const operationName = "EmailServicesClient.ListVerifiedExchangeOnlineDomains"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listVerifiedExchangeOnlineDomainsCreateRequest(ctx, options)
+	if err != nil {
+		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
+	}
+	return client.listVerifiedExchangeOnlineDomainsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listVerifiedExchangeOnlineDomainsCreateRequest creates the ListVerifiedExchangeOnlineDomains request.
+func (client *EmailServicesClient) listVerifiedExchangeOnlineDomainsCreateRequest(ctx context.Context, _ *EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Communication/listVerifiedExchangeOnlineDomains"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listVerifiedExchangeOnlineDomainsHandleResponse handles the ListVerifiedExchangeOnlineDomains response.
+func (client *EmailServicesClient) listVerifiedExchangeOnlineDomainsHandleResponse(resp *http.Response, successCodes ...int) (EmailServicesClientListVerifiedExchangeOnlineDomainsResponse, error) {
+	result := EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StringArray); err != nil {
+		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
 	}
 	return result, nil
 }
@@ -401,137 +534,4 @@ func (client *EmailServicesClient) listBySubscriptionHandleResponse(resp *http.R
 		return EmailServicesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// ListVerifiedExchangeOnlineDomains - List Verified Domains From Exchange Online
-//
-// Get a list of domains that are fully verified in Exchange Online.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - EmailServicesClientListVerifiedExchangeOnlineDomainsOptions contains the optional parameters for the EmailServicesClient.ListVerifiedExchangeOnlineDomains
-//     method.
-func (client *EmailServicesClient) ListVerifiedExchangeOnlineDomains(ctx context.Context, options *EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (EmailServicesClientListVerifiedExchangeOnlineDomainsResponse, error) {
-	var err error
-	const operationName = "EmailServicesClient.ListVerifiedExchangeOnlineDomains"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listVerifiedExchangeOnlineDomainsCreateRequest(ctx, options)
-	if err != nil {
-		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
-	}
-	return client.listVerifiedExchangeOnlineDomainsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listVerifiedExchangeOnlineDomainsCreateRequest creates the ListVerifiedExchangeOnlineDomains request.
-func (client *EmailServicesClient) listVerifiedExchangeOnlineDomainsCreateRequest(ctx context.Context, _ *EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Communication/listVerifiedExchangeOnlineDomains"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listVerifiedExchangeOnlineDomainsHandleResponse handles the ListVerifiedExchangeOnlineDomains response.
-func (client *EmailServicesClient) listVerifiedExchangeOnlineDomainsHandleResponse(resp *http.Response, successCodes ...int) (EmailServicesClientListVerifiedExchangeOnlineDomainsResponse, error) {
-	result := EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StringArray); err != nil {
-		return EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpdate - Update
-//
-// Operation to update an existing EmailService.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - emailServiceName - The name of the EmailService resource.
-//   - parameters - Parameters for the update operation
-//   - options - EmailServicesClientBeginUpdateOptions contains the optional parameters for the EmailServicesClient.BeginUpdate
-//     method.
-func (client *EmailServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, options *EmailServicesClientBeginUpdateOptions) (*runtime.Poller[EmailServicesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, emailServiceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EmailServicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EmailServicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update
-//
-// Operation to update an existing EmailService.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EmailServicesClient) update(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, options *EmailServicesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EmailServicesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, emailServiceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EmailServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, parameters EmailServiceResourceUpdate, _ *EmailServicesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if emailServiceName == "" {
-		return nil, errors.New("parameter emailServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

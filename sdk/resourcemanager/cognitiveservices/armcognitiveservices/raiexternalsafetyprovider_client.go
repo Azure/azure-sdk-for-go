@@ -51,7 +51,7 @@ func NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore
 //     method.
 func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*runtime.Poller[RaiExternalSafetyProviderClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, safetyProviderName, options)
+		resp, err := client.deleteOperation(ctx, safetyProviderName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,9 +66,9 @@ func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Deletes the specified custom topic associated with the subscription.
+// deleteOperation - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiExternalSafetyProviderClient) delete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiExternalSafetyProviderClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

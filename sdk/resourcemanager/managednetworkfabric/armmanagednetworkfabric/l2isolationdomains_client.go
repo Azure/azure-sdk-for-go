@@ -67,7 +67,7 @@ func (client *L2IsolationDomainsClient) BeginCommitConfiguration(ctx context.Con
 	}
 }
 
-// CommitConfiguration - Commits the configuration of the given resources.
+// commitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *L2IsolationDomainsClient) commitConfiguration(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *L2IsolationDomainsClient) commitConfiguration(ctx context.Context,
 	return httpResp, nil
 }
 
-// commitConfigurationCreateRequest creates the CommitConfiguration request.
+// commitConfigurationCreateRequest creates the commitConfiguration request.
 func (client *L2IsolationDomainsClient) commitConfigurationCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, _ *L2IsolationDomainsClientBeginCommitConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/commitConfiguration"
 	if client.subscriptionID == "" {
@@ -140,7 +140,7 @@ func (client *L2IsolationDomainsClient) BeginCreate(ctx context.Context, resourc
 	}
 }
 
-// Create - Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+// create - Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
 // applied on the devices only after the isolation domain is enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *L2IsolationDomainsClient) create(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomain, options *L2IsolationDomainsClientBeginCreateOptions) (*http.Response, error) {
@@ -163,7 +163,7 @@ func (client *L2IsolationDomainsClient) create(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *L2IsolationDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomain, _ *L2IsolationDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}"
 	if client.subscriptionID == "" {
@@ -216,7 +216,7 @@ func (client *L2IsolationDomainsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+// deleteOperation - Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *L2IsolationDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -238,7 +238,7 @@ func (client *L2IsolationDomainsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *L2IsolationDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, _ *L2IsolationDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}"
 	if client.subscriptionID == "" {
@@ -260,6 +260,229 @@ func (client *L2IsolationDomainsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - API to update certain properties of the L2 Isolation Domain resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
+//   - body - API to update certain properties of the L2 Isolation Domain resource..
+//   - options - L2IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdate
+//     method.
+func (client *L2IsolationDomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, options *L2IsolationDomainsClientBeginUpdateOptions) (*runtime.Poller[L2IsolationDomainsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, l2IsolationDomainName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - API to update certain properties of the L2 Isolation Domain resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *L2IsolationDomainsClient) update(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, options *L2IsolationDomainsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "L2IsolationDomainsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *L2IsolationDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, _ *L2IsolationDomainsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if l2IsolationDomainName == "" {
+		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
+//   - body - Request payload.
+//   - options - L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdateAdministrativeState
+//     method.
+func (client *L2IsolationDomainsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, options *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[L2IsolationDomainsClientUpdateAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, l2IsolationDomainName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *L2IsolationDomainsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, options *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "L2IsolationDomainsClient.BeginUpdateAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateAdministrativeStateCreateRequest creates the updateAdministrativeState request.
+func (client *L2IsolationDomainsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, _ *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/updateAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if l2IsolationDomainName == "" {
+		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateConfiguration - Validates the configuration of the resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
+//   - options - L2IsolationDomainsClientBeginValidateConfigurationOptions contains the optional parameters for the L2IsolationDomainsClient.BeginValidateConfiguration
+//     method.
+func (client *L2IsolationDomainsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*runtime.Poller[L2IsolationDomainsClientValidateConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, l2IsolationDomainName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientValidateConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateConfiguration - Validates the configuration of the resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *L2IsolationDomainsClient) validateConfiguration(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "L2IsolationDomainsClient.BeginValidateConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateConfigurationCreateRequest creates the validateConfiguration request.
+func (client *L2IsolationDomainsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, _ *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/validateConfiguration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if l2IsolationDomainName == "" {
+		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -460,227 +683,4 @@ func (client *L2IsolationDomainsClient) listBySubscriptionHandleResponse(resp *h
 		return L2IsolationDomainsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - API to update certain properties of the L2 Isolation Domain resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
-//   - body - API to update certain properties of the L2 Isolation Domain resource..
-//   - options - L2IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdate
-//     method.
-func (client *L2IsolationDomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, options *L2IsolationDomainsClientBeginUpdateOptions) (*runtime.Poller[L2IsolationDomainsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, l2IsolationDomainName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - API to update certain properties of the L2 Isolation Domain resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *L2IsolationDomainsClient) update(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, options *L2IsolationDomainsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "L2IsolationDomainsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *L2IsolationDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body L2IsolationDomainPatch, _ *L2IsolationDomainsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l2IsolationDomainName == "" {
-		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
-//   - body - Request payload.
-//   - options - L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdateAdministrativeState
-//     method.
-func (client *L2IsolationDomainsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, options *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[L2IsolationDomainsClientUpdateAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, l2IsolationDomainName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *L2IsolationDomainsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, options *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "L2IsolationDomainsClient.BeginUpdateAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
-func (client *L2IsolationDomainsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, body UpdateAdministrativeState, _ *L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l2IsolationDomainName == "" {
-		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginValidateConfiguration - Validates the configuration of the resources.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l2IsolationDomainName - Name of the L2 Isolation Domain.
-//   - options - L2IsolationDomainsClientBeginValidateConfigurationOptions contains the optional parameters for the L2IsolationDomainsClient.BeginValidateConfiguration
-//     method.
-func (client *L2IsolationDomainsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*runtime.Poller[L2IsolationDomainsClientValidateConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateConfiguration(ctx, resourceGroupName, l2IsolationDomainName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L2IsolationDomainsClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[L2IsolationDomainsClientValidateConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ValidateConfiguration - Validates the configuration of the resources.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *L2IsolationDomainsClient) validateConfiguration(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, options *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "L2IsolationDomainsClient.BeginValidateConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, l2IsolationDomainName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateConfigurationCreateRequest creates the ValidateConfiguration request.
-func (client *L2IsolationDomainsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, l2IsolationDomainName string, _ *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/validateConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l2IsolationDomainName == "" {
-		return nil, errors.New("parameter l2IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l2IsolationDomainName}", url.PathEscape(l2IsolationDomainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

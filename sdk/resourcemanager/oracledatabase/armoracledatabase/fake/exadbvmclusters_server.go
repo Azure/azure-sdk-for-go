@@ -29,6 +29,14 @@ type ExadbVMClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, options *armoracledatabase.ExadbVMClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRemoveVMs is the fake for method ExadbVMClustersClient.BeginRemoveVMs
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRemoveVMs func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails, options *armoracledatabase.ExadbVMClustersClientBeginRemoveVMsOptions) (resp azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientRemoveVMsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ExadbVMClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties armoracledatabase.ExadbVMClusterUpdate, options *armoracledatabase.ExadbVMClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ExadbVMClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, options *armoracledatabase.ExadbVMClustersClientGetOptions) (resp azfake.Responder[armoracledatabase.ExadbVMClustersClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type ExadbVMClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method ExadbVMClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.ExadbVMClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListBySubscriptionResponse])
-
-	// BeginRemoveVMs is the fake for method ExadbVMClustersClient.BeginRemoveVMs
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRemoveVMs func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails, options *armoracledatabase.ExadbVMClustersClientBeginRemoveVMsOptions) (resp azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientRemoveVMsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ExadbVMClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties armoracledatabase.ExadbVMClusterUpdate, options *armoracledatabase.ExadbVMClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExadbVMClustersServerTransport creates a new instance of ExadbVMClustersServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewExadbVMClustersServerTransport(srv *ExadbVMClustersServer) *ExadbVMClust
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListBySubscriptionResponse]](),
 		beginRemoveVMs:              newTracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientRemoveVMsResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type ExadbVMClustersServerTransport struct {
 	srv                         *ExadbVMClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListBySubscriptionResponse]]
 	beginRemoveVMs              *tracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientRemoveVMsResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.ExadbVMClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.ExadbVMClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExadbVMClustersServerTransport.
@@ -102,16 +102,16 @@ func (e *ExadbVMClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExadbVMClustersClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ExadbVMClustersClient.BeginRemoveVMs":
+				res.resp, res.err = e.dispatchBeginRemoveVMs(req)
+			case "ExadbVMClustersClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExadbVMClustersClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ExadbVMClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "ExadbVMClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = e.dispatchNewListBySubscriptionPager(req)
-			case "ExadbVMClustersClient.BeginRemoveVMs":
-				res.resp, res.err = e.dispatchBeginRemoveVMs(req)
-			case "ExadbVMClustersClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,102 @@ func (e *ExadbVMClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (e *ExadbVMClustersServerTransport) dispatchBeginRemoveVMs(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginRemoveVMs == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveVMs not implemented")}
+	}
+	beginRemoveVMs := e.beginRemoveVMs.get(req)
+	if beginRemoveVMs == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeVms`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		exadbVMClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exadbVmClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginRemoveVMs(req.Context(), resourceGroupNameParam, exadbVMClusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRemoveVMs = &respr
+		e.beginRemoveVMs.add(req, beginRemoveVMs)
+	}
+
+	resp, err := server.PollerResponderNext(beginRemoveVMs, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginRemoveVMs.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRemoveVMs) {
+		e.beginRemoveVMs.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExadbVMClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.ExadbVMClusterUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		exadbVMClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exadbVmClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, exadbVMClusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExadbVMClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -320,102 +416,6 @@ func (e *ExadbVMClustersServerTransport) dispatchNewListBySubscriptionPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		e.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ExadbVMClustersServerTransport) dispatchBeginRemoveVMs(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginRemoveVMs == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveVMs not implemented")}
-	}
-	beginRemoveVMs := e.beginRemoveVMs.get(req)
-	if beginRemoveVMs == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeVms`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		exadbVMClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exadbVmClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginRemoveVMs(req.Context(), resourceGroupNameParam, exadbVMClusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRemoveVMs = &respr
-		e.beginRemoveVMs.add(req, beginRemoveVMs)
-	}
-
-	resp, err := server.PollerResponderNext(beginRemoveVMs, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginRemoveVMs.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRemoveVMs) {
-		e.beginRemoveVMs.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (e *ExadbVMClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.ExadbVMClusterUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		exadbVMClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exadbVmClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, exadbVMClusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

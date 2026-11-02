@@ -34,13 +34,13 @@ type OffersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAccessToken func(ctx context.Context, resourceURI string, offerID string, body armedgemarketplace.AccessTokenReadRequest, options *armedgemarketplace.OffersClientGetAccessTokenOptions) (resp azfake.Responder[armedgemarketplace.OffersClientGetAccessTokenResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method OffersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armedgemarketplace.OffersClientListOptions) (resp azfake.PagerResponder[armedgemarketplace.OffersClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method OffersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armedgemarketplace.OffersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armedgemarketplace.OffersClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method OffersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceURI string, options *armedgemarketplace.OffersClientListOptions) (resp azfake.PagerResponder[armedgemarketplace.OffersClientListResponse])
 }
 
 // NewOffersServerTransport creates a new instance of OffersServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewOffersServerTransport(srv *OffersServer) *OffersServerTransport {
 	return &OffersServerTransport{
 		srv:                        srv,
 		beginGenerateAccessToken:   newTracker[azfake.PollerResponder[armedgemarketplace.OffersClientGenerateAccessTokenResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armedgemarketplace.OffersClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armedgemarketplace.OffersClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armedgemarketplace.OffersClientListResponse]](),
 	}
 }
 
@@ -60,8 +60,8 @@ func NewOffersServerTransport(srv *OffersServer) *OffersServerTransport {
 type OffersServerTransport struct {
 	srv                        *OffersServer
 	beginGenerateAccessToken   *tracker[azfake.PollerResponder[armedgemarketplace.OffersClientGenerateAccessTokenResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armedgemarketplace.OffersClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armedgemarketplace.OffersClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armedgemarketplace.OffersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OffersServerTransport.
@@ -91,10 +91,10 @@ func (o *OffersServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = o.dispatchGet(req)
 			case "OffersClient.GetAccessToken":
 				res.resp, res.err = o.dispatchGetAccessToken(req)
-			case "OffersClient.NewListPager":
-				res.resp, res.err = o.dispatchNewListPager(req)
 			case "OffersClient.NewListBySubscriptionPager":
 				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
+			case "OffersClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,39 @@ func (o *OffersServerTransport) dispatchGetAccessToken(req *http.Request) (*http
 	return resp, nil
 }
 
+func (o *OffersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeMarketplace/offers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := o.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armedgemarketplace.OffersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		o.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (o *OffersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if o.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -293,39 +326,6 @@ func (o *OffersServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	if !server.PagerResponderMore(newListPager) {
 		o.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OffersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeMarketplace/offers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := o.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armedgemarketplace.OffersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		o.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

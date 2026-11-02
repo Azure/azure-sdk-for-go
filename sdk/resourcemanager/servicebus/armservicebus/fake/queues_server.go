@@ -46,6 +46,10 @@ type QueuesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *armservicebus.QueuesClientGetAuthorizationRuleOptions) (resp azfake.Responder[armservicebus.QueuesClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method QueuesClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *armservicebus.QueuesClientListKeysOptions) (resp azfake.Responder[armservicebus.QueuesClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewListAuthorizationRulesPager is the fake for method QueuesClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, queueName string, options *armservicebus.QueuesClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armservicebus.QueuesClientListAuthorizationRulesResponse])
@@ -53,10 +57,6 @@ type QueuesServer struct {
 	// NewListByNamespacePager is the fake for method QueuesClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armservicebus.QueuesClientListByNamespaceOptions) (resp azfake.PagerResponder[armservicebus.QueuesClientListByNamespaceResponse])
-
-	// ListKeys is the fake for method QueuesClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *armservicebus.QueuesClientListKeysOptions) (resp azfake.Responder[armservicebus.QueuesClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method QueuesClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -115,12 +115,12 @@ func (q *QueuesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = q.dispatchGet(req)
 			case "QueuesClient.GetAuthorizationRule":
 				res.resp, res.err = q.dispatchGetAuthorizationRule(req)
+			case "QueuesClient.ListKeys":
+				res.resp, res.err = q.dispatchListKeys(req)
 			case "QueuesClient.NewListAuthorizationRulesPager":
 				res.resp, res.err = q.dispatchNewListAuthorizationRulesPager(req)
 			case "QueuesClient.NewListByNamespacePager":
 				res.resp, res.err = q.dispatchNewListByNamespacePager(req)
-			case "QueuesClient.ListKeys":
-				res.resp, res.err = q.dispatchListKeys(req)
 			case "QueuesClient.RegenerateKeys":
 				res.resp, res.err = q.dispatchRegenerateKeys(req)
 			default:
@@ -381,6 +381,47 @@ func (q *QueuesServerTransport) dispatchGetAuthorizationRule(req *http.Request) 
 	return resp, nil
 }
 
+func (q *QueuesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if q.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceBus/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queues/(?P<queueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	queueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, queueNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (q *QueuesServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
 	if q.srv.NewListAuthorizationRulesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
@@ -491,47 +532,6 @@ func (q *QueuesServerTransport) dispatchNewListByNamespacePager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListByNamespacePager) {
 		q.newListByNamespacePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (q *QueuesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if q.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceBus/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queues/(?P<queueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	queueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := q.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, queueNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

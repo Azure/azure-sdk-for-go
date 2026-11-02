@@ -29,6 +29,10 @@ type JavaComponentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, environmentName string, name string, options *armappcontainers.JavaComponentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.JavaComponentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method JavaComponentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, environmentName string, name string, javaComponentEnvelope armappcontainers.JavaComponent, options *armappcontainers.JavaComponentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.JavaComponentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method JavaComponentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, environmentName string, name string, options *armappcontainers.JavaComponentsClientGetOptions) (resp azfake.Responder[armappcontainers.JavaComponentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type JavaComponentsServer struct {
 	// NewListPager is the fake for method JavaComponentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, environmentName string, options *armappcontainers.JavaComponentsClientListOptions) (resp azfake.PagerResponder[armappcontainers.JavaComponentsClientListResponse])
-
-	// BeginUpdate is the fake for method JavaComponentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, environmentName string, name string, javaComponentEnvelope armappcontainers.JavaComponent, options *armappcontainers.JavaComponentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.JavaComponentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewJavaComponentsServerTransport creates a new instance of JavaComponentsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewJavaComponentsServerTransport(srv *JavaComponentsServer) *JavaComponents
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armappcontainers.JavaComponentsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armappcontainers.JavaComponentsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type JavaComponentsServerTransport struct {
 	srv                 *JavaComponentsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armappcontainers.JavaComponentsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armappcontainers.JavaComponentsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armappcontainers.JavaComponentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for JavaComponentsServerTransport.
@@ -90,12 +90,12 @@ func (j *JavaComponentsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = j.dispatchBeginCreateOrUpdate(req)
 			case "JavaComponentsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
+			case "JavaComponentsClient.BeginUpdate":
+				res.resp, res.err = j.dispatchBeginUpdate(req)
 			case "JavaComponentsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			case "JavaComponentsClient.NewListPager":
 				res.resp, res.err = j.dispatchNewListPager(req)
-			case "JavaComponentsClient.BeginUpdate":
-				res.resp, res.err = j.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (j *JavaComponentsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (j *JavaComponentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if j.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := j.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/javaComponents/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.JavaComponent](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		j.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		j.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		j.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (j *JavaComponentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (j *JavaComponentsServerTransport) dispatchNewListPager(req *http.Request) 
 	if !server.PagerResponderMore(newListPager) {
 		j.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (j *JavaComponentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if j.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := j.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/javaComponents/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappcontainers.JavaComponent](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		j.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		j.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		j.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

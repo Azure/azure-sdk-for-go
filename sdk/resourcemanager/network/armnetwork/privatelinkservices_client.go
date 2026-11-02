@@ -277,7 +277,7 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, serviceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -292,9 +292,9 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// delete - Deletes the specified private link service.
+// deleteOperation - Deletes the specified private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateLinkServicesClient) delete(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PrivateLinkServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

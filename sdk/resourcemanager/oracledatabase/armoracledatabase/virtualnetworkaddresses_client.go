@@ -69,7 +69,7 @@ func (client *VirtualNetworkAddressesClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create a VirtualNetworkAddress
+// createOrUpdate - Create a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkAddressesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, resource VirtualNetworkAddress, options *VirtualNetworkAddressesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualNetworkAddressesClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworkAddressesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, resource VirtualNetworkAddress, _ *VirtualNetworkAddressesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VirtualNetworkAddressesClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete a VirtualNetworkAddress
+// deleteOperation - Delete a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkAddressesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, options *VirtualNetworkAddressesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VirtualNetworkAddressesClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworkAddressesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, _ *VirtualNetworkAddressesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}"
 	if client.subscriptionID == "" {

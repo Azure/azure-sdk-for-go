@@ -33,6 +33,14 @@ type GoldenGateDeploymentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, options *armoracledatabase.GoldenGateDeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUnassignConnection is the fake for method GoldenGateDeploymentsClient.BeginUnassignConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUnassignConnection func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body armoracledatabase.AssignUnassignConnection, options *armoracledatabase.GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (resp azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method GoldenGateDeploymentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties armoracledatabase.GoldenGateDeploymentUpdate, options *armoracledatabase.GoldenGateDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GoldenGateDeploymentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, options *armoracledatabase.GoldenGateDeploymentsClientGetOptions) (resp azfake.Responder[armoracledatabase.GoldenGateDeploymentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -52,14 +60,6 @@ type GoldenGateDeploymentsServer struct {
 	// NewListBySubscriptionPager is the fake for method GoldenGateDeploymentsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.GoldenGateDeploymentsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListBySubscriptionResponse])
-
-	// BeginUnassignConnection is the fake for method GoldenGateDeploymentsClient.BeginUnassignConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUnassignConnection func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body armoracledatabase.AssignUnassignConnection, options *armoracledatabase.GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (resp azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method GoldenGateDeploymentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties armoracledatabase.GoldenGateDeploymentUpdate, options *armoracledatabase.GoldenGateDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGoldenGateDeploymentsServerTransport creates a new instance of GoldenGateDeploymentsServerTransport with the provided implementation.
@@ -71,11 +71,11 @@ func NewGoldenGateDeploymentsServerTransport(srv *GoldenGateDeploymentsServer) *
 		beginAssignConnection:                   newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientAssignConnectionResponse]](),
 		beginCreateOrUpdate:                     newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientCreateOrUpdateResponse]](),
 		beginDelete:                             newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientDeleteResponse]](),
+		beginUnassignConnection:                 newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse]](),
+		beginUpdate:                             newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse]](),
 		newListAssignedConnectionsByParentPager: newTracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListAssignedConnectionsByParentResponse]](),
 		newListByResourceGroupPager:             newTracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:              newTracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListBySubscriptionResponse]](),
-		beginUnassignConnection:                 newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse]](),
-		beginUpdate:                             newTracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse]](),
 	}
 }
 
@@ -86,11 +86,11 @@ type GoldenGateDeploymentsServerTransport struct {
 	beginAssignConnection                   *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientAssignConnectionResponse]]
 	beginCreateOrUpdate                     *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientCreateOrUpdateResponse]]
 	beginDelete                             *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientDeleteResponse]]
+	beginUnassignConnection                 *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse]]
+	beginUpdate                             *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse]]
 	newListAssignedConnectionsByParentPager *tracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListAssignedConnectionsByParentResponse]]
 	newListByResourceGroupPager             *tracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager              *tracker[azfake.PagerResponder[armoracledatabase.GoldenGateDeploymentsClientListBySubscriptionResponse]]
-	beginUnassignConnection                 *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUnassignConnectionResponse]]
-	beginUpdate                             *tracker[azfake.PollerResponder[armoracledatabase.GoldenGateDeploymentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GoldenGateDeploymentsServerTransport.
@@ -120,6 +120,10 @@ func (g *GoldenGateDeploymentsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GoldenGateDeploymentsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GoldenGateDeploymentsClient.BeginUnassignConnection":
+				res.resp, res.err = g.dispatchBeginUnassignConnection(req)
+			case "GoldenGateDeploymentsClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GoldenGateDeploymentsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GoldenGateDeploymentsClient.GetAssignedConnection":
@@ -130,10 +134,6 @@ func (g *GoldenGateDeploymentsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = g.dispatchNewListByResourceGroupPager(req)
 			case "GoldenGateDeploymentsClient.NewListBySubscriptionPager":
 				res.resp, res.err = g.dispatchNewListBySubscriptionPager(req)
-			case "GoldenGateDeploymentsClient.BeginUnassignConnection":
-				res.resp, res.err = g.dispatchBeginUnassignConnection(req)
-			case "GoldenGateDeploymentsClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -285,6 +285,102 @@ func (g *GoldenGateDeploymentsServerTransport) dispatchBeginDelete(req *http.Req
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		g.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GoldenGateDeploymentsServerTransport) dispatchBeginUnassignConnection(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUnassignConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUnassignConnection not implemented")}
+	}
+	beginUnassignConnection := g.beginUnassignConnection.get(req)
+	if beginUnassignConnection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/goldenGateDeployments/(?P<goldenGateDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unassignConnection`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.AssignUnassignConnection](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goldenGateDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goldenGateDeploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUnassignConnection(req.Context(), resourceGroupNameParam, goldenGateDeploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUnassignConnection = &respr
+		g.beginUnassignConnection.add(req, beginUnassignConnection)
+	}
+
+	resp, err := server.PollerResponderNext(beginUnassignConnection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUnassignConnection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUnassignConnection) {
+		g.beginUnassignConnection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GoldenGateDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/goldenGateDeployments/(?P<goldenGateDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.GoldenGateDeploymentUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goldenGateDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goldenGateDeploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, goldenGateDeploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -468,102 +564,6 @@ func (g *GoldenGateDeploymentsServerTransport) dispatchNewListBySubscriptionPage
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		g.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (g *GoldenGateDeploymentsServerTransport) dispatchBeginUnassignConnection(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUnassignConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUnassignConnection not implemented")}
-	}
-	beginUnassignConnection := g.beginUnassignConnection.get(req)
-	if beginUnassignConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/goldenGateDeployments/(?P<goldenGateDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unassignConnection`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.AssignUnassignConnection](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		goldenGateDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goldenGateDeploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUnassignConnection(req.Context(), resourceGroupNameParam, goldenGateDeploymentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUnassignConnection = &respr
-		g.beginUnassignConnection.add(req, beginUnassignConnection)
-	}
-
-	resp, err := server.PollerResponderNext(beginUnassignConnection, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUnassignConnection.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUnassignConnection) {
-		g.beginUnassignConnection.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GoldenGateDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := g.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/goldenGateDeployments/(?P<goldenGateDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.GoldenGateDeploymentUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		goldenGateDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goldenGateDeploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, goldenGateDeploymentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		g.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		g.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

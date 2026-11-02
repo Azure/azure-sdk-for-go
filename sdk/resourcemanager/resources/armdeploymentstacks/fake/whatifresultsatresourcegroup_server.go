@@ -26,6 +26,10 @@ type WhatIfResultsAtResourceGroupServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtResourceGroupClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginWhatIf is the fake for method WhatIfResultsAtResourceGroupClient.BeginWhatIf
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtResourceGroupClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientWhatIfResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method WhatIfResultsAtResourceGroupClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtResourceGroupClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type WhatIfResultsAtResourceGroupServer struct {
 	// NewListPager is the fake for method WhatIfResultsAtResourceGroupClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armdeploymentstacks.WhatIfResultsAtResourceGroupClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientListResponse])
-
-	// BeginWhatIf is the fake for method WhatIfResultsAtResourceGroupClient.BeginWhatIf
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtResourceGroupClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientWhatIfResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWhatIfResultsAtResourceGroupServerTransport creates a new instance of WhatIfResultsAtResourceGroupServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewWhatIfResultsAtResourceGroupServerTransport(srv *WhatIfResultsAtResource
 	return &WhatIfResultsAtResourceGroupServerTransport{
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientListResponse]](),
 		beginWhatIf:         newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientWhatIfResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientListResponse]](),
 	}
 }
 
@@ -60,8 +60,8 @@ func NewWhatIfResultsAtResourceGroupServerTransport(srv *WhatIfResultsAtResource
 type WhatIfResultsAtResourceGroupServerTransport struct {
 	srv                 *WhatIfResultsAtResourceGroupServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientListResponse]]
 	beginWhatIf         *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientWhatIfResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtResourceGroupClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WhatIfResultsAtResourceGroupServerTransport.
@@ -87,14 +87,14 @@ func (w *WhatIfResultsAtResourceGroupServerTransport) dispatchToMethodFake(req *
 			switch method {
 			case "WhatIfResultsAtResourceGroupClient.BeginCreateOrUpdate":
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
+			case "WhatIfResultsAtResourceGroupClient.BeginWhatIf":
+				res.resp, res.err = w.dispatchBeginWhatIf(req)
 			case "WhatIfResultsAtResourceGroupClient.Delete":
 				res.resp, res.err = w.dispatchDelete(req)
 			case "WhatIfResultsAtResourceGroupClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WhatIfResultsAtResourceGroupClient.NewListPager":
 				res.resp, res.err = w.dispatchNewListPager(req)
-			case "WhatIfResultsAtResourceGroupClient.BeginWhatIf":
-				res.resp, res.err = w.dispatchBeginWhatIf(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -154,6 +154,50 @@ func (w *WhatIfResultsAtResourceGroupServerTransport) dispatchBeginCreateOrUpdat
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		w.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WhatIfResultsAtResourceGroupServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginWhatIf == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
+	}
+	beginWhatIf := w.beginWhatIf.get(req)
+	if beginWhatIf == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentStacksWhatIfResultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStacksWhatIfResultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginWhatIf(req.Context(), resourceGroupNameParam, deploymentStacksWhatIfResultNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginWhatIf = &respr
+		w.beginWhatIf.add(req, beginWhatIf)
+	}
+
+	resp, err := server.PollerResponderNext(beginWhatIf, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginWhatIf.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginWhatIf) {
+		w.beginWhatIf.remove(req)
 	}
 
 	return resp, nil
@@ -278,50 +322,6 @@ func (w *WhatIfResultsAtResourceGroupServerTransport) dispatchNewListPager(req *
 	if !server.PagerResponderMore(newListPager) {
 		w.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WhatIfResultsAtResourceGroupServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginWhatIf == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
-	}
-	beginWhatIf := w.beginWhatIf.get(req)
-	if beginWhatIf == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentStacksWhatIfResultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStacksWhatIfResultName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginWhatIf(req.Context(), resourceGroupNameParam, deploymentStacksWhatIfResultNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginWhatIf = &respr
-		w.beginWhatIf.add(req, beginWhatIf)
-	}
-
-	resp, err := server.PollerResponderNext(beginWhatIf, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginWhatIf.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginWhatIf) {
-		w.beginWhatIf.remove(req)
-	}
-
 	return resp, nil
 }
 

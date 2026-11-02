@@ -65,7 +65,7 @@ func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAc
 	}
 }
 
-// CreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
+// createOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
 // Microsoft Customer Agreement and Microsoft Partner Agreement. If you are a MCA Individual (Pay-as-you-go) customer, then
 // please use the Azure portal experience to create the billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,7 +89,7 @@ func (client *ProfilesClient) createOrUpdate(ctx context.Context, billingAccount
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, _ *ProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
 	if billingAccountName == "" {
@@ -138,8 +138,8 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, billingAccountNam
 	}
 }
 
-// Delete - Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft Customer
-// Agreement and Microsoft Partner Agreement.
+// deleteOperation - Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft
+// Customer Agreement and Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) deleteOperation(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *ProfilesClient) deleteOperation(ctx context.Context, billingAccoun
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *ProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
 	if billingAccountName == "" {

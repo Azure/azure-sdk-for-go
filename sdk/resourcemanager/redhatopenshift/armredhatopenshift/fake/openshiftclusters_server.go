@@ -29,29 +29,29 @@ type OpenShiftClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armredhatopenshift.OpenShiftClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method OpenShiftClustersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, parameters armredhatopenshift.OpenShiftClusterUpdate, options *armredhatopenshift.OpenShiftClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OpenShiftClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armredhatopenshift.OpenShiftClustersClientGetOptions) (resp azfake.Responder[armredhatopenshift.OpenShiftClustersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method OpenShiftClustersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armredhatopenshift.OpenShiftClustersClientListOptions) (resp azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse])
 
 	// ListAdminCredentials is the fake for method OpenShiftClustersClient.ListAdminCredentials
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAdminCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armredhatopenshift.OpenShiftClustersClientListAdminCredentialsOptions) (resp azfake.Responder[armredhatopenshift.OpenShiftClustersClientListAdminCredentialsResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method OpenShiftClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armredhatopenshift.OpenShiftClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse])
-
 	// ListCredentials is the fake for method OpenShiftClustersClient.ListCredentials
 	// HTTP status codes to indicate success: http.StatusOK
 	ListCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armredhatopenshift.OpenShiftClustersClientListCredentialsOptions) (resp azfake.Responder[armredhatopenshift.OpenShiftClustersClientListCredentialsResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method OpenShiftClustersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, parameters armredhatopenshift.OpenShiftClusterUpdate, options *armredhatopenshift.OpenShiftClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListByResourceGroupPager is the fake for method OpenShiftClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armredhatopenshift.OpenShiftClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method OpenShiftClustersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armredhatopenshift.OpenShiftClustersClientListOptions) (resp azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse])
 }
 
 // NewOpenShiftClustersServerTransport creates a new instance of OpenShiftClustersServerTransport with the provided implementation.
@@ -62,9 +62,9 @@ func NewOpenShiftClustersServerTransport(srv *OpenShiftClustersServer) *OpenShif
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse]](),
 	}
 }
 
@@ -74,9 +74,9 @@ type OpenShiftClustersServerTransport struct {
 	srv                         *OpenShiftClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armredhatopenshift.OpenShiftClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armredhatopenshift.OpenShiftClustersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OpenShiftClustersServerTransport.
@@ -104,18 +104,18 @@ func (o *OpenShiftClustersServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = o.dispatchBeginCreateOrUpdate(req)
 			case "OpenShiftClustersClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
-			case "OpenShiftClustersClient.Get":
-				res.resp, res.err = o.dispatchGet(req)
-			case "OpenShiftClustersClient.NewListPager":
-				res.resp, res.err = o.dispatchNewListPager(req)
-			case "OpenShiftClustersClient.ListAdminCredentials":
-				res.resp, res.err = o.dispatchListAdminCredentials(req)
-			case "OpenShiftClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
-			case "OpenShiftClustersClient.ListCredentials":
-				res.resp, res.err = o.dispatchListCredentials(req)
 			case "OpenShiftClustersClient.BeginUpdate":
 				res.resp, res.err = o.dispatchBeginUpdate(req)
+			case "OpenShiftClustersClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			case "OpenShiftClustersClient.ListAdminCredentials":
+				res.resp, res.err = o.dispatchListAdminCredentials(req)
+			case "OpenShiftClustersClient.ListCredentials":
+				res.resp, res.err = o.dispatchListCredentials(req)
+			case "OpenShiftClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
+			case "OpenShiftClustersClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -224,175 +224,6 @@ func (o *OpenShiftClustersServerTransport) dispatchBeginDelete(req *http.Request
 	return resp, nil
 }
 
-func (o *OpenShiftClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if o.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (o *OpenShiftClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := o.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := o.srv.NewListPager(nil)
-		newListPager = &resp
-		o.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armredhatopenshift.OpenShiftClustersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		o.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OpenShiftClustersServerTransport) dispatchListAdminCredentials(req *http.Request) (*http.Response, error) {
-	if o.srv.ListAdminCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAdminCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdminCredentials`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.ListAdminCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftClusterAdminKubeconfig, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (o *OpenShiftClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := o.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := o.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		o.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		o.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OpenShiftClustersServerTransport) dispatchListCredentials(req *http.Request) (*http.Response, error) {
-	if o.srv.ListCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredentials`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.ListCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftClusterCredentials, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (o *OpenShiftClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if o.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -438,6 +269,175 @@ func (o *OpenShiftClustersServerTransport) dispatchBeginUpdate(req *http.Request
 		o.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (o *OpenShiftClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if o.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OpenShiftClustersServerTransport) dispatchListAdminCredentials(req *http.Request) (*http.Response, error) {
+	if o.srv.ListAdminCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAdminCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdminCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.ListAdminCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftClusterAdminKubeconfig, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OpenShiftClustersServerTransport) dispatchListCredentials(req *http.Request) (*http.Response, error) {
+	if o.srv.ListCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.ListCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OpenShiftClusterCredentials, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OpenShiftClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := o.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := o.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		o.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armredhatopenshift.OpenShiftClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		o.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (o *OpenShiftClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := o.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/openShiftClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := o.srv.NewListPager(nil)
+		newListPager = &resp
+		o.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armredhatopenshift.OpenShiftClustersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		o.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -68,7 +68,7 @@ func (client *DomainListsClient) BeginBulk(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Bulk - Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
+// bulk - Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DomainListsClient) bulk(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListBulk, options *DomainListsClientBeginBulkOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *DomainListsClient) bulk(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// bulkCreateRequest creates the Bulk request.
+// bulkCreateRequest creates the bulk request.
 func (client *DomainListsClient) bulkCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListBulk, options *DomainListsClientBeginBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}/bulk"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DomainListsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DNS resolver domain list.
+// createOrUpdate - Creates or updates a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DomainListsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainList, options *DomainListsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DomainListsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DomainListsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainList, options *DomainListsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}"
 	if client.subscriptionID == "" {
@@ -230,7 +230,7 @@ func (client *DomainListsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
+// deleteOperation - Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DomainListsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *DomainListsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -252,7 +252,7 @@ func (client *DomainListsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DomainListsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *DomainListsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}"
 	if client.subscriptionID == "" {
@@ -276,6 +276,84 @@ func (client *DomainListsClient) deleteCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a DNS resolver domain list.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverDomainListName - The name of the DNS resolver domain list.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - DomainListsClientBeginUpdateOptions contains the optional parameters for the DomainListsClient.BeginUpdate method.
+func (client *DomainListsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*runtime.Poller[DomainListsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsResolverDomainListName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainListsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainListsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a DNS resolver domain list.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainListsClient) update(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DomainListsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverDomainListName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DomainListsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dnsResolverDomainListName == "" {
+		return nil, errors.New("parameter dnsResolverDomainListName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverDomainListName}", url.PathEscape(dnsResolverDomainListName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -336,75 +414,6 @@ func (client *DomainListsClient) getHandleResponse(resp *http.Response, successC
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainList); err != nil {
 		return DomainListsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists DNS resolver domain lists in all resource groups of a subscription.
-//   - options - DomainListsClientListOptions contains the optional parameters for the DomainListsClient.NewListPager method.
-func (client *DomainListsClient) NewListPager(options *DomainListsClientListOptions) *runtime.Pager[DomainListsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DomainListsClientListResponse]{
-		More: func(page DomainListsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DomainListsClientListResponse) (DomainListsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DomainListsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DomainListsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DomainListsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DomainListsClient) listCreateRequest(ctx context.Context, nextLink string, options *DomainListsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolverDomainLists"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20251001Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DomainListsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DomainListsClientListResponse, error) {
-	result := DomainListsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DomainListListResult); err != nil {
-		return DomainListsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -484,80 +493,71 @@ func (client *DomainListsClient) listByResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// BeginUpdate - Updates a DNS resolver domain list.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - dnsResolverDomainListName - The name of the DNS resolver domain list.
-//   - parameters - Parameters supplied to the Update operation.
-//   - options - DomainListsClientBeginUpdateOptions contains the optional parameters for the DomainListsClient.BeginUpdate method.
-func (client *DomainListsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*runtime.Poller[DomainListsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, dnsResolverDomainListName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainListsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainListsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+// NewListPager - Lists DNS resolver domain lists in all resource groups of a subscription.
+//   - options - DomainListsClientListOptions contains the optional parameters for the DomainListsClient.NewListPager method.
+func (client *DomainListsClient) NewListPager(options *DomainListsClientListOptions) *runtime.Pager[DomainListsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DomainListsClientListResponse]{
+		More: func(page DomainListsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DomainListsClientListResponse) (DomainListsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DomainListsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DomainListsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DomainListsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - Updates a DNS resolver domain list.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainListsClient) update(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *DomainListsClient) listCreateRequest(ctx context.Context, nextLink string, options *DomainListsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "DomainListsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverDomainListName, parameters, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolverDomainLists"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DomainListsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dnsResolverDomainListName == "" {
-		return nil, errors.New("parameter dnsResolverDomainListName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverDomainListName}", url.PathEscape(dnsResolverDomainListName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DomainListsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DomainListsClientListResponse, error) {
+	result := DomainListsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainListListResult); err != nil {
+		return DomainListsClientListResponse{}, err
+	}
+	return result, nil
 }

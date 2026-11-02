@@ -68,7 +68,7 @@ func (client *SupportPackagesClient) BeginTriggerSupportPackage(ctx context.Cont
 	}
 }
 
-// TriggerSupportPackage - Triggers support package on the device
+// triggerSupportPackage - Triggers support package on the device
 //
 // Triggers support package on the device
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,7 +92,7 @@ func (client *SupportPackagesClient) triggerSupportPackage(ctx context.Context, 
 	return httpResp, nil
 }
 
-// triggerSupportPackageCreateRequest creates the TriggerSupportPackage request.
+// triggerSupportPackageCreateRequest creates the triggerSupportPackage request.
 func (client *SupportPackagesClient) triggerSupportPackageCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, triggerSupportPackageRequest TriggerSupportPackageRequest, _ *SupportPackagesClientBeginTriggerSupportPackageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggerSupportPackage"
 	if client.subscriptionID == "" {

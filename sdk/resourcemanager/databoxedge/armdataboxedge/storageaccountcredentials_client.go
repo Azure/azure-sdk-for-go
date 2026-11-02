@@ -66,7 +66,7 @@ func (client *StorageAccountCredentialsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Creates or updates the storage account credential.
+// createOrUpdate - Creates or updates the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageAccountCredentialsClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, storageAccountCredential StorageAccountCredential, options *StorageAccountCredentialsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *StorageAccountCredentialsClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StorageAccountCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, storageAccountCredential StorageAccountCredential, _ *StorageAccountCredentialsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *StorageAccountCredentialsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes the storage account credential.
+// deleteOperation - Deletes the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageAccountCredentialsClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *StorageAccountCredentialsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *StorageAccountCredentialsClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageAccountCredentialsClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *StorageAccountCredentialsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}"
 	if client.subscriptionID == "" {

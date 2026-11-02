@@ -30,6 +30,9 @@ type FleetAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,82 @@ func NewFleetAnalyticsClient(subscriptionID string, credential azcore.TokenCrede
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginDelete - Deletes an existing Azure Cosmos DB FleetAnalytics.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
+//   - fleetAnalyticsName - Cosmos DB fleetAnalytics name.
+//   - options - FleetAnalyticsClientBeginDeleteOptions contains the optional parameters for the FleetAnalyticsClient.BeginDelete
+//     method.
+func (client *FleetAnalyticsClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *FleetAnalyticsClientBeginDeleteOptions) (*runtime.Poller[FleetAnalyticsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, fleetAnalyticsName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetAnalyticsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetAnalyticsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes an existing Azure Cosmos DB FleetAnalytics.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FleetAnalyticsClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *FleetAnalyticsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "FleetAnalyticsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, fleetAnalyticsName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *FleetAnalyticsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, _ *FleetAnalyticsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetAnalytics/{fleetAnalyticsName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if fleetName == "" {
+		return nil, errors.New("parameter fleetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+	if fleetAnalyticsName == "" {
+		return nil, errors.New("parameter fleetAnalyticsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fleetAnalyticsName}", url.PathEscape(fleetAnalyticsName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // Create - Creates an Azure Cosmos DB FleetAnalytics under a fleet.
@@ -69,7 +148,7 @@ func (client *FleetAnalyticsClient) Create(ctx context.Context, resourceGroupNam
 func (client *FleetAnalyticsClient) createCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, body FleetAnalyticsResource, _ *FleetAnalyticsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetAnalytics/{fleetAnalyticsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,82 +190,6 @@ func (client *FleetAnalyticsClient) createHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
-// BeginDelete - Deletes an existing Azure Cosmos DB FleetAnalytics.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
-//   - fleetAnalyticsName - Cosmos DB fleetAnalytics name.
-//   - options - FleetAnalyticsClientBeginDeleteOptions contains the optional parameters for the FleetAnalyticsClient.BeginDelete
-//     method.
-func (client *FleetAnalyticsClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *FleetAnalyticsClientBeginDeleteOptions) (*runtime.Poller[FleetAnalyticsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, fleetAnalyticsName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetAnalyticsClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetAnalyticsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes an existing Azure Cosmos DB FleetAnalytics.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *FleetAnalyticsClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *FleetAnalyticsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "FleetAnalyticsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, fleetAnalyticsName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *FleetAnalyticsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, _ *FleetAnalyticsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetAnalytics/{fleetAnalyticsName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetAnalyticsName == "" {
-		return nil, errors.New("parameter fleetAnalyticsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetAnalyticsName}", url.PathEscape(fleetAnalyticsName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // Get - Retrieves the properties of an existing Azure Cosmos DB FleetAnalytics under a fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -214,7 +217,7 @@ func (client *FleetAnalyticsClient) Get(ctx context.Context, resourceGroupName s
 func (client *FleetAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, _ *FleetAnalyticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetAnalytics/{fleetAnalyticsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -289,7 +292,7 @@ func (client *FleetAnalyticsClient) listCreateRequest(ctx context.Context, resou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetAnalytics"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

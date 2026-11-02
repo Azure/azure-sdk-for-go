@@ -53,7 +53,7 @@ func NewRaiBlocklistsClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *RaiBlocklistsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, options *RaiBlocklistsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiBlocklistName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiBlocklistName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *RaiBlocklistsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes the specified custom blocklist associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified custom blocklist associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiBlocklistsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, options *RaiBlocklistsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiBlocklistsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, options *RaiBlocklistsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiBlocklistsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

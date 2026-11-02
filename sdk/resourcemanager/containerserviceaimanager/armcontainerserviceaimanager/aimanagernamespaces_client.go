@@ -69,7 +69,7 @@ func (client *AIManagerNamespacesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a AIManagerNamespace
+// createOrUpdate - Create a AIManagerNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AIManagerNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, resource AIManagerNamespace, options *AIManagerNamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AIManagerNamespacesClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AIManagerNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, resource AIManagerNamespace, options *AIManagerNamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *AIManagerNamespacesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a AIManagerNamespace
+// deleteOperation - Delete a AIManagerNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AIManagerNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, options *AIManagerNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *AIManagerNamespacesClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AIManagerNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, options *AIManagerNamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
@@ -340,6 +340,72 @@ func (client *AIManagerNamespacesClient) listAccessKeysHandleResponse(resp *http
 	return result, nil
 }
 
+// ListCredential - Lists the credentials of an AI Manager namespace.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - aiManagerName - The name of the AI Manager resource.
+//   - namespaceName - The name of the AI Manager namespace resource.
+//   - options - AIManagerNamespacesClientListCredentialOptions contains the optional parameters for the AIManagerNamespacesClient.ListCredential
+//     method.
+func (client *AIManagerNamespacesClient) ListCredential(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, options *AIManagerNamespacesClientListCredentialOptions) (AIManagerNamespacesClientListCredentialResponse, error) {
+	var err error
+	const operationName = "AIManagerNamespacesClient.ListCredential"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCredentialCreateRequest(ctx, resourceGroupName, aiManagerName, namespaceName, options)
+	if err != nil {
+		return AIManagerNamespacesClientListCredentialResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AIManagerNamespacesClientListCredentialResponse{}, err
+	}
+	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
+}
+
+// listCredentialCreateRequest creates the ListCredential request.
+func (client *AIManagerNamespacesClient) listCredentialCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, _ *AIManagerNamespacesClientListCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/listCredential"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260902Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCredentialHandleResponse handles the ListCredential response.
+func (client *AIManagerNamespacesClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientListCredentialResponse, error) {
+	result := AIManagerNamespacesClientListCredentialResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
+		return AIManagerNamespacesClientListCredentialResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByAIManagerPager - List AIManagerNamespace resources by AIManager
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiManagerName - The name of the AI Manager resource.
@@ -413,72 +479,6 @@ func (client *AIManagerNamespacesClient) listByAIManagerHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManagerNamespaceListResult); err != nil {
 		return AIManagerNamespacesClientListByAIManagerResponse{}, err
-	}
-	return result, nil
-}
-
-// ListCredential - Lists the credentials of an AI Manager namespace.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - aiManagerName - The name of the AI Manager resource.
-//   - namespaceName - The name of the AI Manager namespace resource.
-//   - options - AIManagerNamespacesClientListCredentialOptions contains the optional parameters for the AIManagerNamespacesClient.ListCredential
-//     method.
-func (client *AIManagerNamespacesClient) ListCredential(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, options *AIManagerNamespacesClientListCredentialOptions) (AIManagerNamespacesClientListCredentialResponse, error) {
-	var err error
-	const operationName = "AIManagerNamespacesClient.ListCredential"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCredentialCreateRequest(ctx, resourceGroupName, aiManagerName, namespaceName, options)
-	if err != nil {
-		return AIManagerNamespacesClientListCredentialResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AIManagerNamespacesClientListCredentialResponse{}, err
-	}
-	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCredentialCreateRequest creates the ListCredential request.
-func (client *AIManagerNamespacesClient) listCredentialCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, _ *AIManagerNamespacesClientListCredentialOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/listCredential"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if aiManagerName == "" {
-		return nil, errors.New("parameter aiManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260902Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCredentialHandleResponse handles the ListCredential response.
-func (client *AIManagerNamespacesClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientListCredentialResponse, error) {
-	result := AIManagerNamespacesClientListCredentialResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
-		return AIManagerNamespacesClientListCredentialResponse{}, err
 	}
 	return result, nil
 }

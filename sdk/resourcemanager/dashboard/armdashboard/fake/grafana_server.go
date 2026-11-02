@@ -21,10 +21,6 @@ import (
 
 // GrafanaServer is a fake server for instances of the armdashboard.GrafanaClient type.
 type GrafanaServer struct {
-	// CheckEnterpriseDetails is the fake for method GrafanaClient.CheckEnterpriseDetails
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckEnterpriseDetails func(ctx context.Context, resourceGroupName string, workspaceName string, options *armdashboard.GrafanaClientCheckEnterpriseDetailsOptions) (resp azfake.Responder[armdashboard.GrafanaClientCheckEnterpriseDetailsResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method GrafanaClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, workspaceName string, requestBodyParameters armdashboard.ManagedGrafana, options *armdashboard.GrafanaClientBeginCreateOptions) (resp azfake.PollerResponder[armdashboard.GrafanaClientCreateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type GrafanaServer struct {
 	// BeginDelete is the fake for method GrafanaClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, options *armdashboard.GrafanaClientBeginDeleteOptions) (resp azfake.PollerResponder[armdashboard.GrafanaClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method GrafanaClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, requestBodyParameters armdashboard.ManagedGrafanaUpdateParameters, options *armdashboard.GrafanaClientBeginUpdateOptions) (resp azfake.PollerResponder[armdashboard.GrafanaClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckEnterpriseDetails is the fake for method GrafanaClient.CheckEnterpriseDetails
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckEnterpriseDetails func(ctx context.Context, resourceGroupName string, workspaceName string, options *armdashboard.GrafanaClientCheckEnterpriseDetailsOptions) (resp azfake.Responder[armdashboard.GrafanaClientCheckEnterpriseDetailsResponse], errResp azfake.ErrorResponder)
 
 	// FetchAvailablePlugins is the fake for method GrafanaClient.FetchAvailablePlugins
 	// HTTP status codes to indicate success: http.StatusOK
@@ -41,17 +45,13 @@ type GrafanaServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, options *armdashboard.GrafanaClientGetOptions) (resp azfake.Responder[armdashboard.GrafanaClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method GrafanaClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdashboard.GrafanaClientListOptions) (resp azfake.PagerResponder[armdashboard.GrafanaClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method GrafanaClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdashboard.GrafanaClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdashboard.GrafanaClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method GrafanaClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, requestBodyParameters armdashboard.ManagedGrafanaUpdateParameters, options *armdashboard.GrafanaClientBeginUpdateOptions) (resp azfake.PollerResponder[armdashboard.GrafanaClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method GrafanaClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdashboard.GrafanaClientListOptions) (resp azfake.PagerResponder[armdashboard.GrafanaClientListResponse])
 }
 
 // NewGrafanaServerTransport creates a new instance of GrafanaServerTransport with the provided implementation.
@@ -62,9 +62,9 @@ func NewGrafanaServerTransport(srv *GrafanaServer) *GrafanaServerTransport {
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armdashboard.GrafanaClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdashboard.GrafanaClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdashboard.GrafanaClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdashboard.GrafanaClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdashboard.GrafanaClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdashboard.GrafanaClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdashboard.GrafanaClientListResponse]](),
 	}
 }
 
@@ -74,9 +74,9 @@ type GrafanaServerTransport struct {
 	srv                         *GrafanaServer
 	beginCreate                 *tracker[azfake.PollerResponder[armdashboard.GrafanaClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdashboard.GrafanaClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdashboard.GrafanaClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdashboard.GrafanaClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdashboard.GrafanaClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdashboard.GrafanaClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdashboard.GrafanaClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GrafanaServerTransport.
@@ -100,22 +100,22 @@ func (g *GrafanaServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "GrafanaClient.CheckEnterpriseDetails":
-				res.resp, res.err = g.dispatchCheckEnterpriseDetails(req)
 			case "GrafanaClient.BeginCreate":
 				res.resp, res.err = g.dispatchBeginCreate(req)
 			case "GrafanaClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GrafanaClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
+			case "GrafanaClient.CheckEnterpriseDetails":
+				res.resp, res.err = g.dispatchCheckEnterpriseDetails(req)
 			case "GrafanaClient.FetchAvailablePlugins":
 				res.resp, res.err = g.dispatchFetchAvailablePlugins(req)
 			case "GrafanaClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
-			case "GrafanaClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GrafanaClient.NewListByResourceGroupPager":
 				res.resp, res.err = g.dispatchNewListByResourceGroupPager(req)
-			case "GrafanaClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
+			case "GrafanaClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -130,39 +130,6 @@ func (g *GrafanaServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (g *GrafanaServerTransport) dispatchCheckEnterpriseDetails(req *http.Request) (*http.Response, error) {
-	if g.srv.CheckEnterpriseDetails == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckEnterpriseDetails not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkEnterpriseDetails`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.CheckEnterpriseDetails(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnterpriseDetails, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (g *GrafanaServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -257,6 +224,87 @@ func (g *GrafanaServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
+func (g *GrafanaServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdashboard.ManagedGrafanaUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GrafanaServerTransport) dispatchCheckEnterpriseDetails(req *http.Request) (*http.Response, error) {
+	if g.srv.CheckEnterpriseDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckEnterpriseDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkEnterpriseDetails`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.CheckEnterpriseDetails(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnterpriseDetails, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (g *GrafanaServerTransport) dispatchFetchAvailablePlugins(req *http.Request) (*http.Response, error) {
 	if g.srv.FetchAvailablePlugins == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchAvailablePlugins not implemented")}
@@ -323,39 +371,6 @@ func (g *GrafanaServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (g *GrafanaServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := g.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := g.srv.NewListPager(nil)
-		newListPager = &resp
-		g.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdashboard.GrafanaClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GrafanaServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -393,51 +408,36 @@ func (g *GrafanaServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	return resp, nil
 }
 
-func (g *GrafanaServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (g *GrafanaServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := g.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := g.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdashboard.ManagedGrafanaUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		g.beginUpdate.add(req, beginUpdate)
+		resp := g.srv.NewListPager(nil)
+		newListPager = &resp
+		g.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdashboard.GrafanaClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		g.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		g.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

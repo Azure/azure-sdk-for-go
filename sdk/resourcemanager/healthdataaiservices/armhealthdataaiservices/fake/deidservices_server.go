@@ -29,6 +29,10 @@ type DeidServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, deidServiceName string, options *armhealthdataaiservices.DeidServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DeidServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, deidServiceName string, properties armhealthdataaiservices.DeidUpdate, options *armhealthdataaiservices.DeidServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DeidServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, deidServiceName string, options *armhealthdataaiservices.DeidServicesClientGetOptions) (resp azfake.Responder[armhealthdataaiservices.DeidServicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type DeidServicesServer struct {
 	// NewListBySubscriptionPager is the fake for method DeidServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhealthdataaiservices.DeidServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhealthdataaiservices.DeidServicesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method DeidServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, deidServiceName string, properties armhealthdataaiservices.DeidUpdate, options *armhealthdataaiservices.DeidServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDeidServicesServerTransport creates a new instance of DeidServicesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewDeidServicesServerTransport(srv *DeidServicesServer) *DeidServicesServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthdataaiservices.DeidServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhealthdataaiservices.DeidServicesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type DeidServicesServerTransport struct {
 	srv                         *DeidServicesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthdataaiservices.DeidServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhealthdataaiservices.DeidServicesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeidServicesServerTransport.
@@ -96,14 +96,14 @@ func (d *DeidServicesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = d.dispatchBeginCreate(req)
 			case "DeidServicesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DeidServicesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DeidServicesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DeidServicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DeidServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
-			case "DeidServicesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (d *DeidServicesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (d *DeidServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthDataAIServices/deidServices/(?P<deidServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhealthdataaiservices.DeidUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		deidServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deidServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, deidServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DeidServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (d *DeidServicesServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		d.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DeidServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthDataAIServices/deidServices/(?P<deidServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhealthdataaiservices.DeidUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		deidServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deidServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, deidServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

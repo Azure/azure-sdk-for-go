@@ -30,6 +30,9 @@ type SoftDeletedSQLDatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSoftDeletedSQLDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftDeletedSQLDatabasesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,172 @@ func NewSoftDeletedSQLDatabasesClient(subscriptionID string, credential azcore.T
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginPurge - Permanently deletes a soft-deleted Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The name of the Azure region.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB SQL database name.
+//   - options - SoftDeletedSQLDatabasesClientBeginPurgeOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginPurge
+//     method.
+func (client *SoftDeletedSQLDatabasesClient) BeginPurge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientPurgeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purge(ctx, resourceGroupName, location, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SoftDeletedSQLDatabasesClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SoftDeletedSQLDatabasesClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purge - Permanently deletes a soft-deleted Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SoftDeletedSQLDatabasesClient) purge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SoftDeletedSQLDatabasesClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeCreateRequest(ctx, resourceGroupName, location, accountName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeCreateRequest creates the purge request.
+func (client *SoftDeletedSQLDatabasesClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases/{databaseName}?softDeleteActionKind=PermanentDeleteResource"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	if options != nil && options.SoftDeleteActionKind != nil {
+		reqQP.Set("softDeleteActionKind", string(*options.SoftDeleteActionKind))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestore - Restores a soft-deleted Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The name of the Azure region.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB SQL database name.
+//   - options - SoftDeletedSQLDatabasesClientBeginRestoreOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginRestore
+//     method.
+func (client *SoftDeletedSQLDatabasesClient) BeginRestore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restore(ctx, resourceGroupName, location, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SoftDeletedSQLDatabasesClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SoftDeletedSQLDatabasesClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restore - Restores a soft-deleted Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SoftDeletedSQLDatabasesClient) restore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SoftDeletedSQLDatabasesClient.BeginRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restoreCreateRequest(ctx, resourceGroupName, location, accountName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restoreCreateRequest creates the restore request.
+func (client *SoftDeletedSQLDatabasesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases/{databaseName}?softDeleteActionKind=RestoreSoftDeletedResource"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	if options != nil && options.SoftDeleteActionKind != nil {
+		reqQP.Set("softDeleteActionKind", string(*options.SoftDeleteActionKind))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // Get - Retrieves the properties of a soft-deleted Azure Cosmos DB SQL database. This call requires 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/read'
@@ -71,7 +240,7 @@ func (client *SoftDeletedSQLDatabasesClient) Get(ctx context.Context, resourceGr
 func (client *SoftDeletedSQLDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, _ *SoftDeletedSQLDatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -142,7 +311,7 @@ func (client *SoftDeletedSQLDatabasesClient) List(ctx context.Context, resourceG
 func (client *SoftDeletedSQLDatabasesClient) listCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, _ *SoftDeletedSQLDatabasesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -178,170 +347,4 @@ func (client *SoftDeletedSQLDatabasesClient) listHandleResponse(resp *http.Respo
 		return SoftDeletedSQLDatabasesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPurge - Permanently deletes a soft-deleted Azure Cosmos DB SQL database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The name of the Azure region.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB SQL database name.
-//   - options - SoftDeletedSQLDatabasesClientBeginPurgeOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginPurge
-//     method.
-func (client *SoftDeletedSQLDatabasesClient) BeginPurge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientPurgeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purge(ctx, resourceGroupName, location, accountName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SoftDeletedSQLDatabasesClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SoftDeletedSQLDatabasesClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Purge - Permanently deletes a soft-deleted Azure Cosmos DB SQL database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SoftDeletedSQLDatabasesClient) purge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SoftDeletedSQLDatabasesClient.BeginPurge"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeCreateRequest(ctx, resourceGroupName, location, accountName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// purgeCreateRequest creates the Purge request.
-func (client *SoftDeletedSQLDatabasesClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases/{databaseName}?softDeleteActionKind=PermanentDeleteResource"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	if options != nil && options.SoftDeleteActionKind != nil {
-		reqQP.Set("softDeleteActionKind", string(*options.SoftDeleteActionKind))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRestore - Restores a soft-deleted Azure Cosmos DB SQL database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The name of the Azure region.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB SQL database name.
-//   - options - SoftDeletedSQLDatabasesClientBeginRestoreOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginRestore
-//     method.
-func (client *SoftDeletedSQLDatabasesClient) BeginRestore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restore(ctx, resourceGroupName, location, accountName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SoftDeletedSQLDatabasesClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SoftDeletedSQLDatabasesClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restore - Restores a soft-deleted Azure Cosmos DB SQL database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SoftDeletedSQLDatabasesClient) restore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SoftDeletedSQLDatabasesClient.BeginRestore"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restoreCreateRequest(ctx, resourceGroupName, location, accountName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restoreCreateRequest creates the Restore request.
-func (client *SoftDeletedSQLDatabasesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/locations/{location}/softDeletedDatabaseAccounts/{accountName}/softDeletedSqlDatabases/{databaseName}?softDeleteActionKind=RestoreSoftDeletedResource"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	if options != nil && options.SoftDeleteActionKind != nil {
-		reqQP.Set("softDeleteActionKind", string(*options.SoftDeleteActionKind))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

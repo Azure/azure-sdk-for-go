@@ -30,6 +30,10 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatadog.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MonitorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, body armdatadog.MonitorResourceUpdateParameters, options *armdatadog.MonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MonitorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorsClientGetOptions) (resp azfake.Responder[armdatadog.MonitorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -42,9 +46,9 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDefaultKey func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorsClientGetDefaultKeyOptions) (resp azfake.Responder[armdatadog.MonitorsClientGetDefaultKeyResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method MonitorsClient.NewListPager
+	// ManageSreAgentConnectors is the fake for method MonitorsClient.ManageSreAgentConnectors
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdatadog.MonitorsClientListOptions) (resp azfake.PagerResponder[armdatadog.MonitorsClientListResponse])
+	ManageSreAgentConnectors func(ctx context.Context, resourceGroupName string, monitorName string, request armdatadog.SreAgentConnectorRequest, options *armdatadog.MonitorsClientManageSreAgentConnectorsOptions) (resp azfake.Responder[armdatadog.MonitorsClientManageSreAgentConnectorsResponse], errResp azfake.ErrorResponder)
 
 	// NewListAPIKeysPager is the fake for method MonitorsClient.NewListAPIKeysPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,9 +70,9 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListMonitoredResourcesPager func(resourceGroupName string, monitorName string, options *armdatadog.MonitorsClientListMonitoredResourcesOptions) (resp azfake.PagerResponder[armdatadog.MonitorsClientListMonitoredResourcesResponse])
 
-	// ManageSreAgentConnectors is the fake for method MonitorsClient.ManageSreAgentConnectors
+	// NewListPager is the fake for method MonitorsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ManageSreAgentConnectors func(ctx context.Context, resourceGroupName string, monitorName string, request armdatadog.SreAgentConnectorRequest, options *armdatadog.MonitorsClientManageSreAgentConnectorsOptions) (resp azfake.Responder[armdatadog.MonitorsClientManageSreAgentConnectorsResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armdatadog.MonitorsClientListOptions) (resp azfake.PagerResponder[armdatadog.MonitorsClientListResponse])
 
 	// RefreshSetPasswordLink is the fake for method MonitorsClient.RefreshSetPasswordLink
 	// HTTP status codes to indicate success: http.StatusOK
@@ -77,10 +81,6 @@ type MonitorsServer struct {
 	// SetDefaultKey is the fake for method MonitorsClient.SetDefaultKey
 	// HTTP status codes to indicate success: http.StatusOK
 	SetDefaultKey func(ctx context.Context, resourceGroupName string, monitorName string, options *armdatadog.MonitorsClientSetDefaultKeyOptions) (resp azfake.Responder[armdatadog.MonitorsClientSetDefaultKeyResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method MonitorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, body armdatadog.MonitorResourceUpdateParameters, options *armdatadog.MonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitorsServerTransport creates a new instance of MonitorsServerTransport with the provided implementation.
@@ -91,13 +91,13 @@ func NewMonitorsServerTransport(srv *MonitorsServer) *MonitorsServerTransport {
 		srv:                            srv,
 		beginCreate:                    newTracker[azfake.PollerResponder[armdatadog.MonitorsClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armdatadog.MonitorsClientDeleteResponse]](),
-		newListPager:                   newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListResponse]](),
+		beginUpdate:                    newTracker[azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse]](),
 		newListAPIKeysPager:            newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListAPIKeysResponse]](),
 		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListByResourceGroupResponse]](),
 		newListHostsPager:              newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListHostsResponse]](),
 		newListLinkedResourcesPager:    newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListLinkedResourcesResponse]](),
 		newListMonitoredResourcesPager: newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListMonitoredResourcesResponse]](),
-		beginUpdate:                    newTracker[azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armdatadog.MonitorsClientListResponse]](),
 	}
 }
 
@@ -107,13 +107,13 @@ type MonitorsServerTransport struct {
 	srv                            *MonitorsServer
 	beginCreate                    *tracker[azfake.PollerResponder[armdatadog.MonitorsClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armdatadog.MonitorsClientDeleteResponse]]
-	newListPager                   *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListResponse]]
+	beginUpdate                    *tracker[azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse]]
 	newListAPIKeysPager            *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListAPIKeysResponse]]
 	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListByResourceGroupResponse]]
 	newListHostsPager              *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListHostsResponse]]
 	newListLinkedResourcesPager    *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListLinkedResourcesResponse]]
 	newListMonitoredResourcesPager *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListMonitoredResourcesResponse]]
-	beginUpdate                    *tracker[azfake.PollerResponder[armdatadog.MonitorsClientUpdateResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armdatadog.MonitorsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitorsServerTransport.
@@ -141,14 +141,16 @@ func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = m.dispatchBeginCreate(req)
 			case "MonitorsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MonitorsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MonitorsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MonitorsClient.GetDefaultApplicationKey":
 				res.resp, res.err = m.dispatchGetDefaultApplicationKey(req)
 			case "MonitorsClient.GetDefaultKey":
 				res.resp, res.err = m.dispatchGetDefaultKey(req)
-			case "MonitorsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
+			case "MonitorsClient.ManageSreAgentConnectors":
+				res.resp, res.err = m.dispatchManageSreAgentConnectors(req)
 			case "MonitorsClient.NewListAPIKeysPager":
 				res.resp, res.err = m.dispatchNewListAPIKeysPager(req)
 			case "MonitorsClient.NewListByResourceGroupPager":
@@ -159,14 +161,12 @@ func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = m.dispatchNewListLinkedResourcesPager(req)
 			case "MonitorsClient.NewListMonitoredResourcesPager":
 				res.resp, res.err = m.dispatchNewListMonitoredResourcesPager(req)
-			case "MonitorsClient.ManageSreAgentConnectors":
-				res.resp, res.err = m.dispatchManageSreAgentConnectors(req)
+			case "MonitorsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			case "MonitorsClient.RefreshSetPasswordLink":
 				res.resp, res.err = m.dispatchRefreshSetPasswordLink(req)
 			case "MonitorsClient.SetDefaultKey":
 				res.resp, res.err = m.dispatchSetDefaultKey(req)
-			case "MonitorsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -275,6 +275,54 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (m *MonitorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatadog.MonitorResourceUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MonitorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -374,35 +422,39 @@ func (m *MonitorsServerTransport) dispatchGetDefaultKey(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (m *MonitorsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (m *MonitorsServerTransport) dispatchManageSreAgentConnectors(req *http.Request) (*http.Response, error) {
+	if m.srv.ManageSreAgentConnectors == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ManageSreAgentConnectors not implemented")}
 	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListPager(nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatadog.MonitorsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/manageSreAgentConnectors`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	body, err := server.UnmarshalRequestAsJSON[armdatadog.SreAgentConnectorRequest](req)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
+	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ManageSreAgentConnectors(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SreAgentConfigurationListResponse, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -608,39 +660,35 @@ func (m *MonitorsServerTransport) dispatchNewListMonitoredResourcesPager(req *ht
 	return resp, nil
 }
 
-func (m *MonitorsServerTransport) dispatchManageSreAgentConnectors(req *http.Request) (*http.Response, error) {
-	if m.srv.ManageSreAgentConnectors == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ManageSreAgentConnectors not implemented")}
+func (m *MonitorsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/manageSreAgentConnectors`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListPager(nil)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatadog.MonitorsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	body, err := server.UnmarshalRequestAsJSON[armdatadog.SreAgentConnectorRequest](req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.ManageSreAgentConnectors(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SreAgentConfigurationListResponse, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -718,54 +766,6 @@ func (m *MonitorsServerTransport) dispatchSetDefaultKey(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (m *MonitorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Datadog/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdatadog.MonitorResourceUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

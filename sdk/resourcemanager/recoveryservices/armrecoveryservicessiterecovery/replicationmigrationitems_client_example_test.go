@@ -110,174 +110,6 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/ReplicationMigrationItems_Get.json
-func ExampleReplicationMigrationItemsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReplicationMigrationItemsClient().Get(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientGetResponse{
-	// 	MigrationItem: armrecoveryservicessiterecovery.MigrationItem{
-	// 		Name: to.Ptr("virtualmachine1"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
-	// 		ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
-	// 		Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
-	// 			AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
-	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
-	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
-	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
-	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
-	// 			},
-	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
-	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
-	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
-	// 			},
-	// 			MachineName: to.Ptr("vm-0520-2"),
-	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
-	// 			MigrationStateDescription: to.Ptr("Ready to migrate"),
-	// 			PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
-	// 			PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
-	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
-	// 				InstanceType: to.Ptr("VMwareCbt"),
-	// 			},
-	// 			TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
-	// 			TestMigrateStateDescription: to.Ptr("None"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/ReplicationMigrationItems_List.json
-func ExampleReplicationMigrationItemsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationMigrationItemsClient().NewListPager("resourcegroup1", "migrationvault", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListResponse{
-		// 	MigrationItemCollection: armrecoveryservicessiterecovery.MigrationItemCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.MigrationItem{
-		// 			{
-		// 				Name: to.Ptr("virtualmachine1"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
-		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
-		// 				Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
-		// 					AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
-		// 					},
-		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
-		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
-		// 						JobName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
-		// 					},
-		// 					MachineName: to.Ptr("vm-0520-2"),
-		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
-		// 					MigrationStateDescription: to.Ptr("Ready to migrate"),
-		// 					PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
-		// 					PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
-		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
-		// 						InstanceType: to.Ptr("VMwareCbt"),
-		// 					},
-		// 					TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
-		// 					TestMigrateStateDescription: to.Ptr("None"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
-func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContainersPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationMigrationItemsClient().NewListByReplicationProtectionContainersPager("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{
-		// 	MigrationItemCollection: armrecoveryservicessiterecovery.MigrationItemCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.MigrationItem{
-		// 			{
-		// 				Name: to.Ptr("virtualmachine1"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
-		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
-		// 				Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
-		// 					AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
-		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
-		// 					},
-		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
-		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
-		// 						JobName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
-		// 					},
-		// 					MachineName: to.Ptr("vm-0520-2"),
-		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
-		// 					MigrationStateDescription: to.Ptr("Ready to migrate"),
-		// 					PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
-		// 					PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
-		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
-		// 						InstanceType: to.Ptr("VMwareCbt"),
-		// 					},
-		// 					TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
-		// 					TestMigrateStateDescription: to.Ptr("None"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-08-01/ReplicationMigrationItems_Migrate.json
 func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -692,4 +524,172 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-08-01/ReplicationMigrationItems_Get.json
+func ExampleReplicationMigrationItemsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReplicationMigrationItemsClient().Get(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientGetResponse{
+	// 	MigrationItem: armrecoveryservicessiterecovery.MigrationItem{
+	// 		Name: to.Ptr("virtualmachine1"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
+	// 		ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
+	// 		Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
+	// 			AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
+	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
+	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
+	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
+	// 				to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
+	// 			},
+	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
+	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
+	// 				JobName: to.Ptr("None"),
+	// 				StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
+	// 			},
+	// 			MachineName: to.Ptr("vm-0520-2"),
+	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
+	// 			MigrationStateDescription: to.Ptr("Ready to migrate"),
+	// 			PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
+	// 			PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
+	// 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
+	// 				InstanceType: to.Ptr("VMwareCbt"),
+	// 			},
+	// 			TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
+	// 			TestMigrateStateDescription: to.Ptr("None"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
+func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContainersPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationMigrationItemsClient().NewListByReplicationProtectionContainersPager("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{
+		// 	MigrationItemCollection: armrecoveryservicessiterecovery.MigrationItemCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.MigrationItem{
+		// 			{
+		// 				Name: to.Ptr("virtualmachine1"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
+		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
+		// 				Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
+		// 					AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
+		// 					},
+		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
+		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
+		// 						JobName: to.Ptr("None"),
+		// 						StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
+		// 					},
+		// 					MachineName: to.Ptr("vm-0520-2"),
+		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
+		// 					MigrationStateDescription: to.Ptr("Ready to migrate"),
+		// 					PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
+		// 					PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
+		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
+		// 						InstanceType: to.Ptr("VMwareCbt"),
+		// 					},
+		// 					TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
+		// 					TestMigrateStateDescription: to.Ptr("None"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01/ReplicationMigrationItems_List.json
+func ExampleReplicationMigrationItemsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationMigrationItemsClient().NewListPager("resourcegroup1", "migrationvault", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListResponse{
+		// 	MigrationItemCollection: armrecoveryservicessiterecovery.MigrationItemCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.MigrationItem{
+		// 			{
+		// 				Name: to.Ptr("virtualmachine1"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems"),
+		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1"),
+		// 				Properties: &armrecoveryservicessiterecovery.MigrationItemProperties{
+		// 					AllowedOperations: []*armrecoveryservicessiterecovery.MigrationItemOperation{
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationMigrate),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationDisableMigration),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrate),
+		// 						to.Ptr(armrecoveryservicessiterecovery.MigrationItemOperationTestMigrateCleanup),
+		// 					},
+		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
+		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
+		// 						JobName: to.Ptr("None"),
+		// 						StartTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
+		// 					},
+		// 					MachineName: to.Ptr("vm-0520-2"),
+		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
+		// 					MigrationStateDescription: to.Ptr("Ready to migrate"),
+		// 					PolicyFriendlyName: to.Ptr("vmwarepolicy1"),
+		// 					PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
+		// 					ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrationDetails{
+		// 						InstanceType: to.Ptr("VMwareCbt"),
+		// 					},
+		// 					TestMigrateState: to.Ptr(armrecoveryservicessiterecovery.TestMigrationStateNone),
+		// 					TestMigrateStateDescription: to.Ptr("None"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

@@ -21,6 +21,10 @@ import (
 
 // MaintenancesServer is a fake server for instances of the armmysqlflexibleservers.MaintenancesClient type.
 type MaintenancesServer struct {
+	// BeginUpdate is the fake for method MaintenancesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, parameters armmysqlflexibleservers.MaintenanceUpdate, options *armmysqlflexibleservers.MaintenancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.MaintenancesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// NewListPager is the fake for method MaintenancesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, serverName string, options *armmysqlflexibleservers.MaintenancesClientListOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.MaintenancesClientListResponse])
@@ -28,10 +32,6 @@ type MaintenancesServer struct {
 	// Read is the fake for method MaintenancesClient.Read
 	// HTTP status codes to indicate success: http.StatusOK
 	Read func(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, options *armmysqlflexibleservers.MaintenancesClientReadOptions) (resp azfake.Responder[armmysqlflexibleservers.MaintenancesClientReadResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method MaintenancesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, parameters armmysqlflexibleservers.MaintenanceUpdate, options *armmysqlflexibleservers.MaintenancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.MaintenancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMaintenancesServerTransport creates a new instance of MaintenancesServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type MaintenancesServer struct {
 func NewMaintenancesServerTransport(srv *MaintenancesServer) *MaintenancesServerTransport {
 	return &MaintenancesServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.MaintenancesClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armmysqlflexibleservers.MaintenancesClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.MaintenancesClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewMaintenancesServerTransport(srv *MaintenancesServer) *MaintenancesServer
 // Don't use this type directly, use NewMaintenancesServerTransport instead.
 type MaintenancesServerTransport struct {
 	srv          *MaintenancesServer
-	newListPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.MaintenancesClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armmysqlflexibleservers.MaintenancesClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.MaintenancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MaintenancesServerTransport.
@@ -74,12 +74,12 @@ func (m *MaintenancesServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "MaintenancesClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MaintenancesClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
 			case "MaintenancesClient.Read":
 				res.resp, res.err = m.dispatchRead(req)
-			case "MaintenancesClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -94,6 +94,58 @@ func (m *MaintenancesServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (m *MaintenancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/maintenances/(?P<maintenanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.MaintenanceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		maintenanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maintenanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, maintenanceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (m *MaintenancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -171,58 +223,6 @@ func (m *MaintenancesServerTransport) dispatchRead(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (m *MaintenancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/maintenances/(?P<maintenanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.MaintenanceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		maintenanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("maintenanceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, maintenanceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -34,21 +34,21 @@ type DomainListsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DomainListsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DomainListsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DomainListPatch, options *armdnsresolver.DomainListsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DomainListsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DomainListsClientGetOptions) (resp azfake.Responder[armdnsresolver.DomainListsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DomainListsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdnsresolver.DomainListsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method DomainListsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdnsresolver.DomainListsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method DomainListsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DomainListPatch, options *armdnsresolver.DomainListsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method DomainListsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdnsresolver.DomainListsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse])
 }
 
 // NewDomainListsServerTransport creates a new instance of DomainListsServerTransport with the provided implementation.
@@ -60,9 +60,9 @@ func NewDomainListsServerTransport(srv *DomainListsServer) *DomainListsServerTra
 		beginBulk:                   newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientBulkResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]](),
 	}
 }
 
@@ -73,9 +73,9 @@ type DomainListsServerTransport struct {
 	beginBulk                   *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientBulkResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DomainListsServerTransport.
@@ -105,14 +105,14 @@ func (d *DomainListsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DomainListsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
-			case "DomainListsClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DomainListsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DomainListsClient.NewListByResourceGroupPager":
-				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DomainListsClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DomainListsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DomainListsClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DomainListsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -294,6 +294,61 @@ func (d *DomainListsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverDomainLists/(?P<dnsResolverDomainListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DomainListPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsResolverDomainListNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverDomainListName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armdnsresolver.DomainListsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdnsresolver.DomainListsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverDomainListNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DomainListsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -323,56 +378,6 @@ func (d *DomainListsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DomainList, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DomainListsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverDomainLists`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdnsresolver.DomainListsClientListOptions
-		if topParam != nil {
-			options = &armdnsresolver.DomainListsClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := d.srv.NewListPager(options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DomainListsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -431,58 +436,53 @@ func (d *DomainListsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (d *DomainListsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverDomainLists/(?P<dnsResolverDomainListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverDomainLists`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DomainListPatch](req)
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsResolverDomainListNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverDomainListName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DomainListsClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdnsresolver.DomainListsClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
+		var options *armdnsresolver.DomainListsClientListOptions
+		if topParam != nil {
+			options = &armdnsresolver.DomainListsClientListOptions{
+				Top: topParam,
 			}
 		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverDomainListNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
+		resp := d.srv.NewListPager(options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DomainListsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

@@ -30,13 +30,17 @@ type OrganizationServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.OrganizationResource, options *armconfluent.OrganizationClientBeginCreateOptions) (resp azfake.PollerResponder[armconfluent.OrganizationClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// CreateAPIKey is the fake for method OrganizationClient.CreateAPIKey
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateAPIKey func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body armconfluent.CreateAPIKeyModel, options *armconfluent.OrganizationClientCreateAPIKeyOptions) (resp azfake.Responder[armconfluent.OrganizationClientCreateAPIKeyResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method OrganizationClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationName string, options *armconfluent.OrganizationClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfluent.OrganizationClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginLinkSaaS is the fake for method OrganizationClient.BeginLinkSaaS
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.SaaSData, options *armconfluent.OrganizationClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armconfluent.OrganizationClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+
+	// CreateAPIKey is the fake for method OrganizationClient.CreateAPIKey
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateAPIKey func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body armconfluent.CreateAPIKeyModel, options *armconfluent.OrganizationClientCreateAPIKeyOptions) (resp azfake.Responder[armconfluent.OrganizationClientCreateAPIKeyResponse], errResp azfake.ErrorResponder)
 
 	// DeleteClusterAPIKey is the fake for method OrganizationClient.DeleteClusterAPIKey
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -66,9 +70,9 @@ type OrganizationServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, organizationName string, options *armconfluent.OrganizationClientLatestLinkedSaaSOptions) (resp azfake.Responder[armconfluent.OrganizationClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
 
-	// BeginLinkSaaS is the fake for method OrganizationClient.BeginLinkSaaS
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.SaaSData, options *armconfluent.OrganizationClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armconfluent.OrganizationClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+	// ListRegions is the fake for method OrganizationClient.ListRegions
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRegions func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.ListAccessRequestModel, options *armconfluent.OrganizationClientListRegionsOptions) (resp azfake.Responder[armconfluent.OrganizationClientListRegionsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method OrganizationClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -85,10 +89,6 @@ type OrganizationServer struct {
 	// NewListEnvironmentsPager is the fake for method OrganizationClient.NewListEnvironmentsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListEnvironmentsPager func(resourceGroupName string, organizationName string, options *armconfluent.OrganizationClientListEnvironmentsOptions) (resp azfake.PagerResponder[armconfluent.OrganizationClientListEnvironmentsResponse])
-
-	// ListRegions is the fake for method OrganizationClient.ListRegions
-	// HTTP status codes to indicate success: http.StatusOK
-	ListRegions func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.ListAccessRequestModel, options *armconfluent.OrganizationClientListRegionsOptions) (resp azfake.Responder[armconfluent.OrganizationClientListRegionsResponse], errResp azfake.ErrorResponder)
 
 	// NewListSchemaRegistryClustersPager is the fake for method OrganizationClient.NewListSchemaRegistryClustersPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -157,10 +157,12 @@ func (o *OrganizationServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = o.dispatchBeginActivateResource(req)
 			case "OrganizationClient.BeginCreate":
 				res.resp, res.err = o.dispatchBeginCreate(req)
-			case "OrganizationClient.CreateAPIKey":
-				res.resp, res.err = o.dispatchCreateAPIKey(req)
 			case "OrganizationClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OrganizationClient.BeginLinkSaaS":
+				res.resp, res.err = o.dispatchBeginLinkSaaS(req)
+			case "OrganizationClient.CreateAPIKey":
+				res.resp, res.err = o.dispatchCreateAPIKey(req)
 			case "OrganizationClient.DeleteClusterAPIKey":
 				res.resp, res.err = o.dispatchDeleteClusterAPIKey(req)
 			case "OrganizationClient.Get":
@@ -175,8 +177,8 @@ func (o *OrganizationServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = o.dispatchGetSchemaRegistryClusterByID(req)
 			case "OrganizationClient.LatestLinkedSaaS":
 				res.resp, res.err = o.dispatchLatestLinkedSaaS(req)
-			case "OrganizationClient.BeginLinkSaaS":
-				res.resp, res.err = o.dispatchBeginLinkSaaS(req)
+			case "OrganizationClient.ListRegions":
+				res.resp, res.err = o.dispatchListRegions(req)
 			case "OrganizationClient.NewListByResourceGroupPager":
 				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
 			case "OrganizationClient.NewListBySubscriptionPager":
@@ -185,8 +187,6 @@ func (o *OrganizationServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = o.dispatchNewListClustersPager(req)
 			case "OrganizationClient.NewListEnvironmentsPager":
 				res.resp, res.err = o.dispatchNewListEnvironmentsPager(req)
-			case "OrganizationClient.ListRegions":
-				res.resp, res.err = o.dispatchListRegions(req)
 			case "OrganizationClient.NewListSchemaRegistryClustersPager":
 				res.resp, res.err = o.dispatchNewListSchemaRegistryClustersPager(req)
 			case "OrganizationClient.Update":
@@ -295,6 +295,98 @@ func (o *OrganizationServerTransport) dispatchBeginCreate(req *http.Request) (*h
 	return resp, nil
 }
 
+func (o *OrganizationServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := o.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginDelete(req.Context(), resourceGroupNameParam, organizationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		o.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		o.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		o.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (o *OrganizationServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginLinkSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
+	}
+	beginLinkSaaS := o.beginLinkSaaS.get(req)
+	if beginLinkSaaS == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armconfluent.SaaSData](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkSaaS = &respr
+		o.beginLinkSaaS.add(req, beginLinkSaaS)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginLinkSaaS.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkSaaS) {
+		o.beginLinkSaaS.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (o *OrganizationServerTransport) dispatchCreateAPIKey(req *http.Request) (*http.Response, error) {
 	if o.srv.CreateAPIKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateAPIKey not implemented")}
@@ -337,50 +429,6 @@ func (o *OrganizationServerTransport) dispatchCreateAPIKey(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (o *OrganizationServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := o.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginDelete(req.Context(), resourceGroupNameParam, organizationNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		o.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		o.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		o.beginDelete.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -643,51 +691,40 @@ func (o *OrganizationServerTransport) dispatchLatestLinkedSaaS(req *http.Request
 	return resp, nil
 }
 
-func (o *OrganizationServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginLinkSaaS == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
+func (o *OrganizationServerTransport) dispatchListRegions(req *http.Request) (*http.Response, error) {
+	if o.srv.ListRegions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRegions not implemented")}
 	}
-	beginLinkSaaS := o.beginLinkSaaS.get(req)
-	if beginLinkSaaS == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconfluent.SaaSData](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginLinkSaaS = &respr
-		o.beginLinkSaaS.add(req, beginLinkSaaS)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listRegions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.ListAccessRequestModel](req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginLinkSaaS.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginLinkSaaS) {
-		o.beginLinkSaaS.remove(req)
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := o.srv.ListRegions(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListRegionsSuccessResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -881,43 +918,6 @@ func (o *OrganizationServerTransport) dispatchNewListEnvironmentsPager(req *http
 	}
 	if !server.PagerResponderMore(newListEnvironmentsPager) {
 		o.newListEnvironmentsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OrganizationServerTransport) dispatchListRegions(req *http.Request) (*http.Response, error) {
-	if o.srv.ListRegions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRegions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listRegions`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armconfluent.ListAccessRequestModel](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.ListRegions(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListRegionsSuccessResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

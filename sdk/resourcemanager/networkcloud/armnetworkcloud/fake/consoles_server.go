@@ -30,6 +30,10 @@ type ConsolesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *armnetworkcloud.ConsolesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.ConsolesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConsolesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleUpdateParameters armnetworkcloud.ConsolePatchParameters, options *armnetworkcloud.ConsolesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.ConsolesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConsolesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *armnetworkcloud.ConsolesClientGetOptions) (resp azfake.Responder[armnetworkcloud.ConsolesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type ConsolesServer struct {
 	// NewListByVirtualMachinePager is the fake for method ConsolesClient.NewListByVirtualMachinePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVirtualMachinePager func(resourceGroupName string, virtualMachineName string, options *armnetworkcloud.ConsolesClientListByVirtualMachineOptions) (resp azfake.PagerResponder[armnetworkcloud.ConsolesClientListByVirtualMachineResponse])
-
-	// BeginUpdate is the fake for method ConsolesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleUpdateParameters armnetworkcloud.ConsolePatchParameters, options *armnetworkcloud.ConsolesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.ConsolesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConsolesServerTransport creates a new instance of ConsolesServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewConsolesServerTransport(srv *ConsolesServer) *ConsolesServerTransport {
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientDeleteResponse]](),
-		newListByVirtualMachinePager: newTracker[azfake.PagerResponder[armnetworkcloud.ConsolesClientListByVirtualMachineResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientUpdateResponse]](),
+		newListByVirtualMachinePager: newTracker[azfake.PagerResponder[armnetworkcloud.ConsolesClientListByVirtualMachineResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type ConsolesServerTransport struct {
 	srv                          *ConsolesServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientDeleteResponse]]
-	newListByVirtualMachinePager *tracker[azfake.PagerResponder[armnetworkcloud.ConsolesClientListByVirtualMachineResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armnetworkcloud.ConsolesClientUpdateResponse]]
+	newListByVirtualMachinePager *tracker[azfake.PagerResponder[armnetworkcloud.ConsolesClientListByVirtualMachineResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConsolesServerTransport.
@@ -91,12 +91,12 @@ func (c *ConsolesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConsolesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConsolesClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConsolesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConsolesClient.NewListByVirtualMachinePager":
 				res.resp, res.err = c.dispatchNewListByVirtualMachinePager(req)
-			case "ConsolesClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (c *ConsolesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (c *ConsolesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines/(?P<virtualMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/consoles/(?P<consoleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ConsolePatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineName")])
+		if err != nil {
+			return nil, err
+		}
+		consoleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("consoleName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.ConsolesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.ConsolesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, virtualMachineNameParam, consoleNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConsolesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (c *ConsolesServerTransport) dispatchNewListByVirtualMachinePager(req *http
 	if !server.PagerResponderMore(newListByVirtualMachinePager) {
 		c.newListByVirtualMachinePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConsolesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/virtualMachines/(?P<virtualMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/consoles/(?P<consoleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ConsolePatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineName")])
-		if err != nil {
-			return nil, err
-		}
-		consoleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("consoleName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.ConsolesClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.ConsolesClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, virtualMachineNameParam, consoleNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

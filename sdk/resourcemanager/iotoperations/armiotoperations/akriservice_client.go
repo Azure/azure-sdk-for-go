@@ -69,7 +69,7 @@ func (client *AkriServiceClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create a AkriServiceResource
+// createOrUpdate - Create a AkriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AkriServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, akriServiceName string, resource AkriServiceResource, options *AkriServiceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AkriServiceClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AkriServiceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriServiceName string, resource AkriServiceResource, _ *AkriServiceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriServices/{akriServiceName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *AkriServiceClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete a AkriServiceResource
+// deleteOperation - Delete a AkriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AkriServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, akriServiceName string, options *AkriServiceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *AkriServiceClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AkriServiceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriServiceName string, _ *AkriServiceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriServices/{akriServiceName}"
 	if client.subscriptionID == "" {

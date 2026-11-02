@@ -37,14 +37,6 @@ type FailoverGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginForceFailoverAllowDataLoss func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *armsql.FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (resp azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method FailoverGroupsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *armsql.FailoverGroupsClientGetOptions) (resp azfake.Responder[armsql.FailoverGroupsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByServerPager is the fake for method FailoverGroupsClient.NewListByServerPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.FailoverGroupsClientListByServerOptions) (resp azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse])
-
 	// BeginTryPlannedBeforeForcedFailover is the fake for method FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginTryPlannedBeforeForcedFailover func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *armsql.FailoverGroupsClientBeginTryPlannedBeforeForcedFailoverOptions) (resp azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse], errResp azfake.ErrorResponder)
@@ -52,6 +44,14 @@ type FailoverGroupsServer struct {
 	// BeginUpdate is the fake for method FailoverGroupsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters armsql.FailoverGroupUpdate, options *armsql.FailoverGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method FailoverGroupsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *armsql.FailoverGroupsClientGetOptions) (resp azfake.Responder[armsql.FailoverGroupsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByServerPager is the fake for method FailoverGroupsClient.NewListByServerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.FailoverGroupsClientListByServerOptions) (resp azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse])
 }
 
 // NewFailoverGroupsServerTransport creates a new instance of FailoverGroupsServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewFailoverGroupsServerTransport(srv *FailoverGroupsServer) *FailoverGroups
 		beginDelete:                         newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]](),
 		beginFailover:                       newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]](),
 		beginForceFailoverAllowDataLoss:     newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]](),
-		newListByServerPager:                newTracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]](),
 		beginTryPlannedBeforeForcedFailover: newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse]](),
 		beginUpdate:                         newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]](),
+		newListByServerPager:                newTracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type FailoverGroupsServerTransport struct {
 	beginDelete                         *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]]
 	beginFailover                       *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]]
 	beginForceFailoverAllowDataLoss     *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]]
-	newListByServerPager                *tracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]]
 	beginTryPlannedBeforeForcedFailover *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse]]
 	beginUpdate                         *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]]
+	newListByServerPager                *tracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for FailoverGroupsServerTransport.
@@ -112,14 +112,14 @@ func (f *FailoverGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = f.dispatchBeginFailover(req)
 			case "FailoverGroupsClient.BeginForceFailoverAllowDataLoss":
 				res.resp, res.err = f.dispatchBeginForceFailoverAllowDataLoss(req)
-			case "FailoverGroupsClient.Get":
-				res.resp, res.err = f.dispatchGet(req)
-			case "FailoverGroupsClient.NewListByServerPager":
-				res.resp, res.err = f.dispatchNewListByServerPager(req)
 			case "FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover":
 				res.resp, res.err = f.dispatchBeginTryPlannedBeforeForcedFailover(req)
 			case "FailoverGroupsClient.BeginUpdate":
 				res.resp, res.err = f.dispatchBeginUpdate(req)
+			case "FailoverGroupsClient.Get":
+				res.resp, res.err = f.dispatchGet(req)
+			case "FailoverGroupsClient.NewListByServerPager":
+				res.resp, res.err = f.dispatchNewListByServerPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -332,84 +332,6 @@ func (f *FailoverGroupsServerTransport) dispatchBeginForceFailoverAllowDataLoss(
 	return resp, nil
 }
 
-func (f *FailoverGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if f.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	failoverGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("failoverGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, failoverGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FailoverGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (f *FailoverGroupsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
-	if f.srv.NewListByServerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
-	}
-	newListByServerPager := f.newListByServerPager.get(req)
-	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := f.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
-		newListByServerPager = &resp
-		f.newListByServerPager.add(req, newListByServerPager)
-		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.FailoverGroupsClientListByServerResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByServerPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		f.newListByServerPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByServerPager) {
-		f.newListByServerPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (f *FailoverGroupsServerTransport) dispatchBeginTryPlannedBeforeForcedFailover(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginTryPlannedBeforeForcedFailover == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTryPlannedBeforeForcedFailover not implemented")}
@@ -507,6 +429,84 @@ func (f *FailoverGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		f.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (f *FailoverGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if f.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	failoverGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("failoverGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, failoverGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FailoverGroup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (f *FailoverGroupsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
+	if f.srv.NewListByServerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
+	}
+	newListByServerPager := f.newListByServerPager.get(req)
+	if newListByServerPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := f.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
+		newListByServerPager = &resp
+		f.newListByServerPager.add(req, newListByServerPager)
+		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.FailoverGroupsClientListByServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByServerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListByServerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByServerPager) {
+		f.newListByServerPager.remove(req)
+	}
 	return resp, nil
 }
 

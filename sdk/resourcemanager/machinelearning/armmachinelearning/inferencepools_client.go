@@ -73,7 +73,7 @@ func (client *InferencePoolsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update InferencePool (asynchronous).
+// createOrUpdate - Create or update InferencePool (asynchronous).
 //
 // Create or update InferencePool (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *InferencePoolsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InferencePoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body InferencePool, _ *InferencePoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *InferencePoolsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete InferencePool (asynchronous).
+// deleteOperation - Delete InferencePool (asynchronous).
 //
 // Delete InferencePool (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -181,7 +181,7 @@ func (client *InferencePoolsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InferencePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, _ *InferencePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
@@ -207,6 +207,91 @@ func (client *InferencePoolsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update InferencePool (asynchronous).
+//
+// Update InferencePool (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - inferencePoolName - Name of InferencePool
+//   - body - Inference Pool entity to apply during operation.
+//   - options - InferencePoolsClientBeginUpdateOptions contains the optional parameters for the InferencePoolsClient.BeginUpdate
+//     method.
+func (client *InferencePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *InferencePoolsClientBeginUpdateOptions) (*runtime.Poller[InferencePoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, inferencePoolName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferencePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferencePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update InferencePool (asynchronous).
+//
+// Update InferencePool (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InferencePoolsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *InferencePoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "InferencePoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, inferencePoolName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *InferencePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, _ *InferencePoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if inferencePoolName == "" {
+		return nil, errors.New("parameter inferencePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{inferencePoolName}", url.PathEscape(inferencePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -368,89 +453,4 @@ func (client *InferencePoolsClient) listHandleResponse(resp *http.Response, succ
 		return InferencePoolsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update InferencePool (asynchronous).
-//
-// Update InferencePool (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - inferencePoolName - Name of InferencePool
-//   - body - Inference Pool entity to apply during operation.
-//   - options - InferencePoolsClientBeginUpdateOptions contains the optional parameters for the InferencePoolsClient.BeginUpdate
-//     method.
-func (client *InferencePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *InferencePoolsClientBeginUpdateOptions) (*runtime.Poller[InferencePoolsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, inferencePoolName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InferencePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InferencePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update InferencePool (asynchronous).
-//
-// Update InferencePool (asynchronous).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *InferencePoolsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *InferencePoolsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "InferencePoolsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, inferencePoolName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *InferencePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, _ *InferencePoolsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if inferencePoolName == "" {
-		return nil, errors.New("parameter inferencePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{inferencePoolName}", url.PathEscape(inferencePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

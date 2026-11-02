@@ -29,6 +29,10 @@ type RuntimeBindingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, options *armworkloadmanager.RuntimeBindingsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RuntimeBindingsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties armworkloadmanager.RuntimeBindingUpdate, options *armworkloadmanager.RuntimeBindingsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RuntimeBindingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, options *armworkloadmanager.RuntimeBindingsClientGetOptions) (resp azfake.Responder[armworkloadmanager.RuntimeBindingsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type RuntimeBindingsServer struct {
 	// NewListByWorkloadSpacePager is the fake for method RuntimeBindingsClient.NewListByWorkloadSpacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkloadSpacePager func(resourceGroupName string, spaceName string, options *armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceOptions) (resp azfake.PagerResponder[armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceResponse])
-
-	// BeginUpdate is the fake for method RuntimeBindingsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties armworkloadmanager.RuntimeBindingUpdate, options *armworkloadmanager.RuntimeBindingsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRuntimeBindingsServerTransport creates a new instance of RuntimeBindingsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewRuntimeBindingsServerTransport(srv *RuntimeBindingsServer) *RuntimeBindi
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientDeleteResponse]](),
-		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientUpdateResponse]](),
+		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type RuntimeBindingsServerTransport struct {
 	srv                         *RuntimeBindingsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientDeleteResponse]]
-	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeBindingsClientUpdateResponse]]
+	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.RuntimeBindingsClientListByWorkloadSpaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for RuntimeBindingsServerTransport.
@@ -90,12 +90,12 @@ func (r *RuntimeBindingsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "RuntimeBindingsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RuntimeBindingsClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RuntimeBindingsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RuntimeBindingsClient.NewListByWorkloadSpacePager":
 				res.resp, res.err = r.dispatchNewListByWorkloadSpacePager(req)
-			case "RuntimeBindingsClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (r *RuntimeBindingsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (r *RuntimeBindingsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runtimeBindings/(?P<bindingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.RuntimeBindingUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
+		if err != nil {
+			return nil, err
+		}
+		bindingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bindingName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, bindingNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *RuntimeBindingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (r *RuntimeBindingsServerTransport) dispatchNewListByWorkloadSpacePager(req
 	if !server.PagerResponderMore(newListByWorkloadSpacePager) {
 		r.newListByWorkloadSpacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *RuntimeBindingsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runtimeBindings/(?P<bindingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.RuntimeBindingUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
-		if err != nil {
-			return nil, err
-		}
-		bindingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bindingName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, bindingNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

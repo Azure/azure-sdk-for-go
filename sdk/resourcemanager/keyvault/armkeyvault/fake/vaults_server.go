@@ -22,13 +22,17 @@ import (
 
 // VaultsServer is a fake server for instances of the armkeyvault.VaultsClient type.
 type VaultsServer struct {
-	// CheckNameAvailability is the fake for method VaultsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, vaultName armkeyvault.VaultCheckNameAvailabilityParameters, options *armkeyvault.VaultsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkeyvault.VaultsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method VaultsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vaultName string, parameters armkeyvault.VaultCreateOrUpdateParameters, options *armkeyvault.VaultsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkeyvault.VaultsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginPurgeDeleted is the fake for method VaultsClient.BeginPurgeDeleted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPurgeDeleted func(ctx context.Context, vaultName string, location string, options *armkeyvault.VaultsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method VaultsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, vaultName armkeyvault.VaultCheckNameAvailabilityParameters, options *armkeyvault.VaultsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkeyvault.VaultsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method VaultsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -42,10 +46,6 @@ type VaultsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDeleted func(ctx context.Context, vaultName string, location string, options *armkeyvault.VaultsClientGetDeletedOptions) (resp azfake.Responder[armkeyvault.VaultsClientGetDeletedResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VaultsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armkeyvault.VaultsClientListOptions) (resp azfake.PagerResponder[armkeyvault.VaultsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method VaultsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armkeyvault.VaultsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armkeyvault.VaultsClientListByResourceGroupResponse])
@@ -58,9 +58,9 @@ type VaultsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDeletedPager func(options *armkeyvault.VaultsClientListDeletedOptions) (resp azfake.PagerResponder[armkeyvault.VaultsClientListDeletedResponse])
 
-	// BeginPurgeDeleted is the fake for method VaultsClient.BeginPurgeDeleted
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted func(ctx context.Context, vaultName string, location string, options *armkeyvault.VaultsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method VaultsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armkeyvault.VaultsClientListOptions) (resp azfake.PagerResponder[armkeyvault.VaultsClientListResponse])
 
 	// Update is the fake for method VaultsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -78,11 +78,11 @@ func NewVaultsServerTransport(srv *VaultsServer) *VaultsServerTransport {
 	return &VaultsServerTransport{
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armkeyvault.VaultsClientCreateOrUpdateResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armkeyvault.VaultsClientListResponse]](),
+		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armkeyvault.VaultsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armkeyvault.VaultsClientListBySubscriptionResponse]](),
 		newListDeletedPager:         newTracker[azfake.PagerResponder[armkeyvault.VaultsClientListDeletedResponse]](),
-		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armkeyvault.VaultsClientListResponse]](),
 	}
 }
 
@@ -91,11 +91,11 @@ func NewVaultsServerTransport(srv *VaultsServer) *VaultsServerTransport {
 type VaultsServerTransport struct {
 	srv                         *VaultsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armkeyvault.VaultsClientCreateOrUpdateResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armkeyvault.VaultsClientListResponse]]
+	beginPurgeDeleted           *tracker[azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armkeyvault.VaultsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armkeyvault.VaultsClientListBySubscriptionResponse]]
 	newListDeletedPager         *tracker[azfake.PagerResponder[armkeyvault.VaultsClientListDeletedResponse]]
-	beginPurgeDeleted           *tracker[azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armkeyvault.VaultsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VaultsServerTransport.
@@ -119,26 +119,26 @@ func (v *VaultsServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "VaultsClient.CheckNameAvailability":
-				res.resp, res.err = v.dispatchCheckNameAvailability(req)
 			case "VaultsClient.BeginCreateOrUpdate":
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
+			case "VaultsClient.BeginPurgeDeleted":
+				res.resp, res.err = v.dispatchBeginPurgeDeleted(req)
+			case "VaultsClient.CheckNameAvailability":
+				res.resp, res.err = v.dispatchCheckNameAvailability(req)
 			case "VaultsClient.Delete":
 				res.resp, res.err = v.dispatchDelete(req)
 			case "VaultsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VaultsClient.GetDeleted":
 				res.resp, res.err = v.dispatchGetDeleted(req)
-			case "VaultsClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VaultsClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
 			case "VaultsClient.NewListBySubscriptionPager":
 				res.resp, res.err = v.dispatchNewListBySubscriptionPager(req)
 			case "VaultsClient.NewListDeletedPager":
 				res.resp, res.err = v.dispatchNewListDeletedPager(req)
-			case "VaultsClient.BeginPurgeDeleted":
-				res.resp, res.err = v.dispatchBeginPurgeDeleted(req)
+			case "VaultsClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VaultsClient.Update":
 				res.resp, res.err = v.dispatchUpdate(req)
 			case "VaultsClient.UpdateAccessPolicy":
@@ -157,35 +157,6 @@ func (v *VaultsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (v *VaultsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if v.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkeyvault.VaultCheckNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (v *VaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -233,6 +204,79 @@ func (v *VaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		v.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VaultsServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginPurgeDeleted == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
+	}
+	beginPurgeDeleted := v.beginPurgeDeleted.get(req)
+	if beginPurgeDeleted == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPurgeDeleted(req.Context(), vaultNameParam, locationParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPurgeDeleted = &respr
+		v.beginPurgeDeleted.add(req, beginPurgeDeleted)
+	}
+
+	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginPurgeDeleted.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPurgeDeleted) {
+		v.beginPurgeDeleted.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VaultsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if v.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkeyvault.VaultCheckNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -331,56 +375,6 @@ func (v *VaultsServerTransport) dispatchGetDeleted(req *http.Request) (*http.Res
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedVault, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VaultsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armkeyvault.VaultsClientListOptions
-		if topParam != nil {
-			options = &armkeyvault.VaultsClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := v.srv.NewListPager(options)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armkeyvault.VaultsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -522,47 +516,53 @@ func (v *VaultsServerTransport) dispatchNewListDeletedPager(req *http.Request) (
 	return resp, nil
 }
 
-func (v *VaultsServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginPurgeDeleted == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
+func (v *VaultsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginPurgeDeleted := v.beginPurgeDeleted.get(req)
-	if beginPurgeDeleted == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
+		var options *armkeyvault.VaultsClientListOptions
+		if topParam != nil {
+			options = &armkeyvault.VaultsClientListOptions{
+				Top: topParam,
+			}
 		}
-		respr, errRespr := v.srv.BeginPurgeDeleted(req.Context(), vaultNameParam, locationParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPurgeDeleted = &respr
-		v.beginPurgeDeleted.add(req, beginPurgeDeleted)
+		resp := v.srv.NewListPager(options)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armkeyvault.VaultsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginPurgeDeleted.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginPurgeDeleted) {
-		v.beginPurgeDeleted.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

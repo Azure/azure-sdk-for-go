@@ -30,6 +30,10 @@ type RecoveryPlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, serviceGroupName string, recoveryPlanName string, options *armresiliencemanagement.RecoveryPlansClientBeginDeleteOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RecoveryPlansClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties armresiliencemanagement.RecoveryPlan, options *armresiliencemanagement.RecoveryPlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RecoveryPlansClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, recoveryPlanName string, options *armresiliencemanagement.RecoveryPlansClientGetOptions) (resp azfake.Responder[armresiliencemanagement.RecoveryPlansClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type RecoveryPlansServer struct {
 	// NewListPager is the fake for method RecoveryPlansClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, options *armresiliencemanagement.RecoveryPlansClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.RecoveryPlansClientListResponse])
-
-	// BeginUpdate is the fake for method RecoveryPlansClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties armresiliencemanagement.RecoveryPlan, options *armresiliencemanagement.RecoveryPlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRecoveryPlansServerTransport creates a new instance of RecoveryPlansServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewRecoveryPlansServerTransport(srv *RecoveryPlansServer) *RecoveryPlansSer
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.RecoveryPlansClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.RecoveryPlansClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type RecoveryPlansServerTransport struct {
 	srv                 *RecoveryPlansServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.RecoveryPlansClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlansClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.RecoveryPlansClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecoveryPlansServerTransport.
@@ -91,12 +91,12 @@ func (r *RecoveryPlansServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "RecoveryPlansClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RecoveryPlansClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RecoveryPlansClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecoveryPlansClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-			case "RecoveryPlansClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -205,6 +205,54 @@ func (r *RecoveryPlansServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (r *RecoveryPlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryPlan](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), serviceGroupNameParam, recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *RecoveryPlansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -291,54 +339,6 @@ func (r *RecoveryPlansServerTransport) dispatchNewListPager(req *http.Request) (
 	if !server.PagerResponderMore(newListPager) {
 		r.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *RecoveryPlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryPlan](req)
-		if err != nil {
-			return nil, err
-		}
-		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), serviceGroupNameParam, recoveryPlanNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

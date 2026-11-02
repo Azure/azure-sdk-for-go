@@ -29,6 +29,10 @@ type ChatModelDeploymentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, chatModelDeploymentName string, options *armdiscovery.ChatModelDeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ChatModelDeploymentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, chatModelDeploymentName string, properties armdiscovery.ChatModelDeployment, options *armdiscovery.ChatModelDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ChatModelDeploymentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, chatModelDeploymentName string, options *armdiscovery.ChatModelDeploymentsClientGetOptions) (resp azfake.Responder[armdiscovery.ChatModelDeploymentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ChatModelDeploymentsServer struct {
 	// NewListByWorkspacePager is the fake for method ChatModelDeploymentsClient.NewListByWorkspacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armdiscovery.ChatModelDeploymentsClientListByWorkspaceOptions) (resp azfake.PagerResponder[armdiscovery.ChatModelDeploymentsClientListByWorkspaceResponse])
-
-	// BeginUpdate is the fake for method ChatModelDeploymentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, chatModelDeploymentName string, properties armdiscovery.ChatModelDeployment, options *armdiscovery.ChatModelDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewChatModelDeploymentsServerTransport creates a new instance of ChatModelDeploymentsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewChatModelDeploymentsServerTransport(srv *ChatModelDeploymentsServer) *Ch
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armdiscovery.ChatModelDeploymentsClientListByWorkspaceResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientUpdateResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armdiscovery.ChatModelDeploymentsClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ChatModelDeploymentsServerTransport struct {
 	srv                     *ChatModelDeploymentsServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armdiscovery.ChatModelDeploymentsClientListByWorkspaceResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armdiscovery.ChatModelDeploymentsClientUpdateResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armdiscovery.ChatModelDeploymentsClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for ChatModelDeploymentsServerTransport.
@@ -90,12 +90,12 @@ func (c *ChatModelDeploymentsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ChatModelDeploymentsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ChatModelDeploymentsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ChatModelDeploymentsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ChatModelDeploymentsClient.NewListByWorkspacePager":
 				res.resp, res.err = c.dispatchNewListByWorkspacePager(req)
-			case "ChatModelDeploymentsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *ChatModelDeploymentsServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
+func (c *ChatModelDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/chatModelDeployments/(?P<chatModelDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdiscovery.ChatModelDeployment](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		chatModelDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("chatModelDeploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, chatModelDeploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ChatModelDeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (c *ChatModelDeploymentsServerTransport) dispatchNewListByWorkspacePager(re
 	if !server.PagerResponderMore(newListByWorkspacePager) {
 		c.newListByWorkspacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ChatModelDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/chatModelDeployments/(?P<chatModelDeploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdiscovery.ChatModelDeployment](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		chatModelDeploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("chatModelDeploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, chatModelDeploymentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

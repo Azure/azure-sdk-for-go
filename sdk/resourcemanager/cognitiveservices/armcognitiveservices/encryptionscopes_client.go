@@ -53,7 +53,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*runtime.Poller[EncryptionScopesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, encryptionScopeName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, encryptionScopeName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified encryptionScope associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EncryptionScopesClient) delete(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EncryptionScopesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

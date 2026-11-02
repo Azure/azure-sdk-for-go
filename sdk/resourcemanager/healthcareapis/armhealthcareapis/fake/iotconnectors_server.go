@@ -29,6 +29,10 @@ type IotConnectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *armhealthcareapis.IotConnectorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthcareapis.IotConnectorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method IotConnectorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource armhealthcareapis.IotConnectorPatchResource, options *armhealthcareapis.IotConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.IotConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method IotConnectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *armhealthcareapis.IotConnectorsClientGetOptions) (resp azfake.Responder[armhealthcareapis.IotConnectorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type IotConnectorsServer struct {
 	// NewListByWorkspacePager is the fake for method IotConnectorsClient.NewListByWorkspacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armhealthcareapis.IotConnectorsClientListByWorkspaceOptions) (resp azfake.PagerResponder[armhealthcareapis.IotConnectorsClientListByWorkspaceResponse])
-
-	// BeginUpdate is the fake for method IotConnectorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource armhealthcareapis.IotConnectorPatchResource, options *armhealthcareapis.IotConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.IotConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIotConnectorsServerTransport creates a new instance of IotConnectorsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewIotConnectorsServerTransport(srv *IotConnectorsServer) *IotConnectorsSer
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.IotConnectorsClientListByWorkspaceResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientUpdateResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.IotConnectorsClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type IotConnectorsServerTransport struct {
 	srv                     *IotConnectorsServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.IotConnectorsClientListByWorkspaceResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armhealthcareapis.IotConnectorsClientUpdateResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.IotConnectorsClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for IotConnectorsServerTransport.
@@ -90,12 +90,12 @@ func (i *IotConnectorsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "IotConnectorsClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "IotConnectorsClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "IotConnectorsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "IotConnectorsClient.NewListByWorkspacePager":
 				res.resp, res.err = i.dispatchNewListByWorkspacePager(req)
-			case "IotConnectorsClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (i *IotConnectorsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (i *IotConnectorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/iotconnectors/(?P<iotConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.IotConnectorPatchResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		iotConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotConnectorName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, iotConnectorNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *IotConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (i *IotConnectorsServerTransport) dispatchNewListByWorkspacePager(req *http
 	if !server.PagerResponderMore(newListByWorkspacePager) {
 		i.newListByWorkspacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *IotConnectorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/iotconnectors/(?P<iotConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.IotConnectorPatchResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		iotConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotConnectorName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, iotConnectorNameParam, workspaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

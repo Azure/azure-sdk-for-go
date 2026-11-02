@@ -22,25 +22,25 @@ import (
 
 // ZonesServer is a fake server for instances of the armdns.ZonesClient type.
 type ZonesServer struct {
-	// CreateOrUpdate is the fake for method ZonesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, zoneName string, parameters armdns.Zone, options *armdns.ZonesClientCreateOrUpdateOptions) (resp azfake.Responder[armdns.ZonesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ZonesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, zoneName string, options *armdns.ZonesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdns.ZonesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ZonesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, zoneName string, parameters armdns.Zone, options *armdns.ZonesClientCreateOrUpdateOptions) (resp azfake.Responder[armdns.ZonesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ZonesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, zoneName string, options *armdns.ZonesClientGetOptions) (resp azfake.Responder[armdns.ZonesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ZonesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdns.ZonesClientListOptions) (resp azfake.PagerResponder[armdns.ZonesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ZonesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdns.ZonesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdns.ZonesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ZonesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdns.ZonesClientListOptions) (resp azfake.PagerResponder[armdns.ZonesClientListResponse])
 
 	// Update is the fake for method ZonesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewZonesServerTransport(srv *ZonesServer) *ZonesServerTransport {
 	return &ZonesServerTransport{
 		srv:                         srv,
 		beginDelete:                 newTracker[azfake.PollerResponder[armdns.ZonesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdns.ZonesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdns.ZonesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdns.ZonesClientListResponse]](),
 	}
 }
 
@@ -64,8 +64,8 @@ func NewZonesServerTransport(srv *ZonesServer) *ZonesServerTransport {
 type ZonesServerTransport struct {
 	srv                         *ZonesServer
 	beginDelete                 *tracker[azfake.PollerResponder[armdns.ZonesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdns.ZonesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdns.ZonesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdns.ZonesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ZonesServerTransport.
@@ -89,16 +89,16 @@ func (z *ZonesServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
-			case "ZonesClient.CreateOrUpdate":
-				res.resp, res.err = z.dispatchCreateOrUpdate(req)
 			case "ZonesClient.BeginDelete":
 				res.resp, res.err = z.dispatchBeginDelete(req)
+			case "ZonesClient.CreateOrUpdate":
+				res.resp, res.err = z.dispatchCreateOrUpdate(req)
 			case "ZonesClient.Get":
 				res.resp, res.err = z.dispatchGet(req)
-			case "ZonesClient.NewListPager":
-				res.resp, res.err = z.dispatchNewListPager(req)
 			case "ZonesClient.NewListByResourceGroupPager":
 				res.resp, res.err = z.dispatchNewListByResourceGroupPager(req)
+			case "ZonesClient.NewListPager":
+				res.resp, res.err = z.dispatchNewListPager(req)
 			case "ZonesClient.Update":
 				res.resp, res.err = z.dispatchUpdate(req)
 			default:
@@ -115,52 +115,6 @@ func (z *ZonesServerTransport) dispatchToMethodFake(req *http.Request, method st
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (z *ZonesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if z.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsZones/(?P<zoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdns.Zone](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	zoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("zoneName")])
-	if err != nil {
-		return nil, err
-	}
-	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-	var options *armdns.ZonesClientCreateOrUpdateOptions
-	if ifMatchParam != nil || ifNoneMatchParam != nil {
-		options = &armdns.ZonesClientCreateOrUpdateOptions{
-			IfMatch:     ifMatchParam,
-			IfNoneMatch: ifNoneMatchParam,
-		}
-	}
-	respr, errRespr := z.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, zoneNameParam, body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Zone, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (z *ZonesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -214,6 +168,52 @@ func (z *ZonesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
+func (z *ZonesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if z.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsZones/(?P<zoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdns.Zone](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	zoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("zoneName")])
+	if err != nil {
+		return nil, err
+	}
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armdns.ZonesClientCreateOrUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armdns.ZonesClientCreateOrUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := z.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, zoneNameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Zone, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (z *ZonesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if z.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -243,56 +243,6 @@ func (z *ZonesServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Zone, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (z *ZonesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if z.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := z.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnszones`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdns.ZonesClientListOptions
-		if topParam != nil {
-			options = &armdns.ZonesClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := z.srv.NewListPager(options)
-		newListPager = &resp
-		z.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdns.ZonesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		z.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		z.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -347,6 +297,56 @@ func (z *ZonesServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		z.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (z *ZonesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if z.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := z.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnszones`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdns.ZonesClientListOptions
+		if topParam != nil {
+			options = &armdns.ZonesClientListOptions{
+				Top: topParam,
+			}
+		}
+		resp := z.srv.NewListPager(options)
+		newListPager = &resp
+		z.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdns.ZonesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		z.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		z.newListPager.remove(req)
 	}
 	return resp, nil
 }

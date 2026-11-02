@@ -110,6 +110,71 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response, successCodes 
 	return result, nil
 }
 
+// ListDownloadURI - Get the URI to download the image.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the resource
+//   - imageName - The name of the Image
+//   - options - ImagesClientListDownloadURIOptions contains the optional parameters for the ImagesClient.ListDownloadURI method.
+func (client *ImagesClient) ListDownloadURI(ctx context.Context, resourceGroupName string, name string, imageName string, options *ImagesClientListDownloadURIOptions) (ImagesClientListDownloadURIResponse, error) {
+	var err error
+	const operationName = "ImagesClient.ListDownloadURI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDownloadURICreateRequest(ctx, resourceGroupName, name, imageName, options)
+	if err != nil {
+		return ImagesClientListDownloadURIResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ImagesClientListDownloadURIResponse{}, err
+	}
+	return client.listDownloadURIHandleResponse(httpResp, http.StatusOK)
+}
+
+// listDownloadURICreateRequest creates the ListDownloadURI request.
+func (client *ImagesClient) listDownloadURICreateRequest(ctx context.Context, resourceGroupName string, name string, imageName string, _ *ImagesClientListDownloadURIOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images/{imageName}/listDownloadUri"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if imageName == "" {
+		return nil, errors.New("parameter imageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDownloadURIHandleResponse handles the ListDownloadURI response.
+func (client *ImagesClient) listDownloadURIHandleResponse(resp *http.Response, successCodes ...int) (ImagesClientListDownloadURIResponse, error) {
+	result := ImagesClientListDownloadURIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDownloadResult); err != nil {
+		return ImagesClientListDownloadURIResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByDisconnectedOperationPager - List by disconnected operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
@@ -192,71 +257,6 @@ func (client *ImagesClient) listByDisconnectedOperationHandleResponse(resp *http
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
 		return ImagesClientListByDisconnectedOperationResponse{}, err
-	}
-	return result, nil
-}
-
-// ListDownloadURI - Get the URI to download the image.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the resource
-//   - imageName - The name of the Image
-//   - options - ImagesClientListDownloadURIOptions contains the optional parameters for the ImagesClient.ListDownloadURI method.
-func (client *ImagesClient) ListDownloadURI(ctx context.Context, resourceGroupName string, name string, imageName string, options *ImagesClientListDownloadURIOptions) (ImagesClientListDownloadURIResponse, error) {
-	var err error
-	const operationName = "ImagesClient.ListDownloadURI"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDownloadURICreateRequest(ctx, resourceGroupName, name, imageName, options)
-	if err != nil {
-		return ImagesClientListDownloadURIResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ImagesClientListDownloadURIResponse{}, err
-	}
-	return client.listDownloadURIHandleResponse(httpResp, http.StatusOK)
-}
-
-// listDownloadURICreateRequest creates the ListDownloadURI request.
-func (client *ImagesClient) listDownloadURICreateRequest(ctx context.Context, resourceGroupName string, name string, imageName string, _ *ImagesClientListDownloadURIOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images/{imageName}/listDownloadUri"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if imageName == "" {
-		return nil, errors.New("parameter imageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDownloadURIHandleResponse handles the ListDownloadURI response.
-func (client *ImagesClient) listDownloadURIHandleResponse(resp *http.Response, successCodes ...int) (ImagesClientListDownloadURIResponse, error) {
-	result := ImagesClientListDownloadURIResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDownloadResult); err != nil {
-		return ImagesClientListDownloadURIResponse{}, err
 	}
 	return result, nil
 }

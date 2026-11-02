@@ -66,7 +66,7 @@ func (client *AccountsClient) BeginAddPaymentTerms(ctx context.Context, billingA
 	}
 }
 
-// AddPaymentTerms - Adds payment terms to all the billing profiles under the billing account. Currently, payment terms can
+// addPaymentTerms - Adds payment terms to all the billing profiles under the billing account. Currently, payment terms can
 // be added only on billing accounts that have Agreement Type as 'Microsoft Customer Agreement' and AccountType as 'Enterprise'.
 // This action needs pre-authorization and only Field Sellers are authorized to add the payment terms and is not a self-serve
 // action.
@@ -91,7 +91,7 @@ func (client *AccountsClient) addPaymentTerms(ctx context.Context, billingAccoun
 	return httpResp, nil
 }
 
-// addPaymentTermsCreateRequest creates the AddPaymentTerms request.
+// addPaymentTermsCreateRequest creates the addPaymentTerms request.
 func (client *AccountsClient) addPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, _ *AccountsClientBeginAddPaymentTermsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/addPaymentTerms"
 	if billingAccountName == "" {
@@ -137,7 +137,7 @@ func (client *AccountsClient) BeginCancelPaymentTerms(ctx context.Context, billi
 	}
 }
 
-// CancelPaymentTerms - Cancels all the payment terms on billing account that falls after the cancellation date in the request.
+// cancelPaymentTerms - Cancels all the payment terms on billing account that falls after the cancellation date in the request.
 // Currently, cancel payment terms is only served by admin actions and is not a self-serve action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) cancelPaymentTerms(ctx context.Context, billingAccountName string, parameters time.Time, options *AccountsClientBeginCancelPaymentTermsOptions) (*http.Response, error) {
@@ -160,7 +160,7 @@ func (client *AccountsClient) cancelPaymentTerms(ctx context.Context, billingAcc
 	return httpResp, nil
 }
 
-// cancelPaymentTermsCreateRequest creates the CancelPaymentTerms request.
+// cancelPaymentTermsCreateRequest creates the cancelPaymentTerms request.
 func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters time.Time, _ *AccountsClientBeginCancelPaymentTermsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/cancelPaymentTerms"
 	if billingAccountName == "" {
@@ -177,6 +177,78 @@ func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Contex
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters.UTC()); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates the properties of a billing account. Currently, displayName and address can be updated for billing
+// accounts with agreement type Microsoft Customer Agreement. Currently address and notification email address can be updated
+// for billing accounts with agreement type Microsoft Online Services Agreement. Currently, purchase order number can be edited
+// for billing accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - A billing account.
+//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the properties of a billing account. Currently, displayName and address can be updated for billing accounts
+// with agreement type Microsoft Customer Agreement. Currently address and notification email address can be updated for billing
+// accounts with agreement type Microsoft Online Services Agreement. Currently, purchase order number can be edited for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) update(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -286,6 +358,79 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
+// NewListInvoiceSectionsByCreateSubscriptionPermissionPager - Lists the invoice sections for which the user has permission
+// to create Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer
+// Agreement.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
+//     AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager method.
+func (client *AccountsClient) NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
+		More: func(page AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, nextLink, options)
+			if err != nil {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+			}
+			return client.listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest creates the ListInvoiceSectionsByCreateSubscriptionPermission request.
+func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse handles the ListInvoiceSectionsByCreateSubscriptionPermission response.
+func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
+	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionWithCreateSubPermissionListResult); err != nil {
+		return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Lists the billing accounts that a user has access to.
 //   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
@@ -382,151 +527,6 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response, successCod
 		return AccountsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// NewListInvoiceSectionsByCreateSubscriptionPermissionPager - Lists the invoice sections for which the user has permission
-// to create Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer
-// Agreement.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
-//     AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager method.
-func (client *AccountsClient) NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
-		More: func(page AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, nextLink, options)
-			if err != nil {
-				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
-			}
-			return client.listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest creates the ListInvoiceSectionsByCreateSubscriptionPermission request.
-func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission"
-		if billingAccountName == "" {
-			return nil, errors.New("parameter billingAccountName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240401)
-		if options != nil && options.Filter != nil {
-			reqQP.Set("filter", *options.Filter)
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse handles the ListInvoiceSectionsByCreateSubscriptionPermission response.
-func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
-	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionWithCreateSubPermissionListResult); err != nil {
-		return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpdate - Updates the properties of a billing account. Currently, displayName and address can be updated for billing
-// accounts with agreement type Microsoft Customer Agreement. Currently address and notification email address can be updated
-// for billing accounts with agreement type Microsoft Online Services Agreement. Currently, purchase order number can be edited
-// for billing accounts with agreement type Enterprise Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - parameters - A billing account.
-//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, billingAccountName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the properties of a billing account. Currently, displayName and address can be updated for billing accounts
-// with agreement type Microsoft Customer Agreement. Currently address and notification email address can be updated for billing
-// accounts with agreement type Microsoft Online Services Agreement. Currently, purchase order number can be edited for billing
-// accounts with agreement type Enterprise Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) update(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, billingAccountName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // ValidatePaymentTerms - Validates payment terms on a billing account with agreement type 'Microsoft Customer Agreement'

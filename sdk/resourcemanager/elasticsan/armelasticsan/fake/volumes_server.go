@@ -29,14 +29,6 @@ type VolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *armelasticsan.VolumesClientBeginDeleteOptions) (resp azfake.PollerResponder[armelasticsan.VolumesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VolumesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *armelasticsan.VolumesClientGetOptions) (resp azfake.Responder[armelasticsan.VolumesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByVolumeGroupPager is the fake for method VolumesClient.NewListByVolumeGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVolumeGroupPager func(resourceGroupName string, elasticSanName string, volumeGroupName string, options *armelasticsan.VolumesClientListByVolumeGroupOptions) (resp azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse])
-
 	// BeginPreBackup is the fake for method VolumesClient.BeginPreBackup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPreBackup func(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, parameters armelasticsan.VolumeNameList, options *armelasticsan.VolumesClientBeginPreBackupOptions) (resp azfake.PollerResponder[armelasticsan.VolumesClientPreBackupResponse], errResp azfake.ErrorResponder)
@@ -48,6 +40,14 @@ type VolumesServer struct {
 	// BeginUpdate is the fake for method VolumesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, parameters armelasticsan.VolumeUpdate, options *armelasticsan.VolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armelasticsan.VolumesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VolumesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *armelasticsan.VolumesClientGetOptions) (resp azfake.Responder[armelasticsan.VolumesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByVolumeGroupPager is the fake for method VolumesClient.NewListByVolumeGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByVolumeGroupPager func(resourceGroupName string, elasticSanName string, volumeGroupName string, options *armelasticsan.VolumesClientListByVolumeGroupOptions) (resp azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse])
 }
 
 // NewVolumesServerTransport creates a new instance of VolumesServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 		srv:                       srv,
 		beginCreate:               newTracker[azfake.PollerResponder[armelasticsan.VolumesClientCreateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armelasticsan.VolumesClientDeleteResponse]](),
-		newListByVolumeGroupPager: newTracker[azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse]](),
 		beginPreBackup:            newTracker[azfake.PollerResponder[armelasticsan.VolumesClientPreBackupResponse]](),
 		beginPreRestore:           newTracker[azfake.PollerResponder[armelasticsan.VolumesClientPreRestoreResponse]](),
 		beginUpdate:               newTracker[azfake.PollerResponder[armelasticsan.VolumesClientUpdateResponse]](),
+		newListByVolumeGroupPager: newTracker[azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type VolumesServerTransport struct {
 	srv                       *VolumesServer
 	beginCreate               *tracker[azfake.PollerResponder[armelasticsan.VolumesClientCreateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armelasticsan.VolumesClientDeleteResponse]]
-	newListByVolumeGroupPager *tracker[azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse]]
 	beginPreBackup            *tracker[azfake.PollerResponder[armelasticsan.VolumesClientPreBackupResponse]]
 	beginPreRestore           *tracker[azfake.PollerResponder[armelasticsan.VolumesClientPreRestoreResponse]]
 	beginUpdate               *tracker[azfake.PollerResponder[armelasticsan.VolumesClientUpdateResponse]]
+	newListByVolumeGroupPager *tracker[azfake.PagerResponder[armelasticsan.VolumesClientListByVolumeGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for VolumesServerTransport.
@@ -102,16 +102,16 @@ func (v *VolumesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = v.dispatchBeginCreate(req)
 			case "VolumesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VolumesClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VolumesClient.NewListByVolumeGroupPager":
-				res.resp, res.err = v.dispatchNewListByVolumeGroupPager(req)
 			case "VolumesClient.BeginPreBackup":
 				res.resp, res.err = v.dispatchBeginPreBackup(req)
 			case "VolumesClient.BeginPreRestore":
 				res.resp, res.err = v.dispatchBeginPreRestore(req)
 			case "VolumesClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VolumesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VolumesClient.NewListByVolumeGroupPager":
+				res.resp, res.err = v.dispatchNewListByVolumeGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -245,99 +245,6 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		v.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (v *VolumesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, volumeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Volume, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByVolumeGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumeGroupPager not implemented")}
-	}
-	newListByVolumeGroupPager := v.newListByVolumeGroupPager.get(req)
-	if newListByVolumeGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		xMSAccessSoftDeletedResourcesParam := getOptional(armelasticsan.XMSAccessSoftDeletedResources(getHeaderValue(req.Header, "x-ms-access-soft-deleted-resources")))
-		var options *armelasticsan.VolumesClientListByVolumeGroupOptions
-		if xMSAccessSoftDeletedResourcesParam != nil {
-			options = &armelasticsan.VolumesClientListByVolumeGroupOptions{
-				XMSAccessSoftDeletedResources: xMSAccessSoftDeletedResourcesParam,
-			}
-		}
-		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, options)
-		newListByVolumeGroupPager = &resp
-		v.newListByVolumeGroupPager.add(req, newListByVolumeGroupPager)
-		server.PagerResponderInjectNextLinks(newListByVolumeGroupPager, req, func(page *armelasticsan.VolumesClientListByVolumeGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVolumeGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByVolumeGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVolumeGroupPager) {
-		v.newListByVolumeGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -498,6 +405,99 @@ func (v *VolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VolumesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, volumeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Volume, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByVolumeGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumeGroupPager not implemented")}
+	}
+	newListByVolumeGroupPager := v.newListByVolumeGroupPager.get(req)
+	if newListByVolumeGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		xMSAccessSoftDeletedResourcesParam := getOptional(armelasticsan.XMSAccessSoftDeletedResources(getHeaderValue(req.Header, "x-ms-access-soft-deleted-resources")))
+		var options *armelasticsan.VolumesClientListByVolumeGroupOptions
+		if xMSAccessSoftDeletedResourcesParam != nil {
+			options = &armelasticsan.VolumesClientListByVolumeGroupOptions{
+				XMSAccessSoftDeletedResources: xMSAccessSoftDeletedResourcesParam,
+			}
+		}
+		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, options)
+		newListByVolumeGroupPager = &resp
+		v.newListByVolumeGroupPager.add(req, newListByVolumeGroupPager)
+		server.PagerResponderInjectNextLinks(newListByVolumeGroupPager, req, func(page *armelasticsan.VolumesClientListByVolumeGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVolumeGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVolumeGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVolumeGroupPager) {
+		v.newListByVolumeGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

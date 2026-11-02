@@ -34,13 +34,13 @@ type RecommendationsServer struct {
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	GetGenerateStatus func(ctx context.Context, operationID string, options *armadvisor.RecommendationsClientGetGenerateStatusOptions) (resp azfake.Responder[armadvisor.RecommendationsClientGetGenerateStatusResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RecommendationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armadvisor.RecommendationsClientListOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListResponse])
-
 	// NewListByTenantPager is the fake for method RecommendationsClient.NewListByTenantPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByTenantPager func(resourceURI string, options *armadvisor.RecommendationsClientListByTenantOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse])
+
+	// NewListPager is the fake for method RecommendationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armadvisor.RecommendationsClientListOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListResponse])
 
 	// Patch is the fake for method RecommendationsClient.Patch
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ type RecommendationsServer struct {
 func NewRecommendationsServerTransport(srv *RecommendationsServer) *RecommendationsServerTransport {
 	return &RecommendationsServerTransport{
 		srv:                  srv,
-		newListPager:         newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]](),
 		newListByTenantPager: newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ func NewRecommendationsServerTransport(srv *RecommendationsServer) *Recommendati
 // Don't use this type directly, use NewRecommendationsServerTransport instead.
 type RecommendationsServerTransport struct {
 	srv                  *RecommendationsServer
-	newListPager         *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]]
 	newListByTenantPager *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecommendationsServerTransport.
@@ -93,10 +93,10 @@ func (r *RecommendationsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecommendationsClient.GetGenerateStatus":
 				res.resp, res.err = r.dispatchGetGenerateStatus(req)
-			case "RecommendationsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecommendationsClient.NewListByTenantPager":
 				res.resp, res.err = r.dispatchNewListByTenantPager(req)
+			case "RecommendationsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecommendationsClient.Patch":
 				res.resp, res.err = r.dispatchPatch(req)
 			default:
@@ -208,60 +208,6 @@ func (r *RecommendationsServerTransport) dispatchGetGenerateStatus(req *http.Req
 	return resp, nil
 }
 
-func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armadvisor.RecommendationsClientListOptions
-		if filterParam != nil || topParam != nil || skipTokenParam != nil {
-			options = &armadvisor.RecommendationsClientListOptions{
-				Filter:    filterParam,
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := r.srv.NewListPager(options)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armadvisor.RecommendationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RecommendationsServerTransport) dispatchNewListByTenantPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByTenantPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByTenantPager not implemented")}
@@ -313,6 +259,60 @@ func (r *RecommendationsServerTransport) dispatchNewListByTenantPager(req *http.
 	}
 	if !server.PagerResponderMore(newListByTenantPager) {
 		r.newListByTenantPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armadvisor.RecommendationsClientListOptions
+		if filterParam != nil || topParam != nil || skipTokenParam != nil {
+			options = &armadvisor.RecommendationsClientListOptions{
+				Filter:    filterParam,
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := r.srv.NewListPager(options)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armadvisor.RecommendationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

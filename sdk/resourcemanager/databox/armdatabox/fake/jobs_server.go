@@ -21,14 +21,6 @@ import (
 
 // JobsServer is a fake server for instances of the armdatabox.JobsClient type.
 type JobsServer struct {
-	// BookShipmentPickUp is the fake for method JobsClient.BookShipmentPickUp
-	// HTTP status codes to indicate success: http.StatusOK
-	BookShipmentPickUp func(ctx context.Context, resourceGroupName string, jobName string, shipmentPickUpRequest armdatabox.ShipmentPickUpRequest, options *armdatabox.JobsClientBookShipmentPickUpOptions) (resp azfake.Responder[armdatabox.JobsClientBookShipmentPickUpResponse], errResp azfake.ErrorResponder)
-
-	// Cancel is the fake for method JobsClient.Cancel
-	// HTTP status codes to indicate success: http.StatusNoContent
-	Cancel func(ctx context.Context, resourceGroupName string, jobName string, cancellationReason armdatabox.CancellationReason, options *armdatabox.JobsClientCancelOptions) (resp azfake.Responder[armdatabox.JobsClientCancelResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method JobsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, jobName string, jobResource armdatabox.JobResource, options *armdatabox.JobsClientBeginCreateOptions) (resp azfake.PollerResponder[armdatabox.JobsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -37,13 +29,25 @@ type JobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, jobName string, options *armdatabox.JobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatabox.JobsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method JobsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter armdatabox.JobResourceUpdateParameter, options *armdatabox.JobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatabox.JobsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BookShipmentPickUp is the fake for method JobsClient.BookShipmentPickUp
+	// HTTP status codes to indicate success: http.StatusOK
+	BookShipmentPickUp func(ctx context.Context, resourceGroupName string, jobName string, shipmentPickUpRequest armdatabox.ShipmentPickUpRequest, options *armdatabox.JobsClientBookShipmentPickUpOptions) (resp azfake.Responder[armdatabox.JobsClientBookShipmentPickUpResponse], errResp azfake.ErrorResponder)
+
+	// Cancel is the fake for method JobsClient.Cancel
+	// HTTP status codes to indicate success: http.StatusNoContent
+	Cancel func(ctx context.Context, resourceGroupName string, jobName string, cancellationReason armdatabox.CancellationReason, options *armdatabox.JobsClientCancelOptions) (resp azfake.Responder[armdatabox.JobsClientCancelResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method JobsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, jobName string, options *armdatabox.JobsClientGetOptions) (resp azfake.Responder[armdatabox.JobsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method JobsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdatabox.JobsClientListOptions) (resp azfake.PagerResponder[armdatabox.JobsClientListResponse])
+	// MarkDevicesShipped is the fake for method JobsClient.MarkDevicesShipped
+	// HTTP status codes to indicate success: http.StatusNoContent
+	MarkDevicesShipped func(ctx context.Context, jobName string, resourceGroupName string, markDevicesShippedRequest armdatabox.MarkDevicesShippedRequest, options *armdatabox.JobsClientMarkDevicesShippedOptions) (resp azfake.Responder[armdatabox.JobsClientMarkDevicesShippedResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method JobsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,13 +57,9 @@ type JobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCredentialsPager func(resourceGroupName string, jobName string, options *armdatabox.JobsClientListCredentialsOptions) (resp azfake.PagerResponder[armdatabox.JobsClientListCredentialsResponse])
 
-	// MarkDevicesShipped is the fake for method JobsClient.MarkDevicesShipped
-	// HTTP status codes to indicate success: http.StatusNoContent
-	MarkDevicesShipped func(ctx context.Context, jobName string, resourceGroupName string, markDevicesShippedRequest armdatabox.MarkDevicesShippedRequest, options *armdatabox.JobsClientMarkDevicesShippedOptions) (resp azfake.Responder[armdatabox.JobsClientMarkDevicesShippedResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method JobsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter armdatabox.JobResourceUpdateParameter, options *armdatabox.JobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdatabox.JobsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method JobsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdatabox.JobsClientListOptions) (resp azfake.PagerResponder[armdatabox.JobsClientListResponse])
 }
 
 // NewJobsServerTransport creates a new instance of JobsServerTransport with the provided implementation.
@@ -70,10 +70,10 @@ func NewJobsServerTransport(srv *JobsServer) *JobsServerTransport {
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armdatabox.JobsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatabox.JobsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdatabox.JobsClientListResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdatabox.JobsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatabox.JobsClientListByResourceGroupResponse]](),
 		newListCredentialsPager:     newTracker[azfake.PagerResponder[armdatabox.JobsClientListCredentialsResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdatabox.JobsClientUpdateResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdatabox.JobsClientListResponse]](),
 	}
 }
 
@@ -83,10 +83,10 @@ type JobsServerTransport struct {
 	srv                         *JobsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armdatabox.JobsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatabox.JobsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdatabox.JobsClientListResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdatabox.JobsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatabox.JobsClientListByResourceGroupResponse]]
 	newListCredentialsPager     *tracker[azfake.PagerResponder[armdatabox.JobsClientListCredentialsResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdatabox.JobsClientUpdateResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdatabox.JobsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for JobsServerTransport.
@@ -110,26 +110,26 @@ func (j *JobsServerTransport) dispatchToMethodFake(req *http.Request, method str
 		}
 		if !intercepted {
 			switch method {
-			case "JobsClient.BookShipmentPickUp":
-				res.resp, res.err = j.dispatchBookShipmentPickUp(req)
-			case "JobsClient.Cancel":
-				res.resp, res.err = j.dispatchCancel(req)
 			case "JobsClient.BeginCreate":
 				res.resp, res.err = j.dispatchBeginCreate(req)
 			case "JobsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
+			case "JobsClient.BeginUpdate":
+				res.resp, res.err = j.dispatchBeginUpdate(req)
+			case "JobsClient.BookShipmentPickUp":
+				res.resp, res.err = j.dispatchBookShipmentPickUp(req)
+			case "JobsClient.Cancel":
+				res.resp, res.err = j.dispatchCancel(req)
 			case "JobsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
-			case "JobsClient.NewListPager":
-				res.resp, res.err = j.dispatchNewListPager(req)
+			case "JobsClient.MarkDevicesShipped":
+				res.resp, res.err = j.dispatchMarkDevicesShipped(req)
 			case "JobsClient.NewListByResourceGroupPager":
 				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
 			case "JobsClient.NewListCredentialsPager":
 				res.resp, res.err = j.dispatchNewListCredentialsPager(req)
-			case "JobsClient.MarkDevicesShipped":
-				res.resp, res.err = j.dispatchMarkDevicesShipped(req)
-			case "JobsClient.BeginUpdate":
-				res.resp, res.err = j.dispatchBeginUpdate(req)
+			case "JobsClient.NewListPager":
+				res.resp, res.err = j.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -144,80 +144,6 @@ func (j *JobsServerTransport) dispatchToMethodFake(req *http.Request, method str
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (j *JobsServerTransport) dispatchBookShipmentPickUp(req *http.Request) (*http.Response, error) {
-	if j.srv.BookShipmentPickUp == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BookShipmentPickUp not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bookShipmentPickUp`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatabox.ShipmentPickUpRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.BookShipmentPickUp(req.Context(), resourceGroupNameParam, jobNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ShipmentPickUpResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if j.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatabox.CancellationReason](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.Cancel(req.Context(), resourceGroupNameParam, jobNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (j *JobsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -312,6 +238,135 @@ func (j *JobsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
+func (j *JobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if j.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := j.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatabox.JobResourceUpdateParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armdatabox.JobsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdatabox.JobsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, jobNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		j.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		j.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		j.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchBookShipmentPickUp(req *http.Request) (*http.Response, error) {
+	if j.srv.BookShipmentPickUp == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BookShipmentPickUp not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bookShipmentPickUp`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatabox.ShipmentPickUpRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.BookShipmentPickUp(req.Context(), resourceGroupNameParam, jobNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ShipmentPickUpResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if j.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatabox.CancellationReason](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.Cancel(req.Context(), resourceGroupNameParam, jobNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (j *JobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -353,43 +408,39 @@ func (j *JobsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	return resp, nil
 }
 
-func (j *JobsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (j *JobsServerTransport) dispatchMarkDevicesShipped(req *http.Request) (*http.Response, error) {
+	if j.srv.MarkDevicesShipped == nil {
+		return nil, &nonRetriableError{errors.New("fake for method MarkDevicesShipped not implemented")}
 	}
-	newListPager := j.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armdatabox.JobsClientListOptions
-		if skipTokenParam != nil {
-			options = &armdatabox.JobsClientListOptions{
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := j.srv.NewListPager(options)
-		newListPager = &resp
-		j.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatabox.JobsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/markDevicesShipped`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	body, err := server.UnmarshalRequestAsJSON[armdatabox.MarkDevicesShippedRequest](req)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		j.newListPager.remove(req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.MarkDevicesShipped(req.Context(), jobNameParam, resourceGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -480,95 +531,44 @@ func (j *JobsServerTransport) dispatchNewListCredentialsPager(req *http.Request)
 	return resp, nil
 }
 
-func (j *JobsServerTransport) dispatchMarkDevicesShipped(req *http.Request) (*http.Response, error) {
-	if j.srv.MarkDevicesShipped == nil {
-		return nil, &nonRetriableError{errors.New("fake for method MarkDevicesShipped not implemented")}
+func (j *JobsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/markDevicesShipped`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatabox.MarkDevicesShippedRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.MarkDevicesShipped(req.Context(), jobNameParam, resourceGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (j *JobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if j.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := j.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := j.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/jobs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdatabox.JobResourceUpdateParameter](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		var options *armdatabox.JobsClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdatabox.JobsClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
+		qp := req.URL.Query()
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armdatabox.JobsClientListOptions
+		if skipTokenParam != nil {
+			options = &armdatabox.JobsClientListOptions{
+				SkipToken: skipTokenParam,
 			}
 		}
-		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, jobNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		j.beginUpdate.add(req, beginUpdate)
+		resp := j.srv.NewListPager(options)
+		newListPager = &resp
+		j.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatabox.JobsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		j.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		j.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		j.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

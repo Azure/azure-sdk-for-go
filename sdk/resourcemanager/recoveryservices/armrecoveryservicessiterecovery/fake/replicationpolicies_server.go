@@ -29,6 +29,10 @@ type ReplicationPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, policyName string, options *armrecoveryservicessiterecovery.ReplicationPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ReplicationPoliciesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, policyName string, input armrecoveryservicessiterecovery.UpdatePolicyInput, options *armrecoveryservicessiterecovery.ReplicationPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ReplicationPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, policyName string, options *armrecoveryservicessiterecovery.ReplicationPoliciesClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationPoliciesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ReplicationPoliciesServer struct {
 	// NewListPager is the fake for method ReplicationPoliciesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationPoliciesClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientListResponse])
-
-	// BeginUpdate is the fake for method ReplicationPoliciesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, policyName string, input armrecoveryservicessiterecovery.UpdatePolicyInput, options *armrecoveryservicessiterecovery.ReplicationPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReplicationPoliciesServerTransport creates a new instance of ReplicationPoliciesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewReplicationPoliciesServerTransport(srv *ReplicationPoliciesServer) *Repl
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ReplicationPoliciesServerTransport struct {
 	srv          *ReplicationPoliciesServer
 	beginCreate  *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationPoliciesServerTransport.
@@ -90,12 +90,12 @@ func (r *ReplicationPoliciesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "ReplicationPoliciesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ReplicationPoliciesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ReplicationPoliciesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ReplicationPoliciesClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-			case "ReplicationPoliciesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (r *ReplicationPoliciesServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
+func (r *ReplicationPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UpdatePolicyInput](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, policyNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ReplicationPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (r *ReplicationPoliciesServerTransport) dispatchNewListPager(req *http.Requ
 	if !server.PagerResponderMore(newListPager) {
 		r.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ReplicationPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UpdatePolicyInput](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, policyNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

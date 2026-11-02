@@ -25,6 +25,10 @@ type EncryptionProtectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName armsql.EncryptionProtectorName, parameters armsql.EncryptionProtector, options *armsql.EncryptionProtectorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.EncryptionProtectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginRevalidate is the fake for method EncryptionProtectorsClient.BeginRevalidate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRevalidate func(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.EncryptionProtectorsClientBeginRevalidateOptions) (resp azfake.PollerResponder[armsql.EncryptionProtectorsClientRevalidateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method EncryptionProtectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.EncryptionProtectorsClientGetOptions) (resp azfake.Responder[armsql.EncryptionProtectorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type EncryptionProtectorsServer struct {
 	// NewListByServerPager is the fake for method EncryptionProtectorsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.EncryptionProtectorsClientListByServerOptions) (resp azfake.PagerResponder[armsql.EncryptionProtectorsClientListByServerResponse])
-
-	// BeginRevalidate is the fake for method EncryptionProtectorsClient.BeginRevalidate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRevalidate func(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.EncryptionProtectorsClientBeginRevalidateOptions) (resp azfake.PollerResponder[armsql.EncryptionProtectorsClientRevalidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEncryptionProtectorsServerTransport creates a new instance of EncryptionProtectorsServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewEncryptionProtectorsServerTransport(srv *EncryptionProtectorsServer) *En
 	return &EncryptionProtectorsServerTransport{
 		srv:                  srv,
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armsql.EncryptionProtectorsClientCreateOrUpdateResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armsql.EncryptionProtectorsClientListByServerResponse]](),
 		beginRevalidate:      newTracker[azfake.PollerResponder[armsql.EncryptionProtectorsClientRevalidateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armsql.EncryptionProtectorsClientListByServerResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewEncryptionProtectorsServerTransport(srv *EncryptionProtectorsServer) *En
 type EncryptionProtectorsServerTransport struct {
 	srv                  *EncryptionProtectorsServer
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armsql.EncryptionProtectorsClientCreateOrUpdateResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armsql.EncryptionProtectorsClientListByServerResponse]]
 	beginRevalidate      *tracker[azfake.PollerResponder[armsql.EncryptionProtectorsClientRevalidateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armsql.EncryptionProtectorsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for EncryptionProtectorsServerTransport.
@@ -82,12 +82,12 @@ func (e *EncryptionProtectorsServerTransport) dispatchToMethodFake(req *http.Req
 			switch method {
 			case "EncryptionProtectorsClient.BeginCreateOrUpdate":
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
+			case "EncryptionProtectorsClient.BeginRevalidate":
+				res.resp, res.err = e.dispatchBeginRevalidate(req)
 			case "EncryptionProtectorsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EncryptionProtectorsClient.NewListByServerPager":
 				res.resp, res.err = e.dispatchNewListByServerPager(req)
-			case "EncryptionProtectorsClient.BeginRevalidate":
-				res.resp, res.err = e.dispatchBeginRevalidate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -157,6 +157,60 @@ func (e *EncryptionProtectorsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		e.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *EncryptionProtectorsServerTransport) dispatchBeginRevalidate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginRevalidate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRevalidate not implemented")}
+	}
+	beginRevalidate := e.beginRevalidate.get(req)
+	if beginRevalidate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionProtector/(?P<encryptionProtectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revalidate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		encryptionProtectorNameParam, err := parseWithCast(matches[regex.SubexpIndex("encryptionProtectorName")], func(v string) (armsql.EncryptionProtectorName, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsql.EncryptionProtectorName(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginRevalidate(req.Context(), resourceGroupNameParam, serverNameParam, encryptionProtectorNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRevalidate = &respr
+		e.beginRevalidate.add(req, beginRevalidate)
+	}
+
+	resp, err := server.PollerResponderNext(beginRevalidate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginRevalidate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRevalidate) {
+		e.beginRevalidate.remove(req)
 	}
 
 	return resp, nil
@@ -243,60 +297,6 @@ func (e *EncryptionProtectorsServerTransport) dispatchNewListByServerPager(req *
 	if !server.PagerResponderMore(newListByServerPager) {
 		e.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *EncryptionProtectorsServerTransport) dispatchBeginRevalidate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginRevalidate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRevalidate not implemented")}
-	}
-	beginRevalidate := e.beginRevalidate.get(req)
-	if beginRevalidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionProtector/(?P<encryptionProtectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revalidate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		encryptionProtectorNameParam, err := parseWithCast(matches[regex.SubexpIndex("encryptionProtectorName")], func(v string) (armsql.EncryptionProtectorName, error) {
-			p, unescapeErr := url.PathUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return armsql.EncryptionProtectorName(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginRevalidate(req.Context(), resourceGroupNameParam, serverNameParam, encryptionProtectorNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRevalidate = &respr
-		e.beginRevalidate.add(req, beginRevalidate)
-	}
-
-	resp, err := server.PollerResponderNext(beginRevalidate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		e.beginRevalidate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRevalidate) {
-		e.beginRevalidate.remove(req)
-	}
-
 	return resp, nil
 }
 

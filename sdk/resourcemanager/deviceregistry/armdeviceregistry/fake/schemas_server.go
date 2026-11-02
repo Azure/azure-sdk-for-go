@@ -21,13 +21,13 @@ import (
 
 // SchemasServer is a fake server for instances of the armdeviceregistry.SchemasClient type.
 type SchemasServer struct {
-	// CreateOrReplace is the fake for method SchemasClient.CreateOrReplace
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrReplace func(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, resource armdeviceregistry.Schema, options *armdeviceregistry.SchemasClientCreateOrReplaceOptions) (resp azfake.Responder[armdeviceregistry.SchemasClientCreateOrReplaceResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SchemasClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, options *armdeviceregistry.SchemasClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.SchemasClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrReplace is the fake for method SchemasClient.CreateOrReplace
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrReplace func(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, resource armdeviceregistry.Schema, options *armdeviceregistry.SchemasClientCreateOrReplaceOptions) (resp azfake.Responder[armdeviceregistry.SchemasClientCreateOrReplaceResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SchemasClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (s *SchemasServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "SchemasClient.CreateOrReplace":
-				res.resp, res.err = s.dispatchCreateOrReplace(req)
 			case "SchemasClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SchemasClient.CreateOrReplace":
+				res.resp, res.err = s.dispatchCreateOrReplace(req)
 			case "SchemasClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SchemasClient.NewListBySchemaRegistryPager":
@@ -100,47 +100,6 @@ func (s *SchemasServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SchemasServerTransport) dispatchCreateOrReplace(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrReplace == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrReplace not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/schemaRegistries/(?P<schemaRegistryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/schemas/(?P<schemaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.Schema](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	schemaRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaRegistryName")])
-	if err != nil {
-		return nil, err
-	}
-	schemaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrReplace(req.Context(), resourceGroupNameParam, schemaRegistryNameParam, schemaNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Schema, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SchemasServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -188,6 +147,47 @@ func (s *SchemasServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SchemasServerTransport) dispatchCreateOrReplace(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrReplace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrReplace not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/schemaRegistries/(?P<schemaRegistryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/schemas/(?P<schemaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.Schema](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schemaRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaRegistryName")])
+	if err != nil {
+		return nil, err
+	}
+	schemaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrReplace(req.Context(), resourceGroupNameParam, schemaRegistryNameParam, schemaNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Schema, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

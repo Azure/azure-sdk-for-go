@@ -68,7 +68,7 @@ func (client *CustomRolloutsClient) BeginCreateOrUpdate(ctx context.Context, pro
 	}
 }
 
-// CreateOrUpdate - Creates or updates the rollout details.
+// createOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CustomRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties CustomRollout, options *CustomRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *CustomRolloutsClient) createOrUpdate(ctx context.Context, provider
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CustomRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties CustomRollout, _ *CustomRolloutsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}"
 	if client.subscriptionID == "" {

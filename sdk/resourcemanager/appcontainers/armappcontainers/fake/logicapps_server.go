@@ -37,13 +37,13 @@ type LogicAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetWorkflow func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, workflowName string, options *armappcontainers.LogicAppsClientGetWorkflowOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientGetWorkflowResponse], errResp azfake.ErrorResponder)
 
-	// NewListWorkflowsPager is the fake for method LogicAppsClient.NewListWorkflowsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListWorkflowsPager func(resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientListWorkflowsOptions) (resp azfake.PagerResponder[armappcontainers.LogicAppsClientListWorkflowsResponse])
-
 	// ListWorkflowsConnections is the fake for method LogicAppsClient.ListWorkflowsConnections
 	// HTTP status codes to indicate success: http.StatusOK
 	ListWorkflowsConnections func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientListWorkflowsConnectionsOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientListWorkflowsConnectionsResponse], errResp azfake.ErrorResponder)
+
+	// NewListWorkflowsPager is the fake for method LogicAppsClient.NewListWorkflowsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListWorkflowsPager func(resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientListWorkflowsOptions) (resp azfake.PagerResponder[armappcontainers.LogicAppsClientListWorkflowsResponse])
 }
 
 // NewLogicAppsServerTransport creates a new instance of LogicAppsServerTransport with the provided implementation.
@@ -92,10 +92,10 @@ func (l *LogicAppsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = l.dispatchGet(req)
 			case "LogicAppsClient.GetWorkflow":
 				res.resp, res.err = l.dispatchGetWorkflow(req)
-			case "LogicAppsClient.NewListWorkflowsPager":
-				res.resp, res.err = l.dispatchNewListWorkflowsPager(req)
 			case "LogicAppsClient.ListWorkflowsConnections":
 				res.resp, res.err = l.dispatchListWorkflowsConnections(req)
+			case "LogicAppsClient.NewListWorkflowsPager":
+				res.resp, res.err = l.dispatchNewListWorkflowsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -268,6 +268,43 @@ func (l *LogicAppsServerTransport) dispatchGetWorkflow(req *http.Request) (*http
 	return resp, nil
 }
 
+func (l *LogicAppsServerTransport) dispatchListWorkflowsConnections(req *http.Request) (*http.Response, error) {
+	if l.srv.ListWorkflowsConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/logicApps/(?P<logicAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
+	if err != nil {
+		return nil, err
+	}
+	logicAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicAppName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.ListWorkflowsConnections(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (l *LogicAppsServerTransport) dispatchNewListWorkflowsPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListWorkflowsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListWorkflowsPager not implemented")}
@@ -309,43 +346,6 @@ func (l *LogicAppsServerTransport) dispatchNewListWorkflowsPager(req *http.Reque
 	}
 	if !server.PagerResponderMore(newListWorkflowsPager) {
 		l.newListWorkflowsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LogicAppsServerTransport) dispatchListWorkflowsConnections(req *http.Request) (*http.Response, error) {
-	if l.srv.ListWorkflowsConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/logicApps/(?P<logicAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	logicAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicAppName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.ListWorkflowsConnections(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

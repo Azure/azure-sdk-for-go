@@ -21,13 +21,13 @@ import (
 
 // HTTPRouteConfigServer is a fake server for instances of the armappcontainers.HTTPRouteConfigClient type.
 type HTTPRouteConfigServer struct {
-	// CreateOrUpdate is the fake for method HTTPRouteConfigClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope armappcontainers.HTTPRouteConfig, options *armappcontainers.HTTPRouteConfigClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.HTTPRouteConfigClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method HTTPRouteConfigClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *armappcontainers.HTTPRouteConfigClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.HTTPRouteConfigClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method HTTPRouteConfigClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope armappcontainers.HTTPRouteConfig, options *armappcontainers.HTTPRouteConfigClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.HTTPRouteConfigClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method HTTPRouteConfigClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,10 +82,10 @@ func (h *HTTPRouteConfigServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "HTTPRouteConfigClient.CreateOrUpdate":
-				res.resp, res.err = h.dispatchCreateOrUpdate(req)
 			case "HTTPRouteConfigClient.BeginDelete":
 				res.resp, res.err = h.dispatchBeginDelete(req)
+			case "HTTPRouteConfigClient.CreateOrUpdate":
+				res.resp, res.err = h.dispatchCreateOrUpdate(req)
 			case "HTTPRouteConfigClient.Get":
 				res.resp, res.err = h.dispatchGet(req)
 			case "HTTPRouteConfigClient.NewListPager":
@@ -106,47 +106,6 @@ func (h *HTTPRouteConfigServerTransport) dispatchToMethodFake(req *http.Request,
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (h *HTTPRouteConfigServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if h.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/httpRouteConfigs/(?P<httpRouteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.HTTPRouteConfig](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	httpRouteNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("httpRouteName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := h.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, httpRouteNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HTTPRouteConfig, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (h *HTTPRouteConfigServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -194,6 +153,47 @@ func (h *HTTPRouteConfigServerTransport) dispatchBeginDelete(req *http.Request) 
 		h.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (h *HTTPRouteConfigServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if h.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/httpRouteConfigs/(?P<httpRouteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappcontainers.HTTPRouteConfig](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	httpRouteNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("httpRouteName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, httpRouteNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HTTPRouteConfig, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

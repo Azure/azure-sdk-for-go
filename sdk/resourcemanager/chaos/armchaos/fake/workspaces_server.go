@@ -37,21 +37,21 @@ type WorkspacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginEvaluate func(ctx context.Context, resourceGroupName string, workspaceName string, options *armchaos.WorkspacesClientBeginEvaluateOptions) (resp azfake.PollerResponder[armchaos.WorkspacesClientEvaluateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method WorkspacesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, properties armchaos.WorkspaceUpdate, options *armchaos.WorkspacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.WorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WorkspacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, options *armchaos.WorkspacesClientGetOptions) (resp azfake.Responder[armchaos.WorkspacesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method WorkspacesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armchaos.WorkspacesClientListOptions) (resp azfake.PagerResponder[armchaos.WorkspacesClientListResponse])
 
 	// NewListAllPager is the fake for method WorkspacesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armchaos.WorkspacesClientListAllOptions) (resp azfake.PagerResponder[armchaos.WorkspacesClientListAllResponse])
 
-	// BeginUpdate is the fake for method WorkspacesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, properties armchaos.WorkspaceUpdate, options *armchaos.WorkspacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.WorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method WorkspacesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armchaos.WorkspacesClientListOptions) (resp azfake.PagerResponder[armchaos.WorkspacesClientListResponse])
 }
 
 // NewWorkspacesServerTransport creates a new instance of WorkspacesServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewWorkspacesServerTransport(srv *WorkspacesServer) *WorkspacesServerTransp
 		beginDelete:         newTracker[azfake.PollerResponder[armchaos.WorkspacesClientDeleteResponse]](),
 		beginDiscover:       newTracker[azfake.PollerResponder[armchaos.WorkspacesClientDiscoverResponse]](),
 		beginEvaluate:       newTracker[azfake.PollerResponder[armchaos.WorkspacesClientEvaluateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armchaos.WorkspacesClientListResponse]](),
-		newListAllPager:     newTracker[azfake.PagerResponder[armchaos.WorkspacesClientListAllResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armchaos.WorkspacesClientUpdateResponse]](),
+		newListAllPager:     newTracker[azfake.PagerResponder[armchaos.WorkspacesClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armchaos.WorkspacesClientListResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type WorkspacesServerTransport struct {
 	beginDelete         *tracker[azfake.PollerResponder[armchaos.WorkspacesClientDeleteResponse]]
 	beginDiscover       *tracker[azfake.PollerResponder[armchaos.WorkspacesClientDiscoverResponse]]
 	beginEvaluate       *tracker[azfake.PollerResponder[armchaos.WorkspacesClientEvaluateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armchaos.WorkspacesClientListResponse]]
-	newListAllPager     *tracker[azfake.PagerResponder[armchaos.WorkspacesClientListAllResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armchaos.WorkspacesClientUpdateResponse]]
+	newListAllPager     *tracker[azfake.PagerResponder[armchaos.WorkspacesClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armchaos.WorkspacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkspacesServerTransport.
@@ -112,14 +112,14 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = w.dispatchBeginDiscover(req)
 			case "WorkspacesClient.BeginEvaluate":
 				res.resp, res.err = w.dispatchBeginEvaluate(req)
-			case "WorkspacesClient.Get":
-				res.resp, res.err = w.dispatchGet(req)
-			case "WorkspacesClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
-			case "WorkspacesClient.NewListAllPager":
-				res.resp, res.err = w.dispatchNewListAllPager(req)
 			case "WorkspacesClient.BeginUpdate":
 				res.resp, res.err = w.dispatchBeginUpdate(req)
+			case "WorkspacesClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WorkspacesClient.NewListAllPager":
+				res.resp, res.err = w.dispatchNewListAllPager(req)
+			case "WorkspacesClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -316,6 +316,54 @@ func (w *WorkspacesServerTransport) dispatchBeginEvaluate(req *http.Request) (*h
 	return resp, nil
 }
 
+func (w *WorkspacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := w.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armchaos.WorkspaceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		w.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		w.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (w *WorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -345,6 +393,47 @@ func (w *WorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workspace, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WorkspacesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := w.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		var options *armchaos.WorkspacesClientListAllOptions
+		if continuationTokenParam != nil {
+			options = &armchaos.WorkspacesClientListAllOptions{
+				ContinuationToken: continuationTokenParam,
+			}
+		}
+		resp := w.srv.NewListAllPager(options)
+		newListAllPager = &resp
+		w.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armchaos.WorkspacesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		w.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -391,95 +480,6 @@ func (w *WorkspacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if !server.PagerResponderMore(newListPager) {
 		w.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WorkspacesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := w.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		continuationTokenParam := getOptional(qp.Get("continuationToken"))
-		var options *armchaos.WorkspacesClientListAllOptions
-		if continuationTokenParam != nil {
-			options = &armchaos.WorkspacesClientListAllOptions{
-				ContinuationToken: continuationTokenParam,
-			}
-		}
-		resp := w.srv.NewListAllPager(options)
-		newListAllPager = &resp
-		w.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armchaos.WorkspacesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		w.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WorkspacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := w.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armchaos.WorkspaceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		w.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		w.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

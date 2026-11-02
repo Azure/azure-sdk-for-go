@@ -21,6 +21,22 @@ import (
 
 // TriggersServer is a fake server for instances of the armdatafactory.TriggersClient type.
 type TriggersServer struct {
+	// BeginStart is the fake for method TriggersClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	BeginStart func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginStartOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method TriggersClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	BeginStop func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginStopOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientStopResponse], errResp azfake.ErrorResponder)
+
+	// BeginSubscribeToEvents is the fake for method TriggersClient.BeginSubscribeToEvents
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSubscribeToEvents func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginSubscribeToEventsOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientSubscribeToEventsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUnsubscribeFromEvents is the fake for method TriggersClient.BeginUnsubscribeFromEvents
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUnsubscribeFromEvents func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginUnsubscribeFromEventsOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientUnsubscribeFromEventsResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method TriggersClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger armdatafactory.TriggerResource, options *armdatafactory.TriggersClientCreateOrUpdateOptions) (resp azfake.Responder[armdatafactory.TriggersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -44,22 +60,6 @@ type TriggersServer struct {
 	// QueryByFactory is the fake for method TriggersClient.QueryByFactory
 	// HTTP status codes to indicate success: http.StatusOK
 	QueryByFactory func(ctx context.Context, resourceGroupName string, factoryName string, filterParameters armdatafactory.TriggerFilterParameters, options *armdatafactory.TriggersClientQueryByFactoryOptions) (resp azfake.Responder[armdatafactory.TriggersClientQueryByFactoryResponse], errResp azfake.ErrorResponder)
-
-	// BeginStart is the fake for method TriggersClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginStartOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientStartResponse], errResp azfake.ErrorResponder)
-
-	// BeginStop is the fake for method TriggersClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	BeginStop func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginStopOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientStopResponse], errResp azfake.ErrorResponder)
-
-	// BeginSubscribeToEvents is the fake for method TriggersClient.BeginSubscribeToEvents
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSubscribeToEvents func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginSubscribeToEventsOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientSubscribeToEventsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUnsubscribeFromEvents is the fake for method TriggersClient.BeginUnsubscribeFromEvents
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUnsubscribeFromEvents func(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *armdatafactory.TriggersClientBeginUnsubscribeFromEventsOptions) (resp azfake.PollerResponder[armdatafactory.TriggersClientUnsubscribeFromEventsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTriggersServerTransport creates a new instance of TriggersServerTransport with the provided implementation.
@@ -68,11 +68,11 @@ type TriggersServer struct {
 func NewTriggersServerTransport(srv *TriggersServer) *TriggersServerTransport {
 	return &TriggersServerTransport{
 		srv:                        srv,
-		newListByFactoryPager:      newTracker[azfake.PagerResponder[armdatafactory.TriggersClientListByFactoryResponse]](),
 		beginStart:                 newTracker[azfake.PollerResponder[armdatafactory.TriggersClientStartResponse]](),
 		beginStop:                  newTracker[azfake.PollerResponder[armdatafactory.TriggersClientStopResponse]](),
 		beginSubscribeToEvents:     newTracker[azfake.PollerResponder[armdatafactory.TriggersClientSubscribeToEventsResponse]](),
 		beginUnsubscribeFromEvents: newTracker[azfake.PollerResponder[armdatafactory.TriggersClientUnsubscribeFromEventsResponse]](),
+		newListByFactoryPager:      newTracker[azfake.PagerResponder[armdatafactory.TriggersClientListByFactoryResponse]](),
 	}
 }
 
@@ -80,11 +80,11 @@ func NewTriggersServerTransport(srv *TriggersServer) *TriggersServerTransport {
 // Don't use this type directly, use NewTriggersServerTransport instead.
 type TriggersServerTransport struct {
 	srv                        *TriggersServer
-	newListByFactoryPager      *tracker[azfake.PagerResponder[armdatafactory.TriggersClientListByFactoryResponse]]
 	beginStart                 *tracker[azfake.PollerResponder[armdatafactory.TriggersClientStartResponse]]
 	beginStop                  *tracker[azfake.PollerResponder[armdatafactory.TriggersClientStopResponse]]
 	beginSubscribeToEvents     *tracker[azfake.PollerResponder[armdatafactory.TriggersClientSubscribeToEventsResponse]]
 	beginUnsubscribeFromEvents *tracker[azfake.PollerResponder[armdatafactory.TriggersClientUnsubscribeFromEventsResponse]]
+	newListByFactoryPager      *tracker[azfake.PagerResponder[armdatafactory.TriggersClientListByFactoryResponse]]
 }
 
 // Do implements the policy.Transporter interface for TriggersServerTransport.
@@ -108,6 +108,14 @@ func (t *TriggersServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "TriggersClient.BeginStart":
+				res.resp, res.err = t.dispatchBeginStart(req)
+			case "TriggersClient.BeginStop":
+				res.resp, res.err = t.dispatchBeginStop(req)
+			case "TriggersClient.BeginSubscribeToEvents":
+				res.resp, res.err = t.dispatchBeginSubscribeToEvents(req)
+			case "TriggersClient.BeginUnsubscribeFromEvents":
+				res.resp, res.err = t.dispatchBeginUnsubscribeFromEvents(req)
 			case "TriggersClient.CreateOrUpdate":
 				res.resp, res.err = t.dispatchCreateOrUpdate(req)
 			case "TriggersClient.Delete":
@@ -120,14 +128,6 @@ func (t *TriggersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = t.dispatchNewListByFactoryPager(req)
 			case "TriggersClient.QueryByFactory":
 				res.resp, res.err = t.dispatchQueryByFactory(req)
-			case "TriggersClient.BeginStart":
-				res.resp, res.err = t.dispatchBeginStart(req)
-			case "TriggersClient.BeginStop":
-				res.resp, res.err = t.dispatchBeginStop(req)
-			case "TriggersClient.BeginSubscribeToEvents":
-				res.resp, res.err = t.dispatchBeginSubscribeToEvents(req)
-			case "TriggersClient.BeginUnsubscribeFromEvents":
-				res.resp, res.err = t.dispatchBeginUnsubscribeFromEvents(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -142,6 +142,198 @@ func (t *TriggersServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (t *TriggersServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := t.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginStart(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		t.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
+		t.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		t.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TriggersServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
+	}
+	beginStop := t.beginStop.get(req)
+	if beginStop == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginStop(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStop = &respr
+		t.beginStop.add(req, beginStop)
+	}
+
+	resp, err := server.PollerResponderNext(beginStop, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
+		t.beginStop.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStop) {
+		t.beginStop.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TriggersServerTransport) dispatchBeginSubscribeToEvents(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginSubscribeToEvents == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSubscribeToEvents not implemented")}
+	}
+	beginSubscribeToEvents := t.beginSubscribeToEvents.get(req)
+	if beginSubscribeToEvents == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscribeToEvents`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginSubscribeToEvents(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSubscribeToEvents = &respr
+		t.beginSubscribeToEvents.add(req, beginSubscribeToEvents)
+	}
+
+	resp, err := server.PollerResponderNext(beginSubscribeToEvents, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginSubscribeToEvents.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSubscribeToEvents) {
+		t.beginSubscribeToEvents.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TriggersServerTransport) dispatchBeginUnsubscribeFromEvents(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUnsubscribeFromEvents == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUnsubscribeFromEvents not implemented")}
+	}
+	beginUnsubscribeFromEvents := t.beginUnsubscribeFromEvents.get(req)
+	if beginUnsubscribeFromEvents == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unsubscribeFromEvents`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUnsubscribeFromEvents(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUnsubscribeFromEvents = &respr
+		t.beginUnsubscribeFromEvents.add(req, beginUnsubscribeFromEvents)
+	}
+
+	resp, err := server.PollerResponderNext(beginUnsubscribeFromEvents, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUnsubscribeFromEvents.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUnsubscribeFromEvents) {
+		t.beginUnsubscribeFromEvents.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (t *TriggersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -385,198 +577,6 @@ func (t *TriggersServerTransport) dispatchQueryByFactory(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (t *TriggersServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := t.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginStart(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		t.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
-		t.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		t.beginStart.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TriggersServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginStop == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
-	}
-	beginStop := t.beginStop.get(req)
-	if beginStop == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginStop(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStop = &respr
-		t.beginStop.add(req, beginStop)
-	}
-
-	resp, err := server.PollerResponderNext(beginStop, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
-		t.beginStop.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStop) {
-		t.beginStop.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TriggersServerTransport) dispatchBeginSubscribeToEvents(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginSubscribeToEvents == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSubscribeToEvents not implemented")}
-	}
-	beginSubscribeToEvents := t.beginSubscribeToEvents.get(req)
-	if beginSubscribeToEvents == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscribeToEvents`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginSubscribeToEvents(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSubscribeToEvents = &respr
-		t.beginSubscribeToEvents.add(req, beginSubscribeToEvents)
-	}
-
-	resp, err := server.PollerResponderNext(beginSubscribeToEvents, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginSubscribeToEvents.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSubscribeToEvents) {
-		t.beginSubscribeToEvents.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TriggersServerTransport) dispatchBeginUnsubscribeFromEvents(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUnsubscribeFromEvents == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUnsubscribeFromEvents not implemented")}
-	}
-	beginUnsubscribeFromEvents := t.beginUnsubscribeFromEvents.get(req)
-	if beginUnsubscribeFromEvents == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unsubscribeFromEvents`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUnsubscribeFromEvents(req.Context(), resourceGroupNameParam, factoryNameParam, triggerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUnsubscribeFromEvents = &respr
-		t.beginUnsubscribeFromEvents.add(req, beginUnsubscribeFromEvents)
-	}
-
-	resp, err := server.PollerResponderNext(beginUnsubscribeFromEvents, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginUnsubscribeFromEvents.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUnsubscribeFromEvents) {
-		t.beginUnsubscribeFromEvents.remove(req)
-	}
-
 	return resp, nil
 }
 

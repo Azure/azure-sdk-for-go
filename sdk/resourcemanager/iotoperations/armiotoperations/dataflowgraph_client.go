@@ -70,7 +70,7 @@ func (client *DataflowGraphClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a DataflowGraphResource
+// createOrUpdate - Create a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataflowGraphClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, resource DataflowGraphResource, options *DataflowGraphClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DataflowGraphClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DataflowGraphClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, resource DataflowGraphResource, _ *DataflowGraphClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *DataflowGraphClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a DataflowGraphResource
+// deleteOperation - Delete a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataflowGraphClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, options *DataflowGraphClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *DataflowGraphClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DataflowGraphClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, _ *DataflowGraphClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}"
 	if client.subscriptionID == "" {

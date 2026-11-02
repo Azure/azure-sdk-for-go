@@ -30,6 +30,14 @@ type InferenceGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, options *armmachinelearning.InferenceGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.InferenceGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginModifyDeltaModelsAsync is the fake for method InferenceGroupsClient.BeginModifyDeltaModelsAsync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginModifyDeltaModelsAsync func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body armmachinelearning.DeltaModelModifyRequest, options *armmachinelearning.InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (resp azfake.PollerResponder[armmachinelearning.InferenceGroupsClientModifyDeltaModelsAsyncResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method InferenceGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body armmachinelearning.PartialMinimalTrackedResourceWithSKU, options *armmachinelearning.InferenceGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.InferenceGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InferenceGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, options *armmachinelearning.InferenceGroupsClientGetOptions) (resp azfake.Responder[armmachinelearning.InferenceGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -42,25 +50,17 @@ type InferenceGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetStatus func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, options *armmachinelearning.InferenceGroupsClientGetStatusOptions) (resp azfake.Responder[armmachinelearning.InferenceGroupsClientGetStatusResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method InferenceGroupsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, poolName string, options *armmachinelearning.InferenceGroupsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse])
-
 	// NewListDeltaModelsAsyncPager is the fake for method InferenceGroupsClient.NewListDeltaModelsAsyncPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDeltaModelsAsyncPager func(resourceGroupName string, workspaceName string, poolName string, groupName string, body armmachinelearning.DeltaModelListRequest, options *armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncOptions) (resp azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse])
 
+	// NewListPager is the fake for method InferenceGroupsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, poolName string, options *armmachinelearning.InferenceGroupsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse])
+
 	// NewListSKUsPager is the fake for method InferenceGroupsClient.NewListSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsPager func(resourceGroupName string, workspaceName string, poolName string, groupName string, options *armmachinelearning.InferenceGroupsClientListSKUsOptions) (resp azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListSKUsResponse])
-
-	// BeginModifyDeltaModelsAsync is the fake for method InferenceGroupsClient.BeginModifyDeltaModelsAsync
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginModifyDeltaModelsAsync func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body armmachinelearning.DeltaModelModifyRequest, options *armmachinelearning.InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions) (resp azfake.PollerResponder[armmachinelearning.InferenceGroupsClientModifyDeltaModelsAsyncResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method InferenceGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, poolName string, groupName string, body armmachinelearning.PartialMinimalTrackedResourceWithSKU, options *armmachinelearning.InferenceGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.InferenceGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInferenceGroupsServerTransport creates a new instance of InferenceGroupsServerTransport with the provided implementation.
@@ -71,11 +71,11 @@ func NewInferenceGroupsServerTransport(srv *InferenceGroupsServer) *InferenceGro
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientDeleteResponse]](),
-		newListPager:                 newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse]](),
-		newListDeltaModelsAsyncPager: newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse]](),
-		newListSKUsPager:             newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListSKUsResponse]](),
 		beginModifyDeltaModelsAsync:  newTracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientModifyDeltaModelsAsyncResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientUpdateResponse]](),
+		newListDeltaModelsAsyncPager: newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse]](),
+		newListSKUsPager:             newTracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListSKUsResponse]](),
 	}
 }
 
@@ -85,11 +85,11 @@ type InferenceGroupsServerTransport struct {
 	srv                          *InferenceGroupsServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientDeleteResponse]]
-	newListPager                 *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse]]
-	newListDeltaModelsAsyncPager *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse]]
-	newListSKUsPager             *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListSKUsResponse]]
 	beginModifyDeltaModelsAsync  *tracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientModifyDeltaModelsAsyncResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armmachinelearning.InferenceGroupsClientUpdateResponse]]
+	newListDeltaModelsAsyncPager *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListResponse]]
+	newListSKUsPager             *tracker[azfake.PagerResponder[armmachinelearning.InferenceGroupsClientListSKUsResponse]]
 }
 
 // Do implements the policy.Transporter interface for InferenceGroupsServerTransport.
@@ -117,22 +117,22 @@ func (i *InferenceGroupsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InferenceGroupsClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InferenceGroupsClient.BeginModifyDeltaModelsAsync":
+				res.resp, res.err = i.dispatchBeginModifyDeltaModelsAsync(req)
+			case "InferenceGroupsClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "InferenceGroupsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InferenceGroupsClient.GetDeltaModelsStatusAsync":
 				res.resp, res.err = i.dispatchGetDeltaModelsStatusAsync(req)
 			case "InferenceGroupsClient.GetStatus":
 				res.resp, res.err = i.dispatchGetStatus(req)
-			case "InferenceGroupsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InferenceGroupsClient.NewListDeltaModelsAsyncPager":
 				res.resp, res.err = i.dispatchNewListDeltaModelsAsyncPager(req)
+			case "InferenceGroupsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InferenceGroupsClient.NewListSKUsPager":
 				res.resp, res.err = i.dispatchNewListSKUsPager(req)
-			case "InferenceGroupsClient.BeginModifyDeltaModelsAsync":
-				res.resp, res.err = i.dispatchBeginModifyDeltaModelsAsync(req)
-			case "InferenceGroupsClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -252,6 +252,118 @@ func (i *InferenceGroupsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		i.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InferenceGroupsServerTransport) dispatchBeginModifyDeltaModelsAsync(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginModifyDeltaModelsAsync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginModifyDeltaModelsAsync not implemented")}
+	}
+	beginModifyDeltaModelsAsync := i.beginModifyDeltaModelsAsync.get(req)
+	if beginModifyDeltaModelsAsync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deltaModels/modify`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DeltaModelModifyRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginModifyDeltaModelsAsync(req.Context(), resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginModifyDeltaModelsAsync = &respr
+		i.beginModifyDeltaModelsAsync.add(req, beginModifyDeltaModelsAsync)
+	}
+
+	resp, err := server.PollerResponderNext(beginModifyDeltaModelsAsync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginModifyDeltaModelsAsync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginModifyDeltaModelsAsync) {
+		i.beginModifyDeltaModelsAsync.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InferenceGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PartialMinimalTrackedResourceWithSKU](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -384,6 +496,59 @@ func (i *InferenceGroupsServerTransport) dispatchGetStatus(req *http.Request) (*
 	return resp, nil
 }
 
+func (i *InferenceGroupsServerTransport) dispatchNewListDeltaModelsAsyncPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListDeltaModelsAsyncPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeltaModelsAsyncPager not implemented")}
+	}
+	newListDeltaModelsAsyncPager := i.newListDeltaModelsAsyncPager.get(req)
+	if newListDeltaModelsAsyncPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deltaModels/list`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DeltaModelListRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListDeltaModelsAsyncPager(resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
+		newListDeltaModelsAsyncPager = &resp
+		i.newListDeltaModelsAsyncPager.add(req, newListDeltaModelsAsyncPager)
+		server.PagerResponderInjectNextLinks(newListDeltaModelsAsyncPager, req, func(page *armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeltaModelsAsyncPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListDeltaModelsAsyncPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeltaModelsAsyncPager) {
+		i.newListDeltaModelsAsyncPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (i *InferenceGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -454,59 +619,6 @@ func (i *InferenceGroupsServerTransport) dispatchNewListPager(req *http.Request)
 	return resp, nil
 }
 
-func (i *InferenceGroupsServerTransport) dispatchNewListDeltaModelsAsyncPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListDeltaModelsAsyncPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListDeltaModelsAsyncPager not implemented")}
-	}
-	newListDeltaModelsAsyncPager := i.newListDeltaModelsAsyncPager.get(req)
-	if newListDeltaModelsAsyncPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deltaModels/list`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DeltaModelListRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListDeltaModelsAsyncPager(resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
-		newListDeltaModelsAsyncPager = &resp
-		i.newListDeltaModelsAsyncPager.add(req, newListDeltaModelsAsyncPager)
-		server.PagerResponderInjectNextLinks(newListDeltaModelsAsyncPager, req, func(page *armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListDeltaModelsAsyncPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListDeltaModelsAsyncPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListDeltaModelsAsyncPager) {
-		i.newListDeltaModelsAsyncPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *InferenceGroupsServerTransport) dispatchNewListSKUsPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListSKUsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSKUsPager not implemented")}
@@ -572,118 +684,6 @@ func (i *InferenceGroupsServerTransport) dispatchNewListSKUsPager(req *http.Requ
 	if !server.PagerResponderMore(newListSKUsPager) {
 		i.newListSKUsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *InferenceGroupsServerTransport) dispatchBeginModifyDeltaModelsAsync(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginModifyDeltaModelsAsync == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginModifyDeltaModelsAsync not implemented")}
-	}
-	beginModifyDeltaModelsAsync := i.beginModifyDeltaModelsAsync.get(req)
-	if beginModifyDeltaModelsAsync == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deltaModels/modify`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DeltaModelModifyRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginModifyDeltaModelsAsync(req.Context(), resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginModifyDeltaModelsAsync = &respr
-		i.beginModifyDeltaModelsAsync.add(req, beginModifyDeltaModelsAsync)
-	}
-
-	resp, err := server.PollerResponderNext(beginModifyDeltaModelsAsync, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		i.beginModifyDeltaModelsAsync.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginModifyDeltaModelsAsync) {
-		i.beginModifyDeltaModelsAsync.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (i *InferenceGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inferencePools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PartialMinimalTrackedResourceWithSKU](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, poolNameParam, groupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

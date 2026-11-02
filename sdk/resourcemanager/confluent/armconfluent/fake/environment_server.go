@@ -20,13 +20,13 @@ import (
 
 // EnvironmentServer is a fake server for instances of the armconfluent.EnvironmentClient type.
 type EnvironmentServer struct {
-	// CreateOrUpdate is the fake for method EnvironmentClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, body armconfluent.SCEnvironmentRecord, options *armconfluent.EnvironmentClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.EnvironmentClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method EnvironmentClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *armconfluent.EnvironmentClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfluent.EnvironmentClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method EnvironmentClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, body armconfluent.SCEnvironmentRecord, options *armconfluent.EnvironmentClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.EnvironmentClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEnvironmentServerTransport creates a new instance of EnvironmentServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func (e *EnvironmentServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "EnvironmentClient.CreateOrUpdate":
-				res.resp, res.err = e.dispatchCreateOrUpdate(req)
 			case "EnvironmentClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EnvironmentClient.CreateOrUpdate":
+				res.resp, res.err = e.dispatchCreateOrUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,47 +85,6 @@ func (e *EnvironmentServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (e *EnvironmentServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armconfluent.SCEnvironmentRecord](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SCEnvironmentRecord, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (e *EnvironmentServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -173,6 +132,47 @@ func (e *EnvironmentServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		e.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *EnvironmentServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.SCEnvironmentRecord](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SCEnvironmentRecord, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

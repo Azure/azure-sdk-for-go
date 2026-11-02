@@ -29,6 +29,10 @@ type AssetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, assetName string, options *armdeviceregistry.AssetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.AssetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AssetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, assetName string, properties armdeviceregistry.AssetUpdate, options *armdeviceregistry.AssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AssetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, assetName string, options *armdeviceregistry.AssetsClientGetOptions) (resp azfake.Responder[armdeviceregistry.AssetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type AssetsServer struct {
 	// NewListBySubscriptionPager is the fake for method AssetsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdeviceregistry.AssetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdeviceregistry.AssetsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AssetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, assetName string, properties armdeviceregistry.AssetUpdate, options *armdeviceregistry.AssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAssetsServerTransport creates a new instance of AssetsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewAssetsServerTransport(srv *AssetsServer) *AssetsServerTransport {
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.AssetsClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.AssetsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.AssetsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdeviceregistry.AssetsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type AssetsServerTransport struct {
 	srv                         *AssetsServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.AssetsClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.AssetsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.AssetsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdeviceregistry.AssetsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.AssetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AssetsServerTransport.
@@ -96,14 +96,14 @@ func (a *AssetsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = a.dispatchBeginCreateOrReplace(req)
 			case "AssetsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AssetsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AssetsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AssetsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AssetsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AssetsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (a *AssetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (a *AssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/assets/(?P<assetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.AssetUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		assetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, assetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AssetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (a *AssetsServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/assets/(?P<assetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.AssetUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		assetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, assetNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

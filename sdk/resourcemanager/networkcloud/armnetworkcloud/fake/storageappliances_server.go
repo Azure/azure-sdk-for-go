@@ -39,6 +39,14 @@ type StorageAppliancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginEnableRemoteVendorManagement func(ctx context.Context, resourceGroupName string, storageApplianceName string, options *armnetworkcloud.StorageAppliancesClientBeginEnableRemoteVendorManagementOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientEnableRemoteVendorManagementResponse], errResp azfake.ErrorResponder)
 
+	// BeginRunReadCommands is the fake for method StorageAppliancesClient.BeginRunReadCommands
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRunReadCommands func(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceRunReadCommandsParameters armnetworkcloud.StorageApplianceRunReadCommandsParameters, options *armnetworkcloud.StorageAppliancesClientBeginRunReadCommandsOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientRunReadCommandsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method StorageAppliancesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters armnetworkcloud.StorageAppliancePatchParameters, options *armnetworkcloud.StorageAppliancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method StorageAppliancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storageApplianceName string, options *armnetworkcloud.StorageAppliancesClientGetOptions) (resp azfake.Responder[armnetworkcloud.StorageAppliancesClientGetResponse], errResp azfake.ErrorResponder)
@@ -50,14 +58,6 @@ type StorageAppliancesServer struct {
 	// NewListBySubscriptionPager is the fake for method StorageAppliancesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.StorageAppliancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListBySubscriptionResponse])
-
-	// BeginRunReadCommands is the fake for method StorageAppliancesClient.BeginRunReadCommands
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRunReadCommands func(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceRunReadCommandsParameters armnetworkcloud.StorageApplianceRunReadCommandsParameters, options *armnetworkcloud.StorageAppliancesClientBeginRunReadCommandsOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientRunReadCommandsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method StorageAppliancesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters armnetworkcloud.StorageAppliancePatchParameters, options *armnetworkcloud.StorageAppliancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageAppliancesServerTransport creates a new instance of StorageAppliancesServerTransport with the provided implementation.
@@ -70,10 +70,10 @@ func NewStorageAppliancesServerTransport(srv *StorageAppliancesServer) *StorageA
 		beginDelete:                        newTracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDeleteResponse]](),
 		beginDisableRemoteVendorManagement: newTracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDisableRemoteVendorManagementResponse]](),
 		beginEnableRemoteVendorManagement:  newTracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientEnableRemoteVendorManagementResponse]](),
-		newListByResourceGroupPager:        newTracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:         newTracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListBySubscriptionResponse]](),
 		beginRunReadCommands:               newTracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientRunReadCommandsResponse]](),
 		beginUpdate:                        newTracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientUpdateResponse]](),
+		newListByResourceGroupPager:        newTracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:         newTracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -85,10 +85,10 @@ type StorageAppliancesServerTransport struct {
 	beginDelete                        *tracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDeleteResponse]]
 	beginDisableRemoteVendorManagement *tracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDisableRemoteVendorManagementResponse]]
 	beginEnableRemoteVendorManagement  *tracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientEnableRemoteVendorManagementResponse]]
-	newListByResourceGroupPager        *tracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager         *tracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListBySubscriptionResponse]]
 	beginRunReadCommands               *tracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientRunReadCommandsResponse]]
 	beginUpdate                        *tracker[azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientUpdateResponse]]
+	newListByResourceGroupPager        *tracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager         *tracker[azfake.PagerResponder[armnetworkcloud.StorageAppliancesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for StorageAppliancesServerTransport.
@@ -120,16 +120,16 @@ func (s *StorageAppliancesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = s.dispatchBeginDisableRemoteVendorManagement(req)
 			case "StorageAppliancesClient.BeginEnableRemoteVendorManagement":
 				res.resp, res.err = s.dispatchBeginEnableRemoteVendorManagement(req)
+			case "StorageAppliancesClient.BeginRunReadCommands":
+				res.resp, res.err = s.dispatchBeginRunReadCommands(req)
+			case "StorageAppliancesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "StorageAppliancesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StorageAppliancesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "StorageAppliancesClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "StorageAppliancesClient.BeginRunReadCommands":
-				res.resp, res.err = s.dispatchBeginRunReadCommands(req)
-			case "StorageAppliancesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -354,6 +354,111 @@ func (s *StorageAppliancesServerTransport) dispatchBeginEnableRemoteVendorManage
 	return resp, nil
 }
 
+func (s *StorageAppliancesServerTransport) dispatchBeginRunReadCommands(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRunReadCommands == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRunReadCommands not implemented")}
+	}
+	beginRunReadCommands := s.beginRunReadCommands.get(req)
+	if beginRunReadCommands == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/storageAppliances/(?P<storageApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runReadCommands`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.StorageApplianceRunReadCommandsParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRunReadCommands(req.Context(), resourceGroupNameParam, storageApplianceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRunReadCommands = &respr
+		s.beginRunReadCommands.add(req, beginRunReadCommands)
+	}
+
+	resp, err := server.PollerResponderNext(beginRunReadCommands, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRunReadCommands.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRunReadCommands) {
+		s.beginRunReadCommands.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StorageAppliancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/storageAppliances/(?P<storageApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.StorageAppliancePatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.StorageAppliancesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.StorageAppliancesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageApplianceNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *StorageAppliancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -492,111 +597,6 @@ func (s *StorageAppliancesServerTransport) dispatchNewListBySubscriptionPager(re
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *StorageAppliancesServerTransport) dispatchBeginRunReadCommands(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRunReadCommands == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRunReadCommands not implemented")}
-	}
-	beginRunReadCommands := s.beginRunReadCommands.get(req)
-	if beginRunReadCommands == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/storageAppliances/(?P<storageApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runReadCommands`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.StorageApplianceRunReadCommandsParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageApplianceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRunReadCommands(req.Context(), resourceGroupNameParam, storageApplianceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRunReadCommands = &respr
-		s.beginRunReadCommands.add(req, beginRunReadCommands)
-	}
-
-	resp, err := server.PollerResponderNext(beginRunReadCommands, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginRunReadCommands.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRunReadCommands) {
-		s.beginRunReadCommands.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StorageAppliancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/storageAppliances/(?P<storageApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.StorageAppliancePatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageApplianceName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.StorageAppliancesClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.StorageAppliancesClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageApplianceNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -25,6 +25,10 @@ type TaskRunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun armcontainerregistrytasks.TaskRun, options *armcontainerregistrytasks.TaskRunsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientCreateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method TaskRunsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters armcontainerregistrytasks.TaskRunUpdateParameters, options *armcontainerregistrytasks.TaskRunsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method TaskRunsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *armcontainerregistrytasks.TaskRunsClientDeleteOptions) (resp azfake.Responder[armcontainerregistrytasks.TaskRunsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type TaskRunsServer struct {
 	// NewListPager is the fake for method TaskRunsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistrytasks.TaskRunsClientListOptions) (resp azfake.PagerResponder[armcontainerregistrytasks.TaskRunsClientListResponse])
-
-	// BeginUpdate is the fake for method TaskRunsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters armcontainerregistrytasks.TaskRunUpdateParameters, options *armcontainerregistrytasks.TaskRunsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTaskRunsServerTransport creates a new instance of TaskRunsServerTransport with the provided implementation.
@@ -53,8 +53,8 @@ func NewTaskRunsServerTransport(srv *TaskRunsServer) *TaskRunsServerTransport {
 	return &TaskRunsServerTransport{
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientCreateResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerregistrytasks.TaskRunsClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistrytasks.TaskRunsClientListResponse]](),
 	}
 }
 
@@ -63,8 +63,8 @@ func NewTaskRunsServerTransport(srv *TaskRunsServer) *TaskRunsServerTransport {
 type TaskRunsServerTransport struct {
 	srv          *TaskRunsServer
 	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientCreateResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerregistrytasks.TaskRunsClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistrytasks.TaskRunsClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistrytasks.TaskRunsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TaskRunsServerTransport.
@@ -90,6 +90,8 @@ func (t *TaskRunsServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "TaskRunsClient.BeginCreate":
 				res.resp, res.err = t.dispatchBeginCreate(req)
+			case "TaskRunsClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TaskRunsClient.Delete":
 				res.resp, res.err = t.dispatchDelete(req)
 			case "TaskRunsClient.Get":
@@ -98,8 +100,6 @@ func (t *TaskRunsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = t.dispatchGetDetails(req)
 			case "TaskRunsClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
-			case "TaskRunsClient.BeginUpdate":
-				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -163,6 +163,58 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	}
 	if !server.PollerResponderMore(beginCreate) {
 		t.beginCreate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/taskRuns/(?P<taskRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistrytasks.TaskRunUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -317,58 +369,6 @@ func (t *TaskRunsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if !server.PagerResponderMore(newListPager) {
 		t.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := t.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/taskRuns/(?P<taskRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistrytasks.TaskRunUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		t.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		t.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		t.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

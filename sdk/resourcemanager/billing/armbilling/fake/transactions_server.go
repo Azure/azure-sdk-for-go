@@ -23,6 +23,10 @@ import (
 
 // TransactionsServer is a fake server for instances of the armbilling.TransactionsClient type.
 type TransactionsServer struct {
+	// BeginTransactionsDownloadByInvoice is the fake for method TransactionsClient.BeginTransactionsDownloadByInvoice
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTransactionsDownloadByInvoice func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (resp azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse], errResp azfake.ErrorResponder)
+
 	// GetTransactionSummaryByInvoice is the fake for method TransactionsClient.GetTransactionSummaryByInvoice
 	// HTTP status codes to indicate success: http.StatusOK
 	GetTransactionSummaryByInvoice func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.TransactionsClientGetTransactionSummaryByInvoiceOptions) (resp azfake.Responder[armbilling.TransactionsClientGetTransactionSummaryByInvoiceResponse], errResp azfake.ErrorResponder)
@@ -42,10 +46,6 @@ type TransactionsServer struct {
 	// NewListByInvoiceSectionPager is the fake for method TransactionsClient.NewListByInvoiceSectionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, periodStartDate time.Time, periodEndDate time.Time, typeParam armbilling.TransactionType, options *armbilling.TransactionsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.TransactionsClientListByInvoiceSectionResponse])
-
-	// BeginTransactionsDownloadByInvoice is the fake for method TransactionsClient.BeginTransactionsDownloadByInvoice
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTransactionsDownloadByInvoice func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (resp azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTransactionsServerTransport creates a new instance of TransactionsServerTransport with the provided implementation.
@@ -54,11 +54,11 @@ type TransactionsServer struct {
 func NewTransactionsServerTransport(srv *TransactionsServer) *TransactionsServerTransport {
 	return &TransactionsServerTransport{
 		srv:                                srv,
+		beginTransactionsDownloadByInvoice: newTracker[azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse]](),
 		newListByBillingProfilePager:       newTracker[azfake.PagerResponder[armbilling.TransactionsClientListByBillingProfileResponse]](),
 		newListByCustomerPager:             newTracker[azfake.PagerResponder[armbilling.TransactionsClientListByCustomerResponse]](),
 		newListByInvoicePager:              newTracker[azfake.PagerResponder[armbilling.TransactionsClientListByInvoiceResponse]](),
 		newListByInvoiceSectionPager:       newTracker[azfake.PagerResponder[armbilling.TransactionsClientListByInvoiceSectionResponse]](),
-		beginTransactionsDownloadByInvoice: newTracker[azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse]](),
 	}
 }
 
@@ -66,11 +66,11 @@ func NewTransactionsServerTransport(srv *TransactionsServer) *TransactionsServer
 // Don't use this type directly, use NewTransactionsServerTransport instead.
 type TransactionsServerTransport struct {
 	srv                                *TransactionsServer
+	beginTransactionsDownloadByInvoice *tracker[azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse]]
 	newListByBillingProfilePager       *tracker[azfake.PagerResponder[armbilling.TransactionsClientListByBillingProfileResponse]]
 	newListByCustomerPager             *tracker[azfake.PagerResponder[armbilling.TransactionsClientListByCustomerResponse]]
 	newListByInvoicePager              *tracker[azfake.PagerResponder[armbilling.TransactionsClientListByInvoiceResponse]]
 	newListByInvoiceSectionPager       *tracker[azfake.PagerResponder[armbilling.TransactionsClientListByInvoiceSectionResponse]]
-	beginTransactionsDownloadByInvoice *tracker[azfake.PollerResponder[armbilling.TransactionsClientTransactionsDownloadByInvoiceResponse]]
 }
 
 // Do implements the policy.Transporter interface for TransactionsServerTransport.
@@ -94,6 +94,8 @@ func (t *TransactionsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "TransactionsClient.BeginTransactionsDownloadByInvoice":
+				res.resp, res.err = t.dispatchBeginTransactionsDownloadByInvoice(req)
 			case "TransactionsClient.GetTransactionSummaryByInvoice":
 				res.resp, res.err = t.dispatchGetTransactionSummaryByInvoice(req)
 			case "TransactionsClient.NewListByBillingProfilePager":
@@ -104,8 +106,6 @@ func (t *TransactionsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = t.dispatchNewListByInvoicePager(req)
 			case "TransactionsClient.NewListByInvoiceSectionPager":
 				res.resp, res.err = t.dispatchNewListByInvoiceSectionPager(req)
-			case "TransactionsClient.BeginTransactionsDownloadByInvoice":
-				res.resp, res.err = t.dispatchBeginTransactionsDownloadByInvoice(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -120,6 +120,50 @@ func (t *TransactionsServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (t *TransactionsServerTransport) dispatchBeginTransactionsDownloadByInvoice(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginTransactionsDownloadByInvoice == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTransactionsDownloadByInvoice not implemented")}
+	}
+	beginTransactionsDownloadByInvoice := t.beginTransactionsDownloadByInvoice.get(req)
+	if beginTransactionsDownloadByInvoice == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactionsDownload`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginTransactionsDownloadByInvoice(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTransactionsDownloadByInvoice = &respr
+		t.beginTransactionsDownloadByInvoice.add(req, beginTransactionsDownloadByInvoice)
+	}
+
+	resp, err := server.PollerResponderNext(beginTransactionsDownloadByInvoice, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginTransactionsDownloadByInvoice.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTransactionsDownloadByInvoice) {
+		t.beginTransactionsDownloadByInvoice.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (t *TransactionsServerTransport) dispatchGetTransactionSummaryByInvoice(req *http.Request) (*http.Response, error) {
@@ -514,50 +558,6 @@ func (t *TransactionsServerTransport) dispatchNewListByInvoiceSectionPager(req *
 	if !server.PagerResponderMore(newListByInvoiceSectionPager) {
 		t.newListByInvoiceSectionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TransactionsServerTransport) dispatchBeginTransactionsDownloadByInvoice(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginTransactionsDownloadByInvoice == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginTransactionsDownloadByInvoice not implemented")}
-	}
-	beginTransactionsDownloadByInvoice := t.beginTransactionsDownloadByInvoice.get(req)
-	if beginTransactionsDownloadByInvoice == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactionsDownload`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginTransactionsDownloadByInvoice(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginTransactionsDownloadByInvoice = &respr
-		t.beginTransactionsDownloadByInvoice.add(req, beginTransactionsDownloadByInvoice)
-	}
-
-	resp, err := server.PollerResponderNext(beginTransactionsDownloadByInvoice, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginTransactionsDownloadByInvoice.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginTransactionsDownloadByInvoice) {
-		t.beginTransactionsDownloadByInvoice.remove(req)
-	}
-
 	return resp, nil
 }
 

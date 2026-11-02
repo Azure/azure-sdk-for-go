@@ -30,9 +30,21 @@ type TopicsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, topicName string, options *armeventgrid.TopicsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.TopicsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRegenerateKey is the fake for method TopicsClient.BeginRegenerateKey
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRegenerateKey func(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest armeventgrid.TopicRegenerateKeyRequest, options *armeventgrid.TopicsClientBeginRegenerateKeyOptions) (resp azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method TopicsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters armeventgrid.TopicUpdateParameters, options *armeventgrid.TopicsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method TopicsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, topicName string, options *armeventgrid.TopicsClientGetOptions) (resp azfake.Responder[armeventgrid.TopicsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListSharedAccessKeys is the fake for method TopicsClient.ListSharedAccessKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSharedAccessKeys func(ctx context.Context, resourceGroupName string, topicName string, options *armeventgrid.TopicsClientListSharedAccessKeysOptions) (resp azfake.Responder[armeventgrid.TopicsClientListSharedAccessKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method TopicsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,18 +57,6 @@ type TopicsServer struct {
 	// NewListEventTypesPager is the fake for method TopicsClient.NewListEventTypesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListEventTypesPager func(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *armeventgrid.TopicsClientListEventTypesOptions) (resp azfake.PagerResponder[armeventgrid.TopicsClientListEventTypesResponse])
-
-	// ListSharedAccessKeys is the fake for method TopicsClient.ListSharedAccessKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSharedAccessKeys func(ctx context.Context, resourceGroupName string, topicName string, options *armeventgrid.TopicsClientListSharedAccessKeysOptions) (resp azfake.Responder[armeventgrid.TopicsClientListSharedAccessKeysResponse], errResp azfake.ErrorResponder)
-
-	// BeginRegenerateKey is the fake for method TopicsClient.BeginRegenerateKey
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRegenerateKey func(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest armeventgrid.TopicRegenerateKeyRequest, options *armeventgrid.TopicsClientBeginRegenerateKeyOptions) (resp azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method TopicsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters armeventgrid.TopicUpdateParameters, options *armeventgrid.TopicsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTopicsServerTransport creates a new instance of TopicsServerTransport with the provided implementation.
@@ -67,11 +67,11 @@ func NewTopicsServerTransport(srv *TopicsServer) *TopicsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armeventgrid.TopicsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armeventgrid.TopicsClientDeleteResponse]](),
+		beginRegenerateKey:          newTracker[azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armeventgrid.TopicsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armeventgrid.TopicsClientListBySubscriptionResponse]](),
 		newListEventTypesPager:      newTracker[azfake.PagerResponder[armeventgrid.TopicsClientListEventTypesResponse]](),
-		beginRegenerateKey:          newTracker[azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse]](),
 	}
 }
 
@@ -81,11 +81,11 @@ type TopicsServerTransport struct {
 	srv                         *TopicsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armeventgrid.TopicsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armeventgrid.TopicsClientDeleteResponse]]
+	beginRegenerateKey          *tracker[azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armeventgrid.TopicsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armeventgrid.TopicsClientListBySubscriptionResponse]]
 	newListEventTypesPager      *tracker[azfake.PagerResponder[armeventgrid.TopicsClientListEventTypesResponse]]
-	beginRegenerateKey          *tracker[azfake.PollerResponder[armeventgrid.TopicsClientRegenerateKeyResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.TopicsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TopicsServerTransport.
@@ -113,20 +113,20 @@ func (t *TopicsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "TopicsClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TopicsClient.BeginRegenerateKey":
+				res.resp, res.err = t.dispatchBeginRegenerateKey(req)
+			case "TopicsClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TopicsClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
+			case "TopicsClient.ListSharedAccessKeys":
+				res.resp, res.err = t.dispatchListSharedAccessKeys(req)
 			case "TopicsClient.NewListByResourceGroupPager":
 				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
 			case "TopicsClient.NewListBySubscriptionPager":
 				res.resp, res.err = t.dispatchNewListBySubscriptionPager(req)
 			case "TopicsClient.NewListEventTypesPager":
 				res.resp, res.err = t.dispatchNewListEventTypesPager(req)
-			case "TopicsClient.ListSharedAccessKeys":
-				res.resp, res.err = t.dispatchListSharedAccessKeys(req)
-			case "TopicsClient.BeginRegenerateKey":
-				res.resp, res.err = t.dispatchBeginRegenerateKey(req)
-			case "TopicsClient.BeginUpdate":
-				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -235,6 +235,102 @@ func (t *TopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (t *TopicsServerTransport) dispatchBeginRegenerateKey(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginRegenerateKey == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRegenerateKey not implemented")}
+	}
+	beginRegenerateKey := t.beginRegenerateKey.get(req)
+	if beginRegenerateKey == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regenerateKey`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.TopicRegenerateKeyRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginRegenerateKey(req.Context(), resourceGroupNameParam, topicNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRegenerateKey = &respr
+		t.beginRegenerateKey.add(req, beginRegenerateKey)
+	}
+
+	resp, err := server.PollerResponderNext(beginRegenerateKey, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginRegenerateKey.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRegenerateKey) {
+		t.beginRegenerateKey.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TopicsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.TopicUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, topicNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TopicsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -262,6 +358,39 @@ func (t *TopicsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Topic, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TopicsServerTransport) dispatchListSharedAccessKeys(req *http.Request) (*http.Response, error) {
+	if t.srv.ListSharedAccessKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSharedAccessKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.ListSharedAccessKeys(req.Context(), resourceGroupNameParam, topicNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TopicSharedAccessKeys, req)
 	if err != nil {
 		return nil, err
 	}
@@ -422,135 +551,6 @@ func (t *TopicsServerTransport) dispatchNewListEventTypesPager(req *http.Request
 	if !server.PagerResponderMore(newListEventTypesPager) {
 		t.newListEventTypesPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TopicsServerTransport) dispatchListSharedAccessKeys(req *http.Request) (*http.Response, error) {
-	if t.srv.ListSharedAccessKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSharedAccessKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.ListSharedAccessKeys(req.Context(), resourceGroupNameParam, topicNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TopicSharedAccessKeys, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (t *TopicsServerTransport) dispatchBeginRegenerateKey(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginRegenerateKey == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRegenerateKey not implemented")}
-	}
-	beginRegenerateKey := t.beginRegenerateKey.get(req)
-	if beginRegenerateKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regenerateKey`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.TopicRegenerateKeyRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginRegenerateKey(req.Context(), resourceGroupNameParam, topicNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRegenerateKey = &respr
-		t.beginRegenerateKey.add(req, beginRegenerateKey)
-	}
-
-	resp, err := server.PollerResponderNext(beginRegenerateKey, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginRegenerateKey.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRegenerateKey) {
-		t.beginRegenerateKey.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (t *TopicsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := t.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.TopicUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, topicNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		t.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		t.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		t.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

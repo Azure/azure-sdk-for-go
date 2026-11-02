@@ -68,7 +68,7 @@ func (client *ServersMigrationClient) BeginCutoverMigration(ctx context.Context,
 	}
 }
 
-// CutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
+// cutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, resourceGroupName string, serverName string, options *ServersMigrationClientBeginCutoverMigrationOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// cutoverMigrationCreateRequest creates the CutoverMigration request.
+// cutoverMigrationCreateRequest creates the cutoverMigration request.
 func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *ServersMigrationClientBeginCutoverMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/cutoverMigration"
 	if client.subscriptionID == "" {

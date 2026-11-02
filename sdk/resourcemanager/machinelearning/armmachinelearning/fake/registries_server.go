@@ -29,21 +29,21 @@ type RegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, options *armmachinelearning.RegistriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.RegistriesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRemoveRegions is the fake for method RegistriesClient.BeginRemoveRegions
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRemoveRegions func(ctx context.Context, resourceGroupName string, registryName string, body armmachinelearning.Registry, options *armmachinelearning.RegistriesClientBeginRemoveRegionsOptions) (resp azfake.PollerResponder[armmachinelearning.RegistriesClientRemoveRegionsResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RegistriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, options *armmachinelearning.RegistriesClientGetOptions) (resp azfake.Responder[armmachinelearning.RegistriesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method RegistriesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armmachinelearning.RegistriesClientListOptions) (resp azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse])
 
 	// NewListBySubscriptionPager is the fake for method RegistriesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmachinelearning.RegistriesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmachinelearning.RegistriesClientListBySubscriptionResponse])
 
-	// BeginRemoveRegions is the fake for method RegistriesClient.BeginRemoveRegions
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRemoveRegions func(ctx context.Context, resourceGroupName string, registryName string, body armmachinelearning.Registry, options *armmachinelearning.RegistriesClientBeginRemoveRegionsOptions) (resp azfake.PollerResponder[armmachinelearning.RegistriesClientRemoveRegionsResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method RegistriesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armmachinelearning.RegistriesClientListOptions) (resp azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse])
 
 	// Update is the fake for method RegistriesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,9 +58,9 @@ func NewRegistriesServerTransport(srv *RegistriesServer) *RegistriesServerTransp
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armmachinelearning.RegistriesClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armmachinelearning.RegistriesClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse]](),
-		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListBySubscriptionResponse]](),
 		beginRemoveRegions:         newTracker[azfake.PollerResponder[armmachinelearning.RegistriesClientRemoveRegionsResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type RegistriesServerTransport struct {
 	srv                        *RegistriesServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armmachinelearning.RegistriesClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armmachinelearning.RegistriesClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse]]
-	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListBySubscriptionResponse]]
 	beginRemoveRegions         *tracker[azfake.PollerResponder[armmachinelearning.RegistriesClientRemoveRegionsResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armmachinelearning.RegistriesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RegistriesServerTransport.
@@ -100,14 +100,14 @@ func (r *RegistriesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "RegistriesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
-			case "RegistriesClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
-			case "RegistriesClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
-			case "RegistriesClient.NewListBySubscriptionPager":
-				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
 			case "RegistriesClient.BeginRemoveRegions":
 				res.resp, res.err = r.dispatchBeginRemoveRegions(req)
+			case "RegistriesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RegistriesClient.NewListBySubscriptionPager":
+				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
+			case "RegistriesClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RegistriesClient.Update":
 				res.resp, res.err = r.dispatchUpdate(req)
 			default:
@@ -218,109 +218,6 @@ func (r *RegistriesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Registry, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *RegistriesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.RegistriesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (r *RegistriesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		r.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmachinelearning.RegistriesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		r.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RegistriesServerTransport) dispatchBeginRemoveRegions(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginRemoveRegions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveRegions not implemented")}
@@ -366,6 +263,109 @@ func (r *RegistriesServerTransport) dispatchBeginRemoveRegions(req *http.Request
 		r.beginRemoveRegions.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RegistriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Registry, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RegistriesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		r.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmachinelearning.RegistriesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		r.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RegistriesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.RegistriesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

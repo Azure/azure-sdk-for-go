@@ -1,0 +1,52 @@
+{
+  "categories": [
+    {
+      "name": "go-runtime-sdk",
+      "patterns": ["(^| )(runtime\\.|internal/|github\\.com/Azure/azure-sdk-for-go/)"]
+    },
+    {
+      "name": "cgo-completion-ffi",
+      "patterns": ["(_cgo_|crosscall|cgocall|azcosmos.*(completion|native|driver)|cosmos.*ffi)"]
+    },
+    {
+      "name": "tokio",
+      "patterns": ["(tokio|mio::|polling::|async_task|futures_)"]
+    },
+    {
+      "name": "http2-hpack",
+      "patterns": ["(h2::|hyper::|http2|hpack|HPACK)"]
+    },
+    {
+      "name": "tls",
+      "patterns": ["(rustls|ring::|openssl|crypto/tls|x509|webpki)"]
+    },
+    {
+      "name": "serialization-body-allocation-memcopy",
+      "patterns": ["(serde|encoding/json|memcpy|memmove|malloc|free|alloc::|bytes::|body)"]
+    },
+    {
+      "name": "aad-bearer-auth-headers",
+      "patterns": ["(azure_identity|azidentity|bearer|oauth|token|authorization|header)"]
+    },
+    {
+      "name": "cosmos-routing-session-transport",
+      "patterns": ["(cosmos|routing|session|transport|partition|endpoint_manager)"]
+    },
+    {
+      "name": "kernel-scheduling-syscalls",
+      "patterns": ["(\\[kernel\\.kallsyms\\].*(schedule|futex|epoll|sys_)|libc.*(poll|read|write))"]
+    },
+    {
+      "name": "kernel-network-memory",
+      "patterns": ["(\\[kernel\\.kallsyms\\].*(tcp|ip_|sock|net_|page|slab|copy_))"]
+    },
+    {
+      "name": "resolved-other",
+      "patterns": ["^(?!\\[unknown\\]).+"]
+    },
+    {
+      "name": "residual-unknown",
+      "patterns": ["^\\[unknown\\]"]
+    }
+  ]
+}

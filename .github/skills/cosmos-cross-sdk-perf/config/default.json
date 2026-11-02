@@ -1,0 +1,52 @@
+{
+  "campaignId": "cosmos-cross-sdk-perf",
+  "azure": {
+    "subscriptionId": "",
+    "resourceGroup": "",
+    "location": "",
+    "existingCosmosAccountResourceId": "",
+    "provisionCosmosAccount": false,
+    "cosmosAccountName": "",
+    "database": "perfdb",
+    "container": "perfcontainer",
+    "provisionDatabaseContainer": false,
+    "throughput": 10000,
+    "vmName": "cosmos-perf-vm",
+    "vmSku": "",
+    "adminUsername": "azureuser",
+    "cleanup": "all-campaign-owned"
+  },
+  "sources": {
+    "goV1Module": "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos",
+    "goV1Version": "v1.5.0",
+    "goV2Repository": "https://github.com/Azure/azure-sdk-for-go.git",
+    "goV2Commit": "7201f4b70fac1184e66379278566f1ac8d299109",
+    "nativeDriverSourceRepository": "https://github.com/Azure/azure-sdk-for-rust.git",
+    "nativeDriverSourceCommit": "62192bf69dac1a3384505971d7deef19eb8282df",
+    "nativeDriverDistributionRepository": "https://github.com/Azure/azure-cosmos-driver.git",
+    "nativeDriverDistributionCommit": "1e449be78bffef6ef99e6bc1810216a84a9dac16",
+    "rustRepository": "https://github.com/Azure/azure-sdk-for-rust.git",
+    "rustCommit": "f87618c80049eab5fd1ed8f16c7cf37488f43663"
+  },
+  "workload": {
+    "partitionKeyPath": "/pk",
+    "seedCount": 1024,
+    "documentBytes": 1024,
+    "cycle": ["read", "read", "read", "read", "read", "upsert", "upsert"],
+    "workers": 8,
+    "warmupSeconds": 30,
+    "measurementSeconds": 300,
+    "closedLoop": true,
+    "gatewayProtocol": "GatewayV1HTTP2",
+    "binaryEncoding": false,
+    "authentication": "managed-identity",
+    "requiredRetries": 0,
+    "requiredThrottles": 0
+  },
+  "profiling": {
+    "perfFrequencyHz": 49,
+    "callGraph": "dwarf,16384",
+    "capacityCores": 4,
+    "accountingTolerancePercent": 0.25
+  }
+}

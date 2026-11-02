@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cosmos cross-SDK performance campaign",
+  "type": "object",
+  "required": ["campaignId", "azure", "sources", "workload", "profiling"],
+  "properties": {
+    "campaignId": {"type": "string", "minLength": 1},
+    "azure": {
+      "type": "object",
+      "required": [
+        "subscriptionId",
+        "resourceGroup",
+        "provisionCosmosAccount",
+        "database",
+        "container",
+        "vmName",
+        "cleanup"
+      ]
+    },
+    "sources": {
+      "type": "object",
+      "required": [
+        "goV1Version",
+        "goV2Commit",
+        "nativeDriverSourceCommit",
+        "nativeDriverDistributionCommit",
+        "rustCommit"
+      ]
+    },
+    "workload": {
+      "type": "object",
+      "required": [
+        "partitionKeyPath",
+        "seedCount",
+        "documentBytes",
+        "cycle",
+        "workers",
+        "warmupSeconds",
+        "measurementSeconds",
+        "closedLoop",
+        "gatewayProtocol",
+        "binaryEncoding",
+        "authentication"
+      ]
+    },
+    "profiling": {
+      "type": "object",
+      "required": [
+        "perfFrequencyHz",
+        "callGraph",
+        "capacityCores",
+        "accountingTolerancePercent"
+      ]
+    }
+  }
+}

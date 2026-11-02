@@ -30,6 +30,31 @@ extends:
     MatrixReplace:
       - GoVersion=.*/1.27.2
     AdditionalStages:
+      # Linux/amd64 executes native tests in DriverEmulator below. The shared PR matrix
+      # has no macOS agent, so separately compile/link the Darwin/arm64 tests without running them.
+      - stage: DarwinNativeCompile
+        displayName: 'Cosmos Darwin/arm64 native compile'
+        dependsOn: []
+        jobs:
+        - job: CompileNativeTests
+          pool:
+            vmImage: 'macOS-15'
+          steps:
+          - task: GoTool@0
+            inputs:
+              version: '1.27.2'
+            displayName: 'Select Go Version'
+          - script: |
+              set -euo pipefail
+              go test -exec /usr/bin/true ./...
+            workingDirectory: sdk/data/azcosmos
+            displayName: 'Compile and link Darwin/arm64 cgo tests (no execution)'
+            env:
+              CGO_ENABLED: '1'
+              GOOS: darwin
+              GOARCH: arm64
+              CC: clang
+
       - stage: Emulator
         displayName: 'Cosmos Emulator'
         variables:

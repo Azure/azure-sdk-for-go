@@ -69,6 +69,21 @@ func TestCodeForDriverStatus(t *testing.T) {
 		{"warning band is not a failure", driverStatus(5001), -1, CodeUnknown},
 
 		{"success is not a failure", driverStatusSuccess, -1, CodeUnknown},
+		{"negative sentinel", -1, -1, CodeUnknown},
+		{"minimum signed status", -1 << 31, -1, CodeUnknown},
+		{"validation upper bound", 999, 0, CodeClientError},
+		{"validation auth gap", 1000, 0, CodeClientError},
+		{"auth upper bound", 1999, 0, CodeClientError},
+		{"auth wire gap", 2000, 0, CodeClientError},
+		{"wire lower bound", 2001, 0, CodeServiceError},
+		{"wire plumbing gap", 3000, 0, CodeServiceError},
+		{"plumbing fatal gap", 4000, 0, CodeClientError},
+		{"fatal lower bound", 4001, 0, CodeClientError},
+		{"fatal upper bound", 4999, 0, CodeClientError},
+		{"fatal warning gap", 5000, 0, CodeClientError},
+		{"warning upper bound", 5999, 0, CodeUnknown},
+		{"above warning band", 6000, 0, CodeUnknown},
+		{"maximum signed status", 1<<31 - 1, 0, CodeUnknown},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			require.Equal(t, tt.want, codeForDriverStatus(tt.status, tt.subStatus))
@@ -111,6 +126,8 @@ func TestNormalizeSubStatus(t *testing.T) {
 		{"any other negative sentinel", -42, 0},
 		{"already zero", 0, 0},
 		{"present", 1002, 1002},
+		{"minimum signed sentinel", -1 << 31, 0},
+		{"maximum signed substatus", 1<<31 - 1, 1<<31 - 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			require.Equal(t, tt.want, normalizeSubStatus(tt.subStatus))
@@ -177,6 +194,12 @@ func TestCloneErrorOwnsDiagnostics(t *testing.T) {
 // its HTTP status would blame the service for a local failure. These are the codes the driver's own
 // classifier consults the sub-status for.
 func TestCodeForSyntheticSubStatus(t *testing.T) {
+	for _, mapping := range nativeSubStatusMappings {
+		t.Run(mapping.symbol, func(t *testing.T) {
+			require.Equal(t, mapping.code, codeForSyntheticSubStatus(mapping.value))
+			require.Equal(t, mapping.code, codeForRichError(false, 503, mapping.value))
+		})
+	}
 	for _, tt := range []struct {
 		name      string
 		subStatus int
@@ -196,6 +219,12 @@ func TestCodeForSyntheticSubStatus(t *testing.T) {
 		{"just outside the transport band", 20016, CodeClientError},
 		{"just outside the serialization band", 20022, CodeClientError},
 		{"absent", 0, CodeClientError},
+		{"negative sentinel", -1, CodeClientError},
+		{"unknown future synthetic", 22000, CodeClientError},
+		{"maximum packed substatus", 65535, CodeClientError},
+		{"below transport band", 20009, CodeClientError},
+		{"reserved transport band member", 20013, CodeTransportFailure},
+		{"below serialization band", 20019, CodeClientError},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			require.Equal(t, tt.want, codeForSyntheticSubStatus(tt.subStatus))
@@ -233,14 +262,39 @@ func TestDriverStatusForHTTP(t *testing.T) {
 		429: CodeThrottled,
 		503: CodeServiceUnavailable,
 	} {
-		require.Equal(t, want, codeForDriverStatus(driverStatusForHTTP(httpStatus), 0),
-			"http %d", httpStatus)
+		t.Run(fmt.Sprint(httpStatus), func(t *testing.T) {
+			require.Equal(t, driverStatus(2000+httpStatus), driverStatusForHTTP(httpStatus))
+			substatuses := []int{0, 1002, 65535}
+			for _, mapping := range nativeSubStatusMappings {
+				substatuses = append(substatuses, mapping.value)
+			}
+			for _, subStatus := range substatuses {
+				expected := want
+				if subStatus == 1002 {
+					switch httpStatus {
+					case 404:
+						expected = CodeSessionUnavailable
+					case 410:
+						expected = CodePartitionKeyRangeGone
+					}
+				}
+				require.Equal(t, expected, codeForRichError(true, httpStatus, subStatus),
+					"wire %d/%d must not use synthetic classification", httpStatus, subStatus)
+			}
+		})
 	}
 
 	// A status with no dedicated code still lands in the wire band rather than going unknown.
 	require.Equal(t, CodeServiceError, codeForDriverStatus(driverStatusForHTTP(451), 0))
 	// No HTTP status at all means nothing reached the wire.
 	require.Equal(t, CodeClientError, codeForDriverStatus(driverStatusForHTTP(0), 0))
+	require.Equal(t, CodeClientError, codeForDriverStatus(driverStatusForHTTP(-1), 0))
+	for _, status := range []int{418, 451, 500, 599} {
+		for _, subStatus := range []int{0, 1002, 22000, 65535} {
+			require.Equal(t, CodeServiceError, codeForRichError(true, status, subStatus),
+				"unknown wire %d/%d", status, subStatus)
+		}
+	}
 }
 
 func TestErrorAsRetrievesFields(t *testing.T) {

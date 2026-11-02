@@ -1,5 +1,15 @@
 # Release History
 
+## 1.8.4-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.8.3 (2026-11-02)
 
 ### Bugs Fixed

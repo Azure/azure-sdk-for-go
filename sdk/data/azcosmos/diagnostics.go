@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -96,7 +97,7 @@ type Diagnostics struct {
 	// Attempts contains the retained per-attempt records in execution order.
 	Attempts []DiagnosticAttempt
 
-	json *diagnosticsJSON
+	json atomic.Pointer[diagnosticsJSON]
 }
 
 // JSON renders and caches this Go-owned diagnostics snapshot. The rendering uses the
@@ -110,9 +111,14 @@ func (d *Diagnostics) JSON() (string, error) {
 	if d == nil {
 		return "", nil
 	}
-	cache := d.json
+	cache := d.json.Load()
 	if cache == nil {
-		cache = newDiagnosticsJSON(d, DiagnosticsVerbosityDefault)
+		candidate := newDiagnosticsJSON(d, DiagnosticsVerbosityDefault)
+		if d.json.CompareAndSwap(nil, candidate) {
+			cache = candidate
+		} else {
+			cache = d.json.Load()
+		}
 	}
 	cache.once.Do(func() {
 		data, err := marshalDiagnosticsJSON(cache.renderValue())
@@ -177,14 +183,15 @@ type diagnosticAttemptJSON struct {
 var marshalDiagnosticsJSON = json.Marshal
 
 func (d *Diagnostics) initializeJSON(verbosity DiagnosticsVerbosity) {
-	d.json = newDiagnosticsJSON(d, verbosity)
+	d.json.Store(newDiagnosticsJSON(d, verbosity))
 }
 
 func (d *Diagnostics) jsonVerbosity() DiagnosticsVerbosity {
-	if d.json == nil {
+	cache := d.json.Load()
+	if cache == nil {
 		return DiagnosticsVerbosityDefault
 	}
-	return d.json.verbosity
+	return cache.verbosity
 }
 
 func newDiagnosticsJSON(d *Diagnostics, verbosity DiagnosticsVerbosity) *diagnosticsJSON {

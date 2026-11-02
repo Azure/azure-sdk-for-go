@@ -165,7 +165,7 @@ func TestCloneErrorOwnsDiagnostics(t *testing.T) {
 	cloned, ok := cloneError(original).(*Error)
 	require.True(t, ok)
 	require.NotSame(t, original.Diagnostics, cloned.Diagnostics)
-	require.NotSame(t, original.Diagnostics.json, cloned.Diagnostics.json)
+	require.NotSame(t, original.Diagnostics.json.Load(), cloned.Diagnostics.json.Load())
 	cloned.Body[0] = 'B'
 	cloned.Diagnostics.RegionsContacted[0] = "West US"
 	cloned.Diagnostics.Attempts[0].StatusCode = 200

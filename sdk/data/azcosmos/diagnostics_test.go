@@ -99,6 +99,24 @@ func TestDiagnosticsJSONIsLazyAndCached(t *testing.T) {
 	}`, first)
 }
 
+func TestDiagnosticsJSONInitializesAndCachesCallerConstructedValue(t *testing.T) {
+	original := marshalDiagnosticsJSON
+	var calls atomic.Int32
+	marshalDiagnosticsJSON = func(value any) ([]byte, error) {
+		calls.Add(1)
+		return original(value)
+	}
+	t.Cleanup(func() { marshalDiagnosticsJSON = original })
+
+	diagnostics := sampleDiagnostics()
+	first, err := diagnostics.JSON()
+	require.NoError(t, err)
+	second, err := diagnostics.JSON()
+	require.NoError(t, err)
+	require.Equal(t, first, second)
+	require.Equal(t, int32(1), calls.Load())
+}
+
 func TestDiagnosticsJSONSummaryOmitsAttempts(t *testing.T) {
 	diagnostics := sampleDiagnostics()
 	diagnostics.initializeJSON(DiagnosticsVerbositySummary)
@@ -121,7 +139,6 @@ func TestDiagnosticsJSONConcurrentCallsShareOneRendering(t *testing.T) {
 	t.Cleanup(func() { marshalDiagnosticsJSON = original })
 
 	diagnostics := sampleDiagnostics()
-	diagnostics.initializeJSON(DiagnosticsVerbosityDetailed)
 	const callers = 32
 	values := make([]string, callers)
 	errs := make([]error, callers)

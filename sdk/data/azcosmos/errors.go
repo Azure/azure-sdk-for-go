@@ -244,9 +244,19 @@ func cloneError(err error) error {
 	clone := *cosmosErr
 	clone.Body = append([]byte(nil), cosmosErr.Body...)
 	if cosmosErr.Diagnostics != nil {
-		diagnostics := *cosmosErr.Diagnostics
-		diagnostics.RegionsContacted = append([]string(nil), diagnostics.RegionsContacted...)
-		diagnostics.Attempts = append([]DiagnosticAttempt(nil), diagnostics.Attempts...)
+		source := cosmosErr.Diagnostics
+		diagnostics := Diagnostics{
+			StatusCode:         source.StatusCode,
+			SubStatus:          source.SubStatus,
+			AttemptCount:       source.AttemptCount,
+			TotalRequestCharge: source.TotalRequestCharge,
+			Elapsed:            source.Elapsed,
+			Completed:          source.Completed,
+			Failed:             source.Failed,
+			Compacted:          source.Compacted,
+			RegionsContacted:   append([]string(nil), source.RegionsContacted...),
+			Attempts:           append([]DiagnosticAttempt(nil), source.Attempts...),
+		}
 		diagnostics.initializeJSON(cosmosErr.Diagnostics.jsonVerbosity())
 		clone.Diagnostics = &diagnostics
 	}

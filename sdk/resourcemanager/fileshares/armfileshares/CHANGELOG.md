@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-10-29)
+## 1.0.0 (2026-11-01)
 ### Features Added
 
 - New value `MediaTierHDD` added to enum type `MediaTier`

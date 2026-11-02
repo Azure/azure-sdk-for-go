@@ -16,6 +16,7 @@
         ".vscode/cspell.json",
         "*.PNG",
         "*.pfx",
+        "**/go.sum",
         "**/recordings/**/*"
     ],
     "words": [

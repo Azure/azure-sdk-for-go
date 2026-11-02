@@ -6,11 +6,11 @@
 set -Eeuo pipefail
 
 usage() {
-  echo "usage: run-clean-leg.sh --leg <go-v1|go-v2-native|rust> --workers <8|16> --repeat <n> --run-dir <dir> --config <json> -- <command...>" >&2
+  echo "usage: run-clean-leg.sh --leg <go-v1|go-v2-native|rust> --workers <8|16> --repeat <n> --run-dir <dir> --config <json> --key-fd <n> -- <command...>" >&2
   exit 2
 }
 
-leg= workers= repeat= run_dir= config=
+leg= workers= repeat= run_dir= config= key_fd=
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --leg) leg=$2; shift 2 ;;
@@ -18,12 +18,14 @@ while [[ $# -gt 0 ]]; do
     --repeat) repeat=$2; shift 2 ;;
     --run-dir) run_dir=$2; shift 2 ;;
     --config) config=$2; shift 2 ;;
+    --key-fd) key_fd=$2; shift 2 ;;
     --) shift; break ;;
     *) usage ;;
   esac
 done
 [[ "$leg" =~ ^(go-v1|go-v2-native|rust)$ ]] || usage
 [[ "$workers" =~ ^(8|16)$ && "$repeat" =~ ^[1-9][0-9]*$ ]] || usage
+[[ "$key_fd" =~ ^[3-9][0-9]*$ && -r "/proc/self/fd/$key_fd" ]] || usage
 [[ -f "$config" && $# -gt 0 ]] || usage
 
 leg_dir=$run_dir/w$workers/clean-score/repeat-$repeat/$leg
@@ -35,11 +37,16 @@ cp "$config" "$run_dir/config/effective.json"
 unset COSMOS_PERF_CPU_PROFILE COSMOS_PERF_HEAP_PROFILE COSMOS_PERF_RUNTIME_TRACE \
   COSMOS_PERF_BLOCK_PROFILE COSMOS_PERF_MUTEX_PROFILE
 export COSMOS_PERF_CONFIG=$run_dir/config/effective.json
+export COSMOS_PERF_WORKERS=$workers
+export COSMOS_PERF_ADAPTER_RESULT=$raw/adapter-result.json
+export COSMOS_PERF_KEY_FD=$key_fd
 
 binary=$(readlink -f "$1")
 sha256sum "$binary" > "$raw/binary.sha256"
 readelf -n "$binary" > "$raw/binary-build-id.txt" 2>&1 || true
 cp --preserve=mode,timestamps "$binary" "$raw/binary"
+[[ -f "$binary.provenance.json" ]] || { echo "missing $binary.provenance.json" >&2; exit 1; }
+cp "$binary.provenance.json" "$leg_dir/provenance.json"
 
 "$@" > "$raw/stdout.txt" 2> "$raw/stderr.txt" &
 pid=$!
@@ -75,6 +82,13 @@ sample end 2>/dev/null || true
 for base in proc-status smaps-rollup smaps cgroup-memory thread-stacks; do
   cp "$raw/$base-latest.txt" "$raw/$base.txt"
 done
+if [[ "$status" -eq 0 ]]; then
+  [[ -s "$raw/adapter-result.json" ]] || { echo "adapter did not write its result" >&2; exit 1; }
+  python3 "$(dirname "$0")/convert-adapter-output.py" \
+    --adapter-result "$raw/adapter-result.json" --raw-dir "$raw" \
+    --leg "$leg" --run-class clean-score --workers "$workers" --repeat "$repeat" \
+    --output "$leg_dir/metrics.json"
+fi
 sha256sum "$raw"/* > "$raw/SHA256SUMS"
 chmod -R a-w "$raw"
 exit "$status"

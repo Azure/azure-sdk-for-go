@@ -22,7 +22,8 @@ scripts in this directory.
    available four-vCPU Linux VM SKU, and writes ownership state. A managed identity may administer
    campaign storage, but measured SDK legs use the Cosmos account key.
 6. On the VM, run `python3 scripts/campaign.py prerequisites --phase vm`, then build each adapter
-   with profiling-quality symbols. The native Rust driver build must
+   with `scripts/build-go-adapters.sh` and `scripts/build-rust-adapter.sh`, then create an immutable
+   staging directory with `scripts/stage-adapters.sh`. The native Rust driver build must
    include `-C debuginfo=2`, `-C force-frame-pointers=yes`, and an ELF build ID, with stripping
    disabled. Build its pinned source-of-record commit from `Azure/azure-sdk-for-rust`, and record
    the pinned `Azure/azure-cosmos-driver` distribution commit consumed by Go v2. Record the complete
@@ -33,6 +34,8 @@ scripts in this directory.
    disabled. Fail before warmup if any proof is absent. Every timed operation is a point read using
    the deterministic round-robin key sequence. Adapters consume raw response bytes and perform
    equivalent minimal validation outside the timed hot path.
+   Pass the account key only through an inherited private file descriptor numbered 3 or higher.
+   Adapters reject key-bearing arguments and common key-bearing environment variables.
 9. Run the workers in this order to reduce temporal bias: workers 8 uses Go v1, Go v2/native,
    Rust; workers 16 uses Rust, Go v2/native, Go v1. Use one long-lived runtime/client/pool per
    process, a 30-second excluded warmup, and a 300-second measurement.
@@ -60,6 +63,11 @@ scripts in this directory.
     command without `--dry-run`.
 
 ## Adapter contract
+
+The checked-in adapters support `seed`, `verify`, `preflight`, `run`, and `cleanup`. They derive
+exactly 1,024 owner-scoped IDs and partition keys in round-robin order. Seed refuses to overwrite an
+existing differently owned item. Cleanup reads and validates ownership before each delete and
+retains malformed, ambiguous, and non-owned items.
 
 Adapters may be maintained in their authoritative SDK repositories, but a run is comparable only
 when all three emit the same contract. `metrics.json` must include operation counts, errors,

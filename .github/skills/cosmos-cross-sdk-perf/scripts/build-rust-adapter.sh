@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# cSpell:words Eeuo esac rustc rustflags serde
+
+set -Eeuo pipefail
+
+usage() {
+  echo "usage: build-rust-adapter.sh --checkout <azure-sdk-for-rust> --commit <sha> --output <dir>" >&2
+  exit 2
+}
+
+checkout= commit= output=
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --checkout) checkout=$(readlink -f "$2"); shift 2 ;;
+    --commit) commit=$2; shift 2 ;;
+    --output) output=$(readlink -m "$2"); shift 2 ;;
+    *) usage ;;
+  esac
+done
+[[ "$commit" =~ ^[0-9a-f]{40}$ && -d "$checkout" && -n "$output" ]] || usage
+[[ ! -e "$output" ]] || { echo "refusing to overwrite $output" >&2; exit 1; }
+[[ "$(git -C "$checkout" rev-parse HEAD)" == "$commit" ]] || {
+  echo "Rust checkout commit mismatch" >&2
+  exit 1
+}
+[[ -z "$(git -C "$checkout" status --short)" ]] || {
+  echo "Rust checkout must be clean" >&2
+  exit 1
+}
+
+skill=$(cd "$(dirname "$0")/.." && pwd)
+mkdir -p "$output/work" "$output/bin"
+git -C "$checkout" worktree add --detach "$output/work/sdk" "$commit"
+trap 'git -C "$checkout" worktree remove --force "$output/work/sdk" 2>/dev/null || true' EXIT
+
+crate=$output/work/sdk/cosmos-perf-adapter
+mkdir -p "$crate/src"
+cp "$skill/adapters/rust/src/"*.rs "$crate/src/"
+cat > "$crate/Cargo.toml" <<'EOF'
+[package]
+name = "cosmos-perf-adapter"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+azure_core = { path = "../sdk/core/azure_core" }
+azure_data_cosmos = { path = "../sdk/cosmos/azure_data_cosmos", features = ["key_auth"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
+EOF
+
+python3 - "$output/work/sdk/Cargo.toml" <<'PY'
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+marker = "members = ["
+index = text.index(marker) + len(marker)
+text = text[:index] + '\n  "cosmos-perf-adapter",' + text[index:]
+path.write_text(text, encoding="utf-8")
+PY
+
+export CARGO_TARGET_DIR=$output/work/target
+export RUSTFLAGS="-C force-frame-pointers=yes -C debuginfo=2 -C link-arg=-Wl,--build-id=sha1"
+export CARGO_PROFILE_RELEASE_DEBUG=2
+export CARGO_PROFILE_RELEASE_STRIP=false
+(
+  cd "$output/work/sdk"
+  cargo test --offline -p cosmos-perf-adapter
+  cargo build --offline --release -p cosmos-perf-adapter
+)
+cp "$CARGO_TARGET_DIR/release/cosmos-perf-adapter" "$output/bin/cosmos-perf-rust"
+
+build_id=$(readelf -n "$output/bin/cosmos-perf-rust" | awk '/Build ID:/ {print $3; exit}')
+python3 - "$output/bin/cosmos-perf-rust" "$commit" \
+  "$(git -C "$checkout" rev-parse HEAD^{tree})" "$build_id" <<'PY'
+import hashlib
+import json
+import pathlib
+import subprocess
+import sys
+
+binary, commit, tree, build_id = sys.argv[1:]
+path = pathlib.Path(binary)
+value = {
+    "leg": "rust",
+    "source": {
+        "repository": "https://github.com/Azure/azure-sdk-for-rust.git",
+        "commit": commit,
+        "tree": tree,
+        "dirty": False,
+    },
+    "compiler": subprocess.check_output(["rustc", "--version", "--verbose"], text=True).strip(),
+    "buildCommand": "cargo build --offline --release -p cosmos-perf-adapter",
+    "dependencyVersions": {
+        "azure_data_cosmos": "pinned-workspace",
+        "azure_data_cosmos_driver": "pinned-workspace",
+    },
+    "binary": {
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "buildId": build_id,
+        "debugSymbols": "embedded",
+    },
+}
+path.with_suffix(path.suffix + ".provenance.json").write_text(
+    json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+)
+PY
+sha256sum "$output/bin/cosmos-perf-rust" > "$output/SHA256SUMS"
+git -C "$checkout" worktree remove --force "$output/work/sdk"
+trap - EXIT
+rm -rf "$output/work"
+chmod -R a-w "$output"

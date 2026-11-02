@@ -31,9 +31,7 @@ pub fn make_document(owner: &str, index: usize) -> Result<Vec<u8>, String> {
     let id = item_id(owner, index);
     let prefix = format!("{{\"id\":\"{id}\",\"pk\":\"{id}\",\"owner\":\"{owner}\",\"padding\":\"");
     let suffix = "\"}";
-    let padding = DOCUMENT_BYTES
-        .checked_sub(prefix.len() + suffix.len())
-        .ok_or_else(|| "owner leaves no room for document padding".to_string())?;
+    let padding = expected_padding_length(owner, index)?;
     let mut body = Vec::with_capacity(DOCUMENT_BYTES);
     body.extend_from_slice(prefix.as_bytes());
     body.extend(std::iter::repeat_n(b'x', padding));
@@ -45,24 +43,29 @@ pub fn make_document(owner: &str, index: usize) -> Result<Vec<u8>, String> {
 }
 
 pub fn validate_document(body: &[u8], owner: &str, index: usize) -> Result<(), String> {
-    if body.len() != DOCUMENT_BYTES {
-        return Err(format!(
-            "document length is {}, expected {DOCUMENT_BYTES}",
-            body.len()
-        ));
-    }
-    let text = std::str::from_utf8(body).map_err(|error| error.to_string())?;
+    let value: serde_json::Value =
+        serde_json::from_slice(body).map_err(|error| format!("decode document: {error}"))?;
     let id = item_id(owner, index);
-    for expected in [
-        format!("\"id\":\"{id}\""),
-        format!("\"pk\":\"{id}\""),
-        format!("\"owner\":\"{owner}\""),
-    ] {
-        if !text.contains(&expected) {
-            return Err("document id, pk, or owner does not match the campaign".into());
-        }
+    if value["id"] != id || value["pk"] != id || value["owner"] != owner {
+        return Err("document id, pk, or owner does not match the campaign".into());
+    }
+    let padding = value["padding"]
+        .as_str()
+        .ok_or("document padding is missing or is not a string")?;
+    if padding.len() != expected_padding_length(owner, index)?
+        || !padding.bytes().all(|value| value == b'x')
+    {
+        return Err("document padding does not match the exact-size campaign payload".into());
     }
     Ok(())
+}
+
+fn expected_padding_length(owner: &str, index: usize) -> Result<usize, String> {
+    const EMPTY_DOCUMENT_BYTES: usize = r#"{"id":"","pk":"","owner":"","padding":""}"#.len();
+    let id = item_id(owner, index);
+    DOCUMENT_BYTES
+        .checked_sub(EMPTY_DOCUMENT_BYTES + 2 * id.len() + owner.len())
+        .ok_or_else(|| "owner leaves no room for document padding".to_string())
 }
 
 pub fn owned_by(body: &[u8], owner: &str) -> bool {
@@ -108,6 +111,25 @@ mod tests {
         let body = make_document("campaign-owner", 17).unwrap();
         assert_eq!(body.len(), DOCUMENT_BYTES);
         validate_document(&body, "campaign-owner", 17).unwrap();
+    }
+
+    #[test]
+    fn validation_allows_cosmos_system_properties() {
+        let mut body = make_document("campaign-owner", 17).unwrap();
+        body.pop();
+        body.extend_from_slice(br#","_rid":"example","_etag":"example"}"#);
+        assert!(body.len() > DOCUMENT_BYTES);
+        validate_document(&body, "campaign-owner", 17).unwrap();
+    }
+
+    #[test]
+    fn validation_rejects_changed_campaign_payload() {
+        let body = make_document("campaign-owner", 17).unwrap();
+        let mut value: serde_json::Value = serde_json::from_slice(&body).unwrap();
+        value["padding"] =
+            serde_json::Value::String("y".repeat(value["padding"].as_str().unwrap().len()));
+        let changed = serde_json::to_vec(&value).unwrap();
+        assert!(validate_document(&changed, "campaign-owner", 17).is_err());
     }
 
     #[test]

@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bytes"
 	"os"
 	"testing"
 
@@ -15,6 +16,21 @@ func TestMakeDocumentExactSize(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, body, documentBytes)
 	require.NoError(t, validateDocument(body, "campaign-owner", 17))
+}
+
+func TestValidateDocumentAllowsCosmosSystemProperties(t *testing.T) {
+	body, err := makeDocument("campaign-owner", 17)
+	require.NoError(t, err)
+	body = append(body[:len(body)-1], []byte(`,"_rid":"example","_etag":"example"}`)...)
+	require.Greater(t, len(body), documentBytes)
+	require.NoError(t, validateDocument(body, "campaign-owner", 17))
+}
+
+func TestValidateDocumentRejectsChangedCampaignPayload(t *testing.T) {
+	body, err := makeDocument("campaign-owner", 17)
+	require.NoError(t, err)
+	body = bytes.Replace(body, []byte(`"padding":"x`), []byte(`"padding":"y`), 1)
+	require.Error(t, validateDocument(body, "campaign-owner", 17))
 }
 
 func TestKeySequenceRoundRobin(t *testing.T) {

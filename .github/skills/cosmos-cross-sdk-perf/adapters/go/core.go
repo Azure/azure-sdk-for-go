@@ -39,12 +39,7 @@ func makeDocument(owner string, index int) ([]byte, error) {
 		return nil, err
 	}
 	value := document{ID: itemID(owner, index), PK: itemPK(owner, index), Owner: owner}
-	base, err := json.Marshal(value)
-	if err != nil {
-		return nil, err
-	}
-	// Replacing the empty padding string adds exactly len(padding) bytes.
-	paddingLength := documentBytes - len(base)
+	paddingLength := expectedPaddingLength(owner, index)
 	if paddingLength < 0 {
 		return nil, fmt.Errorf("owner %q leaves no room for document padding", owner)
 	}
@@ -60,9 +55,6 @@ func makeDocument(owner string, index int) ([]byte, error) {
 }
 
 func validateDocument(body []byte, owner string, index int) error {
-	if len(body) != documentBytes {
-		return fmt.Errorf("document length is %d, expected %d", len(body), documentBytes)
-	}
 	var value document
 	if err := json.Unmarshal(body, &value); err != nil {
 		return fmt.Errorf("decode document: %w", err)
@@ -70,7 +62,16 @@ func validateDocument(body []byte, owner string, index int) error {
 	if value.ID != itemID(owner, index) || value.PK != itemPK(owner, index) || value.Owner != owner {
 		return errors.New("document id, pk, or owner does not match the campaign")
 	}
+	if len(value.Padding) != expectedPaddingLength(owner, index) || strings.Trim(value.Padding, "x") != "" {
+		return errors.New("document padding does not match the exact-size campaign payload")
+	}
 	return nil
+}
+
+func expectedPaddingLength(owner string, index int) int {
+	const emptyDocumentBytes = len(`{"id":"","pk":"","owner":"","padding":""}`)
+	id := itemID(owner, index)
+	return documentBytes - emptyDocumentBytes - 2*len(id) - len(owner)
 }
 
 func validateOwner(owner string) error {

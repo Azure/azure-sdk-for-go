@@ -46,7 +46,6 @@ edition = "2021"
 publish = false
 
 [dependencies]
-azure_core = { path = "../sdk/core/azure_core" }
 azure_data_cosmos = { path = "../sdk/cosmos/azure_data_cosmos", features = ["key_auth"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

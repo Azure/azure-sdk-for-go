@@ -4,7 +4,6 @@
 
 mod core;
 
-use azure_core::credentials::Secret;
 use azure_data_cosmos::clients::ContainerClient;
 use azure_data_cosmos::error::CosmosError;
 use azure_data_cosmos::{
@@ -147,7 +146,7 @@ fn parse_options(arguments: &[String]) -> Result<(Options, String), BoxError> {
 }
 
 fn read_key(fd: i32) -> Result<Vec<u8>, BoxError> {
-    let mut file = unsafe { File::from_raw_fd(fd) };
+    let file = unsafe { File::from_raw_fd(fd) };
     let mut value = Vec::new();
     file.take(16 * 1024).read_to_end(&mut value)?;
     while value.last().is_some_and(|byte| byte.is_ascii_whitespace()) {
@@ -168,8 +167,8 @@ async fn create_client(options: &Options, key: &[u8]) -> Result<CosmosClient, Bo
         .build()
         .await?;
     let endpoint: AccountEndpoint = options.endpoint.parse()?;
-    let secret = Secret::from(String::from_utf8(key.to_vec())?);
-    let account = AccountReference::with_authentication_key(endpoint, secret);
+    let account =
+        AccountReference::with_authentication_key(endpoint, String::from_utf8(key.to_vec())?);
     Ok(CosmosClient::builder()
         .with_runtime(runtime)
         .with_binary_encoding_options(BinaryEncodingOptions::new().with_enabled(false))
@@ -186,7 +185,7 @@ async fn read_raw(
     index: usize,
 ) -> Result<(Vec<u8>, u64, Value), BoxError> {
     let id = item_id(owner, index);
-    let response = container.read_item(id.as_str(), id.as_str(), None).await?;
+    let response = container.read_item(id.clone(), id.as_str(), None).await?;
     let diagnostics = response.diagnostics();
     let requests = diagnostics.requests();
     let retries = requests.len().saturating_sub(1) as u64;
@@ -209,13 +208,13 @@ async fn seed(container: &ContainerClient, options: &Options) -> Result<(), BoxE
         match read_raw(container, &options.owner, index).await {
             Ok((existing, _, _)) if owned_by(&existing, &options.owner) => {
                 container
-                    .upsert_item(id.as_str(), id.as_str(), value, None)
+                    .upsert_item(id.clone(), id.as_str(), value, None)
                     .await?;
             }
             Ok(_) => return Err(format!("refusing to overwrite non-owned item {id:?}").into()),
             Err(error) if is_not_found(error.as_ref()) => {
                 container
-                    .create_item(id.as_str(), id.as_str(), value, None)
+                    .create_item(id.clone(), id.as_str(), value, None)
                     .await?;
             }
             Err(error) => return Err(error),
@@ -247,9 +246,7 @@ async fn cleanup(container: &ContainerClient, options: &Options) -> Result<(), B
         let id = item_id(&options.owner, index);
         match read_raw(container, &options.owner, index).await {
             Ok((body, _, _)) if owned_by(&body, &options.owner) => {
-                container
-                    .delete_item(id.as_str(), id.as_str(), None)
-                    .await?;
+                container.delete_item(id.clone(), id.as_str(), None).await?;
                 deleted += 1;
             }
             Ok(_) => skipped += 1,

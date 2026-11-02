@@ -36,9 +36,9 @@ type ClientOptions struct {
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
 	DiagnosticsHandler func(context.Context, OperationDiagnostic)
-	// DiagnosticsVerbosity controls how much detail every completion's [Diagnostics.JSON] renders.
-	// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It
-	// applies to every operation on the client; there is no per-operation override.
+	// DiagnosticsVerbosity controls how much detail [Diagnostics.JSON] renders on first use. The
+	// zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It applies
+	// to every operation on the client; there is no per-operation override.
 	DiagnosticsVerbosity DiagnosticsVerbosity
 }
 

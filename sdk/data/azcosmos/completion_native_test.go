@@ -10,6 +10,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -92,8 +94,7 @@ func captureDiagnosticsLog(t *testing.T) *[]string {
 // constant, verifying translateCompletionOutcome passes the exact value a caller gave it through
 // to copyDiagnosticsForCompletion unchanged, regardless of the completion's outcome. The seam is
 // stubbed because cosmos_diagnostics_t is an opaque native handle tests cannot construct; this
-// proves the plumbing between the two functions rather than the native rendering itself, which the
-// emulator tests and TestNativeDiagnosticsVerbosityMapsEveryEnumValue cover separately.
+// proves the plumbing between the two functions; lazy rendering is covered separately below.
 func TestTranslateCompletionOutcomePropagatesEveryDiagnosticsVerbosity(t *testing.T) {
 	for _, outcome := range []syntheticOutcome{syntheticOutcomeOK, syntheticOutcomeCancelled, syntheticOutcomeError} {
 		for _, verbosity := range []DiagnosticsVerbosity{
@@ -110,6 +111,32 @@ func TestTranslateCompletionOutcomePropagatesEveryDiagnosticsVerbosity(t *testin
 				require.Equal(t, []DiagnosticsVerbosity{verbosity}, *seen)
 			})
 		}
+	}
+}
+
+func TestTranslateCompletionOutcomeDefersDiagnosticsJSON(t *testing.T) {
+	original := marshalDiagnosticsJSON
+	var calls atomic.Int32
+	marshalDiagnosticsJSON = func(value any) ([]byte, error) {
+		calls.Add(1)
+		return original(value)
+	}
+	t.Cleanup(func() { marshalDiagnosticsJSON = original })
+
+	for _, verbosity := range []DiagnosticsVerbosity{DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed} {
+		t.Run(verbosity.String(), func(t *testing.T) {
+			fakeDiagnostics := sampleDiagnostics()
+			stubDiagnosticsCopy(t, fakeDiagnostics, nil)
+
+			result := syntheticCompletionResultWithVerbosity(syntheticOutcomeOK, http.StatusOK, false, verbosity)
+			require.Zero(t, calls.Load(), "completion translation must not render JSON")
+
+			rendered, err := result.response.Diagnostics.JSON()
+			require.NoError(t, err)
+			require.Equal(t, int32(1), calls.Load())
+			require.Equal(t, verbosity == DiagnosticsVerbosityDetailed, strings.Contains(rendered, `"attempts"`))
+			calls.Store(0)
+		})
 	}
 }
 

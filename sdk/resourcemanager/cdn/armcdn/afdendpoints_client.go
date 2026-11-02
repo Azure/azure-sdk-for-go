@@ -19,7 +19,7 @@ import (
 // AFDEndpointsClient contains the methods for the AFDEndpoints group.
 // Don't use this type directly, use NewAFDEndpointsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type AFDEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
+// create - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*http.Response, error) {
@@ -95,7 +95,7 @@ func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, _ *AFDEndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -119,7 +119,7 @@ func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -155,7 +155,7 @@ func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
+// deleteOperation - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*http.Response, error) {
@@ -178,7 +178,7 @@ func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *AFDEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -202,8 +202,180 @@ func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPurgeContent - Removes a content from AzureFrontDoor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - contents - The list of paths to the content and the list of linked domains to be purged. Path can be a full URL, e.g. '/pictures/city.png'
+//     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and files in
+//     the directory.
+//   - options - AFDEndpointsClientBeginPurgeContentOptions contains the optional parameters for the AFDEndpointsClient.BeginPurgeContent
+//     method.
+func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*runtime.Poller[AFDEndpointsClientPurgeContentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contents, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientPurgeContentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purgeContent - Removes a content from AzureFrontDoor.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AFDEndpointsClient.BeginPurgeContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contents, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeContentCreateRequest creates the purgeContent request.
+func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, _ *AFDEndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/purge"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, contents); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
+// resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+// operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - endpointUpdateProperties - Endpoint update properties
+//   - options - AFDEndpointsClientBeginUpdateOptions contains the optional parameters for the AFDEndpointsClient.BeginUpdate
+//     method.
+func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*runtime.Poller[AFDEndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
+// resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+// operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AFDEndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, _ *AFDEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -256,7 +428,7 @@ func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -333,7 +505,7 @@ func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -416,7 +588,7 @@ func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -433,178 +605,6 @@ func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Res
 		return AFDEndpointsClientListResourceUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPurgeContent - Removes a content from AzureFrontDoor.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - contents - The list of paths to the content and the list of linked domains to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-//     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and files in
-//     the directory.
-//   - options - AFDEndpointsClientBeginPurgeContentOptions contains the optional parameters for the AFDEndpointsClient.BeginPurgeContent
-//     method.
-func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*runtime.Poller[AFDEndpointsClientPurgeContentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contents, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientPurgeContentResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientPurgeContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PurgeContent - Removes a content from AzureFrontDoor.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AFDEndpointsClient.BeginPurgeContent"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contents, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// purgeContentCreateRequest creates the PurgeContent request.
-func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, _ *AFDEndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/purge"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, contents); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-// resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
-// operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - endpointUpdateProperties - Endpoint update properties
-//   - options - AFDEndpointsClientBeginUpdateOptions contains the optional parameters for the AFDEndpointsClient.BeginUpdate
-//     method.
-func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*runtime.Poller[AFDEndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-// resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
-// operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AFDEndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, _ *AFDEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in
@@ -658,7 +658,7 @@ func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

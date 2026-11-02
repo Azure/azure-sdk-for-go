@@ -21,6 +21,12 @@ type ServerFactory struct {
 	// AdvancedPlatformMetricsServer contains the fakes for client AdvancedPlatformMetricsClient
 	AdvancedPlatformMetricsServer AdvancedPlatformMetricsServer
 
+	// BlobAccessPointConfigurationsServer contains the fakes for client BlobAccessPointConfigurationsClient
+	BlobAccessPointConfigurationsServer BlobAccessPointConfigurationsServer
+
+	// BlobAccessPointConnectionTestsServer contains the fakes for client BlobAccessPointConnectionTestsClient
+	BlobAccessPointConnectionTestsServer BlobAccessPointConnectionTestsServer
+
 	// BlobContainersServer contains the fakes for client BlobContainersClient
 	BlobContainersServer BlobContainersServer
 
@@ -119,6 +125,8 @@ type ServerFactoryTransport struct {
 	trMu                                           sync.Mutex
 	trAccountsServer                               *AccountsServerTransport
 	trAdvancedPlatformMetricsServer                *AdvancedPlatformMetricsServerTransport
+	trBlobAccessPointConfigurationsServer          *BlobAccessPointConfigurationsServerTransport
+	trBlobAccessPointConnectionTestsServer         *BlobAccessPointConnectionTestsServerTransport
 	trBlobContainersServer                         *BlobContainersServerTransport
 	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
 	trBlobServicesServer                           *BlobServicesServerTransport
@@ -169,6 +177,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAdvancedPlatformMetricsServerTransport(&s.srv.AdvancedPlatformMetricsServer)
 		})
 		resp, err = s.trAdvancedPlatformMetricsServer.Do(req)
+	case "BlobAccessPointConfigurationsClient":
+		initServer(&s.trMu, &s.trBlobAccessPointConfigurationsServer, func() *BlobAccessPointConfigurationsServerTransport {
+			return NewBlobAccessPointConfigurationsServerTransport(&s.srv.BlobAccessPointConfigurationsServer)
+		})
+		resp, err = s.trBlobAccessPointConfigurationsServer.Do(req)
+	case "BlobAccessPointConnectionTestsClient":
+		initServer(&s.trMu, &s.trBlobAccessPointConnectionTestsServer, func() *BlobAccessPointConnectionTestsServerTransport {
+			return NewBlobAccessPointConnectionTestsServerTransport(&s.srv.BlobAccessPointConnectionTestsServer)
+		})
+		resp, err = s.trBlobAccessPointConnectionTestsServer.Do(req)
 	case "BlobContainersClient":
 		initServer(&s.trMu, &s.trBlobContainersServer, func() *BlobContainersServerTransport {
 			return NewBlobContainersServerTransport(&s.srv.BlobContainersServer)

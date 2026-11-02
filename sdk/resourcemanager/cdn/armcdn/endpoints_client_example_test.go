@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Endpoints_Create.json
+// Generated from example definition: 2026-10-01/Endpoints_Create.json
 func ExampleEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Delete.json
+// Generated from example definition: 2026-10-01/Endpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,276 @@ func ExampleEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Get.json
+// Generated from example definition: 2026-10-01/Endpoints_LoadContent.json
+func ExampleEndpointsClient_BeginLoadContent() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEndpointsClient().BeginLoadContent(ctx, "RG", "profile1", "endpoint1", armcdn.LoadParameters{
+		ContentPaths: []*string{
+			to.Ptr("/folder1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.EndpointsClientLoadContentResponse{
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Endpoints_PurgeContent.json
+func ExampleEndpointsClient_BeginPurgeContent() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEndpointsClient().BeginPurgeContent(ctx, "RG", "profile1", "endpoint1", armcdn.PurgeParameters{
+		ContentPaths: []*string{
+			to.Ptr("/folder1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.EndpointsClientPurgeContentResponse{
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Endpoints_Start.json
+func ExampleEndpointsClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEndpointsClient().BeginStart(ctx, "RG", "profile1", "endpoint1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.EndpointsClientStartResponse{
+	// 	Endpoint: armcdn.Endpoint{
+	// 		Name: to.Ptr("endpoint4899"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		Location: to.Ptr("WestUs"),
+	// 		Properties: &armcdn.EndpointProperties{
+	// 			ContentTypesToCompress: []*string{
+	// 			},
+	// 			GeoFilters: []*armcdn.GeoFilter{
+	// 			},
+	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
+	// 			IsCompressionEnabled: to.Ptr(false),
+	// 			IsHTTPAllowed: to.Ptr(true),
+	// 			IsHTTPSAllowed: to.Ptr(true),
+	// 			OptimizationType: to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
+	// 			OriginHostHeader: to.Ptr("www.bing.com"),
+	// 			Origins: []*armcdn.DeepCreatedOrigin{
+	// 				{
+	// 					Name: to.Ptr("www-bing-com"),
+	// 					Properties: &armcdn.DeepCreatedOriginProperties{
+	// 						HostName: to.Ptr("www.bing.com"),
+	// 						HTTPPort: to.Ptr[int32](80),
+	// 						HTTPSPort: to.Ptr[int32](443),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProbePath: to.Ptr("/image"),
+	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateSucceeded),
+	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorNotSet),
+	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateStarting),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"kay1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Endpoints_Stop.json
+func ExampleEndpointsClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEndpointsClient().BeginStop(ctx, "RG", "profile1", "endpoint1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.EndpointsClientStopResponse{
+	// 	Endpoint: armcdn.Endpoint{
+	// 		Name: to.Ptr("endpoint4899"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		Location: to.Ptr("WestUs"),
+	// 		Properties: &armcdn.EndpointProperties{
+	// 			ContentTypesToCompress: []*string{
+	// 			},
+	// 			GeoFilters: []*armcdn.GeoFilter{
+	// 			},
+	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
+	// 			IsCompressionEnabled: to.Ptr(false),
+	// 			IsHTTPAllowed: to.Ptr(true),
+	// 			IsHTTPSAllowed: to.Ptr(true),
+	// 			OptimizationType: to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
+	// 			OriginHostHeader: to.Ptr("www.bing.com"),
+	// 			Origins: []*armcdn.DeepCreatedOrigin{
+	// 				{
+	// 					Name: to.Ptr("www-bing-com"),
+	// 					Properties: &armcdn.DeepCreatedOriginProperties{
+	// 						HostName: to.Ptr("www.bing.com"),
+	// 						HTTPPort: to.Ptr[int32](80),
+	// 						HTTPSPort: to.Ptr[int32](443),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProbePath: to.Ptr("/image"),
+	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateSucceeded),
+	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorNotSet),
+	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateStopping),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"kay1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Endpoints_Update.json
+func ExampleEndpointsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEndpointsClient().BeginUpdate(ctx, "RG", "profile1", "endpoint1", armcdn.EndpointUpdateParameters{
+		Tags: map[string]*string{
+			"additionalProperties": to.Ptr("Tag1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.EndpointsClientUpdateResponse{
+	// 	Endpoint: armcdn.Endpoint{
+	// 		Name: to.Ptr("endpoint1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		Location: to.Ptr("WestCentralUs"),
+	// 		Properties: &armcdn.EndpointProperties{
+	// 			ContentTypesToCompress: []*string{
+	// 			},
+	// 			DefaultOriginGroup: &armcdn.ResourceReference{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 			},
+	// 			GeoFilters: []*armcdn.GeoFilter{
+	// 			},
+	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
+	// 			IsCompressionEnabled: to.Ptr(false),
+	// 			IsHTTPAllowed: to.Ptr(true),
+	// 			IsHTTPSAllowed: to.Ptr(true),
+	// 			OriginGroups: []*armcdn.DeepCreatedOriginGroup{
+	// 				{
+	// 					Name: to.Ptr("originGroup1"),
+	// 					Properties: &armcdn.DeepCreatedOriginGroupProperties{
+	// 						HealthProbeSettings: &armcdn.HealthProbeParameters{
+	// 							ProbeIntervalInSeconds: to.Ptr[int32](120),
+	// 							ProbePath: to.Ptr("/health.aspx"),
+	// 							ProbeProtocol: to.Ptr(armcdn.ProbeProtocolHTTP),
+	// 							ProbeRequestType: to.Ptr(armcdn.HealthProbeRequestTypeGET),
+	// 						},
+	// 						Origins: []*armcdn.ResourceReference{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Origins: []*armcdn.DeepCreatedOrigin{
+	// 				{
+	// 					Name: to.Ptr("www-bing-com"),
+	// 					Properties: &armcdn.DeepCreatedOriginProperties{
+	// 						Enabled: to.Ptr(true),
+	// 						HostName: to.Ptr("www.bing.com"),
+	// 						HTTPPort: to.Ptr[int32](80),
+	// 						HTTPSPort: to.Ptr[int32](443),
+	// 						OriginHostHeader: to.Ptr("www.someDomain2.net"),
+	// 						Priority: to.Ptr[int32](2),
+	// 						Weight: to.Ptr[int32](50),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateCreating),
+	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorIgnoreQueryString),
+	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateCreating),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"additionalProperties": to.Ptr("Tag1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Endpoints_Get.json
 func ExampleEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +679,7 @@ func ExampleEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_ListByProfile.json
+// Generated from example definition: 2026-10-01/Endpoints_ListByProfile.json
 func ExampleEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +781,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_ListResourceUsage.json
+// Generated from example definition: 2026-10-01/Endpoints_ListResourceUsage.json
 func ExampleEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,276 +824,7 @@ func ExampleEndpointsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_LoadContent.json
-func ExampleEndpointsClient_BeginLoadContent() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginLoadContent(ctx, "RG", "profile1", "endpoint1", armcdn.LoadParameters{
-		ContentPaths: []*string{
-			to.Ptr("/folder1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.EndpointsClientLoadContentResponse{
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Endpoints_PurgeContent.json
-func ExampleEndpointsClient_BeginPurgeContent() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginPurgeContent(ctx, "RG", "profile1", "endpoint1", armcdn.PurgeParameters{
-		ContentPaths: []*string{
-			to.Ptr("/folder1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.EndpointsClientPurgeContentResponse{
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Endpoints_Start.json
-func ExampleEndpointsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginStart(ctx, "RG", "profile1", "endpoint1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.EndpointsClientStartResponse{
-	// 	Endpoint: armcdn.Endpoint{
-	// 		Name: to.Ptr("endpoint4899"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
-	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armcdn.EndpointProperties{
-	// 			ContentTypesToCompress: []*string{
-	// 			},
-	// 			GeoFilters: []*armcdn.GeoFilter{
-	// 			},
-	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
-	// 			IsCompressionEnabled: to.Ptr(false),
-	// 			IsHTTPAllowed: to.Ptr(true),
-	// 			IsHTTPSAllowed: to.Ptr(true),
-	// 			OptimizationType: to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
-	// 			OriginHostHeader: to.Ptr("www.bing.com"),
-	// 			Origins: []*armcdn.DeepCreatedOrigin{
-	// 				{
-	// 					Name: to.Ptr("www-bing-com"),
-	// 					Properties: &armcdn.DeepCreatedOriginProperties{
-	// 						HostName: to.Ptr("www.bing.com"),
-	// 						HTTPPort: to.Ptr[int32](80),
-	// 						HTTPSPort: to.Ptr[int32](443),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProbePath: to.Ptr("/image"),
-	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateSucceeded),
-	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorNotSet),
-	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateStarting),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"kay1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Endpoints_Stop.json
-func ExampleEndpointsClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginStop(ctx, "RG", "profile1", "endpoint1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.EndpointsClientStopResponse{
-	// 	Endpoint: armcdn.Endpoint{
-	// 		Name: to.Ptr("endpoint4899"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
-	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armcdn.EndpointProperties{
-	// 			ContentTypesToCompress: []*string{
-	// 			},
-	// 			GeoFilters: []*armcdn.GeoFilter{
-	// 			},
-	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
-	// 			IsCompressionEnabled: to.Ptr(false),
-	// 			IsHTTPAllowed: to.Ptr(true),
-	// 			IsHTTPSAllowed: to.Ptr(true),
-	// 			OptimizationType: to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
-	// 			OriginHostHeader: to.Ptr("www.bing.com"),
-	// 			Origins: []*armcdn.DeepCreatedOrigin{
-	// 				{
-	// 					Name: to.Ptr("www-bing-com"),
-	// 					Properties: &armcdn.DeepCreatedOriginProperties{
-	// 						HostName: to.Ptr("www.bing.com"),
-	// 						HTTPPort: to.Ptr[int32](80),
-	// 						HTTPSPort: to.Ptr[int32](443),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProbePath: to.Ptr("/image"),
-	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateSucceeded),
-	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorNotSet),
-	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateStopping),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"kay1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Endpoints_Update.json
-func ExampleEndpointsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginUpdate(ctx, "RG", "profile1", "endpoint1", armcdn.EndpointUpdateParameters{
-		Tags: map[string]*string{
-			"additionalProperties": to.Ptr("Tag1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.EndpointsClientUpdateResponse{
-	// 	Endpoint: armcdn.Endpoint{
-	// 		Name: to.Ptr("endpoint1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
-	// 		Location: to.Ptr("WestCentralUs"),
-	// 		Properties: &armcdn.EndpointProperties{
-	// 			ContentTypesToCompress: []*string{
-	// 			},
-	// 			DefaultOriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
-	// 			},
-	// 			GeoFilters: []*armcdn.GeoFilter{
-	// 			},
-	// 			HostName: to.Ptr("endpoint1.azureedge.net"),
-	// 			IsCompressionEnabled: to.Ptr(false),
-	// 			IsHTTPAllowed: to.Ptr(true),
-	// 			IsHTTPSAllowed: to.Ptr(true),
-	// 			OriginGroups: []*armcdn.DeepCreatedOriginGroup{
-	// 				{
-	// 					Name: to.Ptr("originGroup1"),
-	// 					Properties: &armcdn.DeepCreatedOriginGroupProperties{
-	// 						HealthProbeSettings: &armcdn.HealthProbeParameters{
-	// 							ProbeIntervalInSeconds: to.Ptr[int32](120),
-	// 							ProbePath: to.Ptr("/health.aspx"),
-	// 							ProbeProtocol: to.Ptr(armcdn.ProbeProtocolHTTP),
-	// 							ProbeRequestType: to.Ptr(armcdn.HealthProbeRequestTypeGET),
-	// 						},
-	// 						Origins: []*armcdn.ResourceReference{
-	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Origins: []*armcdn.DeepCreatedOrigin{
-	// 				{
-	// 					Name: to.Ptr("www-bing-com"),
-	// 					Properties: &armcdn.DeepCreatedOriginProperties{
-	// 						Enabled: to.Ptr(true),
-	// 						HostName: to.Ptr("www.bing.com"),
-	// 						HTTPPort: to.Ptr[int32](80),
-	// 						HTTPSPort: to.Ptr[int32](443),
-	// 						OriginHostHeader: to.Ptr("www.someDomain2.net"),
-	// 						Priority: to.Ptr[int32](2),
-	// 						Weight: to.Ptr[int32](50),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcdn.EndpointProvisioningStateCreating),
-	// 			QueryStringCachingBehavior: to.Ptr(armcdn.QueryStringCachingBehaviorIgnoreQueryString),
-	// 			ResourceState: to.Ptr(armcdn.EndpointResourceStateCreating),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"additionalProperties": to.Ptr("Tag1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Endpoints_ValidateCustomDomain.json
+// Generated from example definition: 2026-10-01/Endpoints_ValidateCustomDomain.json
 func ExampleEndpointsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

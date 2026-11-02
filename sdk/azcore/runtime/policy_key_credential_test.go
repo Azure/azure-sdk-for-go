@@ -21,7 +21,7 @@ func TestKeyCredentialPolicy(t *testing.T) {
 	policy := NewKeyCredentialPolicy(cred, headerName, nil)
 	require.NotNil(t, policy)
 
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		require.EqualValues(t, key, req.Header.Get(headerName))
 		return &http.Response{}, nil
 	}), policy)
@@ -37,7 +37,7 @@ func TestKeyCredentialPolicy(t *testing.T) {
 	})
 	require.NotNil(t, policy)
 
-	pl = exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl = exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		require.EqualValues(t, "Prefix: "+key, req.Header.Get(headerName))
 		return &http.Response{}, nil
 	}), policy)
@@ -55,7 +55,7 @@ func TestKeyCredentialPolicy_RequiresHTTPS(t *testing.T) {
 	policy := NewKeyCredentialPolicy(cred, "fake-auth", nil)
 	require.NotNil(t, policy)
 
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{}, nil
 	}), policy)
 
@@ -71,7 +71,7 @@ func TestKeyCredentialPolicy_NilCredential(t *testing.T) {
 	policy := NewKeyCredentialPolicy(nil, headerName, nil)
 	require.NotNil(t, policy)
 
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		require.Zero(t, req.Header.Get(headerName))
 		return &http.Response{}, nil
 	}), policy)
@@ -91,7 +91,7 @@ func TestKeyCredentialPolicy_InsecureAllowCredentialWithHTTP(t *testing.T) {
 	})
 	require.NotNil(t, policy)
 
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{}, nil
 	}), policy)
 

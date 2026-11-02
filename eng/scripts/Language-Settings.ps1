@@ -5,8 +5,10 @@ $LanguageDisplayName = "go"
 # get version from specific files (*constants.go, *version.go)
 function Get-GoModuleVersionInfo($modPath)
 {
-  $NO_PREFIX_VERSION_LINE_REGEX = ".+\s*=\s*`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-  $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+  # Only SDK version declarations qualify; service enums can also contain semantic versions.
+  $VERSION_CONSTANT_REGEX = "(?m)^\s*(?:const\s+)?(?:moduleVersion|serviceLibVersion|version)\s*(?:string\s*)?=\s*"
+  $NO_PREFIX_VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+  $VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
   $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
 

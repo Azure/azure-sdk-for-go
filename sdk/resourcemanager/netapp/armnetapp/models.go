@@ -51,6 +51,18 @@ type AccountEncryption struct {
 	KeyVaultProperties *KeyVaultProperties
 }
 
+// AccountEncryptionPatch - Encryption settings for PATCH operations (no default values)
+type AccountEncryptionPatch struct {
+	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	Identity *EncryptionIdentityPatch
+
+	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
+	KeySource *KeySource
+
+	// Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	KeyVaultProperties *KeyVaultPropertiesPatch
+}
+
 // AccountList - List of NetApp account resources
 type AccountList struct {
 	// REQUIRED; The NetAppAccount items on this page
@@ -103,10 +115,10 @@ type AccountProperties struct {
 // AccountPropertiesPatch - NetApp account patch properties
 type AccountPropertiesPatch struct {
 	// Active Directories
-	ActiveDirectories []*ActiveDirectory
+	ActiveDirectories []*ActiveDirectoryPatch
 
 	// Encryption settings
-	Encryption *AccountEncryption
+	Encryption *AccountEncryptionPatch
 
 	// Entra ID configuration for the account.
 	EntraIDConfig *EntraIDConfigPatch
@@ -320,6 +332,85 @@ type ActiveDirectoryConfigUpdateProperties struct {
 
 	// A domain user account with permission to create machine accounts
 	UserName *string
+}
+
+// ActiveDirectoryPatch - Active Directory settings for PATCH operations (no default values)
+type ActiveDirectoryPatch struct {
+	// Id of the Active Directory
+	ActiveDirectoryID *string
+
+	// Name of the active directory machine. This optional parameter is used only while creating kerberos volume
+	AdName *string
+
+	// Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier
+	Administrators []*string
+
+	// If enabled, AES encryption will be enabled for SMB communication.
+	AesEncryption *bool
+
+	// If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
+	AllowLocalNfsUsersWithLdap *bool
+
+	// Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier
+	BackupOperators []*string
+
+	// Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain
+	DNS *string
+
+	// Name of the Active Directory domain
+	Domain *string
+
+	// If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted.
+	EncryptDCConnections *bool
+
+	// kdc server IP address for the active directory machine. This optional parameter is used only while creating kerberos volume.
+	KdcIP *string
+
+	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
+	LdapOverTLS *bool
+
+	// LDAP Search scope options
+	LdapSearchScope *LdapSearchScopeOpt
+
+	// Specifies whether or not the LDAP traffic needs to be signed.
+	LdapSigning *bool
+
+	// The Organizational Unit (OU) within the Windows Active Directory
+	OrganizationalUnit *string
+
+	// Plain text password of Active Directory domain administrator, value is masked in the response
+	Password *string
+
+	// Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4 addresses
+	// can be passed.
+	PreferredServersForLdapClient *string
+
+	// Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares
+	// for SQL). A list of unique usernames without domain specifier
+	SecurityOperators []*string
+
+	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's
+	// self-signed root CA certificate, this optional parameter is used only for dual protocol with LDAP user-mapping volumes.
+	ServerRootCACertificate *string
+
+	// The Active Directory site the service will limit Domain Controller discovery to
+	Site *string
+
+	// NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
+	SmbServerName *string
+
+	// A domain user account with permission to create machine accounts
+	Username *string
+}
+
+// AsyncDirectoryDelete - Async Directory Delete configuration for the volume.
+type AsyncDirectoryDelete struct {
+	// Specifies whether Async Directory Delete is enabled for the volume.
+	Status *AsyncDirectoryDeleteStatus
+
+	// The name of the Trash bin folder for deleted files. Max length of 255. Must contain at least one alphanumeric character
+	// (A-Z, a-z, 0-9) and may include dots (.), underscores (_), and hyphens (-).
+	TrashBinName *string
 }
 
 // AuthorizeRequest - Authorize request
@@ -1146,6 +1237,25 @@ type CifsUser struct {
 	Username *string
 }
 
+// ClusterPeer - Cluster Peer resource, represents a peer relationship between an external cluster and an Azure NetApp Files
+// cluster
+type ClusterPeer struct {
+	// The resource-specific properties for this resource.
+	Properties *ClusterPeerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // ClusterPeerCommandResponse - Information about cluster peering process
 type ClusterPeerCommandResponse struct {
 	// Represents the properties of the cluster peer command response.
@@ -1159,6 +1269,48 @@ type ClusterPeerCommandResponseProperties struct {
 
 	// Passphrase for use with cluster peer command
 	Passphrase *string
+}
+
+// ClusterPeerListResult - The response of a ClusterPeer list operation.
+type ClusterPeerListResult struct {
+	// REQUIRED; The ClusterPeer items on this page
+	Value []*ClusterPeer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterPeerProperties - Cluster Peer properties
+type ClusterPeerProperties struct {
+	// READ-ONLY; Name of the Azure NetApp Files (ANF) cluster
+	AnfClusterName *string
+
+	// READ-ONLY; Cluster Peer Subnet Resource ID
+	ClusterPeerSubnetResourceID *string
+
+	// READ-ONLY; Command to execute to create the peer relationship
+	Command *string
+
+	// READ-ONLY; External cache connection resource IDs
+	ExternalCacheConnectionResourceIDs []*string
+
+	// READ-ONLY; External volume replication resource IDs
+	HybridReplicationResourceIDs []*string
+
+	// READ-ONLY; Network interfaces created that allow communications between the clusters
+	NetworkInterfaces []*ExternalResourceNetworkInterfaces
+
+	// READ-ONLY; Name of the external ONTAP cluster, discovered during cluster peering
+	OntapClusterName *string
+
+	// READ-ONLY; The ONTAP version of the external cluster.
+	OntapVersion *string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Status of the peer relationship
+	Status *ClusterPeerStatus
 }
 
 // CredentialsAkvDetails - Specifies the Azure Key Vault settings for storing the bucket credentials.
@@ -2045,6 +2197,16 @@ type EncryptionIdentity struct {
 	PrincipalID *string
 }
 
+// EncryptionIdentityPatch - Identity used to authenticate with key vault for PATCH operations
+type EncryptionIdentityPatch struct {
+	// ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
+	FederatedClientID *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
+	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
+	UserAssignedIdentity *string
+}
+
 // EncryptionTransitionRequest - Encryption transition request
 type EncryptionTransitionRequest struct {
 	// REQUIRED; Identifier of the private endpoint to reach the Azure Key Vault
@@ -2165,6 +2327,260 @@ type ExportPolicyRule struct {
 	UnixReadWrite *bool
 }
 
+// ExternalCache - External Cache resource, representing a cache volume on an external ONTAP system
+type ExternalCache struct {
+	// The resource-specific properties for this resource.
+	Properties *ExternalCacheProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExternalCacheConnection - External Cache Connection resource, representing a cache connection relationship between External
+// and Azure NetApp Files volumes
+type ExternalCacheConnection struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ExternalCacheConnectionProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExternalCacheConnectionList - List of External Cache Connection resources
+type ExternalCacheConnectionList struct {
+	// REQUIRED; The ExternalCacheConnection items on this page
+	Value []*ExternalCacheConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExternalCacheConnectionProperties - External Cache Connection properties
+type ExternalCacheConnectionProperties struct {
+	// REQUIRED; Name of the cache associated with this connection
+	ExternalCacheName *string
+
+	// REQUIRED; External SVM resource ID, the external storage virtual machine associated with this cache connection
+	ExternalSVMResourceID *string
+
+	// REQUIRED; Origin volume resource ID, the ANF volume that acts as the origin for the cache connection
+	OriginVolumeResourceID *string
+
+	// The Azure Resource URI for a delegated subnet used for cluster peering
+	ClusterPeerSubnetResourceID *string
+
+	// READ-ONLY; Resource ID of the cluster peer
+	ClusterPeerResourceID *string
+
+	// READ-ONLY; Current status of the operation
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Resource ID of the SVM peer
+	SVMPeerResourceID *string
+
+	// READ-ONLY; Setup information for the external cache connection
+	SetupInformation *SetupInformation
+}
+
+// ExternalCacheConnectionTagsUpdate - The type used for updating tags in ExternalCacheConnection resources.
+type ExternalCacheConnectionTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ExternalCacheListResult - The response of a ExternalCache list operation.
+type ExternalCacheListResult struct {
+	// REQUIRED; The ExternalCache items on this page
+	Value []*ExternalCache
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExternalCacheProperties - External Cache properties
+type ExternalCacheProperties struct {
+	// READ-ONLY; Connection status of the external cache
+	ConnectionStatus *ExternalCacheConnectionStatus
+
+	// READ-ONLY; The ONTAP CLI command to create this cache
+	CreateCommand *string
+
+	// READ-ONLY; Name of the cache volume on the external ONTAP system
+	ExternalCacheName *string
+
+	// READ-ONLY; Name of the origin SVM (Storage Virtual Machine) associated with this cache
+	OriginSVMName *string
+
+	// READ-ONLY; Name of the origin volume associated with this cache
+	OriginVolumeName *string
+
+	// READ-ONLY; Origin volume resource ID, the ANF volume that acts as the origin for this cache
+	OriginVolumeResourceID *string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Size of the cache in bytes
+	SizeInBytes *int64
+
+	// READ-ONLY; State of the remote cache volume
+	State *ExternalCacheState
+}
+
+// ExternalCluster - External Cluster resource, representing a cluster on an external NetApp ONTAP system
+type ExternalCluster struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ExternalClusterProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExternalClusterList - List of External Cluster resources
+type ExternalClusterList struct {
+	// REQUIRED; The ExternalCluster items on this page
+	Value []*ExternalCluster
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExternalClusterProperties - External Cluster properties
+type ExternalClusterProperties struct {
+	// REQUIRED; Key Vault authentication configuration for cluster peering passphrase
+	ClusterPeerPassphraseKeyVault *KeyVaultClusterPeerPassphraseProperties
+
+	// REQUIRED; Intercluster LIFs, external cluster IPs for cluster peer connection
+	InterclusterLifsIPAddresses []*string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+}
+
+// ExternalClusterUpdate - The type used for update operations of the ExternalCluster.
+type ExternalClusterUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ExternalClusterUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ExternalClusterUpdateProperties - The updatable properties of the ExternalCluster.
+type ExternalClusterUpdateProperties struct {
+	// Key Vault authentication configuration for cluster peering passphrase
+	ClusterPeerPassphraseKeyVault *KeyVaultClusterPeerPassphrasePatchProperties
+
+	// Intercluster LIFs, external cluster IPs for cluster peer connection
+	InterclusterLifsIPAddresses []*string
+}
+
+// ExternalResourceNetworkInterfaces - External Resource Network Interfaces
+type ExternalResourceNetworkInterfaces struct {
+	// REQUIRED; Network Interface Resource ID
+	NetworkInterfaceResourceID *string
+
+	// REQUIRED; Peer IP address used for peering
+	PeerIPAddress *string
+}
+
+// ExternalSVM - External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP
+// system
+type ExternalSVM struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ExternalSVMProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExternalSVMProperties - External SVM properties
+type ExternalSVMProperties struct {
+	// REQUIRED; Name of the external ONTAP SVM (different from Azure resource name). Must be unique across the cluster.
+	OntapSVMName *string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Resource IDs of associated SVM Peer relationships
+	SVMPeerResourceIDs []*string
+}
+
+// ExternalSvmListResult - The response of a ExternalSvm list operation.
+type ExternalSvmListResult struct {
+	// REQUIRED; The ExternalSvm items on this page
+	Value []*ExternalSVM
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExternalSvmTagsUpdate - The type used for updating tags in ExternalSvm resources.
+type ExternalSvmTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // FilePathAvailabilityRequest - File path availability request content - availability is based on the name and the subnetId.
 type FilePathAvailabilityRequest struct {
 	// REQUIRED; File path to verify.
@@ -2235,6 +2651,32 @@ type HourlySchedule struct {
 	UsedBytes *int64
 }
 
+// KeyVaultClusterPeerPassphrasePatchProperties - Key Vault authentication properties for PATCH operations
+type KeyVaultClusterPeerPassphrasePatchProperties struct {
+	// The Azure Key Vault URI where the passphrase for cluster peering handshake is stored
+	KeyVaultURI *string
+
+	// The name of the secret in Azure Key Vault. Passphrase for cluster peering handshake is stored in this secret.
+	SecretName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. If not provided, system-assigned
+	// identity will be used.
+	UserAssignedIdentityResourceID *string
+}
+
+// KeyVaultClusterPeerPassphraseProperties - Key Vault authentication properties
+type KeyVaultClusterPeerPassphraseProperties struct {
+	// REQUIRED; The Azure Key Vault URI where the passphrase for cluster peering handshake is stored
+	KeyVaultURI *string
+
+	// REQUIRED; The name of the secret in Azure Key Vault. Passphrase for cluster peering handshake is stored in this secret.
+	SecretName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. If not provided, system-assigned
+	// identity will be used.
+	UserAssignedIdentityResourceID *string
+}
+
 // KeyVaultPrivateEndpoint - Pairs of virtual network ID and private endpoint ID. Every virtual network that has volumes encrypted
 // with customer-managed keys needs its own key vault private endpoint.
 type KeyVaultPrivateEndpoint struct {
@@ -2261,6 +2703,18 @@ type KeyVaultProperties struct {
 
 	// READ-ONLY; Status of the KeyVault connection.
 	Status *KeyVaultStatus
+}
+
+// KeyVaultPropertiesPatch - Properties of key vault for PATCH operations (no required properties)
+type KeyVaultPropertiesPatch struct {
+	// The name of KeyVault key.
+	KeyName *string
+
+	// The resource ID of KeyVault.
+	KeyVaultResourceID *string
+
+	// The Uri of KeyVault.
+	KeyVaultURI *string
 }
 
 // LdapConfiguration - LDAP configuration
@@ -3035,6 +3489,51 @@ type RestoreStatus struct {
 	UnhealthyReason *string
 }
 
+// SVMPeer - SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
+type SVMPeer struct {
+	// The resource-specific properties for this resource.
+	Properties *SVMPeerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SVMPeerProperties - SVM Peer properties
+type SVMPeerProperties struct {
+	// READ-ONLY; Command to accept the peer relationship
+	AcceptCommand *string
+
+	// READ-ONLY; Name of the Azure Net App Files (ANF) SVM
+	AnfSVMName *string
+
+	// READ-ONLY; Resource IDs of External Cache Connections associated with this SVM peer
+	ExternalCacheConnectionResourceIDs []*string
+
+	// READ-ONLY; Resource ID of the external SVM
+	ExternalSVMResourceID *string
+
+	// READ-ONLY; Resource IDs of Hybrid Replication resources associated with this SVM peer
+	HybridReplicationResourceIDs []*string
+
+	// READ-ONLY; Peer types; expected values include "Replication" or "Cache"
+	PeerTypes []*SVMPeerType
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Status of the peer relationship
+	Status *SVMPeerStatus
+}
+
 // SecretPassword - Access password from Azure KeyVault Secrets to connect Active Directory
 type SecretPassword struct {
 	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
@@ -3072,16 +3571,31 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification
 }
 
+// SetupInformation - Setup Information for External Connection Setups
+type SetupInformation struct {
+	// READ-ONLY; Command to execute
+	Command *string
+
+	// READ-ONLY; Setup status indicating the current step in the setup process
+	SetupStatus *ExternalConnectionSetupState
+
+	// READ-ONLY; Additional status information
+	StatusInformation *string
+}
+
 // SmbSettings - SMB settings for the cache
 type SmbSettings struct {
-	// Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	// Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol cache
 	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration
 
 	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol cache.
 	SmbEncryption *SmbEncryptionState
 
-	// Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	// Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol cache
 	SmbNonBrowsable *SmbNonBrowsable
+
+	// Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol cache
+	SmbOplocks *SmbOplocks
 }
 
 // Snapshot of a Volume
@@ -3396,6 +3910,15 @@ type SvmPeerCommandResponseProperties struct {
 	SvmPeeringCommand *string
 }
 
+// SvmPeerListResult - The response of a SvmPeer list operation.
+type SvmPeerListResult struct {
+	// REQUIRED; The SvmPeer items on this page
+	Value []*SVMPeer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -3660,6 +4183,12 @@ type VolumeList struct {
 	NextLink *string
 }
 
+// VolumeNamespaceProperties - Geographic namespace properties for a volume.
+type VolumeNamespaceProperties struct {
+	// Indicates whether this volume is designated as an origin for cache volumes.
+	OriginVolume *OriginVolume
+}
+
 // VolumePatch - Volume patch resource
 type VolumePatch struct {
 	// Resource location
@@ -3681,8 +4210,17 @@ type VolumePatch struct {
 	Type *string
 }
 
+// VolumePatchNamespaceProperties - Geographic namespace properties for a volume patch operation.
+type VolumePatchNamespaceProperties struct {
+	// Indicates whether this volume is designated as an origin for cache volumes.
+	OriginVolume *OriginVolume
+}
+
 // VolumePatchProperties - Patchable volume properties
 type VolumePatchProperties struct {
+	// Async Directory Delete configuration for the volume.
+	AsyncDirectoryDelete *AsyncDirectoryDelete
+
 	// Specifies whether Cool Access(tiering) is enabled for the volume.
 	CoolAccess *bool
 
@@ -3714,6 +4252,9 @@ type VolumePatchProperties struct {
 	// Set of export policy rules
 	ExportPolicy *VolumePatchPropertiesExportPolicy
 
+	// Geographic namespace properties for this volume.
+	GeoNamespaceProperties *VolumePatchNamespaceProperties
+
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
 
@@ -3729,6 +4270,9 @@ type VolumePatchProperties struct {
 
 	// Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
 	SmbNonBrowsable *SmbNonBrowsable
+
+	// Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbOplocks *SmbOplocks
 
 	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
 	// snapshots.
@@ -3790,6 +4334,9 @@ type VolumeProperties struct {
 	// grow and create a short term clone volume, set the property as accepted.
 	AcceptGrowCapacityPoolForShortTermCloneSplit *AcceptGrowCapacityPoolForShortTermCloneSplit
 
+	// Async Directory Delete configuration for the volume.
+	AsyncDirectoryDelete *AsyncDirectoryDelete
+
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
 	AvsDataStore *AvsDataStore
 
@@ -3844,6 +4391,9 @@ type VolumeProperties struct {
 
 	// Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy
+
+	// Geographic namespace properties for this volume.
+	GeoNamespaceProperties *VolumeNamespaceProperties
 
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
@@ -3904,6 +4454,9 @@ type VolumeProperties struct {
 
 	// Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
 	SmbNonBrowsable *SmbNonBrowsable
+
+	// Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbOplocks *SmbOplocks
 
 	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
 	// snapshots (defaults to true).

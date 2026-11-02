@@ -20,7 +20,7 @@ import (
 // RelationshipsClient contains the methods for the Relationships group.
 // Don't use this type directly, use NewRelationshipsClient() instead.
 //
-// Generated from API version 2026-10-01-preview
+// Generated from API version 2026-11-01
 type RelationshipsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *RelationshipsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a Relationship
+// createOrUpdate - Create a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, options *RelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, _ *RelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
@@ -117,7 +117,7 @@ func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -152,7 +152,7 @@ func (client *RelationshipsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a Relationship
+// deleteOperation - Delete a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RelationshipsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *RelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *RelationshipsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
@@ -198,7 +198,7 @@ func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -251,7 +251,7 @@ func (client *RelationshipsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +327,7 @@ func (client *RelationshipsClient) listByHealthModelCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261001Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.Timestamp != nil {
 			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
 		}

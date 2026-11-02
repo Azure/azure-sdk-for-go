@@ -16,30 +16,22 @@ stages:
         - template: /eng/pipelines/templates/variables/image.yml
       strategy:
         matrix:
-          Linux_Go118:
+          Linux_GoPrevious:
             pool.name: $(LINUXPOOL)
             image.name: $(LINUXVMIMAGE)
-            go.version: '1.18.10'
-          Windows_Go118:
+            go.version: $(GO_VERSION_PREVIOUS)
+          Windows_GoPrevious:
             pool.name: $(WINDOWSPOOL)
             image.name: $(WINDOWSVMIMAGE)
-            go.version: '1.18.10'
-          Linux_Go122:
+            go.version: $(GO_VERSION_PREVIOUS)
+          Linux_GoLatest:
             pool.name: $(LINUXPOOL)
             image.name: $(LINUXVMIMAGE)
-            go.version: '1.22.8'
-          Windows_Go122:
+            go.version: $(GO_VERSION_LATEST)
+          Windows_GoLatest:
             pool.name: $(WINDOWSPOOL)
             image.name: $(WINDOWSVMIMAGE)
-            go.version: '1.22.8'
-          Linux_Go123:
-            pool.name: $(LINUXPOOL)
-            image.name: $(LINUXVMIMAGE)
-            go.version: '1.23.2'
-          Windows_Go123:
-            pool.name: $(WINDOWSPOOL)
-            image.name: $(WINDOWSVMIMAGE)
-            go.version: '1.23.2'
+            go.version: $(GO_VERSION_LATEST)
       pool:
         name: $(pool.name)
         demands: ImageOverride -equals '$(image.name)'
@@ -74,7 +66,7 @@ stages:
       steps:
       - task: GoTool@0
         inputs:
-          version: '1.23.2'
+          version: '$(GO_VERSION_LATEST)'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml

@@ -71,8 +71,8 @@ export CARGO_PROFILE_RELEASE_DEBUG=2
 export CARGO_PROFILE_RELEASE_STRIP=false
 (
   cd "$output/work/sdk"
-  cargo test --offline -p cosmos-perf-adapter
-  cargo build --offline --release -p cosmos-perf-adapter
+  cargo test --locked -p cosmos-perf-adapter
+  cargo build --locked --release -p cosmos-perf-adapter
 )
 cp "$CARGO_TARGET_DIR/release/cosmos-perf-adapter" "$output/bin/cosmos-perf-rust"
 
@@ -96,7 +96,7 @@ value = {
         "dirty": False,
     },
     "compiler": subprocess.check_output(["rustc", "--version", "--verbose"], text=True).strip(),
-    "buildCommand": "cargo build --offline --release -p cosmos-perf-adapter",
+    "buildCommand": "cargo build --locked --release -p cosmos-perf-adapter",
     "dependencyVersions": {
         "azure_data_cosmos": "pinned-workspace",
         "azure_data_cosmos_driver": "pinned-workspace",

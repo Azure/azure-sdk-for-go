@@ -38,7 +38,7 @@ scripts in this directory.
    process, a 30-second excluded warmup, and a 300-second measurement.
 10. Keep run classes separate:
     - `clean-score`: at least two A/A repeats, external process/cgroup sampling only. No perf,
-      pprof, runtime trace, uprobes, or new hot-path diagnostic counters.
+      pprof, runtime trace, user-space probes, or new hot-path diagnostic counters.
     - `perf`: Linux perf only with profiling-quality optimized binaries. Calibrate frame-pointer
       versus DWARF first and use one passing mode consistently. No Go pprof.
     - `go-diagnostic`: Go v1/v2 CPU and heap pprof plus short runtime trace, block, and mutex

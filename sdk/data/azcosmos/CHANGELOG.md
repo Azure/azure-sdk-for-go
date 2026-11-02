@@ -130,6 +130,8 @@
 
 ### Other Changes
 
+* Added exhaustive native error-mapping tests, header drift detection, metadata and diagnostics
+  ownership checks, and Darwin/arm64 native compile/link coverage.
 * Moved completion response copying and diagnostics conversion onto waiting callers so one
   caller's response preparation no longer delays unrelated completions.
   See [PR 27841](https://github.com/Azure/azure-sdk-for-go/pull/27841).

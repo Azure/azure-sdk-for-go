@@ -105,7 +105,7 @@ func ExampleRecommendationsClient_RecommendVMSKU() {
 	// 						to.Ptr("3"),
 	// 					},
 	// 				},
-	// 				AzureMlRecommended: to.Ptr(true),
+	// 				AzureMLRecommended: to.Ptr(true),
 	// 				Benchmark: &armaiinfraoptimization.RecommendVMSKUBenchmark{
 	// 					Level: to.Ptr(armaiinfraoptimization.BenchmarkLevelTopologyMatched),
 	// 					ModelClass: to.Ptr("70b"),
@@ -120,8 +120,8 @@ func ExampleRecommendationsClient_RecommendVMSKU() {
 	// 					Software: to.Ptr("vLLM 0.6.2"),
 	// 					OperatingSystem: to.Ptr("Ubuntu 22.04"),
 	// 					WeightDataTypes: to.Ptr("float16"),
-	// 					P99TtftMs: to.Ptr[float64](385.2),
-	// 					P99TpotMs: to.Ptr[float64](42.7),
+	// 					P99TTFTMs: to.Ptr[float64](385.2),
+	// 					P99TPOTMs: to.Ptr[float64](42.7),
 	// 				},
 	// 				DocumentationURL: to.Ptr("https://learn.microsoft.com/azure/virtual-machines/nc-a100-v4-series"),
 	// 			},
@@ -172,7 +172,7 @@ func ExampleRecommendationsClient_RecommendVMSKU() {
 	// 					Status: to.Ptr(armaiinfraoptimization.PlacementStatusNotEvaluated),
 	// 					Reason: to.Ptr("Placement is queried only for sizes with available quota."),
 	// 				},
-	// 				AzureMlRecommended: to.Ptr(false),
+	// 				AzureMLRecommended: to.Ptr(false),
 	// 				Benchmark: &armaiinfraoptimization.RecommendVMSKUBenchmark{
 	// 					Level: to.Ptr(armaiinfraoptimization.BenchmarkLevelBenchmarked),
 	// 					ModelClass: to.Ptr("70b"),
@@ -194,9 +194,9 @@ func ExampleRecommendationsClient_RecommendVMSKU() {
 	// 			},
 	// 			Memory: &armaiinfraoptimization.RecommendVMSKUMemory{
 	// 				ModelWeightsGiB: to.Ptr[float64](130.39),
-	// 				KvCacheGiBPerRequest: to.Ptr[float64](2.75),
-	// 				KvCacheGiBTotal: to.Ptr[float64](2.75),
-	// 				ModelAndKvCacheGiB: to.Ptr[float64](133.14),
+	// 				KVCacheGiBPerRequest: to.Ptr[float64](2.75),
+	// 				KVCacheGiBTotal: to.Ptr[float64](2.75),
+	// 				ModelAndKVCacheGiB: to.Ptr[float64](133.14),
 	// 			},
 	// 			Basis: &armaiinfraoptimization.RecommendVMSKUSizingBasis{
 	// 				ParameterCountSource: to.Ptr(armaiinfraoptimization.ParameterCountSourceRequest),

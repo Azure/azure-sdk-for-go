@@ -168,8 +168,8 @@ func (r RecommendVMSKUBenchmark) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "level", r.Level)
 	populate(objectMap, "modelClass", r.ModelClass)
 	populate(objectMap, "operatingSystem", r.OperatingSystem)
-	populate(objectMap, "p99TpotMs", r.P99TpotMs)
-	populate(objectMap, "p99TtftMs", r.P99TtftMs)
+	populate(objectMap, "p99TpotMs", r.P99TPOTMs)
+	populate(objectMap, "p99TtftMs", r.P99TTFTMs)
 	populate(objectMap, "scenario", r.Scenario)
 	populate(objectMap, "software", r.Software)
 	populate(objectMap, "submissionId", r.SubmissionID)
@@ -204,10 +204,10 @@ func (r *RecommendVMSKUBenchmark) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "OperatingSystem", &r.OperatingSystem)
 			delete(rawMsg, key)
 		case "p99TpotMs":
-			err = unpopulate(val, "P99TpotMs", &r.P99TpotMs)
+			err = unpopulate(val, "P99TPOTMs", &r.P99TPOTMs)
 			delete(rawMsg, key)
 		case "p99TtftMs":
-			err = unpopulate(val, "P99TtftMs", &r.P99TtftMs)
+			err = unpopulate(val, "P99TTFTMs", &r.P99TTFTMs)
 			delete(rawMsg, key)
 		case "scenario":
 			err = unpopulate(val, "Scenario", &r.Scenario)
@@ -356,9 +356,9 @@ func (r *RecommendVMSKUHourlyCost) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RecommendVMSKUMemory.
 func (r RecommendVMSKUMemory) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "kvCacheGiBPerRequest", r.KvCacheGiBPerRequest)
-	populate(objectMap, "kvCacheGiBTotal", r.KvCacheGiBTotal)
-	populate(objectMap, "modelAndKvCacheGiB", r.ModelAndKvCacheGiB)
+	populate(objectMap, "kvCacheGiBPerRequest", r.KVCacheGiBPerRequest)
+	populate(objectMap, "kvCacheGiBTotal", r.KVCacheGiBTotal)
+	populate(objectMap, "modelAndKvCacheGiB", r.ModelAndKVCacheGiB)
 	populate(objectMap, "modelWeightsGiB", r.ModelWeightsGiB)
 	return json.Marshal(objectMap)
 }
@@ -373,13 +373,13 @@ func (r *RecommendVMSKUMemory) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "kvCacheGiBPerRequest":
-			err = unpopulate(val, "KvCacheGiBPerRequest", &r.KvCacheGiBPerRequest)
+			err = unpopulate(val, "KVCacheGiBPerRequest", &r.KVCacheGiBPerRequest)
 			delete(rawMsg, key)
 		case "kvCacheGiBTotal":
-			err = unpopulate(val, "KvCacheGiBTotal", &r.KvCacheGiBTotal)
+			err = unpopulate(val, "KVCacheGiBTotal", &r.KVCacheGiBTotal)
 			delete(rawMsg, key)
 		case "modelAndKvCacheGiB":
-			err = unpopulate(val, "ModelAndKvCacheGiB", &r.ModelAndKvCacheGiB)
+			err = unpopulate(val, "ModelAndKVCacheGiB", &r.ModelAndKVCacheGiB)
 			delete(rawMsg, key)
 		case "modelWeightsGiB":
 			err = unpopulate(val, "ModelWeightsGiB", &r.ModelWeightsGiB)
@@ -477,7 +477,7 @@ func (r *RecommendVMSKUOptimization) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RecommendVMSKUOption.
 func (r RecommendVMSKUOption) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "azureMlRecommended", r.AzureMlRecommended)
+	populate(objectMap, "azureMlRecommended", r.AzureMLRecommended)
 	populate(objectMap, "benchmark", r.Benchmark)
 	populate(objectMap, "cost", r.Cost)
 	populate(objectMap, "documentationUrl", r.DocumentationURL)
@@ -501,7 +501,7 @@ func (r *RecommendVMSKUOption) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "azureMlRecommended":
-			err = unpopulate(val, "AzureMlRecommended", &r.AzureMlRecommended)
+			err = unpopulate(val, "AzureMLRecommended", &r.AzureMLRecommended)
 			delete(rawMsg, key)
 		case "benchmark":
 			err = unpopulate(val, "Benchmark", &r.Benchmark)
@@ -545,7 +545,7 @@ func (r *RecommendVMSKUOption) UnmarshalJSON(data []byte) error {
 func (r RecommendVMSKUPerformanceEstimate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deploymentOutputTokensPerSecond", r.DeploymentOutputTokensPerSecond)
-	populate(objectMap, "ttftMs", r.TtftMs)
+	populate(objectMap, "ttftMs", r.TTFTMs)
 	return json.Marshal(objectMap)
 }
 
@@ -562,7 +562,7 @@ func (r *RecommendVMSKUPerformanceEstimate) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DeploymentOutputTokensPerSecond", &r.DeploymentOutputTokensPerSecond)
 			delete(rawMsg, key)
 		case "ttftMs":
-			err = unpopulate(val, "TtftMs", &r.TtftMs)
+			err = unpopulate(val, "TTFTMs", &r.TTFTMs)
 			delete(rawMsg, key)
 		}
 		if err != nil {

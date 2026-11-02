@@ -90,10 +90,10 @@ type RecommendVMSKUBenchmark struct {
 	OperatingSystem *string
 
 	// The 99th-percentile time per output token observed in the benchmark, in milliseconds.
-	P99TpotMs *float64
+	P99TPOTMs *float64
 
 	// The 99th-percentile time to first token observed in the benchmark, in milliseconds.
-	P99TtftMs *float64
+	P99TTFTMs *float64
 
 	// The serving software the benchmark was measured with.
 	Software *string
@@ -159,13 +159,13 @@ type RecommendVMSKUHourlyCost struct {
 // RecommendVMSKUMemory - The memory calculation shared by every returned option.
 type RecommendVMSKUMemory struct {
 	// REQUIRED; The key-value cache memory required for a single concurrent request, in gibibytes.
-	KvCacheGiBPerRequest *float64
+	KVCacheGiBPerRequest *float64
 
 	// REQUIRED; The key-value cache memory required for all concurrent requests on a replica, in gibibytes.
-	KvCacheGiBTotal *float64
+	KVCacheGiBTotal *float64
 
 	// REQUIRED; The combined model-weight and key-value cache memory required per replica, in gibibytes.
-	ModelAndKvCacheGiB *float64
+	ModelAndKVCacheGiB *float64
 
 	// REQUIRED; The memory required for the model weights, in gibibytes.
 	ModelWeightsGiB *float64
@@ -227,7 +227,7 @@ type RecommendVMSKUOption struct {
 	VMSize *string
 
 	// Whether the Azure Machine Learning model catalog recommends this virtual machine size for the model.
-	AzureMlRecommended *bool
+	AzureMLRecommended *bool
 
 	// The external benchmark evidence selected for this option.
 	Benchmark *RecommendVMSKUBenchmark
@@ -251,7 +251,7 @@ type RecommendVMSKUPerformanceEstimate struct {
 	DeploymentOutputTokensPerSecond *float64
 
 	// REQUIRED; The estimated time to first token for a single request, in milliseconds.
-	TtftMs *float64
+	TTFTMs *float64
 }
 
 // RecommendVMSKUPlacement - The capacity placement evidence for one virtual machine size option.

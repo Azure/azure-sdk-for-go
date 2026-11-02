@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * Fixed `QueueClient.GetSASURL()` and `ServiceClient.GetSASURL()` appending a duplicated `?` to the resulting URL when the client's underlying URL already contained a query string, which produced a malformed SAS URL.
 
 #### Other Changes

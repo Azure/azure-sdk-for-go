@@ -19,7 +19,7 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type EndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and
+// create - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *EndpointsClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *EndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, _ *EndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -117,7 +117,7 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -152,8 +152,8 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
-// and profile.
+// deleteOperation - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
+// group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -175,7 +175,7 @@ func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if client.subscriptionID == "" {
@@ -199,8 +199,410 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - contentFilePaths - The path to the content to be loaded. Path should be a full URL, e.g. ‘/pictures/city.png' which loads
+//     a single file
+//   - options - EndpointsClientBeginLoadContentOptions contains the optional parameters for the EndpointsClient.BeginLoadContent
+//     method.
+func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*runtime.Poller[EndpointsClientLoadContentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.loadContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientLoadContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientLoadContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// loadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginLoadContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.loadContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// loadContentCreateRequest creates the loadContent request.
+func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, _ *EndpointsClientBeginLoadContentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPurgeContent - Removes a content from CDN.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
+//     a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and files in the directory.
+//   - options - EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent
+//     method.
+func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*runtime.Poller[EndpointsClientPurgeContentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purgeContent - Removes a content from CDN.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginPurgeContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeContentCreateRequest creates the purgeContent request.
+func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, _ *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginStart - Starts an existing CDN endpoint that is on a stopped state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - options - EndpointsClientBeginStartOptions contains the optional parameters for the EndpointsClient.BeginStart method.
+func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*runtime.Poller[EndpointsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, profileName, endpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts an existing CDN endpoint that is on a stopped state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStop - Stops an existing running CDN endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - options - EndpointsClientBeginStopOptions contains the optional parameters for the EndpointsClient.BeginStop method.
+func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*runtime.Poller[EndpointsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, profileName, endpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops an existing running CDN endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
+// group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin operation.
+// To update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - endpointUpdateProperties - Endpoint update properties
+//   - options - EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
+func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*runtime.Poller[EndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
+// and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin operation. To
+// update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, _ *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -253,7 +655,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +732,7 @@ func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -413,7 +815,7 @@ func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -430,408 +832,6 @@ func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Respon
 		return EndpointsClientListResourceUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - contentFilePaths - The path to the content to be loaded. Path should be a full URL, e.g. ‘/pictures/city.png' which loads
-//     a single file
-//   - options - EndpointsClientBeginLoadContentOptions contains the optional parameters for the EndpointsClient.BeginLoadContent
-//     method.
-func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*runtime.Poller[EndpointsClientLoadContentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.loadContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientLoadContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientLoadContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginLoadContent"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.loadContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// loadContentCreateRequest creates the LoadContent request.
-func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, _ *EndpointsClientBeginLoadContentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginPurgeContent - Removes a content from CDN.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
-//     a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and files in the directory.
-//   - options - EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent
-//     method.
-func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*runtime.Poller[EndpointsClientPurgeContentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientPurgeContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientPurgeContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PurgeContent - Removes a content from CDN.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginPurgeContent"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// purgeContentCreateRequest creates the PurgeContent request.
-func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, _ *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStart - Starts an existing CDN endpoint that is on a stopped state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - options - EndpointsClientBeginStartOptions contains the optional parameters for the EndpointsClient.BeginStart method.
-func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*runtime.Poller[EndpointsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, profileName, endpointName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts an existing CDN endpoint that is on a stopped state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginStop - Stops an existing running CDN endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - options - EndpointsClientBeginStopOptions contains the optional parameters for the EndpointsClient.BeginStop method.
-func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*runtime.Poller[EndpointsClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, profileName, endpointName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops an existing running CDN endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-// group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin operation.
-// To update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - endpointUpdateProperties - Endpoint update properties
-//   - options - EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
-func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*runtime.Poller[EndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
-// and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin operation. To
-// update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, _ *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
@@ -884,7 +884,7 @@ func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

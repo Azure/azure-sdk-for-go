@@ -199,7 +199,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '1.23.2'
+                  version: '$(GO_VERSION_LATEST)'
                 displayName: "Select Go Version"
 
               - template: /eng/pipelines/templates/steps/create-go-workspace.yml

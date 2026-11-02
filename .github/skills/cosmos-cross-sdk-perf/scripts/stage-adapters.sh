@@ -30,8 +30,12 @@ done
 install -m 0755 "$rust_build/bin/cosmos-perf-rust" "$output/bin/cosmos-perf-rust"
 install -m 0444 "$rust_build/bin/cosmos-perf-rust.provenance.json" \
   "$output/bin/cosmos-perf-rust.provenance.json"
+mkdir -p "$output/provenance"
+for name in Cargo.lock.original Cargo.lock.resolved Cargo.lock.diff; do
+  install -m 0444 "$rust_build/$name" "$output/provenance/$name"
+done
 (
   cd "$output"
-  sha256sum bin/* > SHA256SUMS
+  find bin provenance -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
 )
 chmod -R a-w "$output"

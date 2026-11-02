@@ -69,24 +69,44 @@ export CARGO_TARGET_DIR=$output/work/target
 export RUSTFLAGS="-C force-frame-pointers=yes -C debuginfo=2 -C link-arg=-Wl,--build-id=sha1"
 export CARGO_PROFILE_RELEASE_DEBUG=2
 export CARGO_PROFILE_RELEASE_STRIP=false
+cp "$output/work/sdk/Cargo.lock" "$output/Cargo.lock.original"
 (
   cd "$output/work/sdk"
-  cargo test --locked -p cosmos-perf-adapter
+  cargo test -p cosmos-perf-adapter
+  git diff -- Cargo.lock > "$output/Cargo.lock.diff"
+  python3 - "$output/Cargo.lock.diff" <<'PY'
+import pathlib
+import sys
+
+diff = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
+if 'name = "cosmos-perf-adapter"' not in diff:
+    raise SystemExit("Cargo.lock did not add the local adapter package")
+removed = [
+    line for line in diff.splitlines()
+    if line.startswith("-") and not line.startswith("---")
+]
+if removed:
+    raise SystemExit("Cargo.lock changed existing pinned dependency entries")
+PY
+  cp Cargo.lock "$output/Cargo.lock.resolved"
   cargo build --locked --release -p cosmos-perf-adapter
 )
 cp "$CARGO_TARGET_DIR/release/cosmos-perf-adapter" "$output/bin/cosmos-perf-rust"
 
 build_id=$(readelf -n "$output/bin/cosmos-perf-rust" | awk '/Build ID:/ {print $3; exit}')
 python3 - "$output/bin/cosmos-perf-rust" "$commit" \
-  "$(git -C "$checkout" rev-parse HEAD^{tree})" "$build_id" <<'PY'
+  "$(git -C "$checkout" rev-parse HEAD^{tree})" "$build_id" \
+  "$output/Cargo.lock.original" "$output/Cargo.lock.resolved" <<'PY'
 import hashlib
 import json
 import pathlib
 import subprocess
 import sys
 
-binary, commit, tree, build_id = sys.argv[1:]
+binary, commit, tree, build_id, original_lock, resolved_lock = sys.argv[1:]
 path = pathlib.Path(binary)
+original_lock_path = pathlib.Path(original_lock)
+resolved_lock_path = pathlib.Path(resolved_lock)
 value = {
     "leg": "rust",
     "source": {
@@ -95,11 +115,25 @@ value = {
         "tree": tree,
         "dirty": False,
     },
-    "compiler": subprocess.check_output(["rustc", "--version", "--verbose"], text=True).strip(),
-    "buildCommand": "cargo build --locked --release -p cosmos-perf-adapter",
+    "compiler": {
+        "rustc": subprocess.check_output(
+            ["rustc", "--version", "--verbose"], text=True
+        ).strip(),
+        "cargo": subprocess.check_output(["cargo", "--version"], text=True).strip(),
+    },
+    "buildCommand": [
+        "cargo test -p cosmos-perf-adapter",
+        "cargo build --locked --release -p cosmos-perf-adapter",
+    ],
     "dependencyVersions": {
         "azure_data_cosmos": "pinned-workspace",
         "azure_data_cosmos_driver": "pinned-workspace",
+        "cargoLockOriginalSha256": hashlib.sha256(
+            original_lock_path.read_bytes()
+        ).hexdigest(),
+        "cargoLockResolvedSha256": hashlib.sha256(
+            resolved_lock_path.read_bytes()
+        ).hexdigest(),
     },
     "binary": {
         "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),

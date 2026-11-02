@@ -99,7 +99,9 @@ value = {
         "tree": tree,
         "dirty": False,
     },
-    "compiler": subprocess.check_output(["go", "version"], text=True).strip(),
+    "compiler": {
+        "go": subprocess.check_output(["go", "version"], text=True).strip(),
+    },
     "buildCommand": "CGO_ENABLED=0 go build -tags go_v1 -ldflags=-compressdwarf=false"
     if leg == "go-v1"
     else "CGO_ENABLED=1 go build -tags go_v2 -ldflags=-compressdwarf=false",
@@ -120,6 +122,8 @@ PY
 
 adapter_commit=$(git -C "$skill" rev-parse HEAD)
 adapter_tree=$(git -C "$skill" rev-parse HEAD^{tree})
+native_archive=$native_module/linux/amd64/libazurecosmosdriver.a
+native_archive_sha=$(sha256sum "$native_archive" | awk '{print $1}')
 write_provenance go-v1 "$output/bin/cosmos-perf-go-v1" \
   https://github.com/Azure/azure-sdk-for-go.git "$adapter_commit" "$adapter_tree" \
   '{"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos":"v1.5.0"}' ''
@@ -127,7 +131,7 @@ write_provenance go-v2-native "$output/bin/cosmos-perf-go-v2-native" \
   https://github.com/Azure/azure-sdk-for-go.git "$go_v2_commit" \
   "$(git -C "$go_v2_checkout" rev-parse HEAD^{tree})" \
   '{"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2":"local-pinned-commit"}' \
-  "{\"sourceCommit\":\"62192bf69dac1a3384505971d7deef19eb8282df\",\"distributionCommit\":\"$native_commit\"}"
+  "{\"sourceCommit\":\"62192bf69dac1a3384505971d7deef19eb8282df\",\"distributionCommit\":\"$native_commit\",\"archiveSha256\":\"$native_archive_sha\",\"buildId\":\"not-applicable-static-archive\"}"
 
 for binary in "$output"/bin/cosmos-perf-go-*; do
   [[ "$binary" == *.json ]] && continue

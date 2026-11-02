@@ -5,6 +5,9 @@
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 
+### Other Changes
+* Updated `azcore` version to `1.23.3`
+
 ## 1.7.0 (2026-10-08)
 
 ### Features Added

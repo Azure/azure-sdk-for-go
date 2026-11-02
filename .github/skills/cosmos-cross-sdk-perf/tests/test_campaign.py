@@ -3,6 +3,7 @@
 # cSpell:words kallsyms mallocgc rollup smaps vcpu westus
 
 import csv
+import hashlib
 import importlib.util
 import json
 import pathlib
@@ -26,7 +27,7 @@ def load_default():
 
 
 class CampaignTests(unittest.TestCase):
-    def test_default_config_has_governed_workload(self):
+    def test_default_config_has_governed_point_read_pilot(self):
         config = load_default()
         config["azure"]["subscriptionId"] = "00000000-0000-0000-0000-000000000000"
         config["azure"]["resourceGroup"] = "perf-rg"
@@ -35,25 +36,80 @@ class CampaignTests(unittest.TestCase):
             "resourceGroups/cosmos-rg/providers/Microsoft.DocumentDB/databaseAccounts/account"
         )
         campaign.validate_config(config)
+        self.assertEqual(
+            "https://github.com/brendangregg/FlameGraph.git",
+            config["sources"]["flameGraphRepository"],
+        )
+        self.assertRegex(config["sources"]["flameGraphCommit"], r"^[0-9a-f]{40}$")
 
-    def test_config_rejects_unmatched_cycle(self):
+    def test_flamegraph_script_uses_canonical_upstream_tools(self):
+        script = (ROOT / "scripts" / "generate-flamegraphs.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"$collapse" --all', script)
+        self.assertIn("flamegraph.pl", script)
+        self.assertIn("difffolded.pl", script)
+        self.assertIn("FLAMEGRAPH-COMMIT", script)
+        self.assertNotIn("custom flamegraph", script.lower())
+
+    def test_config_rejects_non_read_operation(self):
         config = load_default()
-        config["workload"]["cycle"] = ["read", "upsert"]
-        with self.assertRaisesRegex(campaign.CampaignError, "workload.cycle"):
+        config["workload"]["operation"] = "mixed"
+        with self.assertRaisesRegex(campaign.CampaignError, "workload.operation"):
             campaign.validate_config(config, allow_incomplete_azure=True)
 
-    def test_classification_maps_every_row_and_totals_100(self):
+    def test_config_rejects_second_pass_or_larger_matrix(self):
+        config = load_default()
+        config["workload"]["workers"].append(32)
+        with self.assertRaisesRegex(campaign.CampaignError, "workload.workers"):
+            campaign.validate_config(config, allow_incomplete_azure=True)
+
+    def test_classification_maps_shared_key_and_totals_100(self):
         rows = [
-            campaign.PerfRow("runtime.mallocgc", "go-v2", 25.0),
-            campaign.PerfRow("tokio::runtime::park", "rust", 25.0),
-            campaign.PerfRow("tcp_sendmsg", "[kernel.kallsyms]", 25.0),
-            campaign.PerfRow("custom_resolved_symbol", "binary", 25.0),
+            campaign.PerfRow("runtime.mallocgc", "go-v2", 20.0),
+            campaign.PerfRow("tokio::runtime::park", "rust", 20.0),
+            campaign.PerfRow("hmac_sha256", "binary", 20.0),
+            campaign.PerfRow("tcp_sendmsg", "[kernel.kallsyms]", 20.0),
+            campaign.PerfRow("custom_resolved_symbol", "binary", 20.0),
         ]
         totals, unmapped = campaign.classify(rows)
         self.assertEqual([], unmapped)
         self.assertAlmostEqual(100.0, sum(totals.values()))
-        self.assertEqual(25.0, totals["go-runtime-sdk"])
-        self.assertEqual(25.0, totals["tokio"])
+        self.assertEqual(20.0, totals["shared-key-signing-hmac-headers"])
+
+    def test_call_graph_calibration_selects_best_passing_mode(self):
+        config = load_default()
+        with tempfile.TemporaryDirectory() as temp:
+            root = pathlib.Path(temp)
+            config_path = root / "config.json"
+            frame_path = root / "frame.json"
+            dwarf_path = root / "dwarf.json"
+            config_path.write_text(json.dumps(config), encoding="utf-8")
+            frame_path.write_text(
+                json.dumps(
+                    {
+                        "callGraphMode": "frame-pointer",
+                        "lostEventPercent": 0,
+                        "resolvedSamplePercent": 99,
+                        "callchainSamplePercent": 99,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            dwarf_path.write_text(
+                json.dumps(
+                    {
+                        "callGraphMode": "dwarf,16384",
+                        "lostEventPercent": 0,
+                        "resolvedSamplePercent": 98,
+                        "callchainSamplePercent": 98,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            campaign.calibrate_call_graph(config_path, frame_path, dwarf_path)
+            selected = json.loads(config_path.read_text(encoding="utf-8"))
+            self.assertEqual("frame-pointer", selected["profiling"]["selectedCallGraph"])
 
     @mock.patch.object(campaign, "az_json")
     @mock.patch.object(campaign, "run")
@@ -86,70 +142,121 @@ class CampaignTests(unittest.TestCase):
         plan = campaign.provision_plan(config)
         self.assertEqual("West US 2", plan["location"])
         self.assertEqual("Standard_D4s_v5", plan["vmSku"])
-        self.assertEqual(
-            [
-                mock.call(["az", "account", "set", "--subscription", "sub"]),
-                mock.call(
-                    [
-                        "az",
-                        "group",
-                        "exists",
-                        "--name",
-                        "perf-rg",
-                        "--output",
-                        "tsv",
-                    ]
-                ),
-            ],
-            run_mock.call_args_list,
-        )
 
-    def test_validate_leg_and_report(self):
+    def test_clean_run_rejects_profile_artifacts(self):
         config = load_default()
+        config["profiling"]["selectedCallGraph"] = "frame-pointer"
+        with tempfile.TemporaryDirectory() as temp:
+            leg_dir = pathlib.Path(temp) / "go-v1"
+            self._write_leg(leg_dir, "go-v1", "clean-score", 8, 1, config)
+            (leg_dir / "raw" / "cpu.pprof").write_bytes(b"forbidden")
+            with self.assertRaisesRegex(campaign.CampaignError, "forbidden"):
+                campaign.validate_leg(leg_dir, config)
+
+    def test_complete_pilot_report_uses_clean_scores(self):
+        config = load_default()
+        config["profiling"]["selectedCallGraph"] = "frame-pointer"
         with tempfile.TemporaryDirectory() as temp:
             run_dir = pathlib.Path(temp)
-            for leg in campaign.LEGS:
-                self._write_leg(run_dir / leg, leg, config)
+            for workers in (8, 16):
+                for repeat in (1, 2):
+                    for leg in config["execution"]["order"][str(workers)]:
+                        self._write_leg(
+                            campaign.run_path(
+                                run_dir, workers, "clean-score", repeat, leg
+                            ),
+                            leg,
+                            "clean-score",
+                            workers,
+                            repeat,
+                            config,
+                        )
+                for leg in config["execution"]["order"][str(workers)]:
+                    self._write_leg(
+                        campaign.run_path(run_dir, workers, "perf", 1, leg),
+                        leg,
+                        "perf",
+                        workers,
+                        1,
+                        config,
+                    )
+                for leg in ("go-v1", "go-v2-native"):
+                    self._write_leg(
+                        campaign.run_path(run_dir, workers, "go-diagnostic", 1, leg),
+                        leg,
+                        "go-diagnostic",
+                        workers,
+                        1,
+                        config,
+                    )
             campaign.report(run_dir, config)
-            comparison = json.loads(
-                (run_dir / "comparison" / "comparison.json").read_text(encoding="utf-8")
+            summary = json.loads(
+                (run_dir / "comparison" / "summary.json").read_text(encoding="utf-8")
             )
-            self.assertEqual(3, len(comparison["legs"]))
-            self.assertTrue((run_dir / "comparison" / "cpu-flywheel.svg").is_file())
+            self.assertEqual("clean-score", summary["authoritativeClass"])
+            self.assertEqual(6, len(summary["authoritative"]))
+            self.assertEqual(22, len(summary["allRuns"]))
+            self.assertTrue((run_dir / "dashboard.html").is_file())
+            self.assertTrue((run_dir / "comparison" / "setup-equivalence.csv").is_file())
             self.assertTrue((run_dir / "SHA256SUMS").is_file())
 
-    def test_sanitize_redacts_sensitive_json_fields(self):
+    def test_sanitize_redacts_sensitive_json_and_includes_dashboard(self):
         with tempfile.TemporaryDirectory() as temp:
             run_dir = pathlib.Path(temp) / "run"
             run_dir.mkdir()
-            (run_dir / "metrics.json").write_text(
+            (run_dir / "summary.json").write_text(
                 json.dumps({"endpoint": "https://account", "success": 10}), encoding="utf-8"
             )
+            (run_dir / "dashboard.html").write_text("<html></html>", encoding="utf-8")
             output = pathlib.Path(temp) / "bundle.tar.gz"
             campaign.sanitize(run_dir, output)
             with tarfile.open(output, "r:gz") as archive:
-                member = archive.extractfile("cosmos-perf-result/metrics.json")
+                member = archive.extractfile("cosmos-perf-result/summary.json")
                 assert member is not None
                 value = json.load(member)
+                self.assertIsNotNone(
+                    archive.getmember("cosmos-perf-result/dashboard.html")
+                )
             self.assertTrue(value["endpoint"].startswith("sha256:"))
             self.assertEqual(10, value["success"])
 
-    def _write_leg(self, leg_dir, leg, config):
-        (leg_dir / "raw").mkdir(parents=True)
+    def _write_leg(self, leg_dir, leg, run_class, workers, repeat, config):
+        raw = leg_dir / "raw"
+        raw.mkdir(parents=True)
         binary = b"test-binary-" + leg.encode()
-        (leg_dir / "raw" / "binary").write_bytes(binary)
-        for path in (
-            "perf.data",
-            "proc-status.txt",
-            "smaps-rollup.txt",
-            "smaps.txt",
-            "cgroup-memory.txt",
-            "thread-stacks.txt",
-        ):
-            (leg_dir / "raw" / path).write_text("evidence\n", encoding="utf-8")
-        if leg.startswith("go-"):
-            (leg_dir / "raw" / "cpu.pprof").write_bytes(b"cpu")
-            (leg_dir / "raw" / "heap.pprof").write_bytes(b"heap")
+        (raw / "binary").write_bytes(binary)
+        if run_class in ("clean-score", "perf"):
+            for path in (
+                "proc-status.txt",
+                "smaps-rollup.txt",
+                "smaps.txt",
+                "cgroup-memory.txt",
+                "thread-stacks.txt",
+            ):
+                (raw / path).write_text("evidence\n", encoding="utf-8")
+        if run_class == "perf":
+            (raw / "perf.data").write_bytes(b"perf")
+            (raw / "perf-quality.json").write_text(
+                json.dumps(
+                    {
+                        "callGraphMode": config["profiling"]["selectedCallGraph"],
+                        "lostEventPercent": 0,
+                        "resolvedSamplePercent": 100,
+                        "callchainSamplePercent": 100,
+                    }
+                ),
+                encoding="utf-8",
+            )
+        if run_class == "go-diagnostic":
+            for path in (
+                "cpu.pprof",
+                "heap.pprof",
+                "runtime.trace",
+                "block.pprof",
+                "mutex.pprof",
+            ):
+                (raw / path).write_bytes(path.encode())
+
         source_commit = {
             "go-v1": "1" * 40,
             "go-v2-native": config["sources"]["goV2Commit"],
@@ -169,7 +276,7 @@ class CampaignTests(unittest.TestCase):
                 config["sources"]["goV1Module"]: config["sources"]["goV1Version"]
             },
             "binary": {
-                "sha256": __import__("hashlib").sha256(binary).hexdigest(),
+                "sha256": hashlib.sha256(binary).hexdigest(),
                 "buildId": "test-build-id",
                 "debugSymbols": "embedded",
             },
@@ -184,10 +291,21 @@ class CampaignTests(unittest.TestCase):
         (leg_dir / "provenance.json").write_text(
             json.dumps(provenance) + "\n", encoding="utf-8"
         )
+
+        workload = dict(config["workload"])
+        workload["workers"] = workers
         metrics = {
             "leg": leg,
-            "workload": config["workload"],
-            "counts": {"success": 3000, "error": 0, "retry": 0, "throttle": 0},
+            "runClass": run_class,
+            "workers": workers,
+            "repeat": repeat,
+            "workload": workload,
+            "transportProof": {
+                "transportKind": "gateway-v1",
+                "negotiatedHTTPVersion": "HTTP/2",
+                "binaryEncoding": False,
+            },
+            "counts": {"success": 3000 + repeat, "error": 0, "retry": 0, "throttle": 0},
             "timing": {"wallSeconds": 300, "processCPUSeconds": 600},
             "latencyMilliseconds": {"p50": 1, "p90": 2, "p95": 3, "p99": 4, "p999": 5},
             "queueDelayMilliseconds": None,
@@ -201,20 +319,23 @@ class CampaignTests(unittest.TestCase):
             },
             "gauges": {
                 "queueHighWater": None,
-                "inFlightHighWater": 8,
+                "inFlightHighWater": workers,
                 "completionHighWater": None,
             },
         }
         (leg_dir / "metrics.json").write_text(
             json.dumps(metrics, indent=2) + "\n", encoding="utf-8"
         )
-        with (leg_dir / "perf-self.csv").open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.writer(handle)
-            writer.writerow(["symbol", "dso", "self_percent"])
-            writer.writerow(["runtime.mallocgc", "binary", "40"])
-            writer.writerow(["tokio::runtime::park", "binary", "20"])
-            writer.writerow(["tcp_sendmsg", "[kernel.kallsyms]", "20"])
-            writer.writerow(["resolved_symbol", "binary", "20"])
+        if run_class == "perf":
+            with (leg_dir / "perf-self.csv").open(
+                "w", newline="", encoding="utf-8"
+            ) as handle:
+                writer = csv.writer(handle)
+                writer.writerow(["symbol", "dso", "self_percent"])
+                writer.writerow(["runtime.mallocgc", "binary", "40"])
+                writer.writerow(["tokio::runtime::park", "binary", "20"])
+                writer.writerow(["tcp_sendmsg", "[kernel.kallsyms]", "20"])
+                writer.writerow(["resolved_symbol", "binary", "20"])
 
 
 if __name__ == "__main__":

@@ -6,16 +6,20 @@
 set -Eeuo pipefail
 
 usage() {
-  echo "usage: profile-leg.sh --leg <go-v1|go-v2-native|rust> --run-dir <dir> --config <json> -- <command...>" >&2
+  echo "usage: profile-leg.sh --leg <go-v1|go-v2-native|rust> --workers <8|16> --repeat <n> --run-dir <dir> --config <json> -- <command...>" >&2
   exit 2
 }
 
 leg=
 run_dir=
 config=
+workers=
+repeat=
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --leg) leg=$2; shift 2 ;;
+    --workers) workers=$2; shift 2 ;;
+    --repeat) repeat=$2; shift 2 ;;
     --run-dir) run_dir=$2; shift 2 ;;
     --config) config=$2; shift 2 ;;
     --) shift; break ;;
@@ -23,9 +27,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 [[ "$leg" =~ ^(go-v1|go-v2-native|rust)$ ]] || usage
+[[ "$workers" =~ ^(8|16)$ && "$repeat" =~ ^[1-9][0-9]*$ ]] || usage
 [[ -n "$run_dir" && -f "$config" && $# -gt 0 ]] || usage
 
-leg_dir=$run_dir/$leg
+leg_dir=$run_dir/w$workers/perf/repeat-$repeat/$leg
 raw=$leg_dir/raw
 derived=$leg_dir/derived
 [[ ! -e "$leg_dir" ]] || { echo "refusing to overwrite $leg_dir" >&2; exit 1; }
@@ -38,9 +43,24 @@ sha256sum "$command_path" > "$raw/binary.sha256"
 readelf -n "$command_path" > "$raw/binary-build-id.txt" 2>&1 || true
 cp --preserve=mode,timestamps "$command_path" "$raw/binary"
 
-export COSMOS_PERF_CPU_PROFILE=$raw/cpu.pprof
-export COSMOS_PERF_HEAP_PROFILE=$raw/heap.pprof
 export COSMOS_PERF_CONFIG=$run_dir/config/effective.json
+unset COSMOS_PERF_CPU_PROFILE COSMOS_PERF_HEAP_PROFILE COSMOS_PERF_RUNTIME_TRACE \
+  COSMOS_PERF_BLOCK_PROFILE COSMOS_PERF_MUTEX_PROFILE
+
+call_graph=$(python3 - "$config" <<'PY'
+import json
+import sys
+value = json.load(open(sys.argv[1], encoding="utf-8"))["profiling"]["selectedCallGraph"]
+if not value:
+    raise SystemExit("profiling.selectedCallGraph must be chosen by calibration before perf runs")
+print(value)
+PY
+)
+case "$call_graph" in
+  frame-pointer) perf_call_graph=fp ;;
+  dwarf,16384) perf_call_graph=dwarf,16384 ;;
+  *) echo "unsupported call graph: $call_graph" >&2; exit 2 ;;
+esac
 
 started=$(date -u +%FT%TZ)
 printf '%s\n' "$started" > "$raw/started-utc.txt"
@@ -48,7 +68,8 @@ printf '%s\n' "$started" > "$raw/started-utc.txt"
 "$@" > "$raw/stdout.txt" 2> "$raw/stderr.txt" &
 pid=$!
 printf '%s\n' "$pid" > "$raw/pid.txt"
-perf record -q -F 49 -g --call-graph dwarf,16384 -p "$pid" -o "$raw/perf.data" &
+perf record -F 49 -g --call-graph "$perf_call_graph" -p "$pid" \
+  -o "$raw/perf.data" 2> "$raw/perf-record.stderr" &
 perf_pid=$!
 
 sample_proc() {
@@ -94,6 +115,37 @@ for base in proc-status smaps-rollup smaps cgroup-memory thread-stacks; do
 done
 perf report --stdio --show-nr-samples --percent-limit 0 -i "$raw/perf.data" > "$raw/perf-report.txt"
 perf script -i "$raw/perf.data" > "$raw/perf-script.txt"
+python3 - "$raw/perf-report.txt" "$raw/perf-script.txt" "$raw/perf-record.stderr" \
+  "$call_graph" "$raw/perf-quality.json" <<'PY'
+import json
+import pathlib
+import re
+import sys
+
+report = pathlib.Path(sys.argv[1])
+script = pathlib.Path(sys.argv[2])
+stderr = pathlib.Path(sys.argv[3])
+mode = sys.argv[4]
+output = pathlib.Path(sys.argv[5])
+report_text = report.read_text(errors="replace")
+script_text = script.read_text(errors="replace")
+stderr_text = stderr.read_text(errors="replace")
+samples = len(re.findall(r"^\S.+\s+\d+\s+\[", script_text, re.M))
+unknown = len(re.findall(r"\[unknown\]|unknown", report_text, re.I))
+callchains = len(re.findall(r"^\s+[0-9a-f]+\s+", script_text, re.M))
+lost_match = re.search(r"lost samples:\s*(\d+)", stderr_text, re.I)
+lost = int(lost_match.group(1)) if lost_match else 0
+denominator = max(samples + lost, 1)
+value = {
+    "callGraphMode": mode,
+    "samples": samples,
+    "lostSamples": lost,
+    "lostEventPercent": lost / denominator * 100,
+    "resolvedSamplePercent": max(0.0, 100.0 - unknown / max(samples, 1) * 100),
+    "callchainSamplePercent": min(100.0, callchains / max(samples, 1) * 100),
+}
+output.write_text(json.dumps(value, indent=2) + "\n")
+PY
 {
   echo "symbol,dso,self_percent"
   perf report --stdio --field-separator '|' -F overhead,symbol,dso --percent-limit 0 \

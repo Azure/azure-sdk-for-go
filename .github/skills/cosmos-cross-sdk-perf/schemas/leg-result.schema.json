@@ -4,7 +4,11 @@
   "type": "object",
   "required": [
     "leg",
+    "runClass",
+    "workers",
+    "repeat",
     "workload",
+    "transportProof",
     "counts",
     "timing",
     "latencyMilliseconds",
@@ -13,6 +17,9 @@
   ],
   "properties": {
     "leg": {"enum": ["go-v1", "go-v2-native", "rust"]},
+    "runClass": {"enum": ["clean-score", "perf", "go-diagnostic"]},
+    "workers": {"enum": [8, 16]},
+    "repeat": {"type": "integer", "minimum": 1},
     "workload": {
       "type": "object",
       "required": [
@@ -28,6 +35,15 @@
         "binaryEncoding",
         "authentication"
       ]
+    },
+    "transportProof": {
+      "type": "object",
+      "required": ["transportKind", "negotiatedHTTPVersion", "binaryEncoding"],
+      "properties": {
+        "transportKind": {"const": "gateway-v1"},
+        "negotiatedHTTPVersion": {"const": "HTTP/2"},
+        "binaryEncoding": {"const": false}
+      }
     },
     "counts": {
       "type": "object",

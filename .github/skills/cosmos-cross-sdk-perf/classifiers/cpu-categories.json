@@ -25,8 +25,8 @@
       "patterns": ["(ser[d]e|encoding/json|mem[c]py|memmove|malloc|free|alloc::|bytes::|body)"]
     },
     {
-      "name": "aad-bearer-auth-headers",
-      "patterns": ["(azure_identity|azidentity|bearer|oauth|token|authorization|header)"]
+      "name": "shared-key-signing-hmac-headers",
+      "patterns": ["(hmac|sha2|digest|base64|authorization|shared.?key|header)"]
     },
     {
       "name": "cosmos-routing-session-transport",

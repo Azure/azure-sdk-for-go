@@ -26,6 +26,7 @@ from typing import Any
 SKILL_ROOT = pathlib.Path(__file__).resolve().parents[1]
 CLASSIFIER_PATH = SKILL_ROOT / "classifiers" / "cpu-categories.json"
 LEGS = ("go-v1", "go-v2-native", "rust")
+RUN_CLASSES = ("clean-score", "perf", "go-diagnostic")
 DIAGNOSTICS_FIX = "7201f4b70fac1184e66379278566f1ac8d299109"
 ROLE_ID = "00000000-0000-0000-0000-000000000002"
 OWNERSHIP_TAGS = {
@@ -73,20 +74,24 @@ def validate_config(config: dict[str, Any], allow_incomplete_azure: bool = False
     azure = required(config, "azure")
     workload = required(config, "workload")
     sources = required(config, "sources")
+    execution = required(config, "execution")
     profiling = required(config, "profiling")
 
     expected = {
         "partitionKeyPath": "/pk",
         "seedCount": 1024,
         "documentBytes": 1024,
-        "cycle": ["read", "read", "read", "read", "read", "upsert", "upsert"],
-        "workers": 8,
+        "operation": "point-read",
+        "workers": [8, 16],
         "warmupSeconds": 30,
         "measurementSeconds": 300,
         "closedLoop": True,
+        "keySequence": "round-robin-0-through-1023",
+        "rawResponseMode": True,
+        "validationOutsideTimedPath": True,
         "gatewayProtocol": "GatewayV1HTTP2",
         "binaryEncoding": False,
-        "authentication": "managed-identity",
+        "authentication": "account-key",
         "requiredRetries": 0,
         "requiredThrottles": 0,
     }
@@ -101,9 +106,29 @@ def validate_config(config: dict[str, Any], allow_incomplete_azure: bool = False
         raise CampaignError("profiling.perfFrequencyHz must be 49")
     if profiling.get("capacityCores") != 4:
         raise CampaignError("profiling.capacityCores must be 4")
+    if profiling.get("calibrationModes") != ["frame-pointer", "dwarf,16384"]:
+        raise CampaignError(
+            "profiling.calibrationModes must compare frame-pointer and dwarf,16384"
+        )
+    if profiling.get("selectedCallGraph") not in ("", "frame-pointer", "dwarf,16384"):
+        raise CampaignError("profiling.selectedCallGraph has an unsupported value")
     tolerance = profiling.get("accountingTolerancePercent")
     if not isinstance(tolerance, (int, float)) or tolerance <= 0 or tolerance > 1:
         raise CampaignError("profiling.accountingTolerancePercent must be in (0, 1]")
+    if execution.get("cleanRepeats", 0) < 2:
+        raise CampaignError("execution.cleanRepeats must be at least 2 for A/A variance")
+    if execution.get("runClasses") != list(RUN_CLASSES):
+        raise CampaignError(f"execution.runClasses must be {list(RUN_CLASSES)!r}")
+    if execution.get("authoritativeClass") != "clean-score":
+        raise CampaignError("execution.authoritativeClass must be clean-score")
+    if execution.get("stopAfterPilot") is not True:
+        raise CampaignError("execution.stopAfterPilot must be true")
+    expected_order = {
+        "8": ["go-v1", "go-v2-native", "rust"],
+        "16": ["rust", "go-v2-native", "go-v1"],
+    }
+    if execution.get("order") != expected_order:
+        raise CampaignError(f"execution.order must be {expected_order!r}")
 
     if sources.get("goV1Version") not in ("", "v1.5.0"):
         raise CampaignError("sources.goV1Version must be v1.5.0 for the baseline")
@@ -117,10 +142,15 @@ def validate_config(config: dict[str, Any], allow_incomplete_azure: bool = False
         "nativeDriverSourceCommit",
         "nativeDriverDistributionCommit",
         "rustCommit",
+        "flameGraphCommit",
     ):
         ref = str(sources.get(name, ""))
         if not re.fullmatch(r"[0-9a-f]{40}", ref):
             raise CampaignError(f"sources.{name} must be a full 40-character commit SHA")
+    if sources.get("flameGraphRepository") != "https://github.com/brendangregg/FlameGraph.git":
+        raise CampaignError(
+            "sources.flameGraphRepository must use Brendan Gregg's canonical FlameGraph repository"
+        )
 
     if azure.get("cleanup") not in ("retain-vm", "all-campaign-owned"):
         raise CampaignError("azure.cleanup must be retain-vm or all-campaign-owned")
@@ -540,11 +570,13 @@ def compare_workload(metrics: dict[str, Any], config: dict[str, Any]) -> None:
         "partitionKeyPath",
         "seedCount",
         "documentBytes",
-        "cycle",
-        "workers",
+        "operation",
         "warmupSeconds",
         "measurementSeconds",
         "closedLoop",
+        "keySequence",
+        "rawResponseMode",
+        "validationOutsideTimedPath",
         "gatewayProtocol",
         "binaryEncoding",
         "authentication",
@@ -554,11 +586,28 @@ def compare_workload(metrics: dict[str, Any], config: dict[str, Any]) -> None:
                 f"workload mismatch for {key}: expected {expected.get(key)!r}, "
                 f"got {actual.get(key)!r}"
             )
+    if actual.get("workers") != metrics.get("workers"):
+        raise CampaignError("workload workers must match metrics workers")
+    if actual.get("workers") not in expected.get("workers", []):
+        raise CampaignError("workload workers are outside the configured pilot matrix")
 
 
 def validate_metrics(metrics: dict[str, Any], leg: str) -> None:
     if metrics.get("leg") != leg:
         raise CampaignError(f"metrics leg must be {leg!r}")
+    if metrics.get("runClass") not in RUN_CLASSES:
+        raise CampaignError(f"metrics runClass must be one of {RUN_CLASSES}")
+    if metrics.get("workers") not in (8, 16):
+        raise CampaignError("metrics workers must be 8 or 16")
+    if not isinstance(metrics.get("repeat"), int) or metrics["repeat"] < 1:
+        raise CampaignError("metrics repeat must be a positive integer")
+    proof = required(metrics, "transportProof")
+    if proof.get("transportKind") != "gateway-v1":
+        raise CampaignError("transport preflight did not prove classic Gateway V1")
+    if proof.get("negotiatedHTTPVersion") != "HTTP/2":
+        raise CampaignError("transport preflight did not prove HTTP/2")
+    if proof.get("binaryEncoding") is not False:
+        raise CampaignError("transport preflight did not prove binary encoding disabled")
     counts = required(metrics, "counts")
     for key in ("success", "error", "retry", "throttle"):
         if not isinstance(counts.get(key), int) or counts[key] < 0:
@@ -650,25 +699,72 @@ def validate_leg(
         raise CampaignError(f"{leg}: retries must be zero")
     if counts["throttle"] != config["workload"]["requiredThrottles"]:
         raise CampaignError(f"{leg}: throttles must be zero")
-    for evidence in (
-        "raw/perf.data",
-        "raw/proc-status.txt",
-        "raw/smaps-rollup.txt",
-        "raw/smaps.txt",
-        "raw/cgroup-memory.txt",
-        "raw/thread-stacks.txt",
-        "raw/binary",
-        "provenance.json",
-    ):
+    common_evidence = ["raw/binary", "provenance.json"]
+    if metrics["runClass"] in ("clean-score", "perf"):
+        common_evidence.extend(
+            [
+                "raw/proc-status.txt",
+                "raw/smaps-rollup.txt",
+                "raw/smaps.txt",
+                "raw/cgroup-memory.txt",
+                "raw/thread-stacks.txt",
+            ]
+        )
+    for evidence in common_evidence:
         if not (leg_dir / evidence).is_file():
             raise CampaignError(f"{leg}: missing evidence {evidence}")
-    if leg.startswith("go-"):
-        for profile in ("raw/cpu.pprof", "raw/heap.pprof"):
-            if not (leg_dir / profile).is_file():
-                raise CampaignError(f"{leg}: missing Go profile {profile}")
+    run_class = metrics["runClass"]
+    forbidden = {
+        "clean-score": (
+            "raw/perf.data",
+            "raw/cpu.pprof",
+            "raw/heap.pprof",
+            "raw/runtime.trace",
+        ),
+        "perf": ("raw/cpu.pprof", "raw/heap.pprof", "raw/runtime.trace"),
+        "go-diagnostic": ("raw/perf.data",),
+    }[run_class]
+    for evidence in forbidden:
+        if (leg_dir / evidence).exists():
+            raise CampaignError(f"{leg}: {run_class} run contains forbidden {evidence}")
+    if run_class == "perf":
+        for evidence in ("raw/perf.data", "raw/perf-quality.json", "perf-self.csv"):
+            if not (leg_dir / evidence).is_file():
+                raise CampaignError(f"{leg}: perf run missing {evidence}")
+    if run_class == "go-diagnostic":
+        if not leg.startswith("go-"):
+            raise CampaignError("go-diagnostic runs are valid only for Go legs")
+        for evidence in (
+            "raw/cpu.pprof",
+            "raw/heap.pprof",
+            "raw/runtime.trace",
+            "raw/block.pprof",
+            "raw/mutex.pprof",
+        ):
+            if not (leg_dir / evidence).is_file():
+                raise CampaignError(f"{leg}: Go diagnostic run missing {evidence}")
     validate_provenance(
         load_json(leg_dir / "provenance.json"), leg, config, leg_dir / "raw" / "binary"
     )
+
+    wall = metrics["timing"]["wallSeconds"]
+    process_cpu = metrics["timing"]["processCPUSeconds"]
+    capacity = config["profiling"]["capacityCores"]
+    busy_cores = process_cpu / wall
+    capacity_percent = busy_cores / capacity * 100.0
+    cpu_per_success_us = process_cpu * 1_000_000.0 / counts["success"]
+    result = {
+        "valid": True,
+        "runClass": run_class,
+        "processCPUSeconds": process_cpu,
+        "busyCores": busy_cores,
+        "fourVCPUCapacityPercent": capacity_percent,
+        "cpuMicrosecondsPerSuccess": cpu_per_success_us,
+    }
+    if run_class != "perf":
+        if write_derived:
+            write_json(leg_dir / "derived" / "validation.json", result)
+        return result
 
     rows = load_perf_rows(leg_dir / "perf-self.csv")
     categories, unmapped = classify(rows)
@@ -684,12 +780,15 @@ def validate_leg(
     if abs(category_total - perf_total) > 1e-9:
         raise CampaignError(f"{leg}: classified category total drifted from perf total")
 
-    wall = metrics["timing"]["wallSeconds"]
-    process_cpu = metrics["timing"]["processCPUSeconds"]
-    capacity = config["profiling"]["capacityCores"]
-    busy_cores = process_cpu / wall
-    capacity_percent = busy_cores / capacity * 100.0
-    cpu_per_success_us = process_cpu * 1_000_000.0 / counts["success"]
+    quality = load_json(leg_dir / "raw" / "perf-quality.json")
+    if quality.get("lostEventPercent", 100) > config["profiling"]["maxLostEventPercent"]:
+        raise CampaignError(f"{leg}: perf lost-event quality gate failed")
+    if quality.get("resolvedSamplePercent", 0) < config["profiling"]["minResolvedSamplePercent"]:
+        raise CampaignError(f"{leg}: perf resolved-sample quality gate failed")
+    if quality.get("callchainSamplePercent", 0) < config["profiling"]["minCallchainSamplePercent"]:
+        raise CampaignError(f"{leg}: perf callchain quality gate failed")
+    if quality.get("callGraphMode") != config["profiling"]["selectedCallGraph"]:
+        raise CampaignError(f"{leg}: perf call-graph mode differs from calibrated selection")
     bridged = {
         name: {
             "perfSelfPercent": percent,
@@ -698,15 +797,11 @@ def validate_leg(
         }
         for name, percent in categories.items()
     }
-    result = {
-        "valid": True,
+    result.update({
         "perfSelfTotalPercent": perf_total,
-        "processCPUSeconds": process_cpu,
-        "busyCores": busy_cores,
-        "fourVCPUCapacityPercent": capacity_percent,
-        "cpuMicrosecondsPerSuccess": cpu_per_success_us,
+        "perfQuality": quality,
         "categories": bridged,
-    }
+    })
     if write_derived:
         write_json(leg_dir / "derived" / "accounting.json", result)
     return result
@@ -789,121 +884,296 @@ def svg_flywheel(accounting: dict[str, dict[str, Any]], path: pathlib.Path) -> N
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def run_path(
+    run_dir: pathlib.Path, workers: int, run_class: str, repeat: int, leg: str
+) -> pathlib.Path:
+    return run_dir / f"w{workers}" / run_class / f"repeat-{repeat}" / leg
+
+
+def summarize_metrics(metrics: dict[str, Any], validation: dict[str, Any]) -> dict[str, Any]:
+    success = metrics["counts"]["success"]
+    wall = metrics["timing"]["wallSeconds"]
+    return {
+        "workers": metrics["workers"],
+        "leg": metrics["leg"],
+        "runClass": metrics["runClass"],
+        "repeat": metrics["repeat"],
+        "valid": True,
+        "throughputOpsPerSecond": success / wall,
+        "success": success,
+        "error": metrics["counts"]["error"],
+        "retry": metrics["counts"]["retry"],
+        "throttle": metrics["counts"]["throttle"],
+        "processCPUSeconds": metrics["timing"]["processCPUSeconds"],
+        "busyCores": validation["busyCores"],
+        "cpuMicrosecondsPerSuccess": validation["cpuMicrosecondsPerSuccess"],
+        "latencyMilliseconds": metrics["latencyMilliseconds"],
+        "memoryBytes": metrics["memoryBytes"],
+        "transportProof": metrics["transportProof"],
+    }
+
+
+def arithmetic_mean(values: list[float]) -> float:
+    return sum(values) / len(values)
+
+
+def relative_range_percent(values: list[float]) -> float:
+    mean = arithmetic_mean(values)
+    return 0.0 if mean == 0 else (max(values) - min(values)) / mean * 100.0
+
+
 def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
     comparison_dir = run_dir / "comparison"
     comparison_dir.mkdir(parents=True, exist_ok=True)
-    rows: list[dict[str, Any]] = []
-    accounting: dict[str, dict[str, Any]] = {}
-    for leg in LEGS:
-        leg_dir = run_dir / leg
-        result = validate_leg(leg_dir, config)
-        metrics = load_json(leg_dir / "metrics.json")
-        accounting[leg] = result
-        success = metrics["counts"]["success"]
-        wall = metrics["timing"]["wallSeconds"]
-        rows.append(
+    all_rows: list[dict[str, Any]] = []
+    clean_groups: dict[tuple[int, str], list[dict[str, Any]]] = {}
+    perf_accounting: dict[str, dict[str, Any]] = {}
+    setup_rows: list[list[Any]] = []
+
+    for workers in config["workload"]["workers"]:
+        for repeat in range(1, config["execution"]["cleanRepeats"] + 1):
+            for leg in config["execution"]["order"][str(workers)]:
+                leg_dir = run_path(run_dir, workers, "clean-score", repeat, leg)
+                validation = validate_leg(leg_dir, config)
+                metrics = load_json(leg_dir / "metrics.json")
+                row = summarize_metrics(metrics, validation)
+                all_rows.append(row)
+                clean_groups.setdefault((workers, leg), []).append(row)
+                provenance = load_json(leg_dir / "provenance.json")
+                setup_rows.append(
+                    [
+                        workers,
+                        leg,
+                        repeat,
+                        provenance["source"]["commit"],
+                        provenance["binary"]["sha256"],
+                        metrics["transportProof"]["transportKind"],
+                        metrics["transportProof"]["negotiatedHTTPVersion"],
+                        metrics["workload"]["documentBytes"],
+                        metrics["workload"]["seedCount"],
+                        metrics["workload"]["keySequence"],
+                    ]
+                )
+        for leg in config["execution"]["order"][str(workers)]:
+            perf_dir = run_path(run_dir, workers, "perf", 1, leg)
+            validation = validate_leg(perf_dir, config)
+            metrics = load_json(perf_dir / "metrics.json")
+            all_rows.append(summarize_metrics(metrics, validation))
+            perf_accounting[f"w{workers}-{leg}"] = validation
+        for leg in ("go-v1", "go-v2-native"):
+            diagnostic_dir = run_path(run_dir, workers, "go-diagnostic", 1, leg)
+            validation = validate_leg(diagnostic_dir, config)
+            metrics = load_json(diagnostic_dir / "metrics.json")
+            all_rows.append(summarize_metrics(metrics, validation))
+
+    authoritative: list[dict[str, Any]] = []
+    for (workers, leg), rows in sorted(clean_groups.items()):
+        throughput = [row["throughputOpsPerSecond"] for row in rows]
+        p99 = [row["latencyMilliseconds"]["p99"] for row in rows]
+        cpu_per_read = [row["cpuMicrosecondsPerSuccess"] for row in rows]
+        authoritative.append(
             {
+                "workers": workers,
                 "leg": leg,
+                "runClass": "clean-score",
+                "repeats": len(rows),
+                "throughputOpsPerSecond": arithmetic_mean(throughput),
+                "throughputAARelativeRangePercent": relative_range_percent(throughput),
+                "latencyMilliseconds": {
+                    key: arithmetic_mean(
+                        [row["latencyMilliseconds"][key] for row in rows]
+                    )
+                    for key in ("p50", "p90", "p95", "p99", "p999")
+                },
+                "p99AARelativeRangePercent": relative_range_percent(p99),
+                "processCPUSeconds": arithmetic_mean(
+                    [row["processCPUSeconds"] for row in rows]
+                ),
+                "busyCores": arithmetic_mean([row["busyCores"] for row in rows]),
+                "cpuMicrosecondsPerSuccess": arithmetic_mean(cpu_per_read),
+                "cpuPerReadAARelativeRangePercent": relative_range_percent(cpu_per_read),
+                "memoryBytes": {
+                    key: arithmetic_mean([row["memoryBytes"][key] for row in rows])
+                    for key in ("rss", "hwm", "anonymous", "file", "cgroupCurrent", "cgroupPeak")
+                },
+                "retry": 0,
+                "throttle": 0,
                 "valid": True,
-                "throughputOpsPerSecond": success / wall,
-                "success": success,
-                "error": metrics["counts"]["error"],
-                "retry": metrics["counts"]["retry"],
-                "throttle": metrics["counts"]["throttle"],
-                "processCPUSeconds": metrics["timing"]["processCPUSeconds"],
-                "busyCores": result["busyCores"],
-                "cpuMicrosecondsPerSuccess": result["cpuMicrosecondsPerSuccess"],
-                "latencyMilliseconds": metrics["latencyMilliseconds"],
-                "queueDelayMilliseconds": metrics.get("queueDelayMilliseconds"),
-                "memoryBytes": metrics["memoryBytes"],
-                "gauges": metrics["gauges"],
             }
         )
-    write_json(comparison_dir / "comparison.json", {"legs": rows})
-    with (comparison_dir / "comparison.csv").open("w", newline="", encoding="utf-8") as handle:
+
+    for row in all_rows:
+        if row["runClass"] != "perf":
+            continue
+        clean = next(
+            item
+            for item in authoritative
+            if item["workers"] == row["workers"] and item["leg"] == row["leg"]
+        )
+        row["observerEffectPercent"] = {
+            "throughput": (
+                row["throughputOpsPerSecond"] / clean["throughputOpsPerSecond"] - 1
+            )
+            * 100.0,
+            "cpuPerRead": (
+                row["cpuMicrosecondsPerSuccess"] / clean["cpuMicrosecondsPerSuccess"] - 1
+            )
+            * 100.0,
+            "p99": (
+                row["latencyMilliseconds"]["p99"]
+                / clean["latencyMilliseconds"]["p99"]
+                - 1
+            )
+            * 100.0,
+        }
+
+    write_json(
+        comparison_dir / "summary.json",
+        {
+            "authoritativeClass": "clean-score",
+            "authoritative": authoritative,
+            "allRuns": all_rows,
+        },
+    )
+    with (comparison_dir / "summary.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
         writer.writerow(
             [
+                "workers",
                 "leg",
                 "throughput_ops_s",
+                "throughput_aa_range_pct",
                 "p50_ms",
                 "p95_ms",
                 "p99_ms",
-                "process_cpu_seconds",
+                "p99_aa_range_pct",
+                "cpu_seconds",
                 "busy_cores",
-                "cpu_us_success",
+                "cpu_us_read",
+                "cpu_aa_range_pct",
                 "rss_bytes",
                 "hwm_bytes",
-                "retries",
-                "throttles",
                 "valid",
             ]
         )
-        for row in rows:
+        for row in authoritative:
             writer.writerow(
                 [
+                    row["workers"],
                     row["leg"],
                     f"{row['throughputOpsPerSecond']:.6f}",
+                    f"{row['throughputAARelativeRangePercent']:.6f}",
                     row["latencyMilliseconds"]["p50"],
                     row["latencyMilliseconds"]["p95"],
                     row["latencyMilliseconds"]["p99"],
+                    f"{row['p99AARelativeRangePercent']:.6f}",
                     row["processCPUSeconds"],
                     f"{row['busyCores']:.6f}",
                     f"{row['cpuMicrosecondsPerSuccess']:.6f}",
+                    f"{row['cpuPerReadAARelativeRangePercent']:.6f}",
                     row["memoryBytes"]["rss"],
                     row["memoryBytes"]["hwm"],
-                    row["retry"],
-                    row["throttle"],
                     "true",
                 ]
             )
-    labels = [row["leg"] for row in rows]
+    with (comparison_dir / "setup-equivalence.csv").open(
+        "w", newline="", encoding="utf-8"
+    ) as handle:
+        writer = csv.writer(handle)
+        writer.writerow(
+            [
+                "workers",
+                "leg",
+                "repeat",
+                "source_commit",
+                "binary_sha256",
+                "transport",
+                "http_version",
+                "document_bytes",
+                "seed_count",
+                "key_sequence",
+            ]
+        )
+        writer.writerows(setup_rows)
+
+    labels = [f"w{row['workers']} {row['leg']}" for row in authoritative]
     svg_bar_chart(
-        "Throughput",
+        "Authoritative clean-score throughput",
         labels,
-        [row["throughputOpsPerSecond"] for row in rows],
-        "ops/s",
+        [row["throughputOpsPerSecond"] for row in authoritative],
+        "reads/s",
         comparison_dir / "throughput.svg",
     )
     svg_bar_chart(
-        "P99 latency",
+        "Authoritative clean-score P99 latency",
         labels,
-        [row["latencyMilliseconds"]["p99"] for row in rows],
+        [row["latencyMilliseconds"]["p99"] for row in authoritative],
         "ms",
         comparison_dir / "latency.svg",
     )
-    svg_flywheel(accounting, comparison_dir / "cpu-flywheel.svg")
+    svg_flywheel(perf_accounting, comparison_dir / "cpu-flywheel.svg")
+
     lines = [
-        "# Cosmos cross-SDK performance comparison",
+        "# Cosmos cross-SDK point-read pilot",
         "",
-        "| Leg | Ops/s | P50 ms | P95 ms | P99 ms | CPU s | Busy cores | CPU us/success | RSS MiB | HWM MiB | Retry | Throttle |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "Only clean-score runs are authoritative for latency and throughput. Perf and Go "
+        "diagnostic runs are observer-effect and attribution evidence only.",
+        "",
+        "| Workers | Leg | Reads/s | A/A range | P50 ms | P95 ms | P99 ms | CPU us/read | RSS MiB | HWM MiB |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for row in rows:
+    for row in authoritative:
         lines.append(
-            f"| {row['leg']} | {row['throughputOpsPerSecond']:.3f} | "
+            f"| {row['workers']} | {row['leg']} | {row['throughputOpsPerSecond']:.3f} | "
+            f"{row['throughputAARelativeRangePercent']:.2f}% | "
             f"{row['latencyMilliseconds']['p50']:.3f} | "
             f"{row['latencyMilliseconds']['p95']:.3f} | "
             f"{row['latencyMilliseconds']['p99']:.3f} | "
-            f"{row['processCPUSeconds']:.3f} | {row['busyCores']:.3f} | "
             f"{row['cpuMicrosecondsPerSuccess']:.3f} | "
             f"{row['memoryBytes']['rss'] / 1048576:.3f} | "
-            f"{row['memoryBytes']['hwm'] / 1048576:.3f} | "
-            f"{row['retry']} | {row['throttle']} |"
+            f"{row['memoryBytes']['hwm'] / 1048576:.3f} |"
         )
     lines.extend(
         [
             "",
-            "All legs passed workload identity, zero retry/throttle, raw evidence, symbol mapping, "
-            "and 100% perf Self accounting gates.",
+            "## Gates",
             "",
-            "The CPU flywheel uses perf Self composition. Go pprof remains a separate Go-only "
-            "denominator and is not added to perf or process CPU.",
+            "- Classic Gateway V1 and negotiated HTTP/2 were proven before every measured run.",
+            "- Binary encoding was disabled; all timed operations were raw point reads.",
+            "- Errors, retries, and throttles were zero.",
+            "- Clean runs contain no perf, pprof, runtime trace, uprobes, or hot-path counters.",
+            "- Perf Self composition normalizes independently to 100%; process CPU is a separate denominator.",
+            "- The pilot stops at workers 8 and 16. Ashley-specific counters are not included.",
         ]
     )
     (comparison_dir / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    flamegraph_links = []
+    for path in sorted(run_dir.rglob("*.html")):
+        if path.name == "dashboard.html":
+            continue
+        flamegraph_links.append(
+            f'<li><a href="{path.relative_to(run_dir).as_posix()}">{path.relative_to(run_dir)}</a></li>'
+        )
+    dashboard = [
+        "<!doctype html>",
+        '<html><head><meta charset="utf-8"><title>Cosmos point-read pilot</title></head><body>',
+        "<h1>Cosmos cross-SDK point-read pilot</h1>",
+        "<p>Authoritative metrics come only from clean-score runs.</p>",
+        '<ul><li><a href="comparison/report.md">Report</a></li>',
+        '<li><a href="comparison/summary.csv">Summary CSV</a></li>',
+        '<li><a href="comparison/summary.json">Summary JSON</a></li>',
+        '<li><a href="comparison/setup-equivalence.csv">Setup equivalence</a></li>',
+        '<li><a href="comparison/throughput.svg">Throughput chart</a></li>',
+        '<li><a href="comparison/latency.svg">Latency chart</a></li>',
+        '<li><a href="comparison/cpu-flywheel.svg">CPU composition</a></li></ul>',
+        "<h2>Interactive flamegraphs</h2><ul>",
+        *flamegraph_links,
+        "</ul></body></html>",
+    ]
+    (run_dir / "dashboard.html").write_text("\n".join(dashboard) + "\n", encoding="utf-8")
     write_manifest(run_dir)
-    print(f"Wrote comparison report to {comparison_dir / 'report.md'}")
+    print(f"Wrote pilot report to {comparison_dir / 'report.md'}")
 
 
 def write_manifest(root: pathlib.Path) -> None:
@@ -938,9 +1208,11 @@ def sanitize(run_dir: pathlib.Path, output: pathlib.Path) -> None:
         "provenance.json",
         "perf-self.csv",
         "accounting.json",
-        "comparison.json",
-        "comparison.csv",
+        "summary.json",
+        "summary.csv",
+        "setup-equivalence.csv",
         "report.md",
+        "dashboard.html",
         "throughput.svg",
         "latency.svg",
         "cpu-flywheel.svg",
@@ -949,7 +1221,14 @@ def sanitize(run_dir: pathlib.Path, output: pathlib.Path) -> None:
     with tempfile.TemporaryDirectory(prefix="cosmos-perf-sanitize-") as temp:
         root = pathlib.Path(temp) / "cosmos-perf-result"
         for source in sorted(run_dir.rglob("*")):
-            if not source.is_file() or source.name not in allowed_names:
+            is_derived_visual = (
+                source.is_file()
+                and "derived" in source.parts
+                and source.suffix in (".svg", ".html", ".folded")
+            )
+            if not source.is_file() or (
+                source.name not in allowed_names and not is_derived_visual
+            ):
                 continue
             relative = source.relative_to(run_dir)
             target = root / relative
@@ -964,6 +1243,45 @@ def sanitize(run_dir: pathlib.Path, output: pathlib.Path) -> None:
             for path in sorted(root.rglob("*")):
                 archive.add(path, arcname=path.relative_to(root.parent), recursive=False)
     print(f"Wrote sanitized bundle to {output}")
+
+
+def calibrate_call_graph(
+    config_path: pathlib.Path, frame_pointer_path: pathlib.Path, dwarf_path: pathlib.Path
+) -> None:
+    config = load_json(config_path)
+    candidates = {
+        "frame-pointer": load_json(frame_pointer_path),
+        "dwarf,16384": load_json(dwarf_path),
+    }
+    passing: list[tuple[float, str]] = []
+    for mode, quality in candidates.items():
+        if quality.get("callGraphMode") != mode:
+            raise CampaignError(f"{mode}: quality file has the wrong callGraphMode")
+        if quality.get("lostEventPercent", 100) > config["profiling"]["maxLostEventPercent"]:
+            continue
+        if (
+            quality.get("resolvedSamplePercent", 0)
+            < config["profiling"]["minResolvedSamplePercent"]
+        ):
+            continue
+        if (
+            quality.get("callchainSamplePercent", 0)
+            < config["profiling"]["minCallchainSamplePercent"]
+        ):
+            continue
+        score = (
+            quality["resolvedSamplePercent"]
+            + quality["callchainSamplePercent"]
+            - quality["lostEventPercent"]
+        )
+        passing.append((score, mode))
+    if not passing:
+        raise CampaignError("neither frame-pointer nor DWARF passed the perf quality gates")
+    passing.sort(reverse=True)
+    selected = passing[0][1]
+    config["profiling"]["selectedCallGraph"] = selected
+    write_json(config_path, config)
+    print(f"Selected {selected} call graphs.")
 
 
 def parse_args() -> argparse.Namespace:
@@ -989,6 +1307,10 @@ def parse_args() -> argparse.Namespace:
     sanitize_parser = commands.add_parser("sanitize")
     sanitize_parser.add_argument("--run-dir", type=pathlib.Path, required=True)
     sanitize_parser.add_argument("--output", type=pathlib.Path, required=True)
+    calibrate_parser = commands.add_parser("calibrate-call-graph")
+    calibrate_parser.add_argument("--config", type=pathlib.Path, required=True)
+    calibrate_parser.add_argument("--frame-pointer", type=pathlib.Path, required=True)
+    calibrate_parser.add_argument("--dwarf", type=pathlib.Path, required=True)
     return parser.parse_args()
 
 
@@ -1011,6 +1333,8 @@ def main() -> int:
             report(args.run_dir, load_json(args.config))
         elif args.command == "sanitize":
             sanitize(args.run_dir, args.output)
+        elif args.command == "calibrate-call-graph":
+            calibrate_call_graph(args.config, args.frame_pointer, args.dwarf)
         return 0
     except CampaignError as exc:
         print(f"error: {exc}", file=sys.stderr)

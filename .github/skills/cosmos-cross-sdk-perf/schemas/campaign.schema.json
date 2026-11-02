@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Cosmos cross-SDK performance campaign",
   "type": "object",
-  "required": ["campaignId", "azure", "sources", "workload", "profiling"],
+  "required": ["campaignId", "azure", "sources", "workload", "execution", "profiling"],
   "properties": {
     "campaignId": {"type": "string", "minLength": 1},
     "azure": {
@@ -24,7 +24,9 @@
         "goV2Commit",
         "nativeDriverSourceCommit",
         "nativeDriverDistributionCommit",
-        "rustCommit"
+        "rustCommit",
+        "flameGraphRepository",
+        "flameGraphCommit"
       ]
     },
     "workload": {
@@ -33,23 +35,40 @@
         "partitionKeyPath",
         "seedCount",
         "documentBytes",
-        "cycle",
+        "operation",
         "workers",
         "warmupSeconds",
         "measurementSeconds",
         "closedLoop",
+        "keySequence",
+        "rawResponseMode",
+        "validationOutsideTimedPath",
         "gatewayProtocol",
         "binaryEncoding",
         "authentication"
+      ]
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "cleanRepeats",
+        "order",
+        "runClasses",
+        "authoritativeClass",
+        "stopAfterPilot"
       ]
     },
     "profiling": {
       "type": "object",
       "required": [
         "perfFrequencyHz",
-        "callGraph",
+        "calibrationModes",
+        "selectedCallGraph",
         "capacityCores",
-        "accountingTolerancePercent"
+        "accountingTolerancePercent",
+        "maxLostEventPercent",
+        "minResolvedSamplePercent",
+        "minCallchainSamplePercent"
       ]
     }
   }

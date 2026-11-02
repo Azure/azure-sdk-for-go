@@ -1,6 +1,6 @@
 # Cosmos cross-SDK performance campaign
 
-This skill produces independently reproducible performance evidence for Cosmos DB Go v1, Go v2
+This skill produces independently reproducible point-read performance evidence for Cosmos DB Go v1, Go v2
 over the Rust native driver, and the standalone Rust SDK. It provisions or reuses Azure resources,
 enforces a materially matched workload, captures process and native evidence, validates CPU
 accounting, and renders deterministic JSON, CSV, Markdown, and SVG reports.
@@ -20,8 +20,8 @@ python3 "$SKILL/scripts/campaign.py" provision \
 # Review the plan, then repeat without --dry-run.
 
 # Copy the run directory and skill to the provisioned VM. Build each pinned adapter, then:
-sudo "$SKILL/scripts/profile-leg.sh" \
-  --leg go-v1 --run-dir "$RUN" --config "$RUN/campaign.json" -- \
+sudo "$SKILL/scripts/run-clean-leg.sh" \
+  --leg go-v1 --workers 8 --repeat 1 --run-dir "$RUN" --config "$RUN/campaign.json" -- \
   /path/to/go-v1-adapter --config "$RUN/campaign.json"
 
 python3 "$SKILL/scripts/campaign.py" report --run-dir "$RUN" --config "$RUN/campaign.json"
@@ -29,13 +29,16 @@ python3 "$SKILL/scripts/campaign.py" sanitize \
   --run-dir "$RUN" --output "$RUN/cosmos-perf-sanitized.tar.gz"
 ```
 
-Repeat `profile-leg.sh` for `go-v2-native` and `rust`. Adapter commands must write the schema files
-described in `SKILL.md`.
+Repeat the ordered clean-score matrix twice, then run the separate perf and Go-diagnostic classes.
+Adapter commands must write the schema files described in `SKILL.md`.
 
 The default pins correspond to Go v1.5.0, the verified Go v2 diagnostics-fix head from
 Azure/azure-sdk-for-go#27873, the Rust SDK campaign commit, and the native-driver source and
 distribution commits recorded by `Azure/azure-cosmos-driver` v0.2.0 provenance. Re-verify and
-update all pins together before using newer sources.
+update all pins together before using newer sources. Flamegraphs use the pinned commit of Brendan
+Gregg's canonical `brendangregg/FlameGraph` repository: `stackcollapse-perf.pl --all`,
+`flamegraph.pl`, and `difffolded.pl`. The generator rejects a dirty or mismatched checkout and
+records the commit in the campaign root.
 
 ## Runtime and cost
 
@@ -52,26 +55,28 @@ when finished.
 run/
   azure-state.json
   config/effective.json
-  go-v1/
-    raw/                 # immutable evidence
-    derived/             # classified tables and charts
-    metrics.json
-    perf-self.csv
-    provenance.json
-  go-v2-native/
-  rust/
+  w8/
+    clean-score/repeat-1/{go-v1,go-v2-native,rust}/
+    clean-score/repeat-2/{go-v1,go-v2-native,rust}/
+    perf/repeat-1/{go-v1,go-v2-native,rust}/
+    perf/differential/
+    go-diagnostic/repeat-1/{go-v1,go-v2-native}/
+  w16/
   comparison/
-    comparison.json
-    comparison.csv
+    summary.json
+    summary.csv
+    setup-equivalence.csv
     report.md
     throughput.svg
     latency.svg
     cpu-flywheel.svg
   SHA256SUMS
+  dashboard.html
 ```
 
 Raw directories are made read-only after capture. Never modify them to repair a run; create a new
-run. Derived artifacts may be regenerated after classifier changes.
+run. Only clean-score results are authoritative. Derived artifacts may be regenerated after
+classifier changes.
 
 ## Contributing results
 

@@ -25,8 +25,10 @@ four-vCPU Linux VM and provisioned Cosmos throughput.
 
 ## Safety and correctness
 
-- Use managed identity and Microsoft Entra ID only. Never request, print, persist, or pass account
-  keys, connection strings, access tokens, or client secrets.
+- Use account-key authentication for all three measured SDK legs. Retrieve the key immediately
+  before launching a leg, keep it only in process memory, and unset it immediately afterward.
+  Never print, persist, upload, or include it in command lines, artifacts, logs, environment dumps,
+  process listings, or error messages.
 - Verify the Cosmos account region and an available four-vCPU VM SKU with Azure CLI. Do not infer
   either from a resource name.
 - Tag campaign-owned resources and preserve the generated ownership state. Teardown may delete
@@ -36,9 +38,12 @@ four-vCPU Linux VM and provisioned Cosmos throughput.
   binary SHA-256 values, and ELF build IDs. Go v2 must include the diagnostics fix from
   Azure/azure-sdk-for-go#27873 at commit `7201f4b70fac1184e66379278566f1ac8d299109`
   unless the fix has since merged and the selected pin contains it.
-- A comparison is valid only when every leg passes the skill's matched-workload, retry/throttle,
-  evidence, and accounting gates. Report invalid runs as invalid; do not render favorable charts
-  from incomplete evidence.
+- Run only the first-pass point-read pilot at workers 8 and 16. Keep clean-score, Linux-perf, and
+  Go-diagnostic runs separate. Do not add or run Ashley-specific CQ, FFI, copy, Tokio, or other
+  hot-path counters without a later explicit user approval.
+- A comparison is valid only when every leg passes the skill's matched-workload, transport,
+  retry/throttle, evidence, and accounting gates. Report invalid runs as invalid; do not render
+  favorable charts from incomplete evidence.
 
 ## Output
 

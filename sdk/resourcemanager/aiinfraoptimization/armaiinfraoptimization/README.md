@@ -1,6 +1,6 @@
-# Azure Aiinfraoptimization Module for Go
+# Azure AI Infra Optimization Module for Go
 
-The `armaiinfraoptimization` module provides operations for working with Azure Aiinfraoptimization.
+The `armaiinfraoptimization` module provides operations for working with Azure AI Infra Optimization.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/aiinfraoptimization/armaiinfraoptimization)
 
@@ -15,7 +15,7 @@ The `armaiinfraoptimization` module provides operations for working with Azure A
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Aiinfraoptimization module:
+Install the Azure AI Infra Optimization module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aiinfraoptimization/armaiinfraoptimization
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aiinfraoptimization
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Aiinfraoptimization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure AI Infra Optimization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Aiinfraoptimization module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure AI Infra Optimization module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armaiinfraoptimization.NewClientFactory(<subscription ID>, cred, nil)

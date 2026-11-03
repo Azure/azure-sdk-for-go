@@ -71,22 +71,11 @@ type SessionOptions struct {
 	// construction fails if Mode is SessionModeEnabled; otherwise the client authenticates every
 	// request with a bearer token.
 	AccountName string
-
-	// Provider is an optional session provider that owns the session cache, created with
-	// container.NewSessionProvider. Clients configured with the same provider share its cached
-	// sessions, so a session is created once per container no matter how many clients use it,
-	// and the cache outlives any one of those clients. The provider must target the same blob
-	// service endpoint as the clients it is used with.
-	// When nil, the client creates a provider of its own, shared only with the clients derived
-	// from it (for example the container and blob clients created from a service client).
-	Provider SessionProvider
 }
 
-// SessionProvider provides and caches the sessions used to authenticate eligible requests. It
-// can be shared across clients through SessionOptions.Provider.
-//
-// SessionProvider can't be implemented outside this module. Use container.NewSessionProvider to
-// create one.
+// SessionProvider provides and caches the sessions used to authenticate eligible requests. Each
+// token credential client with sessions enabled creates one, shared with the clients derived from
+// it (for example the container and blob clients created from a service client).
 type SessionProvider interface {
 	// getSession returns the cached session for the request's scope, acquiring one if needed.
 	// The result may be a fallback marker meaning the request should use a bearer token.
@@ -128,7 +117,7 @@ const (
 // azcore.TokenCredential and caches one per container. It applies only to clients authenticated
 // with a token credential.
 //
-// Use container.NewSessionProvider to create one. The zero value is not usable.
+// Use NewContainerSessionProviderFromClient to create one. The zero value is not usable.
 type ContainerSessionProvider struct {
 	client *generated.ServiceClient
 	now    func() time.Time
@@ -140,8 +129,7 @@ type ContainerSessionProvider struct {
 
 // NewContainerSessionProviderFromClient returns a ContainerSessionProvider that creates sessions
 // through client, which must target a blob service endpoint and must not itself use sessions.
-// It is the constructor the public container.NewSessionProvider and the clients use once they
-// have built a session-free pipeline.
+// It is the constructor the clients use once they have built a session-free pipeline.
 func NewContainerSessionProviderFromClient(client *generated.ServiceClient) *ContainerSessionProvider {
 	return &ContainerSessionProvider{client: client, now: time.Now}
 }

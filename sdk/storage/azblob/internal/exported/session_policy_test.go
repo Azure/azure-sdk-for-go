@@ -192,7 +192,7 @@ func TestSessionPolicyIneligibleRequestUsesBearer(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodPut, testBlobURL))
 	require.NoError(t, err)
@@ -209,7 +209,7 @@ func TestSessionPolicyGetSessionErrorPropagates(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.ErrorIs(t, err, expectedErr)
@@ -226,7 +226,7 @@ func TestSessionPolicyFallbackCredentialUsesBearer(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -242,7 +242,7 @@ func TestSessionPolicySignsRequest(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	before := time.Now().UTC().Add(-time.Second).Truncate(time.Second)
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
@@ -274,7 +274,7 @@ func TestSessionPolicySignatureMatchesSharedKeySignature(t *testing.T) {
 	provider := newEligibleProvider()
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}, false), transport)
 
 	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -300,7 +300,7 @@ func TestSessionPolicyUsesConfiguredAccountNameForSignature(t *testing.T) {
 	transport := &recordingTransport{}
 
 	// the request targets testaccount, but the policy is configured with a different account
-	pl := newTestPipeline(NewSessionPolicy(wrongAccountName, provider, &mockBearerPolicy{}), transport)
+	pl := newTestPipeline(NewSessionPolicy(wrongAccountName, provider, &mockBearerPolicy{}, false), transport)
 
 	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -331,7 +331,7 @@ func TestSessionPolicyRefreshesDateHeader(t *testing.T) {
 	provider := newEligibleProvider()
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}, false), transport)
 
 	req := newTestPolicyRequest(t, http.MethodGet, testBlobURL)
 	stale := time.Now().UTC().Add(-time.Hour).Format(http.TimeFormat)
@@ -351,7 +351,7 @@ func TestSessionPolicyInvalidSessionKeyReturnsError(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.Error(t, err)
@@ -367,7 +367,7 @@ func TestSessionPolicyInvalidatesSessionOnUnauthorizedResponse(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -384,7 +384,7 @@ func TestSessionPolicyNonUnauthorizedResponseIsReturned(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusNotFound}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -400,7 +400,7 @@ func TestSessionPolicyTransportErrorPropagates(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &errorTransport{err: expectedErr}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.ErrorIs(t, err, expectedErr)
@@ -417,7 +417,7 @@ func TestSessionPolicyUnauthorizedWithErrorIsReturned(t *testing.T) {
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
 	fault := &faultPolicy{statusCode: http.StatusUnauthorized, errorCode: "AuthenticationFailed"}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport, fault)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport, fault)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.Error(t, err)
@@ -434,7 +434,7 @@ func TestSessionPolicyRewindsBodyBeforeBearerFallback(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	req := newTestPolicyRequest(t, http.MethodGet, testBlobURL)
 	require.NoError(t, req.SetBody(streaming.NopCloser(bytes.NewReader(body)), "application/octet-stream"))
@@ -453,7 +453,7 @@ func TestSessionPolicyClearsSessionHeadersBeforeBearerFallback(t *testing.T) {
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
 
 	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
@@ -469,7 +469,7 @@ func TestSessionPolicyNonUnauthorizedErrorPropagates(t *testing.T) {
 	transport := &recordingTransport{statusCode: http.StatusForbidden}
 	fault := &faultPolicy{statusCode: http.StatusForbidden, errorCode: "AuthorizationFailure"}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport, fault)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport, fault)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.Error(t, err)
@@ -489,7 +489,7 @@ func TestSessionPolicyAcquiresSessionPerRequest(t *testing.T) {
 	provider := newEligibleProvider()
 	transport := &recordingTransport{}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}), transport)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}, false), transport)
 
 	for i := 0; i < 3; i++ {
 		resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
@@ -499,4 +499,29 @@ func TestSessionPolicyAcquiresSessionPerRequest(t *testing.T) {
 
 	require.Equal(t, 3, provider.getCalls)
 	require.Equal(t, 3, transport.calls)
+}
+
+func TestSessionPolicyRefusesHTTPUnlessAllowed(t *testing.T) {
+	const httpBlobURL = "http://testaccount.blob.core.windows.net/container/blob"
+	for _, eligible := range []bool{true, false} {
+		provider := newEligibleProvider()
+		provider.eligible = eligible
+		bearer := &mockBearerPolicy{}
+		transport := &recordingTransport{}
+		pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer, false), transport)
+
+		_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, httpBlobURL))
+		require.ErrorContains(t, err, "non-TLS")
+		require.Zero(t, provider.getCalls, "no session is acquired")
+		require.Zero(t, bearer.doCalls)
+		require.Zero(t, transport.calls, "nothing is sent")
+	}
+
+	provider := newEligibleProvider()
+	transport := &recordingTransport{}
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, &mockBearerPolicy{}, true), transport)
+	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, httpBlobURL))
+	require.NoError(t, err)
+	require.Equal(t, 1, provider.getCalls)
+	require.True(t, strings.HasPrefix(transport.lastRequest.Header.Get(shared.HeaderAuthorization), "Session "))
 }

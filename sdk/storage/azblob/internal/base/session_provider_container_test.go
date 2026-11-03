@@ -95,16 +95,6 @@ func TestSessionAuthPolicyAccountName(t *testing.T) {
 	})
 }
 
-func TestSessionAuthPolicyUsesSuppliedProvider(t *testing.T) {
-	provider, err := NewContainerSessionProvider(accountBlobURL, fakeTokenCredential{}, nil)
-	require.NoError(t, err)
-	opts := sessionOptions(exported.SessionModeEnabled, "")
-	opts.Session.Provider = provider
-	p, err := newSessionAuthPolicy(accountBlobURL, fakeTokenCredential{}, bearerStub{}, opts)
-	require.NoError(t, err)
-	require.NotEqual(t, policy.Policy(bearerStub{}), p)
-}
-
 func TestGetAzClientSessionsRequireTokenCredential(t *testing.T) {
 	sharedKey, err := exported.NewSharedKeyCredential("account", "dGVzdC1rZXk=")
 	require.NoError(t, err)

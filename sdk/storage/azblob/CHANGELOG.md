@@ -11,9 +11,7 @@
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionModeEnabled` was set explicitly.
-  * By default each client creates its own session cache, shared with the clients derived from it. Create a
-    `container.SessionProvider` with `container.NewSessionProvider` and pass it as `SessionOptions.Provider` to share one
-    cache across separately constructed clients, so that sessions survive the clients that created them.
+  * Each client creates its own session cache, shared with the clients derived from it.
   * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
     unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
 * Added support for data locality in managed downloads through `LayoutAwareRouting` on `DownloadBufferOptions` and

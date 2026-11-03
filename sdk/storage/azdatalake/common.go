@@ -4,12 +4,9 @@
 package azdatalake
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 )
 
@@ -109,28 +106,3 @@ func PossibleSessionModeValues() []SessionMode {
 // SessionOptions configures session authentication; set it as ClientOptions.Session. Clients using
 // a shared key, a SAS or no credential ignore it.
 type SessionOptions = azblob.SessionOptions
-
-// SessionProvider provides and caches the sessions used to authenticate eligible requests. Share
-// one across clients through SessionOptions.Provider. Create one with NewContainerSessionProvider.
-type SessionProvider = azblob.SessionProvider
-
-// ContainerSessionProvider is a SessionProvider that creates sessions with an
-// azcore.TokenCredential and caches one per file system.
-type ContainerSessionProvider = container.SessionProvider
-
-// NewContainerSessionProvider creates a ContainerSessionProvider. Pass it as
-// SessionOptions.Provider to clients that should share its cached sessions, including clients
-// created independently of one another or after others have been discarded.
-//   - serviceURL - the URL of the storage account, e.g. https://<account>.dfs.core.windows.net/. A
-//     DFS URL is converted to the account's blob endpoint, where sessions are created, and a file
-//     system or path URL is reduced to its service URL.
-//   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - options - options for the pipeline that creates sessions; pass nil to accept the default values
-func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential, options *azcore.ClientOptions) (*ContainerSessionProvider, error) {
-	blobURL, _ := shared.GetURLs(serviceURL)
-	var blobOpts container.ClientOptions
-	if options != nil {
-		blobOpts.ClientOptions = *options
-	}
-	return container.NewSessionProvider(blobURL, cred, &blobOpts)
-}

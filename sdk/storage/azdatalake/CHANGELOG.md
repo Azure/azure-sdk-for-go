@@ -8,9 +8,7 @@
   requests to the DFS endpoint, writes and every other operation keep using the bearer token. With
   `SessionModeEnabled`, reads are authenticated with a session created and cached per file system. The default,
   `SessionModeAuto`, currently resolves to `SessionModeDisabled`.
-  * A client and every client derived from it share one session cache. Create a `ContainerSessionProvider` with
-    `azdatalake.NewContainerSessionProvider` and pass it as `SessionOptions.Provider` to share one cache across
-    separately constructed clients, so that sessions survive the clients that created them.
+  * Each client creates its own session cache, shared with the clients derived from it.
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionModeEnabled` was set explicitly.

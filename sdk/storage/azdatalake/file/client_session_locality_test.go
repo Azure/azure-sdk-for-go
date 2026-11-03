@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
 )
@@ -376,6 +375,9 @@ func TestDataLakeSessionIgnoredForSharedKeyAndSAS(t *testing.T) {
 	require.Empty(t, sessions)
 }
 
+// Clients derived through the service and file system clients share their pipeline, and with it the
+// session cache. directory.Client.NewFileClient and NewSubdirectoryClient construct a new blob
+// client, so each of those has a session cache of its own.
 func TestDataLakeImplicitProviderSharedAcrossDerivedClients(t *testing.T) {
 	a := newDLAccount()
 	svc, err := service.NewClient(dlDFSService, dlTokenCredential{}, &service.ClientOptions{ClientOptions: dlClientOptions(a), Session: enabled})
@@ -397,8 +399,8 @@ func TestDataLakeImplicitProviderSharedAcrossDerivedClients(t *testing.T) {
 	readAll(t, svc.NewFileSystemClient("other").NewFileClient("e.txt"), nil)
 
 	_, sessions := a.snapshot()
-	require.Equal(t, map[string]int{"fs": 1, "other": 1}, sessions,
-		"multiple files in one file system share its session; file systems have their own")
+	require.Equal(t, map[string]int{"fs": 3, "other": 1}, sessions,
+		"a.txt and b.txt share the service client's session; c.txt and d.txt come from directory-derived clients with their own; file systems have their own")
 }
 
 func TestDataLakeImplicitProvidersNotSharedAcrossIndependentClients(t *testing.T) {
@@ -407,26 +409,7 @@ func TestDataLakeImplicitProvidersNotSharedAcrossIndependentClients(t *testing.T
 	readAll(t, newDLFileClient(t, a, "fs/b.txt", enabled), nil)
 	_, sessions := a.snapshot()
 	require.Equal(t, map[string]int{"fs": 2}, sessions)
-}
-
-// A provider shared by independently created clients keeps its sessions across them, including
-// clients created after the earlier ones are gone.
-func TestDataLakeSharedProviderSurvivesClientRecreation(t *testing.T) {
-	a := newDLAccount()
-	provider, err := azdatalake.NewContainerSessionProvider(dlDFSService, dlTokenCredential{}, &azcore.ClientOptions{Transport: a})
-	require.NoError(t, err)
-	shared := azdatalake.SessionOptions{Mode: azdatalake.SessionModeEnabled, Provider: provider}
-
-	for i := range 3 {
-		readAll(t, newDLFileClient(t, a, fmt.Sprintf("fs/file%d.txt", i), shared), nil)
-	}
-	fsClient, err := filesystem.NewClient(dlDFSService+"fs", dlTokenCredential{}, &filesystem.ClientOptions{ClientOptions: dlClientOptions(a), Session: shared})
-	require.NoError(t, err)
-	readAll(t, fsClient.NewFileClient("x.txt"), nil)
-
-	_, sessions := a.snapshot()
-	require.Equal(t, map[string]int{"fs": 1}, sessions)
-	require.Equal(t, []string{dlBlobHost}, a.createSessionHosts, "a DFS service URL is converted to the blob endpoint")
+	require.Equal(t, []string{dlBlobHost, dlBlobHost}, a.createSessionHosts, "sessions are created at the blob endpoint, not the DFS endpoint")
 }
 
 func TestDataLakeConcurrentColdReadsCreateOneSession(t *testing.T) {

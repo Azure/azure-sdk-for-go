@@ -216,6 +216,9 @@ class CampaignTests(unittest.TestCase):
                 json.dumps({"endpoint": "https://account", "success": 10}), encoding="utf-8"
             )
             (run_dir / "dashboard.html").write_text("<html></html>", encoding="utf-8")
+            (run_dir / "observer-effect.csv").write_text(
+                "workers,leg,run_class\n8,go-v1,perf\n", encoding="utf-8"
+            )
             output = pathlib.Path(temp) / "bundle.tar.gz"
             campaign.sanitize(run_dir, output)
             with tarfile.open(output, "r:gz") as archive:
@@ -224,6 +227,9 @@ class CampaignTests(unittest.TestCase):
                 value = json.load(member)
                 self.assertIsNotNone(
                     archive.getmember("cosmos-perf-result/dashboard.html")
+                )
+                self.assertIsNotNone(
+                    archive.getmember("cosmos-perf-result/observer-effect.csv")
                 )
             self.assertTrue(value["endpoint"].startswith("sha256:"))
             self.assertEqual(10, value["success"])

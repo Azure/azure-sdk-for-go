@@ -1265,6 +1265,7 @@ def sanitize(run_dir: pathlib.Path, output: pathlib.Path) -> None:
         "accounting.json",
         "summary.json",
         "summary.csv",
+        "observer-effect.csv",
         "setup-equivalence.csv",
         "report.md",
         "dashboard.html",

@@ -1,0 +1,32 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+name: Issue investigation guard tests
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/issue-investigation*.cjs"
+      - ".github/workflows/issue-investigation*"
+      - ".github/workflows/issue-triage*"
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/issue-investigation*.cjs"
+      - ".github/workflows/issue-investigation*"
+      - ".github/workflows/issue-triage*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test investigation guards
+        run: node --test .github/scripts/issue-investigation.test.cjs .github/scripts/issue-investigation-handoff.test.cjs

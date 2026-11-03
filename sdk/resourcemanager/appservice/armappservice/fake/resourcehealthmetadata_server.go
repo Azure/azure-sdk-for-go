@@ -29,10 +29,6 @@ type ResourceHealthMetadataServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetBySiteSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientGetBySiteSlotOptions) (resp azfake.Responder[armappservice.ResourceHealthMetadataClientGetBySiteSlotResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ResourceHealthMetadataClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.ResourceHealthMetadataClientListOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ResourceHealthMetadataClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.ResourceHealthMetadataClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse])
@@ -44,6 +40,10 @@ type ResourceHealthMetadataServer struct {
 	// NewListBySiteSlotPager is the fake for method ResourceHealthMetadataClient.NewListBySiteSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySiteSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientListBySiteSlotOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse])
+
+	// NewListPager is the fake for method ResourceHealthMetadataClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.ResourceHealthMetadataClientListOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse])
 }
 
 // NewResourceHealthMetadataServerTransport creates a new instance of ResourceHealthMetadataServerTransport with the provided implementation.
@@ -52,10 +52,10 @@ type ResourceHealthMetadataServer struct {
 func NewResourceHealthMetadataServerTransport(srv *ResourceHealthMetadataServer) *ResourceHealthMetadataServerTransport {
 	return &ResourceHealthMetadataServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]](),
 		newListBySitePager:          newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]](),
 		newListBySiteSlotPager:      newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]](),
 	}
 }
 
@@ -63,10 +63,10 @@ func NewResourceHealthMetadataServerTransport(srv *ResourceHealthMetadataServer)
 // Don't use this type directly, use NewResourceHealthMetadataServerTransport instead.
 type ResourceHealthMetadataServerTransport struct {
 	srv                         *ResourceHealthMetadataServer
-	newListPager                *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]]
 	newListBySitePager          *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]]
 	newListBySiteSlotPager      *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceHealthMetadataServerTransport.
@@ -94,14 +94,14 @@ func (r *ResourceHealthMetadataServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = r.dispatchGetBySite(req)
 			case "ResourceHealthMetadataClient.GetBySiteSlot":
 				res.resp, res.err = r.dispatchGetBySiteSlot(req)
-			case "ResourceHealthMetadataClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "ResourceHealthMetadataClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "ResourceHealthMetadataClient.NewListBySitePager":
 				res.resp, res.err = r.dispatchNewListBySitePager(req)
 			case "ResourceHealthMetadataClient.NewListBySiteSlotPager":
 				res.resp, res.err = r.dispatchNewListBySiteSlotPager(req)
+			case "ResourceHealthMetadataClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -184,39 +184,6 @@ func (r *ResourceHealthMetadataServerTransport) dispatchGetBySiteSlot(req *http.
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceHealthMetadata, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceHealthMetadataServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/resourceHealthMetadata`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListPager(nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.ResourceHealthMetadataClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -340,6 +307,39 @@ func (r *ResourceHealthMetadataServerTransport) dispatchNewListBySiteSlotPager(r
 	}
 	if !server.PagerResponderMore(newListBySiteSlotPager) {
 		r.newListBySiteSlotPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *ResourceHealthMetadataServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/resourceHealthMetadata`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListPager(nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.ResourceHealthMetadataClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -116,6 +116,63 @@ type AddressResponseProperties struct {
 	VipMappings []*VirtualIPMapping
 }
 
+// AiGateway - An AI gateway resource.
+type AiGateway struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *AiGatewayProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AiGatewayListResult - The response of a AiGateway list operation.
+type AiGatewayListResult struct {
+	// REQUIRED; The AiGateway items on this page
+	Value []*AiGateway
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AiGatewayProperties - The properties of an AI gateway.
+type AiGatewayProperties struct {
+	// READ-ONLY; The description of the resource.
+	AiGatewayID *string
+}
+
+// AiGatewayTagsUpdate - The type used for updating tags in AiGateway resources.
+type AiGatewayTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// AiIntegration - AI integration configuration for the app.
+type AiIntegration struct {
+	// Relative path to the API specification file from /home in site files.
+	APISpecPath *string
+
+	// MCP configuration.
+	Mcp *McpSettings
+
+	// External auth configuration for the MCP endpoint (used when EasyAuth is not enabled).
+	SiteAuth *SiteAuthInfo
+}
+
 // AllowedAudiencesValidation - The configuration settings of the Allowed Audiences validation flow.
 type AllowedAudiencesValidation struct {
 	// The configuration settings of the allowed list of audiences from which to validate the JWT token.
@@ -2401,6 +2458,21 @@ type EndpointDetail struct {
 	Port *int32
 }
 
+// EndpointTrafficConfig - Represents traffic configuration for a single endpoint (region).
+type EndpointTrafficConfig struct {
+	// REQUIRED; Normalized Azure region name (for example, eastus, westus).
+	Region *string
+
+	// Whether the weight was auto-computed from the silo's worker count.
+	IsWeightAutoComputed *bool
+
+	// Priority of the endpoint (1-1000). Lower values receive traffic first in priority routing.
+	Priority *int32
+
+	// Weight of the endpoint (1-1000). Higher values receive proportionally more traffic in weighted routing.
+	Weight *int32
+}
+
 // Environment - Description of an App Service Environment.
 type Environment struct {
 	// REQUIRED; Description of the Virtual Network.
@@ -3013,7 +3085,7 @@ type FunctionsScaleAndConcurrency struct {
 	// proportionally.
 	InstanceMemoryMB *int32
 
-	// The maximum number of instances for the function app.
+	// The maximum number of on demand instances per function group.
 	MaximumInstanceCount *int32
 
 	// Scale and concurrency settings for the function app triggers.
@@ -3832,6 +3904,45 @@ type KubeEnvironmentProperties struct {
 	ProvisioningState *KubeEnvironmentProvisioningState
 }
 
+// LastKnownGoodCollection - Collection of last known good resources.
+type LastKnownGoodCollection struct {
+	// REQUIRED; The LastKnownGoodResource items on this page
+	Value []*LastKnownGoodResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// LastKnownGoodProperties - Last known good resource specific properties.
+type LastKnownGoodProperties struct {
+	// READ-ONLY; Time when the last known good revision was created.
+	CreatedTime *time.Time
+
+	// READ-ONLY; Monotonic revision number that was marked as last known good.
+	RevisionNumber *int64
+
+	// READ-ONLY; Name of the primary site.
+	SiteName *string
+}
+
+// LastKnownGoodResource - Last known good singleton resource.
+type LastKnownGoodResource struct {
+	// The resource-specific properties for this resource.
+	Properties *LastKnownGoodProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // LegacyMicrosoftAccount - The configuration settings of the legacy Microsoft Account provider.
 type LegacyMicrosoftAccount struct {
 	// <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise,
@@ -4101,6 +4212,67 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// ManagedTrafficConfigCollection - Collection of managed traffic configurations.
+type ManagedTrafficConfigCollection struct {
+	// REQUIRED; The ManagedTrafficConfigResource items on this page
+	Value []*ManagedTrafficConfigResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ManagedTrafficConfigProperties - Managed traffic configuration resource specific properties.
+type ManagedTrafficConfigProperties struct {
+	// Per-region endpoint configurations controlling weight and priority.
+	Endpoints []*EndpointTrafficConfig
+
+	// Traffic routing mode: Active (weighted) or Passive (priority-based failover).
+	TrafficMode *SiloFailOverMode
+}
+
+// ManagedTrafficConfigResource - Managed traffic configuration singleton resource.
+type ManagedTrafficConfigResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ManagedTrafficConfigProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// McpServerConfig - Configuration for an individual MCP server.
+type McpServerConfig struct {
+	// The description of the MCP server.
+	Description *string
+
+	// Whether the MCP server is enabled. Defaults to true when not specified on creation.
+	Enabled *bool
+
+	// The endpoint path for the MCP server.
+	Endpoint *string
+
+	// The name of the MCP server.
+	Name *string
+
+	// The list of tools exposed by this MCP server.
+	ToolList []*string
+}
+
+// McpSettings - MCP configuration settings.
+type McpSettings struct {
+	// Array of MCP server configurations. This array is replaced in its entirety on update; individual servers cannot be patched
+	// independently. An empty array signals that MCP should be disabled/deleted.
+	Servers []*McpServerConfig
+}
+
 // MetricAvailability - Retention policy of a resource metric.
 type MetricAvailability struct {
 	BlobDuration *string
@@ -4239,6 +4411,64 @@ type NetworkFeaturesProperties struct {
 	VirtualNetworkName *string
 }
 
+// NetworkSecurityPerimeter - Network Security Perimeter
+type NetworkSecurityPerimeter struct {
+	// ARM URI of the Network Security Perimeter resource.
+	ID *string
+
+	// Location where the Network Security Perimeter resource.
+	Location *string
+
+	// GUID of the Network Security Perimeter resource.
+	PerimeterGUID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Detailed view of a Network Security Perimeter Configured for the site.
+type NetworkSecurityPerimeterConfiguration struct {
+	// Kind of resource.
+	Kind *string
+
+	// Name of the Network Security Perimeter Profile Access Rule.
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource Name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// NetworkSecurityPerimeterConfigurationCollection - Collection of Network Security Perimeter Configurations
+type NetworkSecurityPerimeterConfigurationCollection struct {
+	// REQUIRED; The NetworkSecurityPerimeterConfiguration items on this page
+	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Network Security Perimeter Configuration Properties
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Associated Network Security Perimeter resource.
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// Associated Network Security Perimeter Profile.
+	Profile *NspProfile
+
+	// Reflects any misconfigurations and failures detected while provisioning the association or while processing configuration
+	// changes.
+	ProvisioningIssues []*NspProvisioningIssue
+
+	// Representation of Network Security Perimeter Association.
+	ResourceAssociations *NspResourceAssociation
+
+	// READ-ONLY; Reflects state of association persistence and configuration propagation to App Service Data Plane.
+	ProvisioningState *string
+}
+
 // NetworkTrace - Network trace
 type NetworkTrace struct {
 	// Detailed message of a network trace operation, e.g. error message in case of failure.
@@ -4258,6 +4488,114 @@ type Nonce struct {
 
 	// <code>false</code> if the nonce should not be validated while completing the login flow; otherwise, <code>true</code>.
 	ValidateNonce *bool
+}
+
+// NspProfile - Network Security Perimeter Profile
+type NspProfile struct {
+	// Access Rules for the Network Security Perimeter Profile.
+	AccessRules []*NspProfileAccessRule
+
+	// Access Rules Version for the Network Security Perimeter Profile.
+	AccessRulesVersion *string
+
+	// Diagnostic Settings Version for the Network Security Perimeter Profile.
+	DiagnosticSettingsVersion *string
+
+	// Enabled Log Categories for the Network Security Perimeter Profile.
+	EnabledLogCategories []*string
+
+	// Name of the Network Security Perimeter Profile.
+	Name *string
+}
+
+// NspProfileAccessRule - Network Security Perimeter Profile Access Rule
+type NspProfileAccessRule struct {
+	// Name of the Network Security Perimeter Profile Access Rule.
+	Name *string
+
+	// Name of the Network Security Perimeter Profile Access Rule.
+	Properties *NspProfileAccessRuleProperties
+}
+
+// NspProfileAccessRuleGranularFeature - Network Security Perimeter Profile Access Rule Granular Feature
+type NspProfileAccessRuleGranularFeature struct {
+	// Names of applied Granular Features.
+	Features []*string
+
+	// Resource Type of Granular Feature.
+	ResourceType *string
+}
+
+// NspProfileAccessRuleProperties - Network Security Perimeter Profile Access Rule Properties
+type NspProfileAccessRuleProperties struct {
+	// IP Address Ranges of Access Rule
+	AddressPrefixes []*string
+
+	// Granular Features of Access Rule
+	AppliesTo []*NspProfileAccessRuleGranularFeature
+
+	// Direction of Access Rule (Inbound/Outbound).
+	Direction *string
+
+	// Email Addresses of Access Rule. Not supported by App Service.
+	EmailAddresses []*string
+
+	// Fully Qualified Domain Names of Access Rule. Not supported by App Service.
+	FullyQualifiedDomainNames []*string
+
+	// NetworkSecurityPerimeter of Access Rule. Not supported by App Service.
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// Phone Numbers of Access Rule. Not supported by App Service.
+	PhoneNumbers []*string
+
+	// Service Tags of Access Rule
+	ServiceTags []*string
+
+	// Subscriptions of Access Rule. Not supported by App Service.
+	Subscriptions []*NspSubscription
+}
+
+// NspProvisioningIssue - Network Security Perimeter Association Provisioning Issue
+type NspProvisioningIssue struct {
+	// Provisioning Issue Name
+	Name *string
+
+	// Provisioning Issue Properties
+	Properties *NspProvisioningIssueProperties
+}
+
+// NspProvisioningIssueProperties - Network Security Perimeter Association Provisioning Issue Properties
+type NspProvisioningIssueProperties struct {
+	// Provisioning Issue Description
+	Description *string
+
+	// Provisioning Issue Type
+	IssueType *string
+
+	// Provisioning Issue Severity
+	Severity *string
+
+	// Recommended access rules to resolve the issue
+	SuggestedAccessRules []*string
+
+	// Recommended ARM Ids to resolve the issue
+	SuggestedResourceIDs []*string
+}
+
+// NspResourceAssociation - Network Security Perimeter Resource Association
+type NspResourceAssociation struct {
+	// Network Security Perimeter Association Access Mode (Learning/Enforced)
+	AccessMode *string
+
+	// Network Security Perimeter Resource Association Name
+	Name *string
+}
+
+// NspSubscription - Network Security Perimeter Subscription
+type NspSubscription struct {
+	// Network Security Perimeter Subscription Id
+	ID *string
 }
 
 // OpenAuthenticationAccessPolicies - AuthenticationPolicy of type Open.
@@ -4397,6 +4735,9 @@ type OutboundVnetRouting struct {
 
 	// Enables pulling image over Virtual Network. Previously called VnetImagePullEnabled.
 	ImagePullTraffic *bool
+
+	// Enables Managed Identity operations over virtual network.
+	ManagedIdentityTraffic *bool
 }
 
 // PerfMonCounterCollection - Collection of performance monitor counters.
@@ -6184,10 +6525,138 @@ type ServerFarmRdpDetails struct {
 	RdpPasswordExpiry *time.Time
 }
 
+// ServerFarmSilo - A silo of an App Service plan resource.
+type ServerFarmSilo struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ServerFarmSiloProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ServerFarmSiloCollection - Collection of App Service plan silos.
+type ServerFarmSiloCollection struct {
+	// REQUIRED; The ServerFarmSilo items on this page
+	Value []*ServerFarmSilo
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ServerFarmSiloProperties - App Service plan silo resource specific properties.
+type ServerFarmSiloProperties struct {
+	// REQUIRED; Region of the primary App Service plan.
+	PrimaryLocation *string
+
+	// Instance number override for the silo.
+	InstanceNumberOverride *int32
+
+	// Name of the primary App Service plan.
+	PrimaryServerFarmName *string
+
+	// Azure region of the App Service plan silo, retained for compatibility. When supplied, it must identify the same region
+	// as the required root location.
+	SiloLocation *string
+
+	// Zone redundancy override for the silo.
+	ZoneRedundantOverride *bool
+
+	// READ-ONLY; Time when the silo was created.
+	CreatedTime *time.Time
+
+	// READ-ONLY; Stable machine-readable error code paired with provisioningDetails. Null when the silo is healthy.
+	ErrorCode *string
+
+	// READ-ONLY; Time when the silo was last modified.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; Customer-facing, translated detail describing why the silo is Failed or Degraded. Null when the silo is healthy.
+	ProvisioningDetails *string
+
+	// READ-ONLY; Provisioning state of the silo.
+	ProvisioningState *SiloProvisioningState
+}
+
+// ServerFarmSiloResourceAllocation - Resource IDs reported by the service for resources connected to an integration subnet.
+type ServerFarmSiloResourceAllocation struct {
+	// READ-ONLY; Resource IDs of the connected App Service plans, including backing replica plans.
+	ConnectedServerFarmsID []*string
+
+	// READ-ONLY; Resource IDs of the connected apps, including backing replica apps.
+	ConnectedSitesID []*string
+}
+
+// ServerFarmSiloSubnetIPAllocation - IP address allocation counts for an integration subnet.
+type ServerFarmSiloSubnetIPAllocation struct {
+	// READ-ONLY; Number of subnet IP addresses available.
+	SubnetIPAddressesAvailable *int32
+
+	// READ-ONLY; Number of subnet IP addresses in use.
+	SubnetIPAddressesUsed *int32
+}
+
+// ServerFarmSiloTagsUpdate - The type used for updating tags in ServerFarmSilo resources.
+type ServerFarmSiloTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ServerFarmSiloVnetIntegration - Subnet integration and allocation information for an App Service plan silo.
+type ServerFarmSiloVnetIntegration struct {
+	// READ-ONLY; Resources connected to the subnet.
+	ResourceAllocation *ServerFarmSiloResourceAllocation
+
+	// READ-ONLY; IP address allocation counts for the subnet.
+	SubnetIPAllocation *ServerFarmSiloSubnetIPAllocation
+
+	// READ-ONLY; Resource ID of the integration subnet.
+	SubnetResourceID *string
+}
+
+// ServerFarmSiloVnetIntegrationsResult - Nonpaged virtual network inspection response for an App Service plan silo.
+type ServerFarmSiloVnetIntegrationsResult struct {
+	// READ-ONLY; Identifier returned by the service for the backing plan's virtual network integrations, not the customer-facing
+	// silo.
+	ID *string
+
+	// READ-ONLY; Azure region returned by the service for the backing plan.
+	Location *string
+
+	// READ-ONLY; Name of the inspection response, when one is available.
+	Name *string
+
+	// READ-ONLY; Subnet integrations and their allocation metadata. An empty array indicates no integrations.
+	Properties []*ServerFarmSiloVnetIntegration
+
+	// READ-ONLY; Resource type returned by the service for the backing plan's virtual network integrations.
+	Type *string
+}
+
 // ServiceSpecification - Resource metrics service provided by Microsoft.Insights resource provider.
 type ServiceSpecification struct {
 	LogSpecifications    []*LogSpecification
 	MetricSpecifications []*MetricSpecification
+}
+
+// SiloNetworkingOverride - Networking override configuration for a site silo.
+type SiloNetworkingOverride struct {
+	// Virtual network subnet resource ID override for the silo.
+	VnetIntegrationOverride *string
 }
 
 // Site - A web app, a mobile app backend, or an API app.
@@ -6222,6 +6691,25 @@ type Site struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SiteAuthInfo - External auth configuration for the MCP endpoint (used when EasyAuth is not enabled).
+// At minimum, `scopes` and either `wellKnownOpenIdConfiguration` or `issuer` must be provided.
+type SiteAuthInfo struct {
+	// Expected 'aud' claim.
+	Audience *string
+
+	// Expected 'iss' claim. Required for custom site authentication if `wellKnownOpenIdConfiguration` is not provided.
+	Issuer *string
+
+	// JWKS URL for verifying JWT signatures.
+	JwksURI *string
+
+	// OAuth scopes for Protected Resource Metadata (PRM). Required for custom site authentication.
+	Scopes []*string
+
+	// OIDC metadata URL. Required for custom site authentication if `issuer` is not provided.
+	WellKnownOpenIDConfiguration *string
 }
 
 // SiteAuthSettings - Configuration settings for the Azure App Service Authentication / Authorization feature.
@@ -6967,9 +7455,6 @@ type SiteExtensionInfoProperties struct {
 	// Project URL.
 	ProjectURL *string
 
-	// Provisioning state.
-	ProvisioningState *string
-
 	// Published timestamp.
 	PublishedDateTime *time.Time
 
@@ -6979,6 +7464,9 @@ type SiteExtensionInfoProperties struct {
 
 	// Version information.
 	Version *string
+
+	// READ-ONLY; Provisioning state.
+	ProvisioningState *string
 }
 
 // SiteLimits - Metric limits set on an app.
@@ -7067,6 +7555,9 @@ type SitePatchResource struct {
 
 // SitePatchResourceProperties - SitePatchResource resource specific properties
 type SitePatchResourceProperties struct {
+	// AI integration configuration for the app.
+	AiIntegration *AiIntegration
+
 	// <code>true</code> to enable client affinity; <code>false</code> to stop sending session affinity cookies, which route client
 	// requests in the same session to the same instance. Default is <code>true</code>.
 	ClientAffinityEnabled *bool
@@ -7148,6 +7639,9 @@ type SitePatchResourceProperties struct {
 
 	// Configuration of the app.
 	SiteConfig *SiteConfig
+
+	// <code>true</code> if site scoped certificates are enabled; otherwise, <code>false</code>.
+	SiteScopedCertificatesEnabled *bool
 
 	// Checks if Customer provided storage account is required
 	StorageAccountRequired *bool
@@ -7250,6 +7744,9 @@ type SitePhpErrorLogFlagProperties struct {
 
 // SiteProperties - Site resource specific properties
 type SiteProperties struct {
+	// AI integration configuration for the app.
+	AiIntegration *AiIntegration
+
 	// Specifies the scope of uniqueness for the default hostname during resource creation
 	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
 
@@ -7333,12 +7830,20 @@ type SiteProperties struct {
 	// Identity to use for Key Vault Reference authentication.
 	KeyVaultReferenceIdentity *string
 
+	// <code>true</code> if the app is in maintenance mode; otherwise, <code>false</code>. Setting this value to true puts the
+	// app in maintenance mode, making it return the maintenance custom error page. The maintenance custom error page is required
+	// to set the site to maintenance. Default value is <code>false</code>.
+	MaintenanceEnabled *bool
+
 	// Azure Resource Manager ID of the customer's selected Managed Environment on which to host this app. This must be of the
 	// form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}
 	ManagedEnvironmentID *string
 
 	// Property to configure various outbound traffic routing options over virtual network for a site
 	OutboundVnetRouting *OutboundVnetRouting
+
+	// The platform release channel for the site. Latest receives updates earliest, followed by Standard, then Extended.
+	PlatformReleaseChannel *PlatformReleaseChannel
 
 	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
 	PublicNetworkAccess *string
@@ -7364,6 +7869,9 @@ type SiteProperties struct {
 	// Configuration of an App Service app. This property is not returned in response to normal create and read requests since
 	// it may contain sensitive information.
 	SiteConfig *SiteConfig
+
+	// <code>true</code> if site scoped certificates are enabled; otherwise, <code>false</code>.
+	SiteScopedCertificatesEnabled *bool
 
 	// Checks if Customer provided storage account is required
 	StorageAccountRequired *bool
@@ -7436,6 +7944,130 @@ type SiteProperties struct {
 
 	// READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only.
 	UsageState *UsageState
+}
+
+// SiteSilo - A silo of a Web App resource.
+type SiteSilo struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *SiteSiloProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SiteSiloCollection - Collection of site silos.
+type SiteSiloCollection struct {
+	// REQUIRED; The SiteSilo items on this page
+	Value []*SiteSilo
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SiteSiloProperties - Site silo resource specific properties.
+type SiteSiloProperties struct {
+	// REQUIRED; Region of the primary site.
+	PrimaryLocation *string
+
+	// Status of the silo traffic endpoint.
+	EndpointStatus *string
+
+	// Whether the silo should follow the last known good revision.
+	FollowLastKnownGood *bool
+
+	// Networking overrides for the silo.
+	NetworkingOverride *SiloNetworkingOverride
+
+	// Name of the primary site.
+	PrimarySiteName *string
+
+	// Azure region of the site silo, retained for compatibility. When supplied, it must identify the same region as the required
+	// root location.
+	SiloLocation *string
+
+	// Traffic mode for the site silo's Traffic Manager profile.
+	TrafficMode *SiloFailOverMode
+
+	// READ-ONLY; Time when the silo was created.
+	CreatedTime *time.Time
+
+	// READ-ONLY; Default host name of the silo site.
+	DefaultHostName *string
+
+	// READ-ONLY; Stable machine-readable error code paired with provisioningDetails. Null when the silo is healthy.
+	ErrorCode *string
+
+	// READ-ONLY; Global host name for the site group.
+	GlobalHostName *string
+
+	// READ-ONLY; Inbound IPv4 address used by the silo.
+	InboundIPAddress *string
+
+	// READ-ONLY; Inbound IPv6 address used by the silo.
+	InboundIPv6Address *string
+
+	// READ-ONLY; Time when the silo was last modified.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; Health monitoring status of the silo endpoint.
+	MonitorStatus *string
+
+	// READ-ONLY; Outbound IPv4 addresses used by the silo.
+	OutboundIPAddresses *string
+
+	// READ-ONLY; Outbound IPv6 addresses used by the silo.
+	OutboundIPv6Addresses *string
+
+	// READ-ONLY; All possible inbound IPv4 addresses for the silo.
+	PossibleInboundIPAddresses *string
+
+	// READ-ONLY; All possible inbound IPv6 addresses for the silo.
+	PossibleInboundIPv6Addresses *string
+
+	// READ-ONLY; All possible outbound IPv4 addresses for the silo stamp.
+	PossibleOutboundIPAddresses *string
+
+	// READ-ONLY; All possible outbound IPv6 addresses for the silo stamp.
+	PossibleOutboundIPv6Addresses *string
+
+	// READ-ONLY; Customer-facing, translated detail describing why the silo is Failed or Degraded. Null when the silo is healthy.
+	ProvisioningDetails *string
+
+	// READ-ONLY; Provisioning state of the silo.
+	ProvisioningState *SiloProvisioningState
+
+	// READ-ONLY; Monotonic revision number currently applied to this silo.
+	RevisionNumber *int64
+}
+
+// SiteSiloTagsUpdate - The type used for updating tags in SiteSilo resources.
+type SiteSiloTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// SiteSiloVirtualNetworkConnectionCollection - Collection of virtual network connections for a Web App silo.
+type SiteSiloVirtualNetworkConnectionCollection struct {
+	// REQUIRED; The SwiftVirtualNetwork items on this page
+	Value []*SwiftVirtualNetwork
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SiteSourceControl - Source control configuration for an app.
@@ -8551,6 +9183,39 @@ type StaticSiteZipDeploymentARMResource struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// StaticSitesOperationStatus - Status object for a static sites asynchronous operation.
+type StaticSitesOperationStatus struct {
+	// Properties of the async operation status.
+	Properties *StaticSitesOperationStatusProperties
+
+	// READ-ONLY; The fully qualified ID for the staticSitesOperationStatus. For example, /subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSitesOperationStatuses/{operationId}
+	ID *string
+
+	// READ-ONLY; The name of the staticSitesOperationStatus. For example, a1f6e015-a5de-468f-ad54-9c75638d7134
+	Name *string
+
+	// READ-ONLY; The type of the resource. For example, Microsoft.Web/staticSitesOperationStatuses
+	Type *string
+}
+
+// StaticSitesOperationStatusProperties - Properties of a static sites asynchronous operation status.
+type StaticSitesOperationStatusProperties struct {
+	// The end time of the asynchronous operation.
+	EndTime *string
+
+	// Error details for the asynchronous operation, if any.
+	Error *ErrorResponse
+
+	// The start time of the asynchronous operation.
+	StartTime *string
+
+	// The generic properties of a staticSite.
+	StaticSiteProperties *StaticSite
+
+	// READ-ONLY; The current status of the asynchronous operation performed. For example, Running, Succeeded, Failed
+	Status *string
 }
 
 // StaticSitesWorkflowPreview - Preview for the Static Site Workflow to be generated

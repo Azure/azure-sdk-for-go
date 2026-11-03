@@ -19,7 +19,7 @@ import (
 // ProviderClient contains the methods for the Provider group.
 // Don't use this type directly, use NewProviderClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type ProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,74 +42,6 @@ func NewProviderClient(subscriptionID string, credential azcore.TokenCredential,
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// NewGetAvailableStacksPager - Get available application frameworks and their versions
-//
-// Description for Get available application frameworks and their versions
-//   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
-//     method.
-func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksResponse]{
-		More: func(page ProviderClientGetAvailableStacksResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ProviderClientGetAvailableStacksResponse) (ProviderClientGetAvailableStacksResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetAvailableStacksPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getAvailableStacksCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ProviderClientGetAvailableStacksResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProviderClientGetAvailableStacksResponse{}, err
-			}
-			return client.getAvailableStacksHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getAvailableStacksCreateRequest creates the GetAvailableStacks request.
-func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Web/availableStacks"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		if options != nil && options.OSTypeSelected != nil {
-			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getAvailableStacksHandleResponse handles the GetAvailableStacks response.
-func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetAvailableStacksResponse, error) {
-	result := ProviderClientGetAvailableStacksResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
-		return ProviderClientGetAvailableStacksResponse{}, err
-	}
-	return result, nil
 }
 
 // NewGetAvailableStacksOnPremPager - Get available application frameworks and their versions
@@ -162,7 +94,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.OSTypeSelected != nil {
 			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 		}
@@ -180,6 +112,147 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
 		return ProviderClientGetAvailableStacksOnPremResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetAvailableStacksPager - Get available application frameworks and their versions
+//
+// Description for Get available application frameworks and their versions
+//   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
+//     method.
+func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksResponse]{
+		More: func(page ProviderClientGetAvailableStacksResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProviderClientGetAvailableStacksResponse) (ProviderClientGetAvailableStacksResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetAvailableStacksPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.getAvailableStacksCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ProviderClientGetAvailableStacksResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetAvailableStacksResponse{}, err
+			}
+			return client.getAvailableStacksHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getAvailableStacksCreateRequest creates the GetAvailableStacks request.
+func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/availableStacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801)
+		if options != nil && options.OSTypeSelected != nil {
+			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// getAvailableStacksHandleResponse handles the GetAvailableStacks response.
+func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetAvailableStacksResponse, error) {
+	result := ProviderClientGetAvailableStacksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
+		return ProviderClientGetAvailableStacksResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetFunctionAppStacksForLocationPager - Get available Function app frameworks and their versions for location
+//
+// Description for Get available Function app frameworks and their versions for location
+//   - location - The name of the Azure region.
+//   - options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
+//     method.
+func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksForLocationResponse]{
+		More: func(page ProviderClientGetFunctionAppStacksForLocationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProviderClientGetFunctionAppStacksForLocationResponse) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetFunctionAppStacksForLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.getFunctionAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
+			if err != nil {
+				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+			}
+			return client.getFunctionAppStacksForLocationHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getFunctionAppStacksForLocationCreateRequest creates the GetFunctionAppStacksForLocation request.
+func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetFunctionAppStacksForLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/locations/{location}/functionAppStacks"
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801)
+		if options != nil && options.StackOsType != nil {
+			reqQP.Set("stackOsType", string(*options.StackOsType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// getFunctionAppStacksForLocationHandleResponse handles the GetFunctionAppStacksForLocation response.
+func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
+	result := ProviderClientGetFunctionAppStacksForLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
+		return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
 	}
 	return result, nil
 }
@@ -230,7 +303,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -252,44 +325,44 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewGetFunctionAppStacksForLocationPager - Get available Function app frameworks and their versions for location
+// NewGetWebAppStacksForLocationPager - Get available Web app frameworks and their versions for location
 //
-// Description for Get available Function app frameworks and their versions for location
-//   - location - The location name.
-//   - options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
+// Description for Get available Web app frameworks and their versions for location
+//   - location - The name of the Azure region.
+//   - options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
 //     method.
-func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksForLocationResponse]{
-		More: func(page ProviderClientGetFunctionAppStacksForLocationResponse) bool {
+func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetWebAppStacksForLocationResponse]{
+		More: func(page ProviderClientGetWebAppStacksForLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ProviderClientGetFunctionAppStacksForLocationResponse) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetFunctionAppStacksForLocationPager")
+		Fetcher: func(ctx context.Context, page *ProviderClientGetWebAppStacksForLocationResponse) (ProviderClientGetWebAppStacksForLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetWebAppStacksForLocationPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.getFunctionAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
+			req, err := client.getWebAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
-				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+				return ProviderClientGetWebAppStacksForLocationResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+				return ProviderClientGetWebAppStacksForLocationResponse{}, err
 			}
-			return client.getFunctionAppStacksForLocationHandleResponse(resp, http.StatusOK)
+			return client.getWebAppStacksForLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// getFunctionAppStacksForLocationCreateRequest creates the GetFunctionAppStacksForLocation request.
-func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetFunctionAppStacksForLocationOptions) (*policy.Request, error) {
+// getWebAppStacksForLocationCreateRequest creates the GetWebAppStacksForLocation request.
+func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetWebAppStacksForLocationOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/providers/Microsoft.Web/locations/{location}/functionAppStacks"
+		urlPath := "/providers/Microsoft.Web/locations/{location}/webAppStacks"
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")
 		}
@@ -303,7 +376,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -313,14 +386,14 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 	return req, nil
 }
 
-// getFunctionAppStacksForLocationHandleResponse handles the GetFunctionAppStacksForLocation response.
-func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
-	result := ProviderClientGetFunctionAppStacksForLocationResponse{}
+// getWebAppStacksForLocationHandleResponse handles the GetWebAppStacksForLocation response.
+func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetWebAppStacksForLocationResponse, error) {
+	result := ProviderClientGetWebAppStacksForLocationResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
-		return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
+		return ProviderClientGetWebAppStacksForLocationResponse{}, err
 	}
 	return result, nil
 }
@@ -371,7 +444,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -389,79 +462,6 @@ func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response,
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
 		return ProviderClientGetWebAppStacksResponse{}, err
-	}
-	return result, nil
-}
-
-// NewGetWebAppStacksForLocationPager - Get available Web app frameworks and their versions for location
-//
-// Description for Get available Web app frameworks and their versions for location
-//   - location - The location name.
-//   - options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
-//     method.
-func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetWebAppStacksForLocationResponse]{
-		More: func(page ProviderClientGetWebAppStacksForLocationResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ProviderClientGetWebAppStacksForLocationResponse) (ProviderClientGetWebAppStacksForLocationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetWebAppStacksForLocationPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getWebAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
-			if err != nil {
-				return ProviderClientGetWebAppStacksForLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProviderClientGetWebAppStacksForLocationResponse{}, err
-			}
-			return client.getWebAppStacksForLocationHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getWebAppStacksForLocationCreateRequest creates the GetWebAppStacksForLocation request.
-func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetWebAppStacksForLocationOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Web/locations/{location}/webAppStacks"
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		if options != nil && options.StackOsType != nil {
-			reqQP.Set("stackOsType", string(*options.StackOsType))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getWebAppStacksForLocationHandleResponse handles the GetWebAppStacksForLocation response.
-func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetWebAppStacksForLocationResponse, error) {
-	result := ProviderClientGetWebAppStacksForLocationResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
-		return ProviderClientGetWebAppStacksForLocationResponse{}, err
 	}
 	return result, nil
 }
@@ -513,7 +513,7 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, n
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -1,5 +1,120 @@
 # Release History
 
+## 6.1.0 (2026-11-03)
+### Features Added
+
+- New value `RuntimeNameGo` added to enum type `RuntimeName`
+- New value `TriggeredWebJobStatusAborted`, `TriggeredWebJobStatusRunning` added to enum type `TriggeredWebJobStatus`
+- New enum type `PlatformReleaseChannel` with values `PlatformReleaseChannelExtended`, `PlatformReleaseChannelLatest`, `PlatformReleaseChannelStandard`
+- New enum type `SiloFailOverMode` with values `SiloFailOverModeActive`, `SiloFailOverModePassive`, `SiloFailOverModeUnknown`
+- New enum type `SiloProvisioningState` with values `SiloProvisioningStateCanceled`, `SiloProvisioningStateDegraded`, `SiloProvisioningStateDeleting`, `SiloProvisioningStateFailed`, `SiloProvisioningStateInProgress`, `SiloProvisioningStateSucceeded`
+- New function `NewAiGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiGatewaysClient, error)`
+- New function `*AiGatewaysClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, resource AiGateway, options *AiGatewaysClientCreateOrUpdateOptions) (AiGatewaysClientCreateOrUpdateResponse, error)`
+- New function `*AiGatewaysClient.Delete(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientDeleteOptions) (AiGatewaysClientDeleteResponse, error)`
+- New function `*AiGatewaysClient.Get(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientGetOptions) (AiGatewaysClientGetResponse, error)`
+- New function `*AiGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *AiGatewaysClientListByResourceGroupOptions) *runtime.Pager[AiGatewaysClientListByResourceGroupResponse]`
+- New function `*AiGatewaysClient.NewListBySubscriptionPager(options *AiGatewaysClientListBySubscriptionOptions) *runtime.Pager[AiGatewaysClientListBySubscriptionResponse]`
+- New function `*AiGatewaysClient.Patch(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, options *AiGatewaysClientPatchOptions) (AiGatewaysClientPatchResponse, error)`
+- New function `*ClientFactory.NewAiGatewaysClient() *AiGatewaysClient`
+- New function `*ClientFactory.NewLastKnownGoodResourcesClient() *LastKnownGoodResourcesClient`
+- New function `*ClientFactory.NewManagedTrafficConfigResourcesClient() *ManagedTrafficConfigResourcesClient`
+- New function `*ClientFactory.NewServerFarmSiloResourcesClient() *ServerFarmSiloResourcesClient`
+- New function `*ClientFactory.NewSiteSiloResourcesClient() *SiteSiloResourcesClient`
+- New function `*ClientFactory.NewSiteSiloVirtualNetworkConnectionsClient() *SiteSiloVirtualNetworkConnectionsClient`
+- New function `*ClientFactory.NewSitesClient() *SitesClient`
+- New function `*ClientFactory.NewStaticSitesAsyncOperationsClient() *StaticSitesAsyncOperationsClient`
+- New function `NewLastKnownGoodResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LastKnownGoodResourcesClient, error)`
+- New function `*LastKnownGoodResourcesClient.GetLastKnownGood(ctx context.Context, resourceGroupName string, name string, options *LastKnownGoodResourcesClientGetLastKnownGoodOptions) (LastKnownGoodResourcesClientGetLastKnownGoodResponse, error)`
+- New function `*LastKnownGoodResourcesClient.NewListLastKnownGoodsPager(resourceGroupName string, name string, options *LastKnownGoodResourcesClientListLastKnownGoodsOptions) *runtime.Pager[LastKnownGoodResourcesClientListLastKnownGoodsResponse]`
+- New function `*LastKnownGoodResourcesClient.MarkLastKnownGood(ctx context.Context, resourceGroupName string, name string, options *LastKnownGoodResourcesClientMarkLastKnownGoodOptions) (LastKnownGoodResourcesClientMarkLastKnownGoodResponse, error)`
+- New function `NewManagedTrafficConfigResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedTrafficConfigResourcesClient, error)`
+- New function `*ManagedTrafficConfigResourcesClient.GetManagedTrafficConfig(ctx context.Context, resourceGroupName string, name string, options *ManagedTrafficConfigResourcesClientGetManagedTrafficConfigOptions) (ManagedTrafficConfigResourcesClientGetManagedTrafficConfigResponse, error)`
+- New function `*ManagedTrafficConfigResourcesClient.NewListManagedTrafficConfigsPager(resourceGroupName string, name string, options *ManagedTrafficConfigResourcesClientListManagedTrafficConfigsOptions) *runtime.Pager[ManagedTrafficConfigResourcesClientListManagedTrafficConfigsResponse]`
+- New function `*ManagedTrafficConfigResourcesClient.UpdateManagedTrafficConfig(ctx context.Context, resourceGroupName string, name string, resource ManagedTrafficConfigResource, options *ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigOptions) (ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigResponse, error)`
+- New function `*PlansClient.StartWebApps(ctx context.Context, resourceGroupName string, name string, options *PlansClientStartWebAppsOptions) (PlansClientStartWebAppsResponse, error)`
+- New function `*PlansClient.StopWebApps(ctx context.Context, resourceGroupName string, name string, options *PlansClientStopWebAppsOptions) (PlansClientStopWebAppsResponse, error)`
+- New function `NewServerFarmSiloResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerFarmSiloResourcesClient, error)`
+- New function `*ServerFarmSiloResourcesClient.BeginCreateOrUpdateServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, resource ServerFarmSilo, options *ServerFarmSiloResourcesClientBeginCreateOrUpdateServerFarmSiloOptions) (*runtime.Poller[ServerFarmSiloResourcesClientCreateOrUpdateServerFarmSiloResponse], error)`
+- New function `*ServerFarmSiloResourcesClient.BeginDeleteServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientBeginDeleteServerFarmSiloOptions) (*runtime.Poller[ServerFarmSiloResourcesClientDeleteServerFarmSiloResponse], error)`
+- New function `*ServerFarmSiloResourcesClient.GetServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloResponse, error)`
+- New function `*ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse, error)`
+- New function `*ServerFarmSiloResourcesClient.NewListServerFarmSilosPager(resourceGroupName string, name string, options *ServerFarmSiloResourcesClientListServerFarmSilosOptions) *runtime.Pager[ServerFarmSiloResourcesClientListServerFarmSilosResponse]`
+- New function `*ServerFarmSiloResourcesClient.UpdateServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, properties ServerFarmSiloTagsUpdate, options *ServerFarmSiloResourcesClientUpdateServerFarmSiloOptions) (ServerFarmSiloResourcesClientUpdateServerFarmSiloResponse, error)`
+- New function `NewSiteSiloResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SiteSiloResourcesClient, error)`
+- New function `*SiteSiloResourcesClient.BeginCreateOrUpdateSiteSilo(ctx context.Context, resourceGroupName string, name string, siloName string, resource SiteSilo, options *SiteSiloResourcesClientBeginCreateOrUpdateSiteSiloOptions) (*runtime.Poller[SiteSiloResourcesClientCreateOrUpdateSiteSiloResponse], error)`
+- New function `*SiteSiloResourcesClient.BeginDeleteSiteSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *SiteSiloResourcesClientBeginDeleteSiteSiloOptions) (*runtime.Poller[SiteSiloResourcesClientDeleteSiteSiloResponse], error)`
+- New function `*SiteSiloResourcesClient.GetSiteSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *SiteSiloResourcesClientGetSiteSiloOptions) (SiteSiloResourcesClientGetSiteSiloResponse, error)`
+- New function `*SiteSiloResourcesClient.NewListSiteSilosPager(resourceGroupName string, name string, options *SiteSiloResourcesClientListSiteSilosOptions) *runtime.Pager[SiteSiloResourcesClientListSiteSilosResponse]`
+- New function `*SiteSiloResourcesClient.RefreshSiteSilos(ctx context.Context, resourceGroupName string, name string, options *SiteSiloResourcesClientRefreshSiteSilosOptions) (SiteSiloResourcesClientRefreshSiteSilosResponse, error)`
+- New function `*SiteSiloResourcesClient.UpdateSiteSilo(ctx context.Context, resourceGroupName string, name string, siloName string, properties SiteSiloTagsUpdate, options *SiteSiloResourcesClientUpdateSiteSiloOptions) (SiteSiloResourcesClientUpdateSiteSiloResponse, error)`
+- New function `NewSiteSiloVirtualNetworkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SiteSiloVirtualNetworkConnectionsClient, error)`
+- New function `*SiteSiloVirtualNetworkConnectionsClient.CreateOrUpdateSiteSiloVnetConnection(ctx context.Context, resourceGroupName string, name string, siloName string, resource SwiftVirtualNetwork, options *SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionOptions) (SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionResponse, error)`
+- New function `*SiteSiloVirtualNetworkConnectionsClient.DeleteSiteSiloVnetConnection(ctx context.Context, resourceGroupName string, name string, siloName string, options *SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionOptions) (SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse, error)`
+- New function `*SiteSiloVirtualNetworkConnectionsClient.GetSiteSiloVnetConnection(ctx context.Context, resourceGroupName string, name string, siloName string, options *SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionOptions) (SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionResponse, error)`
+- New function `*SiteSiloVirtualNetworkConnectionsClient.NewListSiteSiloVnetConnectionsPager(resourceGroupName string, name string, siloName string, options *SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsOptions) *runtime.Pager[SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsResponse]`
+- New function `*SiteSiloVirtualNetworkConnectionsClient.UpdateSiteSiloVnetConnection(ctx context.Context, resourceGroupName string, name string, siloName string, properties SwiftVirtualNetwork, options *SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionOptions) (SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionResponse, error)`
+- New function `NewSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesClient, error)`
+- New function `*SitesClient.GetNetworkSecurityPerimeterConfiguration(ctx context.Context, resourceGroupName string, name string, networkSecurityPerimeterReference string, options *SitesClientGetNetworkSecurityPerimeterConfigurationOptions) (SitesClientGetNetworkSecurityPerimeterConfigurationResponse, error)`
+- New function `*SitesClient.NewListNetworkSecurityPerimeterConfigurationsPager(resourceGroupName string, name string, options *SitesClientListNetworkSecurityPerimeterConfigurationsOptions) *runtime.Pager[SitesClientListNetworkSecurityPerimeterConfigurationsResponse]`
+- New function `NewStaticSitesAsyncOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StaticSitesAsyncOperationsClient, error)`
+- New function `*StaticSitesAsyncOperationsClient.BeginGetOperationResult(ctx context.Context, location string, operationID string, options *StaticSitesAsyncOperationsClientBeginGetOperationResultOptions) (*runtime.Poller[StaticSitesAsyncOperationsClientGetOperationResultResponse], error)`
+- New function `*StaticSitesAsyncOperationsClient.GetOperationStatus(ctx context.Context, location string, operationID string, options *StaticSitesAsyncOperationsClientGetOperationStatusOptions) (StaticSitesAsyncOperationsClientGetOperationStatusResponse, error)`
+- New struct `AiGateway`
+- New struct `AiGatewayListResult`
+- New struct `AiGatewayProperties`
+- New struct `AiGatewayTagsUpdate`
+- New struct `AiIntegration`
+- New struct `EndpointTrafficConfig`
+- New struct `LastKnownGoodCollection`
+- New struct `LastKnownGoodProperties`
+- New struct `LastKnownGoodResource`
+- New struct `ManagedTrafficConfigCollection`
+- New struct `ManagedTrafficConfigProperties`
+- New struct `ManagedTrafficConfigResource`
+- New struct `McpServerConfig`
+- New struct `McpSettings`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationCollection`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NspProfile`
+- New struct `NspProfileAccessRule`
+- New struct `NspProfileAccessRuleGranularFeature`
+- New struct `NspProfileAccessRuleProperties`
+- New struct `NspProvisioningIssue`
+- New struct `NspProvisioningIssueProperties`
+- New struct `NspResourceAssociation`
+- New struct `NspSubscription`
+- New struct `ServerFarmSilo`
+- New struct `ServerFarmSiloCollection`
+- New struct `ServerFarmSiloProperties`
+- New struct `ServerFarmSiloResourceAllocation`
+- New struct `ServerFarmSiloSubnetIPAllocation`
+- New struct `ServerFarmSiloTagsUpdate`
+- New struct `ServerFarmSiloVnetIntegration`
+- New struct `ServerFarmSiloVnetIntegrationsResult`
+- New struct `SiloNetworkingOverride`
+- New struct `SiteAuthInfo`
+- New struct `SiteSilo`
+- New struct `SiteSiloCollection`
+- New struct `SiteSiloProperties`
+- New struct `SiteSiloTagsUpdate`
+- New struct `SiteSiloVirtualNetworkConnectionCollection`
+- New struct `StaticSitesOperationStatus`
+- New struct `StaticSitesOperationStatusProperties`
+- New field `Interface` in struct `EnvironmentsClientDeletePrivateEndpointConnectionResponse`
+- New field `ManagedIdentityTraffic` in struct `OutboundVnetRouting`
+- New field `AiIntegration`, `SiteScopedCertificatesEnabled` in struct `SitePatchResourceProperties`
+- New field `AiIntegration`, `MaintenanceEnabled`, `PlatformReleaseChannel`, `SiteScopedCertificatesEnabled` in struct `SiteProperties`
+- New field `Interface` in struct `StaticSitesClientDeletePrivateEndpointConnectionResponse`
+- New field `Interface` in struct `WebAppsClientDeletePrivateEndpointConnectionResponse`
+- New field `Interface` in struct `WebAppsClientDeletePrivateEndpointConnectionSlotResponse`
+- New field `NetworkTraceArray` in struct `WebAppsClientStartNetworkTraceResponse`
+- New field `NetworkTraceArray` in struct `WebAppsClientStartNetworkTraceSlotResponse`
+- New field `NetworkTraceArray` in struct `WebAppsClientStartWebSiteNetworkTraceOperationResponse`
+- New field `NetworkTraceArray` in struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse`
+
+
 ## 6.0.0 (2026-02-27)
 ### Breaking Changes
 

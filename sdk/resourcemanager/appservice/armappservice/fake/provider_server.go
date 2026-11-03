@@ -20,29 +20,29 @@ import (
 
 // ProviderServer is a fake server for instances of the armappservice.ProviderClient type.
 type ProviderServer struct {
-	// NewGetAvailableStacksPager is the fake for method ProviderClient.NewGetAvailableStacksPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAvailableStacksPager func(options *armappservice.ProviderClientGetAvailableStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse])
-
 	// NewGetAvailableStacksOnPremPager is the fake for method ProviderClient.NewGetAvailableStacksOnPremPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetAvailableStacksOnPremPager func(options *armappservice.ProviderClientGetAvailableStacksOnPremOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksOnPremResponse])
 
-	// NewGetFunctionAppStacksPager is the fake for method ProviderClient.NewGetFunctionAppStacksPager
+	// NewGetAvailableStacksPager is the fake for method ProviderClient.NewGetAvailableStacksPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetFunctionAppStacksPager func(options *armappservice.ProviderClientGetFunctionAppStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse])
+	NewGetAvailableStacksPager func(options *armappservice.ProviderClientGetAvailableStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse])
 
 	// NewGetFunctionAppStacksForLocationPager is the fake for method ProviderClient.NewGetFunctionAppStacksForLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetFunctionAppStacksForLocationPager func(location string, options *armappservice.ProviderClientGetFunctionAppStacksForLocationOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksForLocationResponse])
 
-	// NewGetWebAppStacksPager is the fake for method ProviderClient.NewGetWebAppStacksPager
+	// NewGetFunctionAppStacksPager is the fake for method ProviderClient.NewGetFunctionAppStacksPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetWebAppStacksPager func(options *armappservice.ProviderClientGetWebAppStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse])
+	NewGetFunctionAppStacksPager func(options *armappservice.ProviderClientGetFunctionAppStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse])
 
 	// NewGetWebAppStacksForLocationPager is the fake for method ProviderClient.NewGetWebAppStacksForLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetWebAppStacksForLocationPager func(location string, options *armappservice.ProviderClientGetWebAppStacksForLocationOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksForLocationResponse])
+
+	// NewGetWebAppStacksPager is the fake for method ProviderClient.NewGetWebAppStacksPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetWebAppStacksPager func(options *armappservice.ProviderClientGetWebAppStacksOptions) (resp azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse])
 
 	// NewListOperationsPager is the fake for method ProviderClient.NewListOperationsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -55,12 +55,12 @@ type ProviderServer struct {
 func NewProviderServerTransport(srv *ProviderServer) *ProviderServerTransport {
 	return &ProviderServerTransport{
 		srv:                                     srv,
-		newGetAvailableStacksPager:              newTracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse]](),
 		newGetAvailableStacksOnPremPager:        newTracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksOnPremResponse]](),
-		newGetFunctionAppStacksPager:            newTracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse]](),
+		newGetAvailableStacksPager:              newTracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse]](),
 		newGetFunctionAppStacksForLocationPager: newTracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksForLocationResponse]](),
-		newGetWebAppStacksPager:                 newTracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse]](),
+		newGetFunctionAppStacksPager:            newTracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse]](),
 		newGetWebAppStacksForLocationPager:      newTracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksForLocationResponse]](),
+		newGetWebAppStacksPager:                 newTracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse]](),
 		newListOperationsPager:                  newTracker[azfake.PagerResponder[armappservice.ProviderClientListOperationsResponse]](),
 	}
 }
@@ -69,12 +69,12 @@ func NewProviderServerTransport(srv *ProviderServer) *ProviderServerTransport {
 // Don't use this type directly, use NewProviderServerTransport instead.
 type ProviderServerTransport struct {
 	srv                                     *ProviderServer
-	newGetAvailableStacksPager              *tracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse]]
 	newGetAvailableStacksOnPremPager        *tracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksOnPremResponse]]
-	newGetFunctionAppStacksPager            *tracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse]]
+	newGetAvailableStacksPager              *tracker[azfake.PagerResponder[armappservice.ProviderClientGetAvailableStacksResponse]]
 	newGetFunctionAppStacksForLocationPager *tracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksForLocationResponse]]
-	newGetWebAppStacksPager                 *tracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse]]
+	newGetFunctionAppStacksPager            *tracker[azfake.PagerResponder[armappservice.ProviderClientGetFunctionAppStacksResponse]]
 	newGetWebAppStacksForLocationPager      *tracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksForLocationResponse]]
+	newGetWebAppStacksPager                 *tracker[azfake.PagerResponder[armappservice.ProviderClientGetWebAppStacksResponse]]
 	newListOperationsPager                  *tracker[azfake.PagerResponder[armappservice.ProviderClientListOperationsResponse]]
 }
 
@@ -99,18 +99,18 @@ func (p *ProviderServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ProviderClient.NewGetAvailableStacksPager":
-				res.resp, res.err = p.dispatchNewGetAvailableStacksPager(req)
 			case "ProviderClient.NewGetAvailableStacksOnPremPager":
 				res.resp, res.err = p.dispatchNewGetAvailableStacksOnPremPager(req)
-			case "ProviderClient.NewGetFunctionAppStacksPager":
-				res.resp, res.err = p.dispatchNewGetFunctionAppStacksPager(req)
+			case "ProviderClient.NewGetAvailableStacksPager":
+				res.resp, res.err = p.dispatchNewGetAvailableStacksPager(req)
 			case "ProviderClient.NewGetFunctionAppStacksForLocationPager":
 				res.resp, res.err = p.dispatchNewGetFunctionAppStacksForLocationPager(req)
-			case "ProviderClient.NewGetWebAppStacksPager":
-				res.resp, res.err = p.dispatchNewGetWebAppStacksPager(req)
+			case "ProviderClient.NewGetFunctionAppStacksPager":
+				res.resp, res.err = p.dispatchNewGetFunctionAppStacksPager(req)
 			case "ProviderClient.NewGetWebAppStacksForLocationPager":
 				res.resp, res.err = p.dispatchNewGetWebAppStacksForLocationPager(req)
+			case "ProviderClient.NewGetWebAppStacksPager":
+				res.resp, res.err = p.dispatchNewGetWebAppStacksPager(req)
 			case "ProviderClient.NewListOperationsPager":
 				res.resp, res.err = p.dispatchNewListOperationsPager(req)
 			default:
@@ -127,41 +127,6 @@ func (p *ProviderServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (p *ProviderServerTransport) dispatchNewGetAvailableStacksPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewGetAvailableStacksPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetAvailableStacksPager not implemented")}
-	}
-	newGetAvailableStacksPager := p.newGetAvailableStacksPager.get(req)
-	if newGetAvailableStacksPager == nil {
-		qp := req.URL.Query()
-		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(qp.Get("osTypeSelected")))
-		var options *armappservice.ProviderClientGetAvailableStacksOptions
-		if oSTypeSelectedParam != nil {
-			options = &armappservice.ProviderClientGetAvailableStacksOptions{
-				OSTypeSelected: oSTypeSelectedParam,
-			}
-		}
-		resp := p.srv.NewGetAvailableStacksPager(options)
-		newGetAvailableStacksPager = &resp
-		p.newGetAvailableStacksPager.add(req, newGetAvailableStacksPager)
-		server.PagerResponderInjectNextLinks(newGetAvailableStacksPager, req, func(page *armappservice.ProviderClientGetAvailableStacksResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetAvailableStacksPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newGetAvailableStacksPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetAvailableStacksPager) {
-		p.newGetAvailableStacksPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (p *ProviderServerTransport) dispatchNewGetAvailableStacksOnPremPager(req *http.Request) (*http.Response, error) {
@@ -205,37 +170,37 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksOnPremPager(req *
 	return resp, nil
 }
 
-func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewGetFunctionAppStacksPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetFunctionAppStacksPager not implemented")}
+func (p *ProviderServerTransport) dispatchNewGetAvailableStacksPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewGetAvailableStacksPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetAvailableStacksPager not implemented")}
 	}
-	newGetFunctionAppStacksPager := p.newGetFunctionAppStacksPager.get(req)
-	if newGetFunctionAppStacksPager == nil {
+	newGetAvailableStacksPager := p.newGetAvailableStacksPager.get(req)
+	if newGetAvailableStacksPager == nil {
 		qp := req.URL.Query()
-		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
-		var options *armappservice.ProviderClientGetFunctionAppStacksOptions
-		if stackOsTypeParam != nil {
-			options = &armappservice.ProviderClientGetFunctionAppStacksOptions{
-				StackOsType: stackOsTypeParam,
+		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(qp.Get("osTypeSelected")))
+		var options *armappservice.ProviderClientGetAvailableStacksOptions
+		if oSTypeSelectedParam != nil {
+			options = &armappservice.ProviderClientGetAvailableStacksOptions{
+				OSTypeSelected: oSTypeSelectedParam,
 			}
 		}
-		resp := p.srv.NewGetFunctionAppStacksPager(options)
-		newGetFunctionAppStacksPager = &resp
-		p.newGetFunctionAppStacksPager.add(req, newGetFunctionAppStacksPager)
-		server.PagerResponderInjectNextLinks(newGetFunctionAppStacksPager, req, func(page *armappservice.ProviderClientGetFunctionAppStacksResponse, createLink func() string) {
+		resp := p.srv.NewGetAvailableStacksPager(options)
+		newGetAvailableStacksPager = &resp
+		p.newGetAvailableStacksPager.add(req, newGetAvailableStacksPager)
+		server.PagerResponderInjectNextLinks(newGetAvailableStacksPager, req, func(page *armappservice.ProviderClientGetAvailableStacksResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newGetFunctionAppStacksPager, req)
+	resp, err := server.PagerResponderNext(newGetAvailableStacksPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newGetFunctionAppStacksPager.remove(req)
+		p.newGetAvailableStacksPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newGetFunctionAppStacksPager) {
-		p.newGetFunctionAppStacksPager.remove(req)
+	if !server.PagerResponderMore(newGetAvailableStacksPager) {
+		p.newGetAvailableStacksPager.remove(req)
 	}
 	return resp, nil
 }
@@ -285,37 +250,37 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksForLocationPage
 	return resp, nil
 }
 
-func (p *ProviderServerTransport) dispatchNewGetWebAppStacksPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewGetWebAppStacksPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetWebAppStacksPager not implemented")}
+func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewGetFunctionAppStacksPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetFunctionAppStacksPager not implemented")}
 	}
-	newGetWebAppStacksPager := p.newGetWebAppStacksPager.get(req)
-	if newGetWebAppStacksPager == nil {
+	newGetFunctionAppStacksPager := p.newGetFunctionAppStacksPager.get(req)
+	if newGetFunctionAppStacksPager == nil {
 		qp := req.URL.Query()
 		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
-		var options *armappservice.ProviderClientGetWebAppStacksOptions
+		var options *armappservice.ProviderClientGetFunctionAppStacksOptions
 		if stackOsTypeParam != nil {
-			options = &armappservice.ProviderClientGetWebAppStacksOptions{
+			options = &armappservice.ProviderClientGetFunctionAppStacksOptions{
 				StackOsType: stackOsTypeParam,
 			}
 		}
-		resp := p.srv.NewGetWebAppStacksPager(options)
-		newGetWebAppStacksPager = &resp
-		p.newGetWebAppStacksPager.add(req, newGetWebAppStacksPager)
-		server.PagerResponderInjectNextLinks(newGetWebAppStacksPager, req, func(page *armappservice.ProviderClientGetWebAppStacksResponse, createLink func() string) {
+		resp := p.srv.NewGetFunctionAppStacksPager(options)
+		newGetFunctionAppStacksPager = &resp
+		p.newGetFunctionAppStacksPager.add(req, newGetFunctionAppStacksPager)
+		server.PagerResponderInjectNextLinks(newGetFunctionAppStacksPager, req, func(page *armappservice.ProviderClientGetFunctionAppStacksResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newGetWebAppStacksPager, req)
+	resp, err := server.PagerResponderNext(newGetFunctionAppStacksPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newGetWebAppStacksPager.remove(req)
+		p.newGetFunctionAppStacksPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newGetWebAppStacksPager) {
-		p.newGetWebAppStacksPager.remove(req)
+	if !server.PagerResponderMore(newGetFunctionAppStacksPager) {
+		p.newGetFunctionAppStacksPager.remove(req)
 	}
 	return resp, nil
 }
@@ -361,6 +326,41 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksForLocationPager(req
 	}
 	if !server.PagerResponderMore(newGetWebAppStacksForLocationPager) {
 		p.newGetWebAppStacksForLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ProviderServerTransport) dispatchNewGetWebAppStacksPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewGetWebAppStacksPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetWebAppStacksPager not implemented")}
+	}
+	newGetWebAppStacksPager := p.newGetWebAppStacksPager.get(req)
+	if newGetWebAppStacksPager == nil {
+		qp := req.URL.Query()
+		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
+		var options *armappservice.ProviderClientGetWebAppStacksOptions
+		if stackOsTypeParam != nil {
+			options = &armappservice.ProviderClientGetWebAppStacksOptions{
+				StackOsType: stackOsTypeParam,
+			}
+		}
+		resp := p.srv.NewGetWebAppStacksPager(options)
+		newGetWebAppStacksPager = &resp
+		p.newGetWebAppStacksPager.add(req, newGetWebAppStacksPager)
+		server.PagerResponderInjectNextLinks(newGetWebAppStacksPager, req, func(page *armappservice.ProviderClientGetWebAppStacksResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetWebAppStacksPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newGetWebAppStacksPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetWebAppStacksPager) {
+		p.newGetWebAppStacksPager.remove(req)
 	}
 	return resp, nil
 }

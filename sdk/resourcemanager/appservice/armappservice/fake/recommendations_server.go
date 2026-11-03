@@ -50,10 +50,6 @@ type RecommendationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetRuleDetailsByWebApp func(ctx context.Context, resourceGroupName string, siteName string, name string, options *armappservice.RecommendationsClientGetRuleDetailsByWebAppOptions) (resp azfake.Responder[armappservice.RecommendationsClientGetRuleDetailsByWebAppResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RecommendationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.RecommendationsClientListOptions) (resp azfake.PagerResponder[armappservice.RecommendationsClientListResponse])
-
 	// NewListHistoryForHostingEnvironmentPager is the fake for method RecommendationsClient.NewListHistoryForHostingEnvironmentPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListHistoryForHostingEnvironmentPager func(resourceGroupName string, hostingEnvironmentName string, options *armappservice.RecommendationsClientListHistoryForHostingEnvironmentOptions) (resp azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForHostingEnvironmentResponse])
@@ -61,6 +57,10 @@ type RecommendationsServer struct {
 	// NewListHistoryForWebAppPager is the fake for method RecommendationsClient.NewListHistoryForWebAppPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListHistoryForWebAppPager func(resourceGroupName string, siteName string, options *armappservice.RecommendationsClientListHistoryForWebAppOptions) (resp azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForWebAppResponse])
+
+	// NewListPager is the fake for method RecommendationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.RecommendationsClientListOptions) (resp azfake.PagerResponder[armappservice.RecommendationsClientListResponse])
 
 	// NewListRecommendedRulesForHostingEnvironmentPager is the fake for method RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -89,9 +89,9 @@ type RecommendationsServer struct {
 func NewRecommendationsServerTransport(srv *RecommendationsServer) *RecommendationsServerTransport {
 	return &RecommendationsServerTransport{
 		srv:                                      srv,
-		newListPager:                             newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListResponse]](),
 		newListHistoryForHostingEnvironmentPager: newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForHostingEnvironmentResponse]](),
 		newListHistoryForWebAppPager:             newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForWebAppResponse]](),
+		newListPager:                             newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListResponse]](),
 		newListRecommendedRulesForHostingEnvironmentPager: newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]](),
 		newListRecommendedRulesForWebAppPager:             newTracker[azfake.PagerResponder[armappservice.RecommendationsClientListRecommendedRulesForWebAppResponse]](),
 	}
@@ -101,9 +101,9 @@ func NewRecommendationsServerTransport(srv *RecommendationsServer) *Recommendati
 // Don't use this type directly, use NewRecommendationsServerTransport instead.
 type RecommendationsServerTransport struct {
 	srv                                               *RecommendationsServer
-	newListPager                                      *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListResponse]]
 	newListHistoryForHostingEnvironmentPager          *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForHostingEnvironmentResponse]]
 	newListHistoryForWebAppPager                      *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListHistoryForWebAppResponse]]
+	newListPager                                      *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListResponse]]
 	newListRecommendedRulesForHostingEnvironmentPager *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]]
 	newListRecommendedRulesForWebAppPager             *tracker[azfake.PagerResponder[armappservice.RecommendationsClientListRecommendedRulesForWebAppResponse]]
 }
@@ -143,12 +143,12 @@ func (r *RecommendationsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = r.dispatchGetRuleDetailsByHostingEnvironment(req)
 			case "RecommendationsClient.GetRuleDetailsByWebApp":
 				res.resp, res.err = r.dispatchGetRuleDetailsByWebApp(req)
-			case "RecommendationsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecommendationsClient.NewListHistoryForHostingEnvironmentPager":
 				res.resp, res.err = r.dispatchNewListHistoryForHostingEnvironmentPager(req)
 			case "RecommendationsClient.NewListHistoryForWebAppPager":
 				res.resp, res.err = r.dispatchNewListHistoryForWebAppPager(req)
+			case "RecommendationsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager":
 				res.resp, res.err = r.dispatchNewListRecommendedRulesForHostingEnvironmentPager(req)
 			case "RecommendationsClient.NewListRecommendedRulesForWebAppPager":
@@ -446,52 +446,6 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByWebApp(req *htt
 	return resp, nil
 }
 
-func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/recommendations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		featuredParam, err := parseOptional(qp.Get("featured"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armappservice.RecommendationsClientListOptions
-		if featuredParam != nil || filterParam != nil {
-			options = &armappservice.RecommendationsClientListOptions{
-				Featured: featuredParam,
-				Filter:   filterParam,
-			}
-		}
-		resp := r.srv.NewListPager(options)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.RecommendationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RecommendationsServerTransport) dispatchNewListHistoryForHostingEnvironmentPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListHistoryForHostingEnvironmentPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListHistoryForHostingEnvironmentPager not implemented")}
@@ -596,6 +550,52 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForWebAppPager(re
 	}
 	if !server.PagerResponderMore(newListHistoryForWebAppPager) {
 		r.newListHistoryForWebAppPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/recommendations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		featuredParam, err := parseOptional(qp.Get("featured"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armappservice.RecommendationsClientListOptions
+		if featuredParam != nil || filterParam != nil {
+			options = &armappservice.RecommendationsClientListOptions{
+				Featured: featuredParam,
+				Filter:   filterParam,
+			}
+		}
+		resp := r.srv.NewListPager(options)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.RecommendationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

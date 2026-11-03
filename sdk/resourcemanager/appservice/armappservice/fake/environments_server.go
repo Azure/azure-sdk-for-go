@@ -46,13 +46,25 @@ type EnvironmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappservice.EnvironmentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// DeleteAseCustomDNSSuffixConfiguration is the fake for method EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteAseCustomDNSSuffixConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationOptions) (resp azfake.Responder[armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse], errResp azfake.ErrorResponder)
-
 	// BeginDeletePrivateEndpointConnection is the fake for method EnvironmentsClient.BeginDeletePrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.EnvironmentsClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginResume is the fake for method EnvironmentsClient.BeginResume
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResume func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginResumeOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]], errResp azfake.ErrorResponder)
+
+	// BeginSuspend is the fake for method EnvironmentsClient.BeginSuspend
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSuspend func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginSuspendOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]], errResp azfake.ErrorResponder)
+
+	// BeginUpgrade is the fake for method EnvironmentsClient.BeginUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpgrade func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginUpgradeOptions) (resp azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// DeleteAseCustomDNSSuffixConfiguration is the fake for method EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteAseCustomDNSSuffixConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationOptions) (resp azfake.Responder[armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method EnvironmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -70,25 +82,13 @@ type EnvironmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDiagnosticsItem func(ctx context.Context, resourceGroupName string, name string, diagnosticsName string, options *armappservice.EnvironmentsClientGetDiagnosticsItemOptions) (resp azfake.Responder[armappservice.EnvironmentsClientGetDiagnosticsItemResponse], errResp azfake.ErrorResponder)
 
-	// NewGetInboundNetworkDependenciesEndpointsPager is the fake for method EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetInboundNetworkDependenciesEndpointsPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse])
-
 	// GetMultiRolePool is the fake for method EnvironmentsClient.GetMultiRolePool
 	// HTTP status codes to indicate success: http.StatusOK
 	GetMultiRolePool func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetMultiRolePoolOptions) (resp azfake.Responder[armappservice.EnvironmentsClientGetMultiRolePoolResponse], errResp azfake.ErrorResponder)
 
-	// NewGetOutboundNetworkDependenciesEndpointsPager is the fake for method EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse])
-
 	// GetPrivateEndpointConnection is the fake for method EnvironmentsClient.GetPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.EnvironmentsClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armappservice.EnvironmentsClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
-
-	// NewGetPrivateEndpointConnectionListPager is the fake for method EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse])
 
 	// GetPrivateLinkResources is the fake for method EnvironmentsClient.GetPrivateLinkResources
 	// HTTP status codes to indicate success: http.StatusOK
@@ -102,9 +102,25 @@ type EnvironmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetWorkerPool func(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *armappservice.EnvironmentsClientGetWorkerPoolOptions) (resp azfake.Responder[armappservice.EnvironmentsClientGetWorkerPoolResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method EnvironmentsClient.NewListPager
+	// ListDiagnostics is the fake for method EnvironmentsClient.ListDiagnostics
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.EnvironmentsClientListOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientListResponse])
+	ListDiagnostics func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientListDiagnosticsOptions) (resp azfake.Responder[armappservice.EnvironmentsClientListDiagnosticsResponse], errResp azfake.ErrorResponder)
+
+	// ListOperations is the fake for method EnvironmentsClient.ListOperations
+	// HTTP status codes to indicate success: http.StatusOK
+	ListOperations func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientListOperationsOptions) (resp azfake.Responder[armappservice.EnvironmentsClientListOperationsResponse], errResp azfake.ErrorResponder)
+
+	// NewGetInboundNetworkDependenciesEndpointsPager is the fake for method EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetInboundNetworkDependenciesEndpointsPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse])
+
+	// NewGetOutboundNetworkDependenciesEndpointsPager is the fake for method EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse])
+
+	// NewGetPrivateEndpointConnectionListPager is the fake for method EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse])
 
 	// NewListAppServicePlansPager is the fake for method EnvironmentsClient.NewListAppServicePlansPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -117,10 +133,6 @@ type EnvironmentsServer struct {
 	// NewListCapacitiesPager is the fake for method EnvironmentsClient.NewListCapacitiesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCapacitiesPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientListCapacitiesOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientListCapacitiesResponse])
-
-	// ListDiagnostics is the fake for method EnvironmentsClient.ListDiagnostics
-	// HTTP status codes to indicate success: http.StatusOK
-	ListDiagnostics func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientListDiagnosticsOptions) (resp azfake.Responder[armappservice.EnvironmentsClientListDiagnosticsResponse], errResp azfake.ErrorResponder)
 
 	// NewListMultiRoleMetricDefinitionsPager is the fake for method EnvironmentsClient.NewListMultiRoleMetricDefinitionsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -142,9 +154,9 @@ type EnvironmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListMultiRoleUsagesPager func(resourceGroupName string, name string, options *armappservice.EnvironmentsClientListMultiRoleUsagesOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRoleUsagesResponse])
 
-	// ListOperations is the fake for method EnvironmentsClient.ListOperations
+	// NewListPager is the fake for method EnvironmentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListOperations func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientListOperationsOptions) (resp azfake.Responder[armappservice.EnvironmentsClientListOperationsResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armappservice.EnvironmentsClientListOptions) (resp azfake.PagerResponder[armappservice.EnvironmentsClientListResponse])
 
 	// NewListUsagesPager is the fake for method EnvironmentsClient.NewListUsagesPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -178,14 +190,6 @@ type EnvironmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Reboot func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientRebootOptions) (resp azfake.Responder[armappservice.EnvironmentsClientRebootResponse], errResp azfake.ErrorResponder)
 
-	// BeginResume is the fake for method EnvironmentsClient.BeginResume
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginResume func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginResumeOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]], errResp azfake.ErrorResponder)
-
-	// BeginSuspend is the fake for method EnvironmentsClient.BeginSuspend
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSuspend func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginSuspendOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]], errResp azfake.ErrorResponder)
-
 	// TestUpgradeAvailableNotification is the fake for method EnvironmentsClient.TestUpgradeAvailableNotification
 	// HTTP status codes to indicate success: http.StatusOK
 	TestUpgradeAvailableNotification func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientTestUpgradeAvailableNotificationOptions) (resp azfake.Responder[armappservice.EnvironmentsClientTestUpgradeAvailableNotificationResponse], errResp azfake.ErrorResponder)
@@ -209,10 +213,6 @@ type EnvironmentsServer struct {
 	// UpdateWorkerPool is the fake for method EnvironmentsClient.UpdateWorkerPool
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	UpdateWorkerPool func(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope armappservice.WorkerPoolResource, options *armappservice.EnvironmentsClientUpdateWorkerPoolOptions) (resp azfake.Responder[armappservice.EnvironmentsClientUpdateWorkerPoolResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpgrade is the fake for method EnvironmentsClient.BeginUpgrade
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpgrade func(ctx context.Context, resourceGroupName string, name string, options *armappservice.EnvironmentsClientBeginUpgradeOptions) (resp azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEnvironmentsServerTransport creates a new instance of EnvironmentsServerTransport with the provided implementation.
@@ -222,16 +222,18 @@ func NewEnvironmentsServerTransport(srv *EnvironmentsServer) *EnvironmentsServer
 	return &EnvironmentsServerTransport{
 		srv: srv,
 		beginApproveOrRejectPrivateEndpointConnection: newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse]](),
-		beginChangeVnet:                                    newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientChangeVnetResponse]]](),
-		beginCreateOrUpdate:                                newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateResponse]](),
-		beginCreateOrUpdateMultiRolePool:                   newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateMultiRolePoolResponse]](),
-		beginCreateOrUpdateWorkerPool:                      newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateWorkerPoolResponse]](),
-		beginDelete:                                        newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeleteResponse]](),
-		beginDeletePrivateEndpointConnection:               newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeletePrivateEndpointConnectionResponse]](),
+		beginChangeVnet:                      newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientChangeVnetResponse]]](),
+		beginCreateOrUpdate:                  newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateMultiRolePool:     newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateMultiRolePoolResponse]](),
+		beginCreateOrUpdateWorkerPool:        newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateWorkerPoolResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeleteResponse]](),
+		beginDeletePrivateEndpointConnection: newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeletePrivateEndpointConnectionResponse]](),
+		beginResume:                          newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]]](),
+		beginSuspend:                         newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]]](),
+		beginUpgrade:                         newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse]](),
 		newGetInboundNetworkDependenciesEndpointsPager:     newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]](),
 		newGetOutboundNetworkDependenciesEndpointsPager:    newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]](),
 		newGetPrivateEndpointConnectionListPager:           newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse]](),
-		newListPager:                                       newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListResponse]](),
 		newListAppServicePlansPager:                        newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListAppServicePlansResponse]](),
 		newListByResourceGroupPager:                        newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListByResourceGroupResponse]](),
 		newListCapacitiesPager:                             newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListCapacitiesResponse]](),
@@ -240,6 +242,7 @@ func NewEnvironmentsServerTransport(srv *EnvironmentsServer) *EnvironmentsServer
 		newListMultiRolePoolSKUsPager:                      newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRolePoolSKUsResponse]](),
 		newListMultiRolePoolsPager:                         newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRolePoolsResponse]](),
 		newListMultiRoleUsagesPager:                        newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRoleUsagesResponse]](),
+		newListPager:                                       newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListResponse]](),
 		newListUsagesPager:                                 newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListUsagesResponse]](),
 		newListWebAppsPager:                                newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWebAppsResponse]](),
 		newListWebWorkerMetricDefinitionsPager:             newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWebWorkerMetricDefinitionsResponse]](),
@@ -247,9 +250,6 @@ func NewEnvironmentsServerTransport(srv *EnvironmentsServer) *EnvironmentsServer
 		newListWorkerPoolInstanceMetricDefinitionsPager:    newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]](),
 		newListWorkerPoolSKUsPager:                         newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolSKUsResponse]](),
 		newListWorkerPoolsPager:                            newTracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolsResponse]](),
-		beginResume:                                        newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]]](),
-		beginSuspend:                                       newTracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]]](),
-		beginUpgrade:                                       newTracker[azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse]](),
 	}
 }
 
@@ -264,10 +264,12 @@ type EnvironmentsServerTransport struct {
 	beginCreateOrUpdateWorkerPool                      *tracker[azfake.PollerResponder[armappservice.EnvironmentsClientCreateOrUpdateWorkerPoolResponse]]
 	beginDelete                                        *tracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeleteResponse]]
 	beginDeletePrivateEndpointConnection               *tracker[azfake.PollerResponder[armappservice.EnvironmentsClientDeletePrivateEndpointConnectionResponse]]
+	beginResume                                        *tracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]]]
+	beginSuspend                                       *tracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]]]
+	beginUpgrade                                       *tracker[azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse]]
 	newGetInboundNetworkDependenciesEndpointsPager     *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]]
 	newGetOutboundNetworkDependenciesEndpointsPager    *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]]
 	newGetPrivateEndpointConnectionListPager           *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse]]
-	newListPager                                       *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListResponse]]
 	newListAppServicePlansPager                        *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListAppServicePlansResponse]]
 	newListByResourceGroupPager                        *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListByResourceGroupResponse]]
 	newListCapacitiesPager                             *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListCapacitiesResponse]]
@@ -276,6 +278,7 @@ type EnvironmentsServerTransport struct {
 	newListMultiRolePoolSKUsPager                      *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRolePoolSKUsResponse]]
 	newListMultiRolePoolsPager                         *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRolePoolsResponse]]
 	newListMultiRoleUsagesPager                        *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListMultiRoleUsagesResponse]]
+	newListPager                                       *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListResponse]]
 	newListUsagesPager                                 *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListUsagesResponse]]
 	newListWebAppsPager                                *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWebAppsResponse]]
 	newListWebWorkerMetricDefinitionsPager             *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWebWorkerMetricDefinitionsResponse]]
@@ -283,9 +286,6 @@ type EnvironmentsServerTransport struct {
 	newListWorkerPoolInstanceMetricDefinitionsPager    *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]]
 	newListWorkerPoolSKUsPager                         *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolSKUsResponse]]
 	newListWorkerPoolsPager                            *tracker[azfake.PagerResponder[armappservice.EnvironmentsClientListWorkerPoolsResponse]]
-	beginResume                                        *tracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientResumeResponse]]]
-	beginSuspend                                       *tracker[azfake.PollerResponder[azfake.PagerResponder[armappservice.EnvironmentsClientSuspendResponse]]]
-	beginUpgrade                                       *tracker[azfake.PollerResponder[armappservice.EnvironmentsClientUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnvironmentsServerTransport.
@@ -321,10 +321,16 @@ func (e *EnvironmentsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchBeginCreateOrUpdateWorkerPool(req)
 			case "EnvironmentsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration":
-				res.resp, res.err = e.dispatchDeleteAseCustomDNSSuffixConfiguration(req)
 			case "EnvironmentsClient.BeginDeletePrivateEndpointConnection":
 				res.resp, res.err = e.dispatchBeginDeletePrivateEndpointConnection(req)
+			case "EnvironmentsClient.BeginResume":
+				res.resp, res.err = e.dispatchBeginResume(req)
+			case "EnvironmentsClient.BeginSuspend":
+				res.resp, res.err = e.dispatchBeginSuspend(req)
+			case "EnvironmentsClient.BeginUpgrade":
+				res.resp, res.err = e.dispatchBeginUpgrade(req)
+			case "EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration":
+				res.resp, res.err = e.dispatchDeleteAseCustomDNSSuffixConfiguration(req)
 			case "EnvironmentsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EnvironmentsClient.GetAseCustomDNSSuffixConfiguration":
@@ -333,32 +339,32 @@ func (e *EnvironmentsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchGetAseV3NetworkingConfiguration(req)
 			case "EnvironmentsClient.GetDiagnosticsItem":
 				res.resp, res.err = e.dispatchGetDiagnosticsItem(req)
-			case "EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager":
-				res.resp, res.err = e.dispatchNewGetInboundNetworkDependenciesEndpointsPager(req)
 			case "EnvironmentsClient.GetMultiRolePool":
 				res.resp, res.err = e.dispatchGetMultiRolePool(req)
-			case "EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager":
-				res.resp, res.err = e.dispatchNewGetOutboundNetworkDependenciesEndpointsPager(req)
 			case "EnvironmentsClient.GetPrivateEndpointConnection":
 				res.resp, res.err = e.dispatchGetPrivateEndpointConnection(req)
-			case "EnvironmentsClient.NewGetPrivateEndpointConnectionListPager":
-				res.resp, res.err = e.dispatchNewGetPrivateEndpointConnectionListPager(req)
 			case "EnvironmentsClient.GetPrivateLinkResources":
 				res.resp, res.err = e.dispatchGetPrivateLinkResources(req)
 			case "EnvironmentsClient.GetVipInfo":
 				res.resp, res.err = e.dispatchGetVipInfo(req)
 			case "EnvironmentsClient.GetWorkerPool":
 				res.resp, res.err = e.dispatchGetWorkerPool(req)
-			case "EnvironmentsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
+			case "EnvironmentsClient.ListDiagnostics":
+				res.resp, res.err = e.dispatchListDiagnostics(req)
+			case "EnvironmentsClient.ListOperations":
+				res.resp, res.err = e.dispatchListOperations(req)
+			case "EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager":
+				res.resp, res.err = e.dispatchNewGetInboundNetworkDependenciesEndpointsPager(req)
+			case "EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager":
+				res.resp, res.err = e.dispatchNewGetOutboundNetworkDependenciesEndpointsPager(req)
+			case "EnvironmentsClient.NewGetPrivateEndpointConnectionListPager":
+				res.resp, res.err = e.dispatchNewGetPrivateEndpointConnectionListPager(req)
 			case "EnvironmentsClient.NewListAppServicePlansPager":
 				res.resp, res.err = e.dispatchNewListAppServicePlansPager(req)
 			case "EnvironmentsClient.NewListByResourceGroupPager":
 				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "EnvironmentsClient.NewListCapacitiesPager":
 				res.resp, res.err = e.dispatchNewListCapacitiesPager(req)
-			case "EnvironmentsClient.ListDiagnostics":
-				res.resp, res.err = e.dispatchListDiagnostics(req)
 			case "EnvironmentsClient.NewListMultiRoleMetricDefinitionsPager":
 				res.resp, res.err = e.dispatchNewListMultiRoleMetricDefinitionsPager(req)
 			case "EnvironmentsClient.NewListMultiRolePoolInstanceMetricDefinitionsPager":
@@ -369,8 +375,8 @@ func (e *EnvironmentsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchNewListMultiRolePoolsPager(req)
 			case "EnvironmentsClient.NewListMultiRoleUsagesPager":
 				res.resp, res.err = e.dispatchNewListMultiRoleUsagesPager(req)
-			case "EnvironmentsClient.ListOperations":
-				res.resp, res.err = e.dispatchListOperations(req)
+			case "EnvironmentsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			case "EnvironmentsClient.NewListUsagesPager":
 				res.resp, res.err = e.dispatchNewListUsagesPager(req)
 			case "EnvironmentsClient.NewListWebAppsPager":
@@ -387,10 +393,6 @@ func (e *EnvironmentsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchNewListWorkerPoolsPager(req)
 			case "EnvironmentsClient.Reboot":
 				res.resp, res.err = e.dispatchReboot(req)
-			case "EnvironmentsClient.BeginResume":
-				res.resp, res.err = e.dispatchBeginResume(req)
-			case "EnvironmentsClient.BeginSuspend":
-				res.resp, res.err = e.dispatchBeginSuspend(req)
 			case "EnvironmentsClient.TestUpgradeAvailableNotification":
 				res.resp, res.err = e.dispatchTestUpgradeAvailableNotification(req)
 			case "EnvironmentsClient.Update":
@@ -403,8 +405,6 @@ func (e *EnvironmentsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchUpdateMultiRolePool(req)
 			case "EnvironmentsClient.UpdateWorkerPool":
 				res.resp, res.err = e.dispatchUpdateWorkerPool(req)
-			case "EnvironmentsClient.BeginUpgrade":
-				res.resp, res.err = e.dispatchBeginUpgrade(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -724,39 +724,6 @@ func (e *EnvironmentsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
-func (e *EnvironmentsServerTransport) dispatchDeleteAseCustomDNSSuffixConfiguration(req *http.Request) (*http.Response, error) {
-	if e.srv.DeleteAseCustomDNSSuffixConfiguration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeleteAseCustomDNSSuffixConfiguration not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/customdnssuffix`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.DeleteAseCustomDNSSuffixConfiguration(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *EnvironmentsServerTransport) dispatchBeginDeletePrivateEndpointConnection(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginDeletePrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeletePrivateEndpointConnection not implemented")}
@@ -802,6 +769,171 @@ func (e *EnvironmentsServerTransport) dispatchBeginDeletePrivateEndpointConnecti
 		e.beginDeletePrivateEndpointConnection.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginResume == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
+	}
+	beginResume := e.beginResume.get(req)
+	if beginResume == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginResume(req.Context(), resourceGroupNameParam, nameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResume = &respr
+		e.beginResume.add(req, beginResume)
+	}
+
+	resp, err := server.PollerResponderNext(beginResume, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginResume.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResume) {
+		e.beginResume.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchBeginSuspend(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginSuspend == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSuspend not implemented")}
+	}
+	beginSuspend := e.beginSuspend.get(req)
+	if beginSuspend == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suspend`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginSuspend(req.Context(), resourceGroupNameParam, nameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSuspend = &respr
+		e.beginSuspend.add(req, beginSuspend)
+	}
+
+	resp, err := server.PollerResponderNext(beginSuspend, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginSuspend.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSuspend) {
+		e.beginSuspend.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
+	}
+	beginUpgrade := e.beginUpgrade.get(req)
+	if beginUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, nameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgrade = &respr
+		e.beginUpgrade.add(req, beginUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgrade) {
+		e.beginUpgrade.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchDeleteAseCustomDNSSuffixConfiguration(req *http.Request) (*http.Response, error) {
+	if e.srv.DeleteAseCustomDNSSuffixConfiguration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteAseCustomDNSSuffixConfiguration not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/customdnssuffix`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.DeleteAseCustomDNSSuffixConfiguration(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -941,47 +1073,6 @@ func (e *EnvironmentsServerTransport) dispatchGetDiagnosticsItem(req *http.Reque
 	return resp, nil
 }
 
-func (e *EnvironmentsServerTransport) dispatchNewGetInboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewGetInboundNetworkDependenciesEndpointsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetInboundNetworkDependenciesEndpointsPager not implemented")}
-	}
-	newGetInboundNetworkDependenciesEndpointsPager := e.newGetInboundNetworkDependenciesEndpointsPager.get(req)
-	if newGetInboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, nameParam, nil)
-		newGetInboundNetworkDependenciesEndpointsPager = &resp
-		e.newGetInboundNetworkDependenciesEndpointsPager.add(req, newGetInboundNetworkDependenciesEndpointsPager)
-		server.PagerResponderInjectNextLinks(newGetInboundNetworkDependenciesEndpointsPager, req, func(page *armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetInboundNetworkDependenciesEndpointsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newGetInboundNetworkDependenciesEndpointsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetInboundNetworkDependenciesEndpointsPager) {
-		e.newGetInboundNetworkDependenciesEndpointsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *EnvironmentsServerTransport) dispatchGetMultiRolePool(req *http.Request) (*http.Response, error) {
 	if e.srv.GetMultiRolePool == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMultiRolePool not implemented")}
@@ -1011,47 +1102,6 @@ func (e *EnvironmentsServerTransport) dispatchGetMultiRolePool(req *http.Request
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkerPoolResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *EnvironmentsServerTransport) dispatchNewGetOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewGetOutboundNetworkDependenciesEndpointsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetOutboundNetworkDependenciesEndpointsPager not implemented")}
-	}
-	newGetOutboundNetworkDependenciesEndpointsPager := e.newGetOutboundNetworkDependenciesEndpointsPager.get(req)
-	if newGetOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, nameParam, nil)
-		newGetOutboundNetworkDependenciesEndpointsPager = &resp
-		e.newGetOutboundNetworkDependenciesEndpointsPager.add(req, newGetOutboundNetworkDependenciesEndpointsPager)
-		server.PagerResponderInjectNextLinks(newGetOutboundNetworkDependenciesEndpointsPager, req, func(page *armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetOutboundNetworkDependenciesEndpointsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newGetOutboundNetworkDependenciesEndpointsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetOutboundNetworkDependenciesEndpointsPager) {
-		e.newGetOutboundNetworkDependenciesEndpointsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1089,47 +1139,6 @@ func (e *EnvironmentsServerTransport) dispatchGetPrivateEndpointConnection(req *
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RemotePrivateEndpointConnectionARMResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *EnvironmentsServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewGetPrivateEndpointConnectionListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
-	}
-	newGetPrivateEndpointConnectionListPager := e.newGetPrivateEndpointConnectionListPager.get(req)
-	if newGetPrivateEndpointConnectionListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
-		newGetPrivateEndpointConnectionListPager = &resp
-		e.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
-		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newGetPrivateEndpointConnectionListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
-		e.newGetPrivateEndpointConnectionListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1237,35 +1246,191 @@ func (e *EnvironmentsServerTransport) dispatchGetWorkerPool(req *http.Request) (
 	return resp, nil
 }
 
-func (e *EnvironmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (e *EnvironmentsServerTransport) dispatchListDiagnostics(req *http.Request) (*http.Response, error) {
+	if e.srv.ListDiagnostics == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDiagnostics not implemented")}
 	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListDiagnostics(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostingEnvironmentDiagnosticsArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchListOperations(req *http.Request) (*http.Response, error) {
+	if e.srv.ListOperations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListOperations not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListOperations(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchNewGetInboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewGetInboundNetworkDependenciesEndpointsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetInboundNetworkDependenciesEndpointsPager not implemented")}
+	}
+	newGetInboundNetworkDependenciesEndpointsPager := e.newGetInboundNetworkDependenciesEndpointsPager.get(req)
+	if newGetInboundNetworkDependenciesEndpointsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := e.srv.NewListPager(nil)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.EnvironmentsClientListResponse, createLink func() string) {
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, nameParam, nil)
+		newGetInboundNetworkDependenciesEndpointsPager = &resp
+		e.newGetInboundNetworkDependenciesEndpointsPager.add(req, newGetInboundNetworkDependenciesEndpointsPager)
+		server.PagerResponderInjectNextLinks(newGetInboundNetworkDependenciesEndpointsPager, req, func(page *armappservice.EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resp, err := server.PagerResponderNext(newGetInboundNetworkDependenciesEndpointsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
+		e.newGetInboundNetworkDependenciesEndpointsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
+	if !server.PagerResponderMore(newGetInboundNetworkDependenciesEndpointsPager) {
+		e.newGetInboundNetworkDependenciesEndpointsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchNewGetOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewGetOutboundNetworkDependenciesEndpointsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetOutboundNetworkDependenciesEndpointsPager not implemented")}
+	}
+	newGetOutboundNetworkDependenciesEndpointsPager := e.newGetOutboundNetworkDependenciesEndpointsPager.get(req)
+	if newGetOutboundNetworkDependenciesEndpointsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, nameParam, nil)
+		newGetOutboundNetworkDependenciesEndpointsPager = &resp
+		e.newGetOutboundNetworkDependenciesEndpointsPager.add(req, newGetOutboundNetworkDependenciesEndpointsPager)
+		server.PagerResponderInjectNextLinks(newGetOutboundNetworkDependenciesEndpointsPager, req, func(page *armappservice.EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetOutboundNetworkDependenciesEndpointsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newGetOutboundNetworkDependenciesEndpointsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetOutboundNetworkDependenciesEndpointsPager) {
+		e.newGetOutboundNetworkDependenciesEndpointsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentsServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewGetPrivateEndpointConnectionListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
+	}
+	newGetPrivateEndpointConnectionListPager := e.newGetPrivateEndpointConnectionListPager.get(req)
+	if newGetPrivateEndpointConnectionListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
+		newGetPrivateEndpointConnectionListPager = &resp
+		e.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
+		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.EnvironmentsClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newGetPrivateEndpointConnectionListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
+		e.newGetPrivateEndpointConnectionListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1385,39 +1550,6 @@ func (e *EnvironmentsServerTransport) dispatchNewListCapacitiesPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListCapacitiesPager) {
 		e.newListCapacitiesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *EnvironmentsServerTransport) dispatchListDiagnostics(req *http.Request) (*http.Response, error) {
-	if e.srv.ListDiagnostics == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDiagnostics not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.ListDiagnostics(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostingEnvironmentDiagnosticsArray, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -1631,35 +1763,35 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRoleUsagesPager(req *h
 	return resp, nil
 }
 
-func (e *EnvironmentsServerTransport) dispatchListOperations(req *http.Request) (*http.Response, error) {
-	if e.srv.ListOperations == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListOperations not implemented")}
+func (e *EnvironmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := e.srv.NewListPager(nil)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.EnvironmentsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := e.srv.ListOperations(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationArray, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -2020,94 +2152,6 @@ func (e *EnvironmentsServerTransport) dispatchReboot(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (e *EnvironmentsServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginResume == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
-	}
-	beginResume := e.beginResume.get(req)
-	if beginResume == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginResume(req.Context(), resourceGroupNameParam, nameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginResume = &respr
-		e.beginResume.add(req, beginResume)
-	}
-
-	resp, err := server.PollerResponderNext(beginResume, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginResume.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginResume) {
-		e.beginResume.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (e *EnvironmentsServerTransport) dispatchBeginSuspend(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginSuspend == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSuspend not implemented")}
-	}
-	beginSuspend := e.beginSuspend.get(req)
-	if beginSuspend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suspend`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginSuspend(req.Context(), resourceGroupNameParam, nameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSuspend = &respr
-		e.beginSuspend.add(req, beginSuspend)
-	}
-
-	resp, err := server.PollerResponderNext(beginSuspend, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginSuspend.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSuspend) {
-		e.beginSuspend.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (e *EnvironmentsServerTransport) dispatchTestUpgradeAvailableNotification(req *http.Request) (*http.Response, error) {
 	if e.srv.TestUpgradeAvailableNotification == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TestUpgradeAvailableNotification not implemented")}
@@ -2327,50 +2371,6 @@ func (e *EnvironmentsServerTransport) dispatchUpdateWorkerPool(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (e *EnvironmentsServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpgrade == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
-	}
-	beginUpgrade := e.beginUpgrade.get(req)
-	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, nameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpgrade = &respr
-		e.beginUpgrade.add(req, beginUpgrade)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpgrade, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		e.beginUpgrade.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpgrade) {
-		e.beginUpgrade.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -25,13 +25,13 @@ type DeletedWebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDeletedWebAppByLocation func(ctx context.Context, location string, deletedSiteID string, options *armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationOptions) (resp azfake.Responder[armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DeletedWebAppsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.DeletedWebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse])
-
 	// NewListByLocationPager is the fake for method DeletedWebAppsClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByLocationPager func(location string, options *armappservice.DeletedWebAppsClientListByLocationOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse])
+
+	// NewListPager is the fake for method DeletedWebAppsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.DeletedWebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse])
 }
 
 // NewDeletedWebAppsServerTransport creates a new instance of DeletedWebAppsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type DeletedWebAppsServer struct {
 func NewDeletedWebAppsServerTransport(srv *DeletedWebAppsServer) *DeletedWebAppsServerTransport {
 	return &DeletedWebAppsServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]](),
 		newListByLocationPager: newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewDeletedWebAppsServerTransport(srv *DeletedWebAppsServer) *DeletedWebApps
 // Don't use this type directly, use NewDeletedWebAppsServerTransport instead.
 type DeletedWebAppsServerTransport struct {
 	srv                    *DeletedWebAppsServer
-	newListPager           *tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]]
 	newListByLocationPager *tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedWebAppsServerTransport.
@@ -76,10 +76,10 @@ func (d *DeletedWebAppsServerTransport) dispatchToMethodFake(req *http.Request, 
 			switch method {
 			case "DeletedWebAppsClient.GetDeletedWebAppByLocation":
 				res.resp, res.err = d.dispatchGetDeletedWebAppByLocation(req)
-			case "DeletedWebAppsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DeletedWebAppsClient.NewListByLocationPager":
 				res.resp, res.err = d.dispatchNewListByLocationPager(req)
+			case "DeletedWebAppsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -129,39 +129,6 @@ func (d *DeletedWebAppsServerTransport) dispatchGetDeletedWebAppByLocation(req *
 	return resp, nil
 }
 
-func (d *DeletedWebAppsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/deletedSites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.DeletedWebAppsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DeletedWebAppsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByLocationPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
@@ -195,6 +162,39 @@ func (d *DeletedWebAppsServerTransport) dispatchNewListByLocationPager(req *http
 	}
 	if !server.PagerResponderMore(newListByLocationPager) {
 		d.newListByLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeletedWebAppsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/deletedSites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.DeletedWebAppsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

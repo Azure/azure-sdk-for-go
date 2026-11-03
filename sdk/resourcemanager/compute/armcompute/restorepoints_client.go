@@ -69,7 +69,7 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 	}
 }
 
-// Create - The operation to create the restore point. Updating properties of an existing restore point is not allowed
+// create - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, _ *RestorePointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - The operation to delete the restore point.
+// deleteOperation - The operation to delete the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RestorePointsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *RestorePointsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, _ *RestorePointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {

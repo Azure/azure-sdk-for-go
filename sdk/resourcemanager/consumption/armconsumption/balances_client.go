@@ -19,7 +19,7 @@ import (
 // BalancesClient contains the methods for the Balances group.
 // Don't use this type directly, use NewBalancesClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type BalancesClient struct {
 	internal *arm.Client
 }
@@ -73,7 +73,7 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -131,7 +131,7 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

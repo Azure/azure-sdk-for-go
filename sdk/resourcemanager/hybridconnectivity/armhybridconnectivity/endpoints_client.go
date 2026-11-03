@@ -19,7 +19,7 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 //
-// Generated from API version 2024-12-01
+// Generated from API version 2027-01-01
 type EndpointsClient struct {
 	internal *arm.Client
 }
@@ -78,7 +78,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +141,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -184,7 +184,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,73 +198,6 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response, successCod
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List of endpoints to the target resource.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.NewListPager method.
-func (client *EndpointsClient) NewListPager(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EndpointsClientListResponse]{
-		More: func(page EndpointsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EndpointsClientListResponse) (EndpointsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
-			if err != nil {
-				return EndpointsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EndpointsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *EndpointsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints"
-		if resourceURI == "" {
-			return nil, errors.New("parameter resourceURI cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241201)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *EndpointsClient) listHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListResponse, error) {
-	result := EndpointsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointsList); err != nil {
-		return EndpointsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -308,7 +241,7 @@ func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	if options != nil && options.Expiresin != nil {
 		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
 	}
@@ -375,7 +308,7 @@ func (client *EndpointsClient) listIngressGatewayCredentialsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	if options != nil && options.Expiresin != nil {
 		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
 	}
@@ -443,7 +376,7 @@ func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -461,6 +394,73 @@ func (client *EndpointsClient) listManagedProxyDetailsHandleResponse(resp *http.
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedProxyResource); err != nil {
 		return EndpointsClientListManagedProxyDetailsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List of endpoints to the target resource.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.NewListPager method.
+func (client *EndpointsClient) NewListPager(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EndpointsClientListResponse]{
+		More: func(page EndpointsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EndpointsClientListResponse) (EndpointsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
+			if err != nil {
+				return EndpointsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EndpointsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *EndpointsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20270101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *EndpointsClient) listHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListResponse, error) {
+	result := EndpointsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointsList); err != nil {
+		return EndpointsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -504,7 +504,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

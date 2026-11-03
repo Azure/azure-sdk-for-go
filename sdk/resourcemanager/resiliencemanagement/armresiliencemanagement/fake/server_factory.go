@@ -42,6 +42,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// RecoveryConfigProfilesServer contains the fakes for client RecoveryConfigProfilesClient
+	RecoveryConfigProfilesServer RecoveryConfigProfilesServer
+
 	// RecoveryJobResourcesServer contains the fakes for client RecoveryJobResourcesClient
 	RecoveryJobResourcesServer RecoveryJobResourcesServer
 
@@ -87,6 +90,7 @@ type ServerFactoryTransport struct {
 	trGoalResourcesServer          *GoalResourcesServerTransport
 	trOperationStatusServer        *OperationStatusServerTransport
 	trOperationsServer             *OperationsServerTransport
+	trRecoveryConfigProfilesServer *RecoveryConfigProfilesServerTransport
 	trRecoveryJobResourcesServer   *RecoveryJobResourcesServerTransport
 	trRecoveryJobsServer           *RecoveryJobsServerTransport
 	trRecoveryPlanActionsServer    *RecoveryPlanActionsServerTransport
@@ -146,6 +150,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RecoveryConfigProfilesClient":
+		initServer(&s.trMu, &s.trRecoveryConfigProfilesServer, func() *RecoveryConfigProfilesServerTransport {
+			return NewRecoveryConfigProfilesServerTransport(&s.srv.RecoveryConfigProfilesServer)
+		})
+		resp, err = s.trRecoveryConfigProfilesServer.Do(req)
 	case "RecoveryJobResourcesClient":
 		initServer(&s.trMu, &s.trRecoveryJobResourcesServer, func() *RecoveryJobResourcesServerTransport {
 			return NewRecoveryJobResourcesServerTransport(&s.srv.RecoveryJobResourcesServer)

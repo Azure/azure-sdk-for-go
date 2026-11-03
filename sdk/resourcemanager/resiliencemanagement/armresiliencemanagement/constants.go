@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20261001 string = "2026-10-01"
+	version20261130Preview string = "2026-11-30-preview"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -80,6 +80,27 @@ func PossibleAutoFailoverValues() []AutoFailover {
 	}
 }
 
+// BackupType - The backup mechanism used to select recovery points.
+type BackupType string
+
+const (
+	// BackupTypeLog - Log backups that provide point-in-time recovery candidates.
+	BackupTypeLog BackupType = "Log"
+	// BackupTypeSnapshot - Snapshot backups.
+	BackupTypeSnapshot BackupType = "Snapshot"
+	// BackupTypeStreaming - Streaming backups, including full, differential, incremental, and other supported backup categories.
+	BackupTypeStreaming BackupType = "Streaming"
+)
+
+// PossibleBackupTypeValues returns the possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{
+		BackupTypeLog,
+		BackupTypeSnapshot,
+		BackupTypeStreaming,
+	}
+}
+
 // CommentType - The type of user comment.
 type CommentType string
 
@@ -119,6 +140,24 @@ func PossibleConfirmationStatusValues() []ConfirmationStatus {
 		ConfirmationStatusApprovalPending,
 		ConfirmationStatusApprovedByUser,
 		ConfirmationStatusRejectedByUser,
+	}
+}
+
+// CopyOptions - The behavior when a copied file already exists.
+type CopyOptions string
+
+const (
+	// CopyOptionsOverwrite - Overwrite the existing file.
+	CopyOptionsOverwrite CopyOptions = "Overwrite"
+	// CopyOptionsSkip - Skip the existing file.
+	CopyOptionsSkip CopyOptions = "Skip"
+)
+
+// PossibleCopyOptionsValues returns the possible values for the CopyOptions const type.
+func PossibleCopyOptionsValues() []CopyOptions {
+	return []CopyOptions{
+		CopyOptionsOverwrite,
+		CopyOptionsSkip,
 	}
 }
 
@@ -548,6 +587,48 @@ func PossibleFailoverStateValues() []FailoverState {
 	}
 }
 
+// FaultEligibility - Normal fault eligibility of a drill resource, independent of inclusion and readiness.
+type FaultEligibility string
+
+const (
+	// FaultEligibilityEligible - The resource satisfies the normal fault inclusion policy.
+	FaultEligibilityEligible FaultEligibility = "Eligible"
+	// FaultEligibilityIneligible - The resource does not satisfy the normal fault inclusion policy.
+	FaultEligibilityIneligible FaultEligibility = "Ineligible"
+	// FaultEligibilityUnknown - The available information is insufficient to determine normal fault eligibility.
+	FaultEligibilityUnknown FaultEligibility = "Unknown"
+)
+
+// PossibleFaultEligibilityValues returns the possible values for the FaultEligibility const type.
+func PossibleFaultEligibilityValues() []FaultEligibility {
+	return []FaultEligibility{
+		FaultEligibilityEligible,
+		FaultEligibilityIneligible,
+		FaultEligibilityUnknown,
+	}
+}
+
+// FaultIneligibleReason - Reason requiring attention for a resource that requires recovery-plan participation and has no
+// independent fault eligibility path.
+type FaultIneligibleReason string
+
+const (
+	// FaultIneligibleReasonRecoveryPlanNotConfigured - The parent drill has no associated recovery plan required by the resource's
+	// normal fault inclusion policy.
+	FaultIneligibleReasonRecoveryPlanNotConfigured FaultIneligibleReason = "RecoveryPlanNotConfigured"
+	// FaultIneligibleReasonResourceNotIncludedInRecoveryPlan - The associated recovery plan's complete membership collection
+	// was successfully read and the resource is absent or explicitly Excluded.
+	FaultIneligibleReasonResourceNotIncludedInRecoveryPlan FaultIneligibleReason = "ResourceNotIncludedInRecoveryPlan"
+)
+
+// PossibleFaultIneligibleReasonValues returns the possible values for the FaultIneligibleReason const type.
+func PossibleFaultIneligibleReasonValues() []FaultIneligibleReason {
+	return []FaultIneligibleReason{
+		FaultIneligibleReasonRecoveryPlanNotConfigured,
+		FaultIneligibleReasonResourceNotIncludedInRecoveryPlan,
+	}
+}
+
 // ForceInclusionAndUpdate - Enum for ForceInclusionAndUpdate
 type ForceInclusionAndUpdate string
 
@@ -599,6 +680,30 @@ func PossibleInitialConfigValues() []InitialConfig {
 	return []InitialConfig{
 		InitialConfigComplete,
 		InitialConfigPending,
+	}
+}
+
+// IsoDuration - ISO 8601 duration formats.
+type IsoDuration string
+
+const (
+	// IsoDurationPT15M - 15 minutes.
+	IsoDurationPT15M IsoDuration = "PT15M"
+	// IsoDurationPT1H - 1 hour.
+	IsoDurationPT1H IsoDuration = "PT1H"
+	// IsoDurationPT24H - 24 hours.
+	IsoDurationPT24H IsoDuration = "PT24H"
+	// IsoDurationPT4H - 4 hours.
+	IsoDurationPT4H IsoDuration = "PT4H"
+)
+
+// PossibleIsoDurationValues returns the possible values for the IsoDuration const type.
+func PossibleIsoDurationValues() []IsoDuration {
+	return []IsoDuration{
+		IsoDurationPT15M,
+		IsoDurationPT1H,
+		IsoDurationPT24H,
+		IsoDurationPT4H,
 	}
 }
 
@@ -997,6 +1102,8 @@ func PossibleRecoveryPlanStateValues() []RecoveryPlanState {
 type RecoveryPlanType string
 
 const (
+	// RecoveryPlanTypeCyberRecovery - A recovery orchestration plan for cyber recovery into a clean-room environment.
+	RecoveryPlanTypeCyberRecovery RecoveryPlanType = "CyberRecovery"
 	// RecoveryPlanTypeRegional - A recovery orchestration plan for regional resiliency.
 	RecoveryPlanTypeRegional RecoveryPlanType = "Regional"
 	// RecoveryPlanTypeZonal - A recovery orchestration plan for zonal resiliency.
@@ -1006,8 +1113,111 @@ const (
 // PossibleRecoveryPlanTypeValues returns the possible values for the RecoveryPlanType const type.
 func PossibleRecoveryPlanTypeValues() []RecoveryPlanType {
 	return []RecoveryPlanType{
+		RecoveryPlanTypeCyberRecovery,
 		RecoveryPlanTypeRegional,
 		RecoveryPlanTypeZonal,
+	}
+}
+
+// RecoveryPointHealthStatus - The health eligibility filter for discrete recovery points. This filter does not apply to log
+// or point-in-time recovery candidates.
+type RecoveryPointHealthStatus string
+
+const (
+	// RecoveryPointHealthStatusAll - Include all threat statuses without health-based ordering.
+	RecoveryPointHealthStatusAll RecoveryPointHealthStatus = "All"
+	// RecoveryPointHealthStatusHealthyAndUnknown - Include recovery points with Healthy, Unknown, unspecified, or NotAvailable
+	// threat statuses, excluding Warning and UnHealthy.
+	RecoveryPointHealthStatusHealthyAndUnknown RecoveryPointHealthStatus = "HealthyAndUnknown"
+	// RecoveryPointHealthStatusHealthyOnly - Include only recovery points with a Healthy threat status.
+	RecoveryPointHealthStatusHealthyOnly RecoveryPointHealthStatus = "HealthyOnly"
+)
+
+// PossibleRecoveryPointHealthStatusValues returns the possible values for the RecoveryPointHealthStatus const type.
+func PossibleRecoveryPointHealthStatusValues() []RecoveryPointHealthStatus {
+	return []RecoveryPointHealthStatus{
+		RecoveryPointHealthStatusAll,
+		RecoveryPointHealthStatusHealthyAndUnknown,
+		RecoveryPointHealthStatusHealthyOnly,
+	}
+}
+
+// RecoveryPointPolicyType - A policy for selecting a recovery point.
+type RecoveryPointPolicyType string
+
+const (
+	// RecoveryPointPolicyTypeLatest - Use the latest available recovery point.
+	RecoveryPointPolicyTypeLatest RecoveryPointPolicyType = "Latest"
+	// RecoveryPointPolicyTypeRandom - Use a random recovery point within the specified time bounds.
+	RecoveryPointPolicyTypeRandom RecoveryPointPolicyType = "Random"
+)
+
+// PossibleRecoveryPointPolicyTypeValues returns the possible values for the RecoveryPointPolicyType const type.
+func PossibleRecoveryPointPolicyTypeValues() []RecoveryPointPolicyType {
+	return []RecoveryPointPolicyType{
+		RecoveryPointPolicyTypeLatest,
+		RecoveryPointPolicyTypeRandom,
+	}
+}
+
+// RecoveryResourceInclusionEligibility - Indicates whether a recovery resource can be included for the configured targets.
+type RecoveryResourceInclusionEligibility string
+
+const (
+	// RecoveryResourceInclusionEligibilityCanBeIncluded - The recovery resource can be included.
+	RecoveryResourceInclusionEligibilityCanBeIncluded RecoveryResourceInclusionEligibility = "CanBeIncluded"
+	// RecoveryResourceInclusionEligibilityCannotBeIncluded - The recovery resource cannot be included.
+	RecoveryResourceInclusionEligibilityCannotBeIncluded RecoveryResourceInclusionEligibility = "CannotBeIncluded"
+)
+
+// PossibleRecoveryResourceInclusionEligibilityValues returns the possible values for the RecoveryResourceInclusionEligibility const type.
+func PossibleRecoveryResourceInclusionEligibilityValues() []RecoveryResourceInclusionEligibility {
+	return []RecoveryResourceInclusionEligibility{
+		RecoveryResourceInclusionEligibilityCanBeIncluded,
+		RecoveryResourceInclusionEligibilityCannotBeIncluded,
+	}
+}
+
+// RecoveryType - The supported workload recovery behavior.
+type RecoveryType string
+
+const (
+	// RecoveryTypeAlternateLocation - Recovery targets an alternate location.
+	RecoveryTypeAlternateLocation RecoveryType = "AlternateLocation"
+	// RecoveryTypeCreateNewVM - Recovery creates a new virtual machine.
+	RecoveryTypeCreateNewVM RecoveryType = "CreateNewVM"
+	// RecoveryTypeRestoreAsDisks - Recovery restores the workload as disks.
+	RecoveryTypeRestoreAsDisks RecoveryType = "RestoreAsDisks"
+	// RecoveryTypeRestoreAsFiles - Recovery restores the workload as files.
+	RecoveryTypeRestoreAsFiles RecoveryType = "RestoreAsFiles"
+)
+
+// PossibleRecoveryTypeValues returns the possible values for the RecoveryType const type.
+func PossibleRecoveryTypeValues() []RecoveryType {
+	return []RecoveryType{
+		RecoveryTypeAlternateLocation,
+		RecoveryTypeCreateNewVM,
+		RecoveryTypeRestoreAsDisks,
+		RecoveryTypeRestoreAsFiles,
+	}
+}
+
+// RegionalResiliencyStatus - Regional resiliency posture reported by the selected protection solution.
+type RegionalResiliencyStatus string
+
+const (
+	// RegionalResiliencyStatusNotResilient - The available protection-solution posture reports the resource as not regionally
+	// resilient.
+	RegionalResiliencyStatusNotResilient RegionalResiliencyStatus = "NotResilient"
+	// RegionalResiliencyStatusResilient - The available protection-solution posture reports the resource as regionally resilient.
+	RegionalResiliencyStatusResilient RegionalResiliencyStatus = "Resilient"
+)
+
+// PossibleRegionalResiliencyStatusValues returns the possible values for the RegionalResiliencyStatus const type.
+func PossibleRegionalResiliencyStatusValues() []RegionalResiliencyStatus {
+	return []RegionalResiliencyStatus{
+		RegionalResiliencyStatusNotResilient,
+		RegionalResiliencyStatusResilient,
 	}
 }
 
@@ -1026,6 +1236,45 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 	return []RelativeResourceCompositionState{
 		RelativeResourceCompositionStateInSync,
 		RelativeResourceCompositionStateOutOfSync,
+	}
+}
+
+// ReplicationMode - Replication mode configured for a protected resource.
+type ReplicationMode string
+
+const (
+	// ReplicationModeActiveActive - The resource is active in multiple locations at the same time.
+	ReplicationModeActiveActive ReplicationMode = "ActiveActive"
+	// ReplicationModeActivePassive - The resource has one active location and one or more passive recovery locations.
+	ReplicationModeActivePassive ReplicationMode = "ActivePassive"
+	// ReplicationModeNone - No replication mode is configured for the protected resource.
+	ReplicationModeNone ReplicationMode = "None"
+)
+
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeActiveActive,
+		ReplicationModeActivePassive,
+		ReplicationModeNone,
+	}
+}
+
+// ResiliencyType - Specifies the resiliency type for recovery plan properties.
+type ResiliencyType string
+
+const (
+	// ResiliencyTypeCyberResiliency - Cyber resiliency properties.
+	ResiliencyTypeCyberResiliency ResiliencyType = "CyberResiliency"
+	// ResiliencyTypeInfrastructureResiliency - Infrastructure resiliency properties.
+	ResiliencyTypeInfrastructureResiliency ResiliencyType = "InfrastructureResiliency"
+)
+
+// PossibleResiliencyTypeValues returns the possible values for the ResiliencyType const type.
+func PossibleResiliencyTypeValues() []ResiliencyType {
+	return []ResiliencyType{
+		ResiliencyTypeCyberResiliency,
+		ResiliencyTypeInfrastructureResiliency,
 	}
 }
 
@@ -1068,6 +1317,25 @@ func PossibleResourceFeasibilityReviewTypeValues() []ResourceFeasibilityReviewTy
 	}
 }
 
+// ResourceInclusionDisabledReason - Reason why a recovery resource cannot be included in a recovery plan.
+type ResourceInclusionDisabledReason string
+
+const (
+	// ResourceInclusionDisabledReasonResourceActiveActiveProtection - The resource uses active-active protection.
+	ResourceInclusionDisabledReasonResourceActiveActiveProtection ResourceInclusionDisabledReason = "ResourceActiveActiveProtection"
+	// ResourceInclusionDisabledReasonResourceHighlyAvailable - The resource is highly available and does not require recovery-plan
+	// inclusion.
+	ResourceInclusionDisabledReasonResourceHighlyAvailable ResourceInclusionDisabledReason = "ResourceHighlyAvailable"
+)
+
+// PossibleResourceInclusionDisabledReasonValues returns the possible values for the ResourceInclusionDisabledReason const type.
+func PossibleResourceInclusionDisabledReasonValues() []ResourceInclusionDisabledReason {
+	return []ResourceInclusionDisabledReason{
+		ResourceInclusionDisabledReasonResourceActiveActiveProtection,
+		ResourceInclusionDisabledReasonResourceHighlyAvailable,
+	}
+}
+
 // ResourceInclusionState - A state type that indicates inclusion of the resource with respect to the resiliency support.
 type ResourceInclusionState string
 
@@ -1090,12 +1358,26 @@ func PossibleResourceInclusionStateValues() []ResourceInclusionState {
 type ResourceProtectionSolutionType string
 
 const (
+	// ResourceProtectionSolutionTypeAzureCosmosDB - Resource is protected with Azure Cosmos DB multiregion replication using
+	// customer-managed failover, where recovery promotes a secondary region to the write region.
+	ResourceProtectionSolutionTypeAzureCosmosDB ResourceProtectionSolutionType = "AzureCosmosDB"
 	// ResourceProtectionSolutionTypeAzureNative - Resource is protected with the Azure native solution provided by the native
 	// Azure service.
 	ResourceProtectionSolutionTypeAzureNative ResourceProtectionSolutionType = "AzureNative"
+	// ResourceProtectionSolutionTypeAzureNetAppFiles - Resource is protected with Azure NetApp Files cross-region replication,
+	// where recovery fails over to the destination volume.
+	ResourceProtectionSolutionTypeAzureNetAppFiles ResourceProtectionSolutionType = "AzureNetAppFiles"
+	// ResourceProtectionSolutionTypeAzureServiceBus - Resource is protected with Azure Service Bus geo-replication, where a premium
+	// namespace replicates data to a secondary region and recovery promotes that secondary in place.
+	ResourceProtectionSolutionTypeAzureServiceBus ResourceProtectionSolutionType = "AzureServiceBus"
 	// ResourceProtectionSolutionTypeAzureSiteRecovery - Resource protected with the Azure solution provided by the native Azure
 	// Site Service for Azure VMs.
 	ResourceProtectionSolutionTypeAzureSiteRecovery ResourceProtectionSolutionType = "AzureSiteRecovery"
+	// ResourceProtectionSolutionTypeAzureStorageAccount - Resource is protected with Azure Storage account customer-managed failover.
+	ResourceProtectionSolutionTypeAzureStorageAccount ResourceProtectionSolutionType = "AzureStorageAccount"
+	// ResourceProtectionSolutionTypeAzureTemplate - Resource recovery is orchestrated by deploying an Azure Resource Manager
+	// template.
+	ResourceProtectionSolutionTypeAzureTemplate ResourceProtectionSolutionType = "AzureTemplate"
 	// ResourceProtectionSolutionTypeCrossZoneVMRecovery - Cross zone recovery enabled Azure VMs.
 	ResourceProtectionSolutionTypeCrossZoneVMRecovery ResourceProtectionSolutionType = "CrossZoneVMRecovery"
 	// ResourceProtectionSolutionTypeCustomRunbook - Resource is not protected with native solution and using custom runbook automation
@@ -1108,11 +1390,37 @@ const (
 // PossibleResourceProtectionSolutionTypeValues returns the possible values for the ResourceProtectionSolutionType const type.
 func PossibleResourceProtectionSolutionTypeValues() []ResourceProtectionSolutionType {
 	return []ResourceProtectionSolutionType{
+		ResourceProtectionSolutionTypeAzureCosmosDB,
 		ResourceProtectionSolutionTypeAzureNative,
+		ResourceProtectionSolutionTypeAzureNetAppFiles,
+		ResourceProtectionSolutionTypeAzureServiceBus,
 		ResourceProtectionSolutionTypeAzureSiteRecovery,
+		ResourceProtectionSolutionTypeAzureStorageAccount,
+		ResourceProtectionSolutionTypeAzureTemplate,
 		ResourceProtectionSolutionTypeCrossZoneVMRecovery,
 		ResourceProtectionSolutionTypeCustomRunbook,
 		ResourceProtectionSolutionTypeNone,
+	}
+}
+
+// ResourceProtectionState - A state type that indicates the protection status of a resource with an Azure solution for Backup.
+type ResourceProtectionState string
+
+const (
+	// ResourceProtectionStateNotProtected - A state indicating that the resource is not protected by any recovery solution.
+	ResourceProtectionStateNotProtected ResourceProtectionState = "NotProtected"
+	// ResourceProtectionStateProtected - A state indicating that the resource is protected by the recovery solution.
+	ResourceProtectionStateProtected ResourceProtectionState = "Protected"
+	// ResourceProtectionStateUnknown - The protection status of the resource is unknown.
+	ResourceProtectionStateUnknown ResourceProtectionState = "Unknown"
+)
+
+// PossibleResourceProtectionStateValues returns the possible values for the ResourceProtectionState const type.
+func PossibleResourceProtectionStateValues() []ResourceProtectionState {
+	return []ResourceProtectionState{
+		ResourceProtectionStateNotProtected,
+		ResourceProtectionStateProtected,
+		ResourceProtectionStateUnknown,
 	}
 }
 
@@ -1234,6 +1542,21 @@ func PossibleSolutionDisplayNameValues() []SolutionDisplayName {
 	}
 }
 
+// TargetProvisioningMode - How a target resource is provisioned.
+type TargetProvisioningMode string
+
+const (
+	// TargetProvisioningModeExisting - An existing target resource is used.
+	TargetProvisioningModeExisting TargetProvisioningMode = "Existing"
+)
+
+// PossibleTargetProvisioningModeValues returns the possible values for the TargetProvisioningMode const type.
+func PossibleTargetProvisioningModeValues() []TargetProvisioningMode {
+	return []TargetProvisioningMode{
+		TargetProvisioningModeExisting,
+	}
+}
+
 // TestFailoverState - A state specific to the resource that helps identify its TestFailover state.
 type TestFailoverState string
 
@@ -1300,5 +1623,35 @@ func PossibleVMPresentValues() []VMPresent {
 	return []VMPresent{
 		VMPresentAbsent,
 		VMPresentPresent,
+	}
+}
+
+// WorkloadType - The workload protected by a recovery configuration profile.
+type WorkloadType string
+
+const (
+	// WorkloadTypeAzureFileShare - An Azure Files workload.
+	WorkloadTypeAzureFileShare WorkloadType = "AzureFileShare"
+	// WorkloadTypeAzureVM - An Azure virtual machine workload.
+	WorkloadTypeAzureVM WorkloadType = "AzureVm"
+	// WorkloadTypeOracleInAzureVM - An Oracle workload hosted in an Azure virtual machine.
+	WorkloadTypeOracleInAzureVM WorkloadType = "OracleInAzureVm"
+	// WorkloadTypeSQLDatabaseInAzureVM - A SQL database workload hosted in an Azure virtual machine.
+	WorkloadTypeSQLDatabaseInAzureVM WorkloadType = "SqlDatabaseInAzureVm"
+	// WorkloadTypeSapAseInAzureVM - An SAP ASE workload hosted in an Azure virtual machine.
+	WorkloadTypeSapAseInAzureVM WorkloadType = "SapAseInAzureVm"
+	// WorkloadTypeSapHanaInAzureVM - An SAP HANA workload hosted in an Azure virtual machine.
+	WorkloadTypeSapHanaInAzureVM WorkloadType = "SapHanaInAzureVm"
+)
+
+// PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
+func PossibleWorkloadTypeValues() []WorkloadType {
+	return []WorkloadType{
+		WorkloadTypeAzureFileShare,
+		WorkloadTypeAzureVM,
+		WorkloadTypeOracleInAzureVM,
+		WorkloadTypeSQLDatabaseInAzureVM,
+		WorkloadTypeSapAseInAzureVM,
+		WorkloadTypeSapHanaInAzureVM,
 	}
 }

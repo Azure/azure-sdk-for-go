@@ -96,6 +96,13 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewRecoveryConfigProfilesClient creates a new instance of RecoveryConfigProfilesClient.
+func (c *ClientFactory) NewRecoveryConfigProfilesClient() *RecoveryConfigProfilesClient {
+	return &RecoveryConfigProfilesClient{
+		internal: c.internal,
+	}
+}
+
 // NewRecoveryJobResourcesClient creates a new instance of RecoveryJobResourcesClient.
 func (c *ClientFactory) NewRecoveryJobResourcesClient() *RecoveryJobResourcesClient {
 	return &RecoveryJobResourcesClient{

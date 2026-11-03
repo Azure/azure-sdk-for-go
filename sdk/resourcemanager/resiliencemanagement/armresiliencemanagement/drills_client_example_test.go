@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Drills_AddOrUpdateResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Drills_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_Create_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,13 +95,13 @@ func ExampleDrillsClient_BeginCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDrillsClient().BeginCreate(ctx, "sampleServiceGroupName", "drill1", armresiliencemanagement.Drill{
-		Properties: &armresiliencemanagement.ZonalDrillProperties{
+		Properties: &armresiliencemanagement.DrillProperties{
 			ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
 			RbacSetupMode:  to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
 			},
-			DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
+			DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 				LastRunState:       to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
@@ -181,7 +181,7 @@ func ExampleDrillsClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresiliencemanagement.DrillsClientCreateResponse{
 	// 	Drill: armresiliencemanagement.Drill{
-	// 		Properties: &armresiliencemanagement.ZonalDrillProperties{
+	// 		Properties: &armresiliencemanagement.DrillProperties{
 	// 			ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
 	// 			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 	// 			AttentionReason: &armresiliencemanagement.AttentionReason{
@@ -265,12 +265,13 @@ func ExampleDrillsClient_BeginCreate() {
 	// 					to.Ptr(armresiliencemanagement.ResourceTypeCategoriesAzureSiteRecoveryVMsPresent),
 	// 				},
 	// 			},
-	// 			DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
+	// 			DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
+	// 				LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
@@ -365,7 +366,7 @@ func ExampleDrillsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Drills_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_Delete_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +387,7 @@ func ExampleDrillsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Drills_End_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_End_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginEnd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +416,173 @@ func ExampleDrillsClient_BeginEnd() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Drills_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
+func ExampleDrillsClient_BeginResyncReadinessCheck() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillsClient().BeginResyncReadinessCheck(ctx, "sampleServiceGroupName", "qmn", "drill1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-11-30-preview/Drills_Start_MaximumSet_Gen.json
+func ExampleDrillsClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillsClient().BeginStart(ctx, "sampleServiceGroupName", "qmn", "drill1", armresiliencemanagement.DrillStartRequest{
+		Mode: to.Ptr(armresiliencemanagement.DrillModeFailover),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillsClientStartResponse{
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/Drills_Update_MaximumSet_Gen.json
+func ExampleDrillsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillsClient().BeginUpdate(ctx, "sampleServiceGroupName", "drill1", armresiliencemanagement.DrillUpdate{
+		Properties: &armresiliencemanagement.DrillUpdateProperties{
+			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
+			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			MonitoringProperties: &armresiliencemanagement.MonitoringPropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			ChaosResourceProperties: &armresiliencemanagement.ChaosResourcePropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				ChaosResourceIdentityForFaults: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			DrillAssetProperties: &armresiliencemanagement.AssetPropertiesOfDrill{
+				Subscription: to.Ptr("pxlmwjuhcif"),
+				Region:       to.Ptr("zuvwzxnbqyzdkthrewruw"),
+			},
+			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				HealthModelID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm"),
+			},
+			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				Slis: []*armresiliencemanagement.SliSelection{
+					{
+						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+						Type:  to.Ptr(armresiliencemanagement.SliTypeAvailability),
+					},
+				},
+			},
+		},
+		Identity: &armresiliencemanagement.ManagedServiceIdentity{
+			Type:                   to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillsClientUpdateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
+func ExampleDrillsClient_BeginValidateForExecution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillsClient().BeginValidateForExecution(ctx, "sampleServiceGroupName", "qmn", "drill1", armresiliencemanagement.ValidateForExecutionRequest{
+		ValidateForExecutionProperties: &armresiliencemanagement.ValidateForExecutionProperties{
+			SourceLocations: []*string{
+				to.Ptr("eastus2-az1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillsClientValidateForExecutionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/Drills_Get_MaximumSet_Gen.json
 func ExampleDrillsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +602,7 @@ func ExampleDrillsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresiliencemanagement.DrillsClientGetResponse{
 	// 	Drill: armresiliencemanagement.Drill{
-	// 		Properties: &armresiliencemanagement.ZonalDrillProperties{
+	// 		Properties: &armresiliencemanagement.DrillProperties{
 	// 			ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
 	// 			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 	// 			AttentionReason: &armresiliencemanagement.AttentionReason{
@@ -519,12 +686,13 @@ func ExampleDrillsClient_Get() {
 	// 					to.Ptr(armresiliencemanagement.ResourceTypeCategoriesAzureSiteRecoveryVMsPresent),
 	// 				},
 	// 			},
-	// 			DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
+	// 			DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
+	// 				LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
@@ -619,7 +787,7 @@ func ExampleDrillsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Drills_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Drills_List_MaximumSet_Gen.json
 func ExampleDrillsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,7 +815,7 @@ func ExampleDrillsClient_NewListPager() {
 		// 	DrillListResult: armresiliencemanagement.DrillListResult{
 		// 		Value: []*armresiliencemanagement.Drill{
 		// 			{
-		// 				Properties: &armresiliencemanagement.ZonalDrillProperties{
+		// 				Properties: &armresiliencemanagement.DrillProperties{
 		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 		// 					ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
 		// 					RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
@@ -732,12 +900,13 @@ func ExampleDrillsClient_NewListPager() {
 		// 							to.Ptr(armresiliencemanagement.ResourceTypeCategoriesAzureSiteRecoveryVMsPresent),
 		// 						},
 		// 					},
-		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 		// 					LastRunProperties: &armresiliencemanagement.LastRunProperties{
 		// 						LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 		// 						LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 		// 						LastRunDuration: to.Ptr("PT6M"),
 		// 						LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
+		// 						LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 		// 					},
 		// 					ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 		// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
@@ -829,174 +998,8 @@ func ExampleDrillsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-10-01/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
-func ExampleDrillsClient_BeginResyncReadinessCheck() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDrillsClient().BeginResyncReadinessCheck(ctx, "sampleServiceGroupName", "qmn", "drill1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-10-01/Drills_Start_MaximumSet_Gen.json
-func ExampleDrillsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDrillsClient().BeginStart(ctx, "sampleServiceGroupName", "qmn", "drill1", armresiliencemanagement.DrillStartRequest{
-		Mode: to.Ptr(armresiliencemanagement.DrillModeFailover),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresiliencemanagement.DrillsClientStartResponse{
-	// }
-}
-
-// Generated from example definition: 2026-10-01/Drills_Update_MaximumSet_Gen.json
-func ExampleDrillsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDrillsClient().BeginUpdate(ctx, "sampleServiceGroupName", "drill1", armresiliencemanagement.DrillUpdate{
-		Properties: &armresiliencemanagement.DrillUpdateProperties{
-			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
-			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-			},
-			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-			},
-			MonitoringProperties: &armresiliencemanagement.MonitoringPropertiesOfDrill{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-			},
-			ChaosResourceProperties: &armresiliencemanagement.ChaosResourcePropertiesOfDrill{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-				ChaosResourceIdentityForFaults: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-			},
-			DrillAssetProperties: &armresiliencemanagement.AssetPropertiesOfDrill{
-				Subscription: to.Ptr("pxlmwjuhcif"),
-				Region:       to.Ptr("zuvwzxnbqyzdkthrewruw"),
-			},
-			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-				HealthModelID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm"),
-			},
-			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
-				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
-					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
-				},
-				Slis: []*armresiliencemanagement.SliSelection{
-					{
-						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
-						Type:  to.Ptr(armresiliencemanagement.SliTypeAvailability),
-					},
-				},
-			},
-		},
-		Identity: &armresiliencemanagement.ManagedServiceIdentity{
-			Type:                   to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresiliencemanagement.DrillsClientUpdateResponse{
-	// }
-}
-
-// Generated from example definition: 2026-10-01/Drills_ValidateForExecution_MaximumSet_Gen.json
-func ExampleDrillsClient_BeginValidateForExecution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDrillsClient().BeginValidateForExecution(ctx, "sampleServiceGroupName", "qmn", "drill1", armresiliencemanagement.ValidateForExecutionRequest{
-		ValidateForExecutionProperties: &armresiliencemanagement.ValidateForExecutionProperties{
-			SourceLocations: []*string{
-				to.Ptr("eastus2-az1"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresiliencemanagement.DrillsClientValidateForExecutionResponse{
-	// }
 }

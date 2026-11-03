@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/UnifiedResilienceItems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,6 +39,9 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// 				ZonalResiliency: &armresiliencemanagement.UnifiedResilienceItemGoalRequirement{
 	// 					Required: to.Ptr(true),
 	// 				},
+	// 				RegionalResiliency: &armresiliencemanagement.UnifiedResilienceItemGoalRequirement{
+	// 					Required: to.Ptr(false),
+	// 				},
 	// 			},
 	// 			ResiliencyPosture: &armresiliencemanagement.UnifiedResilienceItemResiliencyPosture{
 	// 				ZonalResiliency: &armresiliencemanagement.UnifiedResilienceItemZonalResiliencyPosture{
@@ -47,6 +50,14 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// 					NotEvaluatedResourceCount: to.Ptr[int64](1),
 	// 					UserConfirmationNeededCount: to.Ptr[int64](3),
 	// 					EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				RegionalResiliency: &armresiliencemanagement.UnifiedResilienceItemRegionalResiliencyPosture{
+	// 					EnabledResourceCount: to.Ptr[int64](4),
+	// 					NotEnabledResourceCount: to.Ptr[int64](3),
+	// 					NotEvaluatedResourceCount: to.Ptr[int64](1),
+	// 					UserConfirmationNeededCount: to.Ptr[int64](2),
+	// 					EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
+	// 					EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDuration("PT10M")),
 	// 				},
 	// 			},
 	// 			BillingInfo: &armresiliencemanagement.UnifiedResilienceItemBillingInfo{
@@ -72,7 +83,7 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/UnifiedResilienceItems_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,6 +118,9 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 						ZonalResiliency: &armresiliencemanagement.UnifiedResilienceItemGoalRequirement{
 		// 							Required: to.Ptr(true),
 		// 						},
+		// 						RegionalResiliency: &armresiliencemanagement.UnifiedResilienceItemGoalRequirement{
+		// 							Required: to.Ptr(false),
+		// 						},
 		// 					},
 		// 					ResiliencyPosture: &armresiliencemanagement.UnifiedResilienceItemResiliencyPosture{
 		// 						ZonalResiliency: &armresiliencemanagement.UnifiedResilienceItemZonalResiliencyPosture{
@@ -115,6 +129,14 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 							NotEvaluatedResourceCount: to.Ptr[int64](1),
 		// 							UserConfirmationNeededCount: to.Ptr[int64](3),
 		// 							EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
+		// 						},
+		// 						RegionalResiliency: &armresiliencemanagement.UnifiedResilienceItemRegionalResiliencyPosture{
+		// 							EnabledResourceCount: to.Ptr[int64](4),
+		// 							NotEnabledResourceCount: to.Ptr[int64](3),
+		// 							NotEvaluatedResourceCount: to.Ptr[int64](1),
+		// 							UserConfirmationNeededCount: to.Ptr[int64](2),
+		// 							EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
+		// 							EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDuration("PT10M")),
 		// 						},
 		// 					},
 		// 					BillingInfo: &armresiliencemanagement.UnifiedResilienceItemBillingInfo{
@@ -138,14 +160,14 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/zldmpkvqzifygkqau/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/zldmpkvqzifygkqau/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-10-01/UnifiedResilienceItems_List_MinimumSet_Gen.json
-func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSetGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-11-30-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
+func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

@@ -94,6 +94,75 @@ func unmarshalRecoveryGroupBaseActionClassificationArray(rawMsg json.RawMessage)
 	return fArray, nil
 }
 
+func unmarshalRecoveryGroupResiliencyPropertiesClassification(rawMsg json.RawMessage) (RecoveryGroupResiliencyPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RecoveryGroupResiliencyPropertiesClassification
+	switch m["resiliencyType"] {
+	case string(ResiliencyTypeCyberResiliency):
+		b = &CyberResiliencyGroupProperties{}
+	case string(ResiliencyTypeInfrastructureResiliency):
+		b = &InfrastructureResiliencyGroupProperties{}
+	default:
+		b = &RecoveryGroupResiliencyProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRecoveryPlanResiliencyPropertiesClassification(rawMsg json.RawMessage) (RecoveryPlanResiliencyPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RecoveryPlanResiliencyPropertiesClassification
+	switch m["resiliencyType"] {
+	case string(ResiliencyTypeCyberResiliency):
+		b = &CyberResiliencyPlanProperties{}
+	case string(ResiliencyTypeInfrastructureResiliency):
+		b = &InfrastructureResiliencyPlanProperties{}
+	default:
+		b = &RecoveryPlanResiliencyProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRecoveryResourceResiliencyPropertiesClassification(rawMsg json.RawMessage) (RecoveryResourceResiliencyPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RecoveryResourceResiliencyPropertiesClassification
+	switch m["resiliencyType"] {
+	case string(ResiliencyTypeCyberResiliency):
+		b = &CyberResiliencyResourceProperties{}
+	case string(ResiliencyTypeInfrastructureResiliency):
+		b = &InfrastructureResiliencyResourceProperties{}
+	default:
+		b = &RecoveryResourceResiliencyProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.RawMessage) (ResourceBaseProtectionSolutionSettingClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -104,16 +173,49 @@ func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.Ra
 	}
 	var b ResourceBaseProtectionSolutionSettingClassification
 	switch m["protectionSolutionType"] {
+	case string(ResourceProtectionSolutionTypeAzureCosmosDB):
+		b = &ResourceCosmosDBProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureNative):
 		b = &ResourceNativeProtectionSolutionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureNetAppFiles):
+		b = &ResourceNetAppFilesProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureServiceBus):
+		b = &ResourceServiceBusProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureSiteRecovery):
 		b = &ResourceSiteRecoveryProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureStorageAccount):
+		b = &ResourceStorageAccountProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureTemplate):
+		b = &ResourceAzureTemplateProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCrossZoneVMRecovery):
 		b = &ResourceCrossZoneVMRecoveryProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCustomRunbook):
 		b = &ResourceCustomProtectionSetting{}
 	default:
 		b = &ResourceBaseProtectionSolutionSetting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalWorkloadConfigClassification(rawMsg json.RawMessage) (WorkloadConfigClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b WorkloadConfigClassification
+	switch m["workloadType"] {
+	case string(WorkloadTypeAzureFileShare):
+		b = &FileShareRecoveryConfig{}
+	case string(WorkloadTypeAzureVM):
+		b = &VMRecoveryConfig{}
+	default:
+		b = &WorkloadConfig{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

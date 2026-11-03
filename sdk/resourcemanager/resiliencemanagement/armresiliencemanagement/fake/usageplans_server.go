@@ -29,6 +29,10 @@ type UsagePlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, usagePlanName string, options *armresiliencemanagement.UsagePlansClientBeginDeleteOptions) (resp azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method UsagePlansClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, usagePlanName string, properties armresiliencemanagement.UsagePlanTagsUpdate, options *armresiliencemanagement.UsagePlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method UsagePlansClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, usagePlanName string, options *armresiliencemanagement.UsagePlansClientGetOptions) (resp azfake.Responder[armresiliencemanagement.UsagePlansClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type UsagePlansServer struct {
 	// NewListBySubscriptionPager is the fake for method UsagePlansClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armresiliencemanagement.UsagePlansClientListBySubscriptionOptions) (resp azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method UsagePlansClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, usagePlanName string, properties armresiliencemanagement.UsagePlanTagsUpdate, options *armresiliencemanagement.UsagePlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewUsagePlansServerTransport creates a new instance of UsagePlansServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewUsagePlansServerTransport(srv *UsagePlansServer) *UsagePlansServerTransp
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type UsagePlansServerTransport struct {
 	srv                         *UsagePlansServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsagePlansServerTransport.
@@ -96,14 +96,14 @@ func (u *UsagePlansServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = u.dispatchBeginCreateOrUpdate(req)
 			case "UsagePlansClient.BeginDelete":
 				res.resp, res.err = u.dispatchBeginDelete(req)
+			case "UsagePlansClient.BeginUpdate":
+				res.resp, res.err = u.dispatchBeginUpdate(req)
 			case "UsagePlansClient.Get":
 				res.resp, res.err = u.dispatchGet(req)
 			case "UsagePlansClient.NewListByResourceGroupPager":
 				res.resp, res.err = u.dispatchNewListByResourceGroupPager(req)
 			case "UsagePlansClient.NewListBySubscriptionPager":
 				res.resp, res.err = u.dispatchNewListBySubscriptionPager(req)
-			case "UsagePlansClient.BeginUpdate":
-				res.resp, res.err = u.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (u *UsagePlansServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (u *UsagePlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if u.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := u.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlanTagsUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		u.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		u.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		u.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (u *UsagePlansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if u.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (u *UsagePlansServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		u.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (u *UsagePlansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if u.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := u.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlanTagsUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		u.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		u.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		u.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

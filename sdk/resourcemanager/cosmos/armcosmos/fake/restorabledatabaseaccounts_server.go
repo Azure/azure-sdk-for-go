@@ -25,13 +25,13 @@ type RestorableDatabaseAccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByLocation func(ctx context.Context, location string, instanceID string, options *armcosmos.RestorableDatabaseAccountsClientGetByLocationOptions) (resp azfake.Responder[armcosmos.RestorableDatabaseAccountsClientGetByLocationResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RestorableDatabaseAccountsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcosmos.RestorableDatabaseAccountsClientListOptions) (resp azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse])
-
 	// NewListByLocationPager is the fake for method RestorableDatabaseAccountsClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByLocationPager func(location string, options *armcosmos.RestorableDatabaseAccountsClientListByLocationOptions) (resp azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListByLocationResponse])
+
+	// NewListPager is the fake for method RestorableDatabaseAccountsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcosmos.RestorableDatabaseAccountsClientListOptions) (resp azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse])
 }
 
 // NewRestorableDatabaseAccountsServerTransport creates a new instance of RestorableDatabaseAccountsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type RestorableDatabaseAccountsServer struct {
 func NewRestorableDatabaseAccountsServerTransport(srv *RestorableDatabaseAccountsServer) *RestorableDatabaseAccountsServerTransport {
 	return &RestorableDatabaseAccountsServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse]](),
 		newListByLocationPager: newTracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListByLocationResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewRestorableDatabaseAccountsServerTransport(srv *RestorableDatabaseAccount
 // Don't use this type directly, use NewRestorableDatabaseAccountsServerTransport instead.
 type RestorableDatabaseAccountsServerTransport struct {
 	srv                    *RestorableDatabaseAccountsServer
-	newListPager           *tracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse]]
 	newListByLocationPager *tracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListByLocationResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armcosmos.RestorableDatabaseAccountsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RestorableDatabaseAccountsServerTransport.
@@ -76,10 +76,10 @@ func (r *RestorableDatabaseAccountsServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "RestorableDatabaseAccountsClient.GetByLocation":
 				res.resp, res.err = r.dispatchGetByLocation(req)
-			case "RestorableDatabaseAccountsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RestorableDatabaseAccountsClient.NewListByLocationPager":
 				res.resp, res.err = r.dispatchNewListByLocationPager(req)
+			case "RestorableDatabaseAccountsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -129,39 +129,6 @@ func (r *RestorableDatabaseAccountsServerTransport) dispatchGetByLocation(req *h
 	return resp, nil
 }
 
-func (r *RestorableDatabaseAccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/restorableDatabaseAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListPager(nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.RestorableDatabaseAccountsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RestorableDatabaseAccountsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByLocationPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
@@ -195,6 +162,39 @@ func (r *RestorableDatabaseAccountsServerTransport) dispatchNewListByLocationPag
 	}
 	if !server.PagerResponderMore(newListByLocationPager) {
 		r.newListByLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RestorableDatabaseAccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/restorableDatabaseAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListPager(nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.RestorableDatabaseAccountsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

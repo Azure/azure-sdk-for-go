@@ -19,7 +19,7 @@ import (
 // MongoMIResourcesClient contains the methods for the MongoMIResources group.
 // Don't use this type directly, use NewMongoMIResourcesClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-15
 type MongoMIResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleAssignment(ctx
 	}
 }
 
-// CreateUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
+// createUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx cont
 	return httpResp, nil
 }
 
-// createUpdateMongoMIRoleAssignmentCreateRequest creates the CreateUpdateMongoMIRoleAssignment request.
+// createUpdateMongoMIRoleAssignmentCreateRequest creates the createUpdateMongoMIRoleAssignment request.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, _ *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignmentCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -150,7 +150,7 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleDefinition(ctx
 	}
 }
 
-// CreateUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
+// createUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx cont
 	return httpResp, nil
 }
 
-// createUpdateMongoMIRoleDefinitionCreateRequest creates the CreateUpdateMongoMIRoleDefinition request.
+// createUpdateMongoMIRoleDefinitionCreateRequest creates the createUpdateMongoMIRoleDefinition request.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, _ *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -196,7 +196,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinitionCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -230,7 +230,7 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleAssignment(ctx conte
 	}
 }
 
-// DeleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
+// deleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -252,7 +252,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteMongoMIRoleAssignmentCreateRequest creates the DeleteMongoMIRoleAssignment request.
+// deleteMongoMIRoleAssignmentCreateRequest creates the deleteMongoMIRoleAssignment request.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *MongoMIResourcesClientBeginDeleteMongoMIRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -276,7 +276,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignmentCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -305,7 +305,7 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleDefinition(ctx conte
 	}
 }
 
-// DeleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
+// deleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -327,7 +327,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteMongoMIRoleDefinitionCreateRequest creates the DeleteMongoMIRoleDefinition request.
+// deleteMongoMIRoleDefinitionCreateRequest creates the deleteMongoMIRoleDefinition request.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *MongoMIResourcesClientBeginDeleteMongoMIRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -351,7 +351,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinitionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -405,7 +405,7 @@ func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -472,7 +472,7 @@ func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -548,7 +548,7 @@ func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -625,7 +625,7 @@ func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

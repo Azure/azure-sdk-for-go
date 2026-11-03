@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -35,7 +36,7 @@ func (w *wireTransport) Do(req *http.Request) (*http.Response, error) {
 		body := `<?xml version="1.0" encoding="utf-8"?><CreateSessionResult><Credentials><SessionKey>dGVzdC1rZXk=</SessionKey>` +
 			`<SessionToken>tok</SessionToken></Credentials><Expiration>` + time.Now().Add(time.Hour).UTC().Format(time.RFC1123) +
 			`</Expiration></CreateSessionResult>`
-		return &http.Response{StatusCode: http.StatusCreated, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
+		return &http.Response{StatusCode: http.StatusCreated, Header: http.Header{"Content-Type": {"application/xml"}}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
 	}
 	scheme, _, _ := strings.Cut(req.Header.Get("Authorization"), " ")
 	w.schemes = append(w.schemes, scheme)
@@ -125,4 +126,65 @@ func TestNoCredentialHasNoAuthPolicy(t *testing.T) {
 	tr := &wireTransport{}
 	c := newWireClient(t, tr, nil, nil, exported.SessionModeAuto, wireBlobURL)
 	require.Equal(t, "", sendThrough(t, c, tr, http.MethodGet, wireBlobURL, nil))
+}
+
+// The Create Session response body holds the session key, so it isn't logged even when the
+// client enables body logging.
+func TestCreateSessionResponseBodyIsNotLogged(t *testing.T) {
+	var logged []string
+	log.SetListener(func(_ log.Event, msg string) { logged = append(logged, msg) })
+	defer log.SetListener(nil)
+
+	tr := &wireTransport{}
+	opts := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: tr,
+			Retry:     policy.RetryOptions{MaxRetries: -1},
+			Logging:   policy.LogOptions{IncludeBody: true},
+		},
+		Session: exported.SessionOptions{Mode: exported.SessionModeEnabled},
+	}
+	c, err := GetAzClient(wireBlobURL, fakeTokenCredential{}, nil, opts)
+	require.NoError(t, err)
+	require.Equal(t, "Session", sendThrough(t, c, tr, http.MethodGet, wireBlobURL, nil))
+	require.Equal(t, 1, tr.createSessions)
+
+	all := strings.Join(logged, "\n")
+	require.Contains(t, all, "response 201", "the Create Session response is still logged")
+	require.NotContains(t, all, "dGVzdC1rZXk=", "the session key must not be logged")
+	require.NotContains(t, all, "<SessionToken>", "the session token must not be logged")
+	require.True(t, opts.Logging.IncludeBody, "the caller's options aren't modified")
+}
+
+// A session is a credential, so like a bearer token it is sent over plain HTTP only when the
+// client sets InsecureAllowCredentialWithHTTP.
+func TestSessionAuthRequiresHTTPS(t *testing.T) {
+	const httpBlobURL = "http://account.blob.core.windows.net/container/blob"
+	for _, allowHTTP := range []bool{false, true} {
+		t.Run(map[bool]string{false: "Refused", true: "Allowed"}[allowHTTP], func(t *testing.T) {
+			tr := &wireTransport{}
+			opts := &ClientOptions{
+				ClientOptions: azcore.ClientOptions{
+					Transport:                       tr,
+					Retry:                           policy.RetryOptions{MaxRetries: -1},
+					InsecureAllowCredentialWithHTTP: allowHTTP,
+				},
+				Session: exported.SessionOptions{Mode: exported.SessionModeEnabled},
+			}
+			c, err := GetAzClient(httpBlobURL, fakeTokenCredential{}, nil, opts)
+			require.NoError(t, err)
+			req, err := runtime.NewRequest(context.Background(), http.MethodGet, httpBlobURL)
+			require.NoError(t, err)
+			resp, err := c.Pipeline().Do(req)
+			if !allowHTTP {
+				require.ErrorContains(t, err, "non-TLS")
+				require.Zero(t, tr.createSessions, "no session is created for a request that can't use it")
+				require.Empty(t, tr.schemes, "the request isn't sent")
+				return
+			}
+			require.NoError(t, err)
+			require.NoError(t, resp.Body.Close())
+			require.Equal(t, "Session", tr.lastScheme())
+		})
+	}
 }

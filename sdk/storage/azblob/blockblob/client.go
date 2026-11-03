@@ -402,7 +402,8 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		return toUploadReaderAtResponseFromUploadResponse(resp), err
 	}
 
-	var numBlocks = uint16(((actualSize - 1) / o.BlockSize) + 1)
+	// numBlocks stays int64 until it is checked, so that a large count can't wrap around and pass.
+	numBlocks := ((actualSize - 1) / o.BlockSize) + 1
 	if numBlocks > MaxBlocks {
 		// prevent any math bugs from attempting to upload too many blocks which will always fail
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")

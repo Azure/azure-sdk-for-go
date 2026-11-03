@@ -33,22 +33,6 @@ type ClientOptions struct {
 	Session azblob.SessionOptions
 }
 
-// WithSessionProvider returns a copy of clOpts whose Session.Provider is set, so that a token
-// credential client and every client derived from it share one session cache, as they would if
-// they shared a pipeline. A provider the caller supplied is kept; otherwise a
-// ContainerSessionProvider for blobURL is created, which makes no requests until a session is
-// needed. If one can't be created, Provider stays nil and the blob client reports any
-// configuration error itself.
-func WithSessionProvider(clOpts *ClientOptions, blobURL string, cred azcore.TokenCredential) *ClientOptions {
-	opts := *clOpts
-	if opts.Session.Provider == nil {
-		if p, err := container.NewSessionProvider(blobURL, cred, &container.ClientOptions{ClientOptions: opts.ClientOptions}); err == nil {
-			opts.Session.Provider = p
-		}
-	}
-	return &opts
-}
-
 // BlobClientOptions returns the options for the blob client a data lake client uses for the
 // requests it sends to the blob endpoint.
 func BlobClientOptions(clOpts *ClientOptions) azblob.ClientOptions {

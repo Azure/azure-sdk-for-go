@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 )
@@ -416,7 +415,7 @@ func TestSessionAuthConcurrentUnauthorizedReplacesSessionOnce(t *testing.T) {
 // A rejected session in one container leaves other containers' sessions alone.
 func TestSessionAuthInvalidationIsPerContainer(t *testing.T) {
 	tr := &sessionAPITransport{rejectSession: func(op recordedOp) bool { return op.container == "a" && op.token == "session-token-1" }}
-	svcClient := newSessionTestServiceClient(t, tr, nil)
+	svcClient := newSessionTestServiceClient(t, tr)
 	download := func(container string) {
 		downloadOnce(t, svcClient.NewContainerClient(container).NewBlobClient("blob"))
 	}
@@ -434,11 +433,11 @@ func TestSessionAuthInvalidationIsPerContainer(t *testing.T) {
 
 // ---- session providers ---------------------------------------------------------------------
 
-func newSessionTestServiceClient(t *testing.T, tr *sessionAPITransport, provider azblob.SessionProvider) *service.Client {
+func newSessionTestServiceClient(t *testing.T, tr *sessionAPITransport) *service.Client {
 	t.Helper()
 	opts := &service.ClientOptions{
 		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
-		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, AccountName: sessionTestAccount, Provider: provider},
+		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, AccountName: sessionTestAccount},
 	}
 	svcClient, err := service.NewClient(sessionTestServiceURL, sessionTestTokenCredential{}, opts)
 	require.NoError(t, err)
@@ -454,7 +453,7 @@ func downloadOnce(t *testing.T, client *blob.Client) {
 
 func TestSessionImplicitProviderIsSharedWithDerivedClients(t *testing.T) {
 	tr := &sessionAPITransport{}
-	svcClient := newSessionTestServiceClient(t, tr, nil)
+	svcClient := newSessionTestServiceClient(t, tr)
 
 	downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("one"))
 	downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("two"))
@@ -465,40 +464,10 @@ func TestSessionImplicitProviderIsSharedWithDerivedClients(t *testing.T) {
 
 func TestSessionImplicitProvidersAreNotSharedAcrossIndependentClients(t *testing.T) {
 	tr := &sessionAPITransport{}
-	downloadOnce(t, newSessionTestServiceClient(t, tr, nil).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
-	downloadOnce(t, newSessionTestServiceClient(t, tr, nil).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
+	downloadOnce(t, newSessionTestServiceClient(t, tr).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
+	downloadOnce(t, newSessionTestServiceClient(t, tr).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
 
 	_, _, createSessions := tr.counts()
-	require.Equal(t, 2, createSessions)
-}
-
-// A provider passed to independently created clients keeps one session per container for all of
-// them, including clients created after earlier ones were discarded.
-func TestSessionSharedProviderOutlivesClients(t *testing.T) {
-	tr := &sessionAPITransport{}
-	provider, err := container.NewSessionProvider(sessionTestServiceURL, sessionTestTokenCredential{}, &container.ClientOptions{
-		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
-	})
-	require.NoError(t, err)
-
-	for range 3 {
-		// a new client each time, as an application recreating its clients would
-		svcClient := newSessionTestServiceClient(t, tr, provider)
-		downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
-	}
-	blobClient, err := blob.NewClient(sessionTestServiceURL+sessionTestContainer+"/other", sessionTestTokenCredential{}, &blob.ClientOptions{
-		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
-		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, Provider: provider},
-	})
-	require.NoError(t, err)
-	downloadOnce(t, blobClient)
-
-	_, _, createSessions := tr.counts()
-	require.Equal(t, 1, createSessions, "one session for the container across every client")
-
-	// a different container gets its own session from the same provider
-	downloadOnce(t, newSessionTestServiceClient(t, tr, provider).NewContainerClient("othercontainer").NewBlobClient("blob"))
-	_, _, createSessions = tr.counts()
 	require.Equal(t, 2, createSessions)
 }
 

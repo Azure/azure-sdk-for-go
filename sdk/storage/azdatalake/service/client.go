@@ -58,8 +58,6 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
 	options.PerCallPolicies = perCallPolicies
-	// one session provider for this client and every client derived from it
-	conOptions = (*ClientOptions)(base.WithSessionProvider((*base.ClientOptions)(conOptions), blobServiceURL, cred))
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 		// sessions apply only to the requests this client sends to the blob endpoint

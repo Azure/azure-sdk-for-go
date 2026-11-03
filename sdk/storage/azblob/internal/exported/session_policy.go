@@ -4,11 +4,14 @@
 package exported
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
@@ -19,19 +22,27 @@ type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	provider          SessionProvider
 	accountName       string
+	allowHTTP         bool
 }
 
 // NewSessionPolicy returns the authentication policy for a token credential client with sessions
 // enabled. accountName signs session requests; bearerTokenPolicy authenticates everything else.
-func NewSessionPolicy(accountName string, provider SessionProvider, bearerTokenPolicy policy.Policy) policy.Policy {
+// allowHTTP is the client's InsecureAllowCredentialWithHTTP.
+func NewSessionPolicy(accountName string, provider SessionProvider, bearerTokenPolicy policy.Policy, allowHTTP bool) policy.Policy {
 	return &sessionPolicy{
 		accountName:       accountName,
 		provider:          provider,
 		bearerTokenPolicy: bearerTokenPolicy,
+		allowHTTP:         allowHTTP,
 	}
 }
 
 func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
+	// Like the bearer token policy, never send a credential over plain HTTP unless the client
+	// allows it. The check comes first so that no session is acquired or sent for such a request.
+	if !p.allowHTTP && !strings.EqualFold(req.Raw().URL.Scheme, "https") {
+		return nil, errorinfo.NonRetriableError(errors.New("authorized requests are not permitted for non-TLS protected (https) endpoints"))
+	}
 	if !p.provider.isRequestEligible(req.Raw()) {
 		return p.bearerTokenPolicy.Do(req)
 	}

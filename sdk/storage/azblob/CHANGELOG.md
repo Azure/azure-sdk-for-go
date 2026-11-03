@@ -11,9 +11,7 @@
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionModeEnabled` was set explicitly.
-  * By default each client creates its own session cache, shared with the clients derived from it. Create a
-    `container.SessionProvider` with `container.NewSessionProvider` and pass it as `SessionOptions.Provider` to share one
-    cache across separately constructed clients, so that sessions survive the clients that created them.
+  * Each client creates its own session cache, shared with the clients derived from it.
   * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
     unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
 * Added support for data locality in managed downloads through `LayoutAwareRouting` on `DownloadBufferOptions` and
@@ -33,8 +31,13 @@
     default block size.
 
 ### Bugs Fixed
+* Fixed a panic in `UploadBuffer` and `UploadFile` when the block size split the content into more than 65,535
+  blocks. Such uploads now return the block limit error before sending any request.
 
 ### Other Changes
+* List blobs operations now request the Apache Arrow response format by default: `StorageResponseFormatAuto` resolves
+  to `StorageResponseFormatArrow`, including when no options are passed. The service returns XML when Arrow isn't
+  available, and both are handled transparently. Set `ResponseFormat` to `StorageResponseFormatXML` to opt out.
 * Updated the service version to `2027-03-07`.
 * Updated `sdk/storage/internal` version to `0.2.0`
 

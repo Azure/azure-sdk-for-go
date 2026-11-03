@@ -84,8 +84,3 @@ func PossibleSessionModeValues() []SessionMode {
 // authenticated with an azcore.TokenCredential; clients using a shared key, a SAS or no
 // credential ignore these options.
 type SessionOptions = exported.SessionOptions
-
-// SessionProvider provides and caches the sessions used to authenticate eligible requests. Share
-// one across clients through SessionOptions.Provider. It can't be implemented outside this
-// module; create one with container.NewSessionProvider.
-type SessionProvider = exported.SessionProvider

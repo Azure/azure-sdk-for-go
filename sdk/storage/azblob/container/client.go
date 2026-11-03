@@ -241,15 +241,17 @@ func (c *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	arrowOptions := o.formatArrow()
-	var useArrow bool
+	// nil options select the default format, as empty options do
+	format := exported.StorageResponseFormatAuto
 	if o != nil {
 		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 		listOptions.StartFrom = o.StartFrom
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		format = o.ResponseFormat
 	}
+	useArrow := exported.ResolveAutoFormat(format) == exported.StorageResponseFormatArrow
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsFlatResponse]{
 		More: func(page ListBlobsFlatResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -292,10 +294,12 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierarchyOptions) *runtime.Pager[ListBlobsHierarchyResponse] {
 	listOptions := o.format()
 	arrowOptions := o.formatArrow()
-	var useArrow bool
+	// nil options select the default format, as empty options do
+	format := exported.StorageResponseFormatAuto
 	if o != nil {
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		format = o.ResponseFormat
 	}
+	useArrow := exported.ResolveAutoFormat(format) == exported.StorageResponseFormatArrow
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsHierarchyResponse]{
 		More: func(page ListBlobsHierarchyResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0

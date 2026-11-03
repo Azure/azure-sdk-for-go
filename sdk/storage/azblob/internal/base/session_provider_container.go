@@ -32,6 +32,8 @@ func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential,
 		opts = *options
 	}
 	opts.Session = exported.SessionOptions{Mode: exported.SessionModeDisabled}
+	// The Create Session response body holds the session key, so it is never logged.
+	opts.Logging.IncludeBody = false
 	azClient, err := GetAzClient(svcURL, cred, nil, &opts)
 	if err != nil {
 		return nil, err
@@ -46,6 +48,9 @@ func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential,
 // The account name signs session requests. It comes from Session.AccountName or, failing that,
 // from clientURL. When neither yields one, an explicit SessionModeEnabled is a configuration
 // error, while a mode that merely resolves to enabled leaves the client on bearer tokens.
+//
+// The session provider is created here and lives in the client's pipeline, so it is shared with
+// every client derived from this one.
 func newSessionAuthPolicy(clientURL string, cred azcore.TokenCredential, bearerTokenPolicy policy.Policy, options *ClientOptions) (policy.Policy, error) {
 	sessionOpts := options.Session
 	if err := exported.ValidateSessionMode(sessionOpts.Mode); err != nil {
@@ -72,15 +77,11 @@ func newSessionAuthPolicy(clientURL string, cred azcore.TokenCredential, bearerT
 		accountName = name
 	}
 
-	provider := sessionOpts.Provider
-	if provider == nil {
-		p, err := NewContainerSessionProvider(clientURL, cred, options)
-		if err != nil {
-			return nil, err
-		}
-		provider = p
+	provider, err := NewContainerSessionProvider(clientURL, cred, options)
+	if err != nil {
+		return nil, err
 	}
-	return exported.NewSessionPolicy(accountName, provider, bearerTokenPolicy), nil
+	return exported.NewSessionPolicy(accountName, provider, bearerTokenPolicy, options.InsecureAllowCredentialWithHTTP), nil
 }
 
 // redactedURL returns rawURL without its query and fragment, for use in logs and errors.

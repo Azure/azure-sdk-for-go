@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_Delete.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_Delete.json
 func ExampleSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_Update.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_Update.json
 func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_Create.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_Create.json
 func ExampleSnapshotPoliciesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_Get.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_Get.json
 func ExampleSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_ListVolumes.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_ListVolumes.json
 func ExampleSnapshotPoliciesClient_ListVolumes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/SnapshotPolicies_List.json
+// Generated from example definition: 2026-08-15-preview/SnapshotPolicies_List.json
 func ExampleSnapshotPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

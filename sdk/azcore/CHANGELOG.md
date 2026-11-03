@@ -1,6 +1,16 @@
 # Release History
 
-## 1.24.0 (Unreleased)
+## 1.24.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.24.0 (2026-11-02)
 
 ### Features Added
 
@@ -8,14 +18,15 @@
 * Added supporting infrastructure for SSE responses.  This includes streaming types, runtime support, and fakes.
 * Added `arm.ResourceID.ValidateResourceTypeChain` to validate complete resource-type ancestry.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Client tracing spans now redact the request URL in error descriptions using the pipeline's query parameter allow list.
 * Retry logging now uses the pipeline's query parameter allow list and redacts request URLs in errors.
 
 ### Other Changes
+
+* Upgraded to Go 1.26.0.
+* Upgraded dependencies.
 
 ## 1.23.3 (2026-10-06)
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.1 (Unreleased)
+## 1.7.1 (2026-11-03)
 
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.

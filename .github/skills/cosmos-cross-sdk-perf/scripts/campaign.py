@@ -1003,8 +1003,9 @@ def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
             }
         )
 
+    observer_effect: list[dict[str, Any]] = []
     for row in all_rows:
-        if row["runClass"] != "perf":
+        if row["runClass"] == "clean-score":
             continue
         clean = next(
             item
@@ -1027,12 +1028,21 @@ def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
             )
             * 100.0,
         }
+        observer_effect.append(
+            {
+                "workers": row["workers"],
+                "leg": row["leg"],
+                "runClass": row["runClass"],
+                **row["observerEffectPercent"],
+            }
+        )
 
     write_json(
         comparison_dir / "summary.json",
         {
             "authoritativeClass": "clean-score",
             "authoritative": authoritative,
+            "observerEffect": observer_effect,
             "allRuns": all_rows,
         },
     )
@@ -1096,6 +1106,31 @@ def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
             ]
         )
         writer.writerows(setup_rows)
+    with (comparison_dir / "observer-effect.csv").open(
+        "w", newline="", encoding="utf-8"
+    ) as handle:
+        writer = csv.writer(handle)
+        writer.writerow(
+            [
+                "workers",
+                "leg",
+                "run_class",
+                "throughput_percent",
+                "cpu_per_read_percent",
+                "p99_percent",
+            ]
+        )
+        for row in observer_effect:
+            writer.writerow(
+                [
+                    row["workers"],
+                    row["leg"],
+                    row["runClass"],
+                    f"{row['throughput']:.6f}",
+                    f"{row['cpuPerRead']:.6f}",
+                    f"{row['p99']:.6f}",
+                ]
+            )
 
     labels = [f"w{row['workers']} {row['leg']}" for row in authoritative]
     svg_bar_chart(
@@ -1137,6 +1172,24 @@ def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
     lines.extend(
         [
             "",
+            "## Observer effect",
+            "",
+            "Percent change from the matching clean-score mean. Positive throughput is faster; "
+            "positive CPU/read or P99 means additional observer cost.",
+            "",
+            "| Workers | Leg | Run class | Throughput | CPU/read | P99 |",
+            "| ---: | --- | --- | ---: | ---: | ---: |",
+        ]
+    )
+    for row in observer_effect:
+        lines.append(
+            f"| {row['workers']} | {row['leg']} | {row['runClass']} | "
+            f"{row['throughput']:+.2f}% | {row['cpuPerRead']:+.2f}% | "
+            f"{row['p99']:+.2f}% |"
+        )
+    lines.extend(
+        [
+            "",
             "## Gates",
             "",
             "- Classic Gateway V1 and negotiated HTTP/2 were proven before every measured run.",
@@ -1164,6 +1217,7 @@ def report(run_dir: pathlib.Path, config: dict[str, Any]) -> None:
         '<ul><li><a href="comparison/report.md">Report</a></li>',
         '<li><a href="comparison/summary.csv">Summary CSV</a></li>',
         '<li><a href="comparison/summary.json">Summary JSON</a></li>',
+        '<li><a href="comparison/observer-effect.csv">Observer effect CSV</a></li>',
         '<li><a href="comparison/setup-equivalence.csv">Setup equivalence</a></li>',
         '<li><a href="comparison/throughput.svg">Throughput chart</a></li>',
         '<li><a href="comparison/latency.svg">Latency chart</a></li>',

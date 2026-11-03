@@ -195,9 +195,17 @@ class CampaignTests(unittest.TestCase):
             )
             self.assertEqual("clean-score", summary["authoritativeClass"])
             self.assertEqual(6, len(summary["authoritative"]))
+            self.assertEqual(10, len(summary["observerEffect"]))
             self.assertEqual(22, len(summary["allRuns"]))
             self.assertTrue((run_dir / "dashboard.html").is_file())
+            self.assertTrue(
+                (run_dir / "comparison" / "observer-effect.csv").is_file()
+            )
             self.assertTrue((run_dir / "comparison" / "setup-equivalence.csv").is_file())
+            self.assertIn(
+                "## Observer effect",
+                (run_dir / "comparison" / "report.md").read_text(encoding="utf-8"),
+            )
             self.assertTrue((run_dir / "SHA256SUMS").is_file())
 
     def test_sanitize_redacts_sensitive_json_and_includes_dashboard(self):

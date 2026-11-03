@@ -74,6 +74,13 @@ func expectedPaddingLength(owner string, index int) int {
 	return documentBytes - emptyDocumentBytes - 2*len(id) - len(owner)
 }
 
+func normalizeHTTPVersion(value string) string {
+	if value == "HTTP/2.0" {
+		return "HTTP/2"
+	}
+	return value
+}
+
 func validateOwner(owner string) error {
 	if len(owner) < 8 || len(owner) > 64 {
 		return errors.New("owner must contain 8 through 64 characters")

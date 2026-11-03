@@ -40,6 +40,11 @@ func TestKeySequenceRoundRobin(t *testing.T) {
 	require.Equal(t, 1, keyIndex(1025))
 }
 
+func TestNormalizeHTTPVersion(t *testing.T) {
+	require.Equal(t, "HTTP/2", normalizeHTTPVersion("HTTP/2.0"))
+	require.Equal(t, "HTTP/1.1", normalizeHTTPVersion("HTTP/1.1"))
+}
+
 func TestOwnerGuard(t *testing.T) {
 	body, err := makeDocument("campaign-owner", 2)
 	require.NoError(t, err)

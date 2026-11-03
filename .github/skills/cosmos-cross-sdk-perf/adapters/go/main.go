@@ -244,7 +244,11 @@ func signedHTTPProbe(ctx context.Context, value options) (operationResponse, err
 	if response.Header.Get("x-ms-gatewayversion") != "" {
 		kind = "gateway-v1"
 	}
-	return operationResponse{StatusCode: response.StatusCode, TransportKind: kind, HTTPVersion: response.Proto}, nil
+	return operationResponse{
+		StatusCode:    response.StatusCode,
+		TransportKind: kind,
+		HTTPVersion:   normalizeHTTPVersion(response.Proto),
+	}, nil
 }
 
 func runBenchmark(ctx context.Context, client sdkClient, value options) error {

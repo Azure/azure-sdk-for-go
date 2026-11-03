@@ -7,6 +7,7 @@
 
 ### Other Changes
 * Updated `azcore` version to `1.23.3`
+* Updated `azblob` version to `1.8.3`
 
 ## 1.7.0 (2026-10-08)
 

@@ -82,7 +82,7 @@ func OpenCloseMeasurements(remainingArgs []string) {
 		_ = trackingSender.Close(context.Background())
 
 		if time.Since(start) > max {
-			sc.PanicOnError("Slow close", fmt.Errorf("Took longer than %s", max))
+			sc.PanicOnError("Slow close", fmt.Errorf("took longer than %s", max))
 		}
 	}
 

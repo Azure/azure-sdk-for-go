@@ -187,6 +187,35 @@ type AFDProfilesClientValidateSecretResponse struct {
 	ValidateSecretOutput
 }
 
+// AuthPoliciesClientCreateResponse contains the response from method AuthPoliciesClient.BeginCreate.
+type AuthPoliciesClientCreateResponse struct {
+	// An authorization policy that maps authorization configurations to profile, domain, or route associations.
+	AuthPolicy
+}
+
+// AuthPoliciesClientDeleteResponse contains the response from method AuthPoliciesClient.BeginDelete.
+type AuthPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AuthPoliciesClientGetResponse contains the response from method AuthPoliciesClient.Get.
+type AuthPoliciesClientGetResponse struct {
+	// An authorization policy that maps authorization configurations to profile, domain, or route associations.
+	AuthPolicy
+}
+
+// AuthPoliciesClientListByProfileResponse contains the response from method AuthPoliciesClient.NewListByProfilePager.
+type AuthPoliciesClientListByProfileResponse struct {
+	// The response of a AuthPolicy list operation.
+	AuthPolicyListResult
+}
+
+// AuthPoliciesClientUpdateResponse contains the response from method AuthPoliciesClient.BeginUpdate.
+type AuthPoliciesClientUpdateResponse struct {
+	// An authorization policy that maps authorization configurations to profile, domain, or route associations.
+	AuthPolicy
+}
+
 // CustomDomainsClientCreateResponse contains the response from method CustomDomainsClient.BeginCreate.
 type CustomDomainsClientCreateResponse struct {
 	// Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes, e.g. www.contoso.com.

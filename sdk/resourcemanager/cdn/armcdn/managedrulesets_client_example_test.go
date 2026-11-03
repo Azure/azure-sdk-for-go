@@ -7,11 +7,11 @@ package armcdn_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/WafListManagedRuleSets.json
+// Generated from example definition: 2026-09-01-preview/WafListManagedRuleSets.json
 func ExampleManagedRuleSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleManagedRuleSetsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("DefaultRuleSet_1.0"),
 		// 				Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallmanagedrulesets"),
-		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Cdn/CdnWebApplicationFirewallManagedRuleSets/DefaultRuleSet_1.0"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cdn/CdnWebApplicationFirewallManagedRuleSets/DefaultRuleSet_1.0"),
 		// 				Properties: &armcdn.ManagedRuleSetDefinitionProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					RuleGroups: []*armcdn.ManagedRuleGroupDefinition{

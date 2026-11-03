@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Create.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Create.json
 func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreate() {
 	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
 	// 		Properties: &armcdn.AFDOriginProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
@@ -62,7 +62,7 @@ func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_CreateWithIncomingHostHeaderValidation.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_CreateWithIncomingHostHeaderValidation.json
 func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateIncomingHostHeaderValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateIncomingHostHeaderValid
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Create_CustomCertificateSubject.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Create_CustomCertificateSubject.json
 func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateCustomCertificateSubject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateCustomCertificateSubjec
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Create_OriginHostname.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Create_OriginHostname.json
 func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateOriginHostname() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleAFDOriginsClient_BeginCreate_afdOriginsCreateOriginHostname() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Delete.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Delete.json
 func ExampleAFDOriginsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleAFDOriginsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Update.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Update.json
 func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdate() {
 	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
 	// 		Properties: &armcdn.AFDOriginProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
@@ -304,7 +304,7 @@ func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Update_CustomCertificateSubject.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Update_CustomCertificateSubject.json
 func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdateCustomCertificateSubject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,7 +365,7 @@ func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdateCustomCertificateSubjec
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Update_OriginHostname.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Update_OriginHostname.json
 func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdateOriginHostname() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +418,7 @@ func ExampleAFDOriginsClient_BeginUpdate_afdOriginsUpdateOriginHostname() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_Get.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_Get.json
 func ExampleAFDOriginsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,9 +440,8 @@ func ExampleAFDOriginsClient_Get() {
 	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
 	// 		Properties: &armcdn.AFDOriginProperties{
-	// 			CertificateNameCheckValidationMode: to.Ptr(armcdn.CertificateNameCheckValidationModeOriginHostname),
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			EnforceCertificateNameCheck: to.Ptr(true),
@@ -457,7 +456,7 @@ func ExampleAFDOriginsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOrigins_ListByOriginGroup.json
+// Generated from example definition: 2026-09-01-preview/AFDOrigins_ListByOriginGroup.json
 func ExampleAFDOriginsClient_NewListByOriginGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,9 +484,8 @@ func ExampleAFDOriginsClient_NewListByOriginGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("origin1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
 		// 				Properties: &armcdn.AFDOriginProperties{
-		// 					CertificateNameCheckValidationMode: to.Ptr(armcdn.CertificateNameCheckValidationModeOriginHostname),
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 		// 					EnforceCertificateNameCheck: to.Ptr(true),

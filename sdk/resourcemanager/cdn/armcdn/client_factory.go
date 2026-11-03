@@ -72,6 +72,14 @@ func (c *ClientFactory) NewAFDProfilesClient() *AFDProfilesClient {
 	}
 }
 
+// NewAuthPoliciesClient creates a new instance of AuthPoliciesClient.
+func (c *ClientFactory) NewAuthPoliciesClient() *AuthPoliciesClient {
+	return &AuthPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCustomDomainsClient creates a new instance of CustomDomainsClient.
 func (c *ClientFactory) NewCustomDomainsClient() *CustomDomainsClient {
 	return &CustomDomainsClient{

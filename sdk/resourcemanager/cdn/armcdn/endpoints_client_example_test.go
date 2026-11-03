@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Endpoints_Create.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Create.json
 func ExampleEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.EndpointProperties{
 	// 			ContentTypesToCompress: []*string{
@@ -169,7 +169,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// 				to.Ptr("application/octet-stream"),
 	// 			},
 	// 			DefaultOriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 	// 			},
 	// 			DeliveryPolicy: &armcdn.EndpointPropertiesUpdateParametersDeliveryPolicy{
 	// 				Description: to.Ptr("Test description for a policy."),
@@ -243,10 +243,10 @@ func ExampleEndpointsClient_BeginCreate() {
 	// 						},
 	// 						Origins: []*armcdn.ResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
 	// 							},
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"),
 	// 							},
 	// 						},
 	// 						ResponseBasedOriginErrorDetectionSettings: &armcdn.ResponseBasedOriginErrorDetectionParameters{
@@ -295,7 +295,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_Delete.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_LoadContent.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_LoadContent.json
 func ExampleEndpointsClient_BeginLoadContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +351,7 @@ func ExampleEndpointsClient_BeginLoadContent() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_PurgeContent.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_PurgeContent.json
 func ExampleEndpointsClient_BeginPurgeContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ func ExampleEndpointsClient_BeginPurgeContent() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_Start.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Start.json
 func ExampleEndpointsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +407,7 @@ func ExampleEndpointsClient_BeginStart() {
 	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.EndpointProperties{
 	// 			ContentTypesToCompress: []*string{
@@ -442,7 +442,7 @@ func ExampleEndpointsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_Stop.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Stop.json
 func ExampleEndpointsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleEndpointsClient_BeginStop() {
 	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.EndpointProperties{
 	// 			ContentTypesToCompress: []*string{
@@ -503,7 +503,7 @@ func ExampleEndpointsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_Update.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Update.json
 func ExampleEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,13 +533,13 @@ func ExampleEndpointsClient_BeginUpdate() {
 	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 	// 		Location: to.Ptr("WestCentralUs"),
 	// 		Properties: &armcdn.EndpointProperties{
 	// 			ContentTypesToCompress: []*string{
 	// 			},
 	// 			DefaultOriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 	// 			},
 	// 			GeoFilters: []*armcdn.GeoFilter{
 	// 			},
@@ -559,7 +559,7 @@ func ExampleEndpointsClient_BeginUpdate() {
 	// 						},
 	// 						Origins: []*armcdn.ResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
 	// 							},
 	// 						},
 	// 					},
@@ -590,7 +590,7 @@ func ExampleEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_Get.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_Get.json
 func ExampleEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,7 +612,7 @@ func ExampleEndpointsClient_Get() {
 	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 	// 		Location: to.Ptr("CentralUs"),
 	// 		Properties: &armcdn.EndpointProperties{
 	// 			ContentTypesToCompress: []*string{
@@ -626,7 +626,7 @@ func ExampleEndpointsClient_Get() {
 	// 				},
 	// 			},
 	// 			DefaultOriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 	// 			},
 	// 			GeoFilters: []*armcdn.GeoFilter{
 	// 			},
@@ -647,7 +647,7 @@ func ExampleEndpointsClient_Get() {
 	// 						},
 	// 						Origins: []*armcdn.ResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
 	// 							},
 	// 						},
 	// 					},
@@ -679,7 +679,7 @@ func ExampleEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_ListByProfile.json
 func ExampleEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +707,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("endpoint1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
 		// 				Location: to.Ptr("CentralUs"),
 		// 				Properties: &armcdn.EndpointProperties{
 		// 					ContentTypesToCompress: []*string{
@@ -721,7 +721,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 		// 						},
 		// 					},
 		// 					DefaultOriginGroup: &armcdn.ResourceReference{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 		// 					},
 		// 					GeoFilters: []*armcdn.GeoFilter{
 		// 					},
@@ -742,7 +742,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 		// 								},
 		// 								Origins: []*armcdn.ResourceReference{
 		// 									{
-		// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-bing-com"),
 		// 									},
 		// 								},
 		// 								ResponseBasedOriginErrorDetectionSettings: &armcdn.ResponseBasedOriginErrorDetectionParameters{
@@ -781,7 +781,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_ListResourceUsage.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_ListResourceUsage.json
 func ExampleEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +824,7 @@ func ExampleEndpointsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Endpoints_ValidateCustomDomain.json
+// Generated from example definition: 2026-09-01-preview/Endpoints_ValidateCustomDomain.json
 func ExampleEndpointsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

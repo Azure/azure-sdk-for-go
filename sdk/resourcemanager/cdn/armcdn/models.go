@@ -68,15 +68,15 @@ type AFDDomainListResult struct {
 	NextLink *string
 }
 
-// AFDDomainMTLSParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
+// AFDDomainMtlsParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
 // be configured for custom domains with wildcard host names.
-type AFDDomainMTLSParameters struct {
+type AFDDomainMtlsParameters struct {
 	// REQUIRED; Supported scenarios for establishing mTLS connection.
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type AFDDomainMTLSParameters.
-func (a *AFDDomainMTLSParameters) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters { return a }
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type AFDDomainMtlsParameters.
+func (a *AFDDomainMtlsParameters) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters { return a }
 
 // AFDDomainProperties - The JSON object that contains the properties of the domain to create.
 type AFDDomainProperties struct {
@@ -91,7 +91,7 @@ type AFDDomainProperties struct {
 
 	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
 	// certificate(s) to use.
-	MtlsSettings AFDDomainMTLSParametersClassification
+	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -130,7 +130,7 @@ type AFDDomainUpdatePropertiesParameters struct {
 
 	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
 	// certificate(s) to use.
-	MtlsSettings AFDDomainMTLSParametersClassification
+	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -499,6 +499,170 @@ func (a *AfdSecretMtlsCertificateChain) GetSecretParameters() *SecretParameters 
 	}
 }
 
+// AfdURLSigningAction - Defines the url signing action for the delivery rule.
+type AfdURLSigningAction struct {
+	// CONSTANT; The name of the action for the delivery rule.
+	// Field has constant value DeliveryRuleActionNameAfdURLSigning, any specified value is ignored.
+	Name *DeliveryRuleActionName
+
+	// REQUIRED; Defines the parameters for the action.
+	Parameters *AfdURLSigningActionParameters
+}
+
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type AfdURLSigningAction.
+func (a *AfdURLSigningAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
+		Name: a.Name,
+	}
+}
+
+// AfdURLSigningActionParameters - Defines the parameters for the Url Signing action.
+type AfdURLSigningActionParameters struct {
+	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/keyGroups/{keyGroupName}
+	KeyGroupReference *ResourceReference
+
+	// REQUIRED
+	TypeName *TypeName
+
+	// Algorithm to use for URL signing
+	Algorithm *Algorithm
+
+	// Defines which query string parameters in the url to be considered for expires, key id etc.
+	ParameterNameOverride []*URLSigningParamIdentifier
+}
+
+// AuthPolicy - An authorization policy that maps authorization configurations to profile, domain, or route associations.
+type AuthPolicy struct {
+	// Properties required to create an authorization policy.
+	Properties *AuthPolicyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AuthPolicyAssociation - Resource associations for an authorization policy.
+type AuthPolicyAssociation struct {
+	// Domains associated with the authorization policy.
+	Domains []*AuthPolicyDomainReference
+
+	// Indicates whether the policy is associated at the profile level. When omitted during creation, the service defaults this
+	// value to false.
+	IsProfileLevel *bool
+
+	// Routes associated with the authorization policy.
+	Routes []*AuthPolicyRouteReference
+}
+
+// AuthPolicyConfig - Authorization configuration parameters.
+type AuthPolicyConfig struct {
+	// REQUIRED; Identity provider used by the authorization configuration.
+	IdentityProvider *AuthPolicyConfigIdentityProvider
+}
+
+// GetAuthPolicyConfig implements the AuthPolicyConfigClassification interface for type AuthPolicyConfig.
+func (a *AuthPolicyConfig) GetAuthPolicyConfig() *AuthPolicyConfig { return a }
+
+// AuthPolicyDomainReference - Reference to a domain associated with an authorization policy.
+type AuthPolicyDomainReference struct {
+	// REQUIRED; Resource ID of the custom domain or Azure Front Door endpoint.
+	ID *string
+
+	// READ-ONLY; Whether the resource is active or inactive.
+	IsActive *bool
+}
+
+// AuthPolicyEntraIDConfig - Microsoft Entra ID authorization policy configuration.
+type AuthPolicyEntraIDConfig struct {
+	// REQUIRED; Audiences to validate.
+	Audiences []*string
+
+	// CONSTANT; Identity provider used by the authorization configuration.
+	// Field has constant value AuthPolicyConfigIdentityProviderEntraID, any specified value is ignored.
+	IdentityProvider *AuthPolicyConfigIdentityProvider
+
+	// REQUIRED; Issuer or authority for the identity provider to validate.
+	Issuer *string
+
+	// Location of the authorization value in the HTTP request. Only Header is supported.
+	AuthLocation *AuthLocation
+
+	// Selector within the authorization location used to find the identity.
+	AuthLocationSelector *string
+}
+
+// GetAuthPolicyConfig implements the AuthPolicyConfigClassification interface for type AuthPolicyEntraIDConfig.
+func (a *AuthPolicyEntraIDConfig) GetAuthPolicyConfig() *AuthPolicyConfig {
+	return &AuthPolicyConfig{
+		IdentityProvider: a.IdentityProvider,
+	}
+}
+
+// AuthPolicyListResult - The response of a AuthPolicy list operation.
+type AuthPolicyListResult struct {
+	// REQUIRED; The AuthPolicy items on this page
+	Value []*AuthPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AuthPolicyProperties - Properties of the authorization policy.
+type AuthPolicyProperties struct {
+	// REQUIRED; Resource associations for the authorization policy.
+	Associations *AuthPolicyAssociation
+
+	// REQUIRED; Authorization configurations for the policy.
+	AuthConfigs []AuthPolicyConfigClassification
+
+	// Action to apply when authorization fails.
+	Action *AuthPolicyAction
+
+	// Whether to forward the authentication token to the origin. Defaults to true.
+	ForwardTokenToOrigin *bool
+
+	// READ-ONLY
+	DeploymentStatus *DeploymentStatus
+
+	// READ-ONLY; Provisioning status
+	ProvisioningState *AfdProvisioningState
+}
+
+// AuthPolicyRouteReference - Reference to a route associated with an authorization policy.
+type AuthPolicyRouteReference struct {
+	// REQUIRED; Resource ID of the Azure Front Door route.
+	ID *string
+}
+
+// AuthPolicyUpdateParameters - Parameters for updating an authorization policy.
+type AuthPolicyUpdateParameters struct {
+	// Properties to update on the authorization policy.
+	Properties *AuthPolicyUpdatePropertiesParameters
+}
+
+// AuthPolicyUpdatePropertiesParameters - Writable properties of an authorization policy.
+type AuthPolicyUpdatePropertiesParameters struct {
+	// Action to apply when authorization fails.
+	Action *AuthPolicyAction
+
+	// Resource associations for the authorization policy.
+	Associations *AuthPolicyAssociation
+
+	// Authorization configurations for the policy.
+	AuthConfigs []AuthPolicyConfigClassification
+
+	// Whether to forward the authentication token to the origin. When omitted, the existing value is unchanged.
+	ForwardTokenToOrigin *bool
+}
+
 // AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource
 // providers to enable HTTPS.
 type AzureFirstPartyManagedCertificateParameters struct {
@@ -648,6 +812,15 @@ type CanMigrateResult struct {
 	Type *string
 }
 
+// CapacityDistributionSettingsParameters - Capacity based round-robin load balancing settings for a backend pool
+type CapacityDistributionSettingsParameters struct {
+	// Threshold at which additional backends are added for capacity based load balancing. Default is 80 percent.
+	CapacityConsciousThreshold *int32
+
+	// Type of distribution used in capacity based load balancing.
+	DistributionType *DistributionType
+}
+
 // CertificateSourceParameters - Defines the parameters for using CDN managed certificate for securing custom domain.
 type CertificateSourceParameters struct {
 	// REQUIRED; Type of certificate used
@@ -747,9 +920,9 @@ type ClientCertificateRequiredAndOriginValidatesAdvancedSettings struct {
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
-func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
-	return &AFDDomainMTLSParameters{
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
+func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -772,9 +945,9 @@ type ClientCertificateRequiredAndValidatedAdvancedSettings struct {
 	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
 }
 
-// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
-func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
-	return &AFDDomainMTLSParameters{
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
+func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -797,9 +970,9 @@ type ClientCertificateValidatedIfPresentedAdvancedSettings struct {
 	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
 }
 
-// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
-func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
-	return &AFDDomainMTLSParameters{
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
+func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -837,9 +1010,9 @@ type CompleteMtlsPassthroughToOriginAdvancedSettings struct {
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
-func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
-	return &AFDDomainMTLSParameters{
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
+func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -2121,6 +2294,9 @@ type LoadBalancingSettingsParameters struct {
 	// The additional latency in milliseconds for probes to fall into the lowest latency bucket
 	AdditionalLatencyInMilliseconds *int32
 
+	// Capacity based round-robin load balancing settings
+	CapacityDistributionSettings *CapacityDistributionSettingsParameters
+
 	// The number of samples to consider for load balancing decisions
 	SampleSize *int32
 
@@ -3329,6 +3505,9 @@ type RouteProperties struct {
 	// Protocol this rule will use when forwarding traffic to backends.
 	ForwardingProtocol *ForwardingProtocol
 
+	// Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
+	GrpcState *AFDRouteGrpcState
+
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.
 	HTTPSRedirect *HTTPSRedirect
@@ -3380,6 +3559,9 @@ type RouteUpdatePropertiesParameters struct {
 
 	// Protocol this rule will use when forwarding traffic to backends.
 	ForwardingProtocol *ForwardingProtocol
+
+	// Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
+	GrpcState *AFDRouteGrpcState
 
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.

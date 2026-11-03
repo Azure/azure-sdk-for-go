@@ -6,7 +6,7 @@ package armcdn
 
 import "encoding/json"
 
-func unmarshalAFDDomainMTLSParametersClassification(rawMsg json.RawMessage) (AFDDomainMTLSParametersClassification, error) {
+func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFDDomainMtlsParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -14,7 +14,7 @@ func unmarshalAFDDomainMTLSParametersClassification(rawMsg json.RawMessage) (AFD
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b AFDDomainMTLSParametersClassification
+	var b AFDDomainMtlsParametersClassification
 	switch m["scenario"] {
 	case string(MtlsScenarioTypeClientCertificateRequiredAndOriginValidates):
 		b = &ClientCertificateRequiredAndOriginValidatesAdvancedSettings{}
@@ -25,12 +25,52 @@ func unmarshalAFDDomainMTLSParametersClassification(rawMsg json.RawMessage) (AFD
 	case string(MtlsScenarioTypeCompleteMtlsPassthroughToOrigin):
 		b = &CompleteMtlsPassthroughToOriginAdvancedSettings{}
 	default:
-		b = &AFDDomainMTLSParameters{}
+		b = &AFDDomainMtlsParameters{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
 	}
 	return b, nil
+}
+
+func unmarshalAuthPolicyConfigClassification(rawMsg json.RawMessage) (AuthPolicyConfigClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AuthPolicyConfigClassification
+	switch m["identityProvider"] {
+	case string(AuthPolicyConfigIdentityProviderEntraID):
+		b = &AuthPolicyEntraIDConfig{}
+	default:
+		b = &AuthPolicyConfig{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalAuthPolicyConfigClassificationArray(rawMsg json.RawMessage) ([]AuthPolicyConfigClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]AuthPolicyConfigClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalAuthPolicyConfigClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
 }
 
 func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) (CustomDomainHTTPSParametersClassification, error) {
@@ -66,6 +106,8 @@ func unmarshalDeliveryRuleActionClassification(rawMsg json.RawMessage) (Delivery
 	}
 	var b DeliveryRuleActionClassification
 	switch m["name"] {
+	case string(DeliveryRuleActionNameAfdURLSigning):
+		b = &AfdURLSigningAction{}
 	case string(DeliveryRuleActionNameCacheExpiration):
 		b = &DeliveryRuleCacheExpirationAction{}
 	case string(DeliveryRuleActionNameCacheKeyQueryString):

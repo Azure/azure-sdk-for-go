@@ -7,11 +7,11 @@ package armcdn_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/RuleSets_Create.json
+// Generated from example definition: 2026-09-01-preview/RuleSets_Create.json
 func ExampleRuleSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleRuleSetsClient_BeginCreate() {
 	// 	RuleSet: armcdn.RuleSet{
 	// 		Name: to.Ptr("ruleSet1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
 	// 		Properties: &armcdn.RuleSetProperties{
 	// 			BatchMode: to.Ptr(false),
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
@@ -47,7 +47,7 @@ func ExampleRuleSetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RuleSets_Delete.json
+// Generated from example definition: 2026-09-01-preview/RuleSets_Delete.json
 func ExampleRuleSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleRuleSetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RuleSets_Get.json
+// Generated from example definition: 2026-09-01-preview/RuleSets_Get.json
 func ExampleRuleSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleRuleSetsClient_Get() {
 	// 	RuleSet: armcdn.RuleSet{
 	// 		Name: to.Ptr("ruleSet1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
 	// 		Properties: &armcdn.RuleSetProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
@@ -104,7 +104,7 @@ func ExampleRuleSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RuleSets_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/RuleSets_ListByProfile.json
 func ExampleRuleSetsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleRuleSetsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("ruleSet1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
 		// 				Properties: &armcdn.RuleSetProperties{
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
@@ -144,7 +144,7 @@ func ExampleRuleSetsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/RuleSets_ListResourceUsage.json
+// Generated from example definition: 2026-09-01-preview/RuleSets_ListResourceUsage.json
 func ExampleRuleSetsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleRuleSetsClient_NewListResourceUsagePager() {
 		// 					Value: to.Ptr("rule"),
 		// 				},
 		// 				CurrentValue: to.Ptr[int64](0),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
 		// 				Limit: to.Ptr[int64](25),
 		// 				Unit: to.Ptr(armcdn.UsageUnitCount),
 		// 			},

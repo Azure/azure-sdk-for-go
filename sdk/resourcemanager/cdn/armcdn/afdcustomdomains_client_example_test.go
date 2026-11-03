@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_Create.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_Create.json
 func ExampleAFDCustomDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,10 +25,21 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewAFDCustomDomainsClient().BeginCreate(ctx, "RG", "profile1", "domain1", armcdn.AFDDomain{
 		Properties: &armcdn.AFDDomainProperties{
-			AzureDNSZone: &armcdn.ResourceReference{
-				ID: to.Ptr(""),
-			},
 			HostName: to.Ptr("www.someDomain.net"),
+			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
+				AllowedFqdns: []*string{
+					to.Ptr("foo.contoso.com"),
+				},
+				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
+				Secrets: []*armcdn.ResourceReference{
+					{
+						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name1"),
+					},
+					{
+						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name2"),
+					},
+				},
+			},
 			TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 				CertificateType:    to.Ptr(armcdn.AfdCertificateTypeManagedCertificate),
 				CipherSuiteSetType: to.Ptr(armcdn.AfdCipherSuiteSetTypeCustomized),
@@ -41,14 +52,7 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 						to.Ptr(armcdn.AfdCustomizedCipherSuiteForTls13TLSAES256GCMSHA384),
 					},
 				},
-				MinimumTLSVersion:    to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
-				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
-					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
-					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
-					to.Ptr(armcdn.AfdServerTLSGroupX25519),
-					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
-				},
+				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
 			},
 		},
 	}, nil)
@@ -66,16 +70,24 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
 	// 		Properties: &armcdn.AFDDomainProperties{
-	// 			AzureDNSZone: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
-	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStateSubmitting),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
+	// 			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
+	// 				AllowedFqdns: []*string{
+	// 					to.Ptr("foo.contoso.com"),
+	// 				},
+	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
+	// 				Secrets: []*armcdn.ResourceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name1"),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name2"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProfileName: to.Ptr("profile1"),
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
@@ -92,16 +104,6 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
-	// 				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
-	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
-	// 				},
-	// 				Secret: &armcdn.ResourceReference{
-	// 					ID: to.Ptr(""),
-	// 				},
 	// 			},
 	// 			ValidationProperties: &armcdn.DomainValidationProperties{
 	// 				ExpirationDate: to.Ptr(""),
@@ -112,7 +114,7 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_Delete.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_Delete.json
 func ExampleAFDCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +140,7 @@ func ExampleAFDCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_RefreshValidationToken.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_RefreshValidationToken.json
 func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +166,7 @@ func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_Update.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_Update.json
 func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,8 +179,16 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewAFDCustomDomainsClient().BeginUpdate(ctx, "RG", "profile1", "domain1", armcdn.AFDDomainUpdateParameters{
 		Properties: &armcdn.AFDDomainUpdatePropertiesParameters{
-			AzureDNSZone: &armcdn.ResourceReference{
-				ID: to.Ptr(""),
+			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
+				AllowedFqdns: []*string{
+					to.Ptr("foo.contoso.com"),
+				},
+				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
+				Secrets: []*armcdn.ResourceReference{
+					{
+						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
+					},
+				},
 			},
 			TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 				CertificateType:    to.Ptr(armcdn.AfdCertificateTypeManagedCertificate),
@@ -192,14 +202,7 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 						to.Ptr(armcdn.AfdCustomizedCipherSuiteForTls13TLSAES256GCMSHA384),
 					},
 				},
-				MinimumTLSVersion:    to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
-				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
-					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
-					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
-					to.Ptr(armcdn.AfdServerTLSGroupX25519),
-					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
-				},
+				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
 			},
 		},
 	}, nil)
@@ -217,16 +220,21 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
 	// 		Properties: &armcdn.AFDDomainProperties{
-	// 			AzureDNSZone: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
-	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStateApproved),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
+	// 			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
+	// 				AllowedFqdns: []*string{
+	// 					to.Ptr("foo.contoso.com"),
+	// 				},
+	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
+	// 				Secrets: []*armcdn.ResourceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProfileName: to.Ptr("profile1"),
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateUpdating),
@@ -243,15 +251,8 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
-	// 				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
-	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519),
-	// 					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
-	// 				},
 	// 				Secret: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
 	// 				},
 	// 			},
 	// 			ValidationProperties: &armcdn.DomainValidationProperties{
@@ -263,7 +264,7 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_Get.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_Get.json
 func ExampleAFDCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,16 +286,13 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
 	// 		Properties: &armcdn.AFDDomainProperties{
-	// 			AzureDNSZone: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
-	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStatePending),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
-	// 				ID: to.Ptr(""),
+	// 			MtlsSettings: &armcdn.CompleteMtlsPassthroughToOriginAdvancedSettings{
+	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeCompleteMtlsPassthroughToOrigin),
 	// 			},
 	// 			ProfileName: to.Ptr("profile1"),
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateUpdating),
@@ -311,10 +309,6 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyEnhanced),
-	// 				Secret: &armcdn.ResourceReference{
-	// 					ID: to.Ptr(""),
-	// 				},
 	// 			},
 	// 			ValidationProperties: &armcdn.DomainValidationProperties{
 	// 				ExpirationDate: to.Ptr("2009-06-15T13:45:43.0000000Z"),
@@ -325,7 +319,7 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDCustomDomains_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/AFDCustomDomains_ListByProfile.json
 func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,16 +347,13 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("domain1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
 		// 				Properties: &armcdn.AFDDomainProperties{
-		// 					AzureDNSZone: &armcdn.ResourceReference{
-		// 						ID: to.Ptr(""),
-		// 					},
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					DomainValidationState: to.Ptr(armcdn.DomainValidationStatePending),
 		// 					HostName: to.Ptr("www.contoso.com"),
-		// 					PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
-		// 						ID: to.Ptr(""),
+		// 					MtlsSettings: &armcdn.ClientCertificateRequiredAndOriginValidatesAdvancedSettings{
+		// 						Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndOriginValidates),
 		// 					},
 		// 					ProfileName: to.Ptr("profile1"),
 		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateUpdating),
@@ -379,10 +370,6 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 		// 							},
 		// 						},
 		// 						MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
-		// 						ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyEnhanced),
-		// 						Secret: &armcdn.ResourceReference{
-		// 							ID: to.Ptr(""),
-		// 						},
 		// 					},
 		// 					ValidationProperties: &armcdn.DomainValidationProperties{
 		// 						ExpirationDate: to.Ptr("2009-06-15T13:45:43.0000000Z"),

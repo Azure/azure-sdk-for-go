@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Origins_Create.json
+// Generated from example definition: 2026-09-01-preview/Origins_Create.json
 func ExampleOriginsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleOriginsClient_BeginCreate() {
 	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
 	// 		Properties: &armcdn.OriginProperties{
 	// 			Enabled: to.Ptr(true),
 	// 			HostName: to.Ptr("www.someDomain.net"),
@@ -62,7 +62,7 @@ func ExampleOriginsClient_BeginCreate() {
 	// 			PrivateEndpointStatus: to.Ptr(armcdn.PrivateEndpointStatusPending),
 	// 			PrivateLinkApprovalMessage: to.Ptr("Please approve the connection request for this Private Link"),
 	// 			PrivateLinkLocation: to.Ptr("eastus"),
-	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1"),
+	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1"),
 	// 			ProvisioningState: to.Ptr(armcdn.OriginProvisioningStateSucceeded),
 	// 			ResourceState: to.Ptr(armcdn.OriginResourceStateActive),
 	// 			Weight: to.Ptr[int32](50),
@@ -71,7 +71,7 @@ func ExampleOriginsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Origins_Delete.json
+// Generated from example definition: 2026-09-01-preview/Origins_Delete.json
 func ExampleOriginsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleOriginsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Origins_Update.json
+// Generated from example definition: 2026-09-01-preview/Origins_Update.json
 func ExampleOriginsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleOriginsClient_BeginUpdate() {
 	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
 	// 		Properties: &armcdn.OriginProperties{
 	// 			Enabled: to.Ptr(true),
 	// 			HostName: to.Ptr("www.someDomain.net"),
@@ -152,7 +152,7 @@ func ExampleOriginsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Origins_Get.json
+// Generated from example definition: 2026-09-01-preview/Origins_Get.json
 func ExampleOriginsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleOriginsClient_Get() {
 	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
 	// 		Properties: &armcdn.OriginProperties{
 	// 			Enabled: to.Ptr(true),
 	// 			HostName: to.Ptr("www.someDomain.net"),
@@ -191,7 +191,7 @@ func ExampleOriginsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Origins_ListByEndpoint.json
+// Generated from example definition: 2026-09-01-preview/Origins_ListByEndpoint.json
 func ExampleOriginsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleOriginsClient_NewListByEndpointPager() {
 		// 			{
 		// 				Name: to.Ptr("www-someDomain-net"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
 		// 				Properties: &armcdn.OriginProperties{
 		// 					Enabled: to.Ptr(true),
 		// 					HostName: to.Ptr("www.someDomain.net"),

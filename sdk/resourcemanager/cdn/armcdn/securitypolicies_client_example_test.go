@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/SecurityPolicies_Create.json
+// Generated from example definition: 2026-09-01-preview/SecurityPolicies_Create.json
 func ExampleSecurityPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,11 +40,17 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 						PatternsToMatch: []*string{
 							to.Ptr("/*"),
 						},
+						Routes: []*armcdn.ResourceReference{
+							{
+								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+							},
+						},
 					},
 				},
 				WafPolicy: &armcdn.ResourceReference{
 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 				},
+				IsProfileLevel: to.Ptr(false),
 			},
 		},
 	}, nil)
@@ -62,7 +68,7 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
 	// 		Properties: &armcdn.SecurityPolicyProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -71,20 +77,26 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	// 					{
 	// 						Domains: []*armcdn.ActivatedResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 	// 							},
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 	// 							},
 	// 						},
 	// 						PatternsToMatch: []*string{
 	// 							to.Ptr("/*"),
 	// 						},
+	// 						Routes: []*armcdn.ResourceReference{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 							},
+	// 						},
 	// 					},
 	// 				},
 	// 				WafPolicy: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 	// 				},
+	// 				IsProfileLevel: to.Ptr(false),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
@@ -92,7 +104,7 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/SecurityPolicies_Delete.json
+// Generated from example definition: 2026-09-01-preview/SecurityPolicies_Delete.json
 func ExampleSecurityPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +130,7 @@ func ExampleSecurityPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/SecurityPolicies_Patch.json
+// Generated from example definition: 2026-09-01-preview/SecurityPolicies_Patch.json
 func ExampleSecurityPoliciesClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,11 +158,17 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 						PatternsToMatch: []*string{
 							to.Ptr("/*"),
 						},
+						Routes: []*armcdn.ResourceReference{
+							{
+								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+							},
+						},
 					},
 				},
 				WafPolicy: &armcdn.ResourceReference{
 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 				},
+				IsProfileLevel: to.Ptr(false),
 			},
 		},
 	}, nil)
@@ -168,7 +186,7 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
 	// 		Properties: &armcdn.SecurityPolicyProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -177,20 +195,26 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 	// 					{
 	// 						Domains: []*armcdn.ActivatedResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 	// 							},
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 	// 							},
 	// 						},
 	// 						PatternsToMatch: []*string{
 	// 							to.Ptr("/*"),
 	// 						},
+	// 						Routes: []*armcdn.ResourceReference{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 							},
+	// 						},
 	// 					},
 	// 				},
 	// 				WafPolicy: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 	// 				},
+	// 				IsProfileLevel: to.Ptr(false),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
@@ -198,7 +222,7 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/SecurityPolicies_Get.json
+// Generated from example definition: 2026-09-01-preview/SecurityPolicies_Get.json
 func ExampleSecurityPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +244,7 @@ func ExampleSecurityPoliciesClient_Get() {
 	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
 	// 		Properties: &armcdn.SecurityPolicyProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -229,20 +253,26 @@ func ExampleSecurityPoliciesClient_Get() {
 	// 					{
 	// 						Domains: []*armcdn.ActivatedResourceReference{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 	// 							},
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 	// 							},
 	// 						},
 	// 						PatternsToMatch: []*string{
 	// 							to.Ptr("/*"),
 	// 						},
+	// 						Routes: []*armcdn.ResourceReference{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 							},
+	// 						},
 	// 					},
 	// 				},
 	// 				WafPolicy: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 	// 				},
+	// 				IsProfileLevel: to.Ptr(false),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
@@ -250,7 +280,7 @@ func ExampleSecurityPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/SecurityPolicies_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/SecurityPolicies_ListByProfile.json
 func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +308,7 @@ func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("securityPolicy1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
 		// 				Properties: &armcdn.SecurityPolicyProperties{
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -287,20 +317,26 @@ func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 		// 							{
 		// 								Domains: []*armcdn.ActivatedResourceReference{
 		// 									{
-		// 										ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 		// 									},
 		// 									{
-		// 										ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 		// 									},
 		// 								},
 		// 								PatternsToMatch: []*string{
 		// 									to.Ptr("/*"),
 		// 								},
+		// 								Routes: []*armcdn.ResourceReference{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+		// 									},
+		// 								},
 		// 							},
 		// 						},
 		// 						WafPolicy: &armcdn.ResourceReference{
-		// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 		// 						},
+		// 						IsProfileLevel: to.Ptr(false),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 		// 				},

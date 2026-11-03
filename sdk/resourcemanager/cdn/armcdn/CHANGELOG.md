@@ -1,5 +1,58 @@
 # Release History
 
+## 5.0.0-beta.1 (2026-11-03)
+### Breaking Changes
+
+- Type of `AFDDomainProperties.MtlsSettings` has been changed from `AFDDomainMTLSParametersClassification` to `AFDDomainMtlsParametersClassification`
+- Type of `AFDDomainUpdatePropertiesParameters.MtlsSettings` has been changed from `AFDDomainMTLSParametersClassification` to `AFDDomainMtlsParametersClassification`
+- Function `*AFDDomainMTLSParameters.GetAFDDomainMTLSParameters` has been removed
+- Function `*ClientCertificateRequiredAndOriginValidatesAdvancedSettings.GetAFDDomainMTLSParameters` has been removed
+- Function `*ClientCertificateRequiredAndValidatedAdvancedSettings.GetAFDDomainMTLSParameters` has been removed
+- Function `*ClientCertificateValidatedIfPresentedAdvancedSettings.GetAFDDomainMTLSParameters` has been removed
+- Function `*CompleteMtlsPassthroughToOriginAdvancedSettings.GetAFDDomainMTLSParameters` has been removed
+
+### Features Added
+
+- New value `DeliveryRuleActionNameAfdURLSigning` added to enum type `DeliveryRuleActionName`
+- New value `ProbeProtocolGrpc` added to enum type `ProbeProtocol`
+- New enum type `AFDRouteGrpcState` with values `AFDRouteGrpcStateDisabled`, `AFDRouteGrpcStateEnabled`
+- New enum type `AuthLocation` with values `AuthLocationHeader`
+- New enum type `AuthPolicyAction` with values `AuthPolicyActionBlock`, `AuthPolicyActionLog`
+- New enum type `AuthPolicyConfigIdentityProvider` with values `AuthPolicyConfigIdentityProviderEntraID`
+- New enum type `DistributionType` with values `DistributionTypeDynamicWeights`, `DistributionTypeStaticWeights`
+- New enum type `TypeName` with values `TypeNameDeliveryRuleAfdURLSigningActionParameters`
+- New function `*AFDDomainMtlsParameters.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*AfdURLSigningAction.GetDeliveryRuleAction() *DeliveryRuleAction`
+- New function `NewAuthPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthPoliciesClient, error)`
+- New function `*AuthPoliciesClient.BeginCreate(ctx context.Context, resourceGroupName string, profileName string, authPolicyName string, resource AuthPolicy, options *AuthPoliciesClientBeginCreateOptions) (*runtime.Poller[AuthPoliciesClientCreateResponse], error)`
+- New function `*AuthPoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, profileName string, authPolicyName string, options *AuthPoliciesClientBeginDeleteOptions) (*runtime.Poller[AuthPoliciesClientDeleteResponse], error)`
+- New function `*AuthPoliciesClient.Get(ctx context.Context, resourceGroupName string, profileName string, authPolicyName string, options *AuthPoliciesClientGetOptions) (AuthPoliciesClientGetResponse, error)`
+- New function `*AuthPoliciesClient.NewListByProfilePager(resourceGroupName string, profileName string, options *AuthPoliciesClientListByProfileOptions) *runtime.Pager[AuthPoliciesClientListByProfileResponse]`
+- New function `*AuthPoliciesClient.BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, authPolicyName string, properties AuthPolicyUpdateParameters, options *AuthPoliciesClientBeginUpdateOptions) (*runtime.Poller[AuthPoliciesClientUpdateResponse], error)`
+- New function `*AuthPolicyConfig.GetAuthPolicyConfig() *AuthPolicyConfig`
+- New function `*AuthPolicyEntraIDConfig.GetAuthPolicyConfig() *AuthPolicyConfig`
+- New function `*ClientCertificateRequiredAndOriginValidatesAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientCertificateRequiredAndValidatedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientCertificateValidatedIfPresentedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientFactory.NewAuthPoliciesClient() *AuthPoliciesClient`
+- New function `*CompleteMtlsPassthroughToOriginAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New struct `AfdURLSigningAction`
+- New struct `AfdURLSigningActionParameters`
+- New struct `AuthPolicy`
+- New struct `AuthPolicyAssociation`
+- New struct `AuthPolicyDomainReference`
+- New struct `AuthPolicyEntraIDConfig`
+- New struct `AuthPolicyListResult`
+- New struct `AuthPolicyProperties`
+- New struct `AuthPolicyRouteReference`
+- New struct `AuthPolicyUpdateParameters`
+- New struct `AuthPolicyUpdatePropertiesParameters`
+- New struct `CapacityDistributionSettingsParameters`
+- New field `CapacityDistributionSettings` in struct `LoadBalancingSettingsParameters`
+- New field `GrpcState` in struct `RouteProperties`
+- New field `GrpcState` in struct `RouteUpdatePropertiesParameters`
+
+
 ## 4.0.0 (2026-10-27)
 ### Breaking Changes
 

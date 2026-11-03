@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/AFDProfiles_Upgrade.json
+// Generated from example definition: 2026-09-01-preview/AFDProfiles_Upgrade.json
 func ExampleAFDProfilesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleAFDProfilesClient_BeginUpgrade() {
 	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 	// 		Kind: to.Ptr("frontdoor"),
 	// 		Location: to.Ptr("Global"),
 	// 		Properties: &armcdn.ProfileProperties{
@@ -67,7 +67,7 @@ func ExampleAFDProfilesClient_BeginUpgrade() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDProfiles_CheckEndpointNameAvailability.json
+// Generated from example definition: 2026-09-01-preview/AFDProfiles_CheckEndpointNameAvailability.json
 func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDProfiles_CheckHostNameAvailability.json
+// Generated from example definition: 2026-09-01-preview/AFDProfiles_CheckHostNameAvailability.json
 func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDProfiles_ListResourceUsage.json
+// Generated from example definition: 2026-09-01-preview/AFDProfiles_ListResourceUsage.json
 func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 		// 					Value: to.Ptr("afdendpoint"),
 		// 				},
 		// 				CurrentValue: to.Ptr[int64](0),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1"),
 		// 				Limit: to.Ptr[int64](25),
 		// 				Unit: to.Ptr(armcdn.UsageUnitCount),
 		// 			},
@@ -169,7 +169,7 @@ func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/AFDProfiles_ValidateSecret.json
+// Generated from example definition: 2026-09-01-preview/AFDProfiles_ValidateSecret.json
 func ExampleAFDProfilesClient_ValidateSecret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Profiles_CanMigrate.json
+// Generated from example definition: 2026-09-01-preview/Profiles_CanMigrate.json
 func ExampleProfilesClient_BeginCanMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// res = armcdn.ProfilesClientCanMigrateResponse{
 	// 	CanMigrateResult: armcdn.CanMigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/canmigrate"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/yaoshitest/providers/Microsoft.Cdn/operationresults/operationid/profileresults/DummyProfile/canmigrateresults/DummyProfile"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/yaoshitest/providers/Microsoft.Cdn/operationresults/operationid/profileresults/DummyProfile/canmigrateresults/DummyProfile"),
 	// 		Properties: &armcdn.CanMigrateProperties{
 	// 			CanMigrate: to.Ptr(true),
 	// 			DefaultSKU: to.Ptr(armcdn.CanMigrateDefaultSKUStandardAzureFrontDoor),
@@ -50,7 +50,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/CdnProfiles_CanMigrate.json
+// Generated from example definition: 2026-09-01-preview/CdnProfiles_CanMigrate.json
 func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/CdnProfiles_Migrate.json
+// Generated from example definition: 2026-09-01-preview/CdnProfiles_Migrate.json
 func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_Create.json
+// Generated from example definition: 2026-09-01-preview/Profiles_Create.json
 func ExampleProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 	// 		Kind: to.Ptr("frontdoor"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armcdn.ProfileProperties{
@@ -172,7 +172,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_Delete.json
+// Generated from example definition: 2026-09-01-preview/Profiles_Delete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_Migrate.json
+// Generated from example definition: 2026-09-01-preview/Profiles_Migrate.json
 func ExampleProfilesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,17 +231,17 @@ func ExampleProfilesClient_BeginMigrate() {
 	// res = armcdn.ProfilesClientMigrateResponse{
 	// 	MigrateResult: armcdn.MigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/migrate"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
 	// 		Properties: &armcdn.MigrateResultProperties{
 	// 			MigratedProfileResourceID: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_MigrationAbort.json
+// Generated from example definition: 2026-09-01-preview/Profiles_MigrationAbort.json
 func ExampleProfilesClient_BeginMigrationAbort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleProfilesClient_BeginMigrationAbort() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Profiles_MigrationCommit.json
+// Generated from example definition: 2026-09-01-preview/Profiles_MigrationCommit.json
 func ExampleProfilesClient_BeginMigrationCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleProfilesClient_BeginMigrationCommit() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_Update.json
+// Generated from example definition: 2026-09-01-preview/Profiles_Update.json
 func ExampleProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleProfilesClient_BeginUpdate() {
 	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 	// 		Kind: to.Ptr("frontdoor"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armcdn.ProfileProperties{
@@ -342,7 +342,7 @@ func ExampleProfilesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_GenerateSsoUri.json
+// Generated from example definition: 2026-09-01-preview/Profiles_GenerateSsoUri.json
 func ExampleProfilesClient_GenerateSsoURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleProfilesClient_GenerateSsoURI() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_Get.json
+// Generated from example definition: 2026-09-01-preview/Profiles_Get.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleProfilesClient_Get() {
 	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 	// 		Kind: to.Ptr("frontdoor"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armcdn.ProfileProperties{
@@ -412,7 +412,7 @@ func ExampleProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_ListSupportedOptimizationTypes.json
+// Generated from example definition: 2026-09-01-preview/Profiles_ListSupportedOptimizationTypes.json
 func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +440,7 @@ func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Profiles_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/Profiles_ListByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("profile1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
 		// 				Kind: to.Ptr("frontdoor"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armcdn.ProfileProperties{
@@ -491,7 +491,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("profile2"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile2"),
 		// 				Kind: to.Ptr("frontdoor"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armcdn.ProfileProperties{
@@ -517,7 +517,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Profiles_List.json
+// Generated from example definition: 2026-09-01-preview/Profiles_List.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,7 +545,7 @@ func ExampleProfilesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("profile1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
 		// 				Kind: to.Ptr("frontdoor"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armcdn.ProfileProperties{
@@ -568,7 +568,7 @@ func ExampleProfilesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("profile2"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
 		// 				Kind: to.Ptr("frontdoor"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armcdn.ProfileProperties{
@@ -594,7 +594,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/Profiles_ListResourceUsage.json
+// Generated from example definition: 2026-09-01-preview/Profiles_ListResourceUsage.json
 func ExampleProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

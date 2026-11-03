@@ -5,7 +5,7 @@
 package armcdn
 
 const (
-	version20261001 string = "2026-10-01"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.
@@ -21,6 +21,22 @@ func PossibleAFDEndpointProtocolsValues() []AFDEndpointProtocols {
 	return []AFDEndpointProtocols{
 		AFDEndpointProtocolsHTTP,
 		AFDEndpointProtocolsHTTPS,
+	}
+}
+
+// AFDRouteGrpcState - Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
+type AFDRouteGrpcState string
+
+const (
+	AFDRouteGrpcStateDisabled AFDRouteGrpcState = "Disabled"
+	AFDRouteGrpcStateEnabled  AFDRouteGrpcState = "Enabled"
+)
+
+// PossibleAFDRouteGrpcStateValues returns the possible values for the AFDRouteGrpcState const type.
+func PossibleAFDRouteGrpcStateValues() []AFDRouteGrpcState {
+	return []AFDRouteGrpcState{
+		AFDRouteGrpcStateDisabled,
+		AFDRouteGrpcStateEnabled,
 	}
 }
 
@@ -247,6 +263,54 @@ const (
 func PossibleAlgorithmValues() []Algorithm {
 	return []Algorithm{
 		AlgorithmSHA256,
+	}
+}
+
+// AuthLocation - Supported location of the authorization value in an HTTP request.
+type AuthLocation string
+
+const (
+	// AuthLocationHeader - The authorization value is in an HTTP request header.
+	AuthLocationHeader AuthLocation = "Header"
+)
+
+// PossibleAuthLocationValues returns the possible values for the AuthLocation const type.
+func PossibleAuthLocationValues() []AuthLocation {
+	return []AuthLocation{
+		AuthLocationHeader,
+	}
+}
+
+// AuthPolicyAction - Action applied when authorization fails.
+type AuthPolicyAction string
+
+const (
+	// AuthPolicyActionBlock - Block the request.
+	AuthPolicyActionBlock AuthPolicyAction = "Block"
+	// AuthPolicyActionLog - Log the authorization failure and allow the request to continue.
+	AuthPolicyActionLog AuthPolicyAction = "Log"
+)
+
+// PossibleAuthPolicyActionValues returns the possible values for the AuthPolicyAction const type.
+func PossibleAuthPolicyActionValues() []AuthPolicyAction {
+	return []AuthPolicyAction{
+		AuthPolicyActionBlock,
+		AuthPolicyActionLog,
+	}
+}
+
+// AuthPolicyConfigIdentityProvider - Identity provider used by an authorization configuration.
+type AuthPolicyConfigIdentityProvider string
+
+const (
+	// AuthPolicyConfigIdentityProviderEntraID - Microsoft Entra ID.
+	AuthPolicyConfigIdentityProviderEntraID AuthPolicyConfigIdentityProvider = "EntraID"
+)
+
+// PossibleAuthPolicyConfigIdentityProviderValues returns the possible values for the AuthPolicyConfigIdentityProvider const type.
+func PossibleAuthPolicyConfigIdentityProviderValues() []AuthPolicyConfigIdentityProvider {
+	return []AuthPolicyConfigIdentityProvider{
+		AuthPolicyConfigIdentityProviderEntraID,
 	}
 }
 
@@ -599,6 +663,7 @@ func PossibleDeleteRuleValues() []DeleteRule {
 type DeliveryRuleActionName string
 
 const (
+	DeliveryRuleActionNameAfdURLSigning              DeliveryRuleActionName = "AfdUrlSigning"
 	DeliveryRuleActionNameCacheExpiration            DeliveryRuleActionName = "CacheExpiration"
 	DeliveryRuleActionNameCacheKeyQueryString        DeliveryRuleActionName = "CacheKeyQueryString"
 	DeliveryRuleActionNameEdgeAction                 DeliveryRuleActionName = "EdgeAction"
@@ -614,6 +679,7 @@ const (
 // PossibleDeliveryRuleActionNameValues returns the possible values for the DeliveryRuleActionName const type.
 func PossibleDeliveryRuleActionNameValues() []DeliveryRuleActionName {
 	return []DeliveryRuleActionName{
+		DeliveryRuleActionNameAfdURLSigning,
 		DeliveryRuleActionNameCacheExpiration,
 		DeliveryRuleActionNameCacheKeyQueryString,
 		DeliveryRuleActionNameEdgeAction,
@@ -739,6 +805,24 @@ func PossibleDestinationProtocolValues() []DestinationProtocol {
 		DestinationProtocolHTTP,
 		DestinationProtocolHTTPS,
 		DestinationProtocolMatchRequest,
+	}
+}
+
+// DistributionType - Type of distribution used in capacity based load balancing.
+type DistributionType string
+
+const (
+	// DistributionTypeDynamicWeights - Dynamically adjusts weights based on backend capacity.
+	DistributionTypeDynamicWeights DistributionType = "DynamicWeights"
+	// DistributionTypeStaticWeights - Uses static backend weights for load balancing.
+	DistributionTypeStaticWeights DistributionType = "StaticWeights"
+)
+
+// PossibleDistributionTypeValues returns the possible values for the DistributionType const type.
+func PossibleDistributionTypeValues() []DistributionType {
+	return []DistributionType{
+		DistributionTypeDynamicWeights,
+		DistributionTypeStaticWeights,
 	}
 }
 
@@ -1680,6 +1764,7 @@ func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
 type ProbeProtocol string
 
 const (
+	ProbeProtocolGrpc   ProbeProtocol = "Grpc"
 	ProbeProtocolHTTP   ProbeProtocol = "Http"
 	ProbeProtocolHTTPS  ProbeProtocol = "Https"
 	ProbeProtocolNotSet ProbeProtocol = "NotSet"
@@ -1688,6 +1773,7 @@ const (
 // PossibleProbeProtocolValues returns the possible values for the ProbeProtocol const type.
 func PossibleProbeProtocolValues() []ProbeProtocol {
 	return []ProbeProtocol{
+		ProbeProtocolGrpc,
 		ProbeProtocolHTTP,
 		ProbeProtocolHTTPS,
 		ProbeProtocolNotSet,
@@ -2468,6 +2554,19 @@ func PossibleTransformTypeValues() []TransformType {
 		TransformTypeURLDecode,
 		TransformTypeURLEncode,
 		TransformTypeUppercase,
+	}
+}
+
+type TypeName string
+
+const (
+	TypeNameDeliveryRuleAfdURLSigningActionParameters TypeName = "DeliveryRuleAfdUrlSigningActionParameters"
+)
+
+// PossibleTypeNameValues returns the possible values for the TypeName const type.
+func PossibleTypeNameValues() []TypeName {
+	return []TypeName{
+		TypeNameDeliveryRuleAfdURLSigningActionParameters,
 	}
 }
 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Routes_Create.json
+// Generated from example definition: 2026-09-01-preview/Routes_Create.json
 func ExampleRoutesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,6 +43,7 @@ func ExampleRoutesClient_BeginCreate() {
 			},
 			EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 			ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+			GrpcState:           to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 			HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 			OriginGroup: &armcdn.ResourceReference{
@@ -76,7 +77,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
 	// 		Properties: &armcdn.RouteProperties{
 	// 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
 	// 				CompressionSettings: &armcdn.CompressionSettings{
@@ -91,16 +92,17 @@ func ExampleRoutesClient_BeginCreate() {
 	// 			},
 	// 			CustomDomains: []*armcdn.ActivatedResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 	// 			},
 	// 			PatternsToMatch: []*string{
 	// 				to.Ptr("/*"),
@@ -108,7 +110,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 			RuleSets: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 	// 				},
 	// 			},
 	// 			SupportedProtocols: []*armcdn.AFDEndpointProtocols{
@@ -120,7 +122,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Routes_Delete.json
+// Generated from example definition: 2026-09-01-preview/Routes_Delete.json
 func ExampleRoutesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +148,7 @@ func ExampleRoutesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Routes_Update.json
+// Generated from example definition: 2026-09-01-preview/Routes_Update.json
 func ExampleRoutesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,6 +178,7 @@ func ExampleRoutesClient_BeginUpdate() {
 			},
 			EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 			ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+			GrpcState:           to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 			HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 			OriginGroup: &armcdn.ResourceReference{
@@ -209,7 +212,7 @@ func ExampleRoutesClient_BeginUpdate() {
 	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
 	// 		Properties: &armcdn.RouteProperties{
 	// 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
 	// 				CompressionSettings: &armcdn.CompressionSettings{
@@ -223,16 +226,17 @@ func ExampleRoutesClient_BeginUpdate() {
 	// 			},
 	// 			CustomDomains: []*armcdn.ActivatedResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 	// 			},
 	// 			PatternsToMatch: []*string{
 	// 				to.Ptr("/*"),
@@ -240,7 +244,7 @@ func ExampleRoutesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 			RuleSets: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 	// 				},
 	// 			},
 	// 			SupportedProtocols: []*armcdn.AFDEndpointProtocols{
@@ -252,7 +256,7 @@ func ExampleRoutesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Routes_Get.json
+// Generated from example definition: 2026-09-01-preview/Routes_Get.json
 func ExampleRoutesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +278,7 @@ func ExampleRoutesClient_Get() {
 	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
 	// 		Properties: &armcdn.RouteProperties{
 	// 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
 	// 				CompressionSettings: &armcdn.CompressionSettings{
@@ -288,16 +292,17 @@ func ExampleRoutesClient_Get() {
 	// 			},
 	// 			CustomDomains: []*armcdn.ActivatedResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 	// 			},
 	// 			PatternsToMatch: []*string{
 	// 				to.Ptr("/*"),
@@ -305,7 +310,7 @@ func ExampleRoutesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 			RuleSets: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 	// 				},
 	// 			},
 	// 			SupportedProtocols: []*armcdn.AFDEndpointProtocols{
@@ -317,7 +322,7 @@ func ExampleRoutesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Routes_ListByEndpoint.json
+// Generated from example definition: 2026-09-01-preview/Routes_ListByEndpoint.json
 func ExampleRoutesClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +350,7 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 		// 			{
 		// 				Name: to.Ptr("route1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
 		// 				Properties: &armcdn.RouteProperties{
 		// 					CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
 		// 						CompressionSettings: &armcdn.CompressionSettings{
@@ -359,16 +364,17 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 		// 					},
 		// 					CustomDomains: []*armcdn.ActivatedResourceReference{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 		// 						},
 		// 					},
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 		// 					ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+		// 					GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 		// 					HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 		// 					LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 		// 					OriginGroup: &armcdn.ResourceReference{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 		// 					},
 		// 					PatternsToMatch: []*string{
 		// 						to.Ptr("/*"),
@@ -376,7 +382,7 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 		// 					RuleSets: []*armcdn.ResourceReference{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 		// 						},
 		// 					},
 		// 					SupportedProtocols: []*armcdn.AFDEndpointProtocols{

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Rules_Create.json
+// Generated from example definition: 2026-09-01-preview/Rules_Create.json
 func ExampleRulesClient_BeginCreate_rulesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleRulesClient_BeginCreate_rulesCreate() {
 	// 	Rule: armcdn.Rule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
 	// 		Properties: &armcdn.RuleProperties{
 	// 			Actions: []armcdn.DeliveryRuleActionClassification{
 	// 				&armcdn.DeliveryRuleResponseHeaderAction{
@@ -103,7 +103,118 @@ func ExampleRulesClient_BeginCreate_rulesCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Rules_Create_EdgeAction.json
+// Generated from example definition: 2026-09-01-preview/Rules_Create_AfdUrlSigningAction.json
+func ExampleRulesClient_BeginCreate_rulesCreateAfdUrlSigningAction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRulesClient().BeginCreate(ctx, "RG", "profile1", "ruleSet1", "rule1", armcdn.Rule{
+		Properties: &armcdn.RuleProperties{
+			Actions: []armcdn.DeliveryRuleActionClassification{
+				&armcdn.AfdURLSigningAction{
+					Name: to.Ptr(armcdn.DeliveryRuleActionNameAfdURLSigning),
+					Parameters: &armcdn.AfdURLSigningActionParameters{
+						Algorithm: to.Ptr(armcdn.AlgorithmSHA256),
+						KeyGroupReference: &armcdn.ResourceReference{
+							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/keygroups/kg1"),
+						},
+						ParameterNameOverride: []*armcdn.URLSigningParamIdentifier{
+							{
+								ParamIndicator: to.Ptr(armcdn.ParamIndicatorExpires),
+								ParamName:      to.Ptr("Expiration-Date"),
+							},
+							{
+								ParamIndicator: to.Ptr(armcdn.ParamIndicatorSignature),
+								ParamName:      to.Ptr("Sig-Hash"),
+							},
+						},
+						TypeName: to.Ptr(armcdn.TypeNameDeliveryRuleAfdURLSigningActionParameters),
+					},
+				},
+			},
+			Conditions: []armcdn.DeliveryRuleConditionClassification{
+				&armcdn.DeliveryRuleRequestMethodCondition{
+					Name: to.Ptr(armcdn.MatchVariableRequestMethod),
+					Parameters: &armcdn.RequestMethodMatchConditionParameters{
+						MatchValues: []*armcdn.RequestMethodMatchValue{
+							to.Ptr(armcdn.RequestMethodMatchValueGET),
+						},
+						NegateCondition: to.Ptr(false),
+						Operator:        to.Ptr(armcdn.RequestMethodOperatorEqual),
+						TypeName:        to.Ptr(armcdn.DeliveryRuleConditionParametersTypeDeliveryRuleRequestMethodConditionParameters),
+					},
+				},
+			},
+			Order: to.Ptr[int32](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.RulesClientCreateResponse{
+	// 	Rule: armcdn.Rule{
+	// 		Name: to.Ptr("rule1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+	// 		Properties: &armcdn.RuleProperties{
+	// 			Actions: []armcdn.DeliveryRuleActionClassification{
+	// 				&armcdn.AfdURLSigningAction{
+	// 					Name: to.Ptr(armcdn.DeliveryRuleActionNameAfdURLSigning),
+	// 					Parameters: &armcdn.AfdURLSigningActionParameters{
+	// 						Algorithm: to.Ptr(armcdn.AlgorithmSHA256),
+	// 						KeyGroupReference: &armcdn.ResourceReference{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/keygroups/kg1"),
+	// 						},
+	// 						ParameterNameOverride: []*armcdn.URLSigningParamIdentifier{
+	// 							{
+	// 								ParamIndicator: to.Ptr(armcdn.ParamIndicatorExpires),
+	// 								ParamName: to.Ptr("Expiration-Date"),
+	// 							},
+	// 							{
+	// 								ParamIndicator: to.Ptr(armcdn.ParamIndicatorSignature),
+	// 								ParamName: to.Ptr("Sig-Hash"),
+	// 							},
+	// 						},
+	// 						TypeName: to.Ptr(armcdn.TypeNameDeliveryRuleAfdURLSigningActionParameters),
+	// 					},
+	// 				},
+	// 			},
+	// 			Conditions: []armcdn.DeliveryRuleConditionClassification{
+	// 				&armcdn.DeliveryRuleRequestMethodCondition{
+	// 					Name: to.Ptr(armcdn.MatchVariableRequestMethod),
+	// 					Parameters: &armcdn.RequestMethodMatchConditionParameters{
+	// 						MatchValues: []*armcdn.RequestMethodMatchValue{
+	// 							to.Ptr(armcdn.RequestMethodMatchValueGET),
+	// 						},
+	// 						NegateCondition: to.Ptr(false),
+	// 						Operator: to.Ptr(armcdn.RequestMethodOperatorEqual),
+	// 						TypeName: to.Ptr(armcdn.DeliveryRuleConditionParametersTypeDeliveryRuleRequestMethodConditionParameters),
+	// 					},
+	// 				},
+	// 			},
+	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+	// 			MatchProcessingBehavior: to.Ptr(armcdn.MatchProcessingBehaviorContinue),
+	// 			Order: to.Ptr[int32](1),
+	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/Rules_Create_EdgeAction.json
 func ExampleRulesClient_BeginCreate_rulesCreateEdgeAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +232,7 @@ func ExampleRulesClient_BeginCreate_rulesCreateEdgeAction() {
 					Name: to.Ptr(armcdn.DeliveryRuleActionNameEdgeAction),
 					Parameters: &armcdn.DeliveryRuleEdgeActionParameters{
 						EdgeActionReference: &armcdn.ResourceReference{
-							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
 						},
 						InvocationPoint: to.Ptr(armcdn.InvocationPointClientResponse),
 						TypeName:        to.Ptr(armcdn.DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters),
@@ -157,15 +268,15 @@ func ExampleRulesClient_BeginCreate_rulesCreateEdgeAction() {
 	// res = armcdn.RulesClientCreateResponse{
 	// 	Rule: armcdn.Rule{
 	// 		Name: to.Ptr("rule1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/ruleSets/rules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1/rules/rule1"),
 	// 		Properties: &armcdn.RuleProperties{
 	// 			Actions: []armcdn.DeliveryRuleActionClassification{
 	// 				&armcdn.EdgeAction{
 	// 					Name: to.Ptr(armcdn.DeliveryRuleActionNameEdgeAction),
 	// 					Parameters: &armcdn.DeliveryRuleEdgeActionParameters{
 	// 						EdgeActionReference: &armcdn.ResourceReference{
-	// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
 	// 						},
 	// 						InvocationPoint: to.Ptr(armcdn.InvocationPointClientResponse),
 	// 						TypeName: to.Ptr(armcdn.DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters),
@@ -196,7 +307,7 @@ func ExampleRulesClient_BeginCreate_rulesCreateEdgeAction() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Rules_Delete.json
+// Generated from example definition: 2026-09-01-preview/Rules_Delete.json
 func ExampleRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +333,7 @@ func ExampleRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Rules_Update.json
+// Generated from example definition: 2026-09-01-preview/Rules_Update.json
 func ExampleRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +384,7 @@ func ExampleRulesClient_BeginUpdate() {
 	// 	Rule: armcdn.Rule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
 	// 		Properties: &armcdn.RuleProperties{
 	// 			Actions: []armcdn.DeliveryRuleActionClassification{
 	// 				&armcdn.DeliveryRuleResponseHeaderAction{
@@ -289,7 +400,7 @@ func ExampleRulesClient_BeginUpdate() {
 	// 					Name: to.Ptr(armcdn.DeliveryRuleActionNameEdgeAction),
 	// 					Parameters: &armcdn.DeliveryRuleEdgeActionParameters{
 	// 						EdgeActionReference: &armcdn.ResourceReference{
-	// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
 	// 						},
 	// 						InvocationPoint: to.Ptr(armcdn.InvocationPointClientResponse),
 	// 						TypeName: to.Ptr(armcdn.DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters),
@@ -320,7 +431,7 @@ func ExampleRulesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Rules_Get.json
+// Generated from example definition: 2026-09-01-preview/Rules_Get.json
 func ExampleRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +453,7 @@ func ExampleRulesClient_Get() {
 	// 	Rule: armcdn.Rule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
 	// 		Properties: &armcdn.RuleProperties{
 	// 			Actions: []armcdn.DeliveryRuleActionClassification{
 	// 				&armcdn.DeliveryRuleResponseHeaderAction{
@@ -358,7 +469,7 @@ func ExampleRulesClient_Get() {
 	// 					Name: to.Ptr(armcdn.DeliveryRuleActionNameEdgeAction),
 	// 					Parameters: &armcdn.DeliveryRuleEdgeActionParameters{
 	// 						EdgeActionReference: &armcdn.ResourceReference{
-	// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
 	// 						},
 	// 						InvocationPoint: to.Ptr(armcdn.InvocationPointClientResponse),
 	// 						TypeName: to.Ptr(armcdn.DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters),
@@ -389,7 +500,7 @@ func ExampleRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Rules_ListByRuleSet.json
+// Generated from example definition: 2026-09-01-preview/Rules_ListByRuleSet.json
 func ExampleRulesClient_NewListByRuleSetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +528,7 @@ func ExampleRulesClient_NewListByRuleSetPager() {
 		// 			{
 		// 				Name: to.Ptr("rule1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/rulesets/rules"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1/rules/rule1"),
 		// 				Properties: &armcdn.RuleProperties{
 		// 					Actions: []armcdn.DeliveryRuleActionClassification{
 		// 						&armcdn.DeliveryRuleResponseHeaderAction{

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Secrets_Create.json
+// Generated from example definition: 2026-09-01-preview/Secrets_Create.json
 func ExampleSecretsClient_BeginCreate_secretsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreate() {
 	// 	Secret: armcdn.Secret{
 	// 		Name: to.Ptr("secret1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
 	// 		Properties: &armcdn.SecretProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.CustomerCertificateParameters{
@@ -57,7 +57,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreate() {
 	// 				CertificateAuthority: to.Ptr("Symantec"),
 	// 				ExpirationDate: to.Ptr("2025-01-01T00:00:00-00:00"),
 	// 				SecretSource: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
 	// 				},
 	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
 	// 				Subject: to.Ptr("*.contoso.com"),
@@ -74,7 +74,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Secrets_CreateCustomerCertificateType.json
+// Generated from example definition: 2026-09-01-preview/Secrets_CreateCustomerCertificateType.json
 func ExampleSecretsClient_BeginCreate_secretsCreateCustomerCertificateType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreateCustomerCertificateType() {
 	// 	Secret: armcdn.Secret{
 	// 		Name: to.Ptr("secret1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
 	// 		Properties: &armcdn.SecretProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.CustomerCertificateParameters{
@@ -119,7 +119,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreateCustomerCertificateType() {
 	// 				CertificateAuthority: to.Ptr("Symantec"),
 	// 				ExpirationDate: to.Ptr("2025-01-01T00:00:00-00:00"),
 	// 				SecretSource: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
 	// 				},
 	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
 	// 				Subject: to.Ptr("*.contoso.com"),
@@ -136,7 +136,60 @@ func ExampleSecretsClient_BeginCreate_secretsCreateCustomerCertificateType() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Secrets_CreateUrlSigningKeyType.json
+// Generated from example definition: 2026-09-01-preview/Secrets_CreateMtlsCertificateChainType.json
+func ExampleSecretsClient_BeginCreate_secretsCreateMtlsCertificateChainType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecretsClient().BeginCreate(ctx, "RG", "profile1", "secret1", armcdn.Secret{
+		Properties: &armcdn.SecretProperties{
+			Parameters: &armcdn.AfdSecretMtlsCertificateChain{
+				Type: to.Ptr(armcdn.SecretTypeMtlsCertificateChain),
+				SecretSource: &armcdn.ResourceReference{
+					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/kvName/secrets/mTLSCertificateChainname"),
+				},
+				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.SecretsClientCreateResponse{
+	// 	Secret: armcdn.Secret{
+	// 		Name: to.Ptr("secret1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		Properties: &armcdn.SecretProperties{
+	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+	// 			Parameters: &armcdn.AfdSecretMtlsCertificateChain{
+	// 				Type: to.Ptr(armcdn.SecretTypeMtlsCertificateChain),
+	// 				ExpirationDate: to.Ptr(time.Date(2035, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				SecretSource: &armcdn.ResourceReference{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/kvName/secrets/mTLSCertificateChainName"),
+	// 				},
+	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/Secrets_CreateUrlSigningKeyType.json
 func ExampleSecretsClient_BeginCreate_secretsCreateUrlSigningKeyType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,14 +226,14 @@ func ExampleSecretsClient_BeginCreate_secretsCreateUrlSigningKeyType() {
 	// 	Secret: armcdn.Secret{
 	// 		Name: to.Ptr("secret1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
 	// 		Properties: &armcdn.SecretProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.URLSigningKeyParameters{
 	// 				Type: to.Ptr(armcdn.SecretTypeURLSigningKey),
 	// 				KeyID: to.Ptr("customKeyId"),
 	// 				SecretSource: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/urlsigningkeyname"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/urlsigningkeyname"),
 	// 				},
 	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
 	// 			},
@@ -190,7 +243,7 @@ func ExampleSecretsClient_BeginCreate_secretsCreateUrlSigningKeyType() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Secrets_Delete.json
+// Generated from example definition: 2026-09-01-preview/Secrets_Delete.json
 func ExampleSecretsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +269,7 @@ func ExampleSecretsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Secrets_Get.json
+// Generated from example definition: 2026-09-01-preview/Secrets_Get.json
 func ExampleSecretsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +291,7 @@ func ExampleSecretsClient_Get() {
 	// 	Secret: armcdn.Secret{
 	// 		Name: to.Ptr("secret1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
 	// 		Properties: &armcdn.SecretProperties{
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			Parameters: &armcdn.CustomerCertificateParameters{
@@ -246,7 +299,7 @@ func ExampleSecretsClient_Get() {
 	// 				CertificateAuthority: to.Ptr("Symantec"),
 	// 				ExpirationDate: to.Ptr("2025-01-01T00:00:00-00:00"),
 	// 				SecretSource: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
 	// 				},
 	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
 	// 				Subject: to.Ptr("*.contoso.com"),
@@ -263,7 +316,7 @@ func ExampleSecretsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/Secrets_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/Secrets_ListByProfile.json
 func ExampleSecretsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +344,7 @@ func ExampleSecretsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("secret1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
 		// 				Properties: &armcdn.SecretProperties{
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					Parameters: &armcdn.CustomerCertificateParameters{
@@ -299,7 +352,7 @@ func ExampleSecretsClient_NewListByProfilePager() {
 		// 						CertificateAuthority: to.Ptr("Symantec"),
 		// 						ExpirationDate: to.Ptr("2025-01-01T00:00:00-00:00"),
 		// 						SecretSource: &armcdn.ResourceReference{
-		// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
 		// 						},
 		// 						SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
 		// 						Subject: to.Ptr("*.contoso.com"),
@@ -316,7 +369,7 @@ func ExampleSecretsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("69f05517-6aaf-4a1e-a96d-f8c02f66c756-test12-afdx-test-domains-azfdtest-xyz"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/autogenerated_secret_name"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/autogenerated_secret_name"),
 		// 				Properties: &armcdn.SecretProperties{
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					Parameters: &armcdn.ManagedCertificateParameters{

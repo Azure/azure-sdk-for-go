@@ -181,6 +181,35 @@ type AFDProfilesClientValidateSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AuthPoliciesClientBeginCreateOptions contains the optional parameters for the AuthPoliciesClient.BeginCreate method.
+type AuthPoliciesClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AuthPoliciesClientBeginDeleteOptions contains the optional parameters for the AuthPoliciesClient.BeginDelete method.
+type AuthPoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AuthPoliciesClientBeginUpdateOptions contains the optional parameters for the AuthPoliciesClient.BeginUpdate method.
+type AuthPoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AuthPoliciesClientGetOptions contains the optional parameters for the AuthPoliciesClient.Get method.
+type AuthPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthPoliciesClientListByProfileOptions contains the optional parameters for the AuthPoliciesClient.NewListByProfilePager
+// method.
+type AuthPoliciesClientListByProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CustomDomainsClientBeginCreateOptions contains the optional parameters for the CustomDomainsClient.BeginCreate method.
 type CustomDomainsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.

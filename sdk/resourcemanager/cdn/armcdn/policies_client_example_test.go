@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/WafPolicyCreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
@@ -195,10 +195,10 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			EndpointLinks: []*armcdn.LinkedEndpoint{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
 	// 				},
 	// 			},
 	// 			ManagedRules: &armcdn.ManagedRuleSetList{
@@ -271,7 +271,7 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/WafPatchPolicy.json
+// Generated from example definition: 2026-09-01-preview/WafPatchPolicy.json
 func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExamplePoliciesClient_BeginUpdate() {
 	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
@@ -353,10 +353,10 @@ func ExamplePoliciesClient_BeginUpdate() {
 	// 			},
 	// 			EndpointLinks: []*armcdn.LinkedEndpoint{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
 	// 				},
 	// 			},
 	// 			ManagedRules: &armcdn.ManagedRuleSetList{
@@ -428,7 +428,7 @@ func ExamplePoliciesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/WafPolicyDelete.json
+// Generated from example definition: 2026-09-01-preview/WafPolicyDelete.json
 func ExamplePoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,7 +450,7 @@ func ExamplePoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/WafPolicyGet.json
+// Generated from example definition: 2026-09-01-preview/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +472,7 @@ func ExamplePoliciesClient_Get() {
 	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
 	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
@@ -524,10 +524,10 @@ func ExamplePoliciesClient_Get() {
 	// 			},
 	// 			EndpointLinks: []*armcdn.LinkedEndpoint{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
 	// 				},
 	// 			},
 	// 			ManagedRules: &armcdn.ManagedRuleSetList{
@@ -600,7 +600,7 @@ func ExamplePoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/WafListPolicies.json
+// Generated from example definition: 2026-09-01-preview/WafListPolicies.json
 func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExamplePoliciesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("MicrosoftCdnWafPolicy"),
 		// 				Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 		// 				Location: to.Ptr("WestUs"),
 		// 				Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 		// 					CustomRules: &armcdn.CustomRuleList{
@@ -680,10 +680,10 @@ func ExamplePoliciesClient_NewListPager() {
 		// 					},
 		// 					EndpointLinks: []*armcdn.LinkedEndpoint{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint1"),
 		// 						},
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint2"),
 		// 						},
 		// 					},
 		// 					ManagedRules: &armcdn.ManagedRuleSetList{
@@ -756,7 +756,7 @@ func ExamplePoliciesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("VerizonStandardCdnWafPolicy"),
 		// 				Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/VerizonStandardCdnWafPolicy"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/VerizonStandardCdnWafPolicy"),
 		// 				Location: to.Ptr("WestUs"),
 		// 				Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 		// 					CustomRules: &armcdn.CustomRuleList{
@@ -806,7 +806,7 @@ func ExamplePoliciesClient_NewListPager() {
 		// 					},
 		// 					EndpointLinks: []*armcdn.LinkedEndpoint{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint3"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cdn/profiles/profile1/endpoints/testEndpoint3"),
 		// 						},
 		// 					},
 		// 					ManagedRules: &armcdn.ManagedRuleSetList{

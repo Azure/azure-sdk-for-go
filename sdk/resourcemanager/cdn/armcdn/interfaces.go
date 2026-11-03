@@ -4,14 +4,23 @@
 
 package armcdn
 
-// AFDDomainMTLSParametersClassification provides polymorphic access to related types.
-// Call the interface's GetAFDDomainMTLSParameters() method to access the common type.
+// AFDDomainMtlsParametersClassification provides polymorphic access to related types.
+// Call the interface's GetAFDDomainMtlsParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AFDDomainMTLSParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
+// - *AFDDomainMtlsParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
 // - *ClientCertificateValidatedIfPresentedAdvancedSettings, *CompleteMtlsPassthroughToOriginAdvancedSettings
-type AFDDomainMTLSParametersClassification interface {
-	// GetAFDDomainMTLSParameters returns the AFDDomainMTLSParameters content of the underlying type.
-	GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters
+type AFDDomainMtlsParametersClassification interface {
+	// GetAFDDomainMtlsParameters returns the AFDDomainMtlsParameters content of the underlying type.
+	GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters
+}
+
+// AuthPolicyConfigClassification provides polymorphic access to related types.
+// Call the interface's GetAuthPolicyConfig() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AuthPolicyConfig, *AuthPolicyEntraIDConfig
+type AuthPolicyConfigClassification interface {
+	// GetAuthPolicyConfig returns the AuthPolicyConfig content of the underlying type.
+	GetAuthPolicyConfig() *AuthPolicyConfig
 }
 
 // CertificateSourceParametersBaseClassification provides polymorphic access to related types.
@@ -35,9 +44,9 @@ type CustomDomainHTTPSParametersClassification interface {
 // DeliveryRuleActionClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction, *DeliveryRuleRequestHeaderAction,
-// - *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *EdgeAction, *OriginGroupOverrideAction,
-// - *URLRedirectAction, *URLRewriteAction, *URLSigningAction
+// - *AfdURLSigningAction, *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction,
+// - *DeliveryRuleRequestHeaderAction, *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *EdgeAction,
+// - *OriginGroupOverrideAction, *URLRedirectAction, *URLRewriteAction, *URLSigningAction
 type DeliveryRuleActionClassification interface {
 	// GetDeliveryRuleAction returns the DeliveryRuleAction content of the underlying type.
 	GetDeliveryRuleAction() *DeliveryRuleAction

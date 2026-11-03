@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/OriginGroups_Create.json
+// Generated from example definition: 2026-09-01-preview/OriginGroups_Create.json
 func ExampleOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleOriginGroupsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOriginGroupsClient().BeginCreate(ctx, "RG", "profile1", "endpoint1", "origingroup1", armcdn.OriginGroup{
+	poller, err := clientFactory.NewOriginGroupsClient().BeginCreate(ctx, "RG", "profile1", "endpoint1", "originGroup1", armcdn.OriginGroup{
 		Properties: &armcdn.OriginGroupProperties{
 			HealthProbeSettings: &armcdn.HealthProbeParameters{
 				ProbeIntervalInSeconds: to.Ptr[int32](120),
@@ -54,9 +54,9 @@ func ExampleOriginGroupsClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.OriginGroupsClientCreateResponse{
 	// 	OriginGroup: armcdn.OriginGroup{
-	// 		Name: to.Ptr("origingroup1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origingroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 		Name: to.Ptr("originGroup1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/originGroups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 	// 		Properties: &armcdn.OriginGroupProperties{
 	// 			HealthProbeSettings: &armcdn.HealthProbeParameters{
 	// 				ProbeIntervalInSeconds: to.Ptr[int32](120),
@@ -66,7 +66,7 @@ func ExampleOriginGroupsClient_BeginCreate() {
 	// 			},
 	// 			Origins: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.OriginGroupProvisioningStateSucceeded),
@@ -80,7 +80,7 @@ func ExampleOriginGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/OriginGroups_Delete.json
+// Generated from example definition: 2026-09-01-preview/OriginGroups_Delete.json
 func ExampleOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleOriginGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/OriginGroups_Update.json
+// Generated from example definition: 2026-09-01-preview/OriginGroups_Update.json
 func ExampleOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleOriginGroupsClient_BeginUpdate() {
 	// 	OriginGroup: armcdn.OriginGroup{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
 	// 		Properties: &armcdn.OriginGroupProperties{
 	// 			HealthProbeSettings: &armcdn.HealthProbeParameters{
 	// 				ProbeIntervalInSeconds: to.Ptr[int32](120),
@@ -156,7 +156,7 @@ func ExampleOriginGroupsClient_BeginUpdate() {
 	// 			},
 	// 			Origins: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.OriginGroupProvisioningStateSucceeded),
@@ -166,7 +166,7 @@ func ExampleOriginGroupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/OriginGroups_Get.json
+// Generated from example definition: 2026-09-01-preview/OriginGroups_Get.json
 func ExampleOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleOriginGroupsClient_Get() {
 	// 	OriginGroup: armcdn.OriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origingroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 	// 		Properties: &armcdn.OriginGroupProperties{
 	// 			HealthProbeSettings: &armcdn.HealthProbeParameters{
 	// 				ProbeIntervalInSeconds: to.Ptr[int32](120),
@@ -198,7 +198,7 @@ func ExampleOriginGroupsClient_Get() {
 	// 			},
 	// 			Origins: []*armcdn.ResourceReference{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.OriginGroupProvisioningStateSucceeded),
@@ -218,7 +218,7 @@ func ExampleOriginGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/OriginGroups_ListByEndpoint.json
+// Generated from example definition: 2026-09-01-preview/OriginGroups_ListByEndpoint.json
 func ExampleOriginGroupsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleOriginGroupsClient_NewListByEndpointPager() {
 		// 			{
 		// 				Name: to.Ptr("origingroup1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origingroups"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"),
 		// 				Properties: &armcdn.OriginGroupProperties{
 		// 					HealthProbeSettings: &armcdn.HealthProbeParameters{
 		// 						ProbeIntervalInSeconds: to.Ptr[int32](120),
@@ -256,7 +256,7 @@ func ExampleOriginGroupsClient_NewListByEndpointPager() {
 		// 					},
 		// 					Origins: []*armcdn.ResourceReference{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armcdn.OriginGroupProvisioningStateSucceeded),

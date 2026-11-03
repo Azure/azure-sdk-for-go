@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v5"
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_Create.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_Create.json
 func ExampleAFDOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,8 +40,12 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 			},
 			LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 				AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
-				SampleSize:                      to.Ptr[int32](3),
-				SuccessfulSamplesRequired:       to.Ptr[int32](3),
+				CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+					CapacityConsciousThreshold: to.Ptr[int32](80),
+					DistributionType:           to.Ptr(armcdn.DistributionTypeStaticWeights),
+				},
+				SampleSize:                to.Ptr[int32](3),
+				SuccessfulSamplesRequired: to.Ptr[int32](3),
 			},
 			TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Ptr[int32](5),
 		},
@@ -60,13 +64,13 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
 	// 		Properties: &armcdn.AFDOriginGroupProperties{
 	// 			Authentication: &armcdn.OriginAuthenticationProperties{
 	// 				Type: to.Ptr(armcdn.OriginAuthenticationTypeUserAssignedIdentity),
 	// 				Scope: to.Ptr("https://www.contoso.com/.default"),
 	// 				UserAssignedIdentity: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
@@ -78,6 +82,10 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	// 			},
 	// 			LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 	// 				AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+	// 				CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+	// 					CapacityConsciousThreshold: to.Ptr[int32](80),
+	// 					DistributionType: to.Ptr(armcdn.DistributionTypeStaticWeights),
+	// 				},
 	// 				SampleSize: to.Ptr[int32](3),
 	// 				SuccessfulSamplesRequired: to.Ptr[int32](3),
 	// 			},
@@ -88,7 +96,7 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_Delete.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_Delete.json
 func ExampleAFDOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +122,7 @@ func ExampleAFDOriginGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_Update.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_Update.json
 func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,8 +150,12 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 			},
 			LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 				AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
-				SampleSize:                      to.Ptr[int32](3),
-				SuccessfulSamplesRequired:       to.Ptr[int32](3),
+				CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+					CapacityConsciousThreshold: to.Ptr[int32](80),
+					DistributionType:           to.Ptr(armcdn.DistributionTypeStaticWeights),
+				},
+				SampleSize:                to.Ptr[int32](3),
+				SuccessfulSamplesRequired: to.Ptr[int32](3),
 			},
 			TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Ptr[int32](5),
 		},
@@ -162,13 +174,13 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
 	// 		Properties: &armcdn.AFDOriginGroupProperties{
 	// 			Authentication: &armcdn.OriginAuthenticationProperties{
 	// 				Type: to.Ptr(armcdn.OriginAuthenticationTypeUserAssignedIdentity),
 	// 				Scope: to.Ptr("https://www.contoso.com/.default"),
 	// 				UserAssignedIdentity: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
@@ -180,6 +192,10 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	// 			},
 	// 			LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 	// 				AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+	// 				CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+	// 					CapacityConsciousThreshold: to.Ptr[int32](80),
+	// 					DistributionType: to.Ptr(armcdn.DistributionTypeStaticWeights),
+	// 				},
 	// 				SampleSize: to.Ptr[int32](3),
 	// 				SuccessfulSamplesRequired: to.Ptr[int32](3),
 	// 			},
@@ -190,7 +206,7 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_Get.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_Get.json
 func ExampleAFDOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,13 +228,13 @@ func ExampleAFDOriginGroupsClient_Get() {
 	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
 	// 		Properties: &armcdn.AFDOriginGroupProperties{
 	// 			Authentication: &armcdn.OriginAuthenticationProperties{
 	// 				Type: to.Ptr(armcdn.OriginAuthenticationTypeUserAssignedIdentity),
 	// 				Scope: to.Ptr("https://www.contoso.com/.default"),
 	// 				UserAssignedIdentity: &armcdn.ResourceReference{
-	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
 	// 				},
 	// 			},
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
@@ -230,6 +246,10 @@ func ExampleAFDOriginGroupsClient_Get() {
 	// 			},
 	// 			LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 	// 				AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+	// 				CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+	// 					CapacityConsciousThreshold: to.Ptr[int32](80),
+	// 					DistributionType: to.Ptr(armcdn.DistributionTypeStaticWeights),
+	// 				},
 	// 				SampleSize: to.Ptr[int32](3),
 	// 				SuccessfulSamplesRequired: to.Ptr[int32](3),
 	// 			},
@@ -240,7 +260,7 @@ func ExampleAFDOriginGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_ListByProfile.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_ListByProfile.json
 func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,13 +288,13 @@ func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 		// 			{
 		// 				Name: to.Ptr("origingroup1"),
 		// 				Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
 		// 				Properties: &armcdn.AFDOriginGroupProperties{
 		// 					Authentication: &armcdn.OriginAuthenticationProperties{
 		// 						Type: to.Ptr(armcdn.OriginAuthenticationTypeUserAssignedIdentity),
 		// 						Scope: to.Ptr("https://www.contoso.com/.default"),
 		// 						UserAssignedIdentity: &armcdn.ResourceReference{
-		// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id-1"),
 		// 						},
 		// 					},
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
@@ -286,6 +306,10 @@ func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 		// 					},
 		// 					LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
 		// 						AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+		// 						CapacityDistributionSettings: &armcdn.CapacityDistributionSettingsParameters{
+		// 							CapacityConsciousThreshold: to.Ptr[int32](80),
+		// 							DistributionType: to.Ptr(armcdn.DistributionTypeStaticWeights),
+		// 						},
 		// 						SampleSize: to.Ptr[int32](3),
 		// 						SuccessfulSamplesRequired: to.Ptr[int32](3),
 		// 					},
@@ -299,7 +323,7 @@ func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/AFDOriginGroups_ListResourceUsage.json
+// Generated from example definition: 2026-09-01-preview/AFDOriginGroups_ListResourceUsage.json
 func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,7 +354,7 @@ func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 		// 					Value: to.Ptr("origin"),
 		// 				},
 		// 				CurrentValue: to.Ptr[int64](0),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
 		// 				Limit: to.Ptr[int64](25),
 		// 				Unit: to.Ptr(armcdn.UsageUnitCount),
 		// 			},

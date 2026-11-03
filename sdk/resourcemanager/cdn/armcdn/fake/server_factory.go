@@ -30,6 +30,9 @@ type ServerFactory struct {
 	// AFDProfilesServer contains the fakes for client AFDProfilesClient
 	AFDProfilesServer AFDProfilesServer
 
+	// AuthPoliciesServer contains the fakes for client AuthPoliciesClient
+	AuthPoliciesServer AuthPoliciesServer
+
 	// CustomDomainsServer contains the fakes for client CustomDomainsClient
 	CustomDomainsServer CustomDomainsServer
 
@@ -101,6 +104,7 @@ type ServerFactoryTransport struct {
 	trAFDOriginGroupsServer  *AFDOriginGroupsServerTransport
 	trAFDOriginsServer       *AFDOriginsServerTransport
 	trAFDProfilesServer      *AFDProfilesServerTransport
+	trAuthPoliciesServer     *AuthPoliciesServerTransport
 	trCustomDomainsServer    *CustomDomainsServerTransport
 	trEdgeNodesServer        *EdgeNodesServerTransport
 	trEndpointsServer        *EndpointsServerTransport
@@ -152,6 +156,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AFDProfilesClient":
 		initServer(&s.trMu, &s.trAFDProfilesServer, func() *AFDProfilesServerTransport { return NewAFDProfilesServerTransport(&s.srv.AFDProfilesServer) })
 		resp, err = s.trAFDProfilesServer.Do(req)
+	case "AuthPoliciesClient":
+		initServer(&s.trMu, &s.trAuthPoliciesServer, func() *AuthPoliciesServerTransport { return NewAuthPoliciesServerTransport(&s.srv.AuthPoliciesServer) })
+		resp, err = s.trAuthPoliciesServer.Do(req)
 	case "CustomDomainsClient":
 		initServer(&s.trMu, &s.trCustomDomainsServer, func() *CustomDomainsServerTransport {
 			return NewCustomDomainsServerTransport(&s.srv.CustomDomainsServer)

@@ -130,37 +130,11 @@ if [[ "$status" -eq 0 ]]; then
 fi
 perf report --stdio --show-nr-samples --percent-limit 0 -i "$raw/perf.data" > "$raw/perf-report.txt"
 perf script -i "$raw/perf.data" > "$raw/perf-script.txt"
-python3 - "$raw/perf-report.txt" "$raw/perf-script.txt" "$raw/perf-record.stderr" \
-  "$call_graph" "$raw/perf-quality.json" <<'PY'
-import json
-import pathlib
-import re
-import sys
-
-report = pathlib.Path(sys.argv[1])
-script = pathlib.Path(sys.argv[2])
-stderr = pathlib.Path(sys.argv[3])
-mode = sys.argv[4]
-output = pathlib.Path(sys.argv[5])
-report_text = report.read_text(errors="replace")
-script_text = script.read_text(errors="replace")
-stderr_text = stderr.read_text(errors="replace")
-samples = len(re.findall(r"^\S.+\s+\d+\s+\[", script_text, re.M))
-unknown = len(re.findall(r"\[unknown\]|unknown", report_text, re.I))
-callchains = len(re.findall(r"^\s+[0-9a-f]+\s+", script_text, re.M))
-lost_match = re.search(r"lost samples:\s*(\d+)", stderr_text, re.I)
-lost = int(lost_match.group(1)) if lost_match else 0
-denominator = max(samples + lost, 1)
-value = {
-    "callGraphMode": mode,
-    "samples": samples,
-    "lostSamples": lost,
-    "lostEventPercent": lost / denominator * 100,
-    "resolvedSamplePercent": max(0.0, 100.0 - unknown / max(samples, 1) * 100),
-    "callchainSamplePercent": min(100.0, callchains / max(samples, 1) * 100),
-}
-output.write_text(json.dumps(value, indent=2) + "\n")
-PY
+python3 "$(dirname "$0")/perf-quality.py" \
+  --perf-script "$raw/perf-script.txt" \
+  --perf-stderr "$raw/perf-record.stderr" \
+  --mode "$call_graph" \
+  --output "$raw/perf-quality.json"
 {
   echo "symbol,dso,self_percent"
   perf report --stdio --field-separator '|' -F overhead,symbol,dso --percent-limit 0 \

@@ -15,9 +15,29 @@ SPEC = importlib.util.spec_from_file_location(
 assert SPEC and SPEC.loader
 CONVERTER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CONVERTER)
+PERF_SPEC = importlib.util.spec_from_file_location(
+    "perf_quality", SKILL / "scripts" / "perf-quality.py"
+)
+assert PERF_SPEC and PERF_SPEC.loader
+PERF_QUALITY = importlib.util.module_from_spec(PERF_SPEC)
+PERF_SPEC.loader.exec_module(PERF_QUALITY)
 
 
 class AdapterOutputTests(unittest.TestCase):
+    def test_perf_quality_accepts_script_headers_with_and_without_cpu(self):
+        script = """\
+cosmos-perf-go-  2670 521.716053: 20408163 task-clock:ppp:
+          4aaf23 runtime.futex.abi0+0x23 (binary)
+
+cosmos-perf-go-  2678 [002] 522.186463: 20408163 task-clock:ppp:
+          0 [unknown] ([unknown])
+
+"""
+        result = PERF_QUALITY.calculate(script, "", "frame-pointer")
+        self.assertEqual(2, result["samples"])
+        self.assertEqual(100, result["callchainSamplePercent"])
+        self.assertEqual(50, result["resolvedSamplePercent"])
+
     def test_conversion_is_deterministic_and_reads_memory(self):
         adapter = {
             "workload": {"workers": 8},

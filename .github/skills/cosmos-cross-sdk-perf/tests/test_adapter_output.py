@@ -21,9 +21,29 @@ PERF_SPEC = importlib.util.spec_from_file_location(
 assert PERF_SPEC and PERF_SPEC.loader
 PERF_QUALITY = importlib.util.module_from_spec(PERF_SPEC)
 PERF_SPEC.loader.exec_module(PERF_QUALITY)
+NORMALIZE_SPEC = importlib.util.spec_from_file_location(
+    "normalize_perf_self", SKILL / "scripts" / "normalize-perf-self.py"
+)
+assert NORMALIZE_SPEC and NORMALIZE_SPEC.loader
+NORMALIZE = importlib.util.module_from_spec(NORMALIZE_SPEC)
+NORMALIZE_SPEC.loader.exec_module(NORMALIZE)
 
 
 class AdapterOutputTests(unittest.TestCase):
+    def test_perf_self_normalization_totals_exactly_100(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "perf-self.csv"
+            path.write_text(
+                "symbol,dso,self_percent\none,binary,49.73\ntwo,binary,49.73\n",
+                encoding="utf-8",
+            )
+            NORMALIZE.normalize(path)
+            values = [
+                float(line.rsplit(",", 1)[1])
+                for line in path.read_text(encoding="utf-8").splitlines()[1:]
+            ]
+        self.assertEqual(100.0, sum(values))
+
     def test_perf_quality_accepts_script_headers_with_and_without_cpu(self):
         script = """\
 cosmos-perf-go-  2670 521.716053: 20408163 task-clock:ppp:

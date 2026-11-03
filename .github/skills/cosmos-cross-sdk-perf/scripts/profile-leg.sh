@@ -153,6 +153,7 @@ python3 "$(dirname "$0")/perf-quality.py" \
         }
       }'
 } > "$leg_dir/perf-self.csv"
+python3 "$(dirname "$0")/normalize-perf-self.py" "$leg_dir/perf-self.csv"
 sha256sum "$raw"/* > "$raw/SHA256SUMS"
 chmod -R a-w "$raw"
 printf '%s\n' "$(date -u +%FT%TZ)" > "$leg_dir/completed-utc.txt"

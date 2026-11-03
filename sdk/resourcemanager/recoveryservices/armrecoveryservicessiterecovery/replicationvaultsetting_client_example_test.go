@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/ReplicationVaultSetting_Create.json
-func ExampleReplicationVaultSettingClient_BeginCreate() {
+// Generated from example definition: 2026-11-01/ReplicationVaultSetting_Create.json
+func ExampleReplicationVaultSettingClient_BeginCreate_updatesVaultSettingAVaultSettingObjectIsASingletonPerVaultAndItIsAlwaysPresentByDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -25,7 +25,8 @@ func ExampleReplicationVaultSettingClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewReplicationVaultSettingClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "default", armrecoveryservicessiterecovery.VaultSettingCreationInput{
 		Properties: &armrecoveryservicessiterecovery.VaultSettingCreationInputProperties{
-			MigrationSolutionID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+			MigrationSolutionID:           to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+			RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyEnabled),
 		},
 	}, nil)
 	if err != nil {
@@ -45,12 +46,53 @@ func ExampleReplicationVaultSettingClient_BeginCreate() {
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationVaultSettings/default"),
 	// 		Properties: &armrecoveryservicessiterecovery.VaultSettingProperties{
 	// 			MigrationSolutionID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+	// 			RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyEnabled),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationVaultSetting_Get.json
+// Generated from example definition: 2026-11-01/ReplicationVaultSetting_Create_Disabled.json
+func ExampleReplicationVaultSettingClient_BeginCreate_updatesVaultSettingWithTheA2ARecoveryNetworkConfigurationAutoSyncPolicyDisabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationVaultSettingClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "default", armrecoveryservicessiterecovery.VaultSettingCreationInput{
+		Properties: &armrecoveryservicessiterecovery.VaultSettingCreationInputProperties{
+			MigrationSolutionID:           to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+			RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyDisabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationVaultSettingClientCreateResponse{
+	// 	VaultSetting: armrecoveryservicessiterecovery.VaultSetting{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationVaultSettings"),
+	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationVaultSettings/default"),
+	// 		Properties: &armrecoveryservicessiterecovery.VaultSettingProperties{
+	// 			MigrationSolutionID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+	// 			RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyDisabled),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/ReplicationVaultSetting_Get.json
 func ExampleReplicationVaultSettingClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,12 +117,13 @@ func ExampleReplicationVaultSettingClient_Get() {
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationVaultSettings/default"),
 	// 		Properties: &armrecoveryservicessiterecovery.VaultSettingProperties{
 	// 			MigrationSolutionID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+	// 			RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyEnabled),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationVaultSetting_List.json
+// Generated from example definition: 2026-11-01/ReplicationVaultSetting_List.json
 func ExampleReplicationVaultSettingClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,6 +154,7 @@ func ExampleReplicationVaultSettingClient_NewListPager() {
 		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationVaultSettings/default"),
 		// 				Properties: &armrecoveryservicessiterecovery.VaultSettingProperties{
 		// 					MigrationSolutionID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"),
+		// 					RecoveryNetworkConfigAutoSync: to.Ptr(armrecoveryservicessiterecovery.RecoveryNetworkConfigAutoSyncPolicyEnabled),
 		// 				},
 		// 			},
 		// 		},

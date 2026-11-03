@@ -1,5 +1,5 @@
 directory: specification/keyvault/data-plane/Administration/RBAC
-commit: 3da218c900a6ee02ec0c23c53dc7004c515d221b
+commit: 89b1c6c8b5a3206b7619da9ef7e15c52df5ae9c9
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
 - specification/keyvault/data-plane/Administration/common/

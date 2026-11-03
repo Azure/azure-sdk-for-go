@@ -29,5 +29,6 @@ func main() {
 	// fix up the scope parameter for fakes
 	regexReplace("fake/server.go", `\, scopeParam\,`, ", rbac.RoleScope(`/`+scopeParam),")
 	regexReplace("fake/server.go", `\(scopeParam\, `, "(rbac.RoleScope(`/`+scopeParam), ")
-	regexReplace("fake/server.go", `(\(\?P<scope\>(.*?)\))`, `?$1?`)
+	// match the whole character class, which may itself contain escaped brackets or parentheses
+	regexReplace("fake/server.go", `(\(\?P<scope>\[(?:\\.|[^\]\\])*\]\+\))`, `?$1?`)
 }

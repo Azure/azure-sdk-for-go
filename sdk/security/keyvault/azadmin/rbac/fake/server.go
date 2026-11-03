@@ -130,7 +130,7 @@ func (s *ServerTransport) dispatchCreateOrUpdateRoleDefinition(req *http.Request
 	if s.srv.CreateOrUpdateRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -140,16 +140,7 @@ func (s *ServerTransport) dispatchCreateOrUpdateRoleDefinition(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionName")])
 	if err != nil {
 		return nil, err
@@ -173,7 +164,7 @@ func (s *ServerTransport) dispatchCreateRoleAssignment(req *http.Request) (*http
 	if s.srv.CreateRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -183,16 +174,7 @@ func (s *ServerTransport) dispatchCreateRoleAssignment(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -216,22 +198,13 @@ func (s *ServerTransport) dispatchDeleteRoleAssignment(req *http.Request) (*http
 	if s.srv.DeleteRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -255,22 +228,13 @@ func (s *ServerTransport) dispatchDeleteRoleDefinition(req *http.Request) (*http
 	if s.srv.DeleteRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionName")])
 	if err != nil {
 		return nil, err
@@ -294,22 +258,13 @@ func (s *ServerTransport) dispatchGetRoleAssignment(req *http.Request) (*http.Re
 	if s.srv.GetRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -333,22 +288,13 @@ func (s *ServerTransport) dispatchGetRoleDefinition(req *http.Request) (*http.Re
 	if s.srv.GetRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return rbac.RoleScope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 	roleDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionName")])
 	if err != nil {
 		return nil, err
@@ -374,23 +320,14 @@ func (s *ServerTransport) dispatchNewListRoleAssignmentsPager(req *http.Request)
 	}
 	newListRoleAssignmentsPager := s.newListRoleAssignmentsPager.get(req)
 	if newListRoleAssignmentsPager == nil {
-		const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments`
+		const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-			p, unescapeErr := url.PathUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return rbac.RoleScope(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 		filterParam := getOptional(qp.Get("$filter"))
 		var options *rbac.ListRoleAssignmentsOptions
 		if filterParam != nil {
@@ -425,23 +362,14 @@ func (s *ServerTransport) dispatchNewListRoleDefinitionsPager(req *http.Request)
 	}
 	newListRoleDefinitionsPager := s.newListRoleDefinitionsPager.get(req)
 	if newListRoleDefinitionsPager == nil {
-		const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions`
+		const regexStr = `/?(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)?/providers/Microsoft\.Authorization/roleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
-			p, unescapeErr := url.PathUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return rbac.RoleScope(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := rbac.RoleScope(matches[regex.SubexpIndex("scope")])
 		filterParam := getOptional(qp.Get("$filter"))
 		var options *rbac.ListRoleDefinitionsOptions
 		if filterParam != nil {

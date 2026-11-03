@@ -4,38 +4,38 @@
 
 package ekm
 
-// CheckEkmConnectionResponse contains the response from method KeyVaultClient.CheckEkmConnection.
-type CheckEkmConnectionResponse struct {
+// CheckConnectionResponse contains the response from method Client.CheckConnection.
+type CheckConnectionResponse struct {
 	// EKM proxy information.
 	ProxyInfo
 }
 
-// CreateEkmConnectionResponse contains the response from method KeyVaultClient.CreateEkmConnection.
-type CreateEkmConnectionResponse struct {
-	// A EkmConnection model object.
+// CreateConnectionResponse contains the response from method Client.CreateConnection.
+type CreateConnectionResponse struct {
+	// A Connection model object.
 	Connection
 }
 
-// DeleteEkmConnectionResponse contains the response from method KeyVaultClient.DeleteEkmConnection.
-type DeleteEkmConnectionResponse struct {
-	// A EkmConnection model object.
+// DeleteConnectionResponse contains the response from method Client.DeleteConnection.
+type DeleteConnectionResponse struct {
+	// A Connection model object.
 	Connection
 }
 
-// GetEkmCertificateResponse contains the response from method KeyVaultClient.GetEkmCertificate.
-type GetEkmCertificateResponse struct {
+// GetCertificateResponse contains the response from method Client.GetCertificate.
+type GetCertificateResponse struct {
 	// EKM proxy client certificate information.
 	ProxyClientCertificateInfo
 }
 
-// GetEkmConnectionResponse contains the response from method KeyVaultClient.GetEkmConnection.
-type GetEkmConnectionResponse struct {
-	// A EkmConnection model object.
+// GetConnectionResponse contains the response from method Client.GetConnection.
+type GetConnectionResponse struct {
+	// A Connection model object.
 	Connection
 }
 
-// UpdateEkmConnectionResponse contains the response from method KeyVaultClient.UpdateEkmConnection.
-type UpdateEkmConnectionResponse struct {
-	// A EkmConnection model object.
+// UpdateConnectionResponse contains the response from method Client.UpdateConnection.
+type UpdateConnectionResponse struct {
+	// A Connection model object.
 	Connection
 }

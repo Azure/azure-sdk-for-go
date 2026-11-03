@@ -144,4 +144,12 @@ Log "Creating additional required role assignments for '$testApplicationOid'"
 $null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto Officer' -ObjectID $testApplicationOid
 $null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto User' -ObjectID $testApplicationOid
 
+# EKM tests are optional, so don't fail deployment where EKM isn't available.
+try {
+    $null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM EKM Administrator' -ObjectID $testApplicationOid -ErrorAction Stop
+}
+catch {
+    Write-Warning "Failed to assign 'Managed HSM EKM Administrator'; configuring an EKM connection will fail with 403: $_"
+}
+
 Log "Role assignments created for '$testApplicationOid'"

@@ -22,8 +22,8 @@ import (
 )
 
 func TestBackupRestore(t *testing.T) {
-	client, sasToken := startBackupTest(t)
-	testSerde(t, &sasToken)
+	client, storageParams := startBackupTest(t)
+	testSerde(t, &storageParams)
 
 	var frequency time.Duration
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -32,8 +32,8 @@ func TestBackupRestore(t *testing.T) {
 
 	// backup the vault
 	preBackupParameters := backup.PreBackupOperationParameters{
-		StorageResourceURI: sasToken.StorageResourceURI,
-		Token:              sasToken.Token,
+		StorageResourceURI: storageParams.StorageResourceURI,
+		UseManagedIdentity: storageParams.UseManagedIdentity,
 	}
 	preBackupPoller, err := client.BeginPreFullBackup(context.Background(), preBackupParameters, nil)
 	require.NoError(t, err)
@@ -43,7 +43,7 @@ func TestBackupRestore(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, preBackupResults.Error)
 
-	backupPoller, err := client.BeginFullBackup(context.Background(), sasToken, nil)
+	backupPoller, err := client.BeginFullBackup(context.Background(), storageParams, nil)
 	require.NoError(t, err)
 	backupResults, err := backupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: frequency,
@@ -59,11 +59,11 @@ func TestBackupRestore(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	preRestoreOperationParameters := backup.PreRestoreOperationParameters{
 		FolderToRestore:    &folderURI,
-		SASTokenParameters: &sasToken,
+		SASTokenParameters: &storageParams,
 	}
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
-		SASTokenParameters: &sasToken,
+		SASTokenParameters: &storageParams,
 	}
 	testSerde(t, &restoreOperationParameters)
 
@@ -95,7 +95,7 @@ func TestBackupRestore(t *testing.T) {
 }
 
 func TestBackupRestoreWithResumeToken(t *testing.T) {
-	client, sasToken := startBackupTest(t)
+	client, storageParams := startBackupTest(t)
 
 	var frequency time.Duration
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -103,13 +103,13 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	}
 
 	// backup the vault
-	backupPoller, err := client.BeginFullBackup(context.Background(), sasToken, nil)
+	backupPoller, err := client.BeginFullBackup(context.Background(), storageParams, nil)
 	require.NoError(t, err)
 
 	// create a new poller from a continuation token
 	token, err := backupPoller.ResumeToken()
 	require.NoError(t, err)
-	newBackupPoller, err := client.BeginFullBackup(context.Background(), sasToken, &backup.BeginFullBackupOptions{ResumeToken: token})
+	newBackupPoller, err := client.BeginFullBackup(context.Background(), storageParams, &backup.BeginFullBackupOptions{ResumeToken: token})
 	require.NoError(t, err)
 	backupResults, err := newBackupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: frequency,
@@ -125,7 +125,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
-		SASTokenParameters: &sasToken,
+		SASTokenParameters: &storageParams,
 	}
 	testSerde(t, &restoreOperationParameters)
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
@@ -154,7 +154,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 }
 
 func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
-	backupClient, sasToken := startBackupTest(t)
+	backupClient, storageParams := startBackupTest(t)
 
 	var frequency time.Duration
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -175,7 +175,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	}
 
 	// backup the vault
-	backupPoller, err := backupClient.BeginFullBackup(context.Background(), sasToken, nil)
+	backupPoller, err := backupClient.BeginFullBackup(context.Background(), storageParams, nil)
 	require.NoError(t, err)
 	backupResults, err := backupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: frequency,
@@ -187,7 +187,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	restoreOperationParameters := backup.SelectiveKeyRestoreOperationParameters{
 		Folder:             &folderURI,
-		SASTokenParameters: &sasToken,
+		SASTokenParameters: &storageParams,
 	}
 	testSerde(t, &restoreOperationParameters)
 	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), "selective-restore-test-key", restoreOperationParameters, nil)

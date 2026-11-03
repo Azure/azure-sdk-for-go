@@ -35,7 +35,8 @@ class AdapterOutputTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = pathlib.Path(directory) / "perf-self.csv"
             path.write_text(
-                "symbol,dso,self_percent\none,binary,49.73\ntwo,binary,49.73\n",
+                "symbol,dso,self_percent\n"
+                + "".join(f"row-{index},binary,0.01\n" for index in range(1230)),
                 encoding="utf-8",
             )
             NORMALIZE.normalize(path)
@@ -44,6 +45,7 @@ class AdapterOutputTests(unittest.TestCase):
                 for line in path.read_text(encoding="utf-8").splitlines()[1:]
             ]
         self.assertEqual(Decimal("100.000000000000"), sum(values))
+        self.assertTrue(all(value >= 0 for value in values))
 
     def test_perf_quality_accepts_script_headers_with_and_without_cpu(self):
         script = """\

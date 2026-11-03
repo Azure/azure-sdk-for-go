@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import csv
 import pathlib
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal
 
 
 def normalize(path: pathlib.Path) -> None:
@@ -23,9 +23,12 @@ def normalize(path: pathlib.Path) -> None:
         raise ValueError("perf Self total must be positive")
     precision = Decimal("0.000000000001")
     normalized = [
-        (value / total * Decimal(100)).quantize(precision) for value in values[:-1]
+        (value / total * Decimal(100)).quantize(precision, rounding=ROUND_DOWN)
+        for value in values
     ]
-    normalized.append(Decimal(100) - sum(normalized))
+    normalized[max(range(len(normalized)), key=normalized.__getitem__)] += (
+        Decimal(100) - sum(normalized)
+    )
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=("symbol", "dso", "self_percent"))
         writer.writeheader()

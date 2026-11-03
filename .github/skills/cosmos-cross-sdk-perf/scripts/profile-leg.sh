@@ -128,8 +128,9 @@ if [[ "$status" -eq 0 ]]; then
     --leg "$leg" --run-class perf --workers "$workers" --repeat "$repeat" \
     --output "$leg_dir/metrics.json"
 fi
-perf report --stdio --show-nr-samples --percent-limit 0 -i "$raw/perf.data" > "$raw/perf-report.txt"
-perf script -i "$raw/perf.data" > "$raw/perf-script.txt"
+perf report --no-inline --stdio --show-nr-samples --percent-limit 0 \
+  -i "$raw/perf.data" > "$raw/perf-report.txt"
+perf script --no-inline -i "$raw/perf.data" > "$raw/perf-script.txt"
 python3 "$(dirname "$0")/perf-quality.py" \
   --perf-script "$raw/perf-script.txt" \
   --perf-stderr "$raw/perf-record.stderr" \
@@ -137,7 +138,8 @@ python3 "$(dirname "$0")/perf-quality.py" \
   --output "$raw/perf-quality.json"
 {
   echo "symbol,dso,self_percent"
-  perf report --stdio --field-separator '|' -F overhead,symbol,dso --percent-limit 0 \
+  perf report --no-inline --stdio --field-separator '|' \
+    -F overhead,symbol,dso --percent-limit 0 \
     -i "$raw/perf.data" |
     awk -F'|' '
       /^[#]/ || NF < 3 { next }

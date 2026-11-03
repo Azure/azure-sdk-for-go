@@ -31,6 +31,11 @@ NORMALIZE_SPEC.loader.exec_module(NORMALIZE)
 
 
 class AdapterOutputTests(unittest.TestCase):
+    def test_profile_leg_disables_expensive_inline_symbol_expansion(self):
+        script = (SKILL / "scripts" / "profile-leg.sh").read_text(encoding="utf-8")
+        self.assertEqual(2, script.count("perf report --no-inline"))
+        self.assertIn("perf script --no-inline", script)
+
     def test_perf_self_normalization_totals_exactly_100(self):
         with tempfile.TemporaryDirectory() as directory:
             path = pathlib.Path(directory) / "perf-self.csv"

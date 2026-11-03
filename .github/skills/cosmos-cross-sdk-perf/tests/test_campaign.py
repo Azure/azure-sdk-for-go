@@ -219,6 +219,11 @@ class CampaignTests(unittest.TestCase):
             (run_dir / "observer-effect.csv").write_text(
                 "workers,leg,run_class\n8,go-v1,perf\n", encoding="utf-8"
             )
+            differential = run_dir / "w8" / "perf" / "differential" / "go-v1-vs-go-v2"
+            differential.mkdir(parents=True)
+            (differential / "forward.svg").write_text(
+                "<svg></svg>", encoding="utf-8"
+            )
             output = pathlib.Path(temp) / "bundle.tar.gz"
             campaign.sanitize(run_dir, output)
             with tarfile.open(output, "r:gz") as archive:
@@ -230,6 +235,12 @@ class CampaignTests(unittest.TestCase):
                 )
                 self.assertIsNotNone(
                     archive.getmember("cosmos-perf-result/observer-effect.csv")
+                )
+                self.assertIsNotNone(
+                    archive.getmember(
+                        "cosmos-perf-result/w8/perf/differential/"
+                        "go-v1-vs-go-v2/forward.svg"
+                    )
                 )
             self.assertTrue(value["endpoint"].startswith("sha256:"))
             self.assertEqual(10, value["success"])

@@ -1279,7 +1279,7 @@ def sanitize(run_dir: pathlib.Path, output: pathlib.Path) -> None:
         for source in sorted(run_dir.rglob("*")):
             is_derived_visual = (
                 source.is_file()
-                and "derived" in source.parts
+                and ("derived" in source.parts or "differential" in source.parts)
                 and source.suffix in (".svg", ".html", ".folded")
             )
             if not source.is_file() or (

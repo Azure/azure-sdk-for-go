@@ -67,7 +67,7 @@ func (client *OutboundFirewallRulesClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a outbound firewall rule with a given name.
+// createOrUpdate - Create a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OutboundFirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, options *OutboundFirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *OutboundFirewallRulesClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OutboundFirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, _ *OutboundFirewallRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *OutboundFirewallRulesClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Deletes a outbound firewall rule with a given name.
+// deleteOperation - Deletes a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OutboundFirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, options *OutboundFirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *OutboundFirewallRulesClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OutboundFirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, _ *OutboundFirewallRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}"
 	if client.subscriptionID == "" {

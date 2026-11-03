@@ -29,18 +29,6 @@ type VirtualClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.VirtualClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualClustersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientGetOptions) (resp azfake.Responder[armsql.VirtualClustersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method VirtualClustersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsql.VirtualClustersClientListOptions) (resp azfake.PagerResponder[armsql.VirtualClustersClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method VirtualClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.VirtualClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse])
-
 	// BeginUpdate is the fake for method VirtualClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters armsql.VirtualClusterUpdate, options *armsql.VirtualClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -48,6 +36,18 @@ type VirtualClustersServer struct {
 	// BeginUpdateDNSServers is the fake for method VirtualClustersClient.BeginUpdateDNSServers
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateDNSServers func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientBeginUpdateDNSServersOptions) (resp azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualClustersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientGetOptions) (resp azfake.Responder[armsql.VirtualClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method VirtualClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.VirtualClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VirtualClustersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsql.VirtualClustersClientListOptions) (resp azfake.PagerResponder[armsql.VirtualClustersClientListResponse])
 }
 
 // NewVirtualClustersServerTransport creates a new instance of VirtualClustersServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewVirtualClustersServerTransport(srv *VirtualClustersServer) *VirtualClust
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsql.VirtualClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsql.VirtualClustersClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse]](),
 		beginUpdateDNSServers:       newTracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type VirtualClustersServerTransport struct {
 	srv                         *VirtualClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsql.VirtualClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsql.VirtualClustersClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse]]
 	beginUpdateDNSServers       *tracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualClustersServerTransport.
@@ -102,16 +102,16 @@ func (v *VirtualClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualClustersClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualClustersClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualClustersClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VirtualClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
 			case "VirtualClustersClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
 			case "VirtualClustersClient.BeginUpdateDNSServers":
 				res.resp, res.err = v.dispatchBeginUpdateDNSServers(req)
+			case "VirtualClustersClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualClustersClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,109 +220,6 @@ func (v *VirtualClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (v *VirtualClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters/(?P<virtualClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualClusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualClusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.VirtualClustersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.VirtualClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		v.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -412,6 +309,109 @@ func (v *VirtualClustersServerTransport) dispatchBeginUpdateDNSServers(req *http
 		v.beginUpdateDNSServers.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters/(?P<virtualClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualClusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualClusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.VirtualClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/virtualClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.VirtualClustersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

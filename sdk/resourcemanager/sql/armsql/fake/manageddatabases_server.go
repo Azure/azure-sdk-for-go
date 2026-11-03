@@ -41,18 +41,6 @@ type ManagedDatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *armsql.ManagedDatabasesClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ManagedDatabasesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *armsql.ManagedDatabasesClientGetOptions) (resp azfake.Responder[armsql.ManagedDatabasesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByInstancePager is the fake for method ManagedDatabasesClient.NewListByInstancePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedDatabasesClientListByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse])
-
-	// NewListInaccessibleByInstancePager is the fake for method ManagedDatabasesClient.NewListInaccessibleByInstancePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListInaccessibleByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedDatabasesClientListInaccessibleByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse])
-
 	// BeginReevaluateInaccessibleDatabaseState is the fake for method ManagedDatabasesClient.BeginReevaluateInaccessibleDatabaseState
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReevaluateInaccessibleDatabaseState func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *armsql.ManagedDatabasesClientBeginReevaluateInaccessibleDatabaseStateOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse], errResp azfake.ErrorResponder)
@@ -64,6 +52,18 @@ type ManagedDatabasesServer struct {
 	// BeginUpdate is the fake for method ManagedDatabasesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.ManagedDatabaseUpdate, options *armsql.ManagedDatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ManagedDatabasesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *armsql.ManagedDatabasesClientGetOptions) (resp azfake.Responder[armsql.ManagedDatabasesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByInstancePager is the fake for method ManagedDatabasesClient.NewListByInstancePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedDatabasesClientListByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse])
+
+	// NewListInaccessibleByInstancePager is the fake for method ManagedDatabasesClient.NewListInaccessibleByInstancePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListInaccessibleByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedDatabasesClientListInaccessibleByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse])
 }
 
 // NewManagedDatabasesServerTransport creates a new instance of ManagedDatabasesServerTransport with the provided implementation.
@@ -77,11 +77,11 @@ func NewManagedDatabasesServerTransport(srv *ManagedDatabasesServer) *ManagedDat
 		beginCompleteRestore:                     newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteRestoreResponse]](),
 		beginCreateOrUpdate:                      newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCreateOrUpdateResponse]](),
 		beginDelete:                              newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientDeleteResponse]](),
-		newListByInstancePager:                   newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]](),
-		newListInaccessibleByInstancePager:       newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]](),
 		beginReevaluateInaccessibleDatabaseState: newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse]](),
 		beginStartMove:                           newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientStartMoveResponse]](),
 		beginUpdate:                              newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse]](),
+		newListByInstancePager:                   newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]](),
+		newListInaccessibleByInstancePager:       newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]](),
 	}
 }
 
@@ -94,11 +94,11 @@ type ManagedDatabasesServerTransport struct {
 	beginCompleteRestore                     *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteRestoreResponse]]
 	beginCreateOrUpdate                      *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCreateOrUpdateResponse]]
 	beginDelete                              *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientDeleteResponse]]
-	newListByInstancePager                   *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]]
-	newListInaccessibleByInstancePager       *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]]
 	beginReevaluateInaccessibleDatabaseState *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse]]
 	beginStartMove                           *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientStartMoveResponse]]
 	beginUpdate                              *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse]]
+	newListByInstancePager                   *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]]
+	newListInaccessibleByInstancePager       *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedDatabasesServerTransport.
@@ -132,18 +132,18 @@ func (m *ManagedDatabasesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedDatabasesClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
-			case "ManagedDatabasesClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedDatabasesClient.NewListByInstancePager":
-				res.resp, res.err = m.dispatchNewListByInstancePager(req)
-			case "ManagedDatabasesClient.NewListInaccessibleByInstancePager":
-				res.resp, res.err = m.dispatchNewListInaccessibleByInstancePager(req)
 			case "ManagedDatabasesClient.BeginReevaluateInaccessibleDatabaseState":
 				res.resp, res.err = m.dispatchBeginReevaluateInaccessibleDatabaseState(req)
 			case "ManagedDatabasesClient.BeginStartMove":
 				res.resp, res.err = m.dispatchBeginStartMove(req)
 			case "ManagedDatabasesClient.BeginUpdate":
 				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "ManagedDatabasesClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedDatabasesClient.NewListByInstancePager":
+				res.resp, res.err = m.dispatchNewListByInstancePager(req)
+			case "ManagedDatabasesClient.NewListInaccessibleByInstancePager":
+				res.resp, res.err = m.dispatchNewListInaccessibleByInstancePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -416,125 +416,6 @@ func (m *ManagedDatabasesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (m *ManagedDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedDatabase, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedDatabasesServerTransport) dispatchNewListByInstancePager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByInstancePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePager not implemented")}
-	}
-	newListByInstancePager := m.newListByInstancePager.get(req)
-	if newListByInstancePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
-		newListByInstancePager = &resp
-		m.newListByInstancePager.add(req, newListByInstancePager)
-		server.PagerResponderInjectNextLinks(newListByInstancePager, req, func(page *armsql.ManagedDatabasesClientListByInstanceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByInstancePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByInstancePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByInstancePager) {
-		m.newListByInstancePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedDatabasesServerTransport) dispatchNewListInaccessibleByInstancePager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListInaccessibleByInstancePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListInaccessibleByInstancePager not implemented")}
-	}
-	newListInaccessibleByInstancePager := m.newListInaccessibleByInstancePager.get(req)
-	if newListInaccessibleByInstancePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inaccessibleManagedDatabases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListInaccessibleByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
-		newListInaccessibleByInstancePager = &resp
-		m.newListInaccessibleByInstancePager.add(req, newListInaccessibleByInstancePager)
-		server.PagerResponderInjectNextLinks(newListInaccessibleByInstancePager, req, func(page *armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListInaccessibleByInstancePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListInaccessibleByInstancePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListInaccessibleByInstancePager) {
-		m.newListInaccessibleByInstancePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *ManagedDatabasesServerTransport) dispatchBeginReevaluateInaccessibleDatabaseState(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginReevaluateInaccessibleDatabaseState == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReevaluateInaccessibleDatabaseState not implemented")}
@@ -684,6 +565,125 @@ func (m *ManagedDatabasesServerTransport) dispatchBeginUpdate(req *http.Request)
 		m.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedDatabase, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchNewListByInstancePager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByInstancePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePager not implemented")}
+	}
+	newListByInstancePager := m.newListByInstancePager.get(req)
+	if newListByInstancePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
+		newListByInstancePager = &resp
+		m.newListByInstancePager.add(req, newListByInstancePager)
+		server.PagerResponderInjectNextLinks(newListByInstancePager, req, func(page *armsql.ManagedDatabasesClientListByInstanceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByInstancePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByInstancePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByInstancePager) {
+		m.newListByInstancePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchNewListInaccessibleByInstancePager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListInaccessibleByInstancePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListInaccessibleByInstancePager not implemented")}
+	}
+	newListInaccessibleByInstancePager := m.newListInaccessibleByInstancePager.get(req)
+	if newListInaccessibleByInstancePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inaccessibleManagedDatabases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListInaccessibleByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
+		newListInaccessibleByInstancePager = &resp
+		m.newListInaccessibleByInstancePager.add(req, newListInaccessibleByInstancePager)
+		server.PagerResponderInjectNextLinks(newListInaccessibleByInstancePager, req, func(page *armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListInaccessibleByInstancePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListInaccessibleByInstancePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListInaccessibleByInstancePager) {
+		m.newListInaccessibleByInstancePager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -68,7 +68,7 @@ func (client *TdeCertificatesClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Creates a TDE certificate for a given server.
+// create - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters TdeCertificate, options *TdeCertificatesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *TdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters TdeCertificate, _ *TdeCertificatesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/tdeCertificates"
 	if client.subscriptionID == "" {

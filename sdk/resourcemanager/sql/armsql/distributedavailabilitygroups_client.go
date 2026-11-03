@@ -69,7 +69,7 @@ func (client *DistributedAvailabilityGroupsClient) BeginCreateOrUpdate(ctx conte
 	}
 }
 
-// CreateOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
+// createOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Co
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, _ *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *DistributedAvailabilityGroupsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
+// deleteOperation - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.C
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DistributedAvailabilityGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, _ *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
 	if client.subscriptionID == "" {
@@ -225,7 +225,7 @@ func (client *DistributedAvailabilityGroupsClient) BeginFailover(ctx context.Con
 	}
 }
 
-// Failover - Performs requested failover type in this distributed availability group.
+// failover - Performs requested failover type in this distributed availability group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DistributedAvailabilityGroupsClient) failover(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupsFailoverRequest, options *DistributedAvailabilityGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *DistributedAvailabilityGroupsClient) failover(ctx context.Context,
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *DistributedAvailabilityGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupsFailoverRequest, _ *DistributedAvailabilityGroupsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/failover"
 	if client.subscriptionID == "" {
@@ -267,6 +267,168 @@ func (client *DistributedAvailabilityGroupsClient) failoverCreateRequest(ctx con
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{distributedAvailabilityGroupName}", url.PathEscape(distributedAvailabilityGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginSetRole - Sets the role for managed instance in a distributed availability group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - distributedAvailabilityGroupName - The distributed availability group name.
+//   - parameters - The distributed availability group set role request parameters.
+//   - options - DistributedAvailabilityGroupsClientBeginSetRoleOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginSetRole
+//     method.
+func (client *DistributedAvailabilityGroupsClient) BeginSetRole(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, options *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientSetRoleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.setRole(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DistributedAvailabilityGroupsClientSetRoleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DistributedAvailabilityGroupsClientSetRoleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// setRole - Sets the role for managed instance in a distributed availability group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DistributedAvailabilityGroupsClient) setRole(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, options *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DistributedAvailabilityGroupsClient.BeginSetRole"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.setRoleCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// setRoleCreateRequest creates the setRole request.
+func (client *DistributedAvailabilityGroupsClient) setRoleCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, _ *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/setRole"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if distributedAvailabilityGroupName == "" {
+		return nil, errors.New("parameter distributedAvailabilityGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{distributedAvailabilityGroupName}", url.PathEscape(distributedAvailabilityGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a distributed availability group replication mode.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - distributedAvailabilityGroupName - The distributed availability group name.
+//   - parameters - The distributed availability group info.
+//   - options - DistributedAvailabilityGroupsClientBeginUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginUpdate
+//     method.
+func (client *DistributedAvailabilityGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DistributedAvailabilityGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DistributedAvailabilityGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a distributed availability group replication mode.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DistributedAvailabilityGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, _ *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if distributedAvailabilityGroupName == "" {
+		return nil, errors.New("parameter distributedAvailabilityGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{distributedAvailabilityGroupName}", url.PathEscape(distributedAvailabilityGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -422,166 +584,4 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(
 		return DistributedAvailabilityGroupsClientListByInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginSetRole - Sets the role for managed instance in a distributed availability group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - distributedAvailabilityGroupName - The distributed availability group name.
-//   - parameters - The distributed availability group set role request parameters.
-//   - options - DistributedAvailabilityGroupsClientBeginSetRoleOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginSetRole
-//     method.
-func (client *DistributedAvailabilityGroupsClient) BeginSetRole(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, options *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientSetRoleResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.setRole(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DistributedAvailabilityGroupsClientSetRoleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DistributedAvailabilityGroupsClientSetRoleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SetRole - Sets the role for managed instance in a distributed availability group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DistributedAvailabilityGroupsClient) setRole(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, options *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DistributedAvailabilityGroupsClient.BeginSetRole"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.setRoleCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// setRoleCreateRequest creates the SetRole request.
-func (client *DistributedAvailabilityGroupsClient) setRoleCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, _ *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/setRole"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if distributedAvailabilityGroupName == "" {
-		return nil, errors.New("parameter distributedAvailabilityGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{distributedAvailabilityGroupName}", url.PathEscape(distributedAvailabilityGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates a distributed availability group replication mode.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - distributedAvailabilityGroupName - The distributed availability group name.
-//   - parameters - The distributed availability group info.
-//   - options - DistributedAvailabilityGroupsClientBeginUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginUpdate
-//     method.
-func (client *DistributedAvailabilityGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DistributedAvailabilityGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DistributedAvailabilityGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a distributed availability group replication mode.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DistributedAvailabilityGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, _ *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if distributedAvailabilityGroupName == "" {
-		return nil, errors.New("parameter distributedAvailabilityGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{distributedAvailabilityGroupName}", url.PathEscape(distributedAvailabilityGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

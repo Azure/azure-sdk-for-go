@@ -69,7 +69,7 @@ func (client *ServerConfigurationOptionsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Updates managed instance server configuration option.
+// createOrUpdate - Updates managed instance server configuration option.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerConfigurationOptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, serverConfigurationOptionName ServerConfigurationOptionName, parameters ServerConfigurationOption, options *ServerConfigurationOptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ServerConfigurationOptionsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerConfigurationOptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, serverConfigurationOptionName ServerConfigurationOptionName, parameters ServerConfigurationOption, _ *ServerConfigurationOptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverConfigurationOptions/{serverConfigurationOptionName}"
 	if client.subscriptionID == "" {

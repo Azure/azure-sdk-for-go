@@ -71,7 +71,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginCreateOrUpda
 	}
 }
 
-// CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
+// createOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -94,7 +94,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdate(ct
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, _ *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}"
 	if client.subscriptionID == "" {
@@ -152,7 +152,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginDelete(ctx c
 	}
 }
 
-// Delete - Deletes an existing server Active Directory only authentication property.
+// deleteOperation - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteOperation(c
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, _ *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}"
 	if client.subscriptionID == "" {

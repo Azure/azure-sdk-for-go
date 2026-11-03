@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithGenericBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithGe
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,7 +534,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -670,7 +670,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithBl
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKubernetesClusterBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,108 +818,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKu
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_PostgreSqlFlexibleServerBackupDatasourceParameters.json
-func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithPostgreSqlFlexibleServerBackupDatasourceParameters() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("62b829ee-7936-40c9-a1c9-47a93f9f3965", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "pgflexrg", "pgflexvault", "pgflexbi", armdataprotection.BackupInstanceResource{
-		Properties: &armdataprotection.BackupInstance{
-			DataSourceInfo: &armdataprotection.Datasource{
-				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-				ObjectType:       to.Ptr("Datasource"),
-				ResourceID:       to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-				ResourceLocation: to.Ptr("eastus2euap"),
-				ResourceName:     to.Ptr("pgflexserver"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-				ResourceURI:      to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-			},
-			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-				ResourceID:       to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-				ResourceLocation: to.Ptr("eastus2euap"),
-				ResourceName:     to.Ptr("pgflexserver"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-				ResourceURI:      to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-			},
-			FriendlyName: to.Ptr("pgflexbi"),
-			ObjectType:   to.Ptr("BackupInstance"),
-			PolicyInfo: &armdataprotection.PolicyInfo{
-				PolicyID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/BackupVaults/pgflexvault/backupPolicies/pgflexpolicy"),
-				PolicyParameters: &armdataprotection.PolicyParameters{
-					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
-						&armdataprotection.PostgreSQLFlexibleServerBackupDatasourceParameters{
-							ObjectType:         to.Ptr("PostgreSqlFlexibleServerBackupDatasourceParameters"),
-							BackupSolutionType: to.Ptr(armdataprotection.BackupSolutionTypePhysicalBackup),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("pgflexbi"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/backupVaults/pgflexvault/backupInstances/pgflexbi"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-	// 				ResourceLocation: to.Ptr("eastus2euap"),
-	// 				ResourceName: to.Ptr("pgflexserver"),
-	// 				ResourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-	// 				ResourceURI: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
-	// 				ResourceLocation: to.Ptr("eastus2euap"),
-	// 				ResourceName: to.Ptr("pgflexserver"),
-	// 				ResourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-	// 			},
-	// 			FriendlyName: to.Ptr("pgflexbi"),
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/backupVaults/pgflexvault/backupPolicies/pgflexpolicy"),
-	// 				PolicyParameters: &armdataprotection.PolicyParameters{
-	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
-	// 						&armdataprotection.PostgreSQLFlexibleServerBackupDatasourceParameters{
-	// 							ObjectType: to.Ptr("PostgreSqlFlexibleServerBackupDatasourceParameters"),
-	// 							BackupSolutionType: to.Ptr(armdataprotection.BackupSolutionTypePhysicalBackup),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Provisioned"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerformCriticalOperationWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1035,7 +934,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerf
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1061,7 +960,810 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ResumeBackups.json
+func ExampleBackupInstancesClient_BeginResumeBackups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeBackups(ctx, "testrg", "testvault", "testbi", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientResumeBackupsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ResumeProtection.json
+func ExampleBackupInstancesClient_BeginResumeProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeProtection(ctx, "testrg", "testvault", "testbi", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientResumeProtectionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/StopProtection.json
+func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientStopProtectionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginStopProtectionOptions{
+		Parameters: &armdataprotection.StopProtectionRequest{
+			ResourceGuardOperationRequests: []*string{
+				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourceGroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableStopProtectionRequests/default"),
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientStopProtectionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
+func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{
+		Parameters: &armdataprotection.SuspendBackupRequest{
+			ResourceGuardOperationRequests: []*string{
+				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourceGroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableSuspendBackupsRequests/default"),
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientSuspendBackupsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/SuspendBackups.json
+func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientSuspendBackupsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/SyncBackupInstance.json
+func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSyncBackupInstance(ctx, "testrg", "testvault", "testbi", armdataprotection.SyncBackupInstanceRequest{
+		SyncType: to.Ptr(armdataprotection.SyncTypeDefault),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientSyncBackupInstanceResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/CrossRegionRestore/TriggerCrossRegionRestore.json
+func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerCrossRegionRestore(ctx, "000pikumar", "EastAsia", armdataprotection.CrossRegionRestoreRequestObject{
+		CrossRegionRestoreDetails: &armdataprotection.CrossRegionRestoreDetails{
+			SourceBackupInstanceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1"),
+			SourceRegion:           to.Ptr("east asia"),
+		},
+		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+			RecoveryPointID: to.Ptr("hardcodedRP"),
+			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
+				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+					SecretStoreResource: &armdataprotection.SecretStoreResource{
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+					},
+				},
+				DatasourceInfo: &armdataprotection.Datasource{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("targetdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
+				},
+				DatasourceSetInfo: &armdataprotection.DatasourceSet{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
+				},
+				ObjectType:      to.Ptr("RestoreTargetInfo"),
+				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+				RestoreLocation: to.Ptr("southeastasia"),
+			},
+			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerRehydrate.json
+func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRehydrate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.AzureBackupRehydrationRequest{
+		RecoveryPointID:              to.Ptr("hardcodedRP"),
+		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
+		RehydrationRetentionDuration: to.Ptr("7D"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerRestore.json
+func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+		IdentityDetails: &armdataprotection.IdentityDetails{
+			UseSystemAssignedIdentity:  to.Ptr(false),
+			UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
+		},
+		ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+		RecoveryPointID: to.Ptr("hardcodedRP"),
+		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
+			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+				SecretStoreResource: &armdataprotection.SecretStoreResource{
+					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+				},
+			},
+			DatasourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("targetdb"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DatasourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("viveksipgtest"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+				ResourceURI:      to.Ptr(""),
+			},
+			ObjectType:      to.Ptr("RestoreTargetInfo"),
+			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+			RestoreLocation: to.Ptr("southeastasia"),
+		},
+		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerRestoreAsFiles.json
+func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+		ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+		RecoveryPointID: to.Ptr("hardcodedRP"),
+		RestoreTargetInfo: &armdataprotection.RestoreFilesTargetInfo{
+			ObjectType:      to.Ptr("RestoreFilesTargetInfo"),
+			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+			RestoreLocation: to.Ptr("southeastasia"),
+			TargetDetails: &armdataprotection.TargetDetails{
+				FilePrefix:                to.Ptr("restoredblob"),
+				RestoreTargetLocationType: to.Ptr(armdataprotection.RestoreTargetLocationTypeAzureBlobs),
+				URL:                       to.Ptr("https://teststorage.blob.core.windows.net/restoretest"),
+			},
+		},
+		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
+func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithGenericRestoreDatasourceCriteria() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+		ObjectType:          to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+		RecoveryPointID:     to.Ptr("hardcodedRP"),
+		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeOperationalStore),
+		RestoreTargetInfo: &armdataprotection.ItemLevelRestoreTargetInfo{
+			RestoreLocation: to.Ptr("southeastasia"),
+			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+			ObjectType:      to.Ptr("ItemLevelRestoreTargetInfo"),
+			DatasourceInfo: &armdataprotection.Datasource{
+				ResourceID:       to.Ptr("/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc/volumeGroups/target-esan-volgroup"),
+				ResourceURI:      to.Ptr("SampleresourceUri123"),
+				DatasourceType:   to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
+				ResourceName:     to.Ptr("target-esan-volgroup"),
+				ResourceType:     to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
+				ResourceLocation: to.Ptr("eastus2euap"),
+				ObjectType:       to.Ptr("Datasource"),
+			},
+			DatasourceSetInfo: &armdataprotection.DatasourceSet{
+				ResourceID:       to.Ptr("/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc"),
+				DatasourceType:   to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
+				ResourceType:     to.Ptr("Microsoft.ElasticSan/elasticSans"),
+				ResourceLocation: to.Ptr("eastus2euap"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+			},
+			RestoreCriteria: []armdataprotection.ItemLevelRestoreCriteriaClassification{
+				&armdataprotection.GenericRestoreDatasourceCriteria{
+					ObjectType: to.Ptr("GenericRestoreDatasourceCriteria"),
+					ResourceSelectors: &armdataprotection.ResourceListSelectionCriteria{
+						ObjectType: to.Ptr("resourceListSelectionCriteria"),
+						ResourceIdentifiers: []*string{
+							to.Ptr("source-vol1"),
+							to.Ptr("source-vol2"),
+							to.Ptr("source-vol3"),
+						},
+						ResourceNameOverrides: map[string]*string{
+							"source-vol1": to.Ptr("target-vol1"),
+							"source-vol2": to.Ptr("target-vol2"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRestoreWithRehydrationRequest{
+		ObjectType:                   to.Ptr("AzureBackupRestoreWithRehydrationRequest"),
+		RecoveryPointID:              to.Ptr("hardcodedRP"),
+		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
+		RehydrationRetentionDuration: to.Ptr("7D"),
+		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
+			DatasourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("testdb"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DatasourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("viveksipgtest"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+				ResourceURI:      to.Ptr(""),
+			},
+			ObjectType:      to.Ptr("RestoreTargetInfo"),
+			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+			RestoreLocation: to.Ptr("southeastasia"),
+		},
+		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/CrossRegionRestore/ValidateCrossRegionRestore.json
+func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateCrossRegionRestore(ctx, "000pikumar", "EastAsia", armdataprotection.ValidateCrossRegionRestoreRequestObject{
+		CrossRegionRestoreDetails: &armdataprotection.CrossRegionRestoreDetails{
+			SourceBackupInstanceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1"),
+			SourceRegion:           to.Ptr("east asia"),
+		},
+		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+			RecoveryPointID: to.Ptr("hardcodedRP"),
+			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
+				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+					SecretStoreResource: &armdataprotection.SecretStoreResource{
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+					},
+				},
+				DatasourceInfo: &armdataprotection.Datasource{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("targetdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
+				},
+				DatasourceSetInfo: &armdataprotection.DatasourceSet{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
+				},
+				ObjectType:      to.Ptr("RestoreTargetInfo"),
+				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+				RestoreLocation: to.Ptr("southeastasia"),
+			},
+			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ValidateForBackup.json
+func ExampleBackupInstancesClient_BeginValidateForBackup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", armdataprotection.ValidateForBackupRequest{
+		BackupInstance: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("testdb"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("viveksipgtest"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+				SecretStoreResource: &armdataprotection.SecretStoreResource{
+					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+				},
+			},
+			FriendlyName: to.Ptr("harshitbi2"),
+			IdentityDetails: &armdataprotection.IdentityDetails{
+				UseSystemAssignedIdentity:  to.Ptr(false),
+				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
+			},
+			ObjectType: to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientValidateForBackupResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ValidateForModifyBackup.json
+func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForModifyBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateForModifyBackupRequest{
+		BackupInstance: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("testdb"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("OssDB"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("viveksipgtest"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+				SecretStoreResource: &armdataprotection.SecretStoreResource{
+					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+				},
+			},
+			FriendlyName: to.Ptr("harshitbi2"),
+			IdentityDetails: &armdataprotection.IdentityDetails{
+				UseSystemAssignedIdentity:  to.Ptr(false),
+				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
+			},
+			ObjectType: to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ValidateRestore.json
+func ExampleBackupInstancesClient_BeginValidateForRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
+		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+			IdentityDetails: &armdataprotection.IdentityDetails{
+				UseSystemAssignedIdentity:  to.Ptr(false),
+				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
+			},
+			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
+			RecoveryPointID: to.Ptr("hardcodedRP"),
+			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
+				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+					SecretStoreResource: &armdataprotection.SecretStoreResource{
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+					},
+				},
+				DatasourceInfo: &armdataprotection.Datasource{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("targetdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
+				},
+				DatasourceSetInfo: &armdataprotection.DatasourceSet{
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
+				},
+				ObjectType:      to.Ptr("RestoreTargetInfo"),
+				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+				RestoreLocation: to.Ptr("southeastasia"),
+			},
+			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientValidateForRestoreResponse{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
+	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
+	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1122,7 +1824,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1204,7 +1906,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoPro
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1272,7 +1974,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1354,7 +2056,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtect
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/GetBackupInstanceOperationResult.json
 func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1411,7 +2113,7 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: 2026-08-31-preview/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1475,807 +2177,4 @@ func ExampleBackupInstancesClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ResumeBackups.json
-func ExampleBackupInstancesClient_BeginResumeBackups() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeBackups(ctx, "testrg", "testvault", "testbi", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientResumeBackupsResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ResumeProtection.json
-func ExampleBackupInstancesClient_BeginResumeProtection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeProtection(ctx, "testrg", "testvault", "testbi", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientResumeProtectionResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/StopProtection.json
-func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientStopProtectionResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
-func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginStopProtectionOptions{
-		Parameters: &armdataprotection.StopProtectionRequest{
-			ResourceGuardOperationRequests: []*string{
-				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourceGroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableStopProtectionRequests/default"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientStopProtectionResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
-func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{
-		Parameters: &armdataprotection.SuspendBackupRequest{
-			ResourceGuardOperationRequests: []*string{
-				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourceGroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableSuspendBackupsRequests/default"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientSuspendBackupsResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/SuspendBackups.json
-func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientSuspendBackupsResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/SyncBackupInstance.json
-func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginSyncBackupInstance(ctx, "testrg", "testvault", "testbi", armdataprotection.SyncBackupInstanceRequest{
-		SyncType: to.Ptr(armdataprotection.SyncTypeDefault),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientSyncBackupInstanceResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-01/CrossRegionRestore/TriggerCrossRegionRestore.json
-func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerCrossRegionRestore(ctx, "000pikumar", "EastAsia", armdataprotection.CrossRegionRestoreRequestObject{
-		CrossRegionRestoreDetails: &armdataprotection.CrossRegionRestoreDetails{
-			SourceBackupInstanceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1"),
-			SourceRegion:           to.Ptr("east asia"),
-		},
-		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-			RecoveryPointID: to.Ptr("hardcodedRP"),
-			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-					},
-				},
-				DatasourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("Datasource"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("targetdb"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ResourceURI:      to.Ptr(""),
-				},
-				DatasourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("DatasourceSet"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("viveksipgtest"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-					ResourceURI:      to.Ptr(""),
-				},
-				ObjectType:      to.Ptr("RestoreTargetInfo"),
-				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-				RestoreLocation: to.Ptr("southeastasia"),
-			},
-			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRehydrate.json
-func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRehydrate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.AzureBackupRehydrationRequest{
-		RecoveryPointID:              to.Ptr("hardcodedRP"),
-		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
-		RehydrationRetentionDuration: to.Ptr("7D"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestore.json
-func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-		IdentityDetails: &armdataprotection.IdentityDetails{
-			UseSystemAssignedIdentity:  to.Ptr(false),
-			UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
-		},
-		ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-		RecoveryPointID: to.Ptr("hardcodedRP"),
-		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-				SecretStoreResource: &armdataprotection.SecretStoreResource{
-					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-				},
-			},
-			DatasourceInfo: &armdataprotection.Datasource{
-				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ObjectType:       to.Ptr("Datasource"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("targetdb"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DatasourceSetInfo: &armdataprotection.DatasourceSet{
-				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("viveksipgtest"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-				ResourceURI:      to.Ptr(""),
-			},
-			ObjectType:      to.Ptr("RestoreTargetInfo"),
-			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-			RestoreLocation: to.Ptr("southeastasia"),
-		},
-		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
-func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-		ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-		RecoveryPointID: to.Ptr("hardcodedRP"),
-		RestoreTargetInfo: &armdataprotection.RestoreFilesTargetInfo{
-			ObjectType:      to.Ptr("RestoreFilesTargetInfo"),
-			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-			RestoreLocation: to.Ptr("southeastasia"),
-			TargetDetails: &armdataprotection.TargetDetails{
-				FilePrefix:                to.Ptr("restoredblob"),
-				RestoreTargetLocationType: to.Ptr(armdataprotection.RestoreTargetLocationTypeAzureBlobs),
-				URL:                       to.Ptr("https://teststorage.blob.core.windows.net/restoretest"),
-			},
-		},
-		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
-func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithGenericRestoreDatasourceCriteria() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-		ObjectType:          to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-		RecoveryPointID:     to.Ptr("hardcodedRP"),
-		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeOperationalStore),
-		RestoreTargetInfo: &armdataprotection.ItemLevelRestoreTargetInfo{
-			RestoreLocation: to.Ptr("southeastasia"),
-			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-			ObjectType:      to.Ptr("ItemLevelRestoreTargetInfo"),
-			DatasourceInfo: &armdataprotection.Datasource{
-				ResourceID:       to.Ptr("/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc/volumeGroups/target-esan-volgroup"),
-				ResourceURI:      to.Ptr("SampleresourceUri123"),
-				DatasourceType:   to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
-				ResourceName:     to.Ptr("target-esan-volgroup"),
-				ResourceType:     to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
-				ResourceLocation: to.Ptr("eastus2euap"),
-				ObjectType:       to.Ptr("Datasource"),
-			},
-			DatasourceSetInfo: &armdataprotection.DatasourceSet{
-				ResourceID:       to.Ptr("/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc"),
-				DatasourceType:   to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
-				ResourceType:     to.Ptr("Microsoft.ElasticSan/elasticSans"),
-				ResourceLocation: to.Ptr("eastus2euap"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-			},
-			RestoreCriteria: []armdataprotection.ItemLevelRestoreCriteriaClassification{
-				&armdataprotection.GenericRestoreDatasourceCriteria{
-					ObjectType: to.Ptr("GenericRestoreDatasourceCriteria"),
-					ResourceSelectors: &armdataprotection.ResourceListSelectionCriteria{
-						ObjectType: to.Ptr("resourceListSelectionCriteria"),
-						ResourceIdentifiers: []*string{
-							to.Ptr("source-vol1"),
-							to.Ptr("source-vol2"),
-							to.Ptr("source-vol3"),
-						},
-						ResourceNameOverrides: map[string]*string{
-							"source-vol1": to.Ptr("target-vol1"),
-							"source-vol2": to.Ptr("target-vol2"),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
-func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRestoreWithRehydrationRequest{
-		ObjectType:                   to.Ptr("AzureBackupRestoreWithRehydrationRequest"),
-		RecoveryPointID:              to.Ptr("hardcodedRP"),
-		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
-		RehydrationRetentionDuration: to.Ptr("7D"),
-		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-			DatasourceInfo: &armdataprotection.Datasource{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("Datasource"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("testdb"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DatasourceSetInfo: &armdataprotection.DatasourceSet{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("viveksipgtest"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-				ResourceURI:      to.Ptr(""),
-			},
-			ObjectType:      to.Ptr("RestoreTargetInfo"),
-			RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-			RestoreLocation: to.Ptr("southeastasia"),
-		},
-		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/CrossRegionRestore/ValidateCrossRegionRestore.json
-func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateCrossRegionRestore(ctx, "000pikumar", "EastAsia", armdataprotection.ValidateCrossRegionRestoreRequestObject{
-		CrossRegionRestoreDetails: &armdataprotection.CrossRegionRestoreDetails{
-			SourceBackupInstanceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1"),
-			SourceRegion:           to.Ptr("east asia"),
-		},
-		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-			RecoveryPointID: to.Ptr("hardcodedRP"),
-			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-					},
-				},
-				DatasourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("Datasource"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("targetdb"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ResourceURI:      to.Ptr(""),
-				},
-				DatasourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("DatasourceSet"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("viveksipgtest"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-					ResourceURI:      to.Ptr(""),
-				},
-				ObjectType:      to.Ptr("RestoreTargetInfo"),
-				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-				RestoreLocation: to.Ptr("southeastasia"),
-			},
-			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateForBackup.json
-func ExampleBackupInstancesClient_BeginValidateForBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", armdataprotection.ValidateForBackupRequest{
-		BackupInstance: &armdataprotection.BackupInstance{
-			DataSourceInfo: &armdataprotection.Datasource{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("Datasource"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("testdb"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("viveksipgtest"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-				SecretStoreResource: &armdataprotection.SecretStoreResource{
-					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-				},
-			},
-			FriendlyName: to.Ptr("harshitbi2"),
-			IdentityDetails: &armdataprotection.IdentityDetails{
-				UseSystemAssignedIdentity:  to.Ptr(false),
-				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
-			},
-			ObjectType: to.Ptr("BackupInstance"),
-			PolicyInfo: &armdataprotection.PolicyInfo{
-				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientValidateForBackupResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateForModifyBackup.json
-func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForModifyBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateForModifyBackupRequest{
-		BackupInstance: &armdataprotection.BackupInstance{
-			DataSourceInfo: &armdataprotection.Datasource{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("Datasource"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("testdb"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-				DatasourceType:   to.Ptr("OssDB"),
-				ObjectType:       to.Ptr("DatasourceSet"),
-				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-				ResourceLocation: to.Ptr(""),
-				ResourceName:     to.Ptr("viveksipgtest"),
-				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-				ResourceURI:      to.Ptr(""),
-			},
-			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-				SecretStoreResource: &armdataprotection.SecretStoreResource{
-					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-				},
-			},
-			FriendlyName: to.Ptr("harshitbi2"),
-			IdentityDetails: &armdataprotection.IdentityDetails{
-				UseSystemAssignedIdentity:  to.Ptr(false),
-				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
-			},
-			ObjectType: to.Ptr("BackupInstance"),
-			PolicyInfo: &armdataprotection.PolicyInfo{
-				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateRestore.json
-func ExampleBackupInstancesClient_BeginValidateForRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
-		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-			IdentityDetails: &armdataprotection.IdentityDetails{
-				UseSystemAssignedIdentity:  to.Ptr(false),
-				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
-			},
-			ObjectType:      to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
-			RecoveryPointID: to.Ptr("hardcodedRP"),
-			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
-					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
-					},
-				},
-				DatasourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("Datasource"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("targetdb"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ResourceURI:      to.Ptr(""),
-				},
-				DatasourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-					ObjectType:       to.Ptr("DatasourceSet"),
-					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-					ResourceLocation: to.Ptr(""),
-					ResourceName:     to.Ptr("viveksipgtest"),
-					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-					ResourceURI:      to.Ptr(""),
-				},
-				ObjectType:      to.Ptr("RestoreTargetInfo"),
-				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-				RestoreLocation: to.Ptr("southeastasia"),
-			},
-			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientValidateForRestoreResponse{
-	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
-	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
-	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
-	// 	},
-	// }
 }

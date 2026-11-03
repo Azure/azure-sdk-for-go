@@ -15,11 +15,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armdataprotection.ClientFactory type.
 type ServerFactory struct {
+	// BackupInstanceFromDppCrossTenantVaultServer contains the fakes for client BackupInstanceFromDppCrossTenantVaultClient
+	BackupInstanceFromDppCrossTenantVaultServer BackupInstanceFromDppCrossTenantVaultServer
+
+	// BackupInstanceOperationResultFromDppCrossTenantVaultServer contains the fakes for client BackupInstanceOperationResultFromDppCrossTenantVaultClient
+	BackupInstanceOperationResultFromDppCrossTenantVaultServer BackupInstanceOperationResultFromDppCrossTenantVaultServer
+
+	// BackupInstanceOperationStatusFromDppCrossTenantVaultServer contains the fakes for client BackupInstanceOperationStatusFromDppCrossTenantVaultClient
+	BackupInstanceOperationStatusFromDppCrossTenantVaultServer BackupInstanceOperationStatusFromDppCrossTenantVaultServer
+
 	// BackupInstancesServer contains the fakes for client BackupInstancesClient
 	BackupInstancesServer BackupInstancesServer
 
 	// BackupInstancesExtensionRoutingServer contains the fakes for client BackupInstancesExtensionRoutingClient
 	BackupInstancesExtensionRoutingServer BackupInstancesExtensionRoutingServer
+
+	// BackupInstancesFromDppCrossTenantVaultServer contains the fakes for client BackupInstancesFromDppCrossTenantVaultClient
+	BackupInstancesFromDppCrossTenantVaultServer BackupInstancesFromDppCrossTenantVaultServer
+
+	// BackupJobsFromDppCrossTenantVaultServer contains the fakes for client BackupJobsFromDppCrossTenantVaultClient
+	BackupJobsFromDppCrossTenantVaultServer BackupJobsFromDppCrossTenantVaultServer
 
 	// BackupPoliciesServer contains the fakes for client BackupPoliciesClient
 	BackupPoliciesServer BackupPoliciesServer
@@ -39,6 +54,12 @@ type ServerFactory struct {
 	// DeletedBackupVaultsServer contains the fakes for client DeletedBackupVaultsClient
 	DeletedBackupVaultsServer DeletedBackupVaultsServer
 
+	// DppCrossTenantVaultMappingStatusServer contains the fakes for client DppCrossTenantVaultMappingStatusClient
+	DppCrossTenantVaultMappingStatusServer DppCrossTenantVaultMappingStatusServer
+
+	// DppCrossTenantVaultMappingsServer contains the fakes for client DppCrossTenantVaultMappingsClient
+	DppCrossTenantVaultMappingsServer DppCrossTenantVaultMappingsServer
+
 	// DppResourceGuardProxyServer contains the fakes for client DppResourceGuardProxyClient
 	DppResourceGuardProxyServer DppResourceGuardProxyServer
 
@@ -56,6 +77,9 @@ type ServerFactory struct {
 
 	// FetchSecondaryRecoveryPointsServer contains the fakes for client FetchSecondaryRecoveryPointsClient
 	FetchSecondaryRecoveryPointsServer FetchSecondaryRecoveryPointsServer
+
+	// JobFromDppCrossTenantVaultServer contains the fakes for client JobFromDppCrossTenantVaultClient
+	JobFromDppCrossTenantVaultServer JobFromDppCrossTenantVaultServer
 
 	// JobsServer contains the fakes for client JobsClient
 	JobsServer JobsServer
@@ -75,14 +99,29 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// RecoveryPointFromDppCrossTenantVaultServer contains the fakes for client RecoveryPointFromDppCrossTenantVaultClient
+	RecoveryPointFromDppCrossTenantVaultServer RecoveryPointFromDppCrossTenantVaultServer
+
 	// RecoveryPointsServer contains the fakes for client RecoveryPointsClient
 	RecoveryPointsServer RecoveryPointsServer
+
+	// RecoveryPointsFromDppCrossTenantVaultServer contains the fakes for client RecoveryPointsFromDppCrossTenantVaultClient
+	RecoveryPointsFromDppCrossTenantVaultServer RecoveryPointsFromDppCrossTenantVaultServer
 
 	// ResourceGuardsServer contains the fakes for client ResourceGuardsClient
 	ResourceGuardsServer ResourceGuardsServer
 
 	// RestorableTimeRangesServer contains the fakes for client RestorableTimeRangesClient
 	RestorableTimeRangesServer RestorableTimeRangesServer
+
+	// RestorableTimeRangesFromDppCrossTenantVaultServer contains the fakes for client RestorableTimeRangesFromDppCrossTenantVaultClient
+	RestorableTimeRangesFromDppCrossTenantVaultServer RestorableTimeRangesFromDppCrossTenantVaultServer
+
+	// RestoresFromDppCrossTenantVaultServer contains the fakes for client RestoresFromDppCrossTenantVaultClient
+	RestoresFromDppCrossTenantVaultServer RestoresFromDppCrossTenantVaultServer
+
+	// ValidateRestoreFromDppCrossTenantVaultServer contains the fakes for client ValidateRestoreFromDppCrossTenantVaultClient
+	ValidateRestoreFromDppCrossTenantVaultServer ValidateRestoreFromDppCrossTenantVaultServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -97,31 +136,44 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdataprotection.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                         *ServerFactory
-	trMu                                        sync.Mutex
-	trBackupInstancesServer                     *BackupInstancesServerTransport
-	trBackupInstancesExtensionRoutingServer     *BackupInstancesExtensionRoutingServerTransport
-	trBackupPoliciesServer                      *BackupPoliciesServerTransport
-	trBackupVaultOperationResultsServer         *BackupVaultOperationResultsServerTransport
-	trBackupVaultsServer                        *BackupVaultsServerTransport
-	trServer                                    *ServerTransport
-	trDeletedBackupInstancesServer              *DeletedBackupInstancesServerTransport
-	trDeletedBackupVaultsServer                 *DeletedBackupVaultsServerTransport
-	trDppResourceGuardProxyServer               *DppResourceGuardProxyServerTransport
-	trExportJobsServer                          *ExportJobsServerTransport
-	trExportJobsOperationResultServer           *ExportJobsOperationResultServerTransport
-	trFetchCrossRegionRestoreJobServer          *FetchCrossRegionRestoreJobServerTransport
-	trFetchCrossRegionRestoreJobsServer         *FetchCrossRegionRestoreJobsServerTransport
-	trFetchSecondaryRecoveryPointsServer        *FetchSecondaryRecoveryPointsServerTransport
-	trJobsServer                                *JobsServerTransport
-	trOperationResultServer                     *OperationResultServerTransport
-	trOperationStatusBackupVaultContextServer   *OperationStatusBackupVaultContextServerTransport
-	trOperationStatusServer                     *OperationStatusServerTransport
-	trOperationStatusResourceGroupContextServer *OperationStatusResourceGroupContextServerTransport
-	trOperationsServer                          *OperationsServerTransport
-	trRecoveryPointsServer                      *RecoveryPointsServerTransport
-	trResourceGuardsServer                      *ResourceGuardsServerTransport
-	trRestorableTimeRangesServer                *RestorableTimeRangesServerTransport
+	srv                                                          *ServerFactory
+	trMu                                                         sync.Mutex
+	trBackupInstanceFromDppCrossTenantVaultServer                *BackupInstanceFromDppCrossTenantVaultServerTransport
+	trBackupInstanceOperationResultFromDppCrossTenantVaultServer *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport
+	trBackupInstanceOperationStatusFromDppCrossTenantVaultServer *BackupInstanceOperationStatusFromDppCrossTenantVaultServerTransport
+	trBackupInstancesServer                                      *BackupInstancesServerTransport
+	trBackupInstancesExtensionRoutingServer                      *BackupInstancesExtensionRoutingServerTransport
+	trBackupInstancesFromDppCrossTenantVaultServer               *BackupInstancesFromDppCrossTenantVaultServerTransport
+	trBackupJobsFromDppCrossTenantVaultServer                    *BackupJobsFromDppCrossTenantVaultServerTransport
+	trBackupPoliciesServer                                       *BackupPoliciesServerTransport
+	trBackupVaultOperationResultsServer                          *BackupVaultOperationResultsServerTransport
+	trBackupVaultsServer                                         *BackupVaultsServerTransport
+	trServer                                                     *ServerTransport
+	trDeletedBackupInstancesServer                               *DeletedBackupInstancesServerTransport
+	trDeletedBackupVaultsServer                                  *DeletedBackupVaultsServerTransport
+	trDppCrossTenantVaultMappingStatusServer                     *DppCrossTenantVaultMappingStatusServerTransport
+	trDppCrossTenantVaultMappingsServer                          *DppCrossTenantVaultMappingsServerTransport
+	trDppResourceGuardProxyServer                                *DppResourceGuardProxyServerTransport
+	trExportJobsServer                                           *ExportJobsServerTransport
+	trExportJobsOperationResultServer                            *ExportJobsOperationResultServerTransport
+	trFetchCrossRegionRestoreJobServer                           *FetchCrossRegionRestoreJobServerTransport
+	trFetchCrossRegionRestoreJobsServer                          *FetchCrossRegionRestoreJobsServerTransport
+	trFetchSecondaryRecoveryPointsServer                         *FetchSecondaryRecoveryPointsServerTransport
+	trJobFromDppCrossTenantVaultServer                           *JobFromDppCrossTenantVaultServerTransport
+	trJobsServer                                                 *JobsServerTransport
+	trOperationResultServer                                      *OperationResultServerTransport
+	trOperationStatusBackupVaultContextServer                    *OperationStatusBackupVaultContextServerTransport
+	trOperationStatusServer                                      *OperationStatusServerTransport
+	trOperationStatusResourceGroupContextServer                  *OperationStatusResourceGroupContextServerTransport
+	trOperationsServer                                           *OperationsServerTransport
+	trRecoveryPointFromDppCrossTenantVaultServer                 *RecoveryPointFromDppCrossTenantVaultServerTransport
+	trRecoveryPointsServer                                       *RecoveryPointsServerTransport
+	trRecoveryPointsFromDppCrossTenantVaultServer                *RecoveryPointsFromDppCrossTenantVaultServerTransport
+	trResourceGuardsServer                                       *ResourceGuardsServerTransport
+	trRestorableTimeRangesServer                                 *RestorableTimeRangesServerTransport
+	trRestorableTimeRangesFromDppCrossTenantVaultServer          *RestorableTimeRangesFromDppCrossTenantVaultServerTransport
+	trRestoresFromDppCrossTenantVaultServer                      *RestoresFromDppCrossTenantVaultServerTransport
+	trValidateRestoreFromDppCrossTenantVaultServer               *ValidateRestoreFromDppCrossTenantVaultServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -137,6 +189,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "BackupInstanceFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trBackupInstanceFromDppCrossTenantVaultServer, func() *BackupInstanceFromDppCrossTenantVaultServerTransport {
+			return NewBackupInstanceFromDppCrossTenantVaultServerTransport(&s.srv.BackupInstanceFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trBackupInstanceFromDppCrossTenantVaultServer.Do(req)
+	case "BackupInstanceOperationResultFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trBackupInstanceOperationResultFromDppCrossTenantVaultServer, func() *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport {
+			return NewBackupInstanceOperationResultFromDppCrossTenantVaultServerTransport(&s.srv.BackupInstanceOperationResultFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trBackupInstanceOperationResultFromDppCrossTenantVaultServer.Do(req)
+	case "BackupInstanceOperationStatusFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trBackupInstanceOperationStatusFromDppCrossTenantVaultServer, func() *BackupInstanceOperationStatusFromDppCrossTenantVaultServerTransport {
+			return NewBackupInstanceOperationStatusFromDppCrossTenantVaultServerTransport(&s.srv.BackupInstanceOperationStatusFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trBackupInstanceOperationStatusFromDppCrossTenantVaultServer.Do(req)
 	case "BackupInstancesClient":
 		initServer(&s.trMu, &s.trBackupInstancesServer, func() *BackupInstancesServerTransport {
 			return NewBackupInstancesServerTransport(&s.srv.BackupInstancesServer)
@@ -147,6 +214,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBackupInstancesExtensionRoutingServerTransport(&s.srv.BackupInstancesExtensionRoutingServer)
 		})
 		resp, err = s.trBackupInstancesExtensionRoutingServer.Do(req)
+	case "BackupInstancesFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trBackupInstancesFromDppCrossTenantVaultServer, func() *BackupInstancesFromDppCrossTenantVaultServerTransport {
+			return NewBackupInstancesFromDppCrossTenantVaultServerTransport(&s.srv.BackupInstancesFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trBackupInstancesFromDppCrossTenantVaultServer.Do(req)
+	case "BackupJobsFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trBackupJobsFromDppCrossTenantVaultServer, func() *BackupJobsFromDppCrossTenantVaultServerTransport {
+			return NewBackupJobsFromDppCrossTenantVaultServerTransport(&s.srv.BackupJobsFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trBackupJobsFromDppCrossTenantVaultServer.Do(req)
 	case "BackupPoliciesClient":
 		initServer(&s.trMu, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
 			return NewBackupPoliciesServerTransport(&s.srv.BackupPoliciesServer)
@@ -173,6 +250,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDeletedBackupVaultsServerTransport(&s.srv.DeletedBackupVaultsServer)
 		})
 		resp, err = s.trDeletedBackupVaultsServer.Do(req)
+	case "DppCrossTenantVaultMappingStatusClient":
+		initServer(&s.trMu, &s.trDppCrossTenantVaultMappingStatusServer, func() *DppCrossTenantVaultMappingStatusServerTransport {
+			return NewDppCrossTenantVaultMappingStatusServerTransport(&s.srv.DppCrossTenantVaultMappingStatusServer)
+		})
+		resp, err = s.trDppCrossTenantVaultMappingStatusServer.Do(req)
+	case "DppCrossTenantVaultMappingsClient":
+		initServer(&s.trMu, &s.trDppCrossTenantVaultMappingsServer, func() *DppCrossTenantVaultMappingsServerTransport {
+			return NewDppCrossTenantVaultMappingsServerTransport(&s.srv.DppCrossTenantVaultMappingsServer)
+		})
+		resp, err = s.trDppCrossTenantVaultMappingsServer.Do(req)
 	case "DppResourceGuardProxyClient":
 		initServer(&s.trMu, &s.trDppResourceGuardProxyServer, func() *DppResourceGuardProxyServerTransport {
 			return NewDppResourceGuardProxyServerTransport(&s.srv.DppResourceGuardProxyServer)
@@ -201,6 +288,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFetchSecondaryRecoveryPointsServerTransport(&s.srv.FetchSecondaryRecoveryPointsServer)
 		})
 		resp, err = s.trFetchSecondaryRecoveryPointsServer.Do(req)
+	case "JobFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trJobFromDppCrossTenantVaultServer, func() *JobFromDppCrossTenantVaultServerTransport {
+			return NewJobFromDppCrossTenantVaultServerTransport(&s.srv.JobFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trJobFromDppCrossTenantVaultServer.Do(req)
 	case "JobsClient":
 		initServer(&s.trMu, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
 		resp, err = s.trJobsServer.Do(req)
@@ -227,11 +319,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RecoveryPointFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trRecoveryPointFromDppCrossTenantVaultServer, func() *RecoveryPointFromDppCrossTenantVaultServerTransport {
+			return NewRecoveryPointFromDppCrossTenantVaultServerTransport(&s.srv.RecoveryPointFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trRecoveryPointFromDppCrossTenantVaultServer.Do(req)
 	case "RecoveryPointsClient":
 		initServer(&s.trMu, &s.trRecoveryPointsServer, func() *RecoveryPointsServerTransport {
 			return NewRecoveryPointsServerTransport(&s.srv.RecoveryPointsServer)
 		})
 		resp, err = s.trRecoveryPointsServer.Do(req)
+	case "RecoveryPointsFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trRecoveryPointsFromDppCrossTenantVaultServer, func() *RecoveryPointsFromDppCrossTenantVaultServerTransport {
+			return NewRecoveryPointsFromDppCrossTenantVaultServerTransport(&s.srv.RecoveryPointsFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trRecoveryPointsFromDppCrossTenantVaultServer.Do(req)
 	case "ResourceGuardsClient":
 		initServer(&s.trMu, &s.trResourceGuardsServer, func() *ResourceGuardsServerTransport {
 			return NewResourceGuardsServerTransport(&s.srv.ResourceGuardsServer)
@@ -242,6 +344,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRestorableTimeRangesServerTransport(&s.srv.RestorableTimeRangesServer)
 		})
 		resp, err = s.trRestorableTimeRangesServer.Do(req)
+	case "RestorableTimeRangesFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trRestorableTimeRangesFromDppCrossTenantVaultServer, func() *RestorableTimeRangesFromDppCrossTenantVaultServerTransport {
+			return NewRestorableTimeRangesFromDppCrossTenantVaultServerTransport(&s.srv.RestorableTimeRangesFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trRestorableTimeRangesFromDppCrossTenantVaultServer.Do(req)
+	case "RestoresFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trRestoresFromDppCrossTenantVaultServer, func() *RestoresFromDppCrossTenantVaultServerTransport {
+			return NewRestoresFromDppCrossTenantVaultServerTransport(&s.srv.RestoresFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trRestoresFromDppCrossTenantVaultServer.Do(req)
+	case "ValidateRestoreFromDppCrossTenantVaultClient":
+		initServer(&s.trMu, &s.trValidateRestoreFromDppCrossTenantVaultServer, func() *ValidateRestoreFromDppCrossTenantVaultServerTransport {
+			return NewValidateRestoreFromDppCrossTenantVaultServerTransport(&s.srv.ValidateRestoreFromDppCrossTenantVaultServer)
+		})
+		resp, err = s.trValidateRestoreFromDppCrossTenantVaultServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -38,7 +38,9 @@ extends:
         jobs:
         - job: CompileNativeTests
           pool:
+            name: Azure Pipelines
             vmImage: 'macOS-15'
+            os: macOS
           steps:
           - task: GoTool@0
             inputs:

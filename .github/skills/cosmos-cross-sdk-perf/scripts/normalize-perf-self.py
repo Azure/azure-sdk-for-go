@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import csv
 import pathlib
+from decimal import Decimal
 
 
 def normalize(path: pathlib.Path) -> None:
@@ -16,12 +17,15 @@ def normalize(path: pathlib.Path) -> None:
         rows = list(csv.DictReader(handle))
     if not rows:
         raise ValueError("perf Self CSV has no rows")
-    values = [float(row["self_percent"]) for row in rows]
+    values = [Decimal(row["self_percent"]) for row in rows]
     total = sum(values)
     if total <= 0:
         raise ValueError("perf Self total must be positive")
-    normalized = [value / total * 100.0 for value in values]
-    normalized[-1] += 100.0 - sum(normalized)
+    precision = Decimal("0.000000000001")
+    normalized = [
+        (value / total * Decimal(100)).quantize(precision) for value in values[:-1]
+    ]
+    normalized.append(Decimal(100) - sum(normalized))
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=("symbol", "dso", "self_percent"))
         writer.writeheader()

@@ -6,6 +6,7 @@ import importlib.util
 import pathlib
 import tempfile
 import unittest
+from decimal import Decimal
 
 
 SKILL = pathlib.Path(__file__).resolve().parents[1]
@@ -39,10 +40,10 @@ class AdapterOutputTests(unittest.TestCase):
             )
             NORMALIZE.normalize(path)
             values = [
-                float(line.rsplit(",", 1)[1])
+                Decimal(line.rsplit(",", 1)[1])
                 for line in path.read_text(encoding="utf-8").splitlines()[1:]
             ]
-        self.assertEqual(100.0, sum(values))
+        self.assertEqual(Decimal("100.000000000000"), sum(values))
 
     def test_perf_quality_accepts_script_headers_with_and_without_cpu(self):
         script = """\

@@ -521,3 +521,102 @@ func TestProviderRoutedRequestToIPEndpointKeepsContainer(t *testing.T) {
 	require.Len(t, calls, 1, "both blobs share the container's session")
 	require.Equal(t, "container", calls[0].container)
 }
+
+// requestCaptureKey stands in for another module's response capture context key, such as Data
+// Lake's, whose policy the pipeline that creates sessions inherits from the client options.
+type requestCaptureKey struct{}
+
+// capturePolicy writes each response to the **http.Response stored under requestCaptureKey, as
+// Data Lake's include-blob-response policy does.
+type capturePolicy struct{}
+
+func (capturePolicy) Do(req *policy.Request) (*http.Response, error) {
+	resp, err := req.Next()
+	if out, ok := req.Raw().Context().Value(requestCaptureKey{}).(**http.Response); ok && resp != nil {
+		*out = resp
+	}
+	return resp, err
+}
+
+// newProviderWithPolicies returns a provider whose session pipeline sends through transport and
+// runs extra per-call policies after the locality policy.
+func newProviderWithPolicies(t *testing.T, transport policy.Transporter, clock *providerClock, extra ...policy.Policy) *ContainerSessionProvider {
+	t.Helper()
+	azClient, err := azcore.NewClient("test", "v0.0.0", runtime.PipelineOptions{PerCall: append([]policy.Policy{locality.NewPolicy()}, extra...)},
+		&policy.ClientOptions{Transport: transport, Retry: policy.RetryOptions{MaxRetries: -1}})
+	require.NoError(t, err)
+	p := NewContainerSessionProviderFromClient(generated.NewServiceClient(providerServiceURL, azClient))
+	p.now = clock.Now
+	return p
+}
+
+// Response capture targets in the request's context belong to the request being authenticated.
+// Creating a session, in the foreground or as a background refresh, must not write to them: a
+// background refresh would otherwise race the request for the target and could replace its
+// captured response with the Create Session response.
+func TestProviderSessionAcquisitionDoesNotWriteRequestCaptureTargets(t *testing.T) {
+	const url = "https://testaccount.blob.core.windows.net/container/blob"
+	newCase := func(t *testing.T) (*ContainerSessionProvider, *sessionService, context.Context, **http.Response, **http.Response) {
+		svc := &sessionService{clock: &providerClock{now: time.Date(2026, 10, 1, 12, 0, 0, 0, time.UTC)}}
+		p := newProviderWithPolicies(t, svc, svc.clock, capturePolicy{})
+		var azcoreCapture, otherCapture *http.Response
+		ctx := context.WithValue(policy.WithCaptureResponse(context.Background(), &azcoreCapture), requestCaptureKey{}, &otherCapture)
+		return p, svc, ctx, &azcoreCapture, &otherCapture
+	}
+
+	t.Run("Foreground", func(t *testing.T) {
+		p, _, captureCtx, azcoreCapture, otherCapture := newCase(t)
+		cred, err := p.getSession(blobRequest(t, captureCtx, url))
+		require.NoError(t, err)
+		require.Equal(t, "container-1", cred.token)
+		require.Nil(t, *azcoreCapture, "azcore capture target")
+		require.Nil(t, *otherCapture, "policy capture target")
+	})
+
+	t.Run("BackgroundRefresh", func(t *testing.T) {
+		p, svc, captureCtx, azcoreCapture, otherCapture := newCase(t)
+		require.Equal(t, "container-1", getToken(t, p, url).token)
+
+		// within 30 seconds of expiry, the request gets the current session and a refresh starts
+		// in the background
+		svc.clock.Advance(time.Hour - 29*time.Second)
+		cred, err := p.getSession(blobRequest(t, captureCtx, url))
+		require.NoError(t, err)
+		require.Equal(t, "container-1", cred.token)
+		require.Eventually(t, func() bool { return getToken(t, p, url).token == "container-2" }, 5*time.Second, time.Millisecond)
+
+		require.Nil(t, *azcoreCapture, "azcore capture target")
+		require.Nil(t, *otherCapture, "policy capture target")
+	})
+}
+
+// blockingTransport holds each request until its context is done.
+type blockingTransport struct{ started chan struct{} }
+
+func (b *blockingTransport) Do(req *http.Request) (*http.Response, error) {
+	close(b.started)
+	<-req.Context().Done()
+	return nil, req.Context().Err()
+}
+
+// A caller waiting for a session to be created can still cancel: the acquisition honors the
+// request's cancellation.
+func TestProviderSessionAcquisitionHonorsRequestCancellation(t *testing.T) {
+	tr := &blockingTransport{started: make(chan struct{})}
+	p := newProviderWithPolicies(t, tr, &providerClock{now: time.Date(2026, 10, 1, 12, 0, 0, 0, time.UTC)})
+
+	ctx, cancel := context.WithCancel(context.Background())
+	errs := make(chan error, 1)
+	go func() {
+		_, err := p.getSession(blobRequest(t, ctx, "https://testaccount.blob.core.windows.net/container/blob"))
+		errs <- err
+	}()
+	<-tr.started
+	cancel()
+	select {
+	case err := <-errs:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-time.After(5 * time.Second):
+		t.Fatal("the acquisition didn't return after its context was canceled")
+	}
+}

@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 )
 
 // SessionMode specifies whether eligible requests are authenticated with a session.
@@ -140,10 +139,23 @@ func (p *ContainerSessionProvider) getSession(req *http.Request) (sessionCredent
 	if err != nil {
 		return sessionCredential{}, err
 	}
-	// The request may be routed to a layout endpoint, but its session must be created at the
-	// account endpoint.
-	return cache.Get(locality.WithoutEndpoint(req.Context()))
+	return cache.Get(acquireContext(req.Context()))
 }
+
+// acquireContext returns the context a session is acquired with. It keeps ctx's deadline and
+// cancellation, so a caller waiting for a new session can still give up, but none of ctx's values,
+// which belong to the request being authenticated: a response capture target, such as azcore's
+// runtime.WithCaptureResponse or Data Lake's, would otherwise receive the Create Session response,
+// concurrently with the request's own when the session is refreshed in the background; and the
+// request's layout endpoint would route Create Session away from the account endpoint.
+func acquireContext(ctx context.Context) context.Context {
+	return withoutValues{ctx}
+}
+
+// withoutValues is a context that hides its parent's values.
+type withoutValues struct{ context.Context }
+
+func (withoutValues) Value(any) any { return nil }
 
 func (p *ContainerSessionProvider) invalidateSession(req *http.Request, used sessionCredential) {
 	cache, err := p.cacheFor(req)

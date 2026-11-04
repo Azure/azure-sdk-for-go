@@ -4,12 +4,15 @@
 package azcosmos
 
 import (
+	"crypto/tls"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,6 +27,68 @@ func TestDefaultCosmosHTTPClient_Timeouts(t *testing.T) {
 	transport, ok := c.Transport.(*http.Transport)
 	require.True(t, ok, "expected *http.Transport, got %T", c.Transport)
 	require.NotNil(t, transport.DialContext)
+}
+
+func TestDefaultCosmosHTTPClient_TransportSettings(t *testing.T) {
+	c := newDefaultCosmosHTTPClient()
+	transport, ok := c.Transport.(*http.Transport)
+	require.True(t, ok)
+
+	assert.NotNil(t, transport.Proxy)
+	assert.True(t, transport.ForceAttemptHTTP2)
+	assert.Equal(t, 1000, transport.MaxIdleConns)
+	assert.Equal(t, 100, transport.MaxIdleConnsPerHost)
+	assert.Equal(t, 90*time.Second, transport.IdleConnTimeout)
+	assert.Equal(t, 10*time.Second, transport.TLSHandshakeTimeout)
+	assert.Equal(t, time.Second, transport.ExpectContinueTimeout)
+	require.NotNil(t, transport.TLSClientConfig)
+	assert.Equal(t, uint16(tls.VersionTLS12), transport.TLSClientConfig.MinVersion)
+	assert.Equal(t, tls.RenegotiateFreelyAsClient, transport.TLSClientConfig.Renegotiation)
+	require.NotNil(t, transport.HTTP2)
+	assert.Equal(t, 2*time.Second, transport.HTTP2.SendPingTimeout)
+	assert.Equal(t, time.Second, transport.HTTP2.PingTimeout)
+}
+
+func TestDefaultCosmosHTTPClient_Protocols(t *testing.T) {
+	for _, tt := range []struct {
+		name       string
+		tls        bool
+		http2      bool
+		protoMajor int
+	}{
+		{name: "HTTP1", protoMajor: 1},
+		{name: "HTTPS_HTTP1", tls: true, protoMajor: 1},
+		{name: "HTTPS_HTTP2", tls: true, http2: true, protoMajor: 2},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusNoContent)
+			}))
+			server.EnableHTTP2 = tt.http2
+			if tt.tls {
+				server.StartTLS()
+			} else {
+				server.Start()
+			}
+			t.Cleanup(server.Close)
+
+			c := newDefaultCosmosHTTPClient()
+			t.Cleanup(c.CloseIdleConnections)
+			transport, ok := c.Transport.(*http.Transport)
+			require.True(t, ok)
+			if tt.tls {
+				serverTransport, ok := server.Client().Transport.(*http.Transport)
+				require.True(t, ok)
+				transport.TLSClientConfig.RootCAs = serverTransport.TLSClientConfig.RootCAs
+			}
+
+			resp, err := c.Get(server.URL)
+			require.NoError(t, err)
+			defer func() { assert.NoError(t, resp.Body.Close()) }()
+			assert.Equal(t, http.StatusNoContent, resp.StatusCode)
+			assert.Equal(t, tt.protoMajor, resp.ProtoMajor)
+		})
+	}
 }
 
 func TestWithDefaultTransport_NilOptions(t *testing.T) {

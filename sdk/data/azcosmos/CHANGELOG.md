@@ -14,6 +14,8 @@
 
 ### Other Changes
 
+* Migrated the default HTTP/2 transport configuration to `net/http`, preserving the 2-second idle health check interval and 1-second ping-response timeout.
+
 ## 1.6.0-beta.4 (2026-10-14)
 
 ### Bugs Fixed

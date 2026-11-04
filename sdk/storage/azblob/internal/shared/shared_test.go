@@ -21,6 +21,7 @@ func TestParseConnectionStringInvalid(t *testing.T) {
 		";",
 		"=;==",
 		"foobar=baz=foo",
+		"UseDevelopmentStorage=false",
 	}
 
 	for _, badConnStr := range badConnectionStrings {
@@ -136,6 +137,16 @@ func TestParseConnectionStringAzurite(t *testing.T) {
 	require.Equal(t, "http://local-machine:11002/custom/account/path/faketokensignature/", parsed.ServiceURL)
 	require.Equal(t, "dummyaccountname", parsed.AccountName)
 	require.Equal(t, "secretkeykey", parsed.AccountKey)
+}
+
+func TestParseConnectionStringDevelopmentStorage(t *testing.T) {
+	for _, connStr := range []string{"UseDevelopmentStorage=true", "UseDevelopmentStorage=true;"} {
+		parsed, err := ParseConnectionString(connStr)
+		require.NoError(t, err)
+		require.Equal(t, "http://127.0.0.1:10000/devstoreaccount1/", parsed.ServiceURL)
+		require.Equal(t, "devstoreaccount1", parsed.AccountName)
+		require.Equal(t, "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==", parsed.AccountKey)
+	}
 }
 
 func TestSerializeBlobTags(t *testing.T) {

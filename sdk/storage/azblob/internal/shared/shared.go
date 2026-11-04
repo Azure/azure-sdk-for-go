@@ -59,6 +59,12 @@ var errConnectionString = errors.New("connection string is either blank or malfo
 	"should contain key value pairs separated by semicolons. For example 'DefaultEndpointsProtocol=https;AccountName=<accountName>;" +
 	"AccountKey=<accountKey>;EndpointSuffix=core.windows.net'")
 
+// developmentConnectionString is what the "UseDevelopmentStorage=true" shortcut expands to:
+// the well-known Azurite account and key on the emulator's default blob endpoint.
+const developmentConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;" +
+	"AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
+	"BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1"
+
 type ParsedConnectionString struct {
 	ServiceURL  string
 	AccountName string
@@ -73,6 +79,9 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 
 	connStrMap := make(map[string]string)
 	connectionString = strings.TrimRight(connectionString, ";")
+	if connectionString == "UseDevelopmentStorage=true" {
+		connectionString = developmentConnectionString
+	}
 
 	splitString := strings.Split(connectionString, ";")
 	if len(splitString) == 0 {

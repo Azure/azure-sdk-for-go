@@ -45,6 +45,9 @@ type ServerFactory struct {
 	// CachesServer contains the fakes for client CachesClient
 	CachesServer CachesServer
 
+	// ClusterPeersServer contains the fakes for client ClusterPeersClient
+	ClusterPeersServer ClusterPeersServer
+
 	// ElasticAccountsServer contains the fakes for client ElasticAccountsClient
 	ElasticAccountsServer ElasticAccountsServer
 
@@ -69,6 +72,18 @@ type ServerFactory struct {
 	// ElasticVolumesServer contains the fakes for client ElasticVolumesClient
 	ElasticVolumesServer ElasticVolumesServer
 
+	// ExternalCacheConnectionsServer contains the fakes for client ExternalCacheConnectionsClient
+	ExternalCacheConnectionsServer ExternalCacheConnectionsServer
+
+	// ExternalCachesServer contains the fakes for client ExternalCachesClient
+	ExternalCachesServer ExternalCachesServer
+
+	// ExternalClustersServer contains the fakes for client ExternalClustersClient
+	ExternalClustersServer ExternalClustersServer
+
+	// ExternalSVMsServer contains the fakes for client ExternalSVMsClient
+	ExternalSVMsServer ExternalSVMsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -92,6 +107,9 @@ type ServerFactory struct {
 
 	// ResourceUsagesServer contains the fakes for client ResourceUsagesClient
 	ResourceUsagesServer ResourceUsagesServer
+
+	// SVMPeersServer contains the fakes for client SVMPeersClient
+	SVMPeersServer SVMPeersServer
 
 	// SnapshotPoliciesServer contains the fakes for client SnapshotPoliciesClient
 	SnapshotPoliciesServer SnapshotPoliciesServer
@@ -136,6 +154,7 @@ type ServerFactoryTransport struct {
 	trBackupsUnderVolumeServer         *BackupsUnderVolumeServerTransport
 	trBucketsServer                    *BucketsServerTransport
 	trCachesServer                     *CachesServerTransport
+	trClusterPeersServer               *ClusterPeersServerTransport
 	trElasticAccountsServer            *ElasticAccountsServerTransport
 	trElasticBackupPoliciesServer      *ElasticBackupPoliciesServerTransport
 	trElasticBackupVaultsServer        *ElasticBackupVaultsServerTransport
@@ -144,6 +163,10 @@ type ServerFactoryTransport struct {
 	trElasticSnapshotPoliciesServer    *ElasticSnapshotPoliciesServerTransport
 	trElasticSnapshotsServer           *ElasticSnapshotsServerTransport
 	trElasticVolumesServer             *ElasticVolumesServerTransport
+	trExternalCacheConnectionsServer   *ExternalCacheConnectionsServerTransport
+	trExternalCachesServer             *ExternalCachesServerTransport
+	trExternalClustersServer           *ExternalClustersServerTransport
+	trExternalSVMsServer               *ExternalSVMsServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trPoolsServer                      *PoolsServerTransport
 	trRansomwareReportsServer          *RansomwareReportsServerTransport
@@ -152,6 +175,7 @@ type ServerFactoryTransport struct {
 	trResourceQuotaLimitsServer        *ResourceQuotaLimitsServerTransport
 	trResourceRegionInfosServer        *ResourceRegionInfosServerTransport
 	trResourceUsagesServer             *ResourceUsagesServerTransport
+	trSVMPeersServer                   *SVMPeersServerTransport
 	trSnapshotPoliciesServer           *SnapshotPoliciesServerTransport
 	trSnapshotsServer                  *SnapshotsServerTransport
 	trSubvolumesServer                 *SubvolumesServerTransport
@@ -213,6 +237,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CachesClient":
 		initServer(&s.trMu, &s.trCachesServer, func() *CachesServerTransport { return NewCachesServerTransport(&s.srv.CachesServer) })
 		resp, err = s.trCachesServer.Do(req)
+	case "ClusterPeersClient":
+		initServer(&s.trMu, &s.trClusterPeersServer, func() *ClusterPeersServerTransport { return NewClusterPeersServerTransport(&s.srv.ClusterPeersServer) })
+		resp, err = s.trClusterPeersServer.Do(req)
 	case "ElasticAccountsClient":
 		initServer(&s.trMu, &s.trElasticAccountsServer, func() *ElasticAccountsServerTransport {
 			return NewElasticAccountsServerTransport(&s.srv.ElasticAccountsServer)
@@ -253,6 +280,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewElasticVolumesServerTransport(&s.srv.ElasticVolumesServer)
 		})
 		resp, err = s.trElasticVolumesServer.Do(req)
+	case "ExternalCacheConnectionsClient":
+		initServer(&s.trMu, &s.trExternalCacheConnectionsServer, func() *ExternalCacheConnectionsServerTransport {
+			return NewExternalCacheConnectionsServerTransport(&s.srv.ExternalCacheConnectionsServer)
+		})
+		resp, err = s.trExternalCacheConnectionsServer.Do(req)
+	case "ExternalCachesClient":
+		initServer(&s.trMu, &s.trExternalCachesServer, func() *ExternalCachesServerTransport {
+			return NewExternalCachesServerTransport(&s.srv.ExternalCachesServer)
+		})
+		resp, err = s.trExternalCachesServer.Do(req)
+	case "ExternalClustersClient":
+		initServer(&s.trMu, &s.trExternalClustersServer, func() *ExternalClustersServerTransport {
+			return NewExternalClustersServerTransport(&s.srv.ExternalClustersServer)
+		})
+		resp, err = s.trExternalClustersServer.Do(req)
+	case "ExternalSVMsClient":
+		initServer(&s.trMu, &s.trExternalSVMsServer, func() *ExternalSVMsServerTransport { return NewExternalSVMsServerTransport(&s.srv.ExternalSVMsServer) })
+		resp, err = s.trExternalSVMsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -287,6 +332,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewResourceUsagesServerTransport(&s.srv.ResourceUsagesServer)
 		})
 		resp, err = s.trResourceUsagesServer.Do(req)
+	case "SVMPeersClient":
+		initServer(&s.trMu, &s.trSVMPeersServer, func() *SVMPeersServerTransport { return NewSVMPeersServerTransport(&s.srv.SVMPeersServer) })
+		resp, err = s.trSVMPeersServer.Do(req)
 	case "SnapshotPoliciesClient":
 		initServer(&s.trMu, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
 			return NewSnapshotPoliciesServerTransport(&s.srv.SnapshotPoliciesServer)

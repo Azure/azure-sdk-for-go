@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/PutRaiTopic.json
+// Generated from example definition: 2026-09-15-preview/DeleteRaiTopic.json
+func ExampleRaiTopicsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRaiTopicsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "raiTopicName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/PutRaiTopic.json
 func ExampleRaiTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,28 +74,7 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteRaiTopic.json
-func ExampleRaiTopicsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRaiTopicsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "raiTopicName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/GetRaiTopic.json
+// Generated from example definition: 2026-09-15-preview/GetRaiTopic.json
 func ExampleRaiTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleRaiTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListRaiTopics.json
+// Generated from example definition: 2026-09-15-preview/ListRaiTopics.json
 func ExampleRaiTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

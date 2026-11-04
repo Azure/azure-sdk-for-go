@@ -30,7 +30,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := exported.NewPipeline(srv, NewLogPolicy(nil))
+	pl := exported.NewPipeline(nil, srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -86,7 +86,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := exported.NewPipeline(srv, NewLogPolicy(nil))
+	pl := exported.NewPipeline(nil, srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

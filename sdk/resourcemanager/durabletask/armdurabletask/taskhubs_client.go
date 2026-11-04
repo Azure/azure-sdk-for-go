@@ -19,7 +19,7 @@ import (
 // TaskHubsClient contains the methods for the TaskHubs group.
 // Don't use this type directly, use NewTaskHubsClient() instead.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-07-01-preview
 type TaskHubsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *TaskHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create or Update a Task Hub
+// createOrUpdate - Create or Update a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, resource TaskHub, options *TaskHubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TaskHubsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, resource TaskHub, _ *TaskHubsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *TaskHubsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +148,7 @@ func (client *TaskHubsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Task Hub
+// deleteOperation - Delete a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, options *TaskHubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TaskHubsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, _ *TaskHubsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}"
 	if client.subscriptionID == "" {
@@ -194,7 +194,7 @@ func (client *TaskHubsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -246,7 +246,7 @@ func (client *TaskHubsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *TaskHubsClient) listBySchedulerCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

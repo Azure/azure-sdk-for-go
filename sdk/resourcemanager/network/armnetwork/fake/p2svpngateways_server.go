@@ -37,10 +37,6 @@ type P2SVPNGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGenerateVPNProfile func(ctx context.Context, resourceGroupName string, gatewayName string, parameters armnetwork.P2SVPNProfileParameters, options *armnetwork.P2SVPNGatewaysClientBeginGenerateVPNProfileOptions) (resp azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method P2SVPNGatewaysClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, gatewayName string, options *armnetwork.P2SVPNGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.P2SVPNGatewaysClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetP2SVPNConnectionHealth is the fake for method P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealth
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetP2SVPNConnectionHealth func(ctx context.Context, resourceGroupName string, gatewayName string, options *armnetwork.P2SVPNGatewaysClientBeginGetP2SVPNConnectionHealthOptions) (resp azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse], errResp azfake.ErrorResponder)
@@ -49,14 +45,6 @@ type P2SVPNGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetP2SVPNConnectionHealthDetailed func(ctx context.Context, resourceGroupName string, gatewayName string, request armnetwork.P2SVPNConnectionHealthRequest, options *armnetwork.P2SVPNGatewaysClientBeginGetP2SVPNConnectionHealthDetailedOptions) (resp azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method P2SVPNGatewaysClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.P2SVPNGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method P2SVPNGatewaysClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.P2SVPNGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse])
-
 	// BeginReset is the fake for method P2SVPNGatewaysClient.BeginReset
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReset func(ctx context.Context, resourceGroupName string, gatewayName string, options *armnetwork.P2SVPNGatewaysClientBeginResetOptions) (resp azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse], errResp azfake.ErrorResponder)
@@ -64,6 +52,18 @@ type P2SVPNGatewaysServer struct {
 	// BeginUpdateTags is the fake for method P2SVPNGatewaysClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, gatewayName string, p2SVPNGatewayParameters armnetwork.TagsObject, options *armnetwork.P2SVPNGatewaysClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method P2SVPNGatewaysClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, gatewayName string, options *armnetwork.P2SVPNGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.P2SVPNGatewaysClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method P2SVPNGatewaysClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.P2SVPNGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method P2SVPNGatewaysClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.P2SVPNGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse])
 }
 
 // NewP2SVPNGatewaysServerTransport creates a new instance of P2SVPNGatewaysServerTransport with the provided implementation.
@@ -78,10 +78,10 @@ func NewP2SVPNGatewaysServerTransport(srv *P2SVPNGatewaysServer) *P2SVPNGateways
 		beginGenerateVPNProfile:                newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse]](),
 		beginGetP2SVPNConnectionHealth:         newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse]](),
 		beginGetP2SVPNConnectionHealthDetailed: newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse]](),
-		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]](),
-		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]](),
 		beginReset:                             newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse]](),
 		beginUpdateTags:                        newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse]](),
+		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]](),
 	}
 }
 
@@ -95,10 +95,10 @@ type P2SVPNGatewaysServerTransport struct {
 	beginGenerateVPNProfile                *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse]]
 	beginGetP2SVPNConnectionHealth         *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse]]
 	beginGetP2SVPNConnectionHealthDetailed *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse]]
-	newListPager                           *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]]
-	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]]
 	beginReset                             *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse]]
 	beginUpdateTags                        *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse]]
+	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for P2SVPNGatewaysServerTransport.
@@ -130,20 +130,20 @@ func (p *P2SVPNGatewaysServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = p.dispatchBeginDisconnectP2SVPNConnections(req)
 			case "P2SVPNGatewaysClient.BeginGenerateVPNProfile":
 				res.resp, res.err = p.dispatchBeginGenerateVPNProfile(req)
-			case "P2SVPNGatewaysClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
 			case "P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealth":
 				res.resp, res.err = p.dispatchBeginGetP2SVPNConnectionHealth(req)
 			case "P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealthDetailed":
 				res.resp, res.err = p.dispatchBeginGetP2SVPNConnectionHealthDetailed(req)
-			case "P2SVPNGatewaysClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "P2SVPNGatewaysClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "P2SVPNGatewaysClient.BeginReset":
 				res.resp, res.err = p.dispatchBeginReset(req)
 			case "P2SVPNGatewaysClient.BeginUpdateTags":
 				res.resp, res.err = p.dispatchBeginUpdateTags(req)
+			case "P2SVPNGatewaysClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "P2SVPNGatewaysClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "P2SVPNGatewaysClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -348,39 +348,6 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *htt
 	return resp, nil
 }
 
-func (p *P2SVPNGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, gatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).P2SVPNGateway, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealth(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGetP2SVPNConnectionHealth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetP2SVPNConnectionHealth not implemented")}
@@ -473,76 +440,6 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDe
 	return resp, nil
 }
 
-func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListPager(nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.P2SVPNGatewaysClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginReset == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReset not implemented")}
@@ -632,6 +529,109 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		p.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *P2SVPNGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, gatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).P2SVPNGateway, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/p2svpnGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListPager(nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.P2SVPNGatewaysClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

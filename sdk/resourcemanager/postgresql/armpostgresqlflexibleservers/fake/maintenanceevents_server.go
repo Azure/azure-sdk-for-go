@@ -25,6 +25,10 @@ type MaintenanceEventsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginApplyNow func(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, options *armpostgresqlflexibleservers.MaintenanceEventsClientBeginApplyNowOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientApplyNowResponse], errResp azfake.ErrorResponder)
 
+	// BeginReschedule is the fake for method MaintenanceEventsClient.BeginReschedule
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginReschedule func(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest, options *armpostgresqlflexibleservers.MaintenanceEventsClientBeginRescheduleOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MaintenanceEventsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, options *armpostgresqlflexibleservers.MaintenanceEventsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MaintenanceEventsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type MaintenanceEventsServer struct {
 	// NewListPager is the fake for method MaintenanceEventsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.MaintenanceEventsClientListOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientListResponse])
-
-	// BeginReschedule is the fake for method MaintenanceEventsClient.BeginReschedule
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginReschedule func(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest, options *armpostgresqlflexibleservers.MaintenanceEventsClientBeginRescheduleOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMaintenanceEventsServerTransport creates a new instance of MaintenanceEventsServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewMaintenanceEventsServerTransport(srv *MaintenanceEventsServer) *Maintena
 	return &MaintenanceEventsServerTransport{
 		srv:             srv,
 		beginApplyNow:   newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientApplyNowResponse]](),
-		newListPager:    newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientListResponse]](),
 		beginReschedule: newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientListResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewMaintenanceEventsServerTransport(srv *MaintenanceEventsServer) *Maintena
 type MaintenanceEventsServerTransport struct {
 	srv             *MaintenanceEventsServer
 	beginApplyNow   *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientApplyNowResponse]]
-	newListPager    *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientListResponse]]
 	beginReschedule *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.MaintenanceEventsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MaintenanceEventsServerTransport.
@@ -82,12 +82,12 @@ func (m *MaintenanceEventsServerTransport) dispatchToMethodFake(req *http.Reques
 			switch method {
 			case "MaintenanceEventsClient.BeginApplyNow":
 				res.resp, res.err = m.dispatchBeginApplyNow(req)
+			case "MaintenanceEventsClient.BeginReschedule":
+				res.resp, res.err = m.dispatchBeginReschedule(req)
 			case "MaintenanceEventsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MaintenanceEventsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MaintenanceEventsClient.BeginReschedule":
-				res.resp, res.err = m.dispatchBeginReschedule(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -147,6 +147,58 @@ func (m *MaintenanceEventsServerTransport) dispatchBeginApplyNow(req *http.Reque
 	}
 	if !server.PollerResponderMore(beginApplyNow) {
 		m.beginApplyNow.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MaintenanceEventsServerTransport) dispatchBeginReschedule(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginReschedule == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReschedule not implemented")}
+	}
+	beginReschedule := m.beginReschedule.get(req)
+	if beginReschedule == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/maintenanceEvents/(?P<maintenanceEventId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reschedule`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		maintenanceEventIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("maintenanceEventId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginReschedule(req.Context(), resourceGroupNameParam, serverNameParam, maintenanceEventIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReschedule = &respr
+		m.beginReschedule.add(req, beginReschedule)
+	}
+
+	resp, err := server.PollerResponderNext(beginReschedule, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginReschedule.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReschedule) {
+		m.beginReschedule.remove(req)
 	}
 
 	return resp, nil
@@ -235,58 +287,6 @@ func (m *MaintenanceEventsServerTransport) dispatchNewListPager(req *http.Reques
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MaintenanceEventsServerTransport) dispatchBeginReschedule(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginReschedule == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginReschedule not implemented")}
-	}
-	beginReschedule := m.beginReschedule.get(req)
-	if beginReschedule == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/maintenanceEvents/(?P<maintenanceEventId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reschedule`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		maintenanceEventIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("maintenanceEventId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginReschedule(req.Context(), resourceGroupNameParam, serverNameParam, maintenanceEventIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginReschedule = &respr
-		m.beginReschedule.add(req, beginReschedule)
-	}
-
-	resp, err := server.PollerResponderNext(beginReschedule, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginReschedule.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginReschedule) {
-		m.beginReschedule.remove(req)
-	}
-
 	return resp, nil
 }
 

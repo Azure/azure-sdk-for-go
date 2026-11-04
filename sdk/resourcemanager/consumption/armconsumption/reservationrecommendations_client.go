@@ -18,7 +18,7 @@ import (
 // ReservationRecommendationsClient contains the methods for the ReservationRecommendations group.
 // Don't use this type directly, use NewReservationRecommendationsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationRecommendationsClient struct {
 	internal *arm.Client
 }
@@ -89,7 +89,7 @@ func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Co
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

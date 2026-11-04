@@ -22,13 +22,13 @@ import (
 
 // RoutingRuleCollectionsServer is a fake server for instances of the armnetwork.RoutingRuleCollectionsClient type.
 type RoutingRuleCollectionsServer struct {
-	// CreateOrUpdate is the fake for method RoutingRuleCollectionsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleCollection armnetwork.RoutingRuleCollection, options *armnetwork.RoutingRuleCollectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.RoutingRuleCollectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method RoutingRuleCollectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *armnetwork.RoutingRuleCollectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.RoutingRuleCollectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method RoutingRuleCollectionsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleCollection armnetwork.RoutingRuleCollection, options *armnetwork.RoutingRuleCollectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.RoutingRuleCollectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RoutingRuleCollectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (r *RoutingRuleCollectionsServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
-			case "RoutingRuleCollectionsClient.CreateOrUpdate":
-				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "RoutingRuleCollectionsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RoutingRuleCollectionsClient.CreateOrUpdate":
+				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "RoutingRuleCollectionsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RoutingRuleCollectionsClient.NewListPager":
@@ -101,51 +101,6 @@ func (r *RoutingRuleCollectionsServerTransport) dispatchToMethodFake(req *http.R
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *RoutingRuleCollectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routingConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.RoutingRuleCollection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoutingRuleCollection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *RoutingRuleCollectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -208,6 +163,51 @@ func (r *RoutingRuleCollectionsServerTransport) dispatchBeginDelete(req *http.Re
 		r.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RoutingRuleCollectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routingConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.RoutingRuleCollection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoutingRuleCollection, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

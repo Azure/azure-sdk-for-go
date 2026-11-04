@@ -188,3 +188,12 @@ func TestSessionAuthRequiresHTTPS(t *testing.T) {
 		})
 	}
 }
+
+// Host names are case-insensitive, so an uppercase host still yields the account name that signs
+// session requests.
+func TestSessionAuthUppercaseHost(t *testing.T) {
+	const upperURL = "https://account.BLOB.core.windows.net/container/blob"
+	tr := &wireTransport{}
+	c := newWireClient(t, tr, fakeTokenCredential{}, nil, exported.SessionModeEnabled, upperURL)
+	require.Equal(t, "Session", sendThrough(t, c, tr, http.MethodGet, upperURL, nil))
+}

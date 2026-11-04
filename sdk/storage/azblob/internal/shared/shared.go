@@ -308,7 +308,8 @@ func GetAccountName(storageURL string) (string, error) {
 		}
 		return account, nil
 	}
-	if account := accountNameFromHost(u.Hostname(), "blob"); account != "" {
+	// host names are case-insensitive, and account names are lowercase
+	if account := accountNameFromHost(strings.ToLower(u.Hostname()), "blob"); account != "" {
 		return account, nil
 	}
 	return "", fmt.Errorf("could not determine the account name from host %q", u.Hostname())

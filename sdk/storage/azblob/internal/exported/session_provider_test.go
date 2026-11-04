@@ -496,3 +496,28 @@ func TestSessionModeResolution(t *testing.T) {
 	}
 	require.Error(t, ValidateSessionMode("enabled"), "values are case-sensitive")
 }
+
+// Layout routing replaces the URL host with the layout endpoint and keeps the account authority in
+// req.Host. A layout endpoint that is an IP address mustn't make the path look path-style: the
+// container is still the first path segment.
+func TestProviderRoutedRequestToIPEndpointKeepsContainer(t *testing.T) {
+	routed := func(path string) *http.Request {
+		req := blobRequest(t, context.Background(), "https://10.0.0.4"+path)
+		req.Host = "testaccount.blob.core.windows.net"
+		return req
+	}
+	svc := &sessionService{}
+	p := newTestProvider(t, svc)
+
+	require.True(t, p.isRequestEligible(routed("/container/blob")), "a Get Blob routed to an IP endpoint is eligible")
+	require.True(t, p.isRequestEligible(routed("/container/dir/blob")))
+
+	_, err := p.getSession(routed("/container/dir/blob"))
+	require.NoError(t, err)
+	_, err = p.getSession(routed("/container/blob"))
+	require.NoError(t, err)
+
+	calls := svc.allCalls()
+	require.Len(t, calls, 1, "both blobs share the container's session")
+	require.Equal(t, "container", calls[0].container)
+}

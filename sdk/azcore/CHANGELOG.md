@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed Azure-AsyncOperation pollers for POST actions completing from a terminal resource provisioning state in the initial response body instead of polling the operation URL
+
 ### Other Changes
 
 ## 1.24.0 (2026-11-02)

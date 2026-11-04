@@ -69,12 +69,13 @@ func New[T any](pl exported.Pipeline, resp *http.Response, finalState pollers.Fi
 	if !poller.IsValidURL(asyncURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", asyncURL)
 	}
-	// check for provisioning state.  if the operation is a RELO
-	// and terminates synchronously this will prevent extra polling.
-	// it's ok if there's no provisioning state.
-	state, _ := poller.GetProvisioningState(resp)
-	if state == "" {
-		state = poller.StatusInProgress
+	state := poller.StatusInProgress
+	// POST actions can return an existing resource whose provisioning state
+	// doesn't describe the action. Preserve synchronous RELO completion for other methods.
+	if resp.Request.Method != http.MethodPost {
+		if provisioningState, _ := poller.GetProvisioningState(resp); provisioningState != "" {
+			state = provisioningState
+		}
 	}
 	p := &Poller[T]{
 		pl:         pl,

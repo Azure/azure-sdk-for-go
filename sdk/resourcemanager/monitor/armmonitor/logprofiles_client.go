@@ -30,6 +30,9 @@ type LogProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogProfilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileN
 	if err != nil {
 		return LogProfilesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogProfilesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context, logProfileName string, parameters LogProfileResource, _ *LogProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if logProfileName == "" {
@@ -96,8 +94,11 @@ func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (LogProfilesClientCreateOrUpdateResponse, error) {
+func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LogProfilesClientCreateOrUpdateResponse, error) {
 	result := LogProfilesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
 		return LogProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -123,8 +124,7 @@ func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName stri
 		return LogProfilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogProfilesClientDeleteResponse{}, err
+		return LogProfilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LogProfilesClientDeleteResponse{}, nil
 }
@@ -133,7 +133,7 @@ func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName stri
 func (client *LogProfilesClient) deleteCreateRequest(ctx context.Context, logProfileName string, _ *LogProfilesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if logProfileName == "" {
@@ -168,19 +168,14 @@ func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string,
 	if err != nil {
 		return LogProfilesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogProfilesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *LogProfilesClient) getCreateRequest(ctx context.Context, logProfileName string, _ *LogProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if logProfileName == "" {
@@ -199,8 +194,11 @@ func (client *LogProfilesClient) getCreateRequest(ctx context.Context, logProfil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProfilesClientGetResponse, error) {
+func (client *LogProfilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (LogProfilesClientGetResponse, error) {
 	result := LogProfilesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
 		return LogProfilesClientGetResponse{}, err
 	}
@@ -220,39 +218,53 @@ func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return LogProfilesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LogProfilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *LogProfilesClient) listCreateRequest(ctx context.Context, _ *LogProfilesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LogProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *LogProfilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20160301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20160301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LogProfilesClient) listHandleResponse(resp *http.Response) (LogProfilesClientListResponse, error) {
+func (client *LogProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (LogProfilesClientListResponse, error) {
 	result := LogProfilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileCollection); err != nil {
 		return LogProfilesClientListResponse{}, err
 	}
@@ -278,19 +290,14 @@ func (client *LogProfilesClient) Update(ctx context.Context, logProfileName stri
 	if err != nil {
 		return LogProfilesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogProfilesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, _ *LogProfilesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if logProfileName == "" {
@@ -313,8 +320,11 @@ func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logPro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *LogProfilesClient) updateHandleResponse(resp *http.Response) (LogProfilesClientUpdateResponse, error) {
+func (client *LogProfilesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (LogProfilesClientUpdateResponse, error) {
 	result := LogProfilesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
 		return LogProfilesClientUpdateResponse{}, err
 	}

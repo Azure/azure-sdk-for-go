@@ -68,7 +68,7 @@ func (client *SharedGalleryInvitesClient) BeginGallerySharingAccept(ctx context.
 	}
 }
 
-// GallerySharingAccept - Accept sharing of a subscription-level shared gallery.
+// gallerySharingAccept - Accept sharing of a subscription-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SharedGalleryInvitesClient) gallerySharingAccept(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *SharedGalleryInvitesClientBeginGallerySharingAcceptOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SharedGalleryInvitesClient) gallerySharingAccept(ctx context.Conte
 	return httpResp, nil
 }
 
-// gallerySharingAcceptCreateRequest creates the GallerySharingAccept request.
+// gallerySharingAcceptCreateRequest creates the gallerySharingAccept request.
 func (client *SharedGalleryInvitesClient) gallerySharingAcceptCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *SharedGalleryInvitesClientBeginGallerySharingAcceptOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/accept"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *SharedGalleryInvitesClient) BeginGallerySharingReject(ctx context.
 	}
 }
 
-// GallerySharingReject - Reject sharing of a subscription-level shared gallery.
+// gallerySharingReject - Reject sharing of a subscription-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SharedGalleryInvitesClient) gallerySharingReject(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *SharedGalleryInvitesClientBeginGallerySharingRejectOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *SharedGalleryInvitesClient) gallerySharingReject(ctx context.Conte
 	return httpResp, nil
 }
 
-// gallerySharingRejectCreateRequest creates the GallerySharingReject request.
+// gallerySharingRejectCreateRequest creates the gallerySharingReject request.
 func (client *SharedGalleryInvitesClient) gallerySharingRejectCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *SharedGalleryInvitesClientBeginGallerySharingRejectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/reject"
 	if client.subscriptionID == "" {

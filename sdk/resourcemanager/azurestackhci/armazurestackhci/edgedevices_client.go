@@ -19,7 +19,7 @@ import (
 // EdgeDevicesClient contains the methods for the EdgeDevices group.
 // Don't use this type directly, use NewEdgeDevicesClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type EdgeDevicesClient struct {
 	internal *arm.Client
 }
@@ -62,7 +62,7 @@ func (client *EdgeDevicesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create a EdgeDevice
+// createOrUpdate - Create a EdgeDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDevicesClient) createOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, resource EdgeDeviceClassification, options *EdgeDevicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *EdgeDevicesClient) createOrUpdate(ctx context.Context, resourceURI
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EdgeDevicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, resource EdgeDeviceClassification, _ *EdgeDevicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}"
 	if resourceURI == "" {
@@ -100,7 +100,7 @@ func (client *EdgeDevicesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -132,7 +132,7 @@ func (client *EdgeDevicesClient) BeginDelete(ctx context.Context, resourceURI st
 	}
 }
 
-// Delete - Delete a EdgeDevice
+// deleteOperation - Delete a EdgeDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDevicesClient) deleteOperation(ctx context.Context, resourceURI string, edgeDeviceName string, options *EdgeDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -154,7 +154,7 @@ func (client *EdgeDevicesClient) deleteOperation(ctx context.Context, resourceUR
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EdgeDevicesClient) deleteCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, _ *EdgeDevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}"
 	if resourceURI == "" {
@@ -170,8 +170,80 @@ func (client *EdgeDevicesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginValidate - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - edgeDeviceName - Name of Device
+//   - validateRequest - The content of the action request
+//   - options - EdgeDevicesClientBeginValidateOptions contains the optional parameters for the EdgeDevicesClient.BeginValidate
+//     method.
+func (client *EdgeDevicesClient) BeginValidate(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, options *EdgeDevicesClientBeginValidateOptions) (*runtime.Poller[EdgeDevicesClientValidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validate(ctx, resourceURI, edgeDeviceName, validateRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeDevicesClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeDevicesClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validate - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EdgeDevicesClient) validate(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, options *EdgeDevicesClientBeginValidateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EdgeDevicesClient.BeginValidate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateCreateRequest(ctx, resourceURI, edgeDeviceName, validateRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateCreateRequest creates the validate request.
+func (client *EdgeDevicesClient) validateCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, _ *EdgeDevicesClientBeginValidateOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/validate"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if edgeDeviceName == "" {
+		return nil, errors.New("parameter edgeDeviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{edgeDeviceName}", url.PathEscape(edgeDeviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, validateRequest); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -213,7 +285,7 @@ func (client *EdgeDevicesClient) getCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +351,7 @@ func (client *EdgeDevicesClient) listCreateRequest(ctx context.Context, resource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -296,76 +368,4 @@ func (client *EdgeDevicesClient) listHandleResponse(resp *http.Response, success
 		return EdgeDevicesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginValidate - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - edgeDeviceName - Name of Device
-//   - validateRequest - The content of the action request
-//   - options - EdgeDevicesClientBeginValidateOptions contains the optional parameters for the EdgeDevicesClient.BeginValidate
-//     method.
-func (client *EdgeDevicesClient) BeginValidate(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, options *EdgeDevicesClientBeginValidateOptions) (*runtime.Poller[EdgeDevicesClientValidateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validate(ctx, resourceURI, edgeDeviceName, validateRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeDevicesClientValidateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeDevicesClientValidateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Validate - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeDevicesClient) validate(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, options *EdgeDevicesClientBeginValidateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EdgeDevicesClient.BeginValidate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateCreateRequest(ctx, resourceURI, edgeDeviceName, validateRequest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateCreateRequest creates the Validate request.
-func (client *EdgeDevicesClient) validateCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest ValidateRequest, _ *EdgeDevicesClientBeginValidateOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/validate"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if edgeDeviceName == "" {
-		return nil, errors.New("parameter edgeDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{edgeDeviceName}", url.PathEscape(edgeDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, validateRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

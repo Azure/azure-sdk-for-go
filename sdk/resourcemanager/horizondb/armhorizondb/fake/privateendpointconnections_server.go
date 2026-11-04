@@ -21,6 +21,10 @@ import (
 
 // PrivateEndpointConnectionsServer is a fake server for instances of the armhorizondb.PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsServer struct {
+	// BeginApproveOrReject is the fake for method PrivateEndpointConnectionsClient.BeginApproveOrReject
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginApproveOrReject func(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource armhorizondb.PrivateEndpointConnectionResource, options *armhorizondb.PrivateEndpointConnectionsClientBeginApproveOrRejectOptions) (resp azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientApproveOrRejectResponse], errResp azfake.ErrorResponder)
+
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *armhorizondb.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type PrivateEndpointConnectionsServer struct {
 	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterName string, options *armhorizondb.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armhorizondb.PrivateEndpointConnectionsClientListResponse])
-
-	// UpdateStatus is the fake for method PrivateEndpointConnectionsClient.UpdateStatus
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	UpdateStatus func(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource armhorizondb.PrivateEndpointConnectionResource, options *armhorizondb.PrivateEndpointConnectionsClientUpdateStatusOptions) (resp azfake.Responder[armhorizondb.PrivateEndpointConnectionsClientUpdateStatusResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -43,18 +43,20 @@ type PrivateEndpointConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
-		srv:          srv,
-		beginDelete:  newTracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armhorizondb.PrivateEndpointConnectionsClientListResponse]](),
+		srv:                  srv,
+		beginApproveOrReject: newTracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientApproveOrRejectResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientDeleteResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armhorizondb.PrivateEndpointConnectionsClientListResponse]](),
 	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armhorizondb.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
-	srv          *PrivateEndpointConnectionsServer
-	beginDelete  *tracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armhorizondb.PrivateEndpointConnectionsClientListResponse]]
+	srv                  *PrivateEndpointConnectionsServer
+	beginApproveOrReject *tracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientApproveOrRejectResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armhorizondb.PrivateEndpointConnectionsClientDeleteResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armhorizondb.PrivateEndpointConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -78,14 +80,14 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 		}
 		if !intercepted {
 			switch method {
+			case "PrivateEndpointConnectionsClient.BeginApproveOrReject":
+				res.resp, res.err = p.dispatchBeginApproveOrReject(req)
 			case "PrivateEndpointConnectionsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateEndpointConnectionsClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PrivateEndpointConnectionsClient.UpdateStatus":
-				res.resp, res.err = p.dispatchUpdateStatus(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,6 +102,58 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginApproveOrReject(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginApproveOrReject == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginApproveOrReject not implemented")}
+	}
+	beginApproveOrReject := p.beginApproveOrReject.get(req)
+	if beginApproveOrReject == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhorizondb.PrivateEndpointConnectionResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginApproveOrReject(req.Context(), resourceGroupNameParam, clusterNameParam, privateEndpointConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginApproveOrReject = &respr
+		p.beginApproveOrReject.add(req, beginApproveOrReject)
+	}
+
+	resp, err := server.PollerResponderNext(beginApproveOrReject, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginApproveOrReject.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginApproveOrReject) {
+		p.beginApproveOrReject.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -224,47 +278,6 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 	}
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PrivateEndpointConnectionsServerTransport) dispatchUpdateStatus(req *http.Request) (*http.Response, error) {
-	if p.srv.UpdateStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhorizondb.PrivateEndpointConnectionResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.UpdateStatus(req.Context(), resourceGroupNameParam, clusterNameParam, privateEndpointConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionResource, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

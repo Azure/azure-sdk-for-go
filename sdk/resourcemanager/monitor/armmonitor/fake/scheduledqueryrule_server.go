@@ -21,6 +21,10 @@ import (
 
 // ScheduledQueryRuleServer is a fake server for instances of the armmonitor.ScheduledQueryRuleClient type.
 type ScheduledQueryRuleServer struct {
+	// BeginReconcileNSP is the fake for method ScheduledQueryRuleClient.BeginReconcileNSP
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReconcileNSP func(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *armmonitor.ScheduledQueryRuleClientBeginReconcileNSPOptions) (resp azfake.PollerResponder[armmonitor.ScheduledQueryRuleClientReconcileNSPResponse], errResp azfake.ErrorResponder)
+
 	// GetNSP is the fake for method ScheduledQueryRuleClient.GetNSP
 	// HTTP status codes to indicate success: http.StatusOK
 	GetNSP func(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *armmonitor.ScheduledQueryRuleClientGetNSPOptions) (resp azfake.Responder[armmonitor.ScheduledQueryRuleClientGetNSPResponse], errResp azfake.ErrorResponder)
@@ -28,10 +32,6 @@ type ScheduledQueryRuleServer struct {
 	// NewListNSPPager is the fake for method ScheduledQueryRuleClient.NewListNSPPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListNSPPager func(resourceGroupName string, ruleName string, options *armmonitor.ScheduledQueryRuleClientListNSPOptions) (resp azfake.PagerResponder[armmonitor.ScheduledQueryRuleClientListNSPResponse])
-
-	// BeginReconcileNSP is the fake for method ScheduledQueryRuleClient.BeginReconcileNSP
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReconcileNSP func(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *armmonitor.ScheduledQueryRuleClientBeginReconcileNSPOptions) (resp azfake.PollerResponder[armmonitor.ScheduledQueryRuleClientReconcileNSPResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScheduledQueryRuleServerTransport creates a new instance of ScheduledQueryRuleServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type ScheduledQueryRuleServer struct {
 func NewScheduledQueryRuleServerTransport(srv *ScheduledQueryRuleServer) *ScheduledQueryRuleServerTransport {
 	return &ScheduledQueryRuleServerTransport{
 		srv:               srv,
-		newListNSPPager:   newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRuleClientListNSPResponse]](),
 		beginReconcileNSP: newTracker[azfake.PollerResponder[armmonitor.ScheduledQueryRuleClientReconcileNSPResponse]](),
+		newListNSPPager:   newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRuleClientListNSPResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewScheduledQueryRuleServerTransport(srv *ScheduledQueryRuleServer) *Schedu
 // Don't use this type directly, use NewScheduledQueryRuleServerTransport instead.
 type ScheduledQueryRuleServerTransport struct {
 	srv               *ScheduledQueryRuleServer
-	newListNSPPager   *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRuleClientListNSPResponse]]
 	beginReconcileNSP *tracker[azfake.PollerResponder[armmonitor.ScheduledQueryRuleClientReconcileNSPResponse]]
+	newListNSPPager   *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRuleClientListNSPResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScheduledQueryRuleServerTransport.
@@ -74,12 +74,12 @@ func (s *ScheduledQueryRuleServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
+			case "ScheduledQueryRuleClient.BeginReconcileNSP":
+				res.resp, res.err = s.dispatchBeginReconcileNSP(req)
 			case "ScheduledQueryRuleClient.GetNSP":
 				res.resp, res.err = s.dispatchGetNSP(req)
 			case "ScheduledQueryRuleClient.NewListNSPPager":
 				res.resp, res.err = s.dispatchNewListNSPPager(req)
-			case "ScheduledQueryRuleClient.BeginReconcileNSP":
-				res.resp, res.err = s.dispatchBeginReconcileNSP(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -96,91 +96,13 @@ func (s *ScheduledQueryRuleServerTransport) dispatchToMethodFake(req *http.Reque
 	}
 }
 
-func (s *ScheduledQueryRuleServerTransport) dispatchGetNSP(req *http.Request) (*http.Response, error) {
-	if s.srv.GetNSP == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetNSP not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-	if err != nil {
-		return nil, err
-	}
-	networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.GetNSP(req.Context(), resourceGroupNameParam, ruleNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkSecurityPerimeterConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ScheduledQueryRuleServerTransport) dispatchNewListNSPPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListNSPPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListNSPPager not implemented")}
-	}
-	newListNSPPager := s.newListNSPPager.get(req)
-	if newListNSPPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListNSPPager(resourceGroupNameParam, ruleNameParam, nil)
-		newListNSPPager = &resp
-		s.newListNSPPager.add(req, newListNSPPager)
-		server.PagerResponderInjectNextLinks(newListNSPPager, req, func(page *armmonitor.ScheduledQueryRuleClientListNSPResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListNSPPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListNSPPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListNSPPager) {
-		s.newListNSPPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ScheduledQueryRuleServerTransport) dispatchBeginReconcileNSP(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginReconcileNSP == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReconcileNSP not implemented")}
 	}
 	beginReconcileNSP := s.beginReconcileNSP.get(req)
 	if beginReconcileNSP == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reconcile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -219,6 +141,84 @@ func (s *ScheduledQueryRuleServerTransport) dispatchBeginReconcileNSP(req *http.
 		s.beginReconcileNSP.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ScheduledQueryRuleServerTransport) dispatchGetNSP(req *http.Request) (*http.Response, error) {
+	if s.srv.GetNSP == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetNSP not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+	networkSecurityPerimeterConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterConfigurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetNSP(req.Context(), resourceGroupNameParam, ruleNameParam, networkSecurityPerimeterConfigurationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkSecurityPerimeterConfiguration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ScheduledQueryRuleServerTransport) dispatchNewListNSPPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListNSPPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListNSPPager not implemented")}
+	}
+	newListNSPPager := s.newListNSPPager.get(req)
+	if newListNSPPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/scheduledQueryRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListNSPPager(resourceGroupNameParam, ruleNameParam, nil)
+		newListNSPPager = &resp
+		s.newListNSPPager.add(req, newListNSPPager)
+		server.PagerResponderInjectNextLinks(newListNSPPager, req, func(page *armmonitor.ScheduledQueryRuleClientListNSPResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListNSPPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListNSPPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListNSPPager) {
+		s.newListNSPPager.remove(req)
+	}
 	return resp, nil
 }
 

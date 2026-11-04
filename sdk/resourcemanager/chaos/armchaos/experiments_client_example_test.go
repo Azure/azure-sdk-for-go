@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/Experiments_Cancel.json
+// Generated from example definition: 2026-11-01/Experiments_Cancel.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleExperimentsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/Experiments_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/Experiments_CreateOrUpdate.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Experiments_Delete.json
+// Generated from example definition: 2026-11-01/Experiments_Delete.json
 func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,433 +197,7 @@ func ExampleExperimentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/Experiments_ExecutionDetails.json
-func ExampleExperimentsClient_ExecutionDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExperimentsClient().ExecutionDetails(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.ExperimentsClientExecutionDetailsResponse{
-	// 	ExperimentExecutionDetails: armchaos.ExperimentExecutionDetails{
-	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions/getExecutionDetails"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
-	// 		Properties: &armchaos.ExperimentExecutionDetailsProperties{
-	// 			FailureReason: to.Ptr("Dependency failure"),
-	// 			LastActionAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
-	// 			RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
-	// 				Steps: []*armchaos.StepStatus{
-	// 					{
-	// 						Branches: []*armchaos.BranchStatus{
-	// 							{
-	// 								Actions: []*armchaos.ActionStatus{
-	// 									{
-	// 										ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
-	// 										ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
-	// 										EndTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
-	// 										StartTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
-	// 										Status: to.Ptr("failed"),
-	// 										Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
-	// 											{
-	// 												Status: to.Ptr("succeeded"),
-	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
-	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
-	// 											},
-	// 											{
-	// 												Status: to.Ptr("failed"),
-	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
-	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								BranchID: to.Ptr("FirstBranch"),
-	// 								BranchName: to.Ptr("FirstBranch"),
-	// 								Status: to.Ptr("failed"),
-	// 							},
-	// 						},
-	// 						Status: to.Ptr("failed"),
-	// 						StepID: to.Ptr("FirstStep"),
-	// 						StepName: to.Ptr("FirstStep"),
-	// 					},
-	// 				},
-	// 			},
-	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
-	// 			Status: to.Ptr("failed"),
-	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_Get.json
-func ExampleExperimentsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExperimentsClient().Get(ctx, "exampleRG", "exampleExperiment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.ExperimentsClientGetResponse{
-	// 	Experiment: armchaos.Experiment{
-	// 		Name: to.Ptr("exampleExperiment"),
-	// 		Type: to.Ptr("Microsoft.Chaos/experiments"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
-	// 		Identity: &armchaos.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
-	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-	// 		},
-	// 		Location: to.Ptr("centraluseuap"),
-	// 		Properties: &armchaos.ExperimentProperties{
-	// 			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
-	// 				BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
-	// 				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
-	// 			},
-	// 			Selectors: []armchaos.TargetSelectorClassification{
-	// 				&armchaos.TargetListSelector{
-	// 					Type: to.Ptr(armchaos.SelectorTypeList),
-	// 					ID: to.Ptr("selector1"),
-	// 					Targets: []*armchaos.TargetReference{
-	// 						{
-	// 							Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
-	// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Steps: []*armchaos.ExperimentStep{
-	// 				{
-	// 					Name: to.Ptr("step1"),
-	// 					Branches: []*armchaos.ExperimentBranch{
-	// 						{
-	// 							Name: to.Ptr("branch1"),
-	// 							Actions: []armchaos.ExperimentActionClassification{
-	// 								&armchaos.ContinuousAction{
-	// 									Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-	// 									Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
-	// 									Duration: to.Ptr("PT10M"),
-	// 									Parameters: []*armchaos.KeyValuePair{
-	// 										{
-	// 											Key: to.Ptr("abruptShutdown"),
-	// 											Value: to.Ptr("false"),
-	// 										},
-	// 									},
-	// 									SelectorID: to.Ptr("selector1"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("User"),
-	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("User"),
-	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_GetExecution.json
-func ExampleExperimentsClient_GetExecution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExperimentsClient().GetExecution(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.ExperimentsClientGetExecutionResponse{
-	// 	ExperimentExecution: armchaos.ExperimentExecution{
-	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
-	// 		Properties: &armchaos.ExperimentExecutionProperties{
-	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
-	// 			Status: to.Ptr("failed"),
-	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_List.json
-func ExampleExperimentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExperimentsClient().NewListPager("exampleRG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.ExperimentsClientListResponse{
-		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Experiment{
-		// 			{
-		// 				Name: to.Ptr("exampleExperiment"),
-		// 				Type: to.Ptr("Microsoft.Chaos/experiments"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armchaos.ExperimentProperties{
-		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
-		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
-		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
-		// 					},
-		// 					Selectors: []armchaos.TargetSelectorClassification{
-		// 						&armchaos.TargetListSelector{
-		// 							Type: to.Ptr(armchaos.SelectorTypeList),
-		// 							ID: to.Ptr("selector1"),
-		// 							Targets: []*armchaos.TargetReference{
-		// 								{
-		// 									Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
-		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Steps: []*armchaos.ExperimentStep{
-		// 						{
-		// 							Name: to.Ptr("step1"),
-		// 							Branches: []*armchaos.ExperimentBranch{
-		// 								{
-		// 									Name: to.Ptr("branch1"),
-		// 									Actions: []armchaos.ExperimentActionClassification{
-		// 										&armchaos.ContinuousAction{
-		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
-		// 											Duration: to.Ptr("PT10M"),
-		// 											Parameters: []*armchaos.KeyValuePair{
-		// 												{
-		// 													Key: to.Ptr("abruptShutdown"),
-		// 													Value: to.Ptr("false"),
-		// 												},
-		// 											},
-		// 											SelectorID: to.Ptr("selector1"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_ListAll.json
-func ExampleExperimentsClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExperimentsClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.ExperimentsClientListAllResponse{
-		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Experiment{
-		// 			{
-		// 				Name: to.Ptr("exampleExperiment"),
-		// 				Type: to.Ptr("Microsoft.Chaos/experiments"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armchaos.ExperimentProperties{
-		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
-		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
-		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
-		// 					},
-		// 					Selectors: []armchaos.TargetSelectorClassification{
-		// 						&armchaos.TargetListSelector{
-		// 							Type: to.Ptr(armchaos.SelectorTypeList),
-		// 							ID: to.Ptr("selector1"),
-		// 							Targets: []*armchaos.TargetReference{
-		// 								{
-		// 									Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
-		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Steps: []*armchaos.ExperimentStep{
-		// 						{
-		// 							Name: to.Ptr("step1"),
-		// 							Branches: []*armchaos.ExperimentBranch{
-		// 								{
-		// 									Name: to.Ptr("branch1"),
-		// 									Actions: []armchaos.ExperimentActionClassification{
-		// 										&armchaos.ContinuousAction{
-		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
-		// 											Duration: to.Ptr("PT10M"),
-		// 											Parameters: []*armchaos.KeyValuePair{
-		// 												{
-		// 													Key: to.Ptr("abruptShutdown"),
-		// 													Value: to.Ptr("false"),
-		// 												},
-		// 											},
-		// 											SelectorID: to.Ptr("selector1"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_ListAllExecutions.json
-func ExampleExperimentsClient_NewListAllExecutionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExperimentsClient().NewListAllExecutionsPager("exampleRG", "exampleExperiment", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.ExperimentsClientListAllExecutionsResponse{
-		// 	ExperimentExecutionListResult: armchaos.ExperimentExecutionListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails?continuationToken=&api-version=2025-01-01"),
-		// 		Value: []*armchaos.ExperimentExecution{
-		// 			{
-		// 				Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
-		// 				Properties: &armchaos.ExperimentExecutionProperties{
-		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
-		// 					Status: to.Ptr("failed"),
-		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("14d98367-52ef-4596-be4f-53fc81bbfc33"),
-		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/14d98367-52ef-4596-be4f-53fc81bbfc33"),
-		// 				Properties: &armchaos.ExperimentExecutionProperties{
-		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
-		// 					Status: to.Ptr("success"),
-		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Experiments_Start.json
+// Generated from example definition: 2026-11-01/Experiments_Start.json
 func ExampleExperimentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +218,7 @@ func ExampleExperimentsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/Experiments_Update.json
+// Generated from example definition: 2026-11-01/Experiments_Update.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -748,4 +322,430 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-11-01/Experiments_ExecutionDetails.json
+func ExampleExperimentsClient_ExecutionDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExperimentsClient().ExecutionDetails(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ExperimentsClientExecutionDetailsResponse{
+	// 	ExperimentExecutionDetails: armchaos.ExperimentExecutionDetails{
+	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
+	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions/getExecutionDetails"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
+	// 		Properties: &armchaos.ExperimentExecutionDetailsProperties{
+	// 			FailureReason: to.Ptr("Dependency failure"),
+	// 			LastActionAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
+	// 			RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
+	// 				Steps: []*armchaos.StepStatus{
+	// 					{
+	// 						Branches: []*armchaos.BranchStatus{
+	// 							{
+	// 								Actions: []*armchaos.ActionStatus{
+	// 									{
+	// 										ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
+	// 										ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
+	// 										EndTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
+	// 										StartTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
+	// 										Status: to.Ptr("failed"),
+	// 										Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
+	// 											{
+	// 												Status: to.Ptr("succeeded"),
+	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
+	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
+	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
+	// 											},
+	// 											{
+	// 												Status: to.Ptr("failed"),
+	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
+	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
+	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								BranchID: to.Ptr("FirstBranch"),
+	// 								BranchName: to.Ptr("FirstBranch"),
+	// 								Status: to.Ptr("failed"),
+	// 							},
+	// 						},
+	// 						Status: to.Ptr("failed"),
+	// 						StepID: to.Ptr("FirstStep"),
+	// 						StepName: to.Ptr("FirstStep"),
+	// 					},
+	// 				},
+	// 			},
+	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
+	// 			Status: to.Ptr("failed"),
+	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Experiments_Get.json
+func ExampleExperimentsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExperimentsClient().Get(ctx, "exampleRG", "exampleExperiment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ExperimentsClientGetResponse{
+	// 	Experiment: armchaos.Experiment{
+	// 		Name: to.Ptr("exampleExperiment"),
+	// 		Type: to.Ptr("Microsoft.Chaos/experiments"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+	// 		Identity: &armchaos.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
+	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+	// 		},
+	// 		Location: to.Ptr("centraluseuap"),
+	// 		Properties: &armchaos.ExperimentProperties{
+	// 			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+	// 				BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+	// 				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+	// 			},
+	// 			Selectors: []armchaos.TargetSelectorClassification{
+	// 				&armchaos.TargetListSelector{
+	// 					Type: to.Ptr(armchaos.SelectorTypeList),
+	// 					ID: to.Ptr("selector1"),
+	// 					Targets: []*armchaos.TargetReference{
+	// 						{
+	// 							Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
+	// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Steps: []*armchaos.ExperimentStep{
+	// 				{
+	// 					Name: to.Ptr("step1"),
+	// 					Branches: []*armchaos.ExperimentBranch{
+	// 						{
+	// 							Name: to.Ptr("branch1"),
+	// 							Actions: []armchaos.ExperimentActionClassification{
+	// 								&armchaos.ContinuousAction{
+	// 									Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
+	// 									Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
+	// 									Duration: to.Ptr("PT10M"),
+	// 									Parameters: []*armchaos.KeyValuePair{
+	// 										{
+	// 											Key: to.Ptr("abruptShutdown"),
+	// 											Value: to.Ptr("false"),
+	// 										},
+	// 									},
+	// 									SelectorID: to.Ptr("selector1"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("User"),
+	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("User"),
+	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Experiments_GetExecution.json
+func ExampleExperimentsClient_GetExecution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExperimentsClient().GetExecution(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ExperimentsClientGetExecutionResponse{
+	// 	ExperimentExecution: armchaos.ExperimentExecution{
+	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
+	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
+	// 		Properties: &armchaos.ExperimentExecutionProperties{
+	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
+	// 			Status: to.Ptr("failed"),
+	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Experiments_ListAllExecutions.json
+func ExampleExperimentsClient_NewListAllExecutionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExperimentsClient().NewListAllExecutionsPager("exampleRG", "exampleExperiment", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.ExperimentsClientListAllExecutionsResponse{
+		// 	ExperimentExecutionListResult: armchaos.ExperimentExecutionListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails?continuationToken=&api-version=2025-01-01"),
+		// 		Value: []*armchaos.ExperimentExecution{
+		// 			{
+		// 				Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
+		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
+		// 				Properties: &armchaos.ExperimentExecutionProperties{
+		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
+		// 					Status: to.Ptr("failed"),
+		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("14d98367-52ef-4596-be4f-53fc81bbfc33"),
+		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/14d98367-52ef-4596-be4f-53fc81bbfc33"),
+		// 				Properties: &armchaos.ExperimentExecutionProperties{
+		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
+		// 					Status: to.Ptr("success"),
+		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/Experiments_ListAll.json
+func ExampleExperimentsClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExperimentsClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.ExperimentsClientListAllResponse{
+		// 	ExperimentListResult: armchaos.ExperimentListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-11-01"),
+		// 		Value: []*armchaos.Experiment{
+		// 			{
+		// 				Name: to.Ptr("exampleExperiment"),
+		// 				Type: to.Ptr("Microsoft.Chaos/experiments"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armchaos.ExperimentProperties{
+		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+		// 					},
+		// 					Selectors: []armchaos.TargetSelectorClassification{
+		// 						&armchaos.TargetListSelector{
+		// 							Type: to.Ptr(armchaos.SelectorTypeList),
+		// 							ID: to.Ptr("selector1"),
+		// 							Targets: []*armchaos.TargetReference{
+		// 								{
+		// 									Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
+		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Steps: []*armchaos.ExperimentStep{
+		// 						{
+		// 							Name: to.Ptr("step1"),
+		// 							Branches: []*armchaos.ExperimentBranch{
+		// 								{
+		// 									Name: to.Ptr("branch1"),
+		// 									Actions: []armchaos.ExperimentActionClassification{
+		// 										&armchaos.ContinuousAction{
+		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
+		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
+		// 											Duration: to.Ptr("PT10M"),
+		// 											Parameters: []*armchaos.KeyValuePair{
+		// 												{
+		// 													Key: to.Ptr("abruptShutdown"),
+		// 													Value: to.Ptr("false"),
+		// 												},
+		// 											},
+		// 											SelectorID: to.Ptr("selector1"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/Experiments_List.json
+func ExampleExperimentsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExperimentsClient().NewListPager("exampleRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.ExperimentsClientListResponse{
+		// 	ExperimentListResult: armchaos.ExperimentListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-11-01"),
+		// 		Value: []*armchaos.Experiment{
+		// 			{
+		// 				Name: to.Ptr("exampleExperiment"),
+		// 				Type: to.Ptr("Microsoft.Chaos/experiments"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armchaos.ExperimentProperties{
+		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+		// 					},
+		// 					Selectors: []armchaos.TargetSelectorClassification{
+		// 						&armchaos.TargetListSelector{
+		// 							Type: to.Ptr(armchaos.SelectorTypeList),
+		// 							ID: to.Ptr("selector1"),
+		// 							Targets: []*armchaos.TargetReference{
+		// 								{
+		// 									Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
+		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Steps: []*armchaos.ExperimentStep{
+		// 						{
+		// 							Name: to.Ptr("step1"),
+		// 							Branches: []*armchaos.ExperimentBranch{
+		// 								{
+		// 									Name: to.Ptr("branch1"),
+		// 									Actions: []armchaos.ExperimentActionClassification{
+		// 										&armchaos.ContinuousAction{
+		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
+		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
+		// 											Duration: to.Ptr("PT10M"),
+		// 											Parameters: []*armchaos.KeyValuePair{
+		// 												{
+		// 													Key: to.Ptr("abruptShutdown"),
+		// 													Value: to.Ptr("false"),
+		// 												},
+		// 											},
+		// 											SelectorID: to.Ptr("selector1"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

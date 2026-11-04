@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
-func ExampleScenariosClient_CreateOrUpdate() {
+// Generated from example definition: 2026-11-01/Scenarios_CreateOrUpdate.json
+func ExampleScenariosClient_CreateOrUpdate_createOrUpdateAScenario() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -27,6 +27,18 @@ func ExampleScenariosClient_CreateOrUpdate() {
 		Properties: &armchaos.ScenarioProperties{
 			Description: to.Ptr("Induces an outage of all discovered VM and VMSS instances in the target zone with an option to invoke custom scripted actions using Automation Runbooks. Additionally, it forces failover of discovered Redis instances to simulate backend zonal outage."),
 			Parameters: []*armchaos.ScenarioParameter{
+				{
+					Name:        to.Ptr("logicalZone"),
+					Type:        to.Ptr(armchaos.ParameterTypeString),
+					Required:    to.Ptr(true),
+					Description: to.Ptr("Logical availability-zone label to test in each target subscription, for example 1."),
+				},
+				{
+					Name:        to.Ptr("location"),
+					Type:        to.Ptr(armchaos.ParameterTypeString),
+					Required:    to.Ptr(true),
+					Description: to.Ptr("Azure location name in which to test the logical zone, for example eastus."),
+				},
 				{
 					Name:        to.Ptr("duration"),
 					Type:        to.Ptr(armchaos.ParameterTypeString),
@@ -51,25 +63,35 @@ func ExampleScenariosClient_CreateOrUpdate() {
 			Actions: []*armchaos.ScenarioAction{
 				{
 					Name:        to.Ptr("vmssZoneDown"),
-					ActionID:    to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+					ActionID:    to.Ptr("microsoft-compute-shutdown/2.0"),
 					Description: to.Ptr("Force shutdown VMSS instances in target zone"),
 					Duration:    to.Ptr("%%{parameters.duration}%%"),
-					Parameters: []*armchaos.KeyValuePair{
+					Parameters:  []*armchaos.KeyValuePair{},
+					Selectors: []*armchaos.ScenarioActionSelector{
 						{
-							Key:   to.Ptr("zones"),
-							Value: to.Ptr("%%{filters.zones}%%"),
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+						},
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+							Value: to.Ptr("%%{parameters.location}%%"),
 						},
 					},
 				},
 				{
 					Name:        to.Ptr("vmZoneDown"),
-					ActionID:    to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+					ActionID:    to.Ptr("microsoft-compute-shutdown/2.0"),
 					Description: to.Ptr("Force shutdown VM instances in target zone"),
 					Duration:    to.Ptr("%%{parameters.duration}%%"),
-					Parameters: []*armchaos.KeyValuePair{
+					Parameters:  []*armchaos.KeyValuePair{},
+					Selectors: []*armchaos.ScenarioActionSelector{
 						{
-							Key:   to.Ptr("zones"),
-							Value: to.Ptr("%%{filters.zones}%%"),
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+						},
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+							Value: to.Ptr("%%{parameters.location}%%"),
 						},
 					},
 				},
@@ -120,6 +142,18 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// 			Description: to.Ptr("Induces an outage of all discovered VM and VMSS instances in the target zone with an option to invoke custom scripted actions using Automation Runbooks. Additionally, it forces failover of discovered Redis instances to simulate backend zonal outage."),
 	// 			Parameters: []*armchaos.ScenarioParameter{
 	// 				{
+	// 					Name: to.Ptr("logicalZone"),
+	// 					Type: to.Ptr(armchaos.ParameterTypeString),
+	// 					Required: to.Ptr(true),
+	// 					Description: to.Ptr("Logical availability-zone label to test in each target subscription, for example 1."),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("location"),
+	// 					Type: to.Ptr(armchaos.ParameterTypeString),
+	// 					Required: to.Ptr(true),
+	// 					Description: to.Ptr("Azure location name in which to test the logical zone, for example eastus."),
+	// 				},
+	// 				{
 	// 					Name: to.Ptr("duration"),
 	// 					Type: to.Ptr(armchaos.ParameterTypeString),
 	// 					Default: to.Ptr("PT15M"),
@@ -143,25 +177,37 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// 			Actions: []*armchaos.ScenarioAction{
 	// 				{
 	// 					Name: to.Ptr("vmssZoneDown"),
-	// 					ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+	// 					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 	// 					Description: to.Ptr("Force shutdown VMSS instances in target zone"),
 	// 					Duration: to.Ptr("%%{parameters.duration}%%"),
 	// 					Parameters: []*armchaos.KeyValuePair{
+	// 					},
+	// 					Selectors: []*armchaos.ScenarioActionSelector{
 	// 						{
-	// 							Key: to.Ptr("zones"),
-	// 							Value: to.Ptr("%%{filters.zones}%%"),
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+	// 							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+	// 							Value: to.Ptr("%%{parameters.location}%%"),
 	// 						},
 	// 					},
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("vmZoneDown"),
-	// 					ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+	// 					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 	// 					Description: to.Ptr("Force shutdown VM instances in target zone"),
 	// 					Duration: to.Ptr("%%{parameters.duration}%%"),
 	// 					Parameters: []*armchaos.KeyValuePair{
+	// 					},
+	// 					Selectors: []*armchaos.ScenarioActionSelector{
 	// 						{
-	// 							Key: to.Ptr("zones"),
-	// 							Value: to.Ptr("%%{filters.zones}%%"),
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+	// 							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+	// 							Value: to.Ptr("%%{parameters.location}%%"),
 	// 						},
 	// 					},
 	// 				},
@@ -206,7 +252,260 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Scenarios_Delete.json
+// Generated from example definition: 2026-11-01/Scenarios_CreateOrUpdate_CreateOnly.json
+func ExampleScenariosClient_CreateOrUpdate_createAScenarioOnlyWhenAbsentOrReturn412WhenItAlreadyExists() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewScenariosClient().CreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "exampleScenario", armchaos.Scenario{
+		Properties: &armchaos.ScenarioProperties{
+			Parameters: []*armchaos.ScenarioParameter{},
+			Actions: []*armchaos.ScenarioAction{
+				{
+					Name:     to.Ptr("restart"),
+					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
+					Duration: to.Ptr("PT5M"),
+					Selectors: []*armchaos.ScenarioActionSelector{
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+							Value: to.Ptr("1"),
+						},
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+							Value: to.Ptr("eastus"),
+						},
+					},
+				},
+			},
+		},
+	}, &armchaos.ScenariosClientCreateOrUpdateOptions{
+		IfNoneMatch: to.Ptr("*")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-11-01/Scenarios_CreateOrUpdate_From_Template.json
+func ExampleScenariosClient_CreateOrUpdate_createAScenarioFromABuiltInScenarioTemplateVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScenariosClient().CreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "computeZoneDownScenario", armchaos.Scenario{
+		Properties: &armchaos.ScenarioProperties{
+			CreatedFrom: to.Ptr("/providers/Microsoft.Chaos/scenarioTemplates/ComputeZoneDown/versions/1.2"),
+			Description: to.Ptr("Simulates a datacenter/availability zone failure by shutting down VMSS instances and standalone VMs in the target zone. Zone failures account for ~25% of all cloud incidents — this scenario validates your application's cross-zone resilience."),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ScenariosClientCreateOrUpdateResponse{
+	// 	Scenario: armchaos.Scenario{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/computeZoneDownScenario"),
+	// 		Name: to.Ptr("computeZoneDownScenario"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios"),
+	// 		Properties: &armchaos.ScenarioProperties{
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			CreatedFrom: to.Ptr("/providers/Microsoft.Chaos/scenarioTemplates/ComputeZoneDown/versions/1.2"),
+	// 			Version: to.Ptr("1.0"),
+	// 			Description: to.Ptr("Simulates a datacenter/availability zone failure by shutting down VMSS instances and standalone VMs in the target zone. Zone failures account for ~25% of all cloud incidents — this scenario validates your application's cross-zone resilience."),
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Scenarios_CreateOrUpdate_UpdateOnly.json
+func ExampleScenariosClient_CreateOrUpdate_updateAScenarioOnlyWhenPresentOrReturn412WhenItDoesNotExist() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScenariosClient().CreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "exampleScenario", armchaos.Scenario{
+		Properties: &armchaos.ScenarioProperties{
+			Parameters: []*armchaos.ScenarioParameter{},
+			Actions: []*armchaos.ScenarioAction{
+				{
+					Name:     to.Ptr("restart"),
+					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
+					Duration: to.Ptr("PT5M"),
+					Selectors: []*armchaos.ScenarioActionSelector{
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+							Value: to.Ptr("1"),
+						},
+						{
+							Name:  to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+							Value: to.Ptr("eastus"),
+						},
+					},
+				},
+			},
+		},
+	}, &armchaos.ScenariosClientCreateOrUpdateOptions{
+		IfMatch: to.Ptr("*")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ScenariosClientCreateOrUpdateResponse{
+	// 	Scenario: armchaos.Scenario{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/exampleScenario"),
+	// 		Name: to.Ptr("exampleScenario"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios"),
+	// 		Properties: &armchaos.ScenarioProperties{
+	// 			Version: to.Ptr("1.0"),
+	// 			Parameters: []*armchaos.ScenarioParameter{
+	// 			},
+	// 			Actions: []*armchaos.ScenarioAction{
+	// 				{
+	// 					Name: to.Ptr("restart"),
+	// 					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
+	// 					Duration: to.Ptr("PT5M"),
+	// 					Selectors: []*armchaos.ScenarioActionSelector{
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+	// 							Value: to.Ptr("1"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+	// 							Value: to.Ptr("eastus"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Scenarios_CreateOrUpdate_With_Failure_Behavior.json
+func ExampleScenariosClient_CreateOrUpdate_createOrUpdateAScenarioThatContinuesPastSuppressedActionFailures() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScenariosClient().CreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "bestEffortProbeScenario", armchaos.Scenario{
+		Properties: &armchaos.ScenarioProperties{
+			Description:     to.Ptr("Probes dependencies best-effort, then runs a critical shutdown whose failure must stop the run."),
+			FailureBehavior: to.Ptr(armchaos.FailureBehaviorContinue),
+			Actions: []*armchaos.ScenarioAction{
+				{
+					Name:        to.Ptr("dependencyProbe"),
+					ActionID:    to.Ptr("urn:csci:microsoft:agent:networkDisconnect/1.0.0"),
+					Description: to.Ptr("Best-effort dependency probe. Inherits the scenario-level Continue behavior, so a failure here does not fail the run."),
+					Duration:    to.Ptr("PT5M"),
+				},
+				{
+					Name:            to.Ptr("criticalShutdown"),
+					ActionID:        to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+					Description:     to.Ptr("Critical shutdown. Overrides the scenario default so that a failure stops the run."),
+					Duration:        to.Ptr("PT10M"),
+					FailureBehavior: to.Ptr(armchaos.FailureBehaviorStop),
+					RunAfter: &armchaos.RunAfter{
+						Behavior: to.Ptr(armchaos.RunAfterBehaviorAll),
+						Items: []*armchaos.ActionDependency{
+							{
+								Type:              to.Ptr(armchaos.ActionDependencyTypeAction),
+								Name:              to.Ptr("dependencyProbe"),
+								OnActionLifecycle: to.Ptr(armchaos.ActionLifecycleAnyTerminal),
+							},
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.ScenariosClientCreateOrUpdateResponse{
+	// 	Scenario: armchaos.Scenario{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/bestEffortProbeScenario"),
+	// 		Name: to.Ptr("bestEffortProbeScenario"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios"),
+	// 		Properties: &armchaos.ScenarioProperties{
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Version: to.Ptr("1.0"),
+	// 			Description: to.Ptr("Probes dependencies best-effort, then runs a critical shutdown whose failure must stop the run."),
+	// 			FailureBehavior: to.Ptr(armchaos.FailureBehaviorContinue),
+	// 			Actions: []*armchaos.ScenarioAction{
+	// 				{
+	// 					Name: to.Ptr("dependencyProbe"),
+	// 					ActionID: to.Ptr("urn:csci:microsoft:agent:networkDisconnect/1.0.0"),
+	// 					Description: to.Ptr("Best-effort dependency probe. Inherits the scenario-level Continue behavior, so a failure here does not fail the run."),
+	// 					Duration: to.Ptr("PT5M"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("criticalShutdown"),
+	// 					ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+	// 					Description: to.Ptr("Critical shutdown. Overrides the scenario default so that a failure stops the run."),
+	// 					Duration: to.Ptr("PT10M"),
+	// 					FailureBehavior: to.Ptr(armchaos.FailureBehaviorStop),
+	// 					RunAfter: &armchaos.RunAfter{
+	// 						Behavior: to.Ptr(armchaos.RunAfterBehaviorAll),
+	// 						Items: []*armchaos.ActionDependency{
+	// 							{
+	// 								Type: to.Ptr(armchaos.ActionDependencyTypeAction),
+	// 								Name: to.Ptr("dependencyProbe"),
+	// 								OnActionLifecycle: to.Ptr(armchaos.ActionLifecycleAnyTerminal),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Scenarios_Delete.json
 func ExampleScenariosClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +527,7 @@ func ExampleScenariosClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Scenarios_Get.json
+// Generated from example definition: 2026-11-01/Scenarios_Get.json
 func ExampleScenariosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,6 +556,18 @@ func ExampleScenariosClient_Get() {
 	// 			Description: to.Ptr("Induces an outage of all discovered VM and VMSS instances in the target zone with an option to invoke custom scripted actions using Automation Runbooks. Additionally, it forces failover of discovered Redis instances to simulate backend zonal outage."),
 	// 			Parameters: []*armchaos.ScenarioParameter{
 	// 				{
+	// 					Name: to.Ptr("logicalZone"),
+	// 					Type: to.Ptr(armchaos.ParameterTypeString),
+	// 					Required: to.Ptr(true),
+	// 					Description: to.Ptr("Logical availability-zone label to test in each target subscription, for example 1."),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("location"),
+	// 					Type: to.Ptr(armchaos.ParameterTypeString),
+	// 					Required: to.Ptr(true),
+	// 					Description: to.Ptr("Azure location name in which to test the logical zone, for example eastus."),
+	// 				},
+	// 				{
 	// 					Name: to.Ptr("duration"),
 	// 					Type: to.Ptr(armchaos.ParameterTypeString),
 	// 					Default: to.Ptr("PT15M"),
@@ -280,25 +591,37 @@ func ExampleScenariosClient_Get() {
 	// 			Actions: []*armchaos.ScenarioAction{
 	// 				{
 	// 					Name: to.Ptr("vmssZoneDown"),
-	// 					ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+	// 					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 	// 					Description: to.Ptr("Force shutdown VMSS instances in target zone"),
 	// 					Duration: to.Ptr("%%{parameters.duration}%%"),
 	// 					Parameters: []*armchaos.KeyValuePair{
+	// 					},
+	// 					Selectors: []*armchaos.ScenarioActionSelector{
 	// 						{
-	// 							Key: to.Ptr("zones"),
-	// 							Value: to.Ptr("%%{filters.zones}%%"),
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+	// 							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+	// 							Value: to.Ptr("%%{parameters.location}%%"),
 	// 						},
 	// 					},
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("vmZoneDown"),
-	// 					ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+	// 					ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 	// 					Description: to.Ptr("Force shutdown VM instances in target zone"),
 	// 					Duration: to.Ptr("%%{parameters.duration}%%"),
 	// 					Parameters: []*armchaos.KeyValuePair{
+	// 					},
+	// 					Selectors: []*armchaos.ScenarioActionSelector{
 	// 						{
-	// 							Key: to.Ptr("zones"),
-	// 							Value: to.Ptr("%%{filters.zones}%%"),
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+	// 							Value: to.Ptr("%%{parameters.logicalZone}%%"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+	// 							Value: to.Ptr("%%{parameters.location}%%"),
 	// 						},
 	// 					},
 	// 				},
@@ -347,7 +670,7 @@ func ExampleScenariosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Scenarios_ListAll.json
+// Generated from example definition: 2026-11-01/Scenarios_ListAll.json
 func ExampleScenariosClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,6 +705,18 @@ func ExampleScenariosClient_NewListAllPager() {
 		// 					Description: to.Ptr("Induces an outage of all discovered VM and VMSS instances in the target zone with an option to invoke custom scripted actions using Automation Runbooks. Additionally, it forces failover of discovered Redis instances to simulate backend zonal outage."),
 		// 					Parameters: []*armchaos.ScenarioParameter{
 		// 						{
+		// 							Name: to.Ptr("logicalZone"),
+		// 							Type: to.Ptr(armchaos.ParameterTypeString),
+		// 							Required: to.Ptr(true),
+		// 							Description: to.Ptr("Logical availability-zone label to test in each target subscription, for example 1."),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("location"),
+		// 							Type: to.Ptr(armchaos.ParameterTypeString),
+		// 							Required: to.Ptr(true),
+		// 							Description: to.Ptr("Azure location name in which to test the logical zone, for example eastus."),
+		// 						},
+		// 						{
 		// 							Name: to.Ptr("duration"),
 		// 							Type: to.Ptr(armchaos.ParameterTypeString),
 		// 							Default: to.Ptr("PT15M"),
@@ -405,25 +740,37 @@ func ExampleScenariosClient_NewListAllPager() {
 		// 					Actions: []*armchaos.ScenarioAction{
 		// 						{
 		// 							Name: to.Ptr("vmssZoneDown"),
-		// 							ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+		// 							ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 		// 							Description: to.Ptr("Force shutdown VMSS instances in target zone"),
 		// 							Duration: to.Ptr("%%{parameters.duration}%%"),
 		// 							Parameters: []*armchaos.KeyValuePair{
+		// 							},
+		// 							Selectors: []*armchaos.ScenarioActionSelector{
 		// 								{
-		// 									Key: to.Ptr("zones"),
-		// 									Value: to.Ptr("%%{filters.zones}%%"),
+		// 									Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+		// 									Value: to.Ptr("%%{parameters.logicalZone}%%"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+		// 									Value: to.Ptr("%%{parameters.location}%%"),
 		// 								},
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("vmZoneDown"),
-		// 							ActionID: to.Ptr("urn:csci:microsoft:compute:shutdown/1.0.0"),
+		// 							ActionID: to.Ptr("microsoft-compute-shutdown/2.0"),
 		// 							Description: to.Ptr("Force shutdown VM instances in target zone"),
 		// 							Duration: to.Ptr("%%{parameters.duration}%%"),
 		// 							Parameters: []*armchaos.KeyValuePair{
+		// 							},
+		// 							Selectors: []*armchaos.ScenarioActionSelector{
 		// 								{
-		// 									Key: to.Ptr("zones"),
-		// 									Value: to.Ptr("%%{filters.zones}%%"),
+		// 									Name: to.Ptr(armchaos.ScenarioActionSelectorNameLogicalZone),
+		// 									Value: to.Ptr("%%{parameters.logicalZone}%%"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr(armchaos.ScenarioActionSelectorNameLocation),
+		// 									Value: to.Ptr("%%{parameters.location}%%"),
 		// 								},
 		// 							},
 		// 						},

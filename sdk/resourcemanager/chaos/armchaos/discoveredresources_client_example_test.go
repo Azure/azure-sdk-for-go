@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/DiscoveredResources_Get.json
+// Generated from example definition: 2026-11-01/DiscoveredResources_Get.json
 func ExampleDiscoveredResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,6 +41,10 @@ func ExampleDiscoveredResourcesClient_Get() {
 	// 			FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/myVirtualMachine"),
 	// 			DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			Location: to.Ptr("westus2"),
+	// 			Zones: []*string{
+	// 				to.Ptr("1"),
+	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
@@ -54,7 +58,7 @@ func ExampleDiscoveredResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/DiscoveredResources_ListByWorkspace.json
+// Generated from example definition: 2026-11-01/DiscoveredResources_ListByWorkspace.json
 func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,6 +94,10 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/myVirtualMachine"),
 		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+		// 					Location: to.Ptr("westus2"),
+		// 					Zones: []*string{
+		// 						to.Ptr("1"),
+		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
 		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
@@ -111,6 +119,10 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/mystorageaccount"),
 		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 11, 0, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+		// 					Location: to.Ptr("westus2"),
+		// 					Zones: []*string{
+		// 						to.Ptr("zone-redundant"),
+		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
 		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 0, 0, 0, time.UTC)),
@@ -132,6 +144,7 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork"),
 		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 11, 15, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+		// 					Location: to.Ptr("westus2"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
 		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 15, 0, 0, time.UTC)),

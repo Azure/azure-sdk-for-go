@@ -4,6 +4,7 @@
 package container_test
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"net/http"
@@ -12,7 +13,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/ipc"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/stretchr/testify/require"
 )
 
@@ -71,4 +77,77 @@ func TestListBlobsNilOptionsUseDefaultResponseFormat(t *testing.T) {
 			require.Equal(t, tt.wantArrow, isArrow(tr.accept[1]), "hierarchy Accept %q", tr.accept[1])
 		})
 	}
+}
+
+// formatTransport answers list requests with one blob in Arrow format, or in XML format echoing
+// the request the way the service does.
+type formatTransport struct {
+	t     *testing.T
+	arrow bool
+}
+
+func (f *formatTransport) Do(req *http.Request) (*http.Response, error) {
+	if f.arrow {
+		schema := arrow.NewSchema([]arrow.Field{{Name: "Name", Type: arrow.BinaryTypes.String}}, nil)
+		var buf bytes.Buffer
+		w := ipc.NewWriter(&buf, ipc.WithSchema(schema), ipc.WithAllocator(memory.DefaultAllocator))
+		b := array.NewRecordBuilder(memory.DefaultAllocator, schema)
+		b.Field(0).(*array.StringBuilder).Append("blob")
+		rec := b.NewRecordBatch()
+		require.NoError(f.t, w.Write(rec))
+		rec.Release()
+		b.Release()
+		require.NoError(f.t, w.Close())
+		return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {"application/vnd.apache.arrow.stream"}}, Body: io.NopCloser(&buf), Request: req}, nil
+	}
+	q := req.URL.Query()
+	delimiter := ""
+	if d := q.Get("delimiter"); d != "" {
+		delimiter = "<Delimiter>" + d + "</Delimiter>"
+	}
+	body := `<?xml version="1.0" encoding="utf-8"?><EnumerationResults ServiceEndpoint="https://account.blob.core.windows.net/" ContainerName="container">` +
+		`<Prefix>` + q.Get("prefix") + `</Prefix><Marker>` + q.Get("marker") + `</Marker><MaxResults>` + q.Get("maxresults") + `</MaxResults>` + delimiter +
+		`<Blobs><Blob><Name>blob</Name><Properties /></Blob></Blobs><NextMarker /></EnumerationResults>`
+	return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {"application/xml"}}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
+}
+
+// An Arrow listing reports the same container and request values as an XML listing. The service
+// endpoint isn't in an Arrow response and can't be derived reliably, so it stays nil.
+func TestListBlobsArrowResponseReportsRequestValues(t *testing.T) {
+	list := func(t *testing.T, arrowFormat bool) (container.ListBlobsFlatResponse, container.ListBlobsHierarchyResponse) {
+		c, err := container.NewClientWithNoCredential("https://account.blob.core.windows.net/container?sv=2026-12-06&sig=x", &container.ClientOptions{
+			ClientOptions: azcore.ClientOptions{Transport: &formatTransport{t: t, arrow: arrowFormat}, Retry: policy.RetryOptions{MaxRetries: -1}},
+		})
+		require.NoError(t, err)
+		flat, err := c.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5)}).NextPage(context.Background())
+		require.NoError(t, err)
+		hier, err := c.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5)}).NextPage(context.Background())
+		require.NoError(t, err)
+		return flat, hier
+	}
+	xmlFlat, xmlHier := list(t, false)
+	arrowFlat, arrowHier := list(t, true)
+
+	require.Equal(t, "container", *arrowFlat.ContainerName)
+	require.Nil(t, arrowFlat.ServiceEndpoint)
+	require.Nil(t, arrowHier.ServiceEndpoint)
+	for _, tt := range []struct {
+		name       string
+		xml, arrow any
+	}{
+		{"flat ContainerName", xmlFlat.ContainerName, arrowFlat.ContainerName},
+		{"flat Prefix", xmlFlat.Prefix, arrowFlat.Prefix},
+		{"flat Marker", xmlFlat.Marker, arrowFlat.Marker},
+		{"flat MaxResults", xmlFlat.MaxResults, arrowFlat.MaxResults},
+		{"hierarchy ContainerName", xmlHier.ContainerName, arrowHier.ContainerName},
+		{"hierarchy Prefix", xmlHier.Prefix, arrowHier.Prefix},
+		{"hierarchy Marker", xmlHier.Marker, arrowHier.Marker},
+		{"hierarchy MaxResults", xmlHier.MaxResults, arrowHier.MaxResults},
+		{"hierarchy Delimiter", xmlHier.Delimiter, arrowHier.Delimiter},
+	} {
+		require.NotNil(t, tt.xml, tt.name)
+		require.Equal(t, tt.xml, tt.arrow, tt.name)
+	}
+	require.Len(t, arrowFlat.Segment.BlobItems, 1)
+	require.Equal(t, "blob", *arrowFlat.Segment.BlobItems[0].Name)
 }

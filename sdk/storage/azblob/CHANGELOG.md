@@ -32,6 +32,8 @@
   * A negative `BlockSize` now returns an error. Previously, content of up to 256MB was uploaded regardless.
 
 ### Bugs Fixed
+* Fixed `UploadBuffer` and `UploadFile` dropping the `AccessConditions` (ETag conditions and lease) from the Put Block
+  List request that commits a staged upload.
 * Fixed a panic in `UploadBuffer` and `UploadFile` when the block size split the content into more than 65,535
   blocks. Such uploads now return the block limit error before sending any request.
 

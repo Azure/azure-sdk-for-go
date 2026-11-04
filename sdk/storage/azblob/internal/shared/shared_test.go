@@ -417,6 +417,10 @@ func TestGetAccountName(t *testing.T) {
 		{"DualStackEndpoint", "https://account-dualstack.blob.core.windows.net/c", "account", false},
 		{"SecondaryIPv6Endpoint", "https://account-secondary-ipv6.blob.core.windows.net/c", "account", false},
 		{"SovereignCloud", "https://account.blob.core.chinacloudapi.cn/c", "account", false},
+
+		// host names are case-insensitive, and the account name is returned lowercase
+		{"UppercaseServiceLabel", "https://account.BLOB.core.windows.net/container/blob", "account", false},
+		{"UppercaseHost", "https://ACCOUNT-SECONDARY.BLOB.CORE.WINDOWS.NET/c", "account", false},
 		{"DfsHostHasNoBlobAccount", "https://account.dfs.core.windows.net/c", "", true},
 
 		// Error cases

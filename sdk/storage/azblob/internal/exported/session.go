@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -163,7 +164,7 @@ func (p *ContainerSessionProvider) isRequestEligible(req *http.Request) bool {
 	if req == nil || req.URL == nil || req.Method != http.MethodGet {
 		return false
 	}
-	if _, blob, err := shared.GetContainerAndBlobName(req.URL); err != nil || blob == "" {
+	if _, blob, err := shared.GetContainerAndBlobName(accountURL(req)); err != nil || blob == "" {
 		return false
 	}
 	query := req.URL.Query()
@@ -176,12 +177,25 @@ func (p *ContainerSessionProvider) isRequestEligible(req *http.Request) bool {
 	return true
 }
 
+// accountURL returns the request's URL addressed to the account it was sent for. Layout routing
+// replaces the URL host with the layout endpoint and keeps the account authority in req.Host; the
+// container must still be read from the path as the account endpoint lays it out, because a layout
+// endpoint that is an IP address would otherwise make the path look path-style.
+func accountURL(req *http.Request) *url.URL {
+	if req.Host == "" || req.Host == req.URL.Host {
+		return req.URL
+	}
+	u := *req.URL
+	u.Host = req.Host
+	return &u
+}
+
 // cacheFor returns the session cache for the request's container, creating it on first use.
 func (p *ContainerSessionProvider) cacheFor(req *http.Request) (*autorefresh.Cache[sessionCredential], error) {
 	if req == nil {
 		return nil, errors.New("a request is required to determine the session container")
 	}
-	container, _, err := shared.GetContainerAndBlobName(req.URL)
+	container, _, err := shared.GetContainerAndBlobName(accountURL(req))
 	if err != nil {
 		return nil, err
 	}

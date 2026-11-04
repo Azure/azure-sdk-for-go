@@ -32,7 +32,6 @@
   * A negative `BlockSize` now returns an error. Previously, content of up to 256MB was uploaded regardless.
 
 ### Bugs Fixed
-* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * Fixed a panic in `UploadBuffer` and `UploadFile` when the block size split the content into more than 65,535
   blocks. Such uploads now return the block limit error before sending any request.
 
@@ -43,6 +42,14 @@
 * Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
 * Updated the service version to `2027-03-07`.
 * Updated `sdk/storage/internal` version to `0.2.0`
+
+## 1.8.3 (2026-11-02)
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+* Updated `azcore` version to `1.23.3`
 
 ## 1.8.2 (2026-10-01)
 

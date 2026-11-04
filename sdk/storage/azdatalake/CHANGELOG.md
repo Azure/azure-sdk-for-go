@@ -21,11 +21,19 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes
 * Updated `azblob` version to `1.9.0-beta.1`
+
+## 1.7.1 (2026-11-03)
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+* Updated `azcore` version to `1.23.3`
+* Updated `azblob` version to `1.8.3`
 
 ## 1.7.0 (2026-10-08)
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/RouteFilterCreate.json
+// Generated from example definition: 2026-03-01/RouteFilterCreate.json
 func ExampleRouteFiltersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleRouteFiltersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterDelete.json
+// Generated from example definition: 2026-03-01/RouteFilterDelete.json
 func ExampleRouteFiltersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleRouteFiltersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterGet.json
+// Generated from example definition: 2026-03-01/RouteFilterGet.json
 func ExampleRouteFiltersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,69 +168,7 @@ func ExampleRouteFiltersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterList.json
-func ExampleRouteFiltersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRouteFiltersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.RouteFiltersClientListResponse{
-		// 	RouteFilterListResult: armnetwork.RouteFilterListResult{
-		// 		Value: []*armnetwork.RouteFilter{
-		// 			{
-		// 				Name: to.Ptr("filterName"),
-		// 				Type: to.Ptr("Microsoft.Network/routeFilters"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/routeFilters/filterName"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.RouteFilterPropertiesFormat{
-		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Rules: []*armnetwork.RouteFilterRule{
-		// 						{
-		// 							Name: to.Ptr("ruleName"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/routeFilters/filterName/routeFilterRules/ruleName"),
-		// 							Properties: &armnetwork.RouteFilterRulePropertiesFormat{
-		// 								Access: to.Ptr(armnetwork.AccessAllow),
-		// 								Communities: []*string{
-		// 									to.Ptr("12076:5030"),
-		// 									to.Ptr("12076:5040"),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								RouteFilterRuleType: to.Ptr(armnetwork.RouteFilterRuleTypeCommunity),
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/RouteFilterListByResourceGroup.json
+// Generated from example definition: 2026-03-01/RouteFilterListByResourceGroup.json
 func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +230,69 @@ func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterUpdateTags.json
+// Generated from example definition: 2026-03-01/RouteFilterList.json
+func ExampleRouteFiltersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRouteFiltersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.RouteFiltersClientListResponse{
+		// 	RouteFilterListResult: armnetwork.RouteFilterListResult{
+		// 		Value: []*armnetwork.RouteFilter{
+		// 			{
+		// 				Name: to.Ptr("filterName"),
+		// 				Type: to.Ptr("Microsoft.Network/routeFilters"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/routeFilters/filterName"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.RouteFilterPropertiesFormat{
+		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Rules: []*armnetwork.RouteFilterRule{
+		// 						{
+		// 							Name: to.Ptr("ruleName"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/routeFilters/filterName/routeFilterRules/ruleName"),
+		// 							Properties: &armnetwork.RouteFilterRulePropertiesFormat{
+		// 								Access: to.Ptr(armnetwork.AccessAllow),
+		// 								Communities: []*string{
+		// 									to.Ptr("12076:5030"),
+		// 									to.Ptr("12076:5040"),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								RouteFilterRuleType: to.Ptr(armnetwork.RouteFilterRuleTypeCommunity),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/RouteFilterUpdateTags.json
 func ExampleRouteFiltersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

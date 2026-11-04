@@ -32,9 +32,41 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAdministratorsClient creates a new instance of AdministratorsClient.
-func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
-	return &AdministratorsClient{
+// NewAuthenticationsClient creates a new instance of AuthenticationsClient.
+func (c *ClientFactory) NewAuthenticationsClient() *AuthenticationsClient {
+	return &AuthenticationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCapabilitiesClient creates a new instance of CapabilitiesClient.
+func (c *ClientFactory) NewCapabilitiesClient() *CapabilitiesClient {
+	return &CapabilitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewChangeDataCaptureCapabilitiesClient creates a new instance of ChangeDataCaptureCapabilitiesClient.
+func (c *ClientFactory) NewChangeDataCaptureCapabilitiesClient() *ChangeDataCaptureCapabilitiesClient {
+	return &ChangeDataCaptureCapabilitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewChangeDataCaptureConfigurationsClient creates a new instance of ChangeDataCaptureConfigurationsClient.
+func (c *ClientFactory) NewChangeDataCaptureConfigurationsClient() *ChangeDataCaptureConfigurationsClient {
+	return &ChangeDataCaptureConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewChangeDataCaptureDestinationsClient creates a new instance of ChangeDataCaptureDestinationsClient.
+func (c *ClientFactory) NewChangeDataCaptureDestinationsClient() *ChangeDataCaptureDestinationsClient {
+	return &ChangeDataCaptureDestinationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -48,9 +80,81 @@ func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	}
 }
 
+// NewDefaultParameterGroupsClient creates a new instance of DefaultParameterGroupsClient.
+func (c *ClientFactory) NewDefaultParameterGroupsClient() *DefaultParameterGroupsClient {
+	return &DefaultParameterGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEndpointsClient creates a new instance of EndpointsClient.
+func (c *ClientFactory) NewEndpointsClient() *EndpointsClient {
+	return &EndpointsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient.
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	return &FirewallRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewIdentityAssignmentsClient creates a new instance of IdentityAssignmentsClient.
+func (c *ClientFactory) NewIdentityAssignmentsClient() *IdentityAssignmentsClient {
+	return &IdentityAssignmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewLogCaptureConfigurationsClient creates a new instance of LogCaptureConfigurationsClient.
+func (c *ClientFactory) NewLogCaptureConfigurationsClient() *LogCaptureConfigurationsClient {
+	return &LogCaptureConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewLogFilesClient creates a new instance of LogFilesClient.
+func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
+	return &LogFilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMaintenanceEventsClient creates a new instance of MaintenanceEventsClient.
+func (c *ClientFactory) NewMaintenanceEventsClient() *MaintenanceEventsClient {
+	return &MaintenanceEventsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMicrosoftEntraAdministratorsClient creates a new instance of MicrosoftEntraAdministratorsClient.
+func (c *ClientFactory) NewMicrosoftEntraAdministratorsClient() *MicrosoftEntraAdministratorsClient {
+	return &MicrosoftEntraAdministratorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMicrosoftEntraAuthenticationsClient creates a new instance of MicrosoftEntraAuthenticationsClient.
+func (c *ClientFactory) NewMicrosoftEntraAuthenticationsClient() *MicrosoftEntraAuthenticationsClient {
+	return &MicrosoftEntraAuthenticationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNodesClient creates a new instance of NodesClient.
+func (c *ClientFactory) NewNodesClient() *NodesClient {
+	return &NodesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -66,6 +170,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewParameterGroupsClient creates a new instance of ParameterGroupsClient.
 func (c *ClientFactory) NewParameterGroupsClient() *ParameterGroupsClient {
 	return &ParameterGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPasswordAuthenticationsClient creates a new instance of PasswordAuthenticationsClient.
+func (c *ClientFactory) NewPasswordAuthenticationsClient() *PasswordAuthenticationsClient {
+	return &PasswordAuthenticationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -90,14 +202,6 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	return &PrivateLinkResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewReplicasClient creates a new instance of ReplicasClient.
-func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
-	return &ReplicasClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

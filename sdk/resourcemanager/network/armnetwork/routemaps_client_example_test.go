@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/RouteMapPut.json
+// Generated from example definition: 2026-03-01/RouteMapPut.json
 func ExampleRouteMapsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleRouteMapsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteMapDelete.json
+// Generated from example definition: 2026-03-01/RouteMapDelete.json
 func ExampleRouteMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleRouteMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteMapGet.json
+// Generated from example definition: 2026-03-01/RouteMapGet.json
 func ExampleRouteMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleRouteMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteMapList.json
+// Generated from example definition: 2026-03-01/RouteMapList.json
 func ExampleRouteMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/LoadBalancerProbeGet.json
+// Generated from example definition: 2026-03-01/LoadBalancerProbeGet.json
 func ExampleLoadBalancerProbesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleLoadBalancerProbesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LoadBalancerProbeList.json
+// Generated from example definition: 2026-03-01/LoadBalancerProbeList.json
 func ExampleLoadBalancerProbesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

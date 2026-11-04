@@ -31,6 +31,7 @@
     default block size.
 
 ### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * Fixed a panic in `UploadBuffer` and `UploadFile` when the block size split the content into more than 65,535
   blocks. Such uploads now return the block limit error before sending any request.
 
@@ -38,6 +39,7 @@
 * List blobs operations now request the Apache Arrow response format by default: `StorageResponseFormatAuto` resolves
   to `StorageResponseFormatArrow`, including when no options are passed. The service returns XML when Arrow isn't
   available, and both are handled transparently. Set `ResponseFormat` to `StorageResponseFormatXML` to opt out.
+* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
 * Updated the service version to `2027-03-07`.
 * Updated `sdk/storage/internal` version to `0.2.0`
 

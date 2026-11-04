@@ -21,6 +21,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes

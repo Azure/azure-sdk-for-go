@@ -47,8 +47,8 @@ func NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCancel - Cancels the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
-//     and hyphens.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - occurrenceID - The occurrence ID in UUID format.
 //   - body - The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is canceled for all resources.
 //   - options - OccurrencesClientBeginCancelOptions contains the optional parameters for the OccurrencesClient.BeginCancel method.
@@ -69,7 +69,7 @@ func (client *OccurrencesClient) BeginCancel(ctx context.Context, resourceGroupN
 	}
 }
 
-// Cancel - Cancels the specified occurrence for the specified resource IDs.
+// cancel - Cancels the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, options *OccurrencesClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, _ *OccurrencesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/cancel"
 	if client.subscriptionID == "" {
@@ -128,8 +128,8 @@ func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resour
 // BeginDelay - Delays the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
-//     and hyphens.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - occurrenceID - The occurrence ID in UUID format.
 //   - body - The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all resources
 //     are delayed.
@@ -151,7 +151,7 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delay - Delays the specified occurrence for the specified resource IDs.
+// delay - Delays the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// delayCreateRequest creates the Delay request.
+// delayCreateRequest creates the delay request.
 func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, _ *OccurrencesClientBeginDelayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/delay"
 	if client.subscriptionID == "" {
@@ -210,8 +210,8 @@ func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourc
 // Get - Gets the specified occurrence.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
-//     and hyphens.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - occurrenceID - The occurrence ID in UUID format.
 //   - options - OccurrencesClientGetOptions contains the optional parameters for the OccurrencesClient.Get method.
 func (client *OccurrencesClient) Get(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientGetOptions) (OccurrencesClientGetResponse, error) {
@@ -273,10 +273,10 @@ func (client *OccurrencesClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
-// NewListByScheduledActionPager - Lists occurrences for the specified scheduled action.
+// NewListByScheduledActionPager - Lists occurrences for the specified recurring bulk action.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
-//     and hyphens.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - OccurrencesClientListByScheduledActionOptions contains the optional parameters for the OccurrencesClient.NewListByScheduledActionPager
 //     method.
 func (client *OccurrencesClient) NewListByScheduledActionPager(resourceGroupName string, scheduledActionName string, options *OccurrencesClientListByScheduledActionOptions) *runtime.Pager[OccurrencesClientListByScheduledActionResponse] {
@@ -353,8 +353,8 @@ func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.
 
 // NewListResourcesPager - Lists resources for the specified occurrence.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
-//     and hyphens.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - occurrenceID - The occurrence ID in UUID format.
 //   - options - OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.NewListResourcesPager
 //     method.

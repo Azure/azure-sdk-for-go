@@ -37,3 +37,19 @@ func TestUploadBufferBlockLimitExceeded(t *testing.T) {
 		require.Zero(t, tr.calls.Load(), "nothing is uploaded for size %d", size)
 	}
 }
+
+// A negative block size once sent small content down the staged path, where the negative block
+// count panicked.
+func TestUploadBufferNegativeBlockSize(t *testing.T) {
+	for _, size := range []int{10, 64 * 1024} {
+		tr := &countingTransport{}
+		client, err := blockblob.NewClientWithNoCredential("https://account.blob.core.windows.net/container/blob", &blockblob.ClientOptions{
+			ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
+		})
+		require.NoError(t, err)
+
+		_, err = client.UploadBuffer(context.Background(), make([]byte, size), &blockblob.UploadBufferOptions{BlockSize: -1})
+		require.ErrorContains(t, err, "BlockSize must not be negative", "size %d", size)
+		require.Zero(t, tr.calls.Load(), "nothing is uploaded for size %d", size)
+	}
+}

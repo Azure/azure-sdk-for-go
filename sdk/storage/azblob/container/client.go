@@ -279,7 +279,15 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 			// Otherwise fall back to XML parsing (handles Photon-not-enabled case).
 			arrowResp := useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType)
 			if arrowResp && runtime.HasStatusCode(resp, http.StatusOK) {
-				return arrow.HandleFlatListResponse(resp)
+				result, err := arrow.HandleFlatListResponse(resp)
+				if err != nil {
+					return result, err
+				}
+				// An Arrow listing carries only the blobs and the next marker. Report the request values
+				// that an XML listing echoes back; ServiceEndpoint can't be known, so it stays nil.
+				result.ContainerName = c.listContainerName()
+				result.Prefix, result.Marker, result.MaxResults = arrowOptions.Prefix, arrowOptions.Marker, arrowOptions.Maxresults
+				return result, nil
 			}
 			return c.generated().ListBlobFlatSegmentHandleResponse(resp, http.StatusOK)
 		},
@@ -325,11 +333,31 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 			}
 			arrowResp := useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType)
 			if arrowResp && runtime.HasStatusCode(resp, http.StatusOK) {
-				return arrow.HandleHierarchyListResponse(resp)
+				result, err := arrow.HandleHierarchyListResponse(resp)
+				if err != nil {
+					return result, err
+				}
+				// An Arrow listing carries only the blobs and the next marker. Report the request values
+				// that an XML listing echoes back; ServiceEndpoint can't be known, so it stays nil.
+				result.ContainerName = c.listContainerName()
+				result.Prefix, result.Marker, result.MaxResults = arrowOptions.Prefix, arrowOptions.Marker, arrowOptions.Maxresults
+				if delimiter != "" {
+					result.Delimiter = &delimiter
+				}
+				return result, nil
 			}
 			return c.generated().ListBlobHierarchySegmentHandleResponse(resp, http.StatusOK)
 		},
 	})
+}
+
+// listContainerName returns the name of the container a listing request addresses, which an XML
+// listing echoes back, for listings returned in Arrow format.
+func (c *Client) listContainerName() *string {
+	if parts, err := blob.ParseURL(c.URL()); err == nil && parts.ContainerName != "" {
+		return &parts.ContainerName
+	}
+	return nil
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.

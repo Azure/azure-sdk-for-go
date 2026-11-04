@@ -378,6 +378,9 @@ func (bb *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o
 
 // uploadFromReader uploads a buffer in blocks to a block blob.
 func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+	if o.BlockSize < 0 {
+		return uploadFromReaderResponse{}, errors.New("BlockSize must not be negative")
+	}
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if actualSize > MaxStageBlockBytes*MaxBlocks {

@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	}
 }
 
+// NewActiveDirectoryConfigsClient creates a new instance of ActiveDirectoryConfigsClient.
+func (c *ClientFactory) NewActiveDirectoryConfigsClient() *ActiveDirectoryConfigsClient {
+	return &ActiveDirectoryConfigsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBackupPoliciesClient creates a new instance of BackupPoliciesClient.
 func (c *ClientFactory) NewBackupPoliciesClient() *BackupPoliciesClient {
 	return &BackupPoliciesClient{
@@ -104,6 +112,110 @@ func (c *ClientFactory) NewCachesClient() *CachesClient {
 	}
 }
 
+// NewClusterPeersClient creates a new instance of ClusterPeersClient.
+func (c *ClientFactory) NewClusterPeersClient() *ClusterPeersClient {
+	return &ClusterPeersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticAccountsClient creates a new instance of ElasticAccountsClient.
+func (c *ClientFactory) NewElasticAccountsClient() *ElasticAccountsClient {
+	return &ElasticAccountsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticBackupPoliciesClient creates a new instance of ElasticBackupPoliciesClient.
+func (c *ClientFactory) NewElasticBackupPoliciesClient() *ElasticBackupPoliciesClient {
+	return &ElasticBackupPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticBackupVaultsClient creates a new instance of ElasticBackupVaultsClient.
+func (c *ClientFactory) NewElasticBackupVaultsClient() *ElasticBackupVaultsClient {
+	return &ElasticBackupVaultsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticBackupsClient creates a new instance of ElasticBackupsClient.
+func (c *ClientFactory) NewElasticBackupsClient() *ElasticBackupsClient {
+	return &ElasticBackupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticCapacityPoolsClient creates a new instance of ElasticCapacityPoolsClient.
+func (c *ClientFactory) NewElasticCapacityPoolsClient() *ElasticCapacityPoolsClient {
+	return &ElasticCapacityPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticSnapshotPoliciesClient creates a new instance of ElasticSnapshotPoliciesClient.
+func (c *ClientFactory) NewElasticSnapshotPoliciesClient() *ElasticSnapshotPoliciesClient {
+	return &ElasticSnapshotPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticSnapshotsClient creates a new instance of ElasticSnapshotsClient.
+func (c *ClientFactory) NewElasticSnapshotsClient() *ElasticSnapshotsClient {
+	return &ElasticSnapshotsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewElasticVolumesClient creates a new instance of ElasticVolumesClient.
+func (c *ClientFactory) NewElasticVolumesClient() *ElasticVolumesClient {
+	return &ElasticVolumesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalCacheConnectionsClient creates a new instance of ExternalCacheConnectionsClient.
+func (c *ClientFactory) NewExternalCacheConnectionsClient() *ExternalCacheConnectionsClient {
+	return &ExternalCacheConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalCachesClient creates a new instance of ExternalCachesClient.
+func (c *ClientFactory) NewExternalCachesClient() *ExternalCachesClient {
+	return &ExternalCachesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalClustersClient creates a new instance of ExternalClustersClient.
+func (c *ClientFactory) NewExternalClustersClient() *ExternalClustersClient {
+	return &ExternalClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalSVMsClient creates a new instance of ExternalSVMsClient.
+func (c *ClientFactory) NewExternalSVMsClient() *ExternalSVMsClient {
+	return &ExternalSVMsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -162,6 +274,14 @@ func (c *ClientFactory) NewResourceRegionInfosClient() *ResourceRegionInfosClien
 // NewResourceUsagesClient creates a new instance of ResourceUsagesClient.
 func (c *ClientFactory) NewResourceUsagesClient() *ResourceUsagesClient {
 	return &ResourceUsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSVMPeersClient creates a new instance of SVMPeersClient.
+func (c *ClientFactory) NewSVMPeersClient() *SVMPeersClient {
+	return &SVMPeersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

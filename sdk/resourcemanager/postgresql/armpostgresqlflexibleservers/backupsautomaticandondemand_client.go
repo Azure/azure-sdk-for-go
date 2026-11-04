@@ -19,7 +19,7 @@ import (
 // BackupsAutomaticAndOnDemandClient contains the methods for the BackupsAutomaticAndOnDemand group.
 // Don't use this type directly, use NewBackupsAutomaticAndOnDemandClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-10-01
 type BackupsAutomaticAndOnDemandClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *BackupsAutomaticAndOnDemandClient) BeginCreate(ctx context.Context
 	}
 }
 
-// Create - Creates an on demand backup of a server.
+// create - Creates an on demand backup of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsAutomaticAndOnDemandClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsAutomaticAndOnDemandClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *BackupsAutomaticAndOnDemandClient) create(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *BackupsAutomaticAndOnDemandClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *BackupsAutomaticAndOnDemandClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *BackupsAutomaticAndOnDemandClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -144,7 +144,7 @@ func (client *BackupsAutomaticAndOnDemandClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes a specific backup, given its name.
+// deleteOperation - Deletes a specific backup, given its name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsAutomaticAndOnDemandClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsAutomaticAndOnDemandClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *BackupsAutomaticAndOnDemandClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BackupsAutomaticAndOnDemandClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *BackupsAutomaticAndOnDemandClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
@@ -190,7 +190,7 @@ func (client *BackupsAutomaticAndOnDemandClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -243,7 +243,7 @@ func (client *BackupsAutomaticAndOnDemandClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -319,7 +319,7 @@ func (client *BackupsAutomaticAndOnDemandClient) listByServerCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

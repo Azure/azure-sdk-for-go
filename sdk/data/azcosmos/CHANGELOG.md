@@ -10,7 +10,8 @@
 
 ### Bugs Fixed
 
-* Fixed `ReadManyItems` silently omitting existing items from multi-partition containers using V1 partition key hashing, including containers whose partition key definition omits the version. V1 routing now uses the service-compatible binary EPK encoding and string truncation.
+* Fixed `ReadManyItems` silently omitting existing items from multi-partition containers using V1 partition key hashing, including containers whose partition key definition omits the version. V1 routing now uses the service-compatible binary EPK encoding and string truncation. See [PR 27867](https://github.com/Azure/azure-sdk-for-go/pull/27867).
+* Fixed `ChangeFeedOptions.StartFrom` being ignored by the service, which read the change feed from the beginning instead. The `If-Modified-Since` header is now an HTTP date ending in `GMT` rather than `UTC`. See [PR 27787](https://github.com/Azure/azure-sdk-for-go/pull/27787).
 
 ### Other Changes
 

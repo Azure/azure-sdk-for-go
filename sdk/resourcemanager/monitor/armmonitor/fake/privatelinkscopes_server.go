@@ -21,25 +21,25 @@ import (
 
 // PrivateLinkScopesServer is a fake server for instances of the armmonitor.PrivateLinkScopesClient type.
 type PrivateLinkScopesServer struct {
-	// CreateOrUpdate is the fake for method PrivateLinkScopesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, scopeName string, azureMonitorPrivateLinkScopePayload armmonitor.AzureMonitorPrivateLinkScope, options *armmonitor.PrivateLinkScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.PrivateLinkScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method PrivateLinkScopesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, scopeName string, options *armmonitor.PrivateLinkScopesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method PrivateLinkScopesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, scopeName string, azureMonitorPrivateLinkScopePayload armmonitor.AzureMonitorPrivateLinkScope, options *armmonitor.PrivateLinkScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.PrivateLinkScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateLinkScopesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, scopeName string, options *armmonitor.PrivateLinkScopesClientGetOptions) (resp azfake.Responder[armmonitor.PrivateLinkScopesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateLinkScopesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armmonitor.PrivateLinkScopesClientListOptions) (resp azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method PrivateLinkScopesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armmonitor.PrivateLinkScopesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method PrivateLinkScopesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armmonitor.PrivateLinkScopesClientListOptions) (resp azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse])
 
 	// UpdateTags is the fake for method PrivateLinkScopesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ func NewPrivateLinkScopesServerTransport(srv *PrivateLinkScopesServer) *PrivateL
 	return &PrivateLinkScopesServerTransport{
 		srv:                         srv,
 		beginDelete:                 newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]](),
 	}
 }
 
@@ -63,8 +63,8 @@ func NewPrivateLinkScopesServerTransport(srv *PrivateLinkScopesServer) *PrivateL
 type PrivateLinkScopesServerTransport struct {
 	srv                         *PrivateLinkScopesServer
 	beginDelete                 *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinkScopesServerTransport.
@@ -88,16 +88,16 @@ func (p *PrivateLinkScopesServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
-			case "PrivateLinkScopesClient.CreateOrUpdate":
-				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "PrivateLinkScopesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PrivateLinkScopesClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "PrivateLinkScopesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateLinkScopesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinkScopesClient.NewListByResourceGroupPager":
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "PrivateLinkScopesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinkScopesClient.UpdateTags":
 				res.resp, res.err = p.dispatchUpdateTags(req)
 			default:
@@ -116,50 +116,13 @@ func (p *PrivateLinkScopesServerTransport) dispatchToMethodFake(req *http.Reques
 	}
 }
 
-func (p *PrivateLinkScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armmonitor.AzureMonitorPrivateLinkScope](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, scopeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorPrivateLinkScope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -197,11 +160,48 @@ func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request
 	return resp, nil
 }
 
+func (p *PrivateLinkScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.AzureMonitorPrivateLinkScope](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, scopeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorPrivateLinkScope, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PrivateLinkScopesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -230,46 +230,13 @@ func (p *PrivateLinkScopesServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
-func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListPager(nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.PrivateLinkScopesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -300,11 +267,44 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(r
 	return resp, nil
 }
 
+func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListPager(nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.PrivateLinkScopesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PrivateLinkScopesServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if p.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

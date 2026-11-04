@@ -8,6 +8,7 @@
 ### Other Changes
 * Updated `azcore` version to `1.23.3`
 * Updated `azidentity` version to `1.14.0`
+* Updated `azblob` version to `1.8.3`
 
 ## 1.7.1 (2026-10-05)
 

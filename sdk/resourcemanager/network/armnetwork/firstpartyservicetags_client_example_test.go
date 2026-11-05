@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagCreate.json
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagCreate.json
 func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagDelete.json
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagDelete.json
 func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,54 @@ func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagGet.json
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagUpdateTags.json
+func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFirstPartyServiceTagsClient().BeginUpdateTags(ctx, "rg1", "myServiceTag", armnetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse{
+	// 	FirstPartyServiceTag: armnetwork.FirstPartyServiceTag{
+	// 		Name: to.Ptr("myServiceTag"),
+	// 		Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 		Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
+	// 			Value: to.Ptr("myServiceTagValue"),
+	// 			FailedReason: to.Ptr(""),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagGet.json
 func ExampleFirstPartyServiceTagsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,68 +171,7 @@ func ExampleFirstPartyServiceTagsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagList.json
-func ExampleFirstPartyServiceTagsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewFirstPartyServiceTagsClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.FirstPartyServiceTagsClientListResponse{
-		// 	FirstPartyServiceTagListResult: armnetwork.FirstPartyServiceTagListResult{
-		// 		Value: []*armnetwork.FirstPartyServiceTag{
-		// 			{
-		// 				Name: to.Ptr("myServiceTag"),
-		// 				Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 				Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
-		// 					Value: to.Ptr("myServiceTagValue"),
-		// 					FailedReason: to.Ptr(""),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myServiceTag2"),
-		// 				Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 				Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
-		// 					Value: to.Ptr("myServiceTagValue2"),
-		// 					FailedReason: to.Ptr(""),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagListAll.json
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagListAll.json
 func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,8 +232,8 @@ func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/FirstPartyServiceTagUpdateTags.json
-func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
+// Generated from example definition: 2026-03-01/FirstPartyServiceTagList.json
+func ExampleFirstPartyServiceTagsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -257,38 +243,52 @@ func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirstPartyServiceTagsClient().BeginUpdateTags(ctx, "rg1", "myServiceTag", armnetwork.TagsObject{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewFirstPartyServiceTagsClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.FirstPartyServiceTagsClientListResponse{
+		// 	FirstPartyServiceTagListResult: armnetwork.FirstPartyServiceTagListResult{
+		// 		Value: []*armnetwork.FirstPartyServiceTag{
+		// 			{
+		// 				Name: to.Ptr("myServiceTag"),
+		// 				Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 				Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
+		// 					Value: to.Ptr("myServiceTagValue"),
+		// 					FailedReason: to.Ptr(""),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myServiceTag2"),
+		// 				Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 				Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
+		// 					Value: to.Ptr("myServiceTagValue2"),
+		// 					FailedReason: to.Ptr(""),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse{
-	// 	FirstPartyServiceTag: armnetwork.FirstPartyServiceTag{
-	// 		Name: to.Ptr("myServiceTag"),
-	// 		Type: to.Ptr("Microsoft.Network/firstPartyServiceTags"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 		Properties: &armnetwork.FirstPartyServiceTagPropertiesFormat{
-	// 			Value: to.Ptr("myServiceTagValue"),
-	// 			FailedReason: to.Ptr(""),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		},
-	// 	},
-	// }
 }

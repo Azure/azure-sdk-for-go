@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteConnectionCreate.json
+// Generated from example definition: 2026-03-01/ExpressRouteConnectionCreate.json
 func ExampleExpressRouteConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleExpressRouteConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteConnectionDelete.json
+// Generated from example definition: 2026-03-01/ExpressRouteConnectionDelete.json
 func ExampleExpressRouteConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleExpressRouteConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteConnectionGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteConnectionGet.json
 func ExampleExpressRouteConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleExpressRouteConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteConnectionList.json
+// Generated from example definition: 2026-03-01/ExpressRouteConnectionList.json
 func ExampleExpressRouteConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

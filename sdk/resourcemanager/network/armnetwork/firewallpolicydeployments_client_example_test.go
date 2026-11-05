@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/FirewallPolicyDraftDeploy.json
+// Generated from example definition: 2026-03-01/FirewallPolicyDraftDeploy.json
 func ExampleFirewallPolicyDeploymentsClient_BeginDeploy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

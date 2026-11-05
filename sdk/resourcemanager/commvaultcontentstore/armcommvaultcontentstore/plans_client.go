@@ -19,7 +19,7 @@ import (
 // PlansClient contains the methods for the Plans group.
 // Don't use this type directly, use NewPlansClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-09-30
 type PlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *PlansClient) BeginCreateOrupdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrupdate - Create a CommvaultPlan
+// createOrupdate - Create a CommvaultPlan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PlansClient) createOrupdate(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, resource CommvaultPlan, options *PlansClientBeginCreateOrupdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *PlansClient) createOrupdate(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// createOrupdateCreateRequest creates the CreateOrupdate request.
+// createOrupdateCreateRequest creates the createOrupdate request.
 func (client *PlansClient) createOrupdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, resource CommvaultPlan, _ *PlansClientBeginCreateOrupdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *PlansClient) createOrupdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *PlansClient) createOrupdateCreateRequest(ctx context.Context, reso
 //   - options - PlansClientBeginDeleteOptions contains the optional parameters for the PlansClient.BeginDelete method.
 func (client *PlansClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*runtime.Poller[PlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, planName, options)
+		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, planName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *PlansClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Delete - Delete a CommvaultPlan
+// delete - Delete a CommvaultPlan
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PlansClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PlansClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -170,7 +170,7 @@ func (client *PlansClient) deleteOperation(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, _ *PlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}"
 	if client.subscriptionID == "" {
@@ -194,7 +194,7 @@ func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -246,7 +246,7 @@ func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *PlansClient) listByCloudAccountCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260703Preview)
+		reqQP.Set("api-version", version20260930)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

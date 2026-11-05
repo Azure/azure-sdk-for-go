@@ -19,7 +19,7 @@ import (
 // ConnectorsClient contains the methods for the Connectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-09-01
 type ConnectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ConnectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *ConnectorsClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you to
+// create - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you to
 // replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) create(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOptions) (*http.Response, error) {
@@ -91,11 +94,11 @@ func (client *ConnectorsClient) create(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,7 +118,7 @@ func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +152,7 @@ func (client *ConnectorsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a Storage Connector.
+// deleteOperation - Delete a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,11 +174,11 @@ func (client *ConnectorsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, _ *ConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -195,8 +198,180 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginTestExistingConnection - This method is used to verify that the connection to the backing data store works.
+// This API is designed to be used for monitoring and debugging purposes. From the caller’s perspective,
+// this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
+// If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - connectorName - The name of the Storage Connector.
+//   - body - This method is used to verify that the connection to the backing data store works. This API is designed to be used
+//     for monitoring and debugging purposes. From the caller’s perspective, this method does the following: Calls List on the
+//     backing data store, attempting to list up to one blob/object/etc. If the above succeeds, and if a blob/object/etc is found,
+//     calls Get on that object, attempting to download one byte.
+//   - options - ConnectorsClientBeginTestExistingConnectionOptions contains the optional parameters for the ConnectorsClient.BeginTestExistingConnection
+//     method.
+func (client *ConnectorsClient) BeginTestExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*runtime.Poller[ConnectorsClientTestExistingConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testExistingConnection(ctx, resourceGroupName, accountName, connectorName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectorsClientTestExistingConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectorsClientTestExistingConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// testExistingConnection - This method is used to verify that the connection to the backing data store works.
+// This API is designed to be used for monitoring and debugging purposes. From the caller’s perspective,
+// this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
+// If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectorsClient) testExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectorsClient.BeginTestExistingConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.testExistingConnectionCreateRequest(ctx, resourceGroupName, accountName, connectorName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// testExistingConnectionCreateRequest creates the testExistingConnection request.
+func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, _ *ConnectorsClientBeginTestExistingConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}/testExistingConnection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if connectorName == "" {
+		return nil, errors.New("parameter connectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a Storage Connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - connectorName - The name of the Storage Connector.
+//   - properties - The updated properties of the Storage Connector.
+//   - options - ConnectorsClientBeginUpdateOptions contains the optional parameters for the ConnectorsClient.BeginUpdate method.
+func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*runtime.Poller[ConnectorsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, connectorName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Storage Connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectorsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, connectorName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if connectorName == "" {
+		return nil, errors.New("parameter connectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -228,7 +403,7 @@ func (client *ConnectorsClient) Get(ctx context.Context, resourceGroupName strin
 func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -248,7 +423,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +480,7 @@ func (client *ConnectorsClient) listByStorageAccountCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -325,7 +500,7 @@ func (client *ConnectorsClient) listByStorageAccountCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -342,176 +517,4 @@ func (client *ConnectorsClient) listByStorageAccountHandleResponse(resp *http.Re
 		return ConnectorsClientListByStorageAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginTestExistingConnection - This method is used to verify that the connection to the backing data store works.
-// This API is designed to be used for monitoring and debugging purposes. From the caller’s perspective,
-// this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
-// If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - connectorName - The name of the Storage Connector.
-//   - body - This method is used to verify that the connection to the backing data store works. This API is designed to be used
-//     for monitoring and debugging purposes. From the caller’s perspective, this method does the following: Calls List on the
-//     backing data store, attempting to list up to one blob/object/etc. If the above succeeds, and if a blob/object/etc is found,
-//     calls Get on that object, attempting to download one byte.
-//   - options - ConnectorsClientBeginTestExistingConnectionOptions contains the optional parameters for the ConnectorsClient.BeginTestExistingConnection
-//     method.
-func (client *ConnectorsClient) BeginTestExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*runtime.Poller[ConnectorsClientTestExistingConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.testExistingConnection(ctx, resourceGroupName, accountName, connectorName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectorsClientTestExistingConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectorsClientTestExistingConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TestExistingConnection - This method is used to verify that the connection to the backing data store works.
-// This API is designed to be used for monitoring and debugging purposes. From the caller’s perspective,
-// this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
-// If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectorsClient) testExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectorsClient.BeginTestExistingConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.testExistingConnectionCreateRequest(ctx, resourceGroupName, accountName, connectorName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// testExistingConnectionCreateRequest creates the TestExistingConnection request.
-func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, _ *ConnectorsClientBeginTestExistingConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}/testExistingConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a Storage Connector.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - connectorName - The name of the Storage Connector.
-//   - properties - The updated properties of the Storage Connector.
-//   - options - ConnectorsClientBeginUpdateOptions contains the optional parameters for the ConnectorsClient.BeginUpdate method.
-func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*runtime.Poller[ConnectorsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, connectorName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Storage Connector.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectorsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, connectorName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

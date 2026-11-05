@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerConnectionManagementGroupPut.json
+// Generated from example definition: 2026-03-01/NetworkManagerConnectionManagementGroupPut.json
 func ExampleManagementGroupNetworkManagerConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerConnectionManagementGroupDelete.json
+// Generated from example definition: 2026-03-01/NetworkManagerConnectionManagementGroupDelete.json
 func ExampleManagementGroupNetworkManagerConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerConnectionManagementGroupGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerConnectionManagementGroupGet.json
 func ExampleManagementGroupNetworkManagerConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerConnectionManagementGroupList.json
+// Generated from example definition: 2026-03-01/NetworkManagerConnectionManagementGroupList.json
 func ExampleManagementGroupNetworkManagerConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

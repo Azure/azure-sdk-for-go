@@ -37,7 +37,7 @@ func NewScheduledActionExtensionClient(credential azcore.TokenCredential, option
 	return client, nil
 }
 
-// NewListByVMsPager - Lists scheduled actions associated with the specified VM.
+// NewListByVMsPager - Lists recurring bulk actions associated with the specified VM.
 //   - resourceURI - The fully qualified Azure resource ID of the compute resource.
 //   - options - ScheduledActionExtensionClientListByVMsOptions contains the optional parameters for the ScheduledActionExtensionClient.NewListByVMsPager
 //     method.

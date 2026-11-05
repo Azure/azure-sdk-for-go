@@ -61,6 +61,29 @@ type ArcSettingsClientUpdateResponse struct {
 	ArcSetting
 }
 
+// ClusterJobsClientCreateOrUpdateResponse contains the response from method ClusterJobsClient.BeginCreateOrUpdate.
+type ClusterJobsClientCreateOrUpdateResponse struct {
+	// Cluster Jobs resource
+	ClusterJob
+}
+
+// ClusterJobsClientDeleteResponse contains the response from method ClusterJobsClient.BeginDelete.
+type ClusterJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClusterJobsClientGetResponse contains the response from method ClusterJobsClient.Get.
+type ClusterJobsClientGetResponse struct {
+	// Cluster Jobs resource
+	ClusterJob
+}
+
+// ClusterJobsClientListResponse contains the response from method ClusterJobsClient.NewListPager.
+type ClusterJobsClientListResponse struct {
+	// List of Cluster Job resources for the HCI cluster.
+	ClusterJobListResult
+}
+
 // ClustersClientConfigureRemoteSupportResponse contains the response from method ClustersClient.BeginConfigureRemoteSupport.
 type ClustersClientConfigureRemoteSupportResponse struct {
 	// Cluster details.
@@ -206,6 +229,253 @@ type EdgeDevicesClientValidateResponse struct {
 	ValidateResponse
 }
 
+// EdgeMachineDeploymentSettingsClientCreateOrUpdateResponse contains the response from method EdgeMachineDeploymentSettingsClient.BeginCreateOrUpdate.
+type EdgeMachineDeploymentSettingsClientCreateOrUpdateResponse struct {
+	// Deployment setting resource for an Edge Machine.
+	EdgeMachineDeploymentSetting
+}
+
+// EdgeMachineDeploymentSettingsClientDeleteResponse contains the response from method EdgeMachineDeploymentSettingsClient.BeginDelete.
+type EdgeMachineDeploymentSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineDeploymentSettingsClientGetResponse contains the response from method EdgeMachineDeploymentSettingsClient.Get.
+type EdgeMachineDeploymentSettingsClientGetResponse struct {
+	// Deployment setting resource for an Edge Machine.
+	EdgeMachineDeploymentSetting
+}
+
+// EdgeMachineDeploymentSettingsClientListByEdgeMachineResponse contains the response from method EdgeMachineDeploymentSettingsClient.NewListByEdgeMachinePager.
+type EdgeMachineDeploymentSettingsClientListByEdgeMachineResponse struct {
+	// The response of a EdgeMachineDeploymentSetting list operation.
+	EdgeMachineDeploymentSettingListResult
+}
+
+// EdgeMachineDiskJobsClientCreateOrUpdateResponse contains the response from method EdgeMachineDiskJobsClient.BeginCreateOrUpdate.
+type EdgeMachineDiskJobsClientCreateOrUpdateResponse struct {
+	// Disk Job resource for managing operations on disks.
+	EdgeMachineDiskJob
+}
+
+// EdgeMachineDiskJobsClientDeleteResponse contains the response from method EdgeMachineDiskJobsClient.BeginDelete.
+type EdgeMachineDiskJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineDiskJobsClientGetResponse contains the response from method EdgeMachineDiskJobsClient.Get.
+type EdgeMachineDiskJobsClientGetResponse struct {
+	// Disk Job resource for managing operations on disks.
+	EdgeMachineDiskJob
+}
+
+// EdgeMachineDiskJobsClientListResponse contains the response from method EdgeMachineDiskJobsClient.NewListPager.
+type EdgeMachineDiskJobsClientListResponse struct {
+	// The response of a EdgeMachineDiskJob list operation.
+	EdgeMachineDiskJobListResult
+}
+
+// EdgeMachineDiskPrivilegedJobsClientCreateOrUpdateResponse contains the response from method EdgeMachineDiskPrivilegedJobsClient.BeginCreateOrUpdate.
+type EdgeMachineDiskPrivilegedJobsClientCreateOrUpdateResponse struct {
+	// Disk Privileged Job resource for managing privileged operations on disk volumes.
+	EdgeMachineDiskPrivilegedJob
+}
+
+// EdgeMachineDiskPrivilegedJobsClientDeleteResponse contains the response from method EdgeMachineDiskPrivilegedJobsClient.BeginDelete.
+type EdgeMachineDiskPrivilegedJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineDiskPrivilegedJobsClientGetResponse contains the response from method EdgeMachineDiskPrivilegedJobsClient.Get.
+type EdgeMachineDiskPrivilegedJobsClientGetResponse struct {
+	// Disk Privileged Job resource for managing privileged operations on disk volumes.
+	EdgeMachineDiskPrivilegedJob
+}
+
+// EdgeMachineDiskPrivilegedJobsClientListResponse contains the response from method EdgeMachineDiskPrivilegedJobsClient.NewListPager.
+type EdgeMachineDiskPrivilegedJobsClientListResponse struct {
+	// List of Disk Privileged Job resources.
+	EdgeMachineDiskPrivilegedJobListResult
+}
+
+// EdgeMachineDisksClientCreateOrUpdateResponse contains the response from method EdgeMachineDisksClient.BeginCreateOrUpdate.
+type EdgeMachineDisksClientCreateOrUpdateResponse struct {
+	// Disk resource representing a physical disk on an Edge Machine.
+	EdgeMachineDisk
+}
+
+// EdgeMachineDisksClientDeleteResponse contains the response from method EdgeMachineDisksClient.BeginDelete.
+type EdgeMachineDisksClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineDisksClientGetResponse contains the response from method EdgeMachineDisksClient.Get.
+type EdgeMachineDisksClientGetResponse struct {
+	// Disk resource representing a physical disk on an Edge Machine.
+	EdgeMachineDisk
+}
+
+// EdgeMachineDisksClientListResponse contains the response from method EdgeMachineDisksClient.NewListPager.
+type EdgeMachineDisksClientListResponse struct {
+	// The response of a EdgeMachineDisk list operation.
+	EdgeMachineDiskListResult
+}
+
+// EdgeMachineJobsClientCreateOrUpdateResponse contains the response from method EdgeMachineJobsClient.BeginCreateOrUpdate.
+type EdgeMachineJobsClientCreateOrUpdateResponse struct {
+	// Cluster Jobs resource
+	EdgeMachineJob
+}
+
+// EdgeMachineJobsClientDeleteResponse contains the response from method EdgeMachineJobsClient.BeginDelete.
+type EdgeMachineJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineJobsClientGetResponse contains the response from method EdgeMachineJobsClient.Get.
+type EdgeMachineJobsClientGetResponse struct {
+	// Cluster Jobs resource
+	EdgeMachineJob
+}
+
+// EdgeMachineJobsClientListResponse contains the response from method EdgeMachineJobsClient.NewListPager.
+type EdgeMachineJobsClientListResponse struct {
+	// The response of a EdgeMachineJob list operation.
+	EdgeMachineJobListResult
+}
+
+// EdgeMachineNetworkAdapterJobsClientCreateOrUpdateResponse contains the response from method EdgeMachineNetworkAdapterJobsClient.BeginCreateOrUpdate.
+type EdgeMachineNetworkAdapterJobsClientCreateOrUpdateResponse struct {
+	// Job for an Edge Machine Network Adapter.
+	EdgeMachineNetworkAdapterJob
+}
+
+// EdgeMachineNetworkAdapterJobsClientDeleteResponse contains the response from method EdgeMachineNetworkAdapterJobsClient.BeginDelete.
+type EdgeMachineNetworkAdapterJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineNetworkAdapterJobsClientGetResponse contains the response from method EdgeMachineNetworkAdapterJobsClient.Get.
+type EdgeMachineNetworkAdapterJobsClientGetResponse struct {
+	// Job for an Edge Machine Network Adapter.
+	EdgeMachineNetworkAdapterJob
+}
+
+// EdgeMachineNetworkAdapterJobsClientListResponse contains the response from method EdgeMachineNetworkAdapterJobsClient.NewListPager.
+type EdgeMachineNetworkAdapterJobsClientListResponse struct {
+	// The response of a EdgeMachineNetworkAdapterJob list operation.
+	EdgeMachineNetworkAdapterJobListResult
+}
+
+// EdgeMachineNetworkAdaptersClientGetResponse contains the response from method EdgeMachineNetworkAdaptersClient.Get.
+type EdgeMachineNetworkAdaptersClientGetResponse struct {
+	// Edge Machine Network Adapter Resource.
+	EdgeMachineNetworkAdapter
+}
+
+// EdgeMachineNetworkAdaptersClientListResponse contains the response from method EdgeMachineNetworkAdaptersClient.NewListPager.
+type EdgeMachineNetworkAdaptersClientListResponse struct {
+	// The response of a EdgeMachineNetworkAdapter list operation.
+	EdgeMachineNetworkAdapterListResult
+}
+
+// EdgeMachineSecuritySettingsOperationsClientCreateOrUpdateResponse contains the response from method EdgeMachineSecuritySettingsOperationsClient.BeginCreateOrUpdate.
+type EdgeMachineSecuritySettingsOperationsClientCreateOrUpdateResponse struct {
+	// Edge Machine Security Settings proxy resource
+	EdgeMachineSecuritySettings
+}
+
+// EdgeMachineSecuritySettingsOperationsClientDeleteResponse contains the response from method EdgeMachineSecuritySettingsOperationsClient.BeginDelete.
+type EdgeMachineSecuritySettingsOperationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineSecuritySettingsOperationsClientGetResponse contains the response from method EdgeMachineSecuritySettingsOperationsClient.Get.
+type EdgeMachineSecuritySettingsOperationsClientGetResponse struct {
+	// Edge Machine Security Settings proxy resource
+	EdgeMachineSecuritySettings
+}
+
+// EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineResponse contains the response from method EdgeMachineSecuritySettingsOperationsClient.NewListByEdgeMachinePager.
+type EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineResponse struct {
+	// The response of a EdgeMachineSecuritySettings list operation.
+	EdgeMachineSecuritySettingsListResult
+}
+
+// EdgeMachineVolumesClientCreateOrUpdateResponse contains the response from method EdgeMachineVolumesClient.BeginCreateOrUpdate.
+type EdgeMachineVolumesClientCreateOrUpdateResponse struct {
+	// Volume resource representing a storage volume on an Edge Machine.
+	EdgeMachineVolume
+}
+
+// EdgeMachineVolumesClientDeleteResponse contains the response from method EdgeMachineVolumesClient.BeginDelete.
+type EdgeMachineVolumesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachineVolumesClientGetResponse contains the response from method EdgeMachineVolumesClient.Get.
+type EdgeMachineVolumesClientGetResponse struct {
+	// Volume resource representing a storage volume on an Edge Machine.
+	EdgeMachineVolume
+}
+
+// EdgeMachineVolumesClientListResponse contains the response from method EdgeMachineVolumesClient.NewListPager.
+type EdgeMachineVolumesClientListResponse struct {
+	// The response of a EdgeMachineVolume list operation.
+	EdgeMachineVolumeListResult
+}
+
+// EdgeMachinesClientCreateOrUpdateResponse contains the response from method EdgeMachinesClient.BeginCreateOrUpdate.
+type EdgeMachinesClientCreateOrUpdateResponse struct {
+	// EdgeMachine details.
+	EdgeMachine
+}
+
+// EdgeMachinesClientDeleteResponse contains the response from method EdgeMachinesClient.BeginDelete.
+type EdgeMachinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachinesClientGetResponse contains the response from method EdgeMachinesClient.Get.
+type EdgeMachinesClientGetResponse struct {
+	// EdgeMachine details.
+	EdgeMachine
+}
+
+// EdgeMachinesClientListByResourceGroupResponse contains the response from method EdgeMachinesClient.NewListByResourceGroupPager.
+type EdgeMachinesClientListByResourceGroupResponse struct {
+	// The response of a EdgeMachine list operation.
+	EdgeMachineListResult
+}
+
+// EdgeMachinesClientListBySubscriptionResponse contains the response from method EdgeMachinesClient.NewListBySubscriptionPager.
+type EdgeMachinesClientListBySubscriptionResponse struct {
+	// The response of a EdgeMachine list operation.
+	EdgeMachineListResult
+}
+
+// EdgeMachinesClientRefreshApplicableUpdatesResponse contains the response from method EdgeMachinesClient.BeginRefreshApplicableUpdates.
+type EdgeMachinesClientRefreshApplicableUpdatesResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachinesClientRefreshSecuritySettingsResponse contains the response from method EdgeMachinesClient.BeginRefreshSecuritySettings.
+type EdgeMachinesClientRefreshSecuritySettingsResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeMachinesClientUpdateResponse contains the response from method EdgeMachinesClient.BeginUpdate.
+type EdgeMachinesClientUpdateResponse struct {
+	// EdgeMachine details.
+	EdgeMachine
+}
+
+// EdgeMachinesClientValidateResponse contains the response from method EdgeMachinesClient.BeginValidate.
+type EdgeMachinesClientValidateResponse struct {
+	// The validate response for Edge Machine.
+	EdgeMachineValidateResponse
+}
+
 // ExtensionsClientCreateResponse contains the response from method ExtensionsClient.BeginCreate.
 type ExtensionsClientCreateResponse struct {
 	// Details of a particular extension in HCI Cluster.
@@ -262,6 +532,24 @@ type OffersClientListByPublisherResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// OsImagesClientGetResponse contains the response from method OsImagesClient.Get.
+type OsImagesClientGetResponse struct {
+	// Represents a os image resource.
+	OsImage
+}
+
+// OsImagesClientListBySubscriptionLocationResourceResponse contains the response from method OsImagesClient.NewListBySubscriptionLocationResourcePager.
+type OsImagesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a OsImage list operation.
+	OsImageListResult
+}
+
+// OwnershipVouchersClientValidateResponse contains the response from method OwnershipVouchersClient.Validate.
+type OwnershipVouchersClientValidateResponse struct {
+	// Validate Ownership Voucher Response
+	ValidateOwnershipVouchersResponse
 }
 
 // SKUsClientGetResponse contains the response from method SKUsClient.Get.

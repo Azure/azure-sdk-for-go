@@ -29,21 +29,21 @@ type PacketCapturesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *armnetwork.PacketCapturesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method PacketCapturesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *armnetwork.PacketCapturesClientGetOptions) (resp azfake.Responder[armnetwork.PacketCapturesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetStatus is the fake for method PacketCapturesClient.BeginGetStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetStatus func(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *armnetwork.PacketCapturesClientBeginGetStatusOptions) (resp azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PacketCapturesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, networkWatcherName string, options *armnetwork.PacketCapturesClientListOptions) (resp azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse])
-
 	// BeginStop is the fake for method PacketCapturesClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStop func(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *armnetwork.PacketCapturesClientBeginStopOptions) (resp azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method PacketCapturesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *armnetwork.PacketCapturesClientGetOptions) (resp azfake.Responder[armnetwork.PacketCapturesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method PacketCapturesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, networkWatcherName string, options *armnetwork.PacketCapturesClientListOptions) (resp azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse])
 }
 
 // NewPacketCapturesServerTransport creates a new instance of PacketCapturesServerTransport with the provided implementation.
@@ -55,8 +55,8 @@ func NewPacketCapturesServerTransport(srv *PacketCapturesServer) *PacketCaptures
 		beginCreate:    newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientCreateResponse]](),
 		beginDelete:    newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse]](),
 		beginGetStatus: newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse]](),
-		newListPager:   newTracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]](),
 		beginStop:      newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse]](),
+		newListPager:   newTracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]](),
 	}
 }
 
@@ -67,8 +67,8 @@ type PacketCapturesServerTransport struct {
 	beginCreate    *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientCreateResponse]]
 	beginDelete    *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse]]
 	beginGetStatus *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse]]
-	newListPager   *tracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]]
 	beginStop      *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse]]
+	newListPager   *tracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PacketCapturesServerTransport.
@@ -96,14 +96,14 @@ func (p *PacketCapturesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = p.dispatchBeginCreate(req)
 			case "PacketCapturesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PacketCapturesClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
 			case "PacketCapturesClient.BeginGetStatus":
 				res.resp, res.err = p.dispatchBeginGetStatus(req)
-			case "PacketCapturesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PacketCapturesClient.BeginStop":
 				res.resp, res.err = p.dispatchBeginStop(req)
+			case "PacketCapturesClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PacketCapturesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,43 +220,6 @@ func (p *PacketCapturesServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (p *PacketCapturesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	packetCaptureNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, networkWatcherNameParam, packetCaptureNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PacketCaptureResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGetStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetStatus not implemented")}
@@ -305,47 +268,6 @@ func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request
 	return resp, nil
 }
 
-func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/packetCaptures`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, networkWatcherNameParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PacketCapturesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PacketCapturesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginStop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
@@ -391,6 +313,84 @@ func (p *PacketCapturesServerTransport) dispatchBeginStop(req *http.Request) (*h
 		p.beginStop.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PacketCapturesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	packetCaptureNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, networkWatcherNameParam, packetCaptureNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PacketCaptureResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/packetCaptures`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(resourceGroupNameParam, networkWatcherNameParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PacketCapturesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -19,7 +19,7 @@ import (
 // RoleMappingsClient contains the methods for the RoleMappings group.
 // Don't use this type directly, use NewRoleMappingsClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-09-30
 type RoleMappingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *RoleMappingsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -155,7 +155,7 @@ func (client *RoleMappingsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -202,7 +202,7 @@ func (client *RoleMappingsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *RoleMappingsClient) listCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260703Preview)
+		reqQP.Set("api-version", version20260930)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

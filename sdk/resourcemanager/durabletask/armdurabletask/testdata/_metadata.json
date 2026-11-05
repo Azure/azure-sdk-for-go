@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.DurableTask": "2026-02-01"
+    "Microsoft.DurableTask": "2026-07-01-preview"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.6"
 }

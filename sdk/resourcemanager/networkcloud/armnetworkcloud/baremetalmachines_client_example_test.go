@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Cordon.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Cordon.json
 func ExampleBareMetalMachinesClient_BeginCordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleBareMetalMachinesClient_BeginCordon() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Create.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Create.json
 func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,8 +163,8 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			MachineSKUID: to.Ptr("684E-3B16-399E"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.BareMetalMachineMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			OamIPv4Address: to.Ptr("192.0.2.1"),
 	// 			OamIPv6Address: to.Ptr("0:0:0:0:0:FFFF:7F00:0001"),
@@ -222,7 +222,7 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Delete.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Delete.json
 func ExampleBareMetalMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleBareMetalMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Get.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Get.json
 func ExampleBareMetalMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,8 +341,8 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 			},
 	// 			MachineSKUID: to.Ptr("684E-3B16-399E"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.BareMetalMachineMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			OamIPv4Address: to.Ptr("192.0.2.1"),
 	// 			OamIPv6Address: to.Ptr("0:0:0:0:0:FFFF:7F00:0001"),
@@ -400,7 +400,7 @@ func ExampleBareMetalMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_ListByResourceGroup.json
 func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,8 +505,8 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					MachineSKUID: to.Ptr("684E-3B16-399E"),
 		// 					MonitoringConfigurationStatus: &armnetworkcloud.BareMetalMachineMonitoringConfigurationStatus{
-		// 						LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusLogLevelDefault),
-		// 						MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault),
+		// 						LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault),
 		// 					},
 		// 					OamIPv4Address: to.Ptr("192.0.2.1"),
 		// 					OamIPv6Address: to.Ptr("0:0:0:0:0:FFFF:7F00:0001"),
@@ -567,7 +567,7 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_ListBySubscription.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_ListBySubscription.json
 func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -672,8 +672,8 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					MachineSKUID: to.Ptr("684E-3B16-399E"),
 		// 					MonitoringConfigurationStatus: &armnetworkcloud.BareMetalMachineMonitoringConfigurationStatus{
-		// 						LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusLogLevelDefault),
-		// 						MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault),
+		// 						LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault),
 		// 					},
 		// 					OamIPv4Address: to.Ptr("192.0.2.1"),
 		// 					OamIPv6Address: to.Ptr("0:0:0:0:0:FFFF:7F00:0001"),
@@ -734,7 +734,7 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_PowerOff.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_PowerOff.json
 func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +758,7 @@ func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Reimage.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Reimage.json
 func ExampleBareMetalMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +782,7 @@ func ExampleBareMetalMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Replace.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Replace.json
 func ExampleBareMetalMachinesClient_BeginReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -815,7 +815,7 @@ func ExampleBareMetalMachinesClient_BeginReplace() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Restart.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Restart.json
 func ExampleBareMetalMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -836,7 +836,7 @@ func ExampleBareMetalMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_RunCommand.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_RunCommand.json
 func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,7 +864,7 @@ func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_RunDataExtracts.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_RunDataExtracts.json
 func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -896,7 +896,7 @@ func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_RunDataExtractsRestricted.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_RunDataExtractsRestricted.json
 func ExampleBareMetalMachinesClient_BeginRunDataExtractsRestricted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -927,7 +927,7 @@ func ExampleBareMetalMachinesClient_BeginRunDataExtractsRestricted() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Hostname.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_RunReadCommands_Hostname.json
 func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFromASingleReadOnlyCommandOnBareMetalMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -955,7 +955,7 @@ func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFro
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Multiple.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_RunReadCommands_Multiple.json
 func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFromReadOnlyCommandsOnBareMetalMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +995,7 @@ func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFro
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Start.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Start.json
 func ExampleBareMetalMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1016,7 +1016,7 @@ func ExampleBareMetalMachinesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Uncordon.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Uncordon.json
 func ExampleBareMetalMachinesClient_BeginUncordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1037,7 +1037,7 @@ func ExampleBareMetalMachinesClient_BeginUncordon() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachines_Patch.json
+// Generated from example definition: 2026-07-01/BareMetalMachines_Patch.json
 func ExampleBareMetalMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1147,8 +1147,8 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 			},
 	// 			MachineSKUID: to.Ptr("684E-3B16-399E"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.BareMetalMachineMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			OamIPv4Address: to.Ptr("192.0.2.1"),
 	// 			OamIPv6Address: to.Ptr("0:0:0:0:0:FFFF:7F00:0001"),

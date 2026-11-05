@@ -19,7 +19,7 @@ import (
 // EdgeDeviceJobsClient contains the methods for the EdgeDeviceJobs group.
 // Don't use this type directly, use NewEdgeDeviceJobsClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type EdgeDeviceJobsClient struct {
 	internal *arm.Client
 }
@@ -63,7 +63,7 @@ func (client *EdgeDeviceJobsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a EdgeDeviceJob
+// createOrUpdate - Create a EdgeDeviceJob
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDeviceJobsClient) createOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *EdgeDeviceJobsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EdgeDeviceJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, _ *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/jobs/{jobsName}"
 	if resourceURI == "" {
@@ -105,7 +105,7 @@ func (client *EdgeDeviceJobsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -139,7 +139,7 @@ func (client *EdgeDeviceJobsClient) BeginDelete(ctx context.Context, resourceURI
 	}
 }
 
-// Delete - Delete a EdgeDeviceJob
+// deleteOperation - Delete a EdgeDeviceJob
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDeviceJobsClient) deleteOperation(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *EdgeDeviceJobsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EdgeDeviceJobsClient) deleteCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, _ *EdgeDeviceJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/jobs/{jobsName}"
 	if resourceURI == "" {
@@ -181,7 +181,7 @@ func (client *EdgeDeviceJobsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -229,7 +229,7 @@ func (client *EdgeDeviceJobsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *EdgeDeviceJobsClient) listByEdgeDeviceCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

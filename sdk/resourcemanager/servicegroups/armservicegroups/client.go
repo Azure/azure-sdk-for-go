@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2024-02-01-preview
+// Generated from API version 2026-08-01
 type Client struct {
 	internal *arm.Client
 }
@@ -71,7 +71,7 @@ func (client *Client) getCreateRequest(ctx context.Context, serviceGroupName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -85,57 +85,6 @@ func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroup); err != nil {
 		return ClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// ListAncestors - Get the details of the serviceGroup's ancestors
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - ServiceGroup Name.
-//   - options - ClientListAncestorsOptions contains the optional parameters for the Client.ListAncestors method.
-func (client *Client) ListAncestors(ctx context.Context, serviceGroupName string, options *ClientListAncestorsOptions) (ClientListAncestorsResponse, error) {
-	var err error
-	const operationName = "Client.ListAncestors"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listAncestorsCreateRequest(ctx, serviceGroupName, options)
-	if err != nil {
-		return ClientListAncestorsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientListAncestorsResponse{}, err
-	}
-	return client.listAncestorsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listAncestorsCreateRequest creates the ListAncestors request.
-func (client *Client) listAncestorsCreateRequest(ctx context.Context, serviceGroupName string, _ *ClientListAncestorsOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/listAncestors"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAncestorsHandleResponse handles the ListAncestors response.
-func (client *Client) listAncestorsHandleResponse(resp *http.Response, successCodes ...int) (ClientListAncestorsResponse, error) {
-	result := ClientListAncestorsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroupCollectionResponse); err != nil {
-		return ClientListAncestorsResponse{}, err
 	}
 	return result, nil
 }

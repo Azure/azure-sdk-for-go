@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/BillingInfo_Get.json
+// Generated from example definition: 2026-06-01/BillingInfo_Get.json
 func ExampleBillingInfoClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,6 +68,11 @@ type ClientUpdateResponse struct {
 	Cluster
 }
 
+// ClustersClientUnlinkMigratedEndpointResponse contains the response from method ClustersClient.BeginUnlinkMigratedEndpoint.
+type ClustersClientUnlinkMigratedEndpointResponse struct {
+	// placeholder for future response values
+}
+
 // DatabasesClientCreateResponse contains the response from method DatabasesClient.BeginCreate.
 type DatabasesClientCreateResponse struct {
 	// Describes a database on the Redis Enterprise cluster
@@ -139,27 +144,32 @@ type DatabasesClientUpgradeDBRedisVersionResponse struct {
 	// placeholder for future response values
 }
 
-// MigrationClientCancelResponse contains the response from method MigrationClient.BeginCancel.
-type MigrationClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// MigrationClientGetResponse contains the response from method MigrationClient.Get.
-type MigrationClientGetResponse struct {
+// MigrationsClientGetResponse contains the response from method MigrationsClient.Get.
+type MigrationsClientGetResponse struct {
 	// Describes the current migration operation on a Redis Enterprise cluster.
 	Migration
 }
 
-// MigrationClientListResponse contains the response from method MigrationClient.NewListPager.
-type MigrationClientListResponse struct {
+// MigrationsClientListResponse contains the response from method MigrationsClient.NewListPager.
+type MigrationsClientListResponse struct {
 	// The response of a list-all migrations.
 	MigrationList
 }
 
-// MigrationClientStartResponse contains the response from method MigrationClient.BeginStart.
-type MigrationClientStartResponse struct {
+// MigrationsClientStartResponse contains the response from method MigrationsClient.BeginStart.
+type MigrationsClientStartResponse struct {
 	// Describes the current migration operation on a Redis Enterprise cluster.
 	Migration
+}
+
+// MigrationsClientUndoResponse contains the response from method MigrationsClient.BeginUndo.
+type MigrationsClientUndoResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationsClientUnlinkMigratedEndpointResponse contains the response from method MigrationsClient.BeginUnlinkMigratedEndpoint.
+type MigrationsClientUnlinkMigratedEndpointResponse struct {
+	// placeholder for future response values
 }
 
 // MigrationsClientValidateResponse contains the response from method MigrationsClient.Validate.

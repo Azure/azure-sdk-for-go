@@ -33,6 +33,10 @@ type ProtectionGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *armcommvaultcontentstore.ProtectionGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginStopBackup is the fake for method ProtectionGroupsClient.BeginStopBackup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStopBackup func(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request armcommvaultcontentstore.StopBackupProtectionGroupRequest, options *armcommvaultcontentstore.ProtectionGroupsClientBeginStopBackupOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientStopBackupResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProtectionGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *armcommvaultcontentstore.ProtectionGroupsClientGetOptions) (resp azfake.Responder[armcommvaultcontentstore.ProtectionGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type ProtectionGroupsServer struct {
 	// ResumeBackup is the fake for method ProtectionGroupsClient.ResumeBackup
 	// HTTP status codes to indicate success: http.StatusNoContent
 	ResumeBackup func(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *armcommvaultcontentstore.ProtectionGroupsClientResumeBackupOptions) (resp azfake.Responder[armcommvaultcontentstore.ProtectionGroupsClientResumeBackupResponse], errResp azfake.ErrorResponder)
-
-	// BeginStopBackup is the fake for method ProtectionGroupsClient.BeginStopBackup
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStopBackup func(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request armcommvaultcontentstore.StopBackupProtectionGroupRequest, options *armcommvaultcontentstore.ProtectionGroupsClientBeginStopBackupOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientStopBackupResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProtectionGroupsServerTransport creates a new instance of ProtectionGroupsServerTransport with the provided implementation.
@@ -62,8 +62,8 @@ func NewProtectionGroupsServerTransport(srv *ProtectionGroupsServer) *Protection
 		srv:                        srv,
 		beginCreateOrupdate:        newTracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientCreateOrupdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientDeleteResponse]](),
-		newListByCloudAccountPager: newTracker[azfake.PagerResponder[armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse]](),
 		beginStopBackup:            newTracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientStopBackupResponse]](),
+		newListByCloudAccountPager: newTracker[azfake.PagerResponder[armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse]](),
 	}
 }
 
@@ -73,8 +73,8 @@ type ProtectionGroupsServerTransport struct {
 	srv                        *ProtectionGroupsServer
 	beginCreateOrupdate        *tracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientCreateOrupdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientDeleteResponse]]
-	newListByCloudAccountPager *tracker[azfake.PagerResponder[armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse]]
 	beginStopBackup            *tracker[azfake.PollerResponder[armcommvaultcontentstore.ProtectionGroupsClientStopBackupResponse]]
+	newListByCloudAccountPager *tracker[azfake.PagerResponder[armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProtectionGroupsServerTransport.
@@ -104,6 +104,8 @@ func (p *ProtectionGroupsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = p.dispatchBeginCreateOrupdate(req)
 			case "ProtectionGroupsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProtectionGroupsClient.BeginStopBackup":
+				res.resp, res.err = p.dispatchBeginStopBackup(req)
 			case "ProtectionGroupsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProtectionGroupsClient.NewListByCloudAccountPager":
@@ -112,8 +114,6 @@ func (p *ProtectionGroupsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = p.dispatchRestore(req)
 			case "ProtectionGroupsClient.ResumeBackup":
 				res.resp, res.err = p.dispatchResumeBackup(req)
-			case "ProtectionGroupsClient.BeginStopBackup":
-				res.resp, res.err = p.dispatchBeginStopBackup(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -134,7 +134,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBackup(req *http.Request) (*ht
 	if p.srv.Backup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Backup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backup`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -177,7 +177,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginCreateOrupdate(req *http.
 	}
 	beginCreateOrupdate := p.beginCreateOrupdate.get(req)
 	if beginCreateOrupdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -229,7 +229,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -271,169 +271,13 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (p *ProtectionGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
-	if err != nil {
-		return nil, err
-	}
-	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectionGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ProtectionGroupsServerTransport) dispatchNewListByCloudAccountPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByCloudAccountPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByCloudAccountPager not implemented")}
-	}
-	newListByCloudAccountPager := p.newListByCloudAccountPager.get(req)
-	if newListByCloudAccountPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByCloudAccountPager(resourceGroupNameParam, cloudAccountNameParam, nil)
-		newListByCloudAccountPager = &resp
-		p.newListByCloudAccountPager.add(req, newListByCloudAccountPager)
-		server.PagerResponderInjectNextLinks(newListByCloudAccountPager, req, func(page *armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByCloudAccountPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByCloudAccountPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByCloudAccountPager) {
-		p.newListByCloudAccountPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProtectionGroupsServerTransport) dispatchRestore(req *http.Request) (*http.Response, error) {
-	if p.srv.Restore == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Restore not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcommvaultcontentstore.RestoreProtectionItemRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
-	if err != nil {
-		return nil, err
-	}
-	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Restore(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RestoreProtectionItemResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ProtectionGroupsServerTransport) dispatchResumeBackup(req *http.Request) (*http.Response, error) {
-	if p.srv.ResumeBackup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ResumeBackup not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resumeBackup`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
-	if err != nil {
-		return nil, err
-	}
-	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.ResumeBackup(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *ProtectionGroupsServerTransport) dispatchBeginStopBackup(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginStopBackup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStopBackup not implemented")}
 	}
 	beginStopBackup := p.beginStopBackup.get(req)
 	if beginStopBackup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopBackup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopBackup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -476,6 +320,162 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginStopBackup(req *http.Requ
 		p.beginStopBackup.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ProtectionGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectionGroup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProtectionGroupsServerTransport) dispatchNewListByCloudAccountPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByCloudAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByCloudAccountPager not implemented")}
+	}
+	newListByCloudAccountPager := p.newListByCloudAccountPager.get(req)
+	if newListByCloudAccountPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByCloudAccountPager(resourceGroupNameParam, cloudAccountNameParam, nil)
+		newListByCloudAccountPager = &resp
+		p.newListByCloudAccountPager.add(req, newListByCloudAccountPager)
+		server.PagerResponderInjectNextLinks(newListByCloudAccountPager, req, func(page *armcommvaultcontentstore.ProtectionGroupsClientListByCloudAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByCloudAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByCloudAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByCloudAccountPager) {
+		p.newListByCloudAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ProtectionGroupsServerTransport) dispatchRestore(req *http.Request) (*http.Response, error) {
+	if p.srv.Restore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Restore not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcommvaultcontentstore.RestoreProtectionItemRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Restore(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RestoreProtectionItemResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProtectionGroupsServerTransport) dispatchResumeBackup(req *http.Request) (*http.Response, error) {
+	if p.srv.ResumeBackup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ResumeBackup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resumeBackup`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	protectionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ResumeBackup(req.Context(), resourceGroupNameParam, cloudAccountNameParam, protectionGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

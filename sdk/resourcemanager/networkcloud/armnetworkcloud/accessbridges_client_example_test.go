@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/AccessBridges_CreateOrUpdate.json
 func ExampleAccessBridgesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleAccessBridgesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_Delete.json
+// Generated from example definition: 2026-07-01/AccessBridges_Delete.json
 func ExampleAccessBridgesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleAccessBridgesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_Get.json
+// Generated from example definition: 2026-07-01/AccessBridges_Get.json
 func ExampleAccessBridgesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleAccessBridgesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/AccessBridges_ListByResourceGroup.json
 func ExampleAccessBridgesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleAccessBridgesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_ListBySubscription.json
+// Generated from example definition: 2026-07-01/AccessBridges_ListBySubscription.json
 func ExampleAccessBridgesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ func ExampleAccessBridgesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AccessBridges_Patch.json
+// Generated from example definition: 2026-07-01/AccessBridges_Patch.json
 func ExampleAccessBridgesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

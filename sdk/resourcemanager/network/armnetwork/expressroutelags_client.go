@@ -19,7 +19,7 @@ import (
 // ExpressRouteLagsClient contains the methods for the ExpressRouteLags group.
 // Don't use this type directly, use NewExpressRouteLagsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type ExpressRouteLagsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ExpressRouteLagsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExpressRouteLagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteLagsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *ExpressRouteLagsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified ExpressRouteLag resource.
+// createOrUpdate - Creates or updates the specified ExpressRouteLag resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteLagsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRouteLagName string, resource ExpressRouteLag, options *ExpressRouteLagsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +90,11 @@ func (client *ExpressRouteLagsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, resource ExpressRouteLag, _ *ExpressRouteLagsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -125,7 +128,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, options)
+		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -140,9 +143,9 @@ func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the specified ExpressRouteLag resource.
+// delete - Deletes the specified ExpressRouteLag resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -162,11 +165,11 @@ func (client *ExpressRouteLagsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExpressRouteLagsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, _ *ExpressRouteLagsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,7 +185,7 @@ func (client *ExpressRouteLagsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -215,7 +218,7 @@ func (client *ExpressRouteLagsClient) GenerateLoa(ctx context.Context, resourceG
 func (client *ExpressRouteLagsClient) generateLoaCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, body GenerateExpressRouteLagsLOARequest, _ *ExpressRouteLagsClientGenerateLoaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/generateLoa"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,7 +234,7 @@ func (client *ExpressRouteLagsClient) generateLoaCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -279,7 +282,7 @@ func (client *ExpressRouteLagsClient) Get(ctx context.Context, resourceGroupName
 func (client *ExpressRouteLagsClient) getCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, _ *ExpressRouteLagsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -295,7 +298,7 @@ func (client *ExpressRouteLagsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +344,7 @@ func (client *ExpressRouteLagsClient) LinksGet(ctx context.Context, resourceGrou
 func (client *ExpressRouteLagsClient) linksGetCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, _ *ExpressRouteLagsClientLinksGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/links/{linkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -361,7 +364,7 @@ func (client *ExpressRouteLagsClient) linksGetCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,6 +378,77 @@ func (client *ExpressRouteLagsClient) linksGetHandleResponse(resp *http.Response
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagLink); err != nil {
 		return ExpressRouteLagsClientLinksGetResponse{}, err
+	}
+	return result, nil
+}
+
+// MembersGet - Retrieves the specified ExpressRouteLagMember resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - expressRouteLagName - The name of the express route LAG.
+//   - linkName - The name of the express route LAG link.
+//   - memberName - The name of the express route LAG member.
+//   - options - ExpressRouteLagsClientMembersGetOptions contains the optional parameters for the ExpressRouteLagsClient.MembersGet
+//     method.
+func (client *ExpressRouteLagsClient) MembersGet(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, options *ExpressRouteLagsClientMembersGetOptions) (ExpressRouteLagsClientMembersGetResponse, error) {
+	var err error
+	const operationName = "ExpressRouteLagsClient.MembersGet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.membersGetCreateRequest(ctx, resourceGroupName, expressRouteLagName, linkName, memberName, options)
+	if err != nil {
+		return ExpressRouteLagsClientMembersGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ExpressRouteLagsClientMembersGetResponse{}, err
+	}
+	return client.membersGetHandleResponse(httpResp, http.StatusOK)
+}
+
+// membersGetCreateRequest creates the MembersGet request.
+func (client *ExpressRouteLagsClient) membersGetCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, _ *ExpressRouteLagsClientMembersGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/links/{linkName}/members/{memberName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if expressRouteLagName == "" {
+		return nil, errors.New("parameter expressRouteLagName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{expressRouteLagName}", url.PathEscape(expressRouteLagName))
+	if linkName == "" {
+		return nil, errors.New("parameter linkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkName}", url.PathEscape(linkName))
+	if memberName == "" {
+		return nil, errors.New("parameter memberName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{memberName}", url.PathEscape(memberName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// membersGetHandleResponse handles the MembersGet response.
+func (client *ExpressRouteLagsClient) membersGetHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteLagsClientMembersGetResponse, error) {
+	result := ExpressRouteLagsClientMembersGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagMember); err != nil {
+		return ExpressRouteLagsClientMembersGetResponse{}, err
 	}
 	return result, nil
 }
@@ -417,7 +491,7 @@ func (client *ExpressRouteLagsClient) linksListCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/links"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -437,7 +511,7 @@ func (client *ExpressRouteLagsClient) linksListCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -452,73 +526,6 @@ func (client *ExpressRouteLagsClient) linksListHandleResponse(resp *http.Respons
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagLinkListResult); err != nil {
 		return ExpressRouteLagsClientLinksListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List all the ExpressRouteLag resources in the specified subscription.
-//   - options - ExpressRouteLagsClientListOptions contains the optional parameters for the ExpressRouteLagsClient.NewListPager
-//     method.
-func (client *ExpressRouteLagsClient) NewListPager(options *ExpressRouteLagsClientListOptions) *runtime.Pager[ExpressRouteLagsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExpressRouteLagsClientListResponse]{
-		More: func(page ExpressRouteLagsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ExpressRouteLagsClientListResponse) (ExpressRouteLagsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteLagsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ExpressRouteLagsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExpressRouteLagsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ExpressRouteLagsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ExpressRouteLagsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteLags"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ExpressRouteLagsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteLagsClientListResponse, error) {
-	result := ExpressRouteLagsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagListResult); err != nil {
-		return ExpressRouteLagsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -560,7 +567,7 @@ func (client *ExpressRouteLagsClient) listByResourceGroupCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -576,7 +583,7 @@ func (client *ExpressRouteLagsClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -595,73 +602,69 @@ func (client *ExpressRouteLagsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// MembersGet - Retrieves the specified ExpressRouteLagMember resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - expressRouteLagName - The name of the express route LAG.
-//   - linkName - The name of the express route LAG link.
-//   - memberName - The name of the express route LAG member.
-//   - options - ExpressRouteLagsClientMembersGetOptions contains the optional parameters for the ExpressRouteLagsClient.MembersGet
+// NewListPager - List all the ExpressRouteLag resources in the specified subscription.
+//   - options - ExpressRouteLagsClientListOptions contains the optional parameters for the ExpressRouteLagsClient.NewListPager
 //     method.
-func (client *ExpressRouteLagsClient) MembersGet(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, options *ExpressRouteLagsClientMembersGetOptions) (ExpressRouteLagsClientMembersGetResponse, error) {
-	var err error
-	const operationName = "ExpressRouteLagsClient.MembersGet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.membersGetCreateRequest(ctx, resourceGroupName, expressRouteLagName, linkName, memberName, options)
-	if err != nil {
-		return ExpressRouteLagsClientMembersGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ExpressRouteLagsClientMembersGetResponse{}, err
-	}
-	return client.membersGetHandleResponse(httpResp, http.StatusOK)
+func (client *ExpressRouteLagsClient) NewListPager(options *ExpressRouteLagsClientListOptions) *runtime.Pager[ExpressRouteLagsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExpressRouteLagsClientListResponse]{
+		More: func(page ExpressRouteLagsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ExpressRouteLagsClientListResponse) (ExpressRouteLagsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteLagsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ExpressRouteLagsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExpressRouteLagsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// membersGetCreateRequest creates the MembersGet request.
-func (client *ExpressRouteLagsClient) membersGetCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, _ *ExpressRouteLagsClientMembersGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/links/{linkName}/members/{memberName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *ExpressRouteLagsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ExpressRouteLagsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteLags"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if expressRouteLagName == "" {
-		return nil, errors.New("parameter expressRouteLagName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{expressRouteLagName}", url.PathEscape(expressRouteLagName))
-	if linkName == "" {
-		return nil, errors.New("parameter linkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkName}", url.PathEscape(linkName))
-	if memberName == "" {
-		return nil, errors.New("parameter memberName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{memberName}", url.PathEscape(memberName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// membersGetHandleResponse handles the MembersGet response.
-func (client *ExpressRouteLagsClient) membersGetHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteLagsClientMembersGetResponse, error) {
-	result := ExpressRouteLagsClientMembersGetResponse{}
+// listHandleResponse handles the List response.
+func (client *ExpressRouteLagsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteLagsClientListResponse, error) {
+	result := ExpressRouteLagsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagMember); err != nil {
-		return ExpressRouteLagsClientMembersGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLagListResult); err != nil {
+		return ExpressRouteLagsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -705,7 +708,7 @@ func (client *ExpressRouteLagsClient) membersListCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}/links/{linkName}/members"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -729,7 +732,7 @@ func (client *ExpressRouteLagsClient) membersListCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -775,7 +778,7 @@ func (client *ExpressRouteLagsClient) Update(ctx context.Context, resourceGroupN
 func (client *ExpressRouteLagsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, expressRouteLagName string, properties ExpressRouteLagUpdateTagsOrIdentityRequest, _ *ExpressRouteLagsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteLags/{expressRouteLagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -791,7 +794,7 @@ func (client *ExpressRouteLagsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

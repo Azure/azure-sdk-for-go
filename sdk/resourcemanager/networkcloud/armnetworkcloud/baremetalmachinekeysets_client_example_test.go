@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachineKeySets_Create.json
+// Generated from example definition: 2026-07-01/BareMetalMachineKeySets_Create.json
 func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachineKeySets_Delete.json
+// Generated from example definition: 2026-07-01/BareMetalMachineKeySets_Delete.json
 func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachineKeySets_Get.json
+// Generated from example definition: 2026-07-01/BareMetalMachineKeySets_Get.json
 func ExampleBareMetalMachineKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachineKeySets_ListByCluster.json
+// Generated from example definition: 2026-07-01/BareMetalMachineKeySets_ListByCluster.json
 func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BareMetalMachineKeySets_Patch.json
+// Generated from example definition: 2026-07-01/BareMetalMachineKeySets_Patch.json
 func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

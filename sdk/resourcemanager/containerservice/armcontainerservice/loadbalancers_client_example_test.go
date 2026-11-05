@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/LoadBalancers_Create_Or_Update.json
+// Generated from example definition: 2026-08-02-preview/LoadBalancers_Delete.json
+func ExampleLoadBalancersClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLoadBalancersClient().BeginDelete(ctx, "rg1", "clustername1", "kubernetes", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-08-02-preview/LoadBalancers_Create_Or_Update.json
 func ExampleLoadBalancersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,28 +69,7 @@ func ExampleLoadBalancersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/LoadBalancers_Delete.json
-func ExampleLoadBalancersClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLoadBalancersClient().BeginDelete(ctx, "rg1", "clustername1", "kubernetes", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-05-02-preview/LoadBalancers_Get.json
+// Generated from example definition: 2026-08-02-preview/LoadBalancers_Get.json
 func ExampleLoadBalancersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleLoadBalancersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/LoadBalancers_List.json
+// Generated from example definition: 2026-08-02-preview/LoadBalancers_List.json
 func ExampleLoadBalancersClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

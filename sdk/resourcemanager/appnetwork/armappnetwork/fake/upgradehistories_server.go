@@ -87,7 +87,7 @@ func (u *UpgradeHistoriesServerTransport) dispatchNewListByAppLinkMemberPager(re
 	}
 	newListByAppLinkMemberPager := u.newListByAppLinkMemberPager.get(req)
 	if newListByAppLinkMemberPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppLink/appLinks/(?P<appLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/appLinkMembers/(?P<appLinkMemberName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradeHistories`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppLink/appLinks/(?P<appLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/appLinkMembers/(?P<appLinkMemberName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeHistories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

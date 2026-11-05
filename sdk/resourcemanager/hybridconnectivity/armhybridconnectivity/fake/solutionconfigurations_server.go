@@ -8,19 +8,24 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	"net/http"
-	"net/url"
-	"regexp"
-	"slices"
 )
 
 // SolutionConfigurationsServer is a fake server for instances of the armhybridconnectivity.SolutionConfigurationsClient type.
 type SolutionConfigurationsServer struct {
+	// BeginSyncNow is the fake for method SolutionConfigurationsClient.BeginSyncNow
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSyncNow func(ctx context.Context, resourceURI string, solutionConfiguration string, options *armhybridconnectivity.SolutionConfigurationsClientBeginSyncNowOptions) (resp azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method SolutionConfigurationsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceURI string, solutionConfiguration string, resource armhybridconnectivity.SolutionConfiguration, options *armhybridconnectivity.SolutionConfigurationsClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,10 +42,6 @@ type SolutionConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armhybridconnectivity.SolutionConfigurationsClientListOptions) (resp azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse])
 
-	// BeginSyncNow is the fake for method SolutionConfigurationsClient.BeginSyncNow
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSyncNow func(ctx context.Context, resourceURI string, solutionConfiguration string, options *armhybridconnectivity.SolutionConfigurationsClientBeginSyncNowOptions) (resp azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method SolutionConfigurationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceURI string, solutionConfiguration string, properties armhybridconnectivity.SolutionConfigurationUpdate, options *armhybridconnectivity.SolutionConfigurationsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -52,8 +53,8 @@ type SolutionConfigurationsServer struct {
 func NewSolutionConfigurationsServerTransport(srv *SolutionConfigurationsServer) *SolutionConfigurationsServerTransport {
 	return &SolutionConfigurationsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]](),
 		beginSyncNow: newTracker[azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]](),
 	}
 }
 
@@ -61,8 +62,8 @@ func NewSolutionConfigurationsServerTransport(srv *SolutionConfigurationsServer)
 // Don't use this type directly, use NewSolutionConfigurationsServerTransport instead.
 type SolutionConfigurationsServerTransport struct {
 	srv          *SolutionConfigurationsServer
-	newListPager *tracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]]
 	beginSyncNow *tracker[azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse]]
+	newListPager *tracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SolutionConfigurationsServerTransport.
@@ -86,6 +87,8 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
+			case "SolutionConfigurationsClient.BeginSyncNow":
+				res.resp, res.err = s.dispatchBeginSyncNow(req)
 			case "SolutionConfigurationsClient.CreateOrUpdate":
 				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SolutionConfigurationsClient.Delete":
@@ -94,8 +97,6 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionConfigurationsClient.NewListPager":
 				res.resp, res.err = s.dispatchNewListPager(req)
-			case "SolutionConfigurationsClient.BeginSyncNow":
-				res.resp, res.err = s.dispatchBeginSyncNow(req)
 			case "SolutionConfigurationsClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -114,162 +115,19 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 	}
 }
 
-func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.SolutionConfiguration](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceURIParam, solutionConfigurationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SolutionConfigurationsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if s.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Delete(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SolutionConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SolutionConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPager(resourceURIParam, nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhybridconnectivity.SolutionConfigurationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginSyncNow == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSyncNow not implemented")}
 	}
 	beginSyncNow := s.beginSyncNow.get(req)
 	if beginSyncNow == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncNow`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncNow`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 		if err != nil {
 			return nil, err
@@ -298,11 +156,139 @@ func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.R
 	return resp, nil
 }
 
+func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.SolutionConfiguration](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceURIParam, solutionConfigurationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionConfiguration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SolutionConfigurationsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if s.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Delete(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SolutionConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionConfiguration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SolutionConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		resp := s.srv.NewListPager(resourceURIParam, nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhybridconnectivity.SolutionConfigurationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *SolutionConfigurationsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -312,10 +298,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchUpdate(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err

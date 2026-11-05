@@ -10,10 +10,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/horizondb/armhorizondb"
 	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-01-20-preview/Clusters_CreateOrUpdate.json
-func ExampleClustersClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-10-01-preview/Clusters_CreateOrReplace.json
+func ExampleClustersClient_BeginCreateOrReplace_createOrReplaceAHorizonDbCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,20 +24,26 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClustersClient().BeginCreateOrUpdate(ctx, "exampleresourcegroup", "examplecluster", armhorizondb.Cluster{
-		Location: to.Ptr("westus2"),
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrReplace(ctx, "example-resource-group", "example-cluster", armhorizondb.Cluster{
+		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
-			"env": to.Ptr("dev"),
+			"environment": to.Ptr("production"),
+		},
+		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/fabric-writer": {},
+			},
 		},
 		Properties: &armhorizondb.ClusterProperties{
-			CreateMode:                 to.Ptr(armhorizondb.CreateModeClusterCreate),
-			SourceClusterResourceID:    to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster"),
-			Version:                    to.Ptr("17"),
-			AdministratorLogin:         to.Ptr("exampleadministratorlogin"),
-			AdministratorLoginPassword: to.Ptr("examplepassword"),
-			VCores:                     to.Ptr[int32](4),
-			ReplicaCount:               to.Ptr[int32](2),
-			ZonePlacementPolicy:        to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
+			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+			Network: &armhorizondb.Network{
+				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateEnabled),
+			},
+			Backup: &armhorizondb.BackupProperties{
+				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+				RetentionDays: to.Ptr[int32](14),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -49,33 +56,311 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientCreateOrUpdateResponse{
+	// res = armhorizondb.ClustersClientCreateOrReplaceResponse{
 	// 	Cluster: armhorizondb.Cluster{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-	// 		Name: to.Ptr("examplecluster"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-	// 		Location: to.Ptr("westus2"),
+	// 		Location: to.Ptr("eastus2"),
 	// 		Tags: map[string]*string{
-	// 			"env": to.Ptr("dev"),
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+	// 			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/fabric-writer": &armhorizondb.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Properties: &armhorizondb.ClusterProperties{
-	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-	// 			Version: to.Ptr("17"),
-	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterCreate),
-	// 			SourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster"),
-	// 			VCores: to.Ptr[int32](4),
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.horizondb.azure.com"),
-	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateEnabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 				EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateUpdating),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateInProgress),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_Delete.json
+// Generated from example definition: 2026-10-01-preview/Clusters_CreateOrReplaceCrossRegionPointInTimeRestore.json
+func ExampleClustersClient_BeginCreateOrReplace_restoreAHorizonDbClusterAcrossAzureRegionsFromTheLatestAvailableBackup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrReplace(ctx, "example-resource-group", "cross-region-restored-cluster", armhorizondb.Cluster{
+		Location: to.Ptr("westus2"),
+		Properties: &armhorizondb.ClusterProperties{
+			CreationMode:                    to.Ptr(armhorizondb.ClusterCreateModePointInTimeRestore),
+			PointInTimeUTC:                  to.Ptr(time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC)),
+			CreationSourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/source-cluster"),
+			CreationSourceClusterLocation:   to.Ptr("eastus2"),
+			Network: &armhorizondb.Network{
+				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+			},
+			Backup: &armhorizondb.BackupProperties{
+				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+				RetentionDays: to.Ptr[int32](14),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientCreateOrReplaceResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/cross-region-restored-cluster"),
+	// 		Name: to.Ptr("cross-region-restored-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModePointInTimeRestore),
+	// 			CreationSourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/source-cluster"),
+	// 			CreationSourceClusterLocation: to.Ptr("eastus2"),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateProvisioning),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateProvisioning),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_CreateOrReplaceMinimumDefaults.json
+func ExampleClustersClient_BeginCreateOrReplace_createAPostgreSql18HorizonDbClusterWithMinimumConfigurationAndServiceDefaults() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrReplace(ctx, "example-resource-group", "minimum-defaults", armhorizondb.Cluster{
+		Location: to.Ptr("eastus2"),
+		Properties: &armhorizondb.ClusterProperties{
+			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV18),
+			Backup: &armhorizondb.BackupProperties{
+				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientCreateOrReplaceResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/minimum-defaults"),
+	// 		Name: to.Ptr("minimum-defaults"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV18),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+	// 				RetentionDays: to.Ptr[int32](7),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateUpdating),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateInProgress),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_CreateOrReplacePointInTimeRestore.json
+func ExampleClustersClient_BeginCreateOrReplace_restoreAHorizonDbClusterToAPointInTime() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrReplace(ctx, "example-resource-group", "restored-cluster", armhorizondb.Cluster{
+		Location: to.Ptr("eastus2"),
+		Properties: &armhorizondb.ClusterProperties{
+			CreationMode:                    to.Ptr(armhorizondb.ClusterCreateModePointInTimeRestore),
+			PointInTimeUTC:                  to.Ptr(time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC)),
+			CreationSourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/source-cluster"),
+			Network: &armhorizondb.Network{
+				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+			},
+			Backup: &armhorizondb.BackupProperties{
+				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+				RetentionDays: to.Ptr[int32](14),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientCreateOrReplaceResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/restored-cluster"),
+	// 		Name: to.Ptr("restored-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModePointInTimeRestore),
+	// 			PointInTimeUTC: to.Ptr(time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC)),
+	// 			CreationSourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/source-cluster"),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateProvisioning),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateProvisioning),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_CreateOrReplaceWithDataEncryption.json
+func ExampleClustersClient_BeginCreateOrReplace_createAHorizonDbClusterWithCustomerManagedKeyDataEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrReplace(ctx, "example-resource-group", "example-cluster", armhorizondb.Cluster{
+		Location: to.Ptr("eastus2"),
+		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity": {},
+			},
+		},
+		Properties: &armhorizondb.ClusterProperties{
+			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+			Backup: &armhorizondb.BackupProperties{
+				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+				RetentionDays: to.Ptr[int32](14),
+			},
+			DataEncryption: &armhorizondb.ClusterDataEncryption{
+				Type:                          to.Ptr(armhorizondb.ClusterDataEncryptionTypeAzureKeyVault),
+				PrimaryKeyURI:                 to.Ptr("https://primary-key-vault.vault.azure.net/keys/horizondb-primary-key"),
+				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientCreateOrReplaceResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+	// 			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity": &armhorizondb.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 			},
+	// 			DataEncryption: &armhorizondb.ClusterDataEncryption{
+	// 				Type: to.Ptr(armhorizondb.ClusterDataEncryptionTypeAzureKeyVault),
+	// 				PrimaryKeyURI: to.Ptr("https://primary-key-vault.vault.azure.net/keys/horizondb-primary-key"),
+	// 				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity"),
+	// 				PrimaryEncryptionKeyStatus: to.Ptr(armhorizondb.ClusterEncryptionKeyStatusValid),
+	// 				PrimaryEncryptionKeyCurrentVersion: to.Ptr("33333333333333333333333333333333"),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateUpdating),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateInProgress),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +371,7 @@ func ExampleClustersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClustersClient().BeginDelete(ctx, "exampleresourcegroup", "examplecluster", nil)
+	poller, err := clientFactory.NewClustersClient().BeginDelete(ctx, "example-resource-group", "example-cluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,8 +381,8 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_Get.json
-func ExampleClustersClient_Get() {
+// Generated from example definition: 2026-10-01-preview/Clusters_Failover.json
+func ExampleClustersClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -107,7 +392,204 @@ func ExampleClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClustersClient().Get(ctx, "exampleresourcegroup", "examplecluster", nil)
+	poller, err := clientFactory.NewClustersClient().BeginFailover(ctx, "example-resource-group", "example-cluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientFailoverResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateEnabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 				EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_Update.json
+func ExampleClustersClient_BeginUpdate_updateAHorizonDbCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "example-resource-group", "example-cluster", armhorizondb.ClusterForPatchUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+			"team":        to.Ptr("data-platform"),
+		},
+		Properties: &armhorizondb.ClusterPropertiesForPatchUpdate{
+			Network: &armhorizondb.NetworkForPatchUpdate{
+				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+			},
+			Backup: &armhorizondb.BackupPropertiesForPatchUpdate{
+				RetentionDays: to.Ptr[int32](21),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientUpdateResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"team": to.Ptr("data-platform"),
+	// 		},
+	// 		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+	// 			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/fabric-writer": &armhorizondb.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-2222-3333-4444-555555555555"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](21),
+	// 				EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_UpdateDataEncryption.json
+func ExampleClustersClient_BeginUpdate_rotateTheCustomerManagedKeyUsedByAHorizonDbCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "example-resource-group", "example-cluster", armhorizondb.ClusterForPatchUpdate{
+		Properties: &armhorizondb.ClusterPropertiesForPatchUpdate{
+			DataEncryption: &armhorizondb.ClusterDataEncryptionForPatchUpdate{
+				PrimaryKeyURI: to.Ptr("https://primary-key-vault.vault.azure.net/keys/horizondb-primary-key"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientUpdateResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Identity: &armhorizondb.ClusterManagedServiceIdentity{
+	// 			Type: to.Ptr(armhorizondb.ClusterIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armhorizondb.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity": &armhorizondb.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 				EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.September, 16, 2, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			DataEncryption: &armhorizondb.ClusterDataEncryption{
+	// 				Type: to.Ptr(armhorizondb.ClusterDataEncryptionTypeAzureKeyVault),
+	// 				PrimaryKeyURI: to.Ptr("https://primary-key-vault.vault.azure.net/keys/horizondb-primary-key"),
+	// 				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/identity-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/primary-encryption-identity"),
+	// 				PrimaryEncryptionKeyStatus: to.Ptr(armhorizondb.ClusterEncryptionKeyStatusValid),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_Get.json
+func ExampleClustersClient_Get_getAHorizonDbCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "example-resource-group", "example-cluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,29 +598,122 @@ func ExampleClustersClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.ClustersClientGetResponse{
 	// 	Cluster: armhorizondb.Cluster{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-	// 		Name: to.Ptr("examplecluster"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-	// 		Location: to.Ptr("westus2"),
+	// 		Location: to.Ptr("eastus2"),
 	// 		Tags: map[string]*string{
-	// 			"env": to.Ptr("dev"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
 	// 		Properties: &armhorizondb.ClusterProperties{
-	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-	// 			Version: to.Ptr("17"),
-	// 			VCores: to.Ptr[int32](4),
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.horizondb.azure.com"),
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateEnabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+	// 				RetentionDays: to.Ptr[int32](14),
+	// 				EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/Clusters_GetAfterPoolCreationOnEmptyCluster.json
+func ExampleClustersClient_Get_getAClusterAfterPoolCreationWhileItHadNoExistingPools() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "example-resource-group", "example-cluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientGetResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+	// 				RetentionDays: to.Ptr[int32](7),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 				DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_GetMinimumDefaults.json
+func ExampleClustersClient_Get_getAMinimumHorizonDbClusterWithMaterializedServiceDefaults() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "example-resource-group", "minimum-defaults", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientGetResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/minimum-defaults"),
+	// 		Name: to.Ptr("minimum-defaults"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+	// 			CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+	// 			Network: &armhorizondb.Network{
+	// 				PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+	// 			},
+	// 			Backup: &armhorizondb.BackupProperties{
+	// 				GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateDisabled),
+	// 				RetentionDays: to.Ptr[int32](7),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.ClusterStateReady),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/Clusters_ListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +724,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("exampleresourcegroup", nil)
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("example-resource-group", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -164,43 +739,26 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 	ClusterListResult: armhorizondb.ClusterListResult{
 		// 		Value: []*armhorizondb.Cluster{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-		// 				Name: to.Ptr("examplecluster"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+		// 				Name: to.Ptr("example-cluster"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Tags: map[string]*string{
-		// 					"env": to.Ptr("dev"),
-		// 				},
+		// 				Location: to.Ptr("westcentralus"),
 		// 				Properties: &armhorizondb.ClusterProperties{
-		// 					AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-		// 					Version: to.Ptr("17"),
-		// 					VCores: to.Ptr[int32](4),
-		// 					ReplicaCount: to.Ptr[int32](2),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-		// 					ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
+		// 					PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+		// 					CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+		// 					Network: &armhorizondb.Network{
+		// 						PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+		// 					},
+		// 					Backup: &armhorizondb.BackupProperties{
+		// 						GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+		// 						RetentionDays: to.Ptr[int32](14),
+		// 						EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.ClusterStateReady),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster2"),
-		// 				Name: to.Ptr("examplecluster2"),
-		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("development"),
-		// 				},
-		// 				Properties: &armhorizondb.ClusterProperties{
-		// 					AdministratorLogin: to.Ptr("admin"),
-		// 					Version: to.Ptr("17"),
-		// 					VCores: to.Ptr[int32](2),
-		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster2.westus2.horizondb.azure.com"),
-		// 					ReadonlyEndpoint: to.Ptr("examplecluster2-ro.westus2.horizondb.azure.com"),
-		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+		// 					ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+		// 						DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -209,7 +767,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/Clusters_ListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,103 +793,30 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 	ClusterListResult: armhorizondb.ClusterListResult{
 		// 		Value: []*armhorizondb.Cluster{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-		// 				Name: to.Ptr("examplecluster"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster"),
+		// 				Name: to.Ptr("example-cluster"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Tags: map[string]*string{
-		// 					"env": to.Ptr("dev"),
-		// 				},
+		// 				Location: to.Ptr("eastus2"),
 		// 				Properties: &armhorizondb.ClusterProperties{
-		// 					AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-		// 					Version: to.Ptr("17"),
-		// 					VCores: to.Ptr[int32](4),
-		// 					ReplicaCount: to.Ptr[int32](2),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-		// 					ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
+		// 					PostgreSQLVersion: to.Ptr(armhorizondb.PostgreSQLVersionV17),
+		// 					CreationMode: to.Ptr(armhorizondb.ClusterCreateModeCreate),
+		// 					Network: &armhorizondb.Network{
+		// 						PublicAccess: to.Ptr(armhorizondb.PublicNetworkAccessStateDisabled),
+		// 					},
+		// 					Backup: &armhorizondb.BackupProperties{
+		// 						GeoRedundancy: to.Ptr(armhorizondb.GeoRedundancyStateEnabled),
+		// 						RetentionDays: to.Ptr[int32](14),
+		// 						EarliestRestorePointUTC: to.Ptr(time.Date(2026, time.July, 27, 2, 0, 0, 0, time.UTC)),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.ClusterStateReady),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster2"),
-		// 				Name: to.Ptr("examplecluster2"),
-		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("development"),
-		// 				},
-		// 				Properties: &armhorizondb.ClusterProperties{
-		// 					AdministratorLogin: to.Ptr("admin"),
-		// 					Version: to.Ptr("17"),
-		// 					VCores: to.Ptr[int32](2),
-		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster2.westus2.horizondb.azure.com"),
-		// 					ReadonlyEndpoint: to.Ptr("examplecluster2-ro.westus2.horizondb.azure.com"),
-		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+		// 					ReadWritePool: &armhorizondb.ReadWritePoolProperties{
+		// 						DesignatedPoolResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01"),
+		// 					},
 		// 				},
 		// 			},
 		// 		},
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-20-preview/Clusters_Update.json
-func ExampleClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "exampleresourcegroup", "examplecluster", armhorizondb.ClusterForPatchUpdate{
-		Tags: map[string]*string{
-			"team": to.Ptr("updated-data-platform"),
-		},
-		Properties: &armhorizondb.ClusterPropertiesForPatchUpdate{
-			VCores:                     to.Ptr[int32](8),
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientUpdateResponse{
-	// 	Cluster: armhorizondb.Cluster{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-	// 		Name: to.Ptr("examplecluster"),
-	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-	// 		Location: to.Ptr("westus2"),
-	// 		Tags: map[string]*string{
-	// 			"env": to.Ptr("dev"),
-	// 			"team": to.Ptr("updated-data-platform"),
-	// 		},
-	// 		Properties: &armhorizondb.ClusterProperties{
-	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-	// 			Version: to.Ptr("17"),
-	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterUpdate),
-	// 			VCores: to.Ptr[int32](8),
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
-	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

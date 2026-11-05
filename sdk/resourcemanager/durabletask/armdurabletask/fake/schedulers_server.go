@@ -37,6 +37,14 @@ type SchedulersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, options *armdurabletask.SchedulersClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armdurabletask.SchedulersClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SchedulersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, schedulerName string, properties armdurabletask.SchedulerUpdate, options *armdurabletask.SchedulersClientBeginUpdateOptions) (resp azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdatePrivateEndpointConnection is the fake for method SchedulersClient.BeginUpdatePrivateEndpointConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdatePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties armdurabletask.PrivateEndpointConnectionUpdate, options *armdurabletask.SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SchedulersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, schedulerName string, options *armdurabletask.SchedulersClientGetOptions) (resp azfake.Responder[armdurabletask.SchedulersClientGetResponse], errResp azfake.ErrorResponder)
@@ -65,13 +73,9 @@ type SchedulersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPrivateLinksPager func(resourceGroupName string, schedulerName string, options *armdurabletask.SchedulersClientListPrivateLinksOptions) (resp azfake.PagerResponder[armdurabletask.SchedulersClientListPrivateLinksResponse])
 
-	// BeginUpdate is the fake for method SchedulersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, schedulerName string, properties armdurabletask.SchedulerUpdate, options *armdurabletask.SchedulersClientBeginUpdateOptions) (resp azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdatePrivateEndpointConnection is the fake for method SchedulersClient.BeginUpdatePrivateEndpointConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdatePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties armdurabletask.PrivateEndpointConnectionUpdate, options *armdurabletask.SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	// Restart is the fake for method SchedulersClient.Restart
+	// HTTP status codes to indicate success: http.StatusNoContent
+	Restart func(ctx context.Context, resourceGroupName string, schedulerName string, options *armdurabletask.SchedulersClientRestartOptions) (resp azfake.Responder[armdurabletask.SchedulersClientRestartResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchedulersServerTransport creates a new instance of SchedulersServerTransport with the provided implementation.
@@ -84,12 +88,12 @@ func NewSchedulersServerTransport(srv *SchedulersServer) *SchedulersServerTransp
 		beginCreateOrUpdatePrivateEndpointConnection: newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientDeleteResponse]](),
 		beginDeletePrivateEndpointConnection:   newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientDeletePrivateEndpointConnectionResponse]](),
+		beginUpdate:                            newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse]](),
+		beginUpdatePrivateEndpointConnection:   newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse]](),
 		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armdurabletask.SchedulersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:             newTracker[azfake.PagerResponder[armdurabletask.SchedulersClientListBySubscriptionResponse]](),
 		newListPrivateEndpointConnectionsPager: newTracker[azfake.PagerResponder[armdurabletask.SchedulersClientListPrivateEndpointConnectionsResponse]](),
 		newListPrivateLinksPager:               newTracker[azfake.PagerResponder[armdurabletask.SchedulersClientListPrivateLinksResponse]](),
-		beginUpdate:                            newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse]](),
-		beginUpdatePrivateEndpointConnection:   newTracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse]](),
 	}
 }
 
@@ -101,12 +105,12 @@ type SchedulersServerTransport struct {
 	beginCreateOrUpdatePrivateEndpointConnection *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse]]
 	beginDelete                                  *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientDeleteResponse]]
 	beginDeletePrivateEndpointConnection         *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientDeletePrivateEndpointConnectionResponse]]
+	beginUpdate                                  *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse]]
+	beginUpdatePrivateEndpointConnection         *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse]]
 	newListByResourceGroupPager                  *tracker[azfake.PagerResponder[armdurabletask.SchedulersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                   *tracker[azfake.PagerResponder[armdurabletask.SchedulersClientListBySubscriptionResponse]]
 	newListPrivateEndpointConnectionsPager       *tracker[azfake.PagerResponder[armdurabletask.SchedulersClientListPrivateEndpointConnectionsResponse]]
 	newListPrivateLinksPager                     *tracker[azfake.PagerResponder[armdurabletask.SchedulersClientListPrivateLinksResponse]]
-	beginUpdate                                  *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdateResponse]]
-	beginUpdatePrivateEndpointConnection         *tracker[azfake.PollerResponder[armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SchedulersServerTransport.
@@ -138,6 +142,10 @@ func (s *SchedulersServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "SchedulersClient.BeginDeletePrivateEndpointConnection":
 				res.resp, res.err = s.dispatchBeginDeletePrivateEndpointConnection(req)
+			case "SchedulersClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SchedulersClient.BeginUpdatePrivateEndpointConnection":
+				res.resp, res.err = s.dispatchBeginUpdatePrivateEndpointConnection(req)
 			case "SchedulersClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SchedulersClient.GetPrivateEndpointConnection":
@@ -152,10 +160,8 @@ func (s *SchedulersServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = s.dispatchNewListPrivateEndpointConnectionsPager(req)
 			case "SchedulersClient.NewListPrivateLinksPager":
 				res.resp, res.err = s.dispatchNewListPrivateLinksPager(req)
-			case "SchedulersClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
-			case "SchedulersClient.BeginUpdatePrivateEndpointConnection":
-				res.resp, res.err = s.dispatchBeginUpdatePrivateEndpointConnection(req)
+			case "SchedulersClient.Restart":
+				res.resp, res.err = s.dispatchRestart(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -178,7 +184,7 @@ func (s *SchedulersServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	}
 	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -226,7 +232,7 @@ func (s *SchedulersServerTransport) dispatchBeginCreateOrUpdatePrivateEndpointCo
 	}
 	beginCreateOrUpdatePrivateEndpointConnection := s.beginCreateOrUpdatePrivateEndpointConnection.get(req)
 	if beginCreateOrUpdatePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -278,7 +284,7 @@ func (s *SchedulersServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -322,7 +328,7 @@ func (s *SchedulersServerTransport) dispatchBeginDeletePrivateEndpointConnection
 	}
 	beginDeletePrivateEndpointConnection := s.beginDeletePrivateEndpointConnection.get(req)
 	if beginDeletePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -364,272 +370,13 @@ func (s *SchedulersServerTransport) dispatchBeginDeletePrivateEndpointConnection
 	return resp, nil
 }
 
-func (s *SchedulersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, schedulerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Scheduler, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchGetPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
-	if s.srv.GetPrivateEndpointConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-	if err != nil {
-		return nil, err
-	}
-	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.GetPrivateEndpointConnection(req.Context(), resourceGroupNameParam, schedulerNameParam, privateEndpointConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchGetPrivateLink(req *http.Request) (*http.Response, error) {
-	if s.srv.GetPrivateLink == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetPrivateLink not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources/(?P<privateLinkResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-	if err != nil {
-		return nil, err
-	}
-	privateLinkResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateLinkResourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.GetPrivateLink(req.Context(), resourceGroupNameParam, schedulerNameParam, privateLinkResourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SchedulerPrivateLinkResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdurabletask.SchedulersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdurabletask.SchedulersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		s.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchNewListPrivateEndpointConnectionsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPrivateEndpointConnectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateEndpointConnectionsPager not implemented")}
-	}
-	newListPrivateEndpointConnectionsPager := s.newListPrivateEndpointConnectionsPager.get(req)
-	if newListPrivateEndpointConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPrivateEndpointConnectionsPager(resourceGroupNameParam, schedulerNameParam, nil)
-		newListPrivateEndpointConnectionsPager = &resp
-		s.newListPrivateEndpointConnectionsPager.add(req, newListPrivateEndpointConnectionsPager)
-		server.PagerResponderInjectNextLinks(newListPrivateEndpointConnectionsPager, req, func(page *armdurabletask.SchedulersClientListPrivateEndpointConnectionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPrivateEndpointConnectionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPrivateEndpointConnectionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPrivateEndpointConnectionsPager) {
-		s.newListPrivateEndpointConnectionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SchedulersServerTransport) dispatchNewListPrivateLinksPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPrivateLinksPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateLinksPager not implemented")}
-	}
-	newListPrivateLinksPager := s.newListPrivateLinksPager.get(req)
-	if newListPrivateLinksPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPrivateLinksPager(resourceGroupNameParam, schedulerNameParam, nil)
-		newListPrivateLinksPager = &resp
-		s.newListPrivateLinksPager.add(req, newListPrivateLinksPager)
-		server.PagerResponderInjectNextLinks(newListPrivateLinksPager, req, func(page *armdurabletask.SchedulersClientListPrivateLinksResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPrivateLinksPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPrivateLinksPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPrivateLinksPager) {
-		s.newListPrivateLinksPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SchedulersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -677,7 +424,7 @@ func (s *SchedulersServerTransport) dispatchBeginUpdatePrivateEndpointConnection
 	}
 	beginUpdatePrivateEndpointConnection := s.beginUpdatePrivateEndpointConnection.get(req)
 	if beginUpdatePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -720,6 +467,298 @@ func (s *SchedulersServerTransport) dispatchBeginUpdatePrivateEndpointConnection
 		s.beginUpdatePrivateEndpointConnection.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, schedulerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Scheduler, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchGetPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.GetPrivateEndpointConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+	if err != nil {
+		return nil, err
+	}
+	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetPrivateEndpointConnection(req.Context(), resourceGroupNameParam, schedulerNameParam, privateEndpointConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchGetPrivateLink(req *http.Request) (*http.Response, error) {
+	if s.srv.GetPrivateLink == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPrivateLink not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources/(?P<privateLinkResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+	if err != nil {
+		return nil, err
+	}
+	privateLinkResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateLinkResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetPrivateLink(req.Context(), resourceGroupNameParam, schedulerNameParam, privateLinkResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SchedulerPrivateLinkResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdurabletask.SchedulersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdurabletask.SchedulersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchNewListPrivateEndpointConnectionsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPrivateEndpointConnectionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateEndpointConnectionsPager not implemented")}
+	}
+	newListPrivateEndpointConnectionsPager := s.newListPrivateEndpointConnectionsPager.get(req)
+	if newListPrivateEndpointConnectionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPrivateEndpointConnectionsPager(resourceGroupNameParam, schedulerNameParam, nil)
+		newListPrivateEndpointConnectionsPager = &resp
+		s.newListPrivateEndpointConnectionsPager.add(req, newListPrivateEndpointConnectionsPager)
+		server.PagerResponderInjectNextLinks(newListPrivateEndpointConnectionsPager, req, func(page *armdurabletask.SchedulersClientListPrivateEndpointConnectionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPrivateEndpointConnectionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPrivateEndpointConnectionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPrivateEndpointConnectionsPager) {
+		s.newListPrivateEndpointConnectionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchNewListPrivateLinksPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPrivateLinksPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateLinksPager not implemented")}
+	}
+	newListPrivateLinksPager := s.newListPrivateLinksPager.get(req)
+	if newListPrivateLinksPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPrivateLinksPager(resourceGroupNameParam, schedulerNameParam, nil)
+		newListPrivateLinksPager = &resp
+		s.newListPrivateLinksPager.add(req, newListPrivateLinksPager)
+		server.PagerResponderInjectNextLinks(newListPrivateLinksPager, req, func(page *armdurabletask.SchedulersClientListPrivateLinksResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPrivateLinksPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPrivateLinksPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPrivateLinksPager) {
+		s.newListPrivateLinksPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SchedulersServerTransport) dispatchRestart(req *http.Request) (*http.Response, error) {
+	if s.srv.Restart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Restart not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Restart(req.Context(), resourceGroupNameParam, schedulerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

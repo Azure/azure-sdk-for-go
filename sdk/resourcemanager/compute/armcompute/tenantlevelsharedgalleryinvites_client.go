@@ -19,7 +19,7 @@ import (
 // TenantLevelSharedGalleryInvitesClient contains the methods for the TenantLevelSharedGalleryInvites group.
 // Don't use this type directly, use NewTenantLevelSharedGalleryInvitesClient() instead.
 //
-// Generated from API version 2025-12-03
+// Generated from API version 2026-03-03
 type TenantLevelSharedGalleryInvitesClient struct {
 	internal *arm.Client
 }
@@ -62,7 +62,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) BeginTenantLevelGalleryShar
 	}
 }
 
-// TenantLevelGallerySharingAccept - Accept sharing of a tenant-level shared gallery.
+// tenantLevelGallerySharingAccept - Accept sharing of a tenant-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAccept(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingAcceptOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAc
 	return httpResp, nil
 }
 
-// tenantLevelGallerySharingAcceptCreateRequest creates the TenantLevelGallerySharingAccept request.
+// tenantLevelGallerySharingAcceptCreateRequest creates the tenantLevelGallerySharingAccept request.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAcceptCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingAcceptOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/locations/{location}/tenantLevelSharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/accept"
 	if location == "" {
@@ -104,7 +104,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -133,7 +133,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) BeginTenantLevelGalleryShar
 	}
 }
 
-// TenantLevelGallerySharingReject - Reject sharing of a tenant-level shared gallery.
+// tenantLevelGallerySharingReject - Reject sharing of a tenant-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingReject(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingRejectOptions) (*http.Response, error) {
 	var err error
@@ -155,7 +155,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRe
 	return httpResp, nil
 }
 
-// tenantLevelGallerySharingRejectCreateRequest creates the TenantLevelGallerySharingReject request.
+// tenantLevelGallerySharingRejectCreateRequest creates the tenantLevelGallerySharingReject request.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRejectCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingRejectOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/locations/{location}/tenantLevelSharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/reject"
 	if location == "" {
@@ -175,7 +175,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

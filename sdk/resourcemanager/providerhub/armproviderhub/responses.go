@@ -93,26 +93,16 @@ type DefaultRolloutsClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// NewRegionFrontloadReleaseClientCreateOrUpdateResponse contains the response from method NewRegionFrontloadReleaseClient.CreateOrUpdate.
-type NewRegionFrontloadReleaseClientCreateOrUpdateResponse struct {
+// ManifestsClientCreateOrUpdateResponse contains the response from method ManifestsClient.CreateOrUpdate.
+type ManifestsClientCreateOrUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
-	DefaultRollout
+	ManifestInfo
 }
 
-// NewRegionFrontloadReleaseClientGenerateManifestResponse contains the response from method NewRegionFrontloadReleaseClient.GenerateManifest.
-type NewRegionFrontloadReleaseClientGenerateManifestResponse struct {
-	ResourceProviderManifest
-}
-
-// NewRegionFrontloadReleaseClientGetResponse contains the response from method NewRegionFrontloadReleaseClient.Get.
-type NewRegionFrontloadReleaseClientGetResponse struct {
+// ManifestsClientGetResponse contains the response from method ManifestsClient.Get.
+type ManifestsClientGetResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
-	DefaultRollout
-}
-
-// NewRegionFrontloadReleaseClientStopResponse contains the response from method NewRegionFrontloadReleaseClient.Stop.
-type NewRegionFrontloadReleaseClientStopResponse struct {
-	// placeholder for future response values
+	ManifestInfo
 }
 
 // NotificationRegistrationsClientCreateOrUpdateResponse contains the response from method NotificationRegistrationsClient.CreateOrUpdate.
@@ -151,7 +141,8 @@ type OperationsClientDeleteResponse struct {
 
 // OperationsClientListByProviderRegistrationResponse contains the response from method OperationsClient.ListByProviderRegistration.
 type OperationsClientListByProviderRegistrationResponse struct {
-	OperationsDefinitionArray []*OperationsDefinition
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	OperationsPutContent
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

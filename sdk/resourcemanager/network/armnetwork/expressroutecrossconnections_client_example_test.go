@@ -8,11 +8,182 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionUpdate.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionCommitCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginCommitCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginCommitCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("Committed"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Committed"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Committed"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdate.json
 func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +233,1195 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
+func ExampleExpressRouteCrossConnectionsClient_BeginGetCircuitMigrationInfo() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginGetCircuitMigrationInfo(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("Prepared"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Ready"),
+	// 					Phase: to.Ptr("Prepared"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 31, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](100),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 31, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](100),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Ready"),
+	// 					Phase: to.Ptr("Prepared"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 31, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](97),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](96),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 31, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](97),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](96),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsArpTable.json
+func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListArpTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse{
+	// 	ExpressRouteCircuitsArpTableListResult: armnetwork.ExpressRouteCircuitsArpTableListResult{
+	// 		Value: []*armnetwork.ExpressRouteCircuitArpTable{
+	// 			{
+	// 				Age: to.Ptr[int32](0),
+	// 				Interface: to.Ptr("Microsoft"),
+	// 				IPAddress: to.Ptr("192.116.14.254"),
+	// 				MacAddress: to.Ptr("885a.9269.9110"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTable.json
+func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse{
+	// 	ExpressRouteCircuitsRoutesTableListResult: armnetwork.ExpressRouteCircuitsRoutesTableListResult{
+	// 		Value: []*armnetwork.ExpressRouteCircuitRoutesTable{
+	// 			{
+	// 				Path: to.Ptr("65514"),
+	// 				LocPrf: to.Ptr(""),
+	// 				Network: to.Ptr("10.6.0.0/16"),
+	// 				NextHop: to.Ptr("10.6.1.12"),
+	// 				Weight: to.Ptr[int32](0),
+	// 			},
+	// 			{
+	// 				Path: to.Ptr("65514"),
+	// 				LocPrf: to.Ptr(""),
+	// 				Network: to.Ptr("10.7.0.0/16"),
+	// 				NextHop: to.Ptr("10.7.1.13"),
+	// 				Weight: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTableSummary.json
+func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTableSummary(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse{
+	// 	ExpressRouteCrossConnectionsRoutesTableSummaryListResult: armnetwork.ExpressRouteCrossConnectionsRoutesTableSummaryListResult{
+	// 		Value: []*armnetwork.ExpressRouteCrossConnectionRoutesTableSummary{
+	// 			{
+	// 				Asn: to.Ptr[int32](65514),
+	// 				Neighbor: to.Ptr("10.6.1.112"),
+	// 				StateOrPrefixesReceived: to.Ptr("Active"),
+	// 				UpDown: to.Ptr("1d14h"),
+	// 			},
+	// 			{
+	// 				Asn: to.Ptr[int32](65514),
+	// 				Neighbor: to.Ptr("10.6.1.113"),
+	// 				StateOrPrefixesReceived: to.Ptr("1"),
+	// 				UpDown: to.Ptr("1d14h"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionMigrateCircuit.json
+func ExampleExpressRouteCrossConnectionsClient_BeginMigrateCircuit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginMigrateCircuit(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("Migrated"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Migrated"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Migrated"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionPrepareCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginPrepareCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginPrepareCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("Prepared"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Prepared"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("Prepared"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRestoreBgpForCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginRestoreBgpForCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginRestoreBgpForCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("BgpRestored"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("BgpRestored"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("BgpRestored"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRollbackCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginRollbackCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginRollbackCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("RolledBack"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(true),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("RolledBack"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("RolledBack"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginShutDownBgpForCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginShutDownBgpForCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+		PortID: to.Ptr("sourcePort1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitHealthCheckResponse: armnetwork.MigrateExpressRouteCircuitHealthCheckResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 		Phase: to.Ptr("BgpShutDown"),
+	// 		FailureReason: to.Ptr(""),
+	// 		NewSTag: to.Ptr("12345"),
+	// 		PreparedAt: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 		PrepareExpiryTime: to.Ptr(time.Date(2026, time.August, 5, 12, 30, 0, 0, time.UTC)),
+	// 		NewCrossConnectionURL: to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/newCircuitServiceKey?api-version=2026-01-01"),
+	// 		ShouldRollback: to.Ptr(false),
+	// 		Details: &armnetwork.MigrateExpressRouteCircuitHealthCheckDetails{
+	// 			PortMigrationInfos: []*armnetwork.PortMigrationInfo{
+	// 				{
+	// 					PortID: to.Ptr("targetPort1"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("BgpShutDown"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](150),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](98),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort1"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](150),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](98),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					PortID: to.Ptr("targetPort2"),
+	// 					Status: to.Ptr("Succeeded"),
+	// 					Phase: to.Ptr("BgpShutDown"),
+	// 					FailureReason: to.Ptr(""),
+	// 					Peerings: []*armnetwork.PeeringHealth{
+	// 						{
+	// 							Type: to.Ptr("Private"),
+	// 							StatsCurrent: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](145),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 							StatsAtPrepare: &armnetwork.PeeringStats{
+	// 								Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 								Metrics: []*armnetwork.Metric{
+	// 									{
+	// 										Name: to.Ptr("PacketsIn"),
+	// 										Value: to.Ptr[float64](95),
+	// 										Unit: to.Ptr("count"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					SourcePortID: to.Ptr("sourcePort2"),
+	// 					SourcePortStats: &armnetwork.SourcePortStats{
+	// 						Peerings: []*armnetwork.PeeringHealth{
+	// 							{
+	// 								Type: to.Ptr("Private"),
+	// 								StatsCurrent: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 40, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](145),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 								StatsAtPrepare: &armnetwork.PeeringStats{
+	// 									Timestamp: to.Ptr(time.Date(2026, time.August, 5, 11, 30, 0, 0, time.UTC)),
+	// 									Metrics: []*armnetwork.Metric{
+	// 										{
+	// 											Name: to.Ptr("PacketsIn"),
+	// 											Value: to.Ptr[float64](95),
+	// 											Unit: to.Ptr("count"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionValidateCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginValidateCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginValidateCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitValidateResponse: armnetwork.MigrateExpressRouteCircuitValidateResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGet.json
 func ExampleExpressRouteCrossConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,94 +1464,7 @@ func ExampleExpressRouteCrossConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionList.json
-func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRouteCrossConnectionsClientListResponse{
-		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
-		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
-		// 			{
-		// 				Name: to.Ptr("<circuitServiceKey>"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
-		// 				Location: to.Ptr("brazilsouth"),
-		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
-		// 					BandwidthInMbps: to.Ptr[int32](1000),
-		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
-		// 					},
-		// 					PeeringLocation: to.Ptr("SiliconValley"),
-		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
-		// 					},
-		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
-		// 					STag: to.Ptr[int32](2),
-		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionsArpTable.json
-func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListArpTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse{
-	// 	ExpressRouteCircuitsArpTableListResult: armnetwork.ExpressRouteCircuitsArpTableListResult{
-	// 		Value: []*armnetwork.ExpressRouteCircuitArpTable{
-	// 			{
-	// 				Age: to.Ptr[int32](0),
-	// 				Interface: to.Ptr("Microsoft"),
-	// 				IPAddress: to.Ptr("192.116.14.254"),
-	// 				MacAddress: to.Ptr("885a.9269.9110"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionListByResourceGroup.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionListByResourceGroup.json
 func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,8 +1515,8 @@ func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionsRouteTable.json
-func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionList.json
+func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -254,82 +1526,47 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ExpressRouteCrossConnectionsClientListResponse{
+		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
+		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
+		// 			{
+		// 				Name: to.Ptr("<circuitServiceKey>"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
+		// 				Location: to.Ptr("brazilsouth"),
+		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
+		// 					BandwidthInMbps: to.Ptr[int32](1000),
+		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
+		// 					},
+		// 					PeeringLocation: to.Ptr("SiliconValley"),
+		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
+		// 					},
+		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
+		// 					STag: to.Ptr[int32](2),
+		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse{
-	// 	ExpressRouteCircuitsRoutesTableListResult: armnetwork.ExpressRouteCircuitsRoutesTableListResult{
-	// 		Value: []*armnetwork.ExpressRouteCircuitRoutesTable{
-	// 			{
-	// 				Path: to.Ptr("65514"),
-	// 				LocPrf: to.Ptr(""),
-	// 				Network: to.Ptr("10.6.0.0/16"),
-	// 				NextHop: to.Ptr("10.6.1.12"),
-	// 				Weight: to.Ptr[int32](0),
-	// 			},
-	// 			{
-	// 				Path: to.Ptr("65514"),
-	// 				LocPrf: to.Ptr(""),
-	// 				Network: to.Ptr("10.7.0.0/16"),
-	// 				NextHop: to.Ptr("10.7.1.13"),
-	// 				Weight: to.Ptr[int32](0),
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionsRouteTableSummary.json
-func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTableSummary(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse{
-	// 	ExpressRouteCrossConnectionsRoutesTableSummaryListResult: armnetwork.ExpressRouteCrossConnectionsRoutesTableSummaryListResult{
-	// 		Value: []*armnetwork.ExpressRouteCrossConnectionRoutesTableSummary{
-	// 			{
-	// 				Asn: to.Ptr[int32](65514),
-	// 				Neighbor: to.Ptr("10.6.1.112"),
-	// 				StateOrPrefixesReceived: to.Ptr("Active"),
-	// 				UpDown: to.Ptr("1d14h"),
-	// 			},
-	// 			{
-	// 				Asn: to.Ptr[int32](65514),
-	// 				Neighbor: to.Ptr("10.6.1.113"),
-	// 				StateOrPrefixesReceived: to.Ptr("1"),
-	// 				UpDown: to.Ptr("1d14h"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/ExpressRouteCrossConnectionUpdateTags.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdateTags.json
 func ExampleExpressRouteCrossConnectionsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

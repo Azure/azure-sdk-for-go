@@ -29,6 +29,10 @@ type ElasticBackupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *armnetapp.ElasticBackupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.ElasticBackupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ElasticBackupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body armnetapp.ElasticBackup, options *armnetapp.ElasticBackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ElasticBackupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ElasticBackupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *armnetapp.ElasticBackupsClientGetOptions) (resp azfake.Responder[armnetapp.ElasticBackupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ElasticBackupsServer struct {
 	// NewListByVaultPager is the fake for method ElasticBackupsClient.NewListByVaultPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVaultPager func(resourceGroupName string, accountName string, backupVaultName string, options *armnetapp.ElasticBackupsClientListByVaultOptions) (resp azfake.PagerResponder[armnetapp.ElasticBackupsClientListByVaultResponse])
-
-	// BeginUpdate is the fake for method ElasticBackupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body armnetapp.ElasticBackup, options *armnetapp.ElasticBackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ElasticBackupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewElasticBackupsServerTransport creates a new instance of ElasticBackupsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewElasticBackupsServerTransport(srv *ElasticBackupsServer) *ElasticBackups
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientDeleteResponse]](),
-		newListByVaultPager: newTracker[azfake.PagerResponder[armnetapp.ElasticBackupsClientListByVaultResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientUpdateResponse]](),
+		newListByVaultPager: newTracker[azfake.PagerResponder[armnetapp.ElasticBackupsClientListByVaultResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ElasticBackupsServerTransport struct {
 	srv                 *ElasticBackupsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientDeleteResponse]]
-	newListByVaultPager *tracker[azfake.PagerResponder[armnetapp.ElasticBackupsClientListByVaultResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armnetapp.ElasticBackupsClientUpdateResponse]]
+	newListByVaultPager *tracker[azfake.PagerResponder[armnetapp.ElasticBackupsClientListByVaultResponse]]
 }
 
 // Do implements the policy.Transporter interface for ElasticBackupsServerTransport.
@@ -90,12 +90,12 @@ func (e *ElasticBackupsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ElasticBackupsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ElasticBackupsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ElasticBackupsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ElasticBackupsClient.NewListByVaultPager":
 				res.resp, res.err = e.dispatchNewListByVaultPager(req)
-			case "ElasticBackupsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (e *ElasticBackupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (e *ElasticBackupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,99 +220,13 @@ func (e *ElasticBackupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (e *ElasticBackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
-	if err != nil {
-		return nil, err
-	}
-	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, backupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ElasticBackup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ElasticBackupsServerTransport) dispatchNewListByVaultPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByVaultPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVaultPager not implemented")}
-	}
-	newListByVaultPager := e.newListByVaultPager.get(req)
-	if newListByVaultPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByVaultPager(resourceGroupNameParam, accountNameParam, backupVaultNameParam, nil)
-		newListByVaultPager = &resp
-		e.newListByVaultPager.add(req, newListByVaultPager)
-		server.PagerResponderInjectNextLinks(newListByVaultPager, req, func(page *armnetapp.ElasticBackupsClientListByVaultResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVaultPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByVaultPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVaultPager) {
-		e.newListByVaultPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *ElasticBackupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elasticBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +273,92 @@ func (e *ElasticBackupsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		e.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *ElasticBackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
+	if err != nil {
+		return nil, err
+	}
+	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, backupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ElasticBackup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ElasticBackupsServerTransport) dispatchNewListByVaultPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByVaultPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVaultPager not implemented")}
+	}
+	newListByVaultPager := e.newListByVaultPager.get(req)
+	if newListByVaultPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/elasticAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByVaultPager(resourceGroupNameParam, accountNameParam, backupVaultNameParam, nil)
+		newListByVaultPager = &resp
+		e.newListByVaultPager.add(req, newListByVaultPager)
+		server.PagerResponderInjectNextLinks(newListByVaultPager, req, func(page *armnetapp.ElasticBackupsClientListByVaultResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVaultPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByVaultPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVaultPager) {
+		e.newListByVaultPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -235,6 +235,10 @@ type CallbackConfig struct {
 
 // ConnectedRegistry - An object that represents a connected registry for a container registry.
 type ConnectedRegistry struct {
+	// The user-assigned managed identity used by the on-prem connected registry to authenticate with the cloud registry for sync
+	// operations. Requires authType to be ManagedIdentity.
+	Identity *ManagedServiceIdentity
+
 	// The properties of the connected registry.
 	Properties *ConnectedRegistryProperties
 
@@ -308,6 +312,10 @@ type ConnectedRegistryProperties struct {
 
 // ConnectedRegistryUpdateParameters - The parameters for updating a connected registry.
 type ConnectedRegistryUpdateParameters struct {
+	// The user-assigned managed identity used to authenticate the connected registry with its parent during synchronization.
+	// Requires authType to be ManagedIdentity.
+	Identity *ManagedServiceIdentity
+
 	// The properties of the connected registry update parameters.
 	Properties *ConnectedRegistryUpdateProperties
 }
@@ -792,6 +800,22 @@ type LoginServerProperties struct {
 
 	// READ-ONLY; The TLS properties of the connected registry login server.
 	TLS *TLSProperties
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // NetworkRuleSet - The network rule set for a container registry.
@@ -1650,6 +1674,9 @@ type Status struct {
 
 // StatusDetailProperties - The status detail properties of the connected registry.
 type StatusDetailProperties struct {
+	// READ-ONLY; The available disk space in gibibytes (Gib, base-2).
+	AvailableGib *float64
+
 	// READ-ONLY; The HTTP status code.
 	Code *string
 
@@ -1662,6 +1689,9 @@ type StatusDetailProperties struct {
 	// READ-ONLY; The timestamp of the status.
 	Timestamp *time.Time
 
+	// READ-ONLY; The total disk space in gibibytes (Gib, base-2).
+	TotalGib *float64
+
 	// READ-ONLY; The component of the connected registry corresponding to the status.
 	Type *string
 }
@@ -1672,8 +1702,8 @@ type SyncProperties struct {
 	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
 
-	// REQUIRED; The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
-	TokenID *string
+	// The authentication type used for the connected registry to sync with its parent.
+	AuthType *AuthType
 
 	// The cron expression indicating the schedule that the connected registry will sync with its parent.
 	Schedule *string
@@ -1681,6 +1711,9 @@ type SyncProperties struct {
 	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
 	// as per ISO8601.
 	SyncWindow *string
+
+	// The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
+	TokenID *string
 
 	// READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
 	GatewayEndpoint *string
@@ -1691,6 +1724,9 @@ type SyncProperties struct {
 
 // SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
 type SyncUpdateProperties struct {
+	// The authentication type used for the connected registry to sync with its parent.
+	AuthType *AuthType
+
 	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
 	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
@@ -1876,6 +1912,15 @@ type TrustPolicy struct {
 
 	// The type of trust policy.
 	Type *TrustPolicyType
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 type UserIdentityProperties struct {

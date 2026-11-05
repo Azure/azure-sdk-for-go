@@ -6,5 +6,5 @@ package armrecommender
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )

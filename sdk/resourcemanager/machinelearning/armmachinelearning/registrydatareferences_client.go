@@ -30,6 +30,9 @@ type RegistryDataReferencesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistryDataReferencesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryDataReferencesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,7 +76,7 @@ func (client *RegistryDataReferencesClient) GetBlobReferenceSAS(ctx context.Cont
 func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body GetBlobReferenceSASRequestDto, _ *RegistryDataReferencesClientGetBlobReferenceSASOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/datareferences/{name}/versions/{version}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -1,5 +1,39 @@
 # Release History
 
+## 2.3.0 (2026-09-03)
+### Features Added
+
+- New value `BlockedDatesConstraintCategoryOverlappingMaintenance` added to enum type `BlockedDatesConstraintCategory`
+- New value `RescheduleOperationConstraintKindReschedulingWindow`, `RescheduleOperationConstraintKindWeekendRescheduling` added to enum type `RescheduleOperationConstraintKind`
+- New value `ScheduleOperationConstraintKindWeekendScheduling` added to enum type `ScheduleOperationConstraintKind`
+- New enum type `HostLicenseKind` with values `HostLicenseKindWindowsServer`
+- New enum type `MaintenanceActivityKind` with values `MaintenanceActivityKindBackup`, `MaintenanceActivityKindCertificateRotation`, `MaintenanceActivityKindDowngrade`, `MaintenanceActivityKindUpgrade`
+- New enum type `MaintenanceGroupKind` with values `MaintenanceGroupKindConsolidation`, `MaintenanceGroupKindLogical`
+- New function `*HostLicense.GetHostLicense() *HostLicense`
+- New function `*HostsClient.Update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, properties HostUpdate, options *HostsClientUpdateOptions) (HostsClientUpdateResponse, error)`
+- New function `*ReschedulingWindowConstraint.GetRescheduleOperationConstraint() *RescheduleOperationConstraint`
+- New function `*WeekendReschedulingConstraint.GetRescheduleOperationConstraint() *RescheduleOperationConstraint`
+- New function `*WeekendSchedulingConstraint.GetScheduleOperationConstraint() *ScheduleOperationConstraint`
+- New function `*WindowsServerLicense.GetHostLicense() *HostLicense`
+- New struct `HostUpdate`
+- New struct `HostUpdateProperties`
+- New struct `MaintenanceActivity`
+- New struct `MaintenanceGroup`
+- New struct `MaintenanceRecommendation`
+- New struct `MaintenanceRelationships`
+- New struct `MaintenanceWindowRecommendation`
+- New struct `ReschedulingWindowConstraint`
+- New struct `WeekendReschedulingConstraint`
+- New struct `WeekendSchedulingConstraint`
+- New struct `WindowsServerLicense`
+- New field `Licenses` in struct `GeneralHostProperties`
+- New field `Licenses` in struct `HostProperties`
+- New field `Activities`, `Group`, `Relationships` in struct `MaintenanceProperties`
+- New field `Recommendation` in struct `RescheduleOperation`
+- New field `Recommendation` in struct `ScheduleOperation`
+- New field `Licenses` in struct `SpecializedHostProperties`
+
+
 ## 2.2.0 (2025-12-12)
 ### Features Added
 

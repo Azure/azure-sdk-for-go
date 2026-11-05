@@ -5,7 +5,7 @@
 package armpostgresqlflexibleservers
 
 const (
-	version20260401Preview string = "2026-04-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // AzureManagedDiskPerformanceTier - Storage tier of a server.
@@ -381,6 +381,24 @@ func PossibleFeatureStatusValues() []FeatureStatus {
 	}
 }
 
+// FipsMode - Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server.
+type FipsMode string
+
+const (
+	// FipsModeDisabled - FIPS mode is disabled on the server.
+	FipsModeDisabled FipsMode = "Disabled"
+	// FipsModeEnabled - FIPS mode is enabled on the server.
+	FipsModeEnabled FipsMode = "Enabled"
+)
+
+// PossibleFipsModeValues returns the possible values for the FipsMode const type.
+func PossibleFipsModeValues() []FipsMode {
+	return []FipsMode{
+		FipsModeDisabled,
+		FipsModeEnabled,
+	}
+}
+
 // GeographicallyRedundantBackup - Indicates if the server is configured to create geographically redundant backups.
 type GeographicallyRedundantBackup string
 
@@ -498,6 +516,24 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssigned,
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// ImmutableBackup - Indicates if the server is configured to create immutable backups.
+type ImmutableBackup string
+
+const (
+	// ImmutableBackupDisabled - Server is not configured to create immutable backups.
+	ImmutableBackupDisabled ImmutableBackup = "Disabled"
+	// ImmutableBackupEnabled - Server is configured to create immutable backups.
+	ImmutableBackupEnabled ImmutableBackup = "Enabled"
+)
+
+// PossibleImmutableBackupValues returns the possible values for the ImmutableBackup const type.
+func PossibleImmutableBackupValues() []ImmutableBackup {
+	return []ImmutableBackup{
+		ImmutableBackupDisabled,
+		ImmutableBackupEnabled,
 	}
 }
 
@@ -948,42 +984,6 @@ func PossiblePasswordBasedAuthValues() []PasswordBasedAuth {
 	return []PasswordBasedAuth{
 		PasswordBasedAuthDisabled,
 		PasswordBasedAuthEnabled,
-	}
-}
-
-// PostgresMajorVersion - Major version of PostgreSQL database engine.
-type PostgresMajorVersion string
-
-const (
-	// PostgresMajorVersionEighteen - PostgreSQL 18.
-	PostgresMajorVersionEighteen PostgresMajorVersion = "18"
-	// PostgresMajorVersionEleven - PostgreSQL 11.
-	PostgresMajorVersionEleven PostgresMajorVersion = "11"
-	// PostgresMajorVersionFifteen - PostgreSQL 15.
-	PostgresMajorVersionFifteen PostgresMajorVersion = "15"
-	// PostgresMajorVersionFourteen - PostgreSQL 14.
-	PostgresMajorVersionFourteen PostgresMajorVersion = "14"
-	// PostgresMajorVersionSeventeen - PostgreSQL 17.
-	PostgresMajorVersionSeventeen PostgresMajorVersion = "17"
-	// PostgresMajorVersionSixteen - PostgreSQL 16.
-	PostgresMajorVersionSixteen PostgresMajorVersion = "16"
-	// PostgresMajorVersionThirteen - PostgreSQL 13.
-	PostgresMajorVersionThirteen PostgresMajorVersion = "13"
-	// PostgresMajorVersionTwelve - PostgreSQL 12.
-	PostgresMajorVersionTwelve PostgresMajorVersion = "12"
-)
-
-// PossiblePostgresMajorVersionValues returns the possible values for the PostgresMajorVersion const type.
-func PossiblePostgresMajorVersionValues() []PostgresMajorVersion {
-	return []PostgresMajorVersion{
-		PostgresMajorVersionEighteen,
-		PostgresMajorVersionEleven,
-		PostgresMajorVersionFifteen,
-		PostgresMajorVersionFourteen,
-		PostgresMajorVersionSeventeen,
-		PostgresMajorVersionSixteen,
-		PostgresMajorVersionThirteen,
-		PostgresMajorVersionTwelve,
 	}
 }
 

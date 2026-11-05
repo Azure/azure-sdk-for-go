@@ -19,7 +19,7 @@ import (
 // ProfilesClient contains the methods for the Profiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type ProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,7 @@ func (client *ProfilesClient) BeginCanMigrate(ctx context.Context, resourceGroup
 	}
 }
 
-// CanMigrate - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+// canMigrate - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) canMigrate(ctx context.Context, resourceGroupName string, canMigrateParameters CanMigrateParameters, options *ProfilesClientBeginCanMigrateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *ProfilesClient) canMigrate(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// canMigrateCreateRequest creates the CanMigrate request.
+// canMigrateCreateRequest creates the canMigrate request.
 func (client *ProfilesClient) canMigrateCreateRequest(ctx context.Context, resourceGroupName string, canMigrateParameters CanMigrateParameters, _ *ProfilesClientBeginCanMigrateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/canMigrate"
 	if client.subscriptionID == "" {
@@ -105,7 +105,7 @@ func (client *ProfilesClient) canMigrateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -139,7 +139,7 @@ func (client *ProfilesClient) BeginCdnCanMigrateToAfd(ctx context.Context, resou
 	}
 }
 
-// CdnCanMigrateToAfd - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+// cdnCanMigrateToAfd - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) cdnCanMigrateToAfd(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginCdnCanMigrateToAfdOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *ProfilesClient) cdnCanMigrateToAfd(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// cdnCanMigrateToAfdCreateRequest creates the CdnCanMigrateToAfd request.
+// cdnCanMigrateToAfdCreateRequest creates the cdnCanMigrateToAfd request.
 func (client *ProfilesClient) cdnCanMigrateToAfdCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginCdnCanMigrateToAfdOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/cdnCanMigrateToAfd"
 	if client.subscriptionID == "" {
@@ -181,7 +181,7 @@ func (client *ProfilesClient) cdnCanMigrateToAfdCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *ProfilesClient) BeginCdnMigrateToAfd(ctx context.Context, resource
 	}
 }
 
-// CdnMigrateToAfd - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile
+// cdnMigrateToAfd - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile
 // for migration and will be followed by Commit to finalize the migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) cdnMigrateToAfd(ctx context.Context, resourceGroupName string, profileName string, migrationParameters MigrationToAfdParameters, options *ProfilesClientBeginCdnMigrateToAfdOptions) (*http.Response, error) {
@@ -236,7 +236,7 @@ func (client *ProfilesClient) cdnMigrateToAfd(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// cdnMigrateToAfdCreateRequest creates the CdnMigrateToAfd request.
+// cdnMigrateToAfdCreateRequest creates the cdnMigrateToAfd request.
 func (client *ProfilesClient) cdnMigrateToAfdCreateRequest(ctx context.Context, resourceGroupName string, profileName string, migrationParameters MigrationToAfdParameters, _ *ProfilesClientBeginCdnMigrateToAfdOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/cdnMigrateToAfd"
 	if client.subscriptionID == "" {
@@ -256,7 +256,7 @@ func (client *ProfilesClient) cdnMigrateToAfdCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -291,7 +291,7 @@ func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Create - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+// create - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
 // specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) create(ctx context.Context, resourceGroupName string, profileName string, profile Profile, options *ProfilesClientBeginCreateOptions) (*http.Response, error) {
@@ -314,7 +314,7 @@ func (client *ProfilesClient) create(ctx context.Context, resourceGroupName stri
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ProfilesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profile Profile, _ *ProfilesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}"
 	if client.subscriptionID == "" {
@@ -334,7 +334,7 @@ func (client *ProfilesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -369,8 +369,9 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified parameters.
-// Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
+// deleteOperation - Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+// parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and
+// custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -392,7 +393,7 @@ func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}"
 	if client.subscriptionID == "" {
@@ -412,8 +413,300 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginMigrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after
+// this.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - migrationParameters - Properties needed to migrate the profile.
+//   - options - ProfilesClientBeginMigrateOptions contains the optional parameters for the ProfilesClient.BeginMigrate method.
+func (client *ProfilesClient) BeginMigrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*runtime.Poller[ProfilesClientMigrateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrate(ctx, resourceGroupName, migrationParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProfilesClient) migrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProfilesClient.BeginMigrate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateCreateRequest(ctx, resourceGroupName, migrationParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateCreateRequest creates the migrate request.
+func (client *ProfilesClient) migrateCreateRequest(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, _ *ProfilesClientBeginMigrateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, migrationParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginMigrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - options - ProfilesClientBeginMigrationAbortOptions contains the optional parameters for the ProfilesClient.BeginMigrationAbort
+//     method.
+func (client *ProfilesClient) BeginMigrationAbort(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationAbortOptions) (*runtime.Poller[ProfilesClientMigrationAbortResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrationAbort(ctx, resourceGroupName, profileName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrationAbortResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrationAbortResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProfilesClient) migrationAbort(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationAbortOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProfilesClient.BeginMigrationAbort"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrationAbortCreateRequest(ctx, resourceGroupName, profileName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrationAbortCreateRequest creates the migrationAbort request.
+func (client *ProfilesClient) migrationAbortCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginMigrationAbortOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationAbort"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginMigrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - options - ProfilesClientBeginMigrationCommitOptions contains the optional parameters for the ProfilesClient.BeginMigrationCommit
+//     method.
+func (client *ProfilesClient) BeginMigrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*runtime.Poller[ProfilesClientMigrationCommitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrationCommit(ctx, resourceGroupName, profileName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrationCommitResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrationCommitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProfilesClient) migrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProfilesClient.BeginMigrationCommit"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrationCommitCreateRequest(ctx, resourceGroupName, profileName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrationCommitCreateRequest creates the migrationCommit request.
+func (client *ProfilesClient) migrationCommitCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginMigrationCommitOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationCommit"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+// profile name under the specified subscription and resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - profileUpdateParameters - Profile properties needed to update an existing profile.
+//   - options - ProfilesClientBeginUpdateOptions contains the optional parameters for the ProfilesClient.BeginUpdate method.
+func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*runtime.Poller[ProfilesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile
+// name under the specified subscription and resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProfilesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, _ *ProfilesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, profileUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -463,7 +756,7 @@ func (client *ProfilesClient) generateSsoURICreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -525,7 +818,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -543,68 +836,65 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
-//   - options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.NewListPager method.
-func (client *ProfilesClient) NewListPager(options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListResponse]{
-		More: func(page ProfilesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ProfilesClientListResponse) (ProfilesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProfilesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ProfilesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProfilesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+// ListSupportedOptimizationTypes - Gets the supported optimization types for the current profile. A user can create an endpoint
+// with an optimization type from the listed values.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - options - ProfilesClientListSupportedOptimizationTypesOptions contains the optional parameters for the ProfilesClient.ListSupportedOptimizationTypes
+//     method.
+func (client *ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientListSupportedOptimizationTypesOptions) (ProfilesClientListSupportedOptimizationTypesResponse, error) {
+	var err error
+	const operationName = "ProfilesClient.ListSupportedOptimizationTypes"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSupportedOptimizationTypesCreateRequest(ctx, resourceGroupName, profileName, options)
+	if err != nil {
+		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
+	}
+	return client.listSupportedOptimizationTypesHandleResponse(httpResp, http.StatusOK)
 }
 
-// listCreateRequest creates the List request.
-func (client *ProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *ProfilesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+// listSupportedOptimizationTypesCreateRequest creates the ListSupportedOptimizationTypes request.
+func (client *ProfilesClient) listSupportedOptimizationTypesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientListSupportedOptimizationTypesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getSupportedOptimizationTypes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *ProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProfilesClientListResponse, error) {
-	result := ProfilesClientListResponse{}
+// listSupportedOptimizationTypesHandleResponse handles the ListSupportedOptimizationTypes response.
+func (client *ProfilesClient) listSupportedOptimizationTypesHandleResponse(resp *http.Response, successCodes ...int) (ProfilesClientListSupportedOptimizationTypesResponse, error) {
+	result := ProfilesClientListSupportedOptimizationTypesResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
-		return ProfilesClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedOptimizationTypesListResult); err != nil {
+		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
 	}
 	return result, nil
 }
@@ -663,7 +953,7 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -678,6 +968,72 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
 		return ProfilesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
+//   - options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.NewListPager method.
+func (client *ProfilesClient) NewListPager(options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListResponse]{
+		More: func(page ProfilesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProfilesClientListResponse) (ProfilesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProfilesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ProfilesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProfilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *ProfilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20261001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProfilesClientListResponse, error) {
+	result := ProfilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
+		return ProfilesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -742,7 +1098,7 @@ func (client *ProfilesClient) listResourceUsageCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -759,359 +1115,4 @@ func (client *ProfilesClient) listResourceUsageHandleResponse(resp *http.Respons
 		return ProfilesClientListResourceUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// ListSupportedOptimizationTypes - Gets the supported optimization types for the current profile. A user can create an endpoint
-// with an optimization type from the listed values.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - options - ProfilesClientListSupportedOptimizationTypesOptions contains the optional parameters for the ProfilesClient.ListSupportedOptimizationTypes
-//     method.
-func (client *ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientListSupportedOptimizationTypesOptions) (ProfilesClientListSupportedOptimizationTypesResponse, error) {
-	var err error
-	const operationName = "ProfilesClient.ListSupportedOptimizationTypes"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSupportedOptimizationTypesCreateRequest(ctx, resourceGroupName, profileName, options)
-	if err != nil {
-		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
-	}
-	return client.listSupportedOptimizationTypesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSupportedOptimizationTypesCreateRequest creates the ListSupportedOptimizationTypes request.
-func (client *ProfilesClient) listSupportedOptimizationTypesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientListSupportedOptimizationTypesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getSupportedOptimizationTypes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSupportedOptimizationTypesHandleResponse handles the ListSupportedOptimizationTypes response.
-func (client *ProfilesClient) listSupportedOptimizationTypesHandleResponse(resp *http.Response, successCodes ...int) (ProfilesClientListSupportedOptimizationTypesResponse, error) {
-	result := ProfilesClientListSupportedOptimizationTypesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedOptimizationTypesListResult); err != nil {
-		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginMigrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after
-// this.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - migrationParameters - Properties needed to migrate the profile.
-//   - options - ProfilesClientBeginMigrateOptions contains the optional parameters for the ProfilesClient.BeginMigrate method.
-func (client *ProfilesClient) BeginMigrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*runtime.Poller[ProfilesClientMigrateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrate(ctx, resourceGroupName, migrationParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Migrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProfilesClient) migrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProfilesClient.BeginMigrate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateCreateRequest(ctx, resourceGroupName, migrationParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateCreateRequest creates the Migrate request.
-func (client *ProfilesClient) migrateCreateRequest(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, _ *ProfilesClientBeginMigrateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, migrationParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginMigrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - options - ProfilesClientBeginMigrationAbortOptions contains the optional parameters for the ProfilesClient.BeginMigrationAbort
-//     method.
-func (client *ProfilesClient) BeginMigrationAbort(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationAbortOptions) (*runtime.Poller[ProfilesClientMigrationAbortResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrationAbort(ctx, resourceGroupName, profileName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrationAbortResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrationAbortResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProfilesClient) migrationAbort(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationAbortOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProfilesClient.BeginMigrationAbort"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrationAbortCreateRequest(ctx, resourceGroupName, profileName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrationAbortCreateRequest creates the MigrationAbort request.
-func (client *ProfilesClient) migrationAbortCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginMigrationAbortOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationAbort"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginMigrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - options - ProfilesClientBeginMigrationCommitOptions contains the optional parameters for the ProfilesClient.BeginMigrationCommit
-//     method.
-func (client *ProfilesClient) BeginMigrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*runtime.Poller[ProfilesClientMigrationCommitResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrationCommit(ctx, resourceGroupName, profileName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrationCommitResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrationCommitResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProfilesClient) migrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProfilesClient.BeginMigrationCommit"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrationCommitCreateRequest(ctx, resourceGroupName, profileName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrationCommitCreateRequest creates the MigrationCommit request.
-func (client *ProfilesClient) migrationCommitCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ProfilesClientBeginMigrationCommitOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationCommit"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-// profile name under the specified subscription and resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - profileUpdateParameters - Profile properties needed to update an existing profile.
-//   - options - ProfilesClientBeginUpdateOptions contains the optional parameters for the ProfilesClient.BeginUpdate method.
-func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*runtime.Poller[ProfilesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile
-// name under the specified subscription and resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProfilesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, _ *ProfilesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, profileUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

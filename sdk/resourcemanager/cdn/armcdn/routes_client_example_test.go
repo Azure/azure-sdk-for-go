@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Routes_Create.json
+// Generated from example definition: 2026-10-01/Routes_Create.json
 func ExampleRoutesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Routes_Delete.json
+// Generated from example definition: 2026-10-01/Routes_Delete.json
 func ExampleRoutesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,146 +146,7 @@ func ExampleRoutesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Routes_Get.json
-func ExampleRoutesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoutesClient().Get(ctx, "RG", "profile1", "endpoint1", "route1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.RoutesClientGetResponse{
-	// 	Route: armcdn.Route{
-	// 		Name: to.Ptr("route1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
-	// 		Properties: &armcdn.RouteProperties{
-	// 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
-	// 				CompressionSettings: &armcdn.CompressionSettings{
-	// 					ContentTypesToCompress: []*string{
-	// 						to.Ptr("text/html"),
-	// 						to.Ptr("application/octet-stream"),
-	// 					},
-	// 					IsCompressionEnabled: to.Ptr(true),
-	// 				},
-	// 				QueryStringCachingBehavior: to.Ptr(armcdn.AfdQueryStringCachingBehaviorIgnoreQueryString),
-	// 			},
-	// 			CustomDomains: []*armcdn.ActivatedResourceReference{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
-	// 				},
-	// 			},
-	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
-	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
-	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
-	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
-	// 			OriginGroup: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
-	// 			},
-	// 			PatternsToMatch: []*string{
-	// 				to.Ptr("/*"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
-	// 			RuleSets: []*armcdn.ResourceReference{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
-	// 				},
-	// 			},
-	// 			SupportedProtocols: []*armcdn.AFDEndpointProtocols{
-	// 				to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
-	// 				to.Ptr(armcdn.AFDEndpointProtocolsHTTP),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Routes_ListByEndpoint.json
-func ExampleRoutesClient_NewListByEndpointPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRoutesClient().NewListByEndpointPager("RG", "profile1", "endpoint1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcdn.RoutesClientListByEndpointResponse{
-		// 	RouteListResult: armcdn.RouteListResult{
-		// 		Value: []*armcdn.Route{
-		// 			{
-		// 				Name: to.Ptr("route1"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
-		// 				Properties: &armcdn.RouteProperties{
-		// 					CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
-		// 						CompressionSettings: &armcdn.CompressionSettings{
-		// 							ContentTypesToCompress: []*string{
-		// 								to.Ptr("text/html"),
-		// 								to.Ptr("application/octet-stream"),
-		// 							},
-		// 							IsCompressionEnabled: to.Ptr(true),
-		// 						},
-		// 						QueryStringCachingBehavior: to.Ptr(armcdn.AfdQueryStringCachingBehaviorIgnoreQueryString),
-		// 					},
-		// 					CustomDomains: []*armcdn.ActivatedResourceReference{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
-		// 						},
-		// 					},
-		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
-		// 					EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
-		// 					ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-		// 					HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
-		// 					LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
-		// 					OriginGroup: &armcdn.ResourceReference{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
-		// 					},
-		// 					PatternsToMatch: []*string{
-		// 						to.Ptr("/*"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
-		// 					RuleSets: []*armcdn.ResourceReference{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
-		// 						},
-		// 					},
-		// 					SupportedProtocols: []*armcdn.AFDEndpointProtocols{
-		// 						to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
-		// 						to.Ptr(armcdn.AFDEndpointProtocolsHTTP),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01/Routes_Update.json
+// Generated from example definition: 2026-10-01/Routes_Update.json
 func ExampleRoutesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,4 +250,143 @@ func ExampleRoutesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/Routes_Get.json
+func ExampleRoutesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoutesClient().Get(ctx, "RG", "profile1", "endpoint1", "route1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.RoutesClientGetResponse{
+	// 	Route: armcdn.Route{
+	// 		Name: to.Ptr("route1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+	// 		Properties: &armcdn.RouteProperties{
+	// 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
+	// 				CompressionSettings: &armcdn.CompressionSettings{
+	// 					ContentTypesToCompress: []*string{
+	// 						to.Ptr("text/html"),
+	// 						to.Ptr("application/octet-stream"),
+	// 					},
+	// 					IsCompressionEnabled: to.Ptr(true),
+	// 				},
+	// 				QueryStringCachingBehavior: to.Ptr(armcdn.AfdQueryStringCachingBehaviorIgnoreQueryString),
+	// 			},
+	// 			CustomDomains: []*armcdn.ActivatedResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+	// 				},
+	// 			},
+	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
+	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
+	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
+	// 			OriginGroup: &armcdn.ResourceReference{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+	// 			},
+	// 			PatternsToMatch: []*string{
+	// 				to.Ptr("/*"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+	// 			RuleSets: []*armcdn.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+	// 				},
+	// 			},
+	// 			SupportedProtocols: []*armcdn.AFDEndpointProtocols{
+	// 				to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
+	// 				to.Ptr(armcdn.AFDEndpointProtocolsHTTP),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Routes_ListByEndpoint.json
+func ExampleRoutesClient_NewListByEndpointPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoutesClient().NewListByEndpointPager("RG", "profile1", "endpoint1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcdn.RoutesClientListByEndpointResponse{
+		// 	RouteListResult: armcdn.RouteListResult{
+		// 		Value: []*armcdn.Route{
+		// 			{
+		// 				Name: to.Ptr("route1"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
+		// 				Properties: &armcdn.RouteProperties{
+		// 					CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
+		// 						CompressionSettings: &armcdn.CompressionSettings{
+		// 							ContentTypesToCompress: []*string{
+		// 								to.Ptr("text/html"),
+		// 								to.Ptr("application/octet-stream"),
+		// 							},
+		// 							IsCompressionEnabled: to.Ptr(true),
+		// 						},
+		// 						QueryStringCachingBehavior: to.Ptr(armcdn.AfdQueryStringCachingBehaviorIgnoreQueryString),
+		// 					},
+		// 					CustomDomains: []*armcdn.ActivatedResourceReference{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
+		// 						},
+		// 					},
+		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+		// 					EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
+		// 					ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
+		// 					HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
+		// 					LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
+		// 					OriginGroup: &armcdn.ResourceReference{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
+		// 					},
+		// 					PatternsToMatch: []*string{
+		// 						to.Ptr("/*"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+		// 					RuleSets: []*armcdn.ResourceReference{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
+		// 						},
+		// 					},
+		// 					SupportedProtocols: []*armcdn.AFDEndpointProtocols{
+		// 						to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
+		// 						to.Ptr(armcdn.AFDEndpointProtocolsHTTP),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

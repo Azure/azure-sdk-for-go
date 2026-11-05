@@ -112,13 +112,13 @@
 # ServiceOwners:                                                   @jhendrixMSFT @rickwinter @xirzec
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
+/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207 @pranz1996
 
 # PRLabel: %Service Bus
-/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
+/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207 @pranz1996
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207 @pranz1996
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @bhattmanish98 @gapra-msft @gunjansingh-msft @jhendrixMSFT

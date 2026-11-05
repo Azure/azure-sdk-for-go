@@ -20,3 +20,8 @@ require (
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 )
+
+retract (
+	v0.1.1 // Contains retractions only.
+	v0.1.0 // Published accidentally.
+)

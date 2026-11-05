@@ -19,7 +19,7 @@ import (
 // ManagedComputeCapacitiesClient contains the methods for the ManagedComputeCapacities group.
 // Don't use this type directly, use NewManagedComputeCapacitiesClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type ManagedComputeCapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagedComputeCapacitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedComputeCapacitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeCapacitiesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -79,7 +82,7 @@ func (client *ManagedComputeCapacitiesClient) listCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/managedComputeCapacities"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -94,7 +97,7 @@ func (client *ManagedComputeCapacitiesClient) listCreateRequest(ctx context.Cont
 		if options != nil && options.AcceleratorType != nil {
 			reqQP.Set("acceleratorType", *options.AcceleratorType)
 		}
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		if options != nil && options.DeploymentID != nil {
 			reqQP.Set("deploymentId", *options.DeploymentID)
 		}

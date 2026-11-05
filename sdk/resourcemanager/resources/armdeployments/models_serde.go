@@ -461,7 +461,6 @@ func (d *DeploymentExtended) UnmarshalJSON(data []byte) error {
 func (d DeploymentExtensionConfigItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "keyVaultReference", d.KeyVaultReference)
-	populate(objectMap, "type", d.Type)
 	populateAny(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
@@ -477,9 +476,6 @@ func (d *DeploymentExtensionConfigItem) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "keyVaultReference":
 			err = unpopulate(val, "KeyVaultReference", &d.KeyVaultReference)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &d.Type)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &d.Value)
@@ -497,6 +493,7 @@ func (d DeploymentExtensionDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alias", d.Alias)
 	populate(objectMap, "config", d.Config)
+	populate(objectMap, "configHash", d.ConfigHash)
 	populate(objectMap, "configId", d.ConfigID)
 	populate(objectMap, "name", d.Name)
 	populate(objectMap, "version", d.Version)
@@ -517,6 +514,9 @@ func (d *DeploymentExtensionDefinition) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "config":
 			err = unpopulate(val, "Config", &d.Config)
+			delete(rawMsg, key)
+		case "configHash":
+			err = unpopulate(val, "ConfigHash", &d.ConfigHash)
 			delete(rawMsg, key)
 		case "configId":
 			err = unpopulate(val, "ConfigID", &d.ConfigID)
@@ -993,6 +993,53 @@ func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DeploymentResourceWhatIfPrediction.
+func (d DeploymentResourceWhatIfPrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "apiVersion", d.APIVersion)
+	populate(objectMap, "extension", d.Extension)
+	populateAny(objectMap, "identifiers", d.Identifiers)
+	populate(objectMap, "resourceId", d.ResourceID)
+	populate(objectMap, "resourceType", d.ResourceType)
+	populate(objectMap, "symbolicNamePath", d.SymbolicNamePath)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentResourceWhatIfPrediction.
+func (d *DeploymentResourceWhatIfPrediction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiVersion":
+			err = unpopulate(val, "APIVersion", &d.APIVersion)
+			delete(rawMsg, key)
+		case "extension":
+			err = unpopulate(val, "Extension", &d.Extension)
+			delete(rawMsg, key)
+		case "identifiers":
+			err = unpopulate(val, "Identifiers", &d.Identifiers)
+			delete(rawMsg, key)
+		case "resourceId":
+			err = unpopulate(val, "ResourceID", &d.ResourceID)
+			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, "ResourceType", &d.ResourceType)
+			delete(rawMsg, key)
+		case "symbolicNamePath":
+			err = unpopulate(val, "SymbolicNamePath", &d.SymbolicNamePath)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DeploymentValidateResult.
 func (d DeploymentValidateResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1079,6 +1126,7 @@ func (d DeploymentWhatIfProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "onErrorDeployment", d.OnErrorDeployment)
 	populate(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "parametersLink", d.ParametersLink)
+	populate(objectMap, "resourcePredictions", d.ResourcePredictions)
 	populateAny(objectMap, "template", d.Template)
 	populate(objectMap, "templateLink", d.TemplateLink)
 	populate(objectMap, "validationLevel", d.ValidationLevel)
@@ -1121,6 +1169,9 @@ func (d *DeploymentWhatIfProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "parametersLink":
 			err = unpopulate(val, "ParametersLink", &d.ParametersLink)
+			delete(rawMsg, key)
+		case "resourcePredictions":
+			err = unpopulate(val, "ResourcePredictions", &d.ResourcePredictions)
 			delete(rawMsg, key)
 		case "template":
 			err = unpopulate(val, "Template", &d.Template)
@@ -1609,6 +1660,7 @@ func (r ResourceReference) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", r.ID)
 	populateAny(objectMap, "identifiers", r.Identifiers)
 	populate(objectMap, "resourceType", r.ResourceType)
+	populate(objectMap, "symbolicNamePath", r.SymbolicNamePath)
 	return json.Marshal(objectMap)
 }
 
@@ -1635,6 +1687,9 @@ func (r *ResourceReference) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "resourceType":
 			err = unpopulate(val, "ResourceType", &r.ResourceType)
+			delete(rawMsg, key)
+		case "symbolicNamePath":
+			err = unpopulate(val, "SymbolicNamePath", &r.SymbolicNamePath)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1798,6 +1853,7 @@ func (t TargetResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceName", t.ResourceName)
 	populate(objectMap, "resourceType", t.ResourceType)
 	populate(objectMap, "symbolicName", t.SymbolicName)
+	populate(objectMap, "symbolicNamePath", t.SymbolicNamePath)
 	return json.Marshal(objectMap)
 }
 
@@ -1830,6 +1886,9 @@ func (t *TargetResource) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "symbolicName":
 			err = unpopulate(val, "SymbolicName", &t.SymbolicName)
+			delete(rawMsg, key)
+		case "symbolicNamePath":
+			err = unpopulate(val, "SymbolicNamePath", &t.SymbolicNamePath)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1955,6 +2014,7 @@ func (w WhatIfChange) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extension", w.Extension)
 	populateAny(objectMap, "identifiers", w.Identifiers)
 	populate(objectMap, "resourceId", w.ResourceID)
+	populate(objectMap, "resourceType", w.ResourceType)
 	populate(objectMap, "symbolicName", w.SymbolicName)
 	populate(objectMap, "unsupportedReason", w.UnsupportedReason)
 	return json.Marshal(objectMap)
@@ -1992,6 +2052,9 @@ func (w *WhatIfChange) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "resourceId":
 			err = unpopulate(val, "ResourceID", &w.ResourceID)
+			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, "ResourceType", &w.ResourceType)
 			delete(rawMsg, key)
 		case "symbolicName":
 			err = unpopulate(val, "SymbolicName", &w.SymbolicName)

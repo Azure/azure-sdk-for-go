@@ -29,14 +29,6 @@ type SnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *armnetapp.SnapshotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.SnapshotsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SnapshotsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *armnetapp.SnapshotsClientGetOptions) (resp azfake.Responder[armnetapp.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method SnapshotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.SnapshotsClientListOptions) (resp azfake.PagerResponder[armnetapp.SnapshotsClientListResponse])
-
 	// BeginRestoreFiles is the fake for method SnapshotsClient.BeginRestoreFiles
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestoreFiles func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body armnetapp.SnapshotRestoreFiles, options *armnetapp.SnapshotsClientBeginRestoreFilesOptions) (resp azfake.PollerResponder[armnetapp.SnapshotsClientRestoreFilesResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type SnapshotsServer struct {
 	// BeginUpdate is the fake for method SnapshotsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body armnetapp.SnapshotPatch, options *armnetapp.SnapshotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.SnapshotsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SnapshotsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *armnetapp.SnapshotsClientGetOptions) (resp azfake.Responder[armnetapp.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method SnapshotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.SnapshotsClientListOptions) (resp azfake.PagerResponder[armnetapp.SnapshotsClientListResponse])
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport
 		srv:               srv,
 		beginCreate:       newTracker[azfake.PollerResponder[armnetapp.SnapshotsClientCreateResponse]](),
 		beginDelete:       newTracker[azfake.PollerResponder[armnetapp.SnapshotsClientDeleteResponse]](),
-		newListPager:      newTracker[azfake.PagerResponder[armnetapp.SnapshotsClientListResponse]](),
 		beginRestoreFiles: newTracker[azfake.PollerResponder[armnetapp.SnapshotsClientRestoreFilesResponse]](),
 		beginUpdate:       newTracker[azfake.PollerResponder[armnetapp.SnapshotsClientUpdateResponse]](),
+		newListPager:      newTracker[azfake.PagerResponder[armnetapp.SnapshotsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type SnapshotsServerTransport struct {
 	srv               *SnapshotsServer
 	beginCreate       *tracker[azfake.PollerResponder[armnetapp.SnapshotsClientCreateResponse]]
 	beginDelete       *tracker[azfake.PollerResponder[armnetapp.SnapshotsClientDeleteResponse]]
-	newListPager      *tracker[azfake.PagerResponder[armnetapp.SnapshotsClientListResponse]]
 	beginRestoreFiles *tracker[azfake.PollerResponder[armnetapp.SnapshotsClientRestoreFilesResponse]]
 	beginUpdate       *tracker[azfake.PollerResponder[armnetapp.SnapshotsClientUpdateResponse]]
+	newListPager      *tracker[azfake.PagerResponder[armnetapp.SnapshotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -96,14 +96,14 @@ func (s *SnapshotsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "SnapshotsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SnapshotsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "SnapshotsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SnapshotsClient.BeginRestoreFiles":
 				res.resp, res.err = s.dispatchBeginRestoreFiles(req)
 			case "SnapshotsClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SnapshotsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SnapshotsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -236,100 +236,6 @@ func (s *SnapshotsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
-func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, snapshotNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Snapshot, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.SnapshotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SnapshotsServerTransport) dispatchBeginRestoreFiles(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRestoreFiles == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFiles not implemented")}
@@ -447,6 +353,100 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, snapshotNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Snapshot, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.SnapshotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -19,7 +19,7 @@ import (
 // BillingMetersClient contains the methods for the BillingMeters group.
 // Don't use this type directly, use NewBillingMetersClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type BillingMetersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -48,7 +48,7 @@ func NewBillingMetersClient(subscriptionID string, credential azcore.TokenCreden
 //
 // Get all billingMeters for a location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - BillingMetersClientGetOptions contains the optional parameters for the BillingMetersClient.Get method.
 func (client *BillingMetersClient) Get(ctx context.Context, location string, options *BillingMetersClientGetOptions) (BillingMetersClientGetResponse, error) {
 	var err error
@@ -83,7 +83,7 @@ func (client *BillingMetersClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

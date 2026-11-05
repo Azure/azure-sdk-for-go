@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-04-01/CalculateTemplateHash.json
+// Generated from example definition: 2026-06-01/CalculateTemplateHash.json
 func ExampleDeploymentsClient_CalculateTemplateHash() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleDeploymentsClient_CalculateTemplateHash() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentResourceGroup.json
+// Generated from example definition: 2026-06-01/PutDeploymentResourceGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
+// Generated from example definition: 2026-06-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithExternalInputs.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithExternalInputs.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +313,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalI
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +422,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +532,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtManagementGroup.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtManagementGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtScope.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtScope.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -724,7 +724,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
+// Generated from example definition: 2026-06-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +785,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtTenant.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtTenant.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -885,7 +885,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnResourceGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnResourceGroup.json
 func ExampleDeploymentsClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -976,7 +976,7 @@ func ExampleDeploymentsClient_BeginValidate() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnManagementGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnManagementGroup.json
 func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1066,7 +1066,7 @@ func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnScope.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnScope.json
 func ExampleDeploymentsClient_BeginValidateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1157,7 +1157,7 @@ func ExampleDeploymentsClient_BeginValidateAtScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnSubscription.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnSubscription.json
 func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1248,7 +1248,7 @@ func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnTenant.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnTenant.json
 func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1338,7 +1338,7 @@ func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnResourceGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnResourceGroup.json
 func ExampleDeploymentsClient_BeginWhatIf() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1421,7 +1421,7 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnManagementGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnManagementGroup.json
 func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1519,7 +1519,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnSubscription.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnSubscription.json
 func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1614,7 +1614,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnTenant.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnTenant.json
 func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

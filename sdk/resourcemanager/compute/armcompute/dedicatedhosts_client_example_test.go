@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 	"time"
 )
@@ -117,224 +117,6 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMinimumSetGen() 
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientDeleteResponse{
 	// }
-}
-
-// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_Get.json
-func ExampleDedicatedHostsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDedicatedHostsClient().Get(ctx, "myResourceGroup", "myDedicatedHostGroup", "myHost", &armcompute.DedicatedHostsClientGetOptions{
-		Expand: to.Ptr(armcompute.InstanceViewTypesInstanceView)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.DedicatedHostsClientGetResponse{
-	// 	DedicatedHost: armcompute.DedicatedHost{
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
-	// 		Properties: &armcompute.DedicatedHostProperties{
-	// 			PlatformFaultDomain: to.Ptr[int32](1),
-	// 			AutoReplaceOnFailure: to.Ptr(true),
-	// 			HostID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
-	// 			VirtualMachines: []*armcompute.SubResourceReadOnly{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/vm1"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			InstanceView: &armcompute.DedicatedHostInstanceView{
-	// 				AssetID: to.Ptr("eb3f58b8-b4e8-4882-b69f-301a01812407"),
-	// 				AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
-	// 					AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
-	// 						{
-	// 							VMSize: to.Ptr("Standard_A1"),
-	// 							Count: to.Ptr[float64](10),
-	// 						},
-	// 					},
-	// 				},
-	// 				Statuses: []*armcompute.InstanceViewStatus{
-	// 					{
-	// 						Code: to.Ptr("ProvisioningState/succeeded"),
-	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 					},
-	// 					{
-	// 						Code: to.Ptr("HealthState/available"),
-	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 						DisplayStatus: to.Ptr("Host available"),
-	// 					},
-	// 				},
-	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Tags: map[string]*string{
-	// 			"department": to.Ptr("HR"),
-	// 		},
-	// 		SKU: &armcompute.SKU{
-	// 			Name: to.Ptr("DSv3-Type1"),
-	// 		},
-	// 		Name: to.Ptr("myHost"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
-func ExampleDedicatedHostsClient_NewListAvailableSizesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDedicatedHostsClient().NewListAvailableSizesPager("myResourceGroup", "myDedicatedHostGroup", "myHost", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.DedicatedHostsClientListAvailableSizesResponse{
-		// 	DedicatedHostSizeListResult: armcompute.DedicatedHostSizeListResult{
-		// 		Value: []*string{
-		// 			to.Ptr("Dsv3-Type1"),
-		// 			to.Ptr("Esv3-Type1"),
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MaximumSet_Gen.json
-func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDedicatedHostsClient().NewListByHostGroupPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.DedicatedHostsClientListByHostGroupResponse{
-		// 	DedicatedHostListResult: armcompute.DedicatedHostListResult{
-		// 		Value: []*armcompute.DedicatedHost{
-		// 			{
-		// 				Location: to.Ptr("westus"),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Properties: &armcompute.DedicatedHostProperties{
-		// 					PlatformFaultDomain: to.Ptr[int32](1),
-		// 					AutoReplaceOnFailure: to.Ptr(true),
-		// 					HostID: to.Ptr("{GUID}"),
-		// 					VirtualMachines: []*armcompute.SubResourceReadOnly{
-		// 						{
-		// 							ID: to.Ptr("aaaa"),
-		// 						},
-		// 					},
-		// 					LicenseType: to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
-		// 					ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					InstanceView: &armcompute.DedicatedHostInstanceView{
-		// 						AssetID: to.Ptr("aaaaaaaaaaaaaaaa"),
-		// 						AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
-		// 							AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
-		// 								{
-		// 									VMSize: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 									Count: to.Ptr[float64](26),
-		// 								},
-		// 							},
-		// 						},
-		// 						Statuses: []*armcompute.InstanceViewStatus{
-		// 							{
-		// 								Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 								DisplayStatus: to.Ptr("aaaaaa"),
-		// 								Message: to.Ptr("a"),
-		// 								Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("DSv3-Type1"),
-		// 					Tier: to.Ptr("aaa"),
-		// 					Capacity: to.Ptr[int64](7),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myDedicatedHost"),
-		// 				Name: to.Ptr("myDedicatedHost"),
-		// 				Type: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("a://example.com/aaaaaaa"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MinimumSet_Gen.json
-func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDedicatedHostsClient().NewListByHostGroupPager("rgcompute", "aaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.DedicatedHostsClientListByHostGroupResponse{
-		// 	DedicatedHostListResult: armcompute.DedicatedHostListResult{
-		// 		Value: []*armcompute.DedicatedHost{
-		// 			{
-		// 				Location: to.Ptr("westus"),
-		// 				SKU: &armcompute.SKU{
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_Redeploy.json
@@ -569,4 +351,222 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateResize() {
 	// 		Type: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_Get.json
+func ExampleDedicatedHostsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDedicatedHostsClient().Get(ctx, "myResourceGroup", "myDedicatedHostGroup", "myHost", &armcompute.DedicatedHostsClientGetOptions{
+		Expand: to.Ptr(armcompute.InstanceViewTypesInstanceView)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.DedicatedHostsClientGetResponse{
+	// 	DedicatedHost: armcompute.DedicatedHost{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
+	// 		Properties: &armcompute.DedicatedHostProperties{
+	// 			PlatformFaultDomain: to.Ptr[int32](1),
+	// 			AutoReplaceOnFailure: to.Ptr(true),
+	// 			HostID: to.Ptr("{GUID}"),
+	// 			ProvisioningTime: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			VirtualMachines: []*armcompute.SubResourceReadOnly{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/vm1"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			InstanceView: &armcompute.DedicatedHostInstanceView{
+	// 				AssetID: to.Ptr("eb3f58b8-b4e8-4882-b69f-301a01812407"),
+	// 				AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
+	// 					AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
+	// 						{
+	// 							VMSize: to.Ptr("Standard_A1"),
+	// 							Count: to.Ptr[float64](10),
+	// 						},
+	// 					},
+	// 				},
+	// 				Statuses: []*armcompute.InstanceViewStatus{
+	// 					{
+	// 						Code: to.Ptr("ProvisioningState/succeeded"),
+	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 					},
+	// 					{
+	// 						Code: to.Ptr("HealthState/available"),
+	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 						DisplayStatus: to.Ptr("Host available"),
+	// 					},
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("HR"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("DSv3-Type1"),
+	// 		},
+	// 		Name: to.Ptr("myHost"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
+func ExampleDedicatedHostsClient_NewListAvailableSizesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDedicatedHostsClient().NewListAvailableSizesPager("myResourceGroup", "myDedicatedHostGroup", "myHost", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.DedicatedHostsClientListAvailableSizesResponse{
+		// 	DedicatedHostSizeListResult: armcompute.DedicatedHostSizeListResult{
+		// 		Value: []*string{
+		// 			to.Ptr("Dsv3-Type1"),
+		// 			to.Ptr("Esv3-Type1"),
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MaximumSet_Gen.json
+func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDedicatedHostsClient().NewListByHostGroupPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.DedicatedHostsClientListByHostGroupResponse{
+		// 	DedicatedHostListResult: armcompute.DedicatedHostListResult{
+		// 		Value: []*armcompute.DedicatedHost{
+		// 			{
+		// 				Location: to.Ptr("westus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armcompute.DedicatedHostProperties{
+		// 					PlatformFaultDomain: to.Ptr[int32](1),
+		// 					AutoReplaceOnFailure: to.Ptr(true),
+		// 					HostID: to.Ptr("{GUID}"),
+		// 					VirtualMachines: []*armcompute.SubResourceReadOnly{
+		// 						{
+		// 							ID: to.Ptr("aaaa"),
+		// 						},
+		// 					},
+		// 					LicenseType: to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
+		// 					ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					InstanceView: &armcompute.DedicatedHostInstanceView{
+		// 						AssetID: to.Ptr("aaaaaaaaaaaaaaaa"),
+		// 						AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
+		// 							AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
+		// 								{
+		// 									VMSize: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 									Count: to.Ptr[float64](26),
+		// 								},
+		// 							},
+		// 						},
+		// 						Statuses: []*armcompute.InstanceViewStatus{
+		// 							{
+		// 								Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+		// 								DisplayStatus: to.Ptr("aaaaaa"),
+		// 								Message: to.Ptr("a"),
+		// 								Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("DSv3-Type1"),
+		// 					Tier: to.Ptr("aaa"),
+		// 					Capacity: to.Ptr[int64](7),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myDedicatedHost"),
+		// 				Name: to.Ptr("myDedicatedHost"),
+		// 				Type: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("a://example.com/aaaaaaa"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MinimumSet_Gen.json
+func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDedicatedHostsClient().NewListByHostGroupPager("rgcompute", "aaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.DedicatedHostsClientListByHostGroupResponse{
+		// 	DedicatedHostListResult: armcompute.DedicatedHostListResult{
+		// 		Value: []*armcompute.DedicatedHost{
+		// 			{
+		// 				Location: to.Ptr("westus"),
+		// 				SKU: &armcompute.SKU{
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

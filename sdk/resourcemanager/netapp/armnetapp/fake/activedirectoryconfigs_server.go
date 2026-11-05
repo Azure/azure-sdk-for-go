@@ -29,6 +29,10 @@ type ActiveDirectoryConfigsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, options *armnetapp.ActiveDirectoryConfigsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ActiveDirectoryConfigsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body armnetapp.ActiveDirectoryConfigUpdate, options *armnetapp.ActiveDirectoryConfigsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ActiveDirectoryConfigsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, options *armnetapp.ActiveDirectoryConfigsClientGetOptions) (resp azfake.Responder[armnetapp.ActiveDirectoryConfigsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ActiveDirectoryConfigsServer struct {
 	// NewListBySubscriptionPager is the fake for method ActiveDirectoryConfigsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetapp.ActiveDirectoryConfigsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.ActiveDirectoryConfigsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ActiveDirectoryConfigsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body armnetapp.ActiveDirectoryConfigUpdate, options *armnetapp.ActiveDirectoryConfigsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewActiveDirectoryConfigsServerTransport creates a new instance of ActiveDirectoryConfigsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewActiveDirectoryConfigsServerTransport(srv *ActiveDirectoryConfigsServer)
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetapp.ActiveDirectoryConfigsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetapp.ActiveDirectoryConfigsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ActiveDirectoryConfigsServerTransport struct {
 	srv                         *ActiveDirectoryConfigsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetapp.ActiveDirectoryConfigsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetapp.ActiveDirectoryConfigsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.ActiveDirectoryConfigsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ActiveDirectoryConfigsServerTransport.
@@ -96,14 +96,14 @@ func (a *ActiveDirectoryConfigsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "ActiveDirectoryConfigsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "ActiveDirectoryConfigsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "ActiveDirectoryConfigsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "ActiveDirectoryConfigsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "ActiveDirectoryConfigsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "ActiveDirectoryConfigsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (a *ActiveDirectoryConfigsServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (a *ActiveDirectoryConfigsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/activeDirectoryConfigs/(?P<activeDirectoryConfigName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.ActiveDirectoryConfigUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		activeDirectoryConfigNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activeDirectoryConfigName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, activeDirectoryConfigNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *ActiveDirectoryConfigsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (a *ActiveDirectoryConfigsServerTransport) dispatchNewListBySubscriptionPag
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *ActiveDirectoryConfigsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/activeDirectoryConfigs/(?P<activeDirectoryConfigName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.ActiveDirectoryConfigUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		activeDirectoryConfigNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activeDirectoryConfigName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, activeDirectoryConfigNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

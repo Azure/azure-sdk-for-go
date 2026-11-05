@@ -1403,6 +1403,12 @@ type LongTermRetentionBackupsClientListByLocationOptions struct {
 
 	// Whether or not to only get the latest backup for each database.
 	OnlyLatestPerDatabase *bool
+
+	// An opaque token that identifies a starting point in the collection.
+	Skiptoken *string
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager
@@ -1423,6 +1429,12 @@ type LongTermRetentionBackupsClientListByResourceGroupLocationOptions struct {
 
 	// Whether or not to only get the latest backup for each database.
 	OnlyLatestPerDatabase *bool
+
+	// An opaque token that identifies a starting point in the collection.
+	Skiptoken *string
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // LongTermRetentionBackupsClientListByResourceGroupServerOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByResourceGroupServerPager
@@ -1433,6 +1445,12 @@ type LongTermRetentionBackupsClientListByResourceGroupServerOptions struct {
 
 	// Whether or not to only get the latest backup for each database.
 	OnlyLatestPerDatabase *bool
+
+	// An opaque token that identifies a starting point in the collection.
+	Skiptoken *string
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // LongTermRetentionBackupsClientListByServerOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByServerPager
@@ -1443,6 +1461,12 @@ type LongTermRetentionBackupsClientListByServerOptions struct {
 
 	// Whether or not to only get the latest backup for each database.
 	OnlyLatestPerDatabase *bool
+
+	// An opaque token that identifies a starting point in the collection.
+	Skiptoken *string
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions contains the optional parameters for the
@@ -2635,7 +2659,11 @@ type RestorableDroppedDatabasesClientGetOptions struct {
 // RestorableDroppedDatabasesClientListByServerOptions contains the optional parameters for the RestorableDroppedDatabasesClient.NewListByServerPager
 // method.
 type RestorableDroppedDatabasesClientListByServerOptions struct {
-	// placeholder for future optional parameters
+	// An opaque token that identifies a starting point in the collection.
+	Skiptoken *string
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // RestorableDroppedManagedDatabasesClientGetOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.Get

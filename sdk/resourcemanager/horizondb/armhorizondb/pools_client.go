@@ -19,7 +19,7 @@ import (
 // PoolsClient contains the methods for the Pools group.
 // Don't use this type directly, use NewPoolsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01-preview
 type PoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,576 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrReplace - Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute
+// model, high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
+// and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone and ZoneRedundant
+// are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone placement, while ZoneRedundant requires
+// nodes to be allocated across availability zones. Node allocation and high-availability reconfiguration are atomic: if all
+// requested nodes or the required zonal topology cannot be provisioned, the long-running operation fails and the previous
+// resource state is preserved. A pool name must differ from its parent cluster name because the Cluster-scoped ReadWrite
+// Endpoint is named after the Cluster and the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects
+// a request whose names would collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint
+// representing that Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint
+// cannot outlive or be deleted independently from it. When the first pool is created, the service automatically designates
+// it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one Pool before
+// a private endpoint connection can be created or approved. This API version supports at most one pool per cluster; an attempt
+// to create another pool is rejected with 409 Conflict. parameterGroup, parameterGroupResourceId, and applyMethod are required.
+// When creating a new pool in this API version, parameterGroupResourceId must identify the corresponding default parameter
+// group; a customer-created parameter group is rejected. When replacing an existing pool, the request can switch its association
+// in either direction between the corresponding default parameter group and a customer-created parameter group. applyMethod
+// controls when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
+// Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute constraints
+// are validated before the resource is changed.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - resource - Resource create parameters.
+//   - options - PoolsClientBeginCreateOrReplaceOptions contains the optional parameters for the PoolsClient.BeginCreateOrReplace
+//     method.
+func (client *PoolsClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrReplaceOptions) (*runtime.Poller[PoolsClientCreateOrReplaceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrReplace(ctx, resourceGroupName, clusterName, poolName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientCreateOrReplaceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientCreateOrReplaceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrReplace - Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
+// high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required and have
+// no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone and ZoneRedundant
+// are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone placement, while ZoneRedundant requires
+// nodes to be allocated across availability zones. Node allocation and high-availability reconfiguration are atomic: if all
+// requested nodes or the required zonal topology cannot be provisioned, the long-running operation fails and the previous
+// resource state is preserved. A pool name must differ from its parent cluster name because the Cluster-scoped ReadWrite
+// Endpoint is named after the Cluster and the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects
+// a request whose names would collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint
+// representing that Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint
+// cannot outlive or be deleted independently from it. When the first pool is created, the service automatically designates
+// it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one Pool before
+// a private endpoint connection can be created or approved. This API version supports at most one pool per cluster; an attempt
+// to create another pool is rejected with 409 Conflict. parameterGroup, parameterGroupResourceId, and applyMethod are required.
+// When creating a new pool in this API version, parameterGroupResourceId must identify the corresponding default parameter
+// group; a customer-created parameter group is rejected. When replacing an existing pool, the request can switch its association
+// in either direction between the corresponding default parameter group and a customer-created parameter group. applyMethod
+// controls when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
+// Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute constraints
+// are validated before the resource is changed.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) createOrReplace(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginCreateOrReplace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, clusterName, poolName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrReplaceCreateRequest creates the createOrReplace request.
+func (client *PoolsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource Pool, _ *PoolsClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that
+// Pool and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its Pool.
+// When this is the Cluster's last surviving Pool, the service also disconnects every existing private endpoint connection
+// associated with the Cluster by setting its privateLinkServiceConnectionState.status to Rejected and providing a description
+// that the last Pool was deleted. The HorizonDB private endpoint connection resources remain available for inspection and
+// cleanup, and customer-owned Microsoft.Network/privateEndpoints resources are not deleted. The delete long-running operation
+// completes only after all required private endpoint disconnections have completed.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - options - PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
+func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginDeleteOptions) (*runtime.Poller[PoolsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies
+// that Pool and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from
+// its Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private endpoint
+// connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to Rejected and providing
+// a description that the last Pool was deleted. The HorizonDB private endpoint connection resources remain available for
+// inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints resources are not deleted. The delete long-running
+// operation completes only after all required private endpoint disconnections have completed.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, _ *PoolsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestart - Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
+// and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter changes
+// or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled maintenance do not apply
+// them. Power operations are supported only at pool scope in this API version; there is no cluster-level restart action.
+// When the pool has no allocated nodes, the operation succeeds without restarting any nodes, pending changes are considered
+// applied, parameterGroup.syncStatus becomes InSync, and the resulting configuration applies to nodes allocated later. The
+// request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - options - PoolsClientBeginRestartOptions contains the optional parameters for the PoolsClient.BeginRestart method.
+func (client *PoolsClient) BeginRestart(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginRestartOptions) (*runtime.Poller[PoolsClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, clusterName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
+// and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter changes
+// or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled maintenance do not apply
+// them. Power operations are supported only at pool scope in this API version; there is no cluster-level restart action.
+// When the pool has no allocated nodes, the operation succeeds without restarting any nodes, pending changes are considered
+// applied, parameterGroup.syncStatus becomes InSync, and the resulting configuration applies to nodes allocated later. The
+// request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) restart(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, clusterName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *PoolsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, _ *PoolsClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStart - Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there
+// is no cluster-level start action. Start does not apply pending dynamic or static parameter changes; parameterGroup.syncStatus
+// remains PendingReboot until a customer-initiated Restart. When the pool is already Ready, the operation succeeds as a true
+// idempotent no-op and likewise leaves pending parameter changes pending. The operation is allowed when the pool has no allocated
+// nodes. After the Pool is running, its Pool-scoped ReadOnly Endpoint routes only when at least one allocated node is not
+// currently playing the read-write role. The request fails with 409 Conflict when another operation is in progress or the
+// pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - options - PoolsClientBeginStartOptions contains the optional parameters for the PoolsClient.BeginStart method.
+func (client *PoolsClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStartOptions) (*runtime.Poller[PoolsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, clusterName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
+// no cluster-level start action. Start does not apply pending dynamic or static parameter changes; parameterGroup.syncStatus
+// remains PendingReboot until a customer-initiated Restart. When the pool is already Ready, the operation succeeds as a true
+// idempotent no-op and likewise leaves pending parameter changes pending. The operation is allowed when the pool has no allocated
+// nodes. After the Pool is running, its Pool-scoped ReadOnly Endpoint routes only when at least one allocated node is not
+// currently playing the read-write role. The request fails with 409 Conflict when another operation is in progress or the
+// pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) start(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *PoolsClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, _ *PoolsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStop - Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in
+// this API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter changes;
+// parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending changes. The operation
+// succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the pool has no allocated nodes. The
+// Pool-scoped ReadOnly Endpoint remains discoverable but has no routing destination while the Pool is Stopped. The request
+// fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - options - PoolsClientBeginStopOptions contains the optional parameters for the PoolsClient.BeginStop method.
+func (client *PoolsClient) BeginStop(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStopOptions) (*runtime.Poller[PoolsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, clusterName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
+// API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter changes; parameterGroup.syncStatus
+// remains PendingReboot. A subsequent Start also preserves those pending changes. The operation succeeds as an idempotent
+// no-op when the pool is already Stopped. It is allowed when the pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint
+// remains discoverable but has no routing destination while the Pool is Stopped. The request fails with 409 Conflict when
+// another operation is in progress or the pool is in any other incompatible state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) stop(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, clusterName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *PoolsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, _ *PoolsClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
+// model type, high-availability configuration, or associated parameter group. Omitted nodeCount and highAvailability.mode
+// values preserve their existing values; the service recursively merges the PATCH before atomically validating the effective
+// tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only when the effective nodeCount is 1. AnyZone
+// and ZoneRedundant are valid only when the effective nodeCount is 2 through 16. Therefore, crossing between those node-count
+// ranges requires nodeCount and highAvailability.mode to be changed together. AnyZone permits same-zone or cross-zone placement.
+// Changing from AnyZone to ZoneRedundant may allocate a replacement node in another availability zone and replace a read-only
+// node, disconnecting connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
+// the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute without changing
+// the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both parameterGroupResourceId and
+// applyMethod are required. The pool can switch its association in either direction between the corresponding default parameter
+// group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become effective. Static
+// parameter changes always require a customer-initiated Restart; Stop followed by Start and scheduled maintenance do not
+// apply pending changes. Subtype-specific compute constraints are validated against the recursively merged configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - properties - The resource properties to be updated.
+//   - options - PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
+func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, properties PoolForPatchUpdate, options *PoolsClientBeginUpdateOptions) (*runtime.Poller[PoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, poolName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
+// model type, high-availability configuration, or associated parameter group. Omitted nodeCount and highAvailability.mode
+// values preserve their existing values; the service recursively merges the PATCH before atomically validating the effective
+// tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only when the effective nodeCount is 1. AnyZone
+// and ZoneRedundant are valid only when the effective nodeCount is 2 through 16. Therefore, crossing between those node-count
+// ranges requires nodeCount and highAvailability.mode to be changed together. AnyZone permits same-zone or cross-zone placement.
+// Changing from AnyZone to ZoneRedundant may allocate a replacement node in another availability zone and replace a read-only
+// node, disconnecting connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
+// the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute without changing
+// the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both parameterGroupResourceId and
+// applyMethod are required. The pool can switch its association in either direction between the corresponding default parameter
+// group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become effective. Static
+// parameter changes always require a customer-initiated Restart; Stop followed by Start and scheduled maintenance do not
+// apply pending changes. Subtype-specific compute constraints are validated against the recursively merged configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, clusterName string, poolName string, properties PoolForPatchUpdate, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, poolName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, properties PoolForPatchUpdate, _ *PoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // Get - Gets information about a HorizonDB pool.
@@ -91,7 +661,7 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +736,7 @@ func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/entityQueryTemplates/GetActivityEntityQueryTemplateById.json
+// Generated from example definition: 2025-10-01-preview/entityQueryTemplates/GetActivityEntityQueryTemplateById.json
 func ExampleEntityQueryTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleEntityQueryTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueryTemplates/GetEntityQueryTemplates.json
+// Generated from example definition: 2025-10-01-preview/entityQueryTemplates/GetEntityQueryTemplates.json
 func ExampleEntityQueryTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

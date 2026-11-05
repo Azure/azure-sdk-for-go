@@ -59,8 +59,6 @@ func TestQueryBuilder_SingleLogicalPartition(t *testing.T) {
 		{ID: "5", PartitionKey: NewPartitionKeyString("samePK")},
 	}
 
-	require.True(t, qb.isSingleLogicalPartitionQuery(items))
-
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	require.Equal(t, "SELECT * FROM c WHERE c.myPk = @pk0 AND c.id IN (@param_id0, @param_id1, @param_id2, @param_id3, @param_id4)", query)
 	require.Len(t, params, 6)
@@ -82,7 +80,6 @@ func TestQueryBuilder_MultipleLogicalPartitions(t *testing.T) {
 	}
 
 	require.False(t, qb.isIDPartitionKeyQuery(items, pkDef))
-	require.False(t, qb.isSingleLogicalPartitionQuery(items))
 
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.pk = @param_pk00) OR (c.id = @param_id1 AND c.pk = @param_pk10) OR (c.id = @param_id2 AND c.pk = @param_pk20)", query)
@@ -151,7 +148,6 @@ func TestQueryBuilder_EmptyItems(t *testing.T) {
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
 
 	require.False(t, qb.isIDPartitionKeyQuery(nil, pkDef))
-	require.False(t, qb.isSingleLogicalPartitionQuery(nil))
 }
 
 func TestQueryBuilder_SingleItem(t *testing.T) {
@@ -160,10 +156,7 @@ func TestQueryBuilder_SingleItem(t *testing.T) {
 		{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
 	}
 
-	// Single item → isSingleLogicalPartitionQuery returns false
-	require.False(t, qb.isSingleLogicalPartitionQuery(items))
-
-	// buildParameterizedQueryForItems still works (OR-of-conjunctions with 1 item)
+	// A single item uses the general OR-of-conjunctions shape.
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.pk = @param_pk00)", query)

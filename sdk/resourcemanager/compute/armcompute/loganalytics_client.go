@@ -30,6 +30,9 @@ type LogAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.C
 	}
 }
 
-// ExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to
+// exportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to
 // show throttling activities.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*http.Response, error) {
@@ -88,11 +91,11 @@ func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Contex
 	return httpResp, nil
 }
 
-// exportRequestRateByIntervalCreateRequest creates the ExportRequestRateByInterval request.
+// exportRequestRateByIntervalCreateRequest creates the exportRequestRateByInterval request.
 func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx context.Context, location string, parameters RequestRateByIntervalInput, _ *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -138,7 +141,7 @@ func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Conte
 	}
 }
 
-// ExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
+// exportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*http.Response, error) {
 	var err error
@@ -160,11 +163,11 @@ func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, l
 	return httpResp, nil
 }
 
-// exportThrottledRequestsCreateRequest creates the ExportThrottledRequests request.
+// exportThrottledRequestsCreateRequest creates the exportThrottledRequests request.
 func (client *LogAnalyticsClient) exportThrottledRequestsCreateRequest(ctx context.Context, location string, parameters ThrottledRequestsInput, _ *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {

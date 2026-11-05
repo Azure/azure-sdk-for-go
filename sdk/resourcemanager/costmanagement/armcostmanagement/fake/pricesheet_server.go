@@ -103,7 +103,7 @@ func (p *PriceSheetServerTransport) dispatchBeginDownloadByBillingAccount(req *h
 	}
 	beginDownloadByBillingAccount := p.beginDownloadByBillingAccount.get(req)
 	if beginDownloadByBillingAccount == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPeriods/(?P<billingPeriodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingPeriods/(?P<billingPeriodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -147,7 +147,7 @@ func (p *PriceSheetServerTransport) dispatchBeginDownloadByBillingProfile(req *h
 	}
 	beginDownloadByBillingProfile := p.beginDownloadByBillingProfile.get(req)
 	if beginDownloadByBillingProfile == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -191,7 +191,7 @@ func (p *PriceSheetServerTransport) dispatchBeginDownloadByInvoice(req *http.Req
 	}
 	beginDownloadByInvoice := p.beginDownloadByInvoice.get(req)
 	if beginDownloadByInvoice == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/pricesheets/default/download`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

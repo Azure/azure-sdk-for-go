@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/Relay/RelayCreate.json
+// Generated from example definition: 2026-01-01/Relay/RelayCreate.json
 func ExampleWCFRelaysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleCreate.json
 func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayDelete.json
+// Generated from example definition: 2026-01-01/Relay/RelayDelete.json
 func ExampleWCFRelaysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleWCFRelaysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleDelete.json
 func ExampleWCFRelaysClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleWCFRelaysClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayGet.json
+// Generated from example definition: 2026-01-01/Relay/RelayGet.json
 func ExampleWCFRelaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleWCFRelaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleGet.json
 func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleListAll.json
 func ExampleWCFRelaysClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleWCFRelaysClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayListAll.json
+// Generated from example definition: 2026-01-01/Relay/RelayListAll.json
 func ExampleWCFRelaysClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleWCFRelaysClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleListKey.json
 func ExampleWCFRelaysClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleWCFRelaysClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
 func ExampleWCFRelaysClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

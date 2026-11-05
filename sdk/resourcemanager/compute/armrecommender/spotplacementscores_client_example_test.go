@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-05-preview/GetSpotPlacementScores.json
+// Generated from example definition: 2026-09-05-preview/GetSpotPlacementScores.json
 func ExampleSpotPlacementScoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleSpotPlacementScoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-05-preview/GenerateSpotPlacementScores.json
+// Generated from example definition: 2026-09-05-preview/GenerateSpotPlacementScores.json
 func ExampleSpotPlacementScoresClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

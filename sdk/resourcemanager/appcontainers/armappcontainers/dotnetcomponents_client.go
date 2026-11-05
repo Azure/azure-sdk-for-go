@@ -19,7 +19,7 @@ import (
 // DotNetComponentsClient contains the methods for the DotNetComponents group.
 // Don't use this type directly, use NewDotNetComponentsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type DotNetComponentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type DotNetComponentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDotNetComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DotNetComponentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,7 +99,7 @@ func (client *DotNetComponentsClient) createOrUpdate(ctx context.Context, resour
 func (client *DotNetComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, _ *DotNetComponentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +119,7 @@ func (client *DotNetComponentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +131,7 @@ func (client *DotNetComponentsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a .NET Component.
 //
-// Delete a .NET Component.
+// Deletes a .NET component from a managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the managed environment.
@@ -154,7 +157,7 @@ func (client *DotNetComponentsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a .NET Component.
 //
-// Delete a .NET Component.
+// Deletes a .NET component from a managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DotNetComponentsClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, name string, options *DotNetComponentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -180,7 +183,7 @@ func (client *DotNetComponentsClient) deleteOperation(ctx context.Context, resou
 func (client *DotNetComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, _ *DotNetComponentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -200,14 +203,14 @@ func (client *DotNetComponentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a .NET Component.
 //
-// Get a .NET Component.
+// Gets the details of a .NET component in a managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the managed environment.
@@ -234,7 +237,7 @@ func (client *DotNetComponentsClient) Get(ctx context.Context, resourceGroupName
 func (client *DotNetComponentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, _ *DotNetComponentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -254,7 +257,7 @@ func (client *DotNetComponentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +277,7 @@ func (client *DotNetComponentsClient) getHandleResponse(resp *http.Response, suc
 
 // NewListPager - Get the .NET Components for a managed environment.
 //
-// Get the .NET Components for a managed environment.
+// Lists the .NET components in a managed environment.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the managed environment.
 //   - options - DotNetComponentsClientListOptions contains the optional parameters for the DotNetComponentsClient.NewListPager
@@ -312,7 +315,7 @@ func (client *DotNetComponentsClient) listCreateRequest(ctx context.Context, res
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -332,7 +335,7 @@ func (client *DotNetComponentsClient) listCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -406,7 +409,7 @@ func (client *DotNetComponentsClient) update(ctx context.Context, resourceGroupN
 func (client *DotNetComponentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, _ *DotNetComponentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -426,7 +429,7 @@ func (client *DotNetComponentsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

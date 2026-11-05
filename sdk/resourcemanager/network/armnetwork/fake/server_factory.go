@@ -42,6 +42,9 @@ type ServerFactory struct {
 	// ApplicationSecurityGroupsServer contains the fakes for client ApplicationSecurityGroupsClient
 	ApplicationSecurityGroupsServer ApplicationSecurityGroupsServer
 
+	// AuthenticationPoliciesServer contains the fakes for client AuthenticationPoliciesClient
+	AuthenticationPoliciesServer AuthenticationPoliciesServer
+
 	// AvailableDelegationsServer contains the fakes for client AvailableDelegationsClient
 	AvailableDelegationsServer AvailableDelegationsServer
 
@@ -122,6 +125,9 @@ type ServerFactory struct {
 
 	// ExpressRouteGatewaysServer contains the fakes for client ExpressRouteGatewaysClient
 	ExpressRouteGatewaysServer ExpressRouteGatewaysServer
+
+	// ExpressRouteLagAuthorizationsServer contains the fakes for client ExpressRouteLagAuthorizationsClient
+	ExpressRouteLagAuthorizationsServer ExpressRouteLagAuthorizationsServer
 
 	// ExpressRouteLagsServer contains the fakes for client ExpressRouteLagsClient
 	ExpressRouteLagsServer ExpressRouteLagsServer
@@ -477,6 +483,9 @@ type ServerFactory struct {
 	// VirtualHubsServer contains the fakes for client VirtualHubsClient
 	VirtualHubsServer VirtualHubsServer
 
+	// VirtualNetworkApplianceCapabilitiesServer contains the fakes for client VirtualNetworkApplianceCapabilitiesClient
+	VirtualNetworkApplianceCapabilitiesServer VirtualNetworkApplianceCapabilitiesServer
+
 	// VirtualNetworkAppliancesServer contains the fakes for client VirtualNetworkAppliancesClient
 	VirtualNetworkAppliancesServer VirtualNetworkAppliancesServer
 
@@ -540,6 +549,7 @@ type ServerFactoryTransport struct {
 	trApplicationGatewayWafDynamicManifestsDefaultServer    *ApplicationGatewayWafDynamicManifestsDefaultServerTransport
 	trApplicationGatewaysServer                             *ApplicationGatewaysServerTransport
 	trApplicationSecurityGroupsServer                       *ApplicationSecurityGroupsServerTransport
+	trAuthenticationPoliciesServer                          *AuthenticationPoliciesServerTransport
 	trAvailableDelegationsServer                            *AvailableDelegationsServerTransport
 	trAvailableEndpointServicesServer                       *AvailableEndpointServicesServerTransport
 	trAvailablePrivateEndpointTypesServer                   *AvailablePrivateEndpointTypesServerTransport
@@ -567,6 +577,7 @@ type ServerFactoryTransport struct {
 	trExpressRouteCrossConnectionPeeringsServer             *ExpressRouteCrossConnectionPeeringsServerTransport
 	trExpressRouteCrossConnectionsServer                    *ExpressRouteCrossConnectionsServerTransport
 	trExpressRouteGatewaysServer                            *ExpressRouteGatewaysServerTransport
+	trExpressRouteLagAuthorizationsServer                   *ExpressRouteLagAuthorizationsServerTransport
 	trExpressRouteLagsServer                                *ExpressRouteLagsServerTransport
 	trExpressRouteLinksServer                               *ExpressRouteLinksServerTransport
 	trExpressRoutePortAuthorizationsServer                  *ExpressRoutePortAuthorizationsServerTransport
@@ -685,6 +696,7 @@ type ServerFactoryTransport struct {
 	trVirtualHubIPConfigurationServer                       *VirtualHubIPConfigurationServerTransport
 	trVirtualHubRouteTableV2SServer                         *VirtualHubRouteTableV2SServerTransport
 	trVirtualHubsServer                                     *VirtualHubsServerTransport
+	trVirtualNetworkApplianceCapabilitiesServer             *VirtualNetworkApplianceCapabilitiesServerTransport
 	trVirtualNetworkAppliancesServer                        *VirtualNetworkAppliancesServerTransport
 	trVirtualNetworkGatewayConnectionsServer                *VirtualNetworkGatewayConnectionsServerTransport
 	trVirtualNetworkGatewayNatRulesServer                   *VirtualNetworkGatewayNatRulesServerTransport
@@ -756,6 +768,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewApplicationSecurityGroupsServerTransport(&s.srv.ApplicationSecurityGroupsServer)
 		})
 		resp, err = s.trApplicationSecurityGroupsServer.Do(req)
+	case "AuthenticationPoliciesClient":
+		initServer(&s.trMu, &s.trAuthenticationPoliciesServer, func() *AuthenticationPoliciesServerTransport {
+			return NewAuthenticationPoliciesServerTransport(&s.srv.AuthenticationPoliciesServer)
+		})
+		resp, err = s.trAuthenticationPoliciesServer.Do(req)
 	case "AvailableDelegationsClient":
 		initServer(&s.trMu, &s.trAvailableDelegationsServer, func() *AvailableDelegationsServerTransport {
 			return NewAvailableDelegationsServerTransport(&s.srv.AvailableDelegationsServer)
@@ -887,6 +904,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExpressRouteGatewaysServerTransport(&s.srv.ExpressRouteGatewaysServer)
 		})
 		resp, err = s.trExpressRouteGatewaysServer.Do(req)
+	case "ExpressRouteLagAuthorizationsClient":
+		initServer(&s.trMu, &s.trExpressRouteLagAuthorizationsServer, func() *ExpressRouteLagAuthorizationsServerTransport {
+			return NewExpressRouteLagAuthorizationsServerTransport(&s.srv.ExpressRouteLagAuthorizationsServer)
+		})
+		resp, err = s.trExpressRouteLagAuthorizationsServer.Do(req)
 	case "ExpressRouteLagsClient":
 		initServer(&s.trMu, &s.trExpressRouteLagsServer, func() *ExpressRouteLagsServerTransport {
 			return NewExpressRouteLagsServerTransport(&s.srv.ExpressRouteLagsServer)
@@ -1425,6 +1447,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "VirtualHubsClient":
 		initServer(&s.trMu, &s.trVirtualHubsServer, func() *VirtualHubsServerTransport { return NewVirtualHubsServerTransport(&s.srv.VirtualHubsServer) })
 		resp, err = s.trVirtualHubsServer.Do(req)
+	case "VirtualNetworkApplianceCapabilitiesClient":
+		initServer(&s.trMu, &s.trVirtualNetworkApplianceCapabilitiesServer, func() *VirtualNetworkApplianceCapabilitiesServerTransport {
+			return NewVirtualNetworkApplianceCapabilitiesServerTransport(&s.srv.VirtualNetworkApplianceCapabilitiesServer)
+		})
+		resp, err = s.trVirtualNetworkApplianceCapabilitiesServer.Do(req)
 	case "VirtualNetworkAppliancesClient":
 		initServer(&s.trMu, &s.trVirtualNetworkAppliancesServer, func() *VirtualNetworkAppliancesServerTransport {
 			return NewVirtualNetworkAppliancesServerTransport(&s.srv.VirtualNetworkAppliancesServer)

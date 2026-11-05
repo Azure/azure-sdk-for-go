@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Create.json
+// Generated from example definition: 2026-03-03/galleryScriptExamples/GalleryScript_Create.json
 func ExampleGalleryScriptsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleGalleryScriptsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Delete.json
+// Generated from example definition: 2026-03-03/galleryScriptExamples/GalleryScript_Delete.json
 func ExampleGalleryScriptsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,54 @@ func ExampleGalleryScriptsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Get.json
+// Generated from example definition: 2026-03-03/galleryScriptExamples/GalleryScript_Update.json
+func ExampleGalleryScriptsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGalleryScriptsClient().BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryScriptName", armcompute.GalleryScriptUpdate{
+		Properties: &armcompute.GalleryScriptProperties{
+			Description:         to.Ptr("This is the gallery script description."),
+			Eula:                to.Ptr("This is the gallery script EULA."),
+			PrivacyStatementURI: to.Ptr("{myPrivacyStatementUri}"),
+			ReleaseNoteURI:      to.Ptr("{myReleaseNoteUri}"),
+			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.GalleryScriptsClientUpdateResponse{
+	// 	GalleryScript: armcompute.GalleryScript{
+	// 		Properties: &armcompute.GalleryScriptProperties{
+	// 			Description: to.Ptr("This is the gallery script description."),
+	// 			Eula: to.Ptr("This is the gallery script EULA."),
+	// 			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri"),
+	// 			ReleaseNoteURI: to.Ptr("myReleaseNoteUri"),
+	// 			SupportedOSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		Name: to.Ptr("myGalleryScriptName"),
+	// 		Type: to.Ptr("Microsoft.Compute/galleries"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/scripts/myGalleryScriptName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-03/galleryScriptExamples/GalleryScript_Get.json
 func ExampleGalleryScriptsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +164,7 @@ func ExampleGalleryScriptsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_ListByGallery.json
+// Generated from example definition: 2026-03-03/galleryScriptExamples/GalleryScript_ListByGallery.json
 func ExampleGalleryScriptsClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,51 +220,4 @@ func ExampleGalleryScriptsClient_NewListByGalleryPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Update.json
-func ExampleGalleryScriptsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGalleryScriptsClient().BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryScriptName", armcompute.GalleryScriptUpdate{
-		Properties: &armcompute.GalleryScriptProperties{
-			Description:         to.Ptr("This is the gallery script description."),
-			Eula:                to.Ptr("This is the gallery script EULA."),
-			PrivacyStatementURI: to.Ptr("{myPrivacyStatementUri}"),
-			ReleaseNoteURI:      to.Ptr("{myReleaseNoteUri}"),
-			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.GalleryScriptsClientUpdateResponse{
-	// 	GalleryScript: armcompute.GalleryScript{
-	// 		Properties: &armcompute.GalleryScriptProperties{
-	// 			Description: to.Ptr("This is the gallery script description."),
-	// 			Eula: to.Ptr("This is the gallery script EULA."),
-	// 			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri"),
-	// 			ReleaseNoteURI: to.Ptr("myReleaseNoteUri"),
-	// 			SupportedOSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		Name: to.Ptr("myGalleryScriptName"),
-	// 		Type: to.Ptr("Microsoft.Compute/galleries"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/scripts/myGalleryScriptName"),
-	// 	},
-	// }
 }

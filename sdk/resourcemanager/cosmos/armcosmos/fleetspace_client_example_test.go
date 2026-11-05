@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceCreate.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceCreate.json
 func ExampleFleetspaceClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,13 +61,15 @@ func ExampleFleetspaceClient_BeginCreate() {
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
 	// 				MinThroughput: to.Ptr[int32](100000),
 	// 				MaxThroughput: to.Ptr[int32](500000),
+	// 				DedicatedRUs: to.Ptr[int64](0),
+	// 				MaxConsumableRUs: to.Ptr[int64](0),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceDelete.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceDelete.json
 func ExampleFleetspaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +90,7 @@ func ExampleFleetspaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceGet.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceGet.json
 func ExampleFleetspaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,13 +122,15 @@ func ExampleFleetspaceClient_Get() {
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
 	// 				MinThroughput: to.Ptr[int32](100000),
 	// 				MaxThroughput: to.Ptr[int32](500000),
+	// 				DedicatedRUs: to.Ptr[int64](200000),
+	// 				MaxConsumableRUs: to.Ptr[int64](800000),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceList.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceList.json
 func ExampleFleetspaceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,13 +161,17 @@ func ExampleFleetspaceClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces"),
 		// 				Properties: &armcosmos.FleetspaceProperties{
 		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
+		// 					FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
 		// 					ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierBusinessCritical),
 		// 					DataRegions: []*string{
 		// 						to.Ptr("westus2"),
+		// 						to.Ptr("eastus2"),
 		// 					},
 		// 					ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
 		// 						MinThroughput: to.Ptr[int32](100000),
 		// 						MaxThroughput: to.Ptr[int32](500000),
+		// 						DedicatedRUs: to.Ptr[int64](200000),
+		// 						MaxConsumableRUs: to.Ptr[int64](800000),
 		// 					},
 		// 				},
 		// 			},
@@ -173,6 +181,7 @@ func ExampleFleetspaceClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces"),
 		// 				Properties: &armcosmos.FleetspaceProperties{
 		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
+		// 					FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
 		// 					ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierGeneralPurpose),
 		// 					DataRegions: []*string{
 		// 						to.Ptr("eastus"),
@@ -180,6 +189,8 @@ func ExampleFleetspaceClient_NewListPager() {
 		// 					ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
 		// 						MinThroughput: to.Ptr[int32](200000),
 		// 						MaxThroughput: to.Ptr[int32](600000),
+		// 						DedicatedRUs: to.Ptr[int64](300000),
+		// 						MaxConsumableRUs: to.Ptr[int64](700000),
 		// 					},
 		// 				},
 		// 			},
@@ -189,7 +200,7 @@ func ExampleFleetspaceClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceUpdate.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceUpdate.json
 func ExampleFleetspaceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,12 +214,9 @@ func ExampleFleetspaceClient_BeginUpdate() {
 	poller, err := clientFactory.NewFleetspaceClient().BeginUpdate(ctx, "rg1", "fleet1", "fleetspace1", armcosmos.FleetspaceUpdate{
 		Properties: &armcosmos.FleetspaceProperties{
 			FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
-			DataRegions: []*string{
-				to.Ptr("westus2"),
-			},
 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
-				MinThroughput: to.Ptr[int32](3000),
-				MaxThroughput: to.Ptr[int32](4000),
+				MinThroughput: to.Ptr[int32](100000),
+				MaxThroughput: to.Ptr[int32](1000000),
 			},
 		},
 	}, nil)
@@ -235,8 +243,10 @@ func ExampleFleetspaceClient_BeginUpdate() {
 	// 				to.Ptr("westus2"),
 	// 			},
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
-	// 				MinThroughput: to.Ptr[int32](3000),
-	// 				MaxThroughput: to.Ptr[int32](4000),
+	// 				MinThroughput: to.Ptr[int32](100000),
+	// 				MaxThroughput: to.Ptr[int32](1000000),
+	// 				DedicatedRUs: to.Ptr[int64](2000),
+	// 				MaxConsumableRUs: to.Ptr[int64](8000),
 	// 			},
 	// 		},
 	// 	},

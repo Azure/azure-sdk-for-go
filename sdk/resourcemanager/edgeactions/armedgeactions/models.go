@@ -142,10 +142,12 @@ type EdgeActionUpdate struct {
 	// The resource-specific properties for this resource.
 	Properties *EdgeActionPropertiesUpdate
 
-	// The sku type of the edge action
+	// The SKU of the Edge Action. Do not include sku in PATCH requests; any supplied sku, including null or the existing value,
+	// is rejected.
 	SKU *SKUTypeUpdate
 
-	// Resource tags.
+	// Resource tags. For PATCH requests, omitted tags are preserved, an empty tags object clears all tags, and supplied tags
+	// replace the entire tag collection. Null tags are rejected.
 	Tags map[string]*string
 }
 
@@ -184,10 +186,14 @@ type EdgeActionVersionListResult struct {
 
 // EdgeActionVersionProperties - Represents an edge action version
 type EdgeActionVersionProperties struct {
-	// REQUIRED; The deployment type
+	// REQUIRED; The deployment type for the Edge Action version. Set this value when creating the version. When updating an existing
+	// version, any supplied value must match the existing value.
 	DeploymentType *EdgeActionVersionDeploymentType
 
-	// REQUIRED; The active state
+	// REQUIRED; Indicates whether this is the default version. When creating a version, if the Edge Action has no default version,
+	// the service makes the new version the default even when false is supplied. If another default version exists, supplying
+	// true is rejected. When updating an existing version, any supplied value must match the existing value. Use swapDefault
+	// to change the default version.
 	IsDefaultVersion *EdgeActionIsDefaultVersion
 
 	// READ-ONLY; The last update time in UTC for package update
@@ -211,10 +217,14 @@ type EdgeActionVersionUpdate struct {
 
 // EdgeActionVersionUpdateProperties - The updatable properties of the EdgeActionVersion.
 type EdgeActionVersionUpdateProperties struct {
-	// The deployment type
+	// The deployment type for the Edge Action version. Set this value when creating the version. When updating an existing version,
+	// any supplied value must match the existing value.
 	DeploymentType *EdgeActionVersionDeploymentType
 
-	// The active state
+	// Indicates whether this is the default version. When creating a version, if the Edge Action has no default version, the
+	// service makes the new version the default even when false is supplied. If another default version exists, supplying true
+	// is rejected. When updating an existing version, any supplied value must match the existing value. Use swapDefault to change
+	// the default version.
 	IsDefaultVersion *EdgeActionIsDefaultVersion
 }
 
@@ -227,7 +237,8 @@ type SKUType struct {
 	Tier *string
 }
 
-// SKUTypeUpdate - The SKU type for update operations
+// SKUTypeUpdate - The SKU fields in the update model. Do not include sku in PATCH requests; any supplied sku, including null
+// or the existing value, is rejected.
 type SKUTypeUpdate struct {
 	// The name of the SKU
 	Name *string

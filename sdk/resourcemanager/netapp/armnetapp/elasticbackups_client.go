@@ -19,7 +19,7 @@ import (
 // ElasticBackupsClient contains the methods for the ElasticBackups group.
 // Don't use this type directly, use NewElasticBackupsClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-08-15-preview
 type ElasticBackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ElasticBackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewElasticBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticBackupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *ElasticBackupsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create an elastic backup under the elastic Backup Vault
+// createOrUpdate - Create an elastic backup under the elastic Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ElasticBackupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,11 +92,11 @@ func (client *ElasticBackupsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ElasticBackupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, _ *ElasticBackupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -117,7 +120,7 @@ func (client *ElasticBackupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -152,7 +155,7 @@ func (client *ElasticBackupsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a ElasticBackup
+// deleteOperation - Delete a ElasticBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ElasticBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *ElasticBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,11 +177,11 @@ func (client *ElasticBackupsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ElasticBackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, _ *ElasticBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -202,8 +205,94 @@ func (client *ElasticBackupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Patch an elastic Backup under the Elastic Backup Vault
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the ElasticAccount
+//   - backupVaultName - The name of the ElasticBackupVault
+//   - backupName - The name of the ElasticBackup
+//   - body - The resource properties to be updated.
+//   - options - ElasticBackupsClientBeginUpdateOptions contains the optional parameters for the ElasticBackupsClient.BeginUpdate
+//     method.
+func (client *ElasticBackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch an elastic Backup under the Elastic Backup Vault
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticBackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ElasticBackupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ElasticBackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, _ *ElasticBackupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups/{backupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260815Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -235,7 +324,7 @@ func (client *ElasticBackupsClient) Get(ctx context.Context, resourceGroupName s
 func (client *ElasticBackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, _ *ElasticBackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,7 +348,7 @@ func (client *ElasticBackupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,7 +405,7 @@ func (client *ElasticBackupsClient) listByVaultCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -340,7 +429,7 @@ func (client *ElasticBackupsClient) listByVaultCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260815Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -357,90 +446,4 @@ func (client *ElasticBackupsClient) listByVaultHandleResponse(resp *http.Respons
 		return ElasticBackupsClientListByVaultResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch an elastic Backup under the Elastic Backup Vault
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the ElasticAccount
-//   - backupVaultName - The name of the ElasticBackupVault
-//   - backupName - The name of the ElasticBackup
-//   - body - The resource properties to be updated.
-//   - options - ElasticBackupsClientBeginUpdateOptions contains the optional parameters for the ElasticBackupsClient.BeginUpdate
-//     method.
-func (client *ElasticBackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch an elastic Backup under the Elastic Backup Vault
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ElasticBackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ElasticBackupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ElasticBackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, _ *ElasticBackupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}/elasticBackups/{backupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if backupVaultName == "" {
-		return nil, errors.New("parameter backupVaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

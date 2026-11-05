@@ -24,6 +24,12 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PrivateEndpointConnectionsInterfaceServer contains the fakes for client PrivateEndpointConnectionsInterfaceClient
+	PrivateEndpointConnectionsInterfaceServer PrivateEndpointConnectionsInterfaceServer
+
+	// PrivateLinkResourcesInterfaceServer contains the fakes for client PrivateLinkResourcesInterfaceClient
+	PrivateLinkResourcesInterfaceServer PrivateLinkResourcesInterfaceServer
+
 	// SecurityPoliciesInterfaceServer contains the fakes for client SecurityPoliciesInterfaceClient
 	SecurityPoliciesInterfaceServer SecurityPoliciesInterfaceServer
 
@@ -43,13 +49,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armservicenetworking.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trAssociationsInterfaceServer      *AssociationsInterfaceServerTransport
-	trFrontendsInterfaceServer         *FrontendsInterfaceServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trSecurityPoliciesInterfaceServer  *SecurityPoliciesInterfaceServerTransport
-	trTrafficControllerInterfaceServer *TrafficControllerInterfaceServerTransport
+	srv                                         *ServerFactory
+	trMu                                        sync.Mutex
+	trAssociationsInterfaceServer               *AssociationsInterfaceServerTransport
+	trFrontendsInterfaceServer                  *FrontendsInterfaceServerTransport
+	trOperationsServer                          *OperationsServerTransport
+	trPrivateEndpointConnectionsInterfaceServer *PrivateEndpointConnectionsInterfaceServerTransport
+	trPrivateLinkResourcesInterfaceServer       *PrivateLinkResourcesInterfaceServerTransport
+	trSecurityPoliciesInterfaceServer           *SecurityPoliciesInterfaceServerTransport
+	trTrafficControllerInterfaceServer          *TrafficControllerInterfaceServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -78,6 +86,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateEndpointConnectionsInterfaceClient":
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsInterfaceServer, func() *PrivateEndpointConnectionsInterfaceServerTransport {
+			return NewPrivateEndpointConnectionsInterfaceServerTransport(&s.srv.PrivateEndpointConnectionsInterfaceServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsInterfaceServer.Do(req)
+	case "PrivateLinkResourcesInterfaceClient":
+		initServer(&s.trMu, &s.trPrivateLinkResourcesInterfaceServer, func() *PrivateLinkResourcesInterfaceServerTransport {
+			return NewPrivateLinkResourcesInterfaceServerTransport(&s.srv.PrivateLinkResourcesInterfaceServer)
+		})
+		resp, err = s.trPrivateLinkResourcesInterfaceServer.Do(req)
 	case "SecurityPoliciesInterfaceClient":
 		initServer(&s.trMu, &s.trSecurityPoliciesInterfaceServer, func() *SecurityPoliciesInterfaceServerTransport {
 			return NewSecurityPoliciesInterfaceServerTransport(&s.srv.SecurityPoliciesInterfaceServer)

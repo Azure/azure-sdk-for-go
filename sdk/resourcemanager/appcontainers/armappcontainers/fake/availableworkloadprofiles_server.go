@@ -87,7 +87,7 @@ func (a *AvailableWorkloadProfilesServerTransport) dispatchNewGetPager(req *http
 	}
 	newGetPager := a.newGetPager.get(req)
 	if newGetPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableManagedEnvironmentsWorkloadProfileTypes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableManagedEnvironmentsWorkloadProfileTypes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

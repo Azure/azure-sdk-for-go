@@ -19,7 +19,7 @@ import (
 // BlobServicesClient contains the methods for the BlobServices group.
 // Don't use this type directly, use NewBlobServicesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type BlobServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BlobServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobServicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return BlobServicesClientGetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobServicesClientGetServicePropertiesResponse{}, err
-	}
-	resp, err := client.getServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
 func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *BlobServicesClientGetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -91,15 +89,18 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (BlobServicesClientGetServicePropertiesResponse, error) {
+func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (BlobServicesClientGetServicePropertiesResponse, error) {
 	result := BlobServicesClientGetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
 		return BlobServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -122,47 +123,61 @@ func (client *BlobServicesClient) NewListPager(resourceGroupName string, account
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return BlobServicesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BlobServicesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *BlobServicesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *BlobServicesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BlobServicesClient) listHandleResponse(resp *http.Response) (BlobServicesClientListResponse, error) {
+func (client *BlobServicesClient) listHandleResponse(resp *http.Response, successCodes ...int) (BlobServicesClientListResponse, error) {
 	result := BlobServicesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceItems); err != nil {
 		return BlobServicesClientListResponse{}, err
 	}
@@ -193,19 +208,14 @@ func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return BlobServicesClientSetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobServicesClientSetServicePropertiesResponse{}, err
-	}
-	resp, err := client.setServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
 func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, _ *BlobServicesClientSetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -221,7 +231,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -232,8 +242,11 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (BlobServicesClientSetServicePropertiesResponse, error) {
+func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (BlobServicesClientSetServicePropertiesResponse, error) {
 	result := BlobServicesClientSetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
 		return BlobServicesClientSetServicePropertiesResponse{}, err
 	}

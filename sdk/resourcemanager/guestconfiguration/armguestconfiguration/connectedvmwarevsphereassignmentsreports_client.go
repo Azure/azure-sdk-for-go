@@ -30,6 +30,9 @@ type ConnectedVMwarevSphereAssignmentsReportsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectedVMwarevSphereAssignmentsReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedVMwarevSphereAssignmentsReportsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) Get(ctx context.Co
 func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, reportID string, _ *ConnectedVMwarevSphereAssignmentsReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -140,7 +143,7 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) List(ctx context.C
 func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *ConnectedVMwarevSphereAssignmentsReportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

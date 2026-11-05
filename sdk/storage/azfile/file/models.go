@@ -96,6 +96,9 @@ type CreateOptions struct {
 	OptionalBody          io.ReadSeekCloser
 	ContentLength         *int64
 	ContentMD5            []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 }
 
 func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientCreateOptions {

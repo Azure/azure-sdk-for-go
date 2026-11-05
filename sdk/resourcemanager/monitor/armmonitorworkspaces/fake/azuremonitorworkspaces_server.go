@@ -21,13 +21,13 @@ import (
 
 // AzureMonitorWorkspacesServer is a fake server for instances of the armmonitorworkspaces.AzureMonitorWorkspacesClient type.
 type AzureMonitorWorkspacesServer struct {
-	// CreateOrUpdate is the fake for method AzureMonitorWorkspacesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource armmonitorworkspaces.AzureMonitorWorkspaceResource, options *armmonitorworkspaces.AzureMonitorWorkspacesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitorworkspaces.AzureMonitorWorkspacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method AzureMonitorWorkspacesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *armmonitorworkspaces.AzureMonitorWorkspacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmonitorworkspaces.AzureMonitorWorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method AzureMonitorWorkspacesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource armmonitorworkspaces.AzureMonitorWorkspaceResource, options *armmonitorworkspaces.AzureMonitorWorkspacesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitorworkspaces.AzureMonitorWorkspacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AzureMonitorWorkspacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -88,10 +88,10 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
-			case "AzureMonitorWorkspacesClient.CreateOrUpdate":
-				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AzureMonitorWorkspacesClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AzureMonitorWorkspacesClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AzureMonitorWorkspacesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AzureMonitorWorkspacesClient.NewListByResourceGroupPager":
@@ -116,50 +116,13 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchToMethodFake(req *http.R
 	}
 }
 
-func (a *AzureMonitorWorkspacesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armmonitorworkspaces.AzureMonitorWorkspaceResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	azureMonitorWorkspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureMonitorWorkspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, azureMonitorWorkspaceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorWorkspaceResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AzureMonitorWorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -197,11 +160,48 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (a *AzureMonitorWorkspacesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmonitorworkspaces.AzureMonitorWorkspaceResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	azureMonitorWorkspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureMonitorWorkspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, azureMonitorWorkspaceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorWorkspaceResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AzureMonitorWorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -236,7 +236,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListByResourceGroupPa
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -273,7 +273,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListBySubscriptionPag
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -304,7 +304,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchUpdate(req *http.Request
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

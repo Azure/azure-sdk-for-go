@@ -130,6 +130,47 @@ type AdvancedPlatformMetricsClientListResponse struct {
 	AdvancedPlatformMetricsRuleListResult
 }
 
+// BlobAccessPointConfigurationsClientCreateResponse contains the response from method BlobAccessPointConfigurationsClient.BeginCreate.
+type BlobAccessPointConfigurationsClientCreateResponse struct {
+	// A BlobAccessPointConfiguration is a tracked Azure resource modeled as a sub-resource of a Storage Account.
+	BlobAccessPointConfiguration
+}
+
+// BlobAccessPointConfigurationsClientDeleteResponse contains the response from method BlobAccessPointConfigurationsClient.BeginDelete.
+type BlobAccessPointConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BlobAccessPointConfigurationsClientGetResponse contains the response from method BlobAccessPointConfigurationsClient.Get.
+type BlobAccessPointConfigurationsClientGetResponse struct {
+	// A BlobAccessPointConfiguration is a tracked Azure resource modeled as a sub-resource of a Storage Account.
+	BlobAccessPointConfiguration
+}
+
+// BlobAccessPointConfigurationsClientListByStorageAccountResponse contains the response from method BlobAccessPointConfigurationsClient.NewListByStorageAccountPager.
+type BlobAccessPointConfigurationsClientListByStorageAccountResponse struct {
+	// The response of a BlobAccessPointConfiguration list operation.
+	BlobAccessPointConfigurationListResult
+}
+
+// BlobAccessPointConfigurationsClientTestExistingConnectionResponse contains the response from method BlobAccessPointConfigurationsClient.BeginTestExistingConnection.
+type BlobAccessPointConfigurationsClientTestExistingConnectionResponse struct {
+	// The result of testing a Blob Access Point configuration connection.
+	BlobAccessPointConnectionTestResponse
+}
+
+// BlobAccessPointConfigurationsClientUpdateResponse contains the response from method BlobAccessPointConfigurationsClient.BeginUpdate.
+type BlobAccessPointConfigurationsClientUpdateResponse struct {
+	// A BlobAccessPointConfiguration is a tracked Azure resource modeled as a sub-resource of a Storage Account.
+	BlobAccessPointConfiguration
+}
+
+// BlobAccessPointConnectionTestsClientTestProposedConnectionResponse contains the response from method BlobAccessPointConnectionTestsClient.BeginTestProposedConnection.
+type BlobAccessPointConnectionTestsClientTestProposedConnectionResponse struct {
+	// The result of testing a Blob Access Point configuration connection.
+	BlobAccessPointConnectionTestResponse
+}
+
 // BlobContainersClientClearLegalHoldResponse contains the response from method BlobContainersClient.ClearLegalHold.
 type BlobContainersClientClearLegalHoldResponse struct {
 	// The LegalHold property of a blob container.
@@ -305,6 +346,76 @@ type ConnectorsClientTestExistingConnectionResponse struct {
 type ConnectorsClientUpdateResponse struct {
 	// A Connector is a tracked ARM resource modeled as a sub-resource of a Storage Account.
 	Connector
+}
+
+// ContextCacheContainersClientCreateOrUpdateResponse contains the response from method ContextCacheContainersClient.BeginCreateOrUpdate.
+type ContextCacheContainersClientCreateOrUpdateResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCacheContainersClientDeleteResponse contains the response from method ContextCacheContainersClient.BeginDelete.
+type ContextCacheContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContextCacheContainersClientGetResponse contains the response from method ContextCacheContainersClient.Get.
+type ContextCacheContainersClientGetResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCacheContainersClientListByContextCacheResponse contains the response from method ContextCacheContainersClient.NewListByContextCachePager.
+type ContextCacheContainersClientListByContextCacheResponse struct {
+	// The response of a ContextCacheContainer list operation.
+	ContextCacheContainerListResult
+}
+
+// ContextCacheContainersClientUpdateResponse contains the response from method ContextCacheContainersClient.BeginUpdate.
+type ContextCacheContainersClientUpdateResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCachesClientCheckNameAvailabilityResponse contains the response from method ContextCachesClient.CheckNameAvailability.
+type ContextCachesClientCheckNameAvailabilityResponse struct {
+	// The result of the context cache name availability check.
+	ContextCacheCheckNameAvailabilityResult
+}
+
+// ContextCachesClientCreateOrUpdateResponse contains the response from method ContextCachesClient.BeginCreateOrUpdate.
+type ContextCachesClientCreateOrUpdateResponse struct {
+	// A Context Cache resource
+	ContextCache
+}
+
+// ContextCachesClientDeleteResponse contains the response from method ContextCachesClient.BeginDelete.
+type ContextCachesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContextCachesClientGetResponse contains the response from method ContextCachesClient.Get.
+type ContextCachesClientGetResponse struct {
+	// A Context Cache resource
+	ContextCache
+}
+
+// ContextCachesClientListByResourceGroupResponse contains the response from method ContextCachesClient.NewListByResourceGroupPager.
+type ContextCachesClientListByResourceGroupResponse struct {
+	// The response of a ContextCache list operation.
+	ContextCacheListResult
+}
+
+// ContextCachesClientListBySubscriptionResponse contains the response from method ContextCachesClient.NewListBySubscriptionPager.
+type ContextCachesClientListBySubscriptionResponse struct {
+	// The response of a ContextCache list operation.
+	ContextCacheListResult
+}
+
+// ContextCachesClientUpdateResponse contains the response from method ContextCachesClient.BeginUpdate.
+type ContextCachesClientUpdateResponse struct {
+	// A Context Cache resource
+	ContextCache
 }
 
 // DataSharesClientCreateResponse contains the response from method DataSharesClient.BeginCreate.

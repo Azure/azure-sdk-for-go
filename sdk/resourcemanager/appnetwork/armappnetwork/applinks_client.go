@@ -19,7 +19,7 @@ import (
 // AppLinksClient contains the methods for the AppLinks group.
 // Don't use this type directly, use NewAppLinksClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-08-01-preview
 type AppLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AppLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAppLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppLinksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,7 +44,7 @@ func NewAppLinksClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create an AppLink.
+// BeginCreateOrUpdate - Create an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -65,7 +68,7 @@ func (client *AppLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create an AppLink.
+// CreateOrUpdate - Create an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, appLinkName string, resource AppLink, options *AppLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +94,7 @@ func (client *AppLinksClient) createOrUpdate(ctx context.Context, resourceGroupN
 func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, resource AppLink, _ *AppLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,7 +120,7 @@ func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// BeginDelete - Delete an AppLink.
+// BeginDelete - Delete an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -139,7 +142,7 @@ func (client *AppLinksClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete an AppLink.
+// Delete - Delete an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, appLinkName string, options *AppLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +168,7 @@ func (client *AppLinksClient) deleteOperation(ctx context.Context, resourceGroup
 func (client *AppLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, _ *AppLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -181,12 +184,12 @@ func (client *AppLinksClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get an AppLink.
+// Get - Get the details of an Azure Kubernetes Application Network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -212,7 +215,7 @@ func (client *AppLinksClient) Get(ctx context.Context, resourceGroupName string,
 func (client *AppLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, _ *AppLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -228,7 +231,7 @@ func (client *AppLinksClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +249,7 @@ func (client *AppLinksClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List AppLink resources by resource group.
+// NewListByResourceGroupPager - List Azure Kubernetes Application Network resources by resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AppLinksClientListByResourceGroupOptions contains the optional parameters for the AppLinksClient.NewListByResourceGroupPager
 //     method.
@@ -283,7 +286,7 @@ func (client *AppLinksClient) listByResourceGroupCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -299,7 +302,7 @@ func (client *AppLinksClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -318,7 +321,7 @@ func (client *AppLinksClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List AppLink resources by subscription.
+// NewListBySubscriptionPager - List Azure Kubernetes Application Network resources by subscription.
 //   - options - AppLinksClientListBySubscriptionOptions contains the optional parameters for the AppLinksClient.NewListBySubscriptionPager
 //     method.
 func (client *AppLinksClient) NewListBySubscriptionPager(options *AppLinksClientListBySubscriptionOptions) *runtime.Pager[AppLinksClientListBySubscriptionResponse] {
@@ -354,7 +357,7 @@ func (client *AppLinksClient) listBySubscriptionCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppLink/appLinks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -366,7 +369,7 @@ func (client *AppLinksClient) listBySubscriptionCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -385,7 +388,7 @@ func (client *AppLinksClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginUpdate - Update an AppLink.
+// BeginUpdate - Update an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -409,7 +412,7 @@ func (client *AppLinksClient) BeginUpdate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Update - Update an AppLink.
+// Update - Update an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) update(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -435,7 +438,7 @@ func (client *AppLinksClient) update(ctx context.Context, resourceGroupName stri
 func (client *AppLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, _ *AppLinksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -451,7 +454,7 @@ func (client *AppLinksClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

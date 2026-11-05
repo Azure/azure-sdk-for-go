@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_Create.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Create.json
 func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,26 +38,26 @@ func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientCreateResponse{
 	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armproviderhub.ProviderMonitorSettingProperties{
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_Delete.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Delete.json
 func ExampleProviderMonitorSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleProviderMonitorSettingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_Get.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Get.json
 func ExampleProviderMonitorSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,26 +99,26 @@ func ExampleProviderMonitorSettingsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientGetResponse{
 	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armproviderhub.ProviderMonitorSettingProperties{
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_ListByResourceGroup.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_ListByResourceGroup.json
 func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,20 +144,20 @@ func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 		// 	ProviderMonitorSettingArrayResponseWithContinuation: armproviderhub.ProviderMonitorSettingArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.ProviderMonitorSetting{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 		// 				Name: to.Ptr("ContosoMonitorSetting"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armproviderhub.ProviderMonitorSettingProperties{
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -166,7 +166,7 @@ func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_ListBySubscription.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_ListBySubscription.json
 func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,20 +192,20 @@ func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 		// 	ProviderMonitorSettingArrayResponseWithContinuation: armproviderhub.ProviderMonitorSettingArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.ProviderMonitorSetting{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 		// 				Name: to.Ptr("ContosoMonitorSetting"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armproviderhub.ProviderMonitorSettingProperties{
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -214,7 +214,7 @@ func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/ProviderMonitorSettings_Update.json
+// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Update.json
 func ExampleProviderMonitorSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,20 +234,20 @@ func ExampleProviderMonitorSettingsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientUpdateResponse{
 	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armproviderhub.ProviderMonitorSettingProperties{
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }

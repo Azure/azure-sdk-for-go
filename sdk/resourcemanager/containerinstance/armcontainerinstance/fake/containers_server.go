@@ -94,7 +94,7 @@ func (c *ContainersServerTransport) dispatchAttach(req *http.Request) (*http.Res
 	if c.srv.Attach == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Attach not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attach`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attach`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (c *ContainersServerTransport) dispatchExecuteCommand(req *http.Request) (*
 	if c.srv.ExecuteCommand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecuteCommand not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exec`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exec`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -172,7 +172,7 @@ func (c *ContainersServerTransport) dispatchListLogs(req *http.Request) (*http.R
 	if c.srv.ListLogs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListLogs not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logs`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/logs`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

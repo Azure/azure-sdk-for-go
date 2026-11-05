@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/DirectProviderRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
 func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegistrationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,48 +26,36 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	poller, err := clientFactory.NewProviderRegistrationsClient().BeginCreateOrUpdate(ctx, "Microsoft.Contoso", armproviderhub.ProviderRegistration{
 		Kind: to.Ptr(armproviderhub.ProviderRegistrationKindDirect),
 		Properties: &armproviderhub.ProviderRegistrationProperties{
-			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+			ProviderType:    to.Ptr(armproviderhub.ResourceProviderTypeInternal),
+			ProviderVersion: to.Ptr("2.0"),
+			ServiceName:     to.Ptr("root"),
+			Services: []*armproviderhub.ResourceProviderService{
 				{
-					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-					QuotaID: to.Ptr("CSP_2015-05-01"),
+					ServiceName: to.Ptr("tags"),
+					Status:      to.Ptr(armproviderhub.ServiceStatusInactive),
 				},
-				{
-					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-				},
-			},
-			CustomManifestVersion: to.Ptr("2.0"),
-			DstsConfiguration: &armproviderhub.ResourceProviderManifestPropertiesDstsConfiguration{
-				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
-				ServiceName:    to.Ptr("prds-shim"),
-			},
-			LegacyNamespace: to.Ptr("legacyNamespace"),
-			LegacyRegistrations: []*string{
-				to.Ptr("legacyRegistration"),
 			},
 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
 				IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
 				IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-					},
-				},
+				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
 			},
-			ManagementGroupGlobalNotificationEndpoints: []*armproviderhub.ResourceProviderEndpoint{
+			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 				{
-					EndpointURI: to.Ptr("{your_management_group_notification_endpoint}"),
+					QuotaID: to.Ptr("CSP_2015-05-01"),
+					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+				},
+				{
+					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
 				},
 			},
-			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
 			NotificationSettings: &armproviderhub.ResourceProviderManifestPropertiesNotificationSettings{
 				SubscriberSettings: []*armproviderhub.SubscriberSetting{
 					{
 						FilterRules: []*armproviderhub.FilterRule{
 							{
+								FilterQuery: to.Ptr("Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')"),
 								EndpointInformation: []*armproviderhub.EndpointInformation{
 									{
 										Endpoint:      to.Ptr("https://userrp.azure.com/arnnotify"),
@@ -80,40 +68,41 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 										SchemaVersion: to.Ptr("3.0"),
 									},
 								},
-								FilterQuery: to.Ptr("Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')"),
 							},
 						},
 					},
 				},
 			},
+			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
+			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
+				{
+					SubscriptionID: to.Ptr("e4eae963-2d15-43e6-a097-98bd75b33edd"),
+					AccountName:    to.Ptr("classichydrationprodsn01"),
+				},
+				{
+					SubscriptionID: to.Ptr("69e69ecb-e69c-41d4-99b8-87dd12781067"),
+					AccountName:    to.Ptr("classichydrationprodch01"),
+				},
+			},
+			ManagementGroupGlobalNotificationEndpoints: []*armproviderhub.ResourceProviderEndpoint{
+				{
+					EndpointURI: to.Ptr("{your_management_group_notification_endpoint}"),
+				},
+			},
 			OptionalFeatures: []*string{
 				to.Ptr("Microsoft.Resources/PlatformSubscription"),
 			},
-			ProviderType:    to.Ptr(armproviderhub.ResourceProviderTypeInternal),
-			ProviderVersion: to.Ptr("2.0"),
 			ResourceGroupLockOptionDuringMove: &armproviderhub.ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove{
 				BlockActionVerb: to.Ptr(armproviderhub.BlockActionVerbAction),
-			},
-			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
-				{
-					AccountName:    to.Ptr("classichydrationprodsn01"),
-					SubscriptionID: to.Ptr("e4eae963-2d15-43e6-a097-98bd75b33edd"),
-				},
-				{
-					AccountName:    to.Ptr("classichydrationprodch01"),
-					SubscriptionID: to.Ptr("69e69ecb-e69c-41d4-99b8-87dd12781067"),
-				},
 			},
 			ResponseOptions: &armproviderhub.ResourceProviderManifestPropertiesResponseOptions{
 				ServiceClientOptionsType: to.Ptr(armproviderhub.ServiceClientOptionsTypeDisableAutomaticDecompression),
 			},
-			ServiceName: to.Ptr("root"),
-			Services: []*armproviderhub.ResourceProviderService{
-				{
-					ServiceName: to.Ptr("tags"),
-					Status:      to.Ptr(armproviderhub.ServiceStatusInactive),
-				},
+			LegacyNamespace: to.Ptr("legacyNamespace"),
+			LegacyRegistrations: []*string{
+				to.Ptr("legacyRegistration"),
 			},
+			CustomManifestVersion: to.Ptr("2.0"),
 		},
 	}, nil)
 	if err != nil {
@@ -128,63 +117,58 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderRegistrationsClientCreateOrUpdateResponse{
 	// 	ProviderRegistration: armproviderhub.ProviderRegistration{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Name: to.Ptr("Microsoft.Contoso"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Properties: &armproviderhub.ProviderRegistrationProperties{
-	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+	// 			Namespace: to.Ptr("Microsoft.Contoso"),
+	// 			ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
 	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
+	// 					ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 	// 				},
-	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-	// 				},
-	// 			},
-	// 			CustomManifestVersion: to.Ptr("2.0"),
-	// 			DstsConfiguration: &armproviderhub.ResourceProviderManifestPropertiesDstsConfiguration{
-	// 				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
-	// 				ServiceName: to.Ptr("prds-shim"),
-	// 			},
-	// 			LegacyNamespace: to.Ptr("legacyNamespace"),
-	// 			LegacyRegistrations: []*string{
-	// 				to.Ptr("legacyRegistration"),
 	// 			},
 	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-	// 				AuthorizationOwners: []*string{
-	// 					to.Ptr("authorizationOwners-group"),
-	// 				},
-	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				IncidentRoutingService: to.Ptr(""),
-	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				ManifestOwners: []*string{
 	// 					to.Ptr("manifestOwners-group"),
 	// 				},
-	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 					},
+	// 				AuthorizationOwners: []*string{
+	// 					to.Ptr("authorizationOwners-group"),
 	// 				},
+	// 				IncidentRoutingService: to.Ptr(""),
+	// 				IncidentRoutingTeam: to.Ptr(""),
+	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 			},
-	// 			ManagementGroupGlobalNotificationEndpoints: []*armproviderhub.ResourceProviderEndpoint{
+	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 	// 				{
-	// 					EndpointURI: to.Ptr("{your_management_group_notification_endpoint}"),
+	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 				},
+	// 				{
+	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
 	// 				},
 	// 			},
 	// 			Metadata: map[string]any{
 	// 				"onboardedVia": "ProviderHub",
 	// 			},
-	// 			Namespace: to.Ptr("Microsoft.Contoso"),
-	// 			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
+	// 			ProviderVersion: to.Ptr("2.0"),
+	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
+	// 			ServiceName: to.Ptr("root"),
+	// 			Services: []*armproviderhub.ResourceProviderService{
+	// 				{
+	// 					ServiceName: to.Ptr("tags"),
+	// 					Status: to.Ptr(armproviderhub.ServiceStatusInactive),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 			NotificationSettings: &armproviderhub.ResourceProviderManifestPropertiesNotificationSettings{
 	// 				SubscriberSettings: []*armproviderhub.SubscriberSetting{
 	// 					{
 	// 						FilterRules: []*armproviderhub.FilterRule{
 	// 							{
+	// 								FilterQuery: to.Ptr("Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')"),
 	// 								EndpointInformation: []*armproviderhub.EndpointInformation{
 	// 									{
 	// 										Endpoint: to.Ptr("https://userrp.azure.com/arnnotify"),
@@ -197,61 +181,55 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	// 										SchemaVersion: to.Ptr("3.0"),
 	// 									},
 	// 								},
-	// 								FilterQuery: to.Ptr("Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')"),
 	// 							},
 	// 						},
 	// 					},
 	// 				},
 	// 			},
+	// 			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
+	// 			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
+	// 				{
+	// 					SubscriptionID: to.Ptr("e4eae963-2d15-43e6-a097-98bd75b33edd"),
+	// 					AccountName: to.Ptr("classichydrationprodsn01"),
+	// 				},
+	// 				{
+	// 					SubscriptionID: to.Ptr("69e69ecb-e69c-41d4-99b8-87dd12781067"),
+	// 					AccountName: to.Ptr("classichydrationprodch01"),
+	// 				},
+	// 			},
+	// 			ManagementGroupGlobalNotificationEndpoints: []*armproviderhub.ResourceProviderEndpoint{
+	// 				{
+	// 					EndpointURI: to.Ptr("{your_management_group_notification_endpoint}"),
+	// 				},
+	// 			},
 	// 			OptionalFeatures: []*string{
 	// 				to.Ptr("Microsoft.Resources/PlatformSubscription"),
 	// 			},
-	// 			ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
-	// 				{
-	// 					ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
-	// 				},
-	// 			},
-	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 			ProviderVersion: to.Ptr("2.0"),
-	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 			ResourceGroupLockOptionDuringMove: &armproviderhub.ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove{
 	// 				BlockActionVerb: to.Ptr(armproviderhub.BlockActionVerbAction),
-	// 			},
-	// 			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
-	// 				{
-	// 					AccountName: to.Ptr("classichydrationprodsn01"),
-	// 					SubscriptionID: to.Ptr("e4eae963-2d15-43e6-a097-98bd75b33edd"),
-	// 				},
-	// 				{
-	// 					AccountName: to.Ptr("classichydrationprodch01"),
-	// 					SubscriptionID: to.Ptr("69e69ecb-e69c-41d4-99b8-87dd12781067"),
-	// 				},
 	// 			},
 	// 			ResponseOptions: &armproviderhub.ResourceProviderManifestPropertiesResponseOptions{
 	// 				ServiceClientOptionsType: to.Ptr(armproviderhub.ServiceClientOptionsTypeDisableAutomaticDecompression),
 	// 			},
-	// 			ServiceName: to.Ptr("root"),
-	// 			Services: []*armproviderhub.ResourceProviderService{
-	// 				{
-	// 					ServiceName: to.Ptr("tags"),
-	// 					Status: to.Ptr(armproviderhub.ServiceStatusInactive),
-	// 				},
+	// 			LegacyNamespace: to.Ptr("legacyNamespace"),
+	// 			LegacyRegistrations: []*string{
+	// 				to.Ptr("legacyRegistration"),
 	// 			},
+	// 			CustomManifestVersion: to.Ptr("2.0"),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
 func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistrationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,44 +242,6 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	}
 	poller, err := clientFactory.NewProviderRegistrationsClient().BeginCreateOrUpdate(ctx, "Microsoft.Contoso", armproviderhub.ProviderRegistration{
 		Properties: &armproviderhub.ProviderRegistrationProperties{
-			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
-				{
-					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-					QuotaID: to.Ptr("CSP_2015-05-01"),
-				},
-				{
-					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-				},
-			},
-			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
-			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-				CanaryManifestOwners: []*string{
-					to.Ptr("SPARTA-PlatformServiceAdmin"),
-				},
-				ErrorResponseMessageOptions: &armproviderhub.ResourceProviderManagementErrorResponseMessageOptions{
-					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
-				},
-				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
-					Enabled:                to.Ptr(false),
-					ExpeditedRolloutIntent: to.Ptr(armproviderhub.ExpeditedRolloutIntentHotfix),
-				},
-				ExpeditedRolloutSubmitters: []*string{
-					to.Ptr("SPARTA-PlatformServiceOperator"),
-				},
-				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
-				IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
-				IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
-				PcCode:                 to.Ptr("P1234"),
-				ProfitCenterProgramID:  to.Ptr("1234"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-					},
-				},
-			},
 			ProviderType:    to.Ptr(armproviderhub.ResourceProviderTypeInternal),
 			ProviderVersion: to.Ptr("2.0"),
 			ServiceName:     to.Ptr("root"),
@@ -309,6 +249,37 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 				{
 					ServiceName: to.Ptr("tags"),
 					Status:      to.Ptr(armproviderhub.ServiceStatusInactive),
+				},
+			},
+			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
+			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
+				IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
+				IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
+				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
+				ExpeditedRolloutSubmitters: []*string{
+					to.Ptr("Contoso-PlatformServiceOperator"),
+				},
+				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
+					Enabled:                to.Ptr(false),
+					ExpeditedRolloutIntent: to.Ptr(armproviderhub.ExpeditedRolloutIntentHotfix),
+				},
+				ErrorResponseMessageOptions: &armproviderhub.ResourceProviderManagementErrorResponseMessageOptions{
+					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
+				},
+				CanaryManifestOwners: []*string{
+					to.Ptr("Contoso-PlatformServiceAdmin"),
+				},
+				PcCode:                to.Ptr("P1234"),
+				ProfitCenterProgramID: to.Ptr("1234"),
+			},
+			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+				{
+					QuotaID: to.Ptr("CSP_2015-05-01"),
+					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+				},
+				{
+					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
 				},
 			},
 		},
@@ -325,58 +296,10 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderRegistrationsClientCreateOrUpdateResponse{
 	// 	ProviderRegistration: armproviderhub.ProviderRegistration{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Name: to.Ptr("Microsoft.Contoso"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Properties: &armproviderhub.ProviderRegistrationProperties{
-	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
-	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
-	// 				},
-	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-	// 				},
-	// 			},
-	// 			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
-	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-	// 				AuthorizationOwners: []*string{
-	// 					to.Ptr("authorizationOwners-group"),
-	// 				},
-	// 				CanaryManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdmin"),
-	// 				},
-	// 				ErrorResponseMessageOptions: &armproviderhub.ResourceProviderManagementErrorResponseMessageOptions{
-	// 					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
-	// 				},
-	// 				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
-	// 					Enabled: to.Ptr(false),
-	// 					ExpeditedRolloutIntent: to.Ptr(armproviderhub.ExpeditedRolloutIntentHotfix),
-	// 				},
-	// 				ExpeditedRolloutSubmitters: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceOperator"),
-	// 				},
-	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				IncidentRoutingService: to.Ptr(""),
-	// 				IncidentRoutingTeam: to.Ptr(""),
-	// 				ManifestOwners: []*string{
-	// 					to.Ptr("manifestOwners-group"),
-	// 				},
-	// 				PcCode: to.Ptr("P1234"),
-	// 				ProfitCenterProgramID: to.Ptr("1234"),
-	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 					},
-	// 				},
-	// 			},
-	// 			Metadata: map[string]any{
-	// 				"onboardedVia": "ProviderHub",
-	// 			},
 	// 			Namespace: to.Ptr("Microsoft.Contoso"),
 	// 			ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
 	// 				{
@@ -384,32 +307,26 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 	// 				},
 	// 				{
-	// 					AllowedThirdPartyExtensions: []*armproviderhub.ThirdPartyExtension{
-	// 						{
-	// 							Name: to.Ptr("name"),
-	// 						},
-	// 					},
 	// 					ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k2"),
-	// 					GroupingTag: to.Ptr("GroupingTag"),
+	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b3"),
 	// 					ManagedByAuthorization: &armproviderhub.ResourceProviderAuthorizationManagedByAuthorization{
+	// 						ManagedByResourceRoleDefinitionID: to.Ptr("9e3af657-a8ff-583c-a75c-2fe7c4bcb635"),
+	// 						AllowManagedByInheritance: to.Ptr(true),
 	// 						AdditionalAuthorizations: []*armproviderhub.AdditionalAuthorization{
 	// 							{
 	// 								ApplicationID: to.Ptr("3e5aaca6-6470-4be4-8a17-24ab9519414b"),
 	// 								RoleDefinitionID: to.Ptr("1e86f807-6ec0-40b3-8b5f-686b7e43a0a2"),
 	// 							},
 	// 						},
-	// 						AllowManagedByInheritance: to.Ptr(true),
-	// 						ManagedByResourceRoleDefinitionID: to.Ptr("9e3af657-a8ff-583c-a75c-2fe7c4bcb635"),
 	// 					},
-	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b3"),
+	// 					AllowedThirdPartyExtensions: []*armproviderhub.ThirdPartyExtension{
+	// 						{
+	// 							Name: to.Ptr("name"),
+	// 						},
+	// 					},
+	// 					GroupingTag: to.Ptr("GroupingTag"),
 	// 				},
 	// 			},
-	// 			ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
-	// 				DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
-	// 			},
-	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 			ProviderVersion: to.Ptr("2.0"),
-	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 			ResourceProviderAuthorizationRules: &armproviderhub.ResourceProviderAuthorizationRules{
 	// 				AsyncOperationPollingRules: &armproviderhub.AsyncOperationPollingRules{
 	// 					AuthorizationActions: []*string{
@@ -417,6 +334,48 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 					},
 	// 				},
 	// 			},
+	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
+	// 				ManifestOwners: []*string{
+	// 					to.Ptr("manifestOwners-group"),
+	// 				},
+	// 				AuthorizationOwners: []*string{
+	// 					to.Ptr("authorizationOwners-group"),
+	// 				},
+	// 				IncidentRoutingService: to.Ptr(""),
+	// 				IncidentRoutingTeam: to.Ptr(""),
+	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+	// 				ExpeditedRolloutSubmitters: []*string{
+	// 					to.Ptr("Contoso-PlatformServiceOperator"),
+	// 				},
+	// 				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
+	// 					Enabled: to.Ptr(false),
+	// 					ExpeditedRolloutIntent: to.Ptr(armproviderhub.ExpeditedRolloutIntentHotfix),
+	// 				},
+	// 				ErrorResponseMessageOptions: &armproviderhub.ResourceProviderManagementErrorResponseMessageOptions{
+	// 					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
+	// 				},
+	// 				CanaryManifestOwners: []*string{
+	// 					to.Ptr("Contoso-PlatformServiceAdmin"),
+	// 				},
+	// 				PcCode: to.Ptr("P1234"),
+	// 				ProfitCenterProgramID: to.Ptr("1234"),
+	// 			},
+	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+	// 				{
+	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 				},
+	// 				{
+	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 				},
+	// 			},
+	// 			Metadata: map[string]any{
+	// 				"onboardedVia": "ProviderHub",
+	// 			},
+	// 			ProviderVersion: to.Ptr("2.0"),
+	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
 	// 			ServiceName: to.Ptr("root"),
 	// 			Services: []*armproviderhub.ResourceProviderService{
 	// 				{
@@ -424,20 +383,25 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 					Status: to.Ptr(armproviderhub.ServiceStatusInactive),
 	// 				},
 	// 			},
+	// 			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
+	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 			ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
+	// 				DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
+	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderRegistrations_Delete.json
+// Generated from example definition: 2025-10-01/ProviderRegistrations_Delete.json
 func ExampleProviderRegistrationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,7 +423,7 @@ func ExampleProviderRegistrationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderRegistrations_GenerateOperations.json
+// Generated from example definition: 2025-10-01/ProviderRegistrations_GenerateOperations.json
 func ExampleProviderRegistrationsClient_GenerateOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,54 +442,10 @@ func ExampleProviderRegistrationsClient_GenerateOperations() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderRegistrationsClientGenerateOperationsResponse{
-	// 	OperationsDefinitionArray: []*armproviderhub.OperationsDefinition{
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Read employees"),
-	// 				Operation: to.Ptr("Gets/List employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Write"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Writes employees"),
-	// 				Operation: to.Ptr("Create/update employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Delete"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Deletes employees"),
-	// 				Operation: to.Ptr("Deletes employee resource"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 			Origin: to.Ptr(armproviderhub.OperationOriginsUser),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Action"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Writes employees"),
-	// 				Operation: to.Ptr("Create/update employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(true),
-	// 			Origin: to.Ptr(armproviderhub.OperationOriginsSystem),
-	// 		},
-	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderRegistrations_Get.json
+// Generated from example definition: 2025-10-01/ProviderRegistrations_Get.json
 func ExampleProviderRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,61 +465,25 @@ func ExampleProviderRegistrationsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderRegistrationsClientGetResponse{
 	// 	ProviderRegistration: armproviderhub.ProviderRegistration{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Name: to.Ptr("Microsoft.Contoso"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 		Properties: &armproviderhub.ProviderRegistrationProperties{
-	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
-	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
-	// 				},
-	// 				{
-	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-	// 				},
-	// 			},
-	// 			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
-	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-	// 				AuthorizationOwners: []*string{
-	// 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
-	// 				},
-	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				IncidentRoutingService: to.Ptr(""),
-	// 				IncidentRoutingTeam: to.Ptr(""),
-	// 				ManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdministrator"),
-	// 				},
-	// 				PcCode: to.Ptr("P1234"),
-	// 				ProfitCenterProgramID: to.Ptr("1234"),
-	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
+	// 			ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
+	// 				ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
+	// 					AllowedAudiences: []*string{
+	// 						to.Ptr("https://management.core.windows.net/"),
 	// 					},
 	// 				},
+	// 				DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
 	// 			},
-	// 			Metadata: nil,
-	// 			Namespace: to.Ptr("microsoft.contoso"),
+	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 			ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
 	// 				{
 	// 					ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
 	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 	// 				},
 	// 			},
-	// 			ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
-	// 				DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
-	// 				ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
-	// 					AllowedAudiences: []*string{
-	// 						to.Ptr("https://management.core.windows.net/"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 			ProviderVersion: to.Ptr("2.0"),
-	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 			ResourceProviderAuthorizationRules: &armproviderhub.ResourceProviderAuthorizationRules{
 	// 				AsyncOperationPollingRules: &armproviderhub.AsyncOperationPollingRules{
 	// 					AuthorizationActions: []*string{
@@ -607,6 +491,9 @@ func ExampleProviderRegistrationsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Namespace: to.Ptr("microsoft.contoso"),
+	// 			ProviderVersion: to.Ptr("2.0"),
+	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
 	// 			ServiceName: to.Ptr("root"),
 	// 			Services: []*armproviderhub.ResourceProviderService{
 	// 				{
@@ -614,20 +501,46 @@ func ExampleProviderRegistrationsClient_Get() {
 	// 					Status: to.Ptr(armproviderhub.ServiceStatusInactive),
 	// 				},
 	// 			},
+	// 			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
+	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
+	// 				ManifestOwners: []*string{
+	// 					to.Ptr("Contoso-PlatformServiceAdministrator"),
+	// 				},
+	// 				AuthorizationOwners: []*string{
+	// 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
+	// 				},
+	// 				IncidentRoutingService: to.Ptr(""),
+	// 				IncidentRoutingTeam: to.Ptr(""),
+	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+	// 				PcCode: to.Ptr("P1234"),
+	// 				ProfitCenterProgramID: to.Ptr("1234"),
+	// 			},
+	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+	// 				{
+	// 					QuotaID: to.Ptr("CSP_2015-05-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 				},
+	// 				{
+	// 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+	// 					Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 				},
+	// 			},
+	// 			Metadata: nil,
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProviderRegistrations_List.json
+// Generated from example definition: 2025-10-01/ProviderRegistrations_List.json
 func ExampleProviderRegistrationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -653,42 +566,10 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		// 	ProviderRegistrationArrayResponseWithContinuation: armproviderhub.ProviderRegistrationArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.ProviderRegistration{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 		// 				Name: to.Ptr("Microsoft.Contoso"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 		// 				Properties: &armproviderhub.ProviderRegistrationProperties{
-		// 					Capabilities: []*armproviderhub.ResourceProviderCapabilities{
-		// 						{
-		// 							Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-		// 							QuotaID: to.Ptr("CSP_2015-05-01"),
-		// 						},
-		// 						{
-		// 							Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-		// 							QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-		// 						},
-		// 					},
-		// 					CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
-		// 					Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-		// 						AuthorizationOwners: []*string{
-		// 							to.Ptr("authorizationOwners-group"),
-		// 						},
-		// 						IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-		// 						IncidentRoutingService: to.Ptr(""),
-		// 						IncidentRoutingTeam: to.Ptr(""),
-		// 						ManifestOwners: []*string{
-		// 							to.Ptr("manifestOwners-group"),
-		// 						},
-		// 						PcCode: to.Ptr("P1234"),
-		// 						ProfitCenterProgramID: to.Ptr("1234"),
-		// 						ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
-		// 						ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-		// 							{
-		// 								ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 								Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-		// 								ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 							},
-		// 						},
-		// 					},
 		// 					Namespace: to.Ptr("microsoft.contoso"),
 		// 					ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
 		// 						{
@@ -696,17 +577,6 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		// 							RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 		// 						},
 		// 					},
-		// 					ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
-		// 						DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
-		// 						ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
-		// 							AllowedAudiences: []*string{
-		// 								to.Ptr("https://management.core.windows.net/"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-		// 					ProviderVersion: to.Ptr("2.0"),
-		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 					ResourceProviderAuthorizationRules: &armproviderhub.ResourceProviderAuthorizationRules{
 		// 						AsyncOperationPollingRules: &armproviderhub.AsyncOperationPollingRules{
 		// 							AuthorizationActions: []*string{
@@ -714,6 +584,30 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
+		// 						ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
+		// 							AllowedAudiences: []*string{
+		// 								to.Ptr("https://management.core.windows.net/"),
+		// 							},
+		// 						},
+		// 						DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
+		// 					},
+		// 					CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
+		// 					Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
+		// 						ManifestOwners: []*string{
+		// 							to.Ptr("manifestOwners-group"),
+		// 						},
+		// 						AuthorizationOwners: []*string{
+		// 							to.Ptr("authorizationOwners-group"),
+		// 						},
+		// 						IncidentRoutingService: to.Ptr(""),
+		// 						IncidentRoutingTeam: to.Ptr(""),
+		// 						IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+		// 						ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+		// 						PcCode: to.Ptr("P1234"),
+		// 						ProfitCenterProgramID: to.Ptr("1234"),
+		// 					},
+		// 					ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
 		// 					ServiceName: to.Ptr("root"),
 		// 					Services: []*armproviderhub.ResourceProviderService{
 		// 						{
@@ -721,14 +615,26 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		// 							Status: to.Ptr(armproviderhub.ServiceStatusInactive),
 		// 						},
 		// 					},
+		// 					ProviderVersion: to.Ptr("2.0"),
+		// 					Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+		// 						{
+		// 							QuotaID: to.Ptr("CSP_2015-05-01"),
+		// 							Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+		// 						},
+		// 						{
+		// 							QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+		// 							Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

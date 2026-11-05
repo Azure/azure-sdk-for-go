@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type OriginsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *armcdn.OriginsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.OriginsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method OriginsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties armcdn.OriginUpdateParameters, options *armcdn.OriginsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.OriginsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OriginsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *armcdn.OriginsClientGetOptions) (resp azfake.Responder[armcdn.OriginsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type OriginsServer struct {
 	// NewListByEndpointPager is the fake for method OriginsClient.NewListByEndpointPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByEndpointPager func(resourceGroupName string, profileName string, endpointName string, options *armcdn.OriginsClientListByEndpointOptions) (resp azfake.PagerResponder[armcdn.OriginsClientListByEndpointResponse])
-
-	// BeginUpdate is the fake for method OriginsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties armcdn.OriginUpdateParameters, options *armcdn.OriginsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.OriginsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOriginsServerTransport creates a new instance of OriginsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewOriginsServerTransport(srv *OriginsServer) *OriginsServerTransport {
 		srv:                    srv,
 		beginCreate:            newTracker[azfake.PollerResponder[armcdn.OriginsClientCreateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armcdn.OriginsClientDeleteResponse]](),
-		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.OriginsClientListByEndpointResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armcdn.OriginsClientUpdateResponse]](),
+		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.OriginsClientListByEndpointResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type OriginsServerTransport struct {
 	srv                    *OriginsServer
 	beginCreate            *tracker[azfake.PollerResponder[armcdn.OriginsClientCreateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armcdn.OriginsClientDeleteResponse]]
-	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.OriginsClientListByEndpointResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armcdn.OriginsClientUpdateResponse]]
+	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.OriginsClientListByEndpointResponse]]
 }
 
 // Do implements the policy.Transporter interface for OriginsServerTransport.
@@ -90,12 +90,12 @@ func (o *OriginsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = o.dispatchBeginCreate(req)
 			case "OriginsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OriginsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
 			case "OriginsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OriginsClient.NewListByEndpointPager":
 				res.resp, res.err = o.dispatchNewListByEndpointPager(req)
-			case "OriginsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (o *OriginsServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	}
 	beginCreate := o.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/origins/(?P<originName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (o *OriginsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := o.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/origins/(?P<originName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,99 +220,13 @@ func (o *OriginsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (o *OriginsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if o.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-	if err != nil {
-		return nil, err
-	}
-	originNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("originName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, originNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Origin, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (o *OriginsServerTransport) dispatchNewListByEndpointPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListByEndpointPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByEndpointPager not implemented")}
-	}
-	newListByEndpointPager := o.newListByEndpointPager.get(req)
-	if newListByEndpointPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := o.srv.NewListByEndpointPager(resourceGroupNameParam, profileNameParam, endpointNameParam, nil)
-		newListByEndpointPager = &resp
-		o.newListByEndpointPager.add(req, newListByEndpointPager)
-		server.PagerResponderInjectNextLinks(newListByEndpointPager, req, func(page *armcdn.OriginsClientListByEndpointResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByEndpointPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListByEndpointPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByEndpointPager) {
-		o.newListByEndpointPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (o *OriginsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if o.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := o.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/origins/(?P<originName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +273,92 @@ func (o *OriginsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		o.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (o *OriginsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if o.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/origins/(?P<originName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+	if err != nil {
+		return nil, err
+	}
+	originNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("originName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, originNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Origin, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OriginsServerTransport) dispatchNewListByEndpointPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListByEndpointPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByEndpointPager not implemented")}
+	}
+	newListByEndpointPager := o.newListByEndpointPager.get(req)
+	if newListByEndpointPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/origins`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := o.srv.NewListByEndpointPager(resourceGroupNameParam, profileNameParam, endpointNameParam, nil)
+		newListByEndpointPager = &resp
+		o.newListByEndpointPager.add(req, newListByEndpointPager)
+		server.PagerResponderInjectNextLinks(newListByEndpointPager, req, func(page *armcdn.OriginsClientListByEndpointResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByEndpointPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListByEndpointPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByEndpointPager) {
+		o.newListByEndpointPager.remove(req)
+	}
 	return resp, nil
 }
 

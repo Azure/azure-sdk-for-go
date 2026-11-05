@@ -86,7 +86,7 @@ func (s *SaaSOperationGroupServerTransport) dispatchBeginActivateResource(req *h
 	}
 	beginActivateResource := s.beginActivateResource.get(req)
 	if beginActivateResource == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/activateSaaS`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/activateSaaS`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

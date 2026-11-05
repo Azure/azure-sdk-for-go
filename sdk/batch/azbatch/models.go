@@ -5,9 +5,8 @@
 package azbatch
 
 import (
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
 )
 
 // AccountListSupportedImagesResult - The result of listing the supported Virtual Machine Images.
@@ -17,12 +16,6 @@ type AccountListSupportedImagesResult struct {
 
 	// The list of supported Virtual Machine Images.
 	Value []SupportedImage
-}
-
-// AddTaskCollectionResult - The result of adding a collection of Tasks to a Job.
-type AddTaskCollectionResult struct {
-	// The results of the add Task collection operation.
-	Value []TaskAddResult
 }
 
 // AffinityInfo - A locality hint that can be used by the Batch service to select a Compute Node
@@ -66,15 +59,6 @@ type ApplicationPackageReference struct {
 	// and HTTP status code 409. If this is omitted on a Task, and no default version is specified for this application, the Task
 	// fails with a pre-processing error.
 	Version *string
-}
-
-// AuthenticationTokenSettings - The settings for an authentication token that the Task can use to perform Batch
-// service operations.
-type AuthenticationTokenSettings struct {
-	// The Batch resources to which the token grants access. The authentication token grants access to a limited set of Batch
-	// service operations. Currently the only supported value for the access property is 'job', which grants access to all operations
-	// related to the Job which contains the Task.
-	Access []AccessScope
 }
 
 // AutoPoolSpecification - Specifies characteristics for a temporary 'auto pool'. The Batch service will
@@ -129,8 +113,7 @@ type AutoUserSpecification struct {
 
 	// The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be specified
 	// if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact
-	// other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should
-	// be accessible by StartTasks.
+	// other tasks.
 	Scope *AutoUserScope
 }
 
@@ -140,7 +123,7 @@ type AutomaticOSUpgradePolicy struct {
 	DisableAutomaticRollback *bool
 
 	// Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer
-	// version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools, [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
+	// version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools, [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchservice/pools/create-pool#windowsconfiguration)
 	// cannot be set to true.
 	EnableAutomaticOsUpgrade *bool
 
@@ -220,88 +203,6 @@ type CIFSMountConfiguration struct {
 	MountOptions *string
 }
 
-// Certificate - A Certificate that can be installed on Compute Nodes and can be used to
-// authenticate operations on the machine.
-type Certificate struct {
-	// REQUIRED; The base64-encoded contents of the Certificate. The maximum size is 10KB.
-	Data *string
-
-	// REQUIRED; The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits (it may include spaces but
-	// these are removed).
-	Thumbprint *string
-
-	// REQUIRED; The algorithm used to derive the thumbprint. This must be sha1.
-	ThumbprintAlgorithm *string
-
-	// The format of the Certificate data.
-	Format *CertificateFormat
-
-	// The password to access the Certificate's private key. This must be omitted if the Certificate format is cer.
-	Password *string
-
-	// READ-ONLY; The error that occurred on the last attempt to delete this Certificate. This property is set only if the Certificate
-	// is in the DeleteFailed state.
-	DeleteCertificateError *DeleteCertificateError
-
-	// READ-ONLY; The previous state of the Certificate. This property is not set if the Certificate is in its initial active
-	// state.
-	PreviousState *CertificateState
-
-	// READ-ONLY; The time at which the Certificate entered its previous state. This property is not set if the Certificate is
-	// in its initial Active state.
-	PreviousStateTransitionTime *time.Time
-
-	// READ-ONLY; The public part of the Certificate as a base-64 encoded .cer file.
-	PublicData *string
-
-	// READ-ONLY; The state of the Certificate.
-	State *CertificateState
-
-	// READ-ONLY; The time at which the Certificate entered its current state.
-	StateTransitionTime *time.Time
-
-	// READ-ONLY; The URL of the Certificate.
-	URL *string
-}
-
-// CertificateListResult - The result of listing the Certificates in the Account.
-type CertificateListResult struct {
-	// The URL to get the next set of results.
-	NextLink *string
-
-	// The list of Certificates.
-	Value []Certificate
-}
-
-// CertificateReference - A reference to a Certificate to be installed on Compute Nodes in a Pool. Warning: This object is
-// deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-// instead.
-type CertificateReference struct {
-	// REQUIRED; The thumbprint of the Certificate.
-	Thumbprint *string
-
-	// REQUIRED; The algorithm with which the thumbprint is associated. This must be sha1.
-	ThumbprintAlgorithm *string
-
-	// The location of the Certificate store on the Compute Node into which to install the Certificate. The default value is currentuser.
-	// This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration,
-	// or with virtualMachineConfiguration using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored
-	// in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the
-	// Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the
-	// user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-	StoreLocation *CertificateStoreLocation
-
-	// The name of the Certificate store on the Compute Node into which to install the Certificate. This property is applicable
-	// only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration
-	// using a Windows Image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher,
-	// AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
-	StoreName *string
-
-	// Which user Accounts on the Compute Node should have access to the private data of the Certificate. You can specify more
-	// than one visibility in this collection. The default is all Accounts.
-	Visibility []CertificateVisibility
-}
-
 // ContainerConfiguration - The configuration for container-enabled Pools.
 type ContainerConfiguration struct {
 	// REQUIRED; The container technology to be used.
@@ -343,8 +244,8 @@ type ContainerRegistryReference struct {
 	Username *string
 }
 
-// CreateJobContent - Parameters for creating an Azure Batch Job.
-type CreateJobContent struct {
+// CreateJobOptions - Parameters for creating an Azure Batch Job.
+type CreateJobOptions struct {
 	// REQUIRED; A string that uniquely identifies the Job within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -353,9 +254,17 @@ type CreateJobContent struct {
 	// REQUIRED; The Pool on which the Batch service runs the Job's Tasks.
 	PoolInfo *PoolInfo
 
-	// Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority
-	// jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
-	// allowTaskPreemption after it has been created using the update job API.
+	// The action the Batch service should take when all Tasks in the Job are in the completed state. Note that if a Job contains
+	// no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job Manager task;
+	// if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete to noaction
+	// and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks. The default
+	// is noaction.
+	AllTasksCompleteMode *AllTasksCompleteMode
+
+	// Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by default. Please
+	// contact support for more information) If the value is set to True, other high priority jobs submitted to the system will
+	// take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been
+	// created using the update job API.
 	AllowTaskPreemption *bool
 
 	// The list of common environment variable settings. These environment variables are set for all Tasks in the Job (including
@@ -390,40 +299,35 @@ type CreateJobContent struct {
 	// local files, or shutting down services that were started as part of Job preparation.
 	JobReleaseTask *JobReleaseTask
 
-	// The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater
-	// than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
-	// can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+	// The maximum number of tasks that can be executed in parallel for the job. (This property is not available by default. Please
+	// contact support for more information) The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified,
+	// the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a
+	// job's maxParallelTasks after it has been created using the update job API.
 	MaxParallelTasks *int32
 
 	// A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
 	Metadata []MetadataItem
 
-	// The network configuration for the Job.
+	// (This property is not available by default. Please contact support for more information) The network configuration for
+	// the Job.
 	NetworkConfiguration *JobNetworkConfiguration
-
-	// The action the Batch service should take when all Tasks in the Job are in the completed state. Note that if a Job contains
-	// no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job Manager task;
-	// if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete to noaction
-	// and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks. The default
-	// is noaction.
-	OnAllTasksComplete *OnAllTasksComplete
-
-	// The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if has a failureInfo.
-	// A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was
-	// an error starting the Task, for example due to a resource file download error. The default is noaction.
-	OnTaskFailure *OnTaskFailure
 
 	// The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being
 	// the highest priority. The default value is 0.
 	Priority *int32
 
+	// The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if has a failureInfo.
+	// A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was
+	// an error starting the Task, for example due to a resource file download error. The default is noaction.
+	TaskFailureMode *TaskFailureMode
+
 	// Whether Tasks in the Job can define dependencies on each other. The default is false.
 	UsesTaskDependencies *bool
 }
 
-// CreateJobScheduleContent - Parameters for creating an Azure Batch Job Schedule
-type CreateJobScheduleContent struct {
+// CreateJobScheduleOptions - Parameters for creating an Azure Batch Job Schedule
+type CreateJobScheduleOptions struct {
 	// REQUIRED; A string that uniquely identifies the schedule within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -445,8 +349,8 @@ type CreateJobScheduleContent struct {
 	Metadata []MetadataItem
 }
 
-// CreateNodeUserContent - Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
-type CreateNodeUserContent struct {
+// CreateNodeUserOptions - Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
+type CreateNodeUserOptions struct {
 	// REQUIRED; The user name of the Account.
 	Name *string
 
@@ -468,8 +372,8 @@ type CreateNodeUserContent struct {
 	SSHPublicKey *string
 }
 
-// CreatePoolContent - Parameters for creating an Azure Batch Pool.
-type CreatePoolContent struct {
+// CreatePoolOptions - Parameters for creating an Azure Batch Pool.
+type CreatePoolOptions struct {
 	// REQUIRED; A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
@@ -490,7 +394,7 @@ type CreatePoolContent struct {
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
 	// 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the REST API directly, the
-	// HTTP status code is 400 (Bad Request).
+	// HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	AutoScaleEvaluationInterval *string
 
 	// A formula for the desired number of Compute Nodes in the Pool. This property must not be specified if enableAutoScale is
@@ -498,15 +402,6 @@ type CreatePoolContent struct {
 	// created. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information
 	// about specifying this formula, see 'Automatically scale Compute Nodes in an Azure Batch Pool' (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
 	AutoScaleFormula *string
-
-	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
-	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
-	// and Certificates are placed in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-	// instead.
-	CertificateReferences []CertificateReference
 
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024.
@@ -536,13 +431,8 @@ type CreatePoolContent struct {
 	// The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no effect
 	// when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a
 	// value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status
-	// code is 400 (Bad Request).
+	// code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	ResizeTimeout *string
-
-	// The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch Pool. When
-	// specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be
-	// specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
-	ResourceTags map[string]*string
 
 	// A Task specified to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the
 	// Pool or when the Compute Node is restarted.
@@ -558,9 +448,6 @@ type CreatePoolContent struct {
 	// or both.
 	TargetLowPriorityNodes *int32
 
-	// The desired node communication mode for the pool. If omitted, the default value is Default.
-	TargetNodeCommunicationMode *NodeCommunicationMode
-
 	// How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy
 
@@ -574,12 +461,22 @@ type CreatePoolContent struct {
 	// The list of user Accounts to be created on each Compute Node in the Pool.
 	UserAccounts []UserAccount
 
+	// Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance Mix Pool.
+	// When specified, vmSize must be 'Mix'. This property can only be changed while the Pool has no Compute Nodes.
+	VMSKUProfile *VirtualMachineSKUProfile
+
 	// The virtual machine configuration for the Pool. This property must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration
 }
 
-// CreateTaskContent - Parameters for creating an Azure Batch Task.
-type CreateTaskContent struct {
+// CreateTaskCollectionResult - The result of creating a collection of Tasks to a Job.
+type CreateTaskCollectionResult struct {
+	// The results of the create Task collection operation.
+	Values []TaskCreateResult
+}
+
+// CreateTaskOptions - Parameters for creating an Azure Batch Task.
+type CreateTaskOptions struct {
 	// REQUIRED; The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after
 	// the primary Task and all subtasks have finished executing the coordination command line. The command line does not run
 	// under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
@@ -602,13 +499,6 @@ type CreateTaskContent struct {
 	// is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download
 	// failed, the Task fails.
 	ApplicationPackageReferences []ApplicationPackageReference
-
-	// The settings for an authentication token that the Task can use to perform Batch service operations. If this property is
-	// set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations
-	// without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable.
-	// The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job
-	// permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-	AuthenticationTokenSettings *AuthenticationTokenSettings
 
 	// The execution constraints that apply to this Task. If you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount
 	// specified for the Job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
@@ -675,28 +565,14 @@ type DataDisk struct {
 	// the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
 	Caching *CachingType
 
-	// The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
-	StorageAccountType *StorageAccountType
+	// The managed disk parameters.
+	ManagedDisk *ManagedDisk
 }
 
-// DeallocateNodeContent - Options for deallocating a Compute Node.
-type DeallocateNodeContent struct {
+// DeallocateNodeOptions - Options for deallocating a Compute Node.
+type DeallocateNodeOptions struct {
 	// When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeDeallocateOption *NodeDeallocateOption
-}
-
-// DeleteCertificateError - An error encountered by the Batch service when deleting a Certificate.
-type DeleteCertificateError struct {
-	// An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string
-
-	// A message describing the Certificate deletion error, intended to be suitable for display in a user interface.
-	Message *string
-
-	// A list of additional error details related to the Certificate deletion error. This list includes details such as the active
-	// Pools and Compute Nodes referencing this Certificate. However, if a large number of resources reference the Certificate,
-	// the list contains only about the first hundred.
-	Values []NameValuePair
 }
 
 // DiffDiskSettings - Specifies the ephemeral Disk Settings for the operating system disk used by the
@@ -709,35 +585,59 @@ type DiffDiskSettings struct {
 	Placement *DiffDiskPlacement
 }
 
-// DisableJobContent - Parameters for disabling an Azure Batch Job.
-type DisableJobContent struct {
+// DisableJobOptions - Parameters for disabling an Azure Batch Job.
+type DisableJobOptions struct {
 	// REQUIRED; What to do with active Tasks associated with the Job.
 	DisableTasks *DisableJobOption
 }
 
-// DisableNodeSchedulingContent - Parameters for disabling scheduling on an Azure Batch Compute Node.
-type DisableNodeSchedulingContent struct {
+// DisableNodeSchedulingOptions - Parameters for disabling scheduling on an Azure Batch Compute Node.
+type DisableNodeSchedulingOptions struct {
 	// What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is requeue.
 	NodeDisableSchedulingOption *NodeDisableSchedulingOption
+}
+
+// DiskCustomerManagedKey - The Customer Managed Key reference to encrypt the Disk.
+type DiskCustomerManagedKey struct {
+	// The reference of one of the pool identities to encrypt Disk. This identity will be used to access the KeyVault.
+	IdentityReference *PoolIdentityReference
+
+	// Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is required regardless of rotationToLatestKeyVersionEnabled
+	// value.
+	KeyURL *string
+
+	// Set this flag to true to enable auto-updating of the Disk Encryption to the latest key version. Default is false.
+	RotationToLatestKeyVersionEnabled *bool
 }
 
 // DiskEncryptionConfiguration - The disk encryption configuration applied on compute nodes in the pool.
 // Disk encryption configuration is not supported on Linux pool created with
 // Azure Compute Gallery Image.
 type DiskEncryptionConfiguration struct {
+	// The Customer Managed Key reference to encrypt the OS Disk. Customer Managed Key will encrypt OS Disk by EncryptionAtRest,
+	// and by default we will encrypt the data disk as well. It can be used only when the pool is configured with an identity
+	// and OsDisk is set as one of the targets of DiskEncryption.
+	CustomerManagedKey *DiskCustomerManagedKey
+
 	// The list of disk targets Batch Service will encrypt on the compute node. The list of disk targets Batch Service will encrypt
 	// on the compute node.
 	Targets []DiskEncryptionTarget
 }
 
-// EnablePoolAutoScaleContent - Parameters for enabling automatic scaling on an Azure Batch Pool.
-type EnablePoolAutoScaleContent struct {
+// DiskEncryptionSetParameters - The ARM resource id of the disk encryption set.
+type DiskEncryptionSetParameters struct {
+	// The ARM resource id of the disk encryption set. The resource must be in the same subscription as the Batch account.
+	ID *string
+}
+
+// EnablePoolAutoScaleOptions - Parameters for enabling automatic scaling on an Azure Batch Pool.
+type EnablePoolAutoScaleOptions struct {
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
 	// 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you
 	// are calling the REST API directly, the HTTP status code is 400 (Bad Request). If you specify a new interval, then the existing
 	// autoscale evaluation schedule will be stopped and a new autoscale evaluation schedule will be started, with its starting
-	// time being the time when this request was issued.
+	// time being the time when this request was issued. The time duration is specified in ISO 8601 format.
 	AutoScaleEvaluationInterval *string
 
 	// The formula for the desired number of Compute Nodes in the Pool. The default value is 15 minutes. The minimum and maximum
@@ -760,7 +660,7 @@ type EnvironmentSetting struct {
 
 // Error - An error response received from the Azure Batch service.
 type Error struct {
-	// REQUIRED; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string
 
 	// A message describing the error, intended to be suitable for display in a user interface.
@@ -788,8 +688,8 @@ type ErrorMessage struct {
 	Value *string
 }
 
-// EvaluatePoolAutoScaleContent - Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
-type EvaluatePoolAutoScaleContent struct {
+// EvaluatePoolAutoScaleOptions - Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
+type EvaluatePoolAutoScaleOptions struct {
 	// REQUIRED; The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated,
 	// but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information
 	// about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
@@ -855,7 +755,7 @@ type ExitOptions struct {
 	// If the Job's onTaskFailed property is noaction, then specifying this property returns an error and the add Task request
 	// fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
 	// Request).
-	JobAction *JobAction
+	JobAction *JobActionKind
 }
 
 // FileProperties - The properties of a file on a Compute Node.
@@ -876,52 +776,28 @@ type FileProperties struct {
 	FileMode *string
 }
 
-// HTTPHeader - An HTTP header name-value pair
-type HTTPHeader struct {
-	// REQUIRED; The case-insensitive name of the header to be used while uploading output files.
-	Name *string
-
-	// The value of the header to be used while uploading output files.
-	Value *string
+// HardwareProfile - Specifies the hardware settings for the Compute Nodes.
+type HardwareProfile struct {
+	// Specifies the properties for customizing the size of the virtual machine.
+	VMSizeProperties *VMSizeProperties
 }
 
-// ImageReference - A reference to an Azure Virtual Machines Marketplace Image or a Azure Compute Gallery Image.
-// To get the list of all Azure Marketplace Image references verified by Azure Batch, see the
-// ' List Supported Images ' operation.
-type ImageReference struct {
-	// The community gallery image unique identifier. This property is mutually exclusive with other properties and can be fetched
-	// from community gallery image GET call.
-	CommunityGalleryImageID *string
+// HostEndpointSettings - Specifies particular host endpoint settings.
+type HostEndpointSettings struct {
+	// Specifies the reference to the InVMAccessControlProfileVersion resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles/{profile}/versions/{version}.
+	InVMAccessControlProfileReferenceID *string
 
-	// The offer type of the Azure Virtual Machines Marketplace Image. For example, UbuntuServer or WindowsServer.
-	Offer *string
+	// Specifies the access control policy execution mode.
+	Mode *HostEndpointSettingsModeTypes
+}
 
-	// The publisher of the Azure Virtual Machines Marketplace Image. For example, Canonical or MicrosoftWindowsServer.
-	Publisher *string
+// IPTag - Contains the IP tag associated with the public IP address.
+type IPTag struct {
+	// The IP Tag type. Example: FirstPartyUsage.
+	IPTagType *string
 
-	// The SKU of the Azure Virtual Machines Marketplace Image. For example, 18.04-LTS or 2019-Datacenter.
-	SKU *string
-
-	// The shared gallery image unique identifier. This property is mutually exclusive with other properties and can be fetched
-	// from shared gallery image GET call.
-	SharedGalleryImageID *string
-
-	// The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the latest
-	// version of an Image. If omitted, the default is 'latest'.
-	Version *string
-
-	// The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using this Image
-	// Id. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId}
-	// or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}
-	// for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference properties.
-	// The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure
-	// Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about
-	// the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
-	VirtualMachineImageID *string
-
-	// READ-ONLY; The specific version of the platform image or marketplace image used to create the node. This read-only field
-	// differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
-	ExactVersion *string
+	// The value of the IP tag associated with the public IP. Example: SQL.
+	Tag *string
 }
 
 // InboundEndpoint - An inbound endpoint on a Compute Node.
@@ -1003,52 +879,67 @@ type Job struct {
 	// REQUIRED; The Pool settings associated with the Job.
 	PoolInfo *PoolInfo
 
-	// Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority
-	// jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
-	// allowTaskPreemption after it has been created using the update job API.
-	AllowTaskPreemption *bool
-
-	// The execution constraints for the Job.
-	Constraints *JobConstraints
-
-	// The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater
-	// than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
-	// can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+	// The maximum number of tasks that can be executed in parallel for the job. (This property is not available by default. Please
+	// contact support for more information) The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified,
+	// the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a
+	// job's maxParallelTasks after it has been created using the update job API.
 	MaxParallelTasks *int32
-
-	// A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata;
-	// it is solely for the use of user code.
-	Metadata []MetadataItem
-
-	// The action the Batch service should take when all Tasks in the Job are in the completed state. The default is noaction.
-	OnAllTasksComplete *OnAllTasksComplete
 
 	// The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being
 	// the highest priority. The default value is 0.
 	Priority *int32
 
-	// READ-ONLY; The list of common environment variable settings. These environment variables are set for all Tasks in the Job
-	// (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting
-	// specified here by specifying the same setting name with a different value.
-	CommonEnvironmentSettings []EnvironmentSetting
-
 	// READ-ONLY; The creation time of the Job.
 	CreationTime *time.Time
-
-	// READ-ONLY; The display name for the Job.
-	DisplayName *string
 
 	// READ-ONLY; The ETag of the Job. This is an opaque string. You can use it to detect whether the Job has changed between
 	// requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take effect only
 	// if nobody else has modified the Job in the meantime.
 	ETag *azcore.ETag
 
-	// READ-ONLY; The execution information for the Job.
-	ExecutionInfo *JobExecutionInfo
-
 	// READ-ONLY; A string that uniquely identifies the Job within the Account. The ID is case-preserving and case-insensitive
 	// (that is, you may not have two IDs within an Account that differ only by case).
 	ID *string
+
+	// READ-ONLY; The last modified time of the Job. This is the last time at which the Job level data, such as the Job state
+	// or priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
+	LastModified *time.Time
+
+	// READ-ONLY; The current state of the Job.
+	State *JobState
+
+	// READ-ONLY; The time at which the Job entered its current state.
+	StateTransitionTime *time.Time
+
+	// READ-ONLY; The URL of the Job.
+	URL *string
+
+	// The action the Batch service should take when all Tasks in the Job are in the completed state. The default is noaction.
+	AllTasksCompleteMode *AllTasksCompleteMode
+
+	// Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by default. Please
+	// contact support for more information) If the value is set to True, other high priority jobs submitted to the system will
+	// take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been
+	// created using the update job API.
+	AllowTaskPreemption *bool
+
+	// The execution constraints for the Job.
+	Constraints *JobConstraints
+
+	// A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata;
+	// it is solely for the use of user code.
+	Metadata []MetadataItem
+
+	// READ-ONLY; The list of common environment variable settings. These environment variables are set for all Tasks in the Job
+	// (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting
+	// specified here by specifying the same setting name with a different value.
+	CommonEnvironmentSettings []EnvironmentSetting
+
+	// READ-ONLY; The display name for the Job.
+	DisplayName *string
+
+	// READ-ONLY; The execution information for the Job.
+	ExecutionInfo *JobExecutionInfo
 
 	// READ-ONLY; Details of a Job Manager Task to be launched when the Job is started.
 	JobManagerTask *JobManagerTask
@@ -1061,17 +952,14 @@ type Job struct {
 	// that has run any other Task of the Job.
 	JobReleaseTask *JobReleaseTask
 
-	// READ-ONLY; The last modified time of the Job. This is the last time at which the Job level data, such as the Job state
-	// or priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
-	LastModified *time.Time
+	// READ-ONLY; Resource usage statistics for the entire lifetime of the Job. This property is populated only if the BatchJob
+	// was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately
+	// available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+	JobStatistics *JobStatistics
 
-	// READ-ONLY; The network configuration for the Job.
+	// READ-ONLY; (This property is not available by default. Please contact support for more information) The network configuration
+	// for the Job.
 	NetworkConfiguration *JobNetworkConfiguration
-
-	// READ-ONLY; The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed
-	// if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count,
-	// or if there was an error starting the Task, for example due to a resource file download error. The default is noaction.
-	OnTaskFailure *OnTaskFailure
 
 	// READ-ONLY; The previous state of the Job. This property is not set if the Job is in its initial Active state.
 	PreviousState *JobState
@@ -1080,19 +968,10 @@ type Job struct {
 	// Active state.
 	PreviousStateTransitionTime *time.Time
 
-	// READ-ONLY; The current state of the Job.
-	State *JobState
-
-	// READ-ONLY; The time at which the Job entered its current state.
-	StateTransitionTime *time.Time
-
-	// READ-ONLY; Resource usage statistics for the entire lifetime of the Job. This property is populated only if the BatchJob
-	// was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately
-	// available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-	Stats *JobStatistics
-
-	// READ-ONLY; The URL of the Job.
-	URL *string
+	// READ-ONLY; The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed
+	// if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count,
+	// or if there was an error starting the Task, for example due to a resource file download error. The default is noaction.
+	TaskFailureMode *TaskFailureMode
 
 	// READ-ONLY; Whether Tasks in the Job can define dependencies on each other. The default is false.
 	UsesTaskDependencies *bool
@@ -1110,7 +989,7 @@ type JobConstraints struct {
 	// The maximum elapsed time that the Job may run, measured from the time the Job is created. If the Job does not complete
 	// within the time limit, the Batch service terminates it and any Tasks that are still running. In this case, the termination
 	// reason will be MaxWallClockTimeExpiry. If this property is not specified, there is no time limit on how long the Job may
-	// run.
+	// run. The time duration is specified in ISO 8601 format.
 	MaxWallClockTime *string
 }
 
@@ -1199,13 +1078,6 @@ type JobManagerTask struct {
 	// or because download failed, the Task fails.
 	ApplicationPackageReferences []ApplicationPackageReference
 
-	// The settings for an authentication token that the Task can use to perform Batch service operations. If this property is
-	// set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations
-	// without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable.
-	// The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job
-	// permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-	AuthenticationTokenSettings *AuthenticationTokenSettings
-
 	// Constraints that apply to the Job Manager Task.
 	Constraints *TaskConstraints
 
@@ -1261,13 +1133,9 @@ type JobManagerTask struct {
 	UserIdentity *UserIdentity
 }
 
-// JobNetworkConfiguration - The network configuration for the Job.
+// JobNetworkConfiguration - (This property is not available by default. Please contact support for more information) The
+// network configuration for the Job.
 type JobNetworkConfiguration struct {
-	// REQUIRED; Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true,
-	// nodes will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job ends.
-	// Defaults to false.
-	SkipWithdrawFromVNet *bool
-
 	// REQUIRED; The ARM resource identifier of the virtual network subnet which Compute Nodes running Tasks from the Job will
 	// join for the duration of the Task. The virtual network must be in the same region and subscription as the Azure Batch Account.
 	// The specified subnet should have enough free IP addresses to accommodate the number of Compute Nodes which will run Tasks
@@ -1281,6 +1149,11 @@ type JobNetworkConfiguration struct {
 	// ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is also required to be open for
 	// outbound connections for communications to Azure Storage. For more details see: https://learn.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
 	SubnetID *string
+
+	// Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true, nodes
+	// will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job ends. Defaults
+	// to false.
+	SkipWithdrawFromVnet *bool
 }
 
 // JobPreparationAndReleaseTaskStatus - The status of the Job Preparation and Job Release Tasks on a Compute Node.
@@ -1492,7 +1365,7 @@ type JobReleaseTask struct {
 	// The maximum elapsed time that the Job Release Task may run on a given Compute Node, measured from the time the Task starts.
 	// If the Task does not complete within the time limit, the Batch service terminates it. The default value is 15 minutes.
 	// You may not specify a timeout longer than 15 minutes. If you do, the Batch service rejects it with an error; if you are
-	// calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	MaxWallClockTime *string
 
 	// A list of files that the Batch service will download to the Compute Node before running the command line. There is a maximum
@@ -1504,7 +1377,7 @@ type JobReleaseTask struct {
 
 	// The minimum time to retain the Task directory for the Job Release Task on the Compute Node. After this time, the Batch
 	// service may delete the Task directory and all its contents. The default is 7 days, i.e. the Task directory will be retained
-	// for 7 days unless the Compute Node is removed or the Job is deleted.
+	// for 7 days unless the Compute Node is removed or the Job is deleted. The time duration is specified in ISO 8601 format.
 	RetentionTime *string
 
 	// The user identity under which the Job Release Task runs. If omitted, the Task runs as a non-administrative user unique
@@ -1569,9 +1442,6 @@ type JobSchedule struct {
 	// READ-ONLY; The creation time of the Job Schedule.
 	CreationTime *time.Time
 
-	// READ-ONLY; The display name for the schedule.
-	DisplayName *string
-
 	// READ-ONLY; The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has
 	// changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your
 	// changes should take effect only if nobody else has modified the schedule in the meantime.
@@ -1588,6 +1458,22 @@ type JobSchedule struct {
 	// created or Jobs changing state.
 	LastModified *time.Time
 
+	// READ-ONLY; The current state of the Job Schedule.
+	State *JobScheduleState
+
+	// READ-ONLY; The time at which the Job Schedule entered the current state.
+	StateTransitionTime *time.Time
+
+	// READ-ONLY; The URL of the Job Schedule.
+	URL *string
+
+	// READ-ONLY; The display name for the schedule.
+	DisplayName *string
+
+	// READ-ONLY; The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available.
+	// The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+	JobScheduleStatistics *JobScheduleStatistics
+
 	// READ-ONLY; The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial active
 	// state.
 	PreviousState *JobScheduleState
@@ -1595,19 +1481,6 @@ type JobSchedule struct {
 	// READ-ONLY; The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule
 	// is in its initial active state.
 	PreviousStateTransitionTime *time.Time
-
-	// READ-ONLY; The current state of the Job Schedule.
-	State *JobScheduleState
-
-	// READ-ONLY; The time at which the Job Schedule entered the current state.
-	StateTransitionTime *time.Time
-
-	// READ-ONLY; The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available.
-	// The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-	Stats *JobScheduleStatistics
-
-	// READ-ONLY; The URL of the Job Schedule.
-	URL *string
 }
 
 // JobScheduleConfiguration - The schedule according to which Jobs will be created. All times are fixed
@@ -1632,7 +1505,7 @@ type JobScheduleConfiguration struct {
 	// default is that the schedule does not recur: one Job is created, within the startWindow after the doNotRunUntil time, and
 	// the schedule is complete as soon as that Job finishes. The minimum value is 1 minute. If you specify a lower value, the
 	// Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code is 400
-	// (Bad Request).
+	// (Bad Request). The time duration is specified in ISO 8601 format.
 	RecurrenceInterval *string
 
 	// The time interval, starting from the time at which the schedule indicates a Job should be created, within which a Job must
@@ -1641,7 +1514,7 @@ type JobScheduleConfiguration struct {
 	// interval, then this is equivalent to an infinite startWindow, because the Job that is 'due' in one recurrenceInterval is
 	// not carried forward into the next recurrence interval. The default is infinite. The minimum value is 1 minute. If you specify
 	// a lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP
-	// status code is 400 (Bad Request).
+	// status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	StartWindow *string
 }
 
@@ -1672,64 +1545,64 @@ type JobScheduleListResult struct {
 
 // JobScheduleStatistics - Resource usage statistics for a Job Schedule.
 type JobScheduleStatistics struct {
+	// REQUIRED; The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task
+	// fails if it exhausts its maximum retry count without returning exit code 0.
+	FailedTasksCount *int64
+
 	// REQUIRED; The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
-	// created under the schedule.
+	// created under the schedule. The time duration is specified in ISO 8601 format.
 	KernelCPUTime *string
 
 	// REQUIRED; The time at which the statistics were last updated. All statistics are limited to the range between startTime
 	// and lastUpdateTime.
 	LastUpdateTime *time.Time
 
-	// REQUIRED; The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task
-	// fails if it exhausts its maximum retry count without returning exit code 0.
-	NumFailedTasks *int64
-
-	// REQUIRED; The total number of Tasks successfully completed during the given time range in Jobs created under the schedule.
-	// A Task completes successfully if it returns exit code 0.
-	NumSucceededTasks *int64
-
-	// REQUIRED; The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
-	NumTaskRetries *int64
-
-	// REQUIRED; The total gibibytes read from disk by all Tasks in all Jobs created under the schedule.
-	ReadIOGiB *float32
-
 	// REQUIRED; The total number of disk read operations made by all Tasks in all Jobs created under the schedule.
 	ReadIOPS *int64
 
+	// REQUIRED; The total gibibytes read from disk by all Tasks in all Jobs created under the schedule.
+	ReadIoGiB *float32
+
 	// REQUIRED; The start time of the time range covered by the statistics.
 	StartTime *time.Time
+
+	// REQUIRED; The total number of Tasks successfully completed during the given time range in Jobs created under the schedule.
+	// A Task completes successfully if it returns exit code 0.
+	SucceededTasksCount *int64
+
+	// REQUIRED; The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
+	TaskRetriesCount *int64
 
 	// REQUIRED; The URL of the statistics.
 	URL *string
 
 	// REQUIRED; The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
-	// created under the schedule.
+	// created under the schedule. The time duration is specified in ISO 8601 format.
 	UserCPUTime *string
 
 	// REQUIRED; The total wait time of all Tasks in all Jobs created under the schedule. The wait time for a Task is defined
 	// as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures,
 	// the wait time is the time to the most recent Task execution.). This value is only reported in the Account lifetime statistics;
-	// it is not included in the Job statistics.
+	// it is not included in the Job statistics. The time duration is specified in ISO 8601 format.
 	WaitTime *string
 
 	// REQUIRED; The total wall clock time of all the Tasks in all the Jobs created under the schedule. The wall clock time is
 	// the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics
 	// were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the
-	// Task retries.
+	// Task retries. The time duration is specified in ISO 8601 format.
 	WallClockTime *string
-
-	// REQUIRED; The total gibibytes written to disk by all Tasks in all Jobs created under the schedule.
-	WriteIOGiB *float32
 
 	// REQUIRED; The total number of disk write operations made by all Tasks in all Jobs created under the schedule.
 	WriteIOPS *int64
+
+	// REQUIRED; The total gibibytes written to disk by all Tasks in all Jobs created under the schedule.
+	WriteIoGiB *float32
 }
 
 // JobSchedulingError - An error encountered by the Batch service when scheduling a Job.
 type JobSchedulingError struct {
 	// REQUIRED; The category of the Job scheduling error.
-	Category *ErrorCategory
+	Category *ErrorSourceCategory
 
 	// An identifier for the Job scheduling error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string
@@ -1746,9 +1619,17 @@ type JobSpecification struct {
 	// REQUIRED; The Pool on which the Batch service runs the Tasks of Jobs created under this schedule.
 	PoolInfo *PoolInfo
 
-	// Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority
-	// jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
-	// allowTaskPreemption after it has been created using the update job API.
+	// The action the Batch service should take when all Tasks in a Job created under this schedule are in the completed state.
+	// Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used
+	// with a Job Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete
+	// to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks.
+	// The default is noaction.
+	AllTasksCompleteMode *AllTasksCompleteMode
+
+	// Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by default. Please
+	// contact support for more information) If the value is set to True, other high priority jobs submitted to the system will
+	// take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been
+	// created using the update job API.
 	AllowTaskPreemption *bool
 
 	// A list of common environment variable settings. These environment variables are set for all Tasks in Jobs created under
@@ -1779,35 +1660,30 @@ type JobSpecification struct {
 	// Task for the Job. The Batch service runs the Job Release Task on the Compute Nodes that have run the Job Preparation Task.
 	JobReleaseTask *JobReleaseTask
 
-	// The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater
-	// than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
-	// can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+	// The maximum number of tasks that can be executed in parallel for the job. (This property is not available by default. Please
+	// contact support for more information) The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified,
+	// the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a
+	// job's maxParallelTasks after it has been created using the update job API.
 	MaxParallelTasks *int32
 
 	// A list of name-value pairs associated with each Job created under this schedule as metadata. The Batch service does not
 	// assign any meaning to metadata; it is solely for the use of user code.
 	Metadata []MetadataItem
 
-	// The network configuration for the Job.
+	// (This property is not available by default. Please contact support for more information) The network configuration for
+	// the Job.
 	NetworkConfiguration *JobNetworkConfiguration
-
-	// The action the Batch service should take when all Tasks in a Job created under this schedule are in the completed state.
-	// Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used
-	// with a Job Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete
-	// to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks.
-	// The default is noaction.
-	OnAllTasksComplete *OnAllTasksComplete
-
-	// The action the Batch service should take when any Task fails in a Job created under this schedule. A Task is considered
-	// to have failed if it have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit
-	// code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download
-	// error. The default is noaction.
-	OnTaskFailure *OnTaskFailure
 
 	// The priority of Jobs created under this schedule. Priority values can range from -1000 to 1000, with -1000 being the lowest
 	// priority and 1000 being the highest priority. The default value is 0. This priority is used as the default for all Jobs
 	// under the Job Schedule. You can update a Job's priority after it has been created using by using the update Job API.
 	Priority *int32
+
+	// The action the Batch service should take when any Task fails in a Job created under this schedule. A Task is considered
+	// to have failed if it have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit
+	// code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download
+	// error. The default is noaction.
+	TaskFailureMode *TaskFailureMode
 
 	// Whether Tasks in the Job can define dependencies on each other. The default is false.
 	UsesTaskDependencies *bool
@@ -1815,55 +1691,58 @@ type JobSpecification struct {
 
 // JobStatistics - Resource usage statistics for a Job.
 type JobStatistics struct {
+	// REQUIRED; The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
+	// maximum retry count without returning exit code 0.
+	FailedTasksCount *int64
+
 	// REQUIRED; The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+	// The time duration is specified in ISO 8601 format.
 	KernelCPUTime *string
 
 	// REQUIRED; The time at which the statistics were last updated. All statistics are limited to the range between startTime
 	// and lastUpdateTime.
 	LastUpdateTime *time.Time
 
-	// REQUIRED; The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
-	// maximum retry count without returning exit code 0.
-	NumFailedTasks *int64
-
-	// REQUIRED; The total number of Tasks successfully completed in the Job during the given time range. A Task completes successfully
-	// if it returns exit code 0.
-	NumSucceededTasks *int64
-
-	// REQUIRED; The total number of retries on all the Tasks in the Job during the given time range.
-	NumTaskRetries *int64
-
 	// REQUIRED; The total amount of data in GiB read from disk by all Tasks in the Job.
-	ReadIOGiB *float32
+	ReadIoGiB *float32
 
 	// REQUIRED; The total number of disk read operations made by all Tasks in the Job.
-	ReadIOps *int64
+	ReadIops *int64
 
 	// REQUIRED; The start time of the time range covered by the statistics.
 	StartTime *time.Time
+
+	// REQUIRED; The total number of Tasks successfully completed in the Job during the given time range. A Task completes successfully
+	// if it returns exit code 0.
+	SucceededTasksCount *int64
+
+	// REQUIRED; The total number of retries on all the Tasks in the Job during the given time range.
+	TaskRetriesCount *int64
 
 	// REQUIRED; The URL of the statistics.
 	URL *string
 
 	// REQUIRED; The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+	// The time duration is specified in ISO 8601 format.
 	UserCPUTime *string
 
 	// REQUIRED; The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between
 	// the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the
 	// time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it is not included
-	// in the Job statistics.
+	// in the Job statistics. The time duration is specified in ISO 8601 format.
 	WaitTime *string
 
 	// REQUIRED; The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
 	// started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had
-	// not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
+	// not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries. The time duration
+	// is specified in ISO 8601 format.
 	WallClockTime *string
 
 	// REQUIRED; The total amount of data in GiB written to disk by all Tasks in the Job.
-	WriteIOGiB *float32
+	WriteIoGiB *float32
 
 	// REQUIRED; The total number of disk write operations made by all Tasks in the Job.
-	WriteIOps *int64
+	WriteIops *int64
 }
 
 // LinuxUserConfiguration - Properties used to create a user Account on a Linux Compute Node.
@@ -1895,11 +1774,25 @@ type ListPoolNodeCountsResult struct {
 
 // ManagedDisk - The managed disk parameters.
 type ManagedDisk struct {
+	// Specifies the customer managed disk encryption set resource id for the managed disk. It can be set only in UserSubscription
+	// mode.
+	DiskEncryptionSet *DiskEncryptionSetParameters
+
 	// Specifies the security profile settings for the managed disk.
 	SecurityProfile *VMDiskSecurityProfile
 
 	// The storage account type for managed disk.
 	StorageAccountType *StorageAccountType
+}
+
+// MaxInstancePercentPerZonePolicy - The policy that limits the percentage of Pool instances that may be allocated in a single
+// availability zone.
+type MaxInstancePercentPerZonePolicy struct {
+	// REQUIRED; The maximum percentage of Pool instances that may be allocated in a single availability zone.
+	Value *int32
+
+	// Whether the maximum instance percentage policy is enabled.
+	Enabled *bool
 }
 
 // MetadataItem - The Batch service does not assign any meaning to this metadata; it is solely
@@ -1976,7 +1869,7 @@ type NameValuePair struct {
 // NetworkConfiguration - The network configuration for a Pool.
 type NetworkConfiguration struct {
 	// The scope of dynamic vnet assignment.
-	DynamicVNetAssignmentScope *DynamicVNetAssignmentScope
+	DynamicVnetAssignmentScope *DynamicVNetAssignmentScope
 
 	// Whether this pool should enable accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV)
 	// to a VM, which may lead to improved networking performance. For more details, see: https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
@@ -2028,94 +1921,103 @@ type NetworkSecurityGroupRule struct {
 
 // Node - A Compute Node in the Batch service.
 type Node struct {
-	// An identifier which can be passed when adding a Task to request that the Task be scheduled on this Compute Node. Note that
-	// this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then
-	// the Task will be scheduled elsewhere.
+	// READ-ONLY; An identifier which can be passed when adding a Task to request that the Task be scheduled on this Compute Node.
+	// Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled,
+	// then the Task will be scheduled elsewhere.
 	AffinityID *string
 
-	// The time at which this Compute Node was allocated to the Pool. This is the time when the Compute Node was initially allocated
-	// and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
+	// READ-ONLY; The time at which this Compute Node was allocated to the Pool. This is the time when the Compute Node was initially
+	// allocated and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
 	AllocationTime *time.Time
 
-	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
-	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
-	// and Certificates are placed in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-	// instead.
-	CertificateReferences []CertificateReference
-
-	// The endpoint configuration for the Compute Node.
-	EndpointConfiguration *NodeEndpointConfiguration
-
-	// The list of errors that are currently being encountered by the Compute Node.
-	Errors []NodeError
-
-	// The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node
-	// is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute
+	// READ-ONLY; The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute
+	// Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute
 	// Nodes.
 	ID *string
 
-	// The IP address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added to a Pool
-	// is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and
-	// the IP address is reclaimed and could be reused for new Compute Nodes.
+	// READ-ONLY; The IP address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added
+	// to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files are deleted,
+	// and the IP address is reclaimed and could be reused for new Compute Nodes.
 	IPAddress *string
 
-	// Whether this Compute Node is a dedicated Compute Node. If false, the Compute Node is a Spot/Low-priority Compute Node.
-	IsDedicated *bool
+	// READ-ONLY; The IPv6 address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is
+	// added to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files
+	// are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes. This property will not be present
+	// if the Pool is not configured for IPv6.
+	IPv6Address *string
 
-	// The last time at which the Compute Node was started. This property may not be present if the Compute Node state is unusable.
+	// READ-ONLY; The last time at which the Compute Node was started. This property may not be present if the Compute Node state
+	// is unusable.
 	LastBootTime *time.Time
 
-	// Information about the Compute Node agent version and the time the Compute Node upgraded to a new version.
-	NodeAgentInfo *NodeAgentInfo
-
-	// A list of Tasks whose state has recently changed. This property is present only if at least one Task has run on this Compute
-	// Node since it was assigned to the Pool.
-	RecentTasks []TaskInfo
-
-	// The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes Job Manager
-	// Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
-	RunningTaskSlotsCount *int32
-
-	// The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal Tasks,
-	// but not Job Preparation, Job Release or Start Tasks.
-	RunningTasksCount *int32
-
-	// Whether the Compute Node is available for Task scheduling.
-	SchedulingState *SchedulingState
-
-	// The Task specified to run on the Compute Node as it joins the Pool.
-	StartTask *StartTask
-
-	// Runtime information about the execution of the StartTask on the Compute Node.
-	StartTaskInfo *StartTaskInfo
-
-	// The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were running
-	// on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available.
+	// READ-ONLY; The current state of the Compute Node.
 	State *NodeState
 
-	// The time at which the Compute Node entered its current state.
+	// READ-ONLY; The time at which the Compute Node entered its current state.
 	StateTransitionTime *time.Time
 
-	// The total number of Job Tasks completed on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not
-	// Job Preparation, Job Release or Start Tasks.
+	// READ-ONLY; The total number of Job Tasks completed on the Compute Node. This includes Job Manager Tasks and normal Tasks,
+	// but not Job Preparation, Job Release or Start Tasks.
 	TotalTasksRun *int32
 
-	// The total number of Job Tasks which completed successfully (with exitCode 0) on the Compute Node. This includes Job Manager
-	// Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
-	TotalTasksSucceeded *int32
-
-	// The URL of the Compute Node.
+	// READ-ONLY; The URL of the Compute Node.
 	URL *string
 
-	// The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual machines in
-	// Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	// READ-ONLY; The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual machines
+	// in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
 	VMSize *string
 
-	// Info about the current state of the virtual machine.
+	// READ-ONLY; Info about the current state of the virtual machine.
 	VirtualMachineInfo *VirtualMachineInfo
+
+	// READ-ONLY; The endpoint configuration for the Compute Node.
+	EndpointConfiguration *NodeEndpointConfiguration
+
+	// READ-ONLY; The list of errors that are currently being encountered by the Compute Node.
+	Errors []NodeError
+
+	// READ-ONLY; Whether this Compute Node is a dedicated Compute Node. If false, the Compute Node is a Spot/Low-priority Compute
+	// Node.
+	IsDedicated *bool
+
+	// READ-ONLY; Information about the Compute Node agent version and the time the Compute Node upgraded to a new version.
+	NodeAgentInfo *NodeAgentInfo
+
+	// READ-ONLY; The public IPv4 address (load balancer front-end VIP) used to reach this Compute Node from outside the virtual
+	// network. For Pools that use the Batch-managed or User-managed public load balancer, this is the load balancer's front-end
+	// public IPv4 address. The value is present regardless of whether SSH or RDP remote access is enabled, so callers can perform
+	// IP-based validation even when remote login is disabled. The property is omitted when the Pool is configured with no public
+	// IP addresses (for example, private link or BYO VNet with NoPublicIPAddresses).
+	PublicIPAddress *string
+
+	// READ-ONLY; The public IPv6 address (load balancer front-end VIP) used to reach this Compute Node from outside the virtual
+	// network. Populated only when the Pool is configured for IPv6 / dual-stack public networking. The property is omitted otherwise.
+	PublicIPv6Address *string
+
+	// READ-ONLY; A list of Tasks whose state has recently changed. This property is present only if at least one Task has run
+	// on this Compute Node since it was assigned to the Pool.
+	RecentTasks []TaskInfo
+
+	// READ-ONLY; The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes
+	// Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
+	RunningTaskSlotsCount *int32
+
+	// READ-ONLY; The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal
+	// Tasks, but not Job Preparation, Job Release or Start Tasks.
+	RunningTasksCount *int32
+
+	// READ-ONLY; Whether the Compute Node is available for Task scheduling.
+	SchedulingState *SchedulingState
+
+	// READ-ONLY; The Task specified to run on the Compute Node as it joins the Pool.
+	StartTask *StartTask
+
+	// READ-ONLY; Runtime information about the execution of the StartTask on the Compute Node.
+	StartTaskInfo *StartTaskInfo
+
+	// READ-ONLY; The total number of Job Tasks which completed successfully (with exitCode 0) on the Compute Node. This includes
+	// Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
+	TotalTasksSucceeded *int32
 }
 
 // NodeAgentInfo - The Batch Compute Node agent is a program that runs on each Compute Node in the
@@ -2281,6 +2183,12 @@ type NodeRemoteLoginSettings struct {
 
 	// REQUIRED; The port used for remote login to the Compute Node.
 	RemoteLoginPort *int32
+
+	// The IPv6 address used for remote login to the Compute Node.
+	IPv6RemoteLoginIPAddress *string
+
+	// The port used for remote login to the Compute Node.
+	IPv6RemoteLoginPort *int32
 }
 
 // NodeVMExtension - The configuration for virtual machine extension instance view.
@@ -2304,8 +2212,8 @@ type NodeVMExtensionListResult struct {
 	Value []NodeVMExtension
 }
 
-// OSDisk - Settings for the operating system disk of the compute node (VM).
-type OSDisk struct {
+// OsDisk - Settings for the operating system disk of the compute node (VM).
+type OsDisk struct {
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
 	// storage. ReadOnly for Premium storage.
 	Caching *CachingType
@@ -2364,7 +2272,7 @@ type OutputFileBlobContainerDestination struct {
 
 	// A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when uploading
 	// files to Azure Storage. Official document on allowed headers when uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
-	UploadHeaders []HTTPHeader
+	UploadHeaders []OutputFileUploadHeader
 }
 
 // OutputFileDestination - The destination to which a file should be uploaded.
@@ -2380,16 +2288,65 @@ type OutputFileUploadConfig struct {
 	UploadCondition *OutputFileUploadCondition
 }
 
+// OutputFileUploadHeader - An HTTP header name-value pair
+type OutputFileUploadHeader struct {
+	// REQUIRED; The case-insensitive name of the header to be used while uploading output files.
+	Name *string
+
+	// The value of the header to be used while uploading output files.
+	Value *string
+}
+
+// Placement - The placement policy for Compute Nodes in a Pool.
+type Placement struct {
+	// REQUIRED; The zone placement policy. Auto delegates zone selection and balancing to the Virtual Machine Scale Set.
+	ZonePlacementPolicy *ZonePlacementPolicyType
+}
+
 // Pool - A Pool in the Azure Batch service.
 type Pool struct {
 	// A Task specified to run on each Compute Node as it joins the Pool.
 	StartTask *StartTask
 
-	// The desired node communication mode for the pool. If omitted, the default value is Default.
-	TargetNodeCommunicationMode *NodeCommunicationMode
-
 	// The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
 	UpgradePolicy *UpgradePolicy
+
+	// READ-ONLY; The creation time of the Pool.
+	CreationTime *time.Time
+
+	// READ-ONLY; The number of dedicated Compute Nodes currently in the Pool.
+	CurrentDedicatedNodes *int32
+
+	// READ-ONLY; The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have
+	// been preempted are included in this count.
+	CurrentLowPriorityNodes *int32
+
+	// READ-ONLY; The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between
+	// requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect
+	// only if nobody else has modified the Pool in the meantime.
+	ETag *azcore.ETag
+
+	// READ-ONLY; A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
+	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
+	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
+	ID *string
+
+	// READ-ONLY; The last modified time of the Pool. This is the last time at which the Pool level data, such as the targetDedicatedNodes
+	// or enableAutoscale settings, changed. It does not factor in node-level changes such as a Compute Node changing state.
+	LastModified *time.Time
+
+	// READ-ONLY; The current state of the Pool.
+	State *PoolState
+
+	// READ-ONLY; The time at which the Pool entered its current state.
+	StateTransitionTime *time.Time
+
+	// READ-ONLY; The URL of the Pool.
+	URL *string
+
+	// READ-ONLY; The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
+	// about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	VMSize *string
 
 	// READ-ONLY; Whether the Pool is resizing.
 	AllocationState *AllocationState
@@ -2403,7 +2360,8 @@ type Pool struct {
 	ApplicationPackageReferences []ApplicationPackageReference
 
 	// READ-ONLY; The time interval at which to automatically adjust the Pool size according to the autoscale formula. This property
-	// is set only if the Pool automatically scales, i.e. enableAutoScale is true.
+	// is set only if the Pool automatically scales, i.e. enableAutoScale is true. The time duration is specified in ISO 8601
+	// format.
 	AutoScaleEvaluationInterval *string
 
 	// READ-ONLY; A formula for the desired number of Compute Nodes in the Pool. This property is set only if the Pool automatically
@@ -2414,93 +2372,47 @@ type Pool struct {
 	// automatically scales, i.e. enableAutoScale is true.
 	AutoScaleRun *AutoScaleRun
 
-	// READ-ONLY; For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
-	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
-	// and Certificates are placed in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-	// instead.
-	CertificateReferences []CertificateReference
-
-	// READ-ONLY; The creation time of the Pool.
-	CreationTime *time.Time
-
-	// READ-ONLY; The number of dedicated Compute Nodes currently in the Pool.
-	CurrentDedicatedNodes *int32
-
-	// READ-ONLY; The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have
-	// been preempted are included in this count.
-	CurrentLowPriorityNodes *int32
-
-	// READ-ONLY; The current state of the pool communication mode.
-	CurrentNodeCommunicationMode *NodeCommunicationMode
-
-	// READ-ONLY; The display name for the Pool. The display name need not be unique and can contain any Unicode characters up
-	// to a maximum length of 1024.
+	// READ-ONLY; The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string
-
-	// READ-ONLY; The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between
-	// requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect
-	// only if nobody else has modified the Pool in the meantime.
-	ETag *azcore.ETag
 
 	// READ-ONLY; Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes
 	// and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically
 	// resizes according to the formula. The default value is false.
 	EnableAutoScale *bool
 
-	// READ-ONLY; Whether the Pool permits direct communication between Compute Nodes. This imposes restrictions on which Compute
-	// Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute Nodes
-	// to be allocated in the Pool.
+	// READ-ONLY; Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits
+	// the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool
+	// not reaching its desired size. The default value is false.
 	EnableInterNodeCommunication *bool
-
-	// READ-ONLY; A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
-	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
-	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
-	ID *string
 
 	// READ-ONLY; The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The
 	// user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	Identity *PoolIdentity
 
-	// READ-ONLY; The last modified time of the Pool. This is the last time at which the Pool level data, such as the targetDedicatedNodes
-	// or enableAutoscale settings, changed. It does not factor in node-level changes such as a Compute Node changing state.
-	LastModified *time.Time
-
 	// READ-ONLY; A list of name-value pairs associated with the Pool as metadata.
 	Metadata []MetadataItem
 
-	// READ-ONLY; A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+	// READ-ONLY; Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure
+	// fileshare, NFS, CIFS or Blobfuse based file system.
 	MountConfiguration []MountConfiguration
 
 	// READ-ONLY; The network configuration for the Pool.
 	NetworkConfiguration *NetworkConfiguration
+
+	// READ-ONLY; Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only
+	// if the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics
+	// may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about
+	// 30 minutes.
+	PoolStatistics *PoolStatistics
 
 	// READ-ONLY; A list of errors encountered while performing the last resize on the Pool. This property is set only if one
 	// or more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
 	ResizeErrors []ResizeError
 
 	// READ-ONLY; The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize operation.
-	// (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
+	// (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes. The time duration is
+	// specified in ISO 8601 format.
 	ResizeTimeout *string
-
-	// READ-ONLY; The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-	// Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property
-	// can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
-	ResourceTags map[string]*string
-
-	// READ-ONLY; The current state of the Pool.
-	State *PoolState
-
-	// READ-ONLY; The time at which the Pool entered its current state.
-	StateTransitionTime *time.Time
-
-	// READ-ONLY; Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only
-	// if the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics
-	// may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about
-	// 30 minutes.
-	Stats *PoolStatistics
 
 	// READ-ONLY; The desired number of dedicated Compute Nodes in the Pool.
 	TargetDedicatedNodes *int32
@@ -2515,17 +2427,12 @@ type Pool struct {
 	// default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
 	TaskSlotsPerNode *int32
 
-	// READ-ONLY; The URL of the Pool.
-	URL *string
-
 	// READ-ONLY; The list of user Accounts to be created on each Compute Node in the Pool.
 	UserAccounts []UserAccount
 
-	// READ-ONLY; The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
-	// about available VM sizes, see Sizes for Virtual Machines in Azure (https://learn.microsoft.com/azure/virtual-machines/sizes/overview).
-	// Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-	// series).
-	VMSize *string
+	// READ-ONLY; Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance
+	// Mix Pool. When specified, vmSize must be 'Mix'. This property can only be changed while the Pool has no Compute Nodes.
+	VMSKUProfile *VirtualMachineSKUProfile
 
 	// READ-ONLY; The virtual machine configuration for the Pool. This property must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration
@@ -2548,6 +2455,13 @@ type PoolIdentity struct {
 	// The list of user identities associated with the Batch account. The user identity dictionary key references will be ARM
 	// resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities []UserAssignedIdentity
+}
+
+// PoolIdentityReference - The reference of one of the pool identities to encrypt Disk. This identity will be used to access
+// the key vault.
+type PoolIdentityReference struct {
+	// The ARM resource id of the user assigned identity. This reference must be included in the pool identities.
+	ResourceID *string
 }
 
 // PoolInfo - Specifies how a Job should be assigned to a Pool.
@@ -2646,22 +2560,14 @@ type PoolSpecification struct {
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
 	// 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you
-	// are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601
+	// format.
 	AutoScaleEvaluationInterval *string
 
 	// The formula for the desired number of Compute Nodes in the Pool. This property must not be specified if enableAutoScale
 	// is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the Pool
 	// is created. If the formula is not valid, the Batch service rejects the request with detailed error information.
 	AutoScaleFormula *string
-
-	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux
-	// Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable
-	// AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser',
-	// a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed
-	// in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024.
-	// Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-	CertificateReferences []CertificateReference
 
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024.
@@ -2690,13 +2596,8 @@ type PoolSpecification struct {
 	// The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no effect
 	// when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a
 	// value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly,
-	// the HTTP status code is 400 (Bad Request).
+	// the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	ResizeTimeout *string
-
-	// The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch Pool. When
-	// specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be
-	// specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
-	ResourceTags *string
 
 	// A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when
 	// the Compute Node is restarted.
@@ -2711,9 +2612,6 @@ type PoolSpecification struct {
 	// is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes,
 	// or both.
 	TargetLowPriorityNodes *int32
-
-	// The desired node communication mode for the pool. If omitted, the default value is Default.
-	TargetNodeCommunicationMode *NodeCommunicationMode
 
 	// How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy
@@ -2745,23 +2643,20 @@ type PoolStatistics struct {
 	URL *string
 
 	// Statistics related to resource consumption by Compute Nodes in the Pool.
-	ResourceStats *PoolResourceStatistics
-
-	// Statistics related to Pool usage, such as the amount of core-time used.
-	UsageStats *PoolUsageStatistics
+	ResourceStatistics *PoolResourceStatistics
 }
 
-// PoolUsageStatistics - Statistics related to Pool usage information.
-type PoolUsageStatistics struct {
-	// REQUIRED; The aggregated wall-clock time of the dedicated Compute Node cores being part of the Pool.
-	DedicatedCoreTime *string
+// ProxyAgentSettings - Specifies ProxyAgent settings while creating the virtual machine.
+type ProxyAgentSettings struct {
+	// Specifies whether Metadata Security Protocol feature should be enabled on the virtual machine or virtual machine scale
+	// set. Default is False.
+	Enabled *bool
 
-	// REQUIRED; The time at which the statistics were last updated. All statistics are limited to the range between startTime
-	// and lastUpdateTime.
-	LastUpdateTime *time.Time
+	// Settings for the IMDS endpoint.
+	Imds *HostEndpointSettings
 
-	// REQUIRED; The start time of the time range covered by the statistics.
-	StartTime *time.Time
+	// Settings for the WireServer endpoint.
+	WireServer *HostEndpointSettings
 }
 
 // PublicIPAddressConfiguration - The public IP Address configuration of the networking configuration of a Pool.
@@ -2774,12 +2669,20 @@ type PublicIPAddressConfiguration struct {
 
 	// The provisioning type for Public IP Addresses for the Pool. The default value is BatchManaged.
 	IPAddressProvisioningType *IPAddressProvisioningType
+
+	// The IP families used to specify IP versions available to the pool. IP families are used to determine single-stack or dual-stack
+	// pools. For single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6.
+	IPFamilies []IPFamily
+
+	// A list of IP tags associated with the public IP addresses of the Pool. IP tags are used to categorize and filter public
+	// IP addresses for billing and management purposes.
+	IPTags []IPTag
 }
 
-// RebootNodeContent - Parameters for rebooting an Azure Batch Compute Node.
-type RebootNodeContent struct {
+// RebootNodeOptions - Parameters for rebooting an Azure Batch Compute Node.
+type RebootNodeOptions struct {
 	// When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
-	NodeRebootOption *NodeRebootOption
+	NodeRebootKind *NodeRebootKind
 }
 
 // RecentJob - Information about the most recent Job to run under the Job Schedule.
@@ -2791,17 +2694,17 @@ type RecentJob struct {
 	URL *string
 }
 
-// ReimageNodeContent - Parameters for reimaging an Azure Batch Compute Node.
-type ReimageNodeContent struct {
+// ReimageNodeOptions - Parameters for reimaging an Azure Batch Compute Node.
+type ReimageNodeOptions struct {
 	// When to reimage the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeReimageOption *NodeReimageOption
 }
 
-// RemoveNodeContent - Parameters for removing nodes from an Azure Batch Pool.
-type RemoveNodeContent struct {
+// RemoveNodeOptions - Parameters for removing nodes from an Azure Batch Pool.
+type RemoveNodeOptions struct {
 	// REQUIRED; A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes
 	// may be removed per request.
-	NodeList []string
+	NodeIDs []string
 
 	// Determines what to do with a Compute Node and its running task(s) after it has been selected for deallocation. The default
 	// value is requeue.
@@ -2809,12 +2712,12 @@ type RemoveNodeContent struct {
 
 	// The timeout for removal of Compute Nodes to the Pool. The default value is 15 minutes. The minimum value is 5 minutes.
 	// If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly,
-	// the HTTP status code is 400 (Bad Request).
+	// the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
 	ResizeTimeout *string
 }
 
-// ReplacePoolContent - Parameters for replacing properties on an Azure Batch Pool.
-type ReplacePoolContent struct {
+// ReplacePoolOptions - Parameters for replacing properties on an Azure Batch Pool.
+type ReplacePoolOptions struct {
 	// REQUIRED; The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing
 	// Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining
 	// the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a
@@ -2822,17 +2725,6 @@ type ReplacePoolContent struct {
 	// existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given
 	// Pool.
 	ApplicationPackageReferences []ApplicationPackageReference
-
-	// REQUIRED; This list replaces any existing Certificate references configured on the Pool.
-	// If you specify an empty collection, any existing Certificate references are removed from the Pool.
-	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
-	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
-	// and Certificates are placed in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-	// instead.
-	CertificateReferences []CertificateReference
 
 	// REQUIRED; A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata configured
 	// on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
@@ -2842,10 +2734,12 @@ type ReplacePoolContent struct {
 	// the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing
 	// StartTask is removed from the Pool.
 	StartTask *StartTask
+}
 
-	// The desired node communication mode for the pool. This setting replaces any existing targetNodeCommunication setting on
-	// the Pool. If omitted, the existing setting is default.
-	TargetNodeCommunicationMode *NodeCommunicationMode
+// ResiliencyPolicy - The resiliency policy for Compute Nodes in a Pool.
+type ResiliencyPolicy struct {
+	// REQUIRED; The policy that controls allocation across availability zones.
+	ZoneAllocationPolicy *ZoneAllocationPolicy
 }
 
 // ResizeError - An error that occurred when resizing a Pool.
@@ -2860,15 +2754,16 @@ type ResizeError struct {
 	Values []NameValuePair
 }
 
-// ResizePoolContent - Parameters for changing the size of an Azure Batch Pool.
-type ResizePoolContent struct {
+// ResizePoolOptions - Parameters for changing the size of an Azure Batch Pool.
+type ResizePoolOptions struct {
 	// Determines what to do with a Compute Node and its running task(s) if the Pool size is decreasing. The default value is
 	// requeue.
 	NodeDeallocationOption *NodeDeallocationOption
 
 	// The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from the Pool. The default value is 15 minutes.
 	// The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you
-	// are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601
+	// format.
 	ResizeTimeout *string
 
 	// The desired number of dedicated Compute Nodes in the Pool.
@@ -2924,8 +2819,8 @@ type ResourceFile struct {
 // RollingUpgradePolicy - The configuration parameters used while performing a rolling upgrade.
 type RollingUpgradePolicy struct {
 	// Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent
-	// to determine the batch size. This field is able to be set to true or false only when using NodePlacementConfiguration as
-	// Zonal.
+	// to determine the batch size. This field can be set to true or false only when nodePlacementConfiguration.policy is Zonal
+	// or placement.zonePlacementPolicy is Auto. Auto placement is supported starting with API version 2026-10-01.
 	EnableCrossZoneUpgrade *bool
 
 	// The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one
@@ -2948,7 +2843,7 @@ type RollingUpgradePolicy struct {
 	MaxUnhealthyUpgradedInstancePercent *int32
 
 	// The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time
-	// duration should be specified in ISO 8601 format..
+	// duration is specified in ISO 8601 format.
 	PauseTimeBetweenBatches *string
 
 	// Upgrade all unhealthy instances in a scale set before any healthy instances.
@@ -2960,16 +2855,19 @@ type RollingUpgradePolicy struct {
 
 // SecurityProfile - Specifies the security profile settings for the virtual machine or virtual machine scale set.
 type SecurityProfile struct {
-	// REQUIRED; This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine
-	// or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself.
-	// For more information on encryption at host requirements, please refer to https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
+	// This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual
+	// machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For more
+	// information on encryption at host requirements, please refer to https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
 	EncryptionAtHost *bool
 
-	// REQUIRED; Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+	// Specifies ProxyAgent settings while creating the virtual machine.
+	ProxyAgentSettings *ProxyAgentSettings
+
+	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
 	SecurityType *SecurityTypes
 
-	// REQUIRED; Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Specifies
-	// the security settings like secure boot and vTPM used while creating the virtual machine.
+	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Specifies the security
+	// settings like secure boot and vTPM used while creating the virtual machine.
 	UefiSettings *UEFISettings
 }
 
@@ -3138,7 +3036,7 @@ type Subtask struct {
 // information about the Image.
 type SupportedImage struct {
 	// REQUIRED; The reference to the Azure Virtual Machine's Marketplace Image.
-	ImageReference *ImageReference
+	ImageReference *VMImageReference
 
 	// REQUIRED; The ID of the Compute Node agent SKU which the Image supports.
 	NodeAgentSKUID *string
@@ -3172,6 +3070,38 @@ type Task struct {
 	// The execution constraints that apply to this Task.
 	Constraints *TaskConstraints
 
+	// READ-ONLY; The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after
+	// the primary Task and all subtasks have finished executing the coordination command line. The command line does not run
+	// under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
+	// to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand"
+	// in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path
+	// (relative to the Task working directory), or use the Batch provided environment variable (https://learn.microsoft.com/azure/batch/batch-compute-node-environment-variables).
+	CommandLine *string
+
+	// READ-ONLY; The creation time of the Task.
+	CreationTime *time.Time
+
+	// READ-ONLY; The ETag of the Task. This is an opaque string. You can use it to detect whether the Task has changed between
+	// requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take effect
+	// only if nobody else has modified the Task in the meantime.
+	ETag *azcore.ETag
+
+	// READ-ONLY; A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric
+	// characters including hyphens and underscores, and cannot contain more than 64 characters.
+	ID *string
+
+	// READ-ONLY; The last modified time of the Task.
+	LastModified *time.Time
+
+	// READ-ONLY; The current state of the Task.
+	State *TaskState
+
+	// READ-ONLY; The time at which the Task entered its current state.
+	StateTransitionTime *time.Time
+
+	// READ-ONLY; The URL of the Task.
+	URL *string
+
 	// READ-ONLY; A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
 	AffinityInfo *AffinityInfo
 
@@ -3182,22 +3112,6 @@ type Task struct {
 	// failed, the Task fails.
 	ApplicationPackageReferences []ApplicationPackageReference
 
-	// READ-ONLY; The settings for an authentication token that the Task can use to perform Batch service operations. If this
-	// property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch
-	// service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN
-	// environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a
-	// Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks
-	// under the Job.
-	AuthenticationTokenSettings *AuthenticationTokenSettings
-
-	// READ-ONLY; The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after
-	// the primary Task and all subtasks have finished executing the coordination command line. The command line does not run
-	// under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
-	// to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand"
-	// in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path
-	// (relative to the Task working directory), or use the Batch provided environment variable (https://learn.microsoft.com/azure/batch/batch-compute-node-environment-variables).
-	CommandLine *string
-
 	// READ-ONLY; The settings for the container under which the Task runs. If the Pool that will run this Task has containerConfiguration
 	// set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not
 	// be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories
@@ -3205,9 +3119,6 @@ type Task struct {
 	// command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not
 	// be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings
-
-	// READ-ONLY; The creation time of the Task.
-	CreationTime *time.Time
 
 	// READ-ONLY; The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
 	// completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be scheduled.
@@ -3217,11 +3128,6 @@ type Task struct {
 	// a maximum length of 1024.
 	DisplayName *string
 
-	// READ-ONLY; The ETag of the Task. This is an opaque string. You can use it to detect whether the Task has changed between
-	// requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take effect
-	// only if nobody else has modified the Task in the meantime.
-	ETag *azcore.ETag
-
 	// READ-ONLY; A list of environment variable settings for the Task.
 	EnvironmentSettings []EnvironmentSetting
 
@@ -3230,13 +3136,6 @@ type Task struct {
 
 	// READ-ONLY; How the Batch service should respond when the Task completes.
 	ExitConditions *ExitConditions
-
-	// READ-ONLY; A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric
-	// characters including hyphens and underscores, and cannot contain more than 64 characters.
-	ID *string
-
-	// READ-ONLY; The last modified time of the Task.
-	LastModified *time.Time
 
 	// READ-ONLY; An object that indicates that the Task is a multi-instance Task, and contains information about how to run the
 	// multi-instance Task.
@@ -3268,44 +3167,12 @@ type Task struct {
 	// can be achieved using .zip files, Application Packages, or Docker Containers.
 	ResourceFiles []ResourceFile
 
-	// READ-ONLY; The current state of the Task.
-	State *TaskState
-
-	// READ-ONLY; The time at which the Task entered its current state.
-	StateTransitionTime *time.Time
-
 	// READ-ONLY; Resource usage statistics for the Task.
-	Stats *TaskStatistics
-
-	// READ-ONLY; The URL of the Task.
-	URL *string
+	TaskStatistics *TaskStatistics
 
 	// READ-ONLY; The user identity under which the Task runs. If omitted, the Task runs as a non-administrative user unique to
 	// the Task.
 	UserIdentity *UserIdentity
-}
-
-// TaskAddResult - Result for a single Task added as part of an add Task collection operation.
-type TaskAddResult struct {
-	// REQUIRED; The status of the add Task request.
-	Status *TaskAddStatus
-
-	// REQUIRED; The ID of the Task for which this is the result.
-	TaskID *string
-
-	// The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between
-	// requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take
-	// effect only if nobody else has modified the Job in the meantime.
-	ETag *azcore.ETag
-
-	// The error encountered while attempting to add the Task.
-	Error *Error
-
-	// The last modified time of the Task.
-	LastModified *time.Time
-
-	// The URL of the Task, if the Task was successfully added.
-	Location *string
 }
 
 // TaskConstraints - Execution constraints to apply to a Task.
@@ -3320,12 +3187,13 @@ type TaskConstraints struct {
 
 	// The maximum elapsed time that the Task may run, measured from the time the Task starts. If the Task does not complete within
 	// the time limit, the Batch service terminates it. If this is not specified, there is no time limit on how long the Task
-	// may run.
+	// may run. The time duration is specified in ISO 8601 format.
 	MaxWallClockTime *string
 
 	// The minimum time to retain the Task directory on the Compute Node where it ran, from the time it completes execution. After
 	// this time, the Batch service may delete the Task directory and all its contents. The default is 7 days, i.e. the Task directory
-	// will be retained for 7 days unless the Compute Node is removed or the Job is deleted.
+	// will be retained for 7 days unless the Compute Node is removed or the Job is deleted. The time duration is specified in
+	// ISO 8601 format.
 	RetentionTime *string
 }
 
@@ -3390,6 +3258,29 @@ type TaskCountsResult struct {
 
 	// REQUIRED; The number of TaskSlots required by Tasks per state.
 	TaskSlotCounts *TaskSlotCounts
+}
+
+// TaskCreateResult - Result for a single Task created as part of an add Task collection operation.
+type TaskCreateResult struct {
+	// REQUIRED; The status of the add Task request.
+	Status *TaskAddStatus
+
+	// REQUIRED; The ID of the Task for which this is the result.
+	TaskID *string
+
+	// The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between
+	// requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take
+	// effect only if nobody else has modified the Job in the meantime.
+	ETag *azcore.ETag
+
+	// The error encountered while attempting to add the Task.
+	Error *Error
+
+	// The last modified time of the Task.
+	LastModified *time.Time
+
+	// The URL of the Task, if the Task was successfully added.
+	Location *string
 }
 
 // TaskDependencies - Specifies any dependencies of a Task. Any Task that is explicitly specified or
@@ -3462,7 +3353,7 @@ type TaskExecutionInfo struct {
 // TaskFailureInfo - Information about a Task failure.
 type TaskFailureInfo struct {
 	// REQUIRED; The category of the Task error.
-	Category *ErrorCategory
+	Category *ErrorSourceCategory
 
 	// An identifier for the Task error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string
@@ -3479,7 +3370,7 @@ type TaskGroup struct {
 	// REQUIRED; The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
 	// must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or environment variables),
 	// the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer Tasks.
-	Value []CreateTaskContent
+	Values []CreateTaskOptions
 }
 
 // TaskIDRange - The start and end of the range are inclusive. For example, if a range has start
@@ -3535,6 +3426,9 @@ type TaskListSubtasksResult struct {
 type TaskSchedulingPolicy struct {
 	// REQUIRED; How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.
 	NodeFillType *NodeFillType
+
+	// The order for scheduling tasks from different jobs with the same priority. If not specified, the default is none.
+	JobDefaultOrder *JobDefaultOrder
 }
 
 // TaskSlotCounts - The TaskSlot counts for a Job.
@@ -3557,18 +3451,19 @@ type TaskSlotCounts struct {
 
 // TaskStatistics - Resource usage statistics for a Task.
 type TaskStatistics struct {
-	// REQUIRED; The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+	// REQUIRED; The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task. The time
+	// duration is specified in ISO 8601 format.
 	KernelCPUTime *string
 
 	// REQUIRED; The time at which the statistics were last updated. All statistics are limited to the range between startTime
 	// and lastUpdateTime.
 	LastUpdateTime *time.Time
 
-	// REQUIRED; The total gibibytes read from disk by the Task.
-	ReadIOGiB *float32
-
 	// REQUIRED; The total number of disk read operations made by the Task.
 	ReadIOPS *int64
+
+	// REQUIRED; The total gibibytes read from disk by the Task.
+	ReadIoGiB *float32
 
 	// REQUIRED; The start time of the time range covered by the statistics.
 	StartTime *time.Time
@@ -3576,28 +3471,30 @@ type TaskStatistics struct {
 	// REQUIRED; The URL of the statistics.
 	URL *string
 
-	// REQUIRED; The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+	// REQUIRED; The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task. The time duration
+	// is specified in ISO 8601 format.
 	UserCPUTime *string
 
 	// REQUIRED; The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation
 	// of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the
-	// most recent Task execution.).
+	// most recent Task execution.). The time duration is specified in ISO 8601 format.
 	WaitTime *string
 
 	// REQUIRED; The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running
 	// on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by
-	// then). If the Task was retried, this includes the wall clock time of all the Task retries.
+	// then). If the Task was retried, this includes the wall clock time of all the Task retries. The time duration is specified
+	// in ISO 8601 format.
 	WallClockTime *string
-
-	// REQUIRED; The total gibibytes written to disk by the Task.
-	WriteIOGiB *float32
 
 	// REQUIRED; The total number of disk write operations made by the Task.
 	WriteIOPS *int64
+
+	// REQUIRED; The total gibibytes written to disk by the Task.
+	WriteIoGiB *float32
 }
 
-// TerminateJobContent - Parameters for terminating an Azure Batch Job.
-type TerminateJobContent struct {
+// TerminateJobOptions - Parameters for terminating an Azure Batch Job.
+type TerminateJobOptions struct {
 	// The text you want to appear as the Job's TerminationReason. The default is 'UserTerminate'.
 	TerminationReason *string
 }
@@ -3611,32 +3508,35 @@ type UEFISettings struct {
 	VTPMEnabled *bool
 }
 
-// UpdateJobContent - Parameters for updating an Azure Batch Job.
-type UpdateJobContent struct {
-	// Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority
-	// jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
-	// allowTaskPreemption after it has been created using the update job API.
+// UpdateJobOptions - Parameters for updating an Azure Batch Job.
+type UpdateJobOptions struct {
+	// The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the completion
+	// behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged
+	// automatic Job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property
+	// value' error response; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	AllTasksCompleteMode *AllTasksCompleteMode
+
+	// Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by default. Please
+	// contact support for more information) If the value is set to True, other high priority jobs submitted to the system will
+	// take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been
+	// created using the update job API.
 	AllowTaskPreemption *bool
 
 	// The execution constraints for the Job. If omitted, the existing execution constraints are left unchanged.
 	Constraints *JobConstraints
 
-	// The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater
-	// than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
-	// can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+	// The maximum number of tasks that can be executed in parallel for the job. (This property is not available by default. Please
+	// contact support for more information) The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified,
+	// the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a
+	// job's maxParallelTasks after it has been created using the update job API.
 	MaxParallelTasks *int32
 
 	// A list of name-value pairs associated with the Job as metadata. If omitted, the existing Job metadata is left unchanged.
 	Metadata []MetadataItem
 
-	// The network configuration for the Job.
+	// (This property is not available by default. Please contact support for more information) The network configuration for
+	// the Job.
 	NetworkConfiguration *JobNetworkConfiguration
-
-	// The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the completion
-	// behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged
-	// automatic Job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property
-	// value' error response; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
-	OnAllTasksComplete *OnAllTasksComplete
 
 	// The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for a Job only when the Job is disabled.
 	// The Patch Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification
@@ -3650,8 +3550,8 @@ type UpdateJobContent struct {
 	Priority *int32
 }
 
-// UpdateJobScheduleContent - Parameters for updating an Azure Batch Job Schedule.
-type UpdateJobScheduleContent struct {
+// UpdateJobScheduleOptions - Parameters for updating an Azure Batch Job Schedule.
+type UpdateJobScheduleOptions struct {
 	// The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the update has
 	// taken place. Any currently active Job continues with the older specification.
 	JobSpecification *JobSpecification
@@ -3665,8 +3565,8 @@ type UpdateJobScheduleContent struct {
 	Schedule *JobScheduleConfiguration
 }
 
-// UpdateNodeUserContent - Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
-type UpdateNodeUserContent struct {
+// UpdateNodeUserOptions - Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
+type UpdateNodeUserOptions struct {
 	// The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux Compute
 	// Nodes, the expiryTime has a precision up to a day.
 	ExpiryTime *time.Time
@@ -3682,24 +3582,13 @@ type UpdateNodeUserContent struct {
 	SSHPublicKey *string
 }
 
-// UpdatePoolContent - Parameters for updating an Azure Batch Pool.
-type UpdatePoolContent struct {
+// UpdatePoolOptions - Parameters for updating an Azure Batch Pool.
+type UpdatePoolOptions struct {
 	// A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes
 	// joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If
 	// this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package
 	// references are removed from the Pool. If omitted, any existing Package references are left unchanged.
 	ApplicationPackageReferences []ApplicationPackageReference
-
-	// If this element is present, it replaces any existing Certificate references configured on the Pool.
-	// If omitted, any existing Certificate references are left unchanged.
-	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
-	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
-	// and Certificates are placed in that directory.
-	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-	// instead.
-	CertificateReferences []CertificateReference
 
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024. This field can be updated only when the pool is empty.
@@ -3722,20 +3611,10 @@ type UpdatePoolContent struct {
 	// The network configuration for the Pool. This field can be updated only when the pool is empty.
 	NetworkConfiguration *NetworkConfiguration
 
-	// The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch Pool. When
-	// specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be
-	// specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.<br /><br />This
-	// field can be updated only when the pool is empty.
-	ResourceTags map[string]*string
-
 	// A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when
 	// the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing
 	// StartTask is left unchanged.
 	StartTask *StartTask
-
-	// The desired node communication mode for the pool. If this element is present, it replaces the existing targetNodeCommunicationMode
-	// configured on the Pool. If omitted, any existing metadata is left unchanged.
-	TargetNodeCommunicationMode *NodeCommunicationMode
 
 	// How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.<br /><br />This field
 	// can be updated only when the pool is empty.
@@ -3753,6 +3632,10 @@ type UpdatePoolContent struct {
 	// The list of user Accounts to be created on each Compute Node in the Pool. This field can be updated only when the pool
 	// is empty.
 	UserAccounts []UserAccount
+
+	// Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance Mix Pool.
+	// When specified, vmSize must be 'Mix'.<br /><br />This field can be updated only when the pool is empty.
+	VMSKUProfile *VirtualMachineSKUProfile
 
 	// The size of virtual machines in the Pool. For information about available sizes of virtual machines in Pools, see Choose
 	// a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).<br /><br
@@ -3780,8 +3663,8 @@ type UpgradePolicy struct {
 	RollingUpgradePolicy *RollingUpgradePolicy
 }
 
-// UploadNodeLogsContent - The Azure Batch service log files upload parameters for a Compute Node.
-type UploadNodeLogsContent struct {
+// UploadNodeLogsOptions - The Azure Batch service log files upload parameters for a Compute Node.
+type UploadNodeLogsOptions struct {
 	// REQUIRED; The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user
 	// assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions
 	// to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional
@@ -3913,11 +3796,61 @@ type VMExtensionInstanceView struct {
 	SubStatuses []InstanceViewStatus
 }
 
+// VMImageReference - A reference to an Azure Virtual Machines Marketplace Image or a Azure Compute Gallery Image.
+// To get the list of all Azure Marketplace Image references verified by Azure Batch, see the
+// ' List Supported Images ' operation.
+type VMImageReference struct {
+	// The community gallery image unique identifier. This property is mutually exclusive with other properties and can be fetched
+	// from community gallery image GET call.
+	CommunityGalleryImageID *string
+
+	// The offer type of the Azure Virtual Machines Marketplace Image. For example, UbuntuServer or WindowsServer.
+	Offer *string
+
+	// The publisher of the Azure Virtual Machines Marketplace Image. For example, Canonical or MicrosoftWindowsServer.
+	Publisher *string
+
+	// The SKU of the Azure Virtual Machines Marketplace Image. For example, 18.04-LTS or 2019-Datacenter.
+	SKU *string
+
+	// The shared gallery image unique identifier. This property is mutually exclusive with other properties and can be fetched
+	// from shared gallery image GET call.
+	SharedGalleryImageID *string
+
+	// The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the latest
+	// version of an Image. If omitted, the default is 'latest'.
+	Version *string
+
+	// The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using this Image
+	// Id. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId}
+	// or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}
+	// for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference properties.
+	// The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure
+	// Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about
+	// the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
+	VirtualMachineImageID *string
+
+	// READ-ONLY; The specific version of the platform image or marketplace image used to create the node. This read-only field
+	// differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
+	ExactVersion *string
+}
+
+// VMSizeProperties - Specifies the properties for customizing the size of the virtual machine.
+type VMSizeProperties struct {
+	// Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the default
+	// behavior is to set it to the value of vCPUs available for that VM size.
+	VCPUsAvailable *int32
+
+	// Specifies the vCPU to physical core ratio. When this property is not specified in the request body the default behavior
+	// is set to the value of vCPUsPerCore for the VM Size. Setting this property to 1 also means that hyper-threading is disabled.
+	VCPUsPerCore *int32
+}
+
 // VirtualMachineConfiguration - The configuration for Compute Nodes in a Pool based on the Azure Virtual
 // Machines infrastructure.
 type VirtualMachineConfiguration struct {
 	// REQUIRED; A reference to the Azure Virtual Machines Marketplace Image or the custom Virtual Machine Image to use.
-	ImageReference *ImageReference
+	ImageReference *VMImageReference
 
 	// REQUIRED; The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in the Pool. The Batch Compute Node
 	// agent is a program that runs on each Compute Node in the Pool, and provides the command-and-control interface between the
@@ -3948,6 +3881,10 @@ type VirtualMachineConfiguration struct {
 	// on each node.
 	Extensions []VMExtension
 
+	// Specifies the hardware settings for the Compute Nodes. This property is not supported for pools created via auto-pool (as
+	// part of a job or job schedule); the request will be rejected if it is specified in that context.
+	HardwareProfile *HardwareProfile
+
 	// This only applies to Images that contain the Windows operating system, and
 	// should only be used when you hold valid on-premises licenses for the Compute
 	// Nodes which will be deployed. If omitted, no on-premises licensing discount is
@@ -3962,7 +3899,19 @@ type VirtualMachineConfiguration struct {
 	NodePlacementConfiguration *NodePlacementConfiguration
 
 	// Settings for the operating system disk of the Virtual Machine.
-	OSDisk *OSDisk
+	OsDisk *OsDisk
+
+	// The availability zone placement policy for Compute Nodes in the Pool. Set zonePlacementPolicy to Auto to delegate availability
+	// zone selection and balancing to the Virtual Machine Scale Set.
+	// On Pool creation, if placement is omitted, Batch uses nodePlacementConfiguration when it is specified; otherwise, the Pool
+	// uses Regional placement, which provides no availability zone distribution guarantee. This property cannot be combined with
+	// nodePlacementConfiguration.
+	// On PATCH, omitting placement preserves the existing placement policy, including when virtualMachineConfiguration is supplied.
+	Placement *Placement
+
+	// The resiliency policy for Compute Nodes in the Pool. This property requires placement.zonePlacementPolicy to be Auto.
+	// On PATCH, omitting resiliencyPolicy preserves the existing resiliency policy independently of whether placement is supplied.
+	ResiliencyPolicy *ResiliencyPolicy
 
 	// Specifies the security profile settings for the virtual machine or virtual machine scale set.
 	SecurityProfile *SecurityProfile
@@ -3979,11 +3928,33 @@ type VirtualMachineConfiguration struct {
 // VirtualMachineInfo - Info about the current state of the virtual machine.
 type VirtualMachineInfo struct {
 	// The reference to the Azure Virtual Machine's Marketplace Image.
-	ImageReference *ImageReference
+	ImageReference *VMImageReference
 
 	// The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was created
 	// with its poolAllocationMode property set to 'UserSubscription'.
 	ScaleSetVMResourceID *string
+}
+
+// VirtualMachineSKUProfile - Specifies the set of VM sizes and the allocation strategy used to allocate Compute Nodes for
+// an Instance Mix Pool.
+type VirtualMachineSKUProfile struct {
+	// The allocation strategy used to select VM sizes from vmSizes. Defaults to lowestPrice when not specified.
+	AllocationStrategy *VirtualMachineSKUAllocationStrategy
+
+	// The list of VM sizes (up to 5) that may be allocated for the Pool. VM sizes may span the supported A, B, D, E, and F VM
+	// families, but must have the same vCPU count and CPU architecture and compatible VM capabilities. This must be specified
+	// when the vmSkuProfile is provided during Pool creation.
+	VMSizes []VirtualMachineSKUProfileVMSize
+}
+
+// VirtualMachineSKUProfileVMSize - Specifies a single VM size that may be allocated for an Instance Mix Pool.
+type VirtualMachineSKUProfileVMSize struct {
+	// REQUIRED; The name of the VM size (for example, 'Standard_D8s_v5').
+	Name *string
+
+	// The 0-based rank (a.k.a. priority) associated with this VM size. Lower values indicate higher priority. Rank is required
+	// only when the allocation strategy is 'prioritized' and must be omitted otherwise.
+	Rank *int32
 }
 
 // WindowsConfiguration - Windows operating system settings to apply to the virtual machine.
@@ -3998,30 +3969,12 @@ type WindowsUserConfiguration struct {
 	LoginMode *LoginMode
 }
 
-// listPoolUsageMetricsResult - The result of a listing the usage metrics for an Account.
-type listPoolUsageMetricsResult struct {
-	// The URL to get the next set of results.
-	NextLink *string
+// ZoneAllocationPolicy - The policy that controls allocation across availability zones.
+type ZoneAllocationPolicy struct {
+	// The policy that limits the percentage of Pool instances that may be allocated in a single availability zone.
+	MaxInstancePercentPerZonePolicy *MaxInstancePercentPerZonePolicy
 
-	// The Pool usage metrics data.
-	Value []poolUsageMetrics
-}
-
-// poolUsageMetrics - Usage metrics for a Pool across an aggregation interval.
-type poolUsageMetrics struct {
-	// REQUIRED; The end time of the aggregation interval covered by this entry.
-	EndTime *time.Time
-
-	// REQUIRED; The ID of the Pool whose metrics are aggregated in this entry.
-	PoolID *string
-
-	// REQUIRED; The start time of the aggregation interval covered by this entry.
-	StartTime *time.Time
-
-	// REQUIRED; The total core hours used in the Pool during this aggregation interval.
-	TotalCoreHours *float32
-
-	// REQUIRED; The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available
-	// sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
-	VMSize *string
+	// The maximum number of availability zones that may be used. The value cannot exceed the number of zones supported by the
+	// region.
+	MaxZoneCount *int32
 }

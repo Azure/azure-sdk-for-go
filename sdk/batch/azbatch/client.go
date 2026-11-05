@@ -7,203 +7,70 @@ package azbatch
 import (
 	"context"
 	"errors"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// Client contains the methods for the group.
-// Don't use this type directly, use a constructor function instead.
+// Client contains the methods for the service.
+// Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2026-10-01
 type Client struct {
 	internal *azcore.Client
 	endpoint string
 }
 
-// CancelCertificateDeletion - Cancels a failed deletion of a Certificate from the specified Account.
-//
-// If you try to delete a Certificate that is being used by a Pool or Compute
-// Node, the status of the Certificate changes to deleteFailed. If you decide that
-// you want to continue using the Certificate, you can use this operation to set
-// the status of the Certificate back to active. If you intend to delete the
-// Certificate, you do not need to run this operation after the deletion failed.
-// You must make sure that the Certificate is not being used by any resources, and
-// then you can try again to delete the Certificate.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
-//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
-//   - thumbprint - The thumbprint of the Certificate being deleted.
-//   - options - CancelCertificateDeletionOptions contains the optional parameters for the Client.CancelCertificateDeletion method.
-func (client *Client) CancelCertificateDeletion(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *CancelCertificateDeletionOptions) (CancelCertificateDeletionResponse, error) {
-	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.CancelCertificateDeletion", client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelCertificateDeletionCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
-	if err != nil {
-		return CancelCertificateDeletionResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CancelCertificateDeletionResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CancelCertificateDeletionResponse{}, err
-	}
-	resp, err := client.cancelCertificateDeletionHandleResponse(httpResp)
-	return resp, err
+// ClientOptions contains the optional values for creating a [Client].
+type ClientOptions struct {
+	azcore.ClientOptions
 }
 
-// cancelCertificateDeletionCreateRequest creates the CancelCertificateDeletion request.
-func (client *Client) cancelCertificateDeletionCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *CancelCertificateDeletionOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete"
-	if thumbprintAlgorithm == "" {
-		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
+// NewClient creates a new instance of Client with the specified values.
+//   - endpoint - Service host
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
+func NewClient(endpoint string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
-	if thumbprint == "" {
-		return nil, errors.New("parameter thumbprint cannot be empty")
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	c, ok := options.Cloud.Services[ServiceName]
+	if !ok {
+		return nil, fmt.Errorf("provided Cloud field is missing configuration for %s", ServiceName)
+	} else if c.Audience == "" {
+		return nil, fmt.Errorf("provided Cloud field is missing Audience for %s", ServiceName)
+	}
+	cl, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
+		APIVersion: runtime.APIVersionOptions{
+			Name:     "api-version",
+			Location: runtime.APIVersionLocationQueryParam,
+		},
+		PerCall: []policy.Policy{
+			runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, &policy.BearerTokenOptions{
+				InsecureAllowCredentialWithHTTP: options.InsecureAllowCredentialWithHTTP,
+			}),
+		},
+	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	client := &Client{
+		endpoint: endpoint,
+		internal: cl,
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// cancelCertificateDeletionHandleResponse handles the CancelCertificateDeletion response.
-func (client *Client) cancelCertificateDeletionHandleResponse(resp *http.Response) (CancelCertificateDeletionResponse, error) {
-	result := CancelCertificateDeletionResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
-		result.DataServiceID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return CancelCertificateDeletionResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	return result, nil
-}
-
-// CreateCertificate - Creates a Certificate to the specified Account.
-//
-// Creates a Certificate to the specified Account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
-//   - certificate - The Certificate to be created.
-//   - options - CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
-func (client *Client) CreateCertificate(ctx context.Context, certificate Certificate, options *CreateCertificateOptions) (CreateCertificateResponse, error) {
-	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateCertificate", client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createCertificateCreateRequest(ctx, certificate, options)
-	if err != nil {
-		return CreateCertificateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CreateCertificateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateCertificateResponse{}, err
-	}
-	resp, err := client.createCertificateHandleResponse(httpResp)
-	return resp, err
-}
-
-// createCertificateCreateRequest creates the CreateCertificate request.
-func (client *Client) createCertificateCreateRequest(ctx context.Context, certificate Certificate, options *CreateCertificateOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/certificates"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, certificate); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createCertificateHandleResponse handles the CreateCertificate response.
-func (client *Client) createCertificateHandleResponse(resp *http.Response) (CreateCertificateResponse, error) {
-	result := CreateCertificateResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
-		result.DataServiceID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return CreateCertificateResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	return result, nil
+	return client, nil
 }
 
 // CreateJob - Creates a Job to the specified Account.
@@ -218,11 +85,9 @@ func (client *Client) createCertificateHandleResponse(resp *http.Response) (Crea
 // This information may appear in telemetry logs accessible to Microsoft Support
 // engineers.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - job - The Job to be created.
 //   - options - CreateJobOptions contains the optional parameters for the Client.CreateJob method.
-func (client *Client) CreateJob(ctx context.Context, job CreateJobContent, options *CreateJobOptions) (CreateJobResponse, error) {
+func (client *Client) CreateJob(ctx context.Context, job CreateJobOptions, options *CreateJobOptions) (CreateJobResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateJob", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -234,35 +99,27 @@ func (client *Client) CreateJob(ctx context.Context, job CreateJobContent, optio
 	if err != nil {
 		return CreateJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateJobResponse{}, err
-	}
-	resp, err := client.createJobHandleResponse(httpResp)
-	return resp, err
+	return client.createJobHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createJobCreateRequest creates the CreateJob request.
-func (client *Client) createJobCreateRequest(ctx context.Context, job CreateJobContent, options *CreateJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) createJobCreateRequest(ctx context.Context, job CreateJobOptions, options *CreateJobOptions) (*policy.Request, error) {
 	urlPath := "/jobs"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -275,26 +132,29 @@ func (client *Client) createJobCreateRequest(ctx context.Context, job CreateJobC
 }
 
 // createJobHandleResponse handles the CreateJob response.
-func (client *Client) createJobHandleResponse(resp *http.Response) (CreateJobResponse, error) {
+func (client *Client) createJobHandleResponse(resp *http.Response, successCodes ...int) (CreateJobResponse, error) {
 	result := CreateJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreateJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -303,11 +163,9 @@ func (client *Client) createJobHandleResponse(resp *http.Response) (CreateJobRes
 //
 // Creates a Job Schedule to the specified Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobSchedule - The Job Schedule to be created.
 //   - options - CreateJobScheduleOptions contains the optional parameters for the Client.CreateJobSchedule method.
-func (client *Client) CreateJobSchedule(ctx context.Context, jobSchedule CreateJobScheduleContent, options *CreateJobScheduleOptions) (CreateJobScheduleResponse, error) {
+func (client *Client) CreateJobSchedule(ctx context.Context, jobSchedule CreateJobScheduleOptions, options *CreateJobScheduleOptions) (CreateJobScheduleResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateJobSchedule", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -319,35 +177,27 @@ func (client *Client) CreateJobSchedule(ctx context.Context, jobSchedule CreateJ
 	if err != nil {
 		return CreateJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateJobScheduleResponse{}, err
-	}
-	resp, err := client.createJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.createJobScheduleHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createJobScheduleCreateRequest creates the CreateJobSchedule request.
-func (client *Client) createJobScheduleCreateRequest(ctx context.Context, jobSchedule CreateJobScheduleContent, options *CreateJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) createJobScheduleCreateRequest(ctx context.Context, jobSchedule CreateJobScheduleOptions, options *CreateJobScheduleOptions) (*policy.Request, error) {
 	urlPath := "/jobschedules"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -360,26 +210,29 @@ func (client *Client) createJobScheduleCreateRequest(ctx context.Context, jobSch
 }
 
 // createJobScheduleHandleResponse handles the CreateJobSchedule response.
-func (client *Client) createJobScheduleHandleResponse(resp *http.Response) (CreateJobScheduleResponse, error) {
+func (client *Client) createJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (CreateJobScheduleResponse, error) {
 	result := CreateJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreateJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -387,15 +240,14 @@ func (client *Client) createJobScheduleHandleResponse(resp *http.Response) (Crea
 // CreateNodeUser - Adds a user Account to the specified Compute Node.
 //
 // You can add a user Account to a Compute Node only when it is in the idle or
-// running state.
+// running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP. For more
+// information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the machine on which you want to create a user Account.
 //   - userParam - The options to use for creating the user.
 //   - options - CreateNodeUserOptions contains the optional parameters for the Client.CreateNodeUser method.
-func (client *Client) CreateNodeUser(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserContent, options *CreateNodeUserOptions) (CreateNodeUserResponse, error) {
+func (client *Client) CreateNodeUser(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserOptions, options *CreateNodeUserOptions) (CreateNodeUserResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateNodeUser", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -407,18 +259,11 @@ func (client *Client) CreateNodeUser(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return CreateNodeUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateNodeUserResponse{}, err
-	}
-	resp, err := client.createNodeUserHandleResponse(httpResp)
-	return resp, err
+	return client.createNodeUserHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createNodeUserCreateRequest creates the CreateNodeUser request.
-func (client *Client) createNodeUserCreateRequest(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserContent, options *CreateNodeUserOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) createNodeUserCreateRequest(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserOptions, options *CreateNodeUserOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/users"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -428,22 +273,21 @@ func (client *Client) createNodeUserCreateRequest(ctx context.Context, poolID st
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -456,26 +300,29 @@ func (client *Client) createNodeUserCreateRequest(ctx context.Context, poolID st
 }
 
 // createNodeUserHandleResponse handles the CreateNodeUser response.
-func (client *Client) createNodeUserHandleResponse(resp *http.Response) (CreateNodeUserResponse, error) {
+func (client *Client) createNodeUserHandleResponse(resp *http.Response, successCodes ...int) (CreateNodeUserResponse, error) {
 	result := CreateNodeUserResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreateNodeUserResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -486,11 +333,9 @@ func (client *Client) createNodeUserHandleResponse(resp *http.Response) (CreateN
 // secret project names. This information may appear in telemetry logs accessible
 // to Microsoft Support engineers.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - pool - The Pool to be created.
 //   - options - CreatePoolOptions contains the optional parameters for the Client.CreatePool method.
-func (client *Client) CreatePool(ctx context.Context, pool CreatePoolContent, options *CreatePoolOptions) (CreatePoolResponse, error) {
+func (client *Client) CreatePool(ctx context.Context, pool CreatePoolOptions, options *CreatePoolOptions) (CreatePoolResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreatePool", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -502,35 +347,27 @@ func (client *Client) CreatePool(ctx context.Context, pool CreatePoolContent, op
 	if err != nil {
 		return CreatePoolResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreatePoolResponse{}, err
-	}
-	resp, err := client.createPoolHandleResponse(httpResp)
-	return resp, err
+	return client.createPoolHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createPoolCreateRequest creates the CreatePool request.
-func (client *Client) createPoolCreateRequest(ctx context.Context, pool CreatePoolContent, options *CreatePoolOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) createPoolCreateRequest(ctx context.Context, pool CreatePoolOptions, options *CreatePoolOptions) (*policy.Request, error) {
 	urlPath := "/pools"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -543,26 +380,29 @@ func (client *Client) createPoolCreateRequest(ctx context.Context, pool CreatePo
 }
 
 // createPoolHandleResponse handles the CreatePool response.
-func (client *Client) createPoolHandleResponse(resp *http.Response) (CreatePoolResponse, error) {
+func (client *Client) createPoolHandleResponse(resp *http.Response, successCodes ...int) (CreatePoolResponse, error) {
 	result := CreatePoolResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreatePoolResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -573,12 +413,10 @@ func (client *Client) createPoolHandleResponse(resp *http.Response) (CreatePoolR
 // Task has not completed within 180 days of being added it will be terminated by
 // the Batch service and left in whatever state it was in at that time.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to which the Task is to be created.
 //   - task - The Task to be created.
 //   - options - CreateTaskOptions contains the optional parameters for the Client.CreateTask method.
-func (client *Client) CreateTask(ctx context.Context, jobID string, task CreateTaskContent, options *CreateTaskOptions) (CreateTaskResponse, error) {
+func (client *Client) CreateTask(ctx context.Context, jobID string, task CreateTaskOptions, options *CreateTaskOptions) (CreateTaskResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateTask", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -590,39 +428,31 @@ func (client *Client) CreateTask(ctx context.Context, jobID string, task CreateT
 	if err != nil {
 		return CreateTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateTaskResponse{}, err
-	}
-	resp, err := client.createTaskHandleResponse(httpResp)
-	return resp, err
+	return client.createTaskHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createTaskCreateRequest creates the CreateTask request.
-func (client *Client) createTaskCreateRequest(ctx context.Context, jobID string, task CreateTaskContent, options *CreateTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) createTaskCreateRequest(ctx context.Context, jobID string, task CreateTaskOptions, options *CreateTaskOptions) (*policy.Request, error) {
 	urlPath := "/jobs/{jobId}/tasks"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -635,26 +465,29 @@ func (client *Client) createTaskCreateRequest(ctx context.Context, jobID string,
 }
 
 // createTaskHandleResponse handles the CreateTask response.
-func (client *Client) createTaskHandleResponse(resp *http.Response) (CreateTaskResponse, error) {
+func (client *Client) createTaskHandleResponse(resp *http.Response, successCodes ...int) (CreateTaskResponse, error) {
 	result := CreateTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreateTaskResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -676,8 +509,6 @@ func (client *Client) createTaskHandleResponse(resp *http.Response) (CreateTaskR
 // completed within 180 days of being added it will be terminated by the Batch
 // service and left in whatever state it was in at that time.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to which the Task collection is to be added.
 //   - taskCollection - The Tasks to be added.
 //   - options - CreateTaskCollectionOptions contains the optional parameters for the Client.CreateTaskCollection method.
@@ -693,39 +524,32 @@ func (client *Client) CreateTaskCollection(ctx context.Context, jobID string, ta
 	if err != nil {
 		return CreateTaskCollectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateTaskCollectionResponse{}, err
-	}
-	resp, err := client.createTaskCollectionHandleResponse(httpResp)
-	return resp, err
+	return client.createTaskCollectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createTaskCollectionCreateRequest creates the CreateTaskCollection request.
 func (client *Client) createTaskCollectionCreateRequest(ctx context.Context, jobID string, taskCollection TaskGroup, options *CreateTaskCollectionOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/addtaskcollection"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -738,25 +562,28 @@ func (client *Client) createTaskCollectionCreateRequest(ctx context.Context, job
 }
 
 // createTaskCollectionHandleResponse handles the CreateTaskCollection response.
-func (client *Client) createTaskCollectionHandleResponse(resp *http.Response) (CreateTaskCollectionResponse, error) {
+func (client *Client) createTaskCollectionHandleResponse(resp *http.Response, successCodes ...int) (CreateTaskCollectionResponse, error) {
 	result := CreateTaskCollectionResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return CreateTaskCollectionResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AddTaskCollectionResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CreateTaskCollectionResult); err != nil {
 		return CreateTaskCollectionResponse{}, err
 	}
 	return result, nil
@@ -766,8 +593,6 @@ func (client *Client) createTaskCollectionHandleResponse(resp *http.Response) (C
 //
 // You can deallocate a Compute Node only if it is in an idle or running state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to restart.
 //   - options - DeallocateNodeOptions contains the optional parameters for the Client.DeallocateNode method.
@@ -783,18 +608,11 @@ func (client *Client) DeallocateNode(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeallocateNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DeallocateNodeResponse{}, err
-	}
-	resp, err := client.deallocateNodeHandleResponse(httpResp)
-	return resp, err
+	return client.deallocateNodeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deallocateNodeCreateRequest creates the DeallocateNode request.
 func (client *Client) deallocateNodeCreateRequest(ctx context.Context, poolID string, nodeID string, options *DeallocateNodeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/deallocate"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -804,29 +622,28 @@ func (client *Client) deallocateNodeCreateRequest(ctx context.Context, poolID st
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
-	if options != nil && options.Parameters != nil {
+	if options != nil && options.Options != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Options); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -835,121 +652,29 @@ func (client *Client) deallocateNodeCreateRequest(ctx context.Context, poolID st
 }
 
 // deallocateNodeHandleResponse handles the DeallocateNode response.
-func (client *Client) deallocateNodeHandleResponse(resp *http.Response) (DeallocateNodeResponse, error) {
+func (client *Client) deallocateNodeHandleResponse(resp *http.Response, successCodes ...int) (DeallocateNodeResponse, error) {
 	result := DeallocateNodeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DeallocateNodeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	return result, nil
-}
-
-// DeleteCertificate - Deletes a Certificate from the specified Account.
-//
-// You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-// it. Before you can delete a Certificate, you must therefore make sure that the
-// Certificate is not associated with any existing Pools, the Certificate is not
-// installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-// removed from existing Compute Nodes in that Pool until they restart), and no
-// running Tasks depend on the Certificate. If you try to delete a Certificate
-// that is in use, the deletion fails. The Certificate status changes to
-// deleteFailed. You can use Cancel Delete Certificate to set the status back to
-// active if you decide that you want to continue using the Certificate.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
-//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
-//   - thumbprint - The thumbprint of the Certificate to be deleted.
-//   - options - DeleteCertificateOptions contains the optional parameters for the Client.DeleteCertificate method.
-func (client *Client) DeleteCertificate(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *DeleteCertificateOptions) (DeleteCertificateResponse, error) {
-	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteCertificate", client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCertificateCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
-	if err != nil {
-		return DeleteCertificateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return DeleteCertificateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteCertificateResponse{}, err
-	}
-	resp, err := client.deleteCertificateHandleResponse(httpResp)
-	return resp, err
-}
-
-// deleteCertificateCreateRequest creates the DeleteCertificate request.
-func (client *Client) deleteCertificateCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *DeleteCertificateOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})"
-	if thumbprintAlgorithm == "" {
-		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
-	if thumbprint == "" {
-		return nil, errors.New("parameter thumbprint cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// deleteCertificateHandleResponse handles the DeleteCertificate response.
-func (client *Client) deleteCertificateHandleResponse(resp *http.Response) (DeleteCertificateResponse, error) {
-	result := DeleteCertificateResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DeleteCertificateResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -965,8 +690,6 @@ func (client *Client) deleteCertificateHandleResponse(resp *http.Response) (Dele
 // fail with status code 409 (Conflict), with additional information indicating
 // that the Job is being deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to delete.
 //   - options - DeleteJobOptions contains the optional parameters for the Client.DeleteJob method.
 func (client *Client) DeleteJob(ctx context.Context, jobID string, options *DeleteJobOptions) (DeleteJobResponse, error) {
@@ -981,54 +704,46 @@ func (client *Client) DeleteJob(ctx context.Context, jobID string, options *Dele
 	if err != nil {
 		return DeleteJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteJobResponse{}, err
-	}
-	resp, err := client.deleteJobHandleResponse(httpResp)
-	return resp, err
+	return client.deleteJobHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deleteJobCreateRequest creates the DeleteJob request.
 func (client *Client) deleteJobCreateRequest(ctx context.Context, jobID string, options *DeleteJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1037,13 +752,16 @@ func (client *Client) deleteJobCreateRequest(ctx context.Context, jobID string, 
 }
 
 // deleteJobHandleResponse handles the DeleteJob response.
-func (client *Client) deleteJobHandleResponse(resp *http.Response) (DeleteJobResponse, error) {
+func (client *Client) deleteJobHandleResponse(resp *http.Response, successCodes ...int) (DeleteJobResponse, error) {
 	result := DeleteJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1056,8 +774,6 @@ func (client *Client) deleteJobHandleResponse(resp *http.Response) (DeleteJobRes
 // Schedule statistics are no longer accessible once the Job Schedule is deleted,
 // though they are still counted towards Account lifetime statistics.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to delete.
 //   - options - DeleteJobScheduleOptions contains the optional parameters for the Client.DeleteJobSchedule method.
 func (client *Client) DeleteJobSchedule(ctx context.Context, jobScheduleID string, options *DeleteJobScheduleOptions) (DeleteJobScheduleResponse, error) {
@@ -1072,54 +788,46 @@ func (client *Client) DeleteJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return DeleteJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteJobScheduleResponse{}, err
-	}
-	resp, err := client.deleteJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.deleteJobScheduleHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deleteJobScheduleCreateRequest creates the DeleteJobSchedule request.
 func (client *Client) deleteJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *DeleteJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1128,13 +836,16 @@ func (client *Client) deleteJobScheduleCreateRequest(ctx context.Context, jobSch
 }
 
 // deleteJobScheduleHandleResponse handles the DeleteJobSchedule response.
-func (client *Client) deleteJobScheduleHandleResponse(resp *http.Response) (DeleteJobScheduleResponse, error) {
+func (client *Client) deleteJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (DeleteJobScheduleResponse, error) {
 	result := DeleteJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1143,8 +854,6 @@ func (client *Client) deleteJobScheduleHandleResponse(resp *http.Response) (Dele
 //
 // Deletes the specified file from the Compute Node.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node.
 //   - filePath - The path to the file or directory.
@@ -1161,18 +870,11 @@ func (client *Client) DeleteNodeFile(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeleteNodeFileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteNodeFileResponse{}, err
-	}
-	resp, err := client.deleteNodeFileHandleResponse(httpResp)
-	return resp, err
+	return client.deleteNodeFileHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteNodeFileCreateRequest creates the DeleteNodeFile request.
 func (client *Client) deleteNodeFileCreateRequest(ctx context.Context, poolID string, nodeID string, filePath string, options *DeleteNodeFileOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/files/{filePath}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -1186,25 +888,24 @@ func (client *Client) deleteNodeFileCreateRequest(ctx context.Context, poolID st
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Recursive != nil {
 		reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1213,13 +914,16 @@ func (client *Client) deleteNodeFileCreateRequest(ctx context.Context, poolID st
 }
 
 // deleteNodeFileHandleResponse handles the DeleteNodeFile response.
-func (client *Client) deleteNodeFileHandleResponse(resp *http.Response) (DeleteNodeFileResponse, error) {
+func (client *Client) deleteNodeFileHandleResponse(resp *http.Response, successCodes ...int) (DeleteNodeFileResponse, error) {
 	result := DeleteNodeFileResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1227,10 +931,9 @@ func (client *Client) deleteNodeFileHandleResponse(resp *http.Response) (DeleteN
 // DeleteNodeUser - Deletes a user Account from the specified Compute Node.
 //
 // You can delete a user Account to a Compute Node only when it is in the idle or
-// running state.
+// running state. Before you can remotely login to a Compute Node you must configure
+// access ports for SSH and RDP. For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the machine on which you want to delete a user Account.
 //   - userName - The name of the user Account to delete.
@@ -1247,18 +950,11 @@ func (client *Client) DeleteNodeUser(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeleteNodeUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteNodeUserResponse{}, err
-	}
-	resp, err := client.deleteNodeUserHandleResponse(httpResp)
-	return resp, err
+	return client.deleteNodeUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteNodeUserCreateRequest creates the DeleteNodeUser request.
 func (client *Client) deleteNodeUserCreateRequest(ctx context.Context, poolID string, nodeID string, userName string, options *DeleteNodeUserOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/users/{userName}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -1272,22 +968,21 @@ func (client *Client) deleteNodeUserCreateRequest(ctx context.Context, poolID st
 		return nil, errors.New("parameter userName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userName}", url.PathEscape(userName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1296,13 +991,16 @@ func (client *Client) deleteNodeUserCreateRequest(ctx context.Context, poolID st
 }
 
 // deleteNodeUserHandleResponse handles the DeleteNodeUser response.
-func (client *Client) deleteNodeUserHandleResponse(resp *http.Response) (DeleteNodeUserResponse, error) {
+func (client *Client) deleteNodeUserHandleResponse(resp *http.Response, successCodes ...int) (DeleteNodeUserResponse, error) {
 	result := DeleteNodeUserResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1322,8 +1020,6 @@ func (client *Client) deleteNodeUserHandleResponse(resp *http.Response) (DeleteN
 // on a Pool in the deleting state, it will fail with HTTP status code 409 with
 // error code PoolBeingDeleted.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
 //   - options - DeletePoolOptions contains the optional parameters for the Client.DeletePool method.
 func (client *Client) DeletePool(ctx context.Context, poolID string, options *DeletePoolOptions) (DeletePoolResponse, error) {
@@ -1338,51 +1034,43 @@ func (client *Client) DeletePool(ctx context.Context, poolID string, options *De
 	if err != nil {
 		return DeletePoolResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DeletePoolResponse{}, err
-	}
-	resp, err := client.deletePoolHandleResponse(httpResp)
-	return resp, err
+	return client.deletePoolHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deletePoolCreateRequest creates the DeletePool request.
 func (client *Client) deletePoolCreateRequest(ctx context.Context, poolID string, options *DeletePoolOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1391,13 +1079,16 @@ func (client *Client) deletePoolCreateRequest(ctx context.Context, poolID string
 }
 
 // deletePoolHandleResponse handles the DeletePool response.
-func (client *Client) deletePoolHandleResponse(resp *http.Response) (DeletePoolResponse, error) {
+func (client *Client) deletePoolHandleResponse(resp *http.Response, successCodes ...int) (DeletePoolResponse, error) {
 	result := DeletePoolResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1410,8 +1101,6 @@ func (client *Client) deletePoolHandleResponse(resp *http.Response) (DeletePoolR
 // primary task; subtasks and their files are then deleted asynchronously in the
 // background.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job from which to delete the Task.
 //   - taskID - The ID of the Task to delete.
 //   - options - DeleteTaskOptions contains the optional parameters for the Client.DeleteTask method.
@@ -1427,18 +1116,11 @@ func (client *Client) DeleteTask(ctx context.Context, jobID string, taskID strin
 	if err != nil {
 		return DeleteTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteTaskResponse{}, err
-	}
-	resp, err := client.deleteTaskHandleResponse(httpResp)
-	return resp, err
+	return client.deleteTaskHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteTaskCreateRequest creates the DeleteTask request.
 func (client *Client) deleteTaskCreateRequest(ctx context.Context, jobID string, taskID string, options *DeleteTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -1448,34 +1130,33 @@ func (client *Client) deleteTaskCreateRequest(ctx context.Context, jobID string,
 		return nil, errors.New("parameter taskID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1484,13 +1165,16 @@ func (client *Client) deleteTaskCreateRequest(ctx context.Context, jobID string,
 }
 
 // deleteTaskHandleResponse handles the DeleteTask response.
-func (client *Client) deleteTaskHandleResponse(resp *http.Response) (DeleteTaskResponse, error) {
+func (client *Client) deleteTaskHandleResponse(resp *http.Response, successCodes ...int) (DeleteTaskResponse, error) {
 	result := DeleteTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1499,8 +1183,6 @@ func (client *Client) deleteTaskHandleResponse(resp *http.Response) (DeleteTaskR
 //
 // Deletes the specified Task file from the Compute Node where the Task ran.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job that contains the Task.
 //   - taskID - The ID of the Task whose file you want to retrieve.
 //   - filePath - The path to the Task file that you want to get the content of.
@@ -1517,18 +1199,11 @@ func (client *Client) DeleteTaskFile(ctx context.Context, jobID string, taskID s
 	if err != nil {
 		return DeleteTaskFileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteTaskFileResponse{}, err
-	}
-	resp, err := client.deleteTaskFileHandleResponse(httpResp)
-	return resp, err
+	return client.deleteTaskFileHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteTaskFileCreateRequest creates the DeleteTaskFile request.
 func (client *Client) deleteTaskFileCreateRequest(ctx context.Context, jobID string, taskID string, filePath string, options *DeleteTaskFileOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}/files/{filePath}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -1542,25 +1217,24 @@ func (client *Client) deleteTaskFileCreateRequest(ctx context.Context, jobID str
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Recursive != nil {
 		reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1569,13 +1243,16 @@ func (client *Client) deleteTaskFileCreateRequest(ctx context.Context, jobID str
 }
 
 // deleteTaskFileHandleResponse handles the DeleteTaskFile response.
-func (client *Client) deleteTaskFileHandleResponse(resp *http.Response) (DeleteTaskFileResponse, error) {
+func (client *Client) deleteTaskFileHandleResponse(resp *http.Response, successCodes ...int) (DeleteTaskFileResponse, error) {
 	result := DeleteTaskFileResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1591,16 +1268,14 @@ func (client *Client) deleteTaskFileHandleResponse(resp *http.Response) (DeleteT
 // disable a Job that is in any state other than active, disabling, or disabled,
 // the request fails with status code 409.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to disable.
-//   - content - The options to use for disabling the Job.
+//   - disableOptions - The options to use for disabling the Job.
 //   - options - DisableJobOptions contains the optional parameters for the Client.DisableJob method.
-func (client *Client) DisableJob(ctx context.Context, jobID string, content DisableJobContent, options *DisableJobOptions) (DisableJobResponse, error) {
+func (client *Client) DisableJob(ctx context.Context, jobID string, disableOptions DisableJobOptions, options *DisableJobOptions) (DisableJobResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.DisableJob", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.disableJobCreateRequest(ctx, jobID, content, options)
+	req, err := client.disableJobCreateRequest(ctx, jobID, disableOptions, options)
 	if err != nil {
 		return DisableJobResponse{}, err
 	}
@@ -1608,83 +1283,78 @@ func (client *Client) DisableJob(ctx context.Context, jobID string, content Disa
 	if err != nil {
 		return DisableJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DisableJobResponse{}, err
-	}
-	resp, err := client.disableJobHandleResponse(httpResp)
-	return resp, err
+	return client.disableJobHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // disableJobCreateRequest creates the DisableJob request.
-func (client *Client) disableJobCreateRequest(ctx context.Context, jobID string, content DisableJobContent, options *DisableJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) disableJobCreateRequest(ctx context.Context, jobID string, disableOptions DisableJobOptions, options *DisableJobOptions) (*policy.Request, error) {
 	urlPath := "/jobs/{jobId}/disable"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, disableOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // disableJobHandleResponse handles the DisableJob response.
-func (client *Client) disableJobHandleResponse(resp *http.Response) (DisableJobResponse, error) {
+func (client *Client) disableJobHandleResponse(resp *http.Response, successCodes ...int) (DisableJobResponse, error) {
 	result := DisableJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DisableJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1693,8 +1363,6 @@ func (client *Client) disableJobHandleResponse(resp *http.Response) (DisableJobR
 //
 // No new Jobs will be created until the Job Schedule is enabled again.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to disable.
 //   - options - DisableJobScheduleOptions contains the optional parameters for the Client.DisableJobSchedule method.
 func (client *Client) DisableJobSchedule(ctx context.Context, jobScheduleID string, options *DisableJobScheduleOptions) (DisableJobScheduleResponse, error) {
@@ -1709,51 +1377,43 @@ func (client *Client) DisableJobSchedule(ctx context.Context, jobScheduleID stri
 	if err != nil {
 		return DisableJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DisableJobScheduleResponse{}, err
-	}
-	resp, err := client.disableJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.disableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // disableJobScheduleCreateRequest creates the DisableJobSchedule request.
 func (client *Client) disableJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *DisableJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}/disable"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1762,26 +1422,29 @@ func (client *Client) disableJobScheduleCreateRequest(ctx context.Context, jobSc
 }
 
 // disableJobScheduleHandleResponse handles the DisableJobSchedule response.
-func (client *Client) disableJobScheduleHandleResponse(resp *http.Response) (DisableJobScheduleResponse, error) {
+func (client *Client) disableJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (DisableJobScheduleResponse, error) {
 	result := DisableJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DisableJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1791,8 +1454,6 @@ func (client *Client) disableJobScheduleHandleResponse(resp *http.Response) (Dis
 // You can disable Task scheduling on a Compute Node only if its current
 // scheduling state is enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node on which you want to disable Task scheduling.
 //   - options - DisableNodeSchedulingOptions contains the optional parameters for the Client.DisableNodeScheduling method.
@@ -1808,18 +1469,11 @@ func (client *Client) DisableNodeScheduling(ctx context.Context, poolID string, 
 	if err != nil {
 		return DisableNodeSchedulingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisableNodeSchedulingResponse{}, err
-	}
-	resp, err := client.disableNodeSchedulingHandleResponse(httpResp)
-	return resp, err
+	return client.disableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
 }
 
 // disableNodeSchedulingCreateRequest creates the DisableNodeScheduling request.
 func (client *Client) disableNodeSchedulingCreateRequest(ctx context.Context, poolID string, nodeID string, options *DisableNodeSchedulingOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/disablescheduling"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -1829,29 +1483,28 @@ func (client *Client) disableNodeSchedulingCreateRequest(ctx context.Context, po
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
-	if options != nil && options.Parameters != nil {
+	if options != nil && options.Options != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Options); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -1860,26 +1513,29 @@ func (client *Client) disableNodeSchedulingCreateRequest(ctx context.Context, po
 }
 
 // disableNodeSchedulingHandleResponse handles the DisableNodeScheduling response.
-func (client *Client) disableNodeSchedulingHandleResponse(resp *http.Response) (DisableNodeSchedulingResponse, error) {
+func (client *Client) disableNodeSchedulingHandleResponse(resp *http.Response, successCodes ...int) (DisableNodeSchedulingResponse, error) {
 	result := DisableNodeSchedulingResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DisableNodeSchedulingResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1888,8 +1544,6 @@ func (client *Client) disableNodeSchedulingHandleResponse(resp *http.Response) (
 //
 // Disables automatic scaling for a Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool on which to disable automatic scaling.
 //   - options - DisablePoolAutoScaleOptions contains the optional parameters for the Client.DisablePoolAutoScale method.
 func (client *Client) DisablePoolAutoScale(ctx context.Context, poolID string, options *DisablePoolAutoScaleOptions) (DisablePoolAutoScaleResponse, error) {
@@ -1904,39 +1558,31 @@ func (client *Client) DisablePoolAutoScale(ctx context.Context, poolID string, o
 	if err != nil {
 		return DisablePoolAutoScaleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisablePoolAutoScaleResponse{}, err
-	}
-	resp, err := client.disablePoolAutoScaleHandleResponse(httpResp)
-	return resp, err
+	return client.disablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
 }
 
 // disablePoolAutoScaleCreateRequest creates the DisablePoolAutoScale request.
 func (client *Client) disablePoolAutoScaleCreateRequest(ctx context.Context, poolID string, options *DisablePoolAutoScaleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/disableautoscale"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -1945,26 +1591,29 @@ func (client *Client) disablePoolAutoScaleCreateRequest(ctx context.Context, poo
 }
 
 // disablePoolAutoScaleHandleResponse handles the DisablePoolAutoScale response.
-func (client *Client) disablePoolAutoScaleHandleResponse(resp *http.Response) (DisablePoolAutoScaleResponse, error) {
+func (client *Client) disablePoolAutoScaleHandleResponse(resp *http.Response, successCodes ...int) (DisablePoolAutoScaleResponse, error) {
 	result := DisablePoolAutoScaleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DisablePoolAutoScaleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -1978,8 +1627,6 @@ func (client *Client) disablePoolAutoScaleHandleResponse(resp *http.Response) (D
 // Therefore, if you enable a Job containing active Tasks which were added more
 // than 180 days ago, those Tasks will not run.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to enable.
 //   - options - EnableJobOptions contains the optional parameters for the Client.EnableJob method.
 func (client *Client) EnableJob(ctx context.Context, jobID string, options *EnableJobOptions) (EnableJobResponse, error) {
@@ -1994,51 +1641,43 @@ func (client *Client) EnableJob(ctx context.Context, jobID string, options *Enab
 	if err != nil {
 		return EnableJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return EnableJobResponse{}, err
-	}
-	resp, err := client.enableJobHandleResponse(httpResp)
-	return resp, err
+	return client.enableJobHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // enableJobCreateRequest creates the EnableJob request.
 func (client *Client) enableJobCreateRequest(ctx context.Context, jobID string, options *EnableJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/enable"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2047,26 +1686,29 @@ func (client *Client) enableJobCreateRequest(ctx context.Context, jobID string, 
 }
 
 // enableJobHandleResponse handles the EnableJob response.
-func (client *Client) enableJobHandleResponse(resp *http.Response) (EnableJobResponse, error) {
+func (client *Client) enableJobHandleResponse(resp *http.Response, successCodes ...int) (EnableJobResponse, error) {
 	result := EnableJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return EnableJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -2075,8 +1717,6 @@ func (client *Client) enableJobHandleResponse(resp *http.Response) (EnableJobRes
 //
 // Enables a Job Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to enable.
 //   - options - EnableJobScheduleOptions contains the optional parameters for the Client.EnableJobSchedule method.
 func (client *Client) EnableJobSchedule(ctx context.Context, jobScheduleID string, options *EnableJobScheduleOptions) (EnableJobScheduleResponse, error) {
@@ -2091,51 +1731,43 @@ func (client *Client) EnableJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return EnableJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EnableJobScheduleResponse{}, err
-	}
-	resp, err := client.enableJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.enableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // enableJobScheduleCreateRequest creates the EnableJobSchedule request.
 func (client *Client) enableJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *EnableJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}/enable"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2144,26 +1776,29 @@ func (client *Client) enableJobScheduleCreateRequest(ctx context.Context, jobSch
 }
 
 // enableJobScheduleHandleResponse handles the EnableJobSchedule response.
-func (client *Client) enableJobScheduleHandleResponse(resp *http.Response) (EnableJobScheduleResponse, error) {
+func (client *Client) enableJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (EnableJobScheduleResponse, error) {
 	result := EnableJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return EnableJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -2173,8 +1808,6 @@ func (client *Client) enableJobScheduleHandleResponse(resp *http.Response) (Enab
 // You can enable Task scheduling on a Compute Node only if its current scheduling
 // state is disabled
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node on which you want to enable Task scheduling.
 //   - options - EnableNodeSchedulingOptions contains the optional parameters for the Client.EnableNodeScheduling method.
@@ -2190,18 +1823,11 @@ func (client *Client) EnableNodeScheduling(ctx context.Context, poolID string, n
 	if err != nil {
 		return EnableNodeSchedulingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnableNodeSchedulingResponse{}, err
-	}
-	resp, err := client.enableNodeSchedulingHandleResponse(httpResp)
-	return resp, err
+	return client.enableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
 }
 
 // enableNodeSchedulingCreateRequest creates the EnableNodeScheduling request.
 func (client *Client) enableNodeSchedulingCreateRequest(ctx context.Context, poolID string, nodeID string, options *EnableNodeSchedulingOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/enablescheduling"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -2211,22 +1837,21 @@ func (client *Client) enableNodeSchedulingCreateRequest(ctx context.Context, poo
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2235,26 +1860,29 @@ func (client *Client) enableNodeSchedulingCreateRequest(ctx context.Context, poo
 }
 
 // enableNodeSchedulingHandleResponse handles the EnableNodeScheduling response.
-func (client *Client) enableNodeSchedulingHandleResponse(resp *http.Response) (EnableNodeSchedulingResponse, error) {
+func (client *Client) enableNodeSchedulingHandleResponse(resp *http.Response, successCodes ...int) (EnableNodeSchedulingResponse, error) {
 	result := EnableNodeSchedulingResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return EnableNodeSchedulingResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -2268,16 +1896,14 @@ func (client *Client) enableNodeSchedulingHandleResponse(resp *http.Response) (E
 // and/or a new evaluation interval. You cannot call this API for the same Pool
 // more than once every 30 seconds.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
-//   - content - The options to use for enabling automatic scaling.
+//   - enableAutoScaleOptions - The options to use for enabling automatic scaling.
 //   - options - EnablePoolAutoScaleOptions contains the optional parameters for the Client.EnablePoolAutoScale method.
-func (client *Client) EnablePoolAutoScale(ctx context.Context, poolID string, content EnablePoolAutoScaleContent, options *EnablePoolAutoScaleOptions) (EnablePoolAutoScaleResponse, error) {
+func (client *Client) EnablePoolAutoScale(ctx context.Context, poolID string, enableAutoScaleOptions EnablePoolAutoScaleOptions, options *EnablePoolAutoScaleOptions) (EnablePoolAutoScaleResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.EnablePoolAutoScale", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.enablePoolAutoScaleCreateRequest(ctx, poolID, content, options)
+	req, err := client.enablePoolAutoScaleCreateRequest(ctx, poolID, enableAutoScaleOptions, options)
 	if err != nil {
 		return EnablePoolAutoScaleResponse{}, err
 	}
@@ -2285,83 +1911,78 @@ func (client *Client) EnablePoolAutoScale(ctx context.Context, poolID string, co
 	if err != nil {
 		return EnablePoolAutoScaleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnablePoolAutoScaleResponse{}, err
-	}
-	resp, err := client.enablePoolAutoScaleHandleResponse(httpResp)
-	return resp, err
+	return client.enablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
 }
 
 // enablePoolAutoScaleCreateRequest creates the EnablePoolAutoScale request.
-func (client *Client) enablePoolAutoScaleCreateRequest(ctx context.Context, poolID string, content EnablePoolAutoScaleContent, options *EnablePoolAutoScaleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) enablePoolAutoScaleCreateRequest(ctx context.Context, poolID string, enableAutoScaleOptions EnablePoolAutoScaleOptions, options *EnablePoolAutoScaleOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/enableautoscale"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, enableAutoScaleOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // enablePoolAutoScaleHandleResponse handles the EnablePoolAutoScale response.
-func (client *Client) enablePoolAutoScaleHandleResponse(resp *http.Response) (EnablePoolAutoScaleResponse, error) {
+func (client *Client) enablePoolAutoScaleHandleResponse(resp *http.Response, successCodes ...int) (EnablePoolAutoScaleResponse, error) {
 	result := EnablePoolAutoScaleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return EnablePoolAutoScaleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -2372,16 +1993,14 @@ func (client *Client) enablePoolAutoScaleHandleResponse(resp *http.Response) (En
 // the result without applying the formula to the Pool. The Pool must have auto
 // scaling enabled in order to evaluate a formula.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool on which to evaluate the automatic scaling formula.
-//   - content - The options to use for evaluating the automatic scaling formula.
+//   - evaluateAutoScaleOptions - The options to use for evaluating the automatic scaling formula.
 //   - options - EvaluatePoolAutoScaleOptions contains the optional parameters for the Client.EvaluatePoolAutoScale method.
-func (client *Client) EvaluatePoolAutoScale(ctx context.Context, poolID string, content EvaluatePoolAutoScaleContent, options *EvaluatePoolAutoScaleOptions) (EvaluatePoolAutoScaleResponse, error) {
+func (client *Client) EvaluatePoolAutoScale(ctx context.Context, poolID string, evaluateAutoScaleOptions EvaluatePoolAutoScaleOptions, options *EvaluatePoolAutoScaleOptions) (EvaluatePoolAutoScaleResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.EvaluatePoolAutoScale", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.evaluatePoolAutoScaleCreateRequest(ctx, poolID, content, options)
+	req, err := client.evaluatePoolAutoScaleCreateRequest(ctx, poolID, evaluateAutoScaleOptions, options)
 	if err != nil {
 		return EvaluatePoolAutoScaleResponse{}, err
 	}
@@ -2389,71 +2008,67 @@ func (client *Client) EvaluatePoolAutoScale(ctx context.Context, poolID string, 
 	if err != nil {
 		return EvaluatePoolAutoScaleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EvaluatePoolAutoScaleResponse{}, err
-	}
-	resp, err := client.evaluatePoolAutoScaleHandleResponse(httpResp)
-	return resp, err
+	return client.evaluatePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
 }
 
 // evaluatePoolAutoScaleCreateRequest creates the EvaluatePoolAutoScale request.
-func (client *Client) evaluatePoolAutoScaleCreateRequest(ctx context.Context, poolID string, content EvaluatePoolAutoScaleContent, options *EvaluatePoolAutoScaleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) evaluatePoolAutoScaleCreateRequest(ctx context.Context, poolID string, evaluateAutoScaleOptions EvaluatePoolAutoScaleOptions, options *EvaluatePoolAutoScaleOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/evaluateautoscale"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, evaluateAutoScaleOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // evaluatePoolAutoScaleHandleResponse handles the EvaluatePoolAutoScale response.
-func (client *Client) evaluatePoolAutoScaleHandleResponse(resp *http.Response) (EvaluatePoolAutoScaleResponse, error) {
+func (client *Client) evaluatePoolAutoScaleHandleResponse(resp *http.Response, successCodes ...int) (EvaluatePoolAutoScaleResponse, error) {
 	result := EvaluatePoolAutoScaleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return EvaluatePoolAutoScaleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleRun); err != nil {
 		return EvaluatePoolAutoScaleResponse{}, err
@@ -2469,8 +2084,6 @@ func (client *Client) evaluatePoolAutoScaleHandleResponse(resp *http.Response) (
 // available to Compute Nodes, use the Azure portal or the Azure Resource Manager
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - applicationID - The ID of the Application
 //   - options - GetApplicationOptions contains the optional parameters for the Client.GetApplication method.
 func (client *Client) GetApplication(ctx context.Context, applicationID string, options *GetApplicationOptions) (GetApplicationResponse, error) {
@@ -2485,39 +2098,32 @@ func (client *Client) GetApplication(ctx context.Context, applicationID string, 
 	if err != nil {
 		return GetApplicationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetApplicationResponse{}, err
-	}
-	resp, err := client.getApplicationHandleResponse(httpResp)
-	return resp, err
+	return client.getApplicationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getApplicationCreateRequest creates the GetApplication request.
 func (client *Client) getApplicationCreateRequest(ctx context.Context, applicationID string, options *GetApplicationOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/applications/{applicationId}"
 	if applicationID == "" {
 		return nil, errors.New("parameter applicationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationId}", url.PathEscape(applicationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2526,117 +2132,29 @@ func (client *Client) getApplicationCreateRequest(ctx context.Context, applicati
 }
 
 // getApplicationHandleResponse handles the GetApplication response.
-func (client *Client) getApplicationHandleResponse(resp *http.Response) (GetApplicationResponse, error) {
+func (client *Client) getApplicationHandleResponse(resp *http.Response, successCodes ...int) (GetApplicationResponse, error) {
 	result := GetApplicationResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetApplicationResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return GetApplicationResponse{}, err
-	}
-	return result, nil
-}
-
-// GetCertificate - Gets information about the specified Certificate.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
-//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
-//   - thumbprint - The thumbprint of the Certificate to get.
-//   - options - GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
-func (client *Client) GetCertificate(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *GetCertificateOptions) (GetCertificateResponse, error) {
-	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetCertificate", client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCertificateCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
-	if err != nil {
-		return GetCertificateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetCertificateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetCertificateResponse{}, err
-	}
-	resp, err := client.getCertificateHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCertificateCreateRequest creates the GetCertificate request.
-func (client *Client) getCertificateCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *GetCertificateOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})"
-	if thumbprintAlgorithm == "" {
-		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
-	if thumbprint == "" {
-		return nil, errors.New("parameter thumbprint cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// getCertificateHandleResponse handles the GetCertificate response.
-func (client *Client) getCertificateHandleResponse(resp *http.Response) (GetCertificateResponse, error) {
-	result := GetCertificateResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return GetCertificateResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return GetCertificateResponse{}, err
 	}
 	return result, nil
 }
@@ -2645,8 +2163,6 @@ func (client *Client) getCertificateHandleResponse(resp *http.Response) (GetCert
 //
 // Gets information about the specified Job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job.
 //   - options - GetJobOptions contains the optional parameters for the Client.GetJob method.
 func (client *Client) GetJob(ctx context.Context, jobID string, options *GetJobOptions) (GetJobResponse, error) {
@@ -2661,24 +2177,17 @@ func (client *Client) GetJob(ctx context.Context, jobID string, options *GetJobO
 	if err != nil {
 		return GetJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetJobResponse{}, err
-	}
-	resp, err := client.getJobHandleResponse(httpResp)
-	return resp, err
+	return client.getJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // getJobCreateRequest creates the GetJob request.
 func (client *Client) getJobCreateRequest(ctx context.Context, jobID string, options *GetJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2686,32 +2195,32 @@ func (client *Client) getJobCreateRequest(ctx context.Context, jobID string, opt
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", strings.Join(options.Expand, ","))
 	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2720,23 +2229,26 @@ func (client *Client) getJobCreateRequest(ctx context.Context, jobID string, opt
 }
 
 // getJobHandleResponse handles the GetJob response.
-func (client *Client) getJobHandleResponse(resp *http.Response) (GetJobResponse, error) {
+func (client *Client) getJobHandleResponse(resp *http.Response, successCodes ...int) (GetJobResponse, error) {
 	result := GetJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return GetJobResponse{}, err
@@ -2746,8 +2258,6 @@ func (client *Client) getJobHandleResponse(resp *http.Response) (GetJobResponse,
 
 // GetJobSchedule - Gets information about the specified Job Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to get.
 //   - options - GetJobScheduleOptions contains the optional parameters for the Client.GetJobSchedule method.
 func (client *Client) GetJobSchedule(ctx context.Context, jobScheduleID string, options *GetJobScheduleOptions) (GetJobScheduleResponse, error) {
@@ -2762,24 +2272,17 @@ func (client *Client) GetJobSchedule(ctx context.Context, jobScheduleID string, 
 	if err != nil {
 		return GetJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetJobScheduleResponse{}, err
-	}
-	resp, err := client.getJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.getJobScheduleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getJobScheduleCreateRequest creates the GetJobSchedule request.
 func (client *Client) getJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *GetJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2787,32 +2290,32 @@ func (client *Client) getJobScheduleCreateRequest(ctx context.Context, jobSchedu
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", strings.Join(options.Expand, ","))
 	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2821,23 +2324,26 @@ func (client *Client) getJobScheduleCreateRequest(ctx context.Context, jobSchedu
 }
 
 // getJobScheduleHandleResponse handles the GetJobSchedule response.
-func (client *Client) getJobScheduleHandleResponse(resp *http.Response) (GetJobScheduleResponse, error) {
+func (client *Client) getJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (GetJobScheduleResponse, error) {
 	result := GetJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobSchedule); err != nil {
 		return GetJobScheduleResponse{}, err
@@ -2852,8 +2358,6 @@ func (client *Client) getJobScheduleHandleResponse(resp *http.Response) (GetJobS
 // state are counted as running. Note that the numbers returned may not always be
 // up to date. If you need exact task counts, use a list query.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job.
 //   - options - GetJobTaskCountsOptions contains the optional parameters for the Client.GetJobTaskCounts method.
 func (client *Client) GetJobTaskCounts(ctx context.Context, jobID string, options *GetJobTaskCountsOptions) (GetJobTaskCountsResponse, error) {
@@ -2868,39 +2372,32 @@ func (client *Client) GetJobTaskCounts(ctx context.Context, jobID string, option
 	if err != nil {
 		return GetJobTaskCountsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetJobTaskCountsResponse{}, err
-	}
-	resp, err := client.getJobTaskCountsHandleResponse(httpResp)
-	return resp, err
+	return client.getJobTaskCountsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getJobTaskCountsCreateRequest creates the GetJobTaskCounts request.
 func (client *Client) getJobTaskCountsCreateRequest(ctx context.Context, jobID string, options *GetJobTaskCountsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/taskcounts"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -2909,23 +2406,26 @@ func (client *Client) getJobTaskCountsCreateRequest(ctx context.Context, jobID s
 }
 
 // getJobTaskCountsHandleResponse handles the GetJobTaskCounts response.
-func (client *Client) getJobTaskCountsHandleResponse(resp *http.Response) (GetJobTaskCountsResponse, error) {
+func (client *Client) getJobTaskCountsHandleResponse(resp *http.Response, successCodes ...int) (GetJobTaskCountsResponse, error) {
 	result := GetJobTaskCountsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetJobTaskCountsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskCountsResult); err != nil {
 		return GetJobTaskCountsResponse{}, err
@@ -2937,8 +2437,6 @@ func (client *Client) getJobTaskCountsHandleResponse(resp *http.Response) (GetJo
 //
 // Gets information about the specified Compute Node.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to get information about.
 //   - options - GetNodeOptions contains the optional parameters for the Client.GetNode method.
@@ -2954,18 +2452,11 @@ func (client *Client) GetNode(ctx context.Context, poolID string, nodeID string,
 	if err != nil {
 		return GetNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetNodeResponse{}, err
-	}
-	resp, err := client.getNodeHandleResponse(httpResp)
-	return resp, err
+	return client.getNodeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNodeCreateRequest creates the GetNode request.
 func (client *Client) getNodeCreateRequest(ctx context.Context, poolID string, nodeID string, options *GetNodeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -2975,25 +2466,25 @@ func (client *Client) getNodeCreateRequest(ctx context.Context, poolID string, n
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3002,23 +2493,26 @@ func (client *Client) getNodeCreateRequest(ctx context.Context, poolID string, n
 }
 
 // getNodeHandleResponse handles the GetNode response.
-func (client *Client) getNodeHandleResponse(resp *http.Response) (GetNodeResponse, error) {
+func (client *Client) getNodeHandleResponse(resp *http.Response, successCodes ...int) (GetNodeResponse, error) {
 	result := GetNodeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Node); err != nil {
 		return GetNodeResponse{}, err
@@ -3030,8 +2524,6 @@ func (client *Client) getNodeHandleResponse(resp *http.Response) (GetNodeRespons
 //
 // Gets information about the specified Compute Node Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that contains the extensions.
 //   - extensionName - The name of the Compute Node Extension that you want to get information about.
@@ -3048,18 +2540,11 @@ func (client *Client) GetNodeExtension(ctx context.Context, poolID string, nodeI
 	if err != nil {
 		return GetNodeExtensionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetNodeExtensionResponse{}, err
-	}
-	resp, err := client.getNodeExtensionHandleResponse(httpResp)
-	return resp, err
+	return client.getNodeExtensionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNodeExtensionCreateRequest creates the GetNodeExtension request.
 func (client *Client) getNodeExtensionCreateRequest(ctx context.Context, poolID string, nodeID string, extensionName string, options *GetNodeExtensionOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -3073,25 +2558,25 @@ func (client *Client) getNodeExtensionCreateRequest(ctx context.Context, poolID 
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3100,23 +2585,26 @@ func (client *Client) getNodeExtensionCreateRequest(ctx context.Context, poolID 
 }
 
 // getNodeExtensionHandleResponse handles the GetNodeExtension response.
-func (client *Client) getNodeExtensionHandleResponse(resp *http.Response) (GetNodeExtensionResponse, error) {
+func (client *Client) getNodeExtensionHandleResponse(resp *http.Response, successCodes ...int) (GetNodeExtensionResponse, error) {
 	result := GetNodeExtensionResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeExtensionResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeVMExtension); err != nil {
 		return GetNodeExtensionResponse{}, err
@@ -3126,8 +2614,6 @@ func (client *Client) getNodeExtensionHandleResponse(resp *http.Response) (GetNo
 
 // GetNodeFile - Returns the content of the specified Compute Node file.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node.
 //   - filePath - The path to the file or directory.
@@ -3144,18 +2630,11 @@ func (client *Client) GetNodeFile(ctx context.Context, poolID string, nodeID str
 	if err != nil {
 		return GetNodeFileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetNodeFileResponse{}, err
-	}
-	resp, err := client.getNodeFileHandleResponse(httpResp)
-	return resp, err
+	return client.getNodeFileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNodeFileCreateRequest creates the GetNodeFile request.
 func (client *Client) getNodeFileCreateRequest(ctx context.Context, poolID string, nodeID string, filePath string, options *GetNodeFileOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/files/{filePath}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -3169,32 +2648,32 @@ func (client *Client) getNodeFileCreateRequest(ctx context.Context, poolID strin
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
-	if options != nil && options.OCPRange != nil {
-		req.Raw().Header["ocp-range"] = []string{*options.OCPRange}
+	if options != nil && options.OcpRange != nil {
+		req.Raw().Header["ocp-range"] = []string{*options.OcpRange}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3203,9 +2682,12 @@ func (client *Client) getNodeFileCreateRequest(ctx context.Context, poolID strin
 }
 
 // getNodeFileHandleResponse handles the GetNodeFile response.
-func (client *Client) getNodeFileHandleResponse(resp *http.Response) (GetNodeFileResponse, error) {
-	result := GetNodeFileResponse{Body: resp.Body}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+func (client *Client) getNodeFileHandleResponse(resp *http.Response, successCodes ...int) (GetNodeFileResponse, error) {
+	result := GetNodeFileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -3215,49 +2697,48 @@ func (client *Client) getNodeFileHandleResponse(resp *http.Response) (GetNodeFil
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("content-type"); val != "" {
+	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeFileResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("ocp-batch-file-isdirectory"); val != "" {
-		ocpBatchFileIsdirectory, err := strconv.ParseBool(val)
+	if val := resp.Header.Get("Ocp-Batch-File-Isdirectory"); val != "" {
+		ocpbatchfileisdirectory, err := strconv.ParseBool(val)
 		if err != nil {
 			return GetNodeFileResponse{}, err
 		}
-		result.OCPBatchFileIsDirectory = &ocpBatchFileIsdirectory
+		result.Ocpbatchfileisdirectory = &ocpbatchfileisdirectory
 	}
-	if val := resp.Header.Get("ocp-batch-file-mode"); val != "" {
-		result.OCPBatchFileMode = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Mode"); val != "" {
+		result.Ocpbatchfilemode = &val
 	}
-	if val := resp.Header.Get("ocp-batch-file-url"); val != "" {
-		result.OCPBatchFileURL = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Url"); val != "" {
+		result.Ocpbatchfileurl = &val
 	}
-	if val := resp.Header.Get("ocp-creation-time"); val != "" {
-		ocpCreationTime, err := time.Parse(time.RFC1123, val)
+	if val := resp.Header.Get("Ocp-Creation-Time"); val != "" {
+		ocpcreationtime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeFileResponse{}, err
 		}
-		result.OCPCreationTime = &ocpCreationTime
+		result.Ocpcreationtime = &ocpcreationtime
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
 // GetNodeFileProperties - Gets the properties of the specified Compute Node file.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node.
 //   - filePath - The path to the file or directory.
@@ -3274,18 +2755,11 @@ func (client *Client) GetNodeFileProperties(ctx context.Context, poolID string, 
 	if err != nil {
 		return GetNodeFilePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetNodeFilePropertiesResponse{}, err
-	}
-	resp, err := client.getNodeFilePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getNodeFilePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNodeFilePropertiesCreateRequest creates the GetNodeFileProperties request.
 func (client *Client) getNodeFilePropertiesCreateRequest(ctx context.Context, poolID string, nodeID string, filePath string, options *GetNodeFilePropertiesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/files/{filePath}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -3299,28 +2773,27 @@ func (client *Client) getNodeFilePropertiesCreateRequest(ctx context.Context, po
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3329,9 +2802,12 @@ func (client *Client) getNodeFilePropertiesCreateRequest(ctx context.Context, po
 }
 
 // getNodeFilePropertiesHandleResponse handles the GetNodeFileProperties response.
-func (client *Client) getNodeFilePropertiesHandleResponse(resp *http.Response) (GetNodeFilePropertiesResponse, error) {
+func (client *Client) getNodeFilePropertiesHandleResponse(resp *http.Response, successCodes ...int) (GetNodeFilePropertiesResponse, error) {
 	result := GetNodeFilePropertiesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -3341,49 +2817,47 @@ func (client *Client) getNodeFilePropertiesHandleResponse(resp *http.Response) (
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeFilePropertiesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("ocp-batch-file-isdirectory"); val != "" {
-		ocpBatchFileIsdirectory, err := strconv.ParseBool(val)
+	if val := resp.Header.Get("Ocp-Batch-File-Isdirectory"); val != "" {
+		ocpbatchfileisdirectory, err := strconv.ParseBool(val)
 		if err != nil {
 			return GetNodeFilePropertiesResponse{}, err
 		}
-		result.OCPBatchFileIsDirectory = &ocpBatchFileIsdirectory
+		result.Ocpbatchfileisdirectory = &ocpbatchfileisdirectory
 	}
-	if val := resp.Header.Get("ocp-batch-file-mode"); val != "" {
-		result.OCPBatchFileMode = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Mode"); val != "" {
+		result.Ocpbatchfilemode = &val
 	}
-	if val := resp.Header.Get("ocp-batch-file-url"); val != "" {
-		result.OCPBatchFileURL = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Url"); val != "" {
+		result.Ocpbatchfileurl = &val
 	}
-	if val := resp.Header.Get("ocp-creation-time"); val != "" {
-		ocpCreationTime, err := time.Parse(time.RFC1123, val)
+	if val := resp.Header.Get("Ocp-Creation-Time"); val != "" {
+		ocpcreationtime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeFilePropertiesResponse{}, err
 		}
-		result.OCPCreationTime = &ocpCreationTime
+		result.Ocpcreationtime = &ocpcreationtime
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
 
 // GetNodeRemoteLoginSettings - Gets the settings required for remote login to a Compute Node.
 //
-// Before you can remotely login to a Compute Node using the remote login settings,
-// you must create a user Account on the Compute Node.
+// Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the
+// Compute Node and configure access ports for SSH and RDP. For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node for which to obtain the remote login settings.
 //   - options - GetNodeRemoteLoginSettingsOptions contains the optional parameters for the Client.GetNodeRemoteLoginSettings
@@ -3400,18 +2874,11 @@ func (client *Client) GetNodeRemoteLoginSettings(ctx context.Context, poolID str
 	if err != nil {
 		return GetNodeRemoteLoginSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetNodeRemoteLoginSettingsResponse{}, err
-	}
-	resp, err := client.getNodeRemoteLoginSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.getNodeRemoteLoginSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNodeRemoteLoginSettingsCreateRequest creates the GetNodeRemoteLoginSettings request.
 func (client *Client) getNodeRemoteLoginSettingsCreateRequest(ctx context.Context, poolID string, nodeID string, options *GetNodeRemoteLoginSettingsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/remoteloginsettings"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -3421,22 +2888,22 @@ func (client *Client) getNodeRemoteLoginSettingsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3445,23 +2912,26 @@ func (client *Client) getNodeRemoteLoginSettingsCreateRequest(ctx context.Contex
 }
 
 // getNodeRemoteLoginSettingsHandleResponse handles the GetNodeRemoteLoginSettings response.
-func (client *Client) getNodeRemoteLoginSettingsHandleResponse(resp *http.Response) (GetNodeRemoteLoginSettingsResponse, error) {
+func (client *Client) getNodeRemoteLoginSettingsHandleResponse(resp *http.Response, successCodes ...int) (GetNodeRemoteLoginSettingsResponse, error) {
 	result := GetNodeRemoteLoginSettingsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetNodeRemoteLoginSettingsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeRemoteLoginSettings); err != nil {
 		return GetNodeRemoteLoginSettingsResponse{}, err
@@ -3471,8 +2941,6 @@ func (client *Client) getNodeRemoteLoginSettingsHandleResponse(resp *http.Respon
 
 // GetPool - Gets information about the specified Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
 //   - options - GetPoolOptions contains the optional parameters for the Client.GetPool method.
 func (client *Client) GetPool(ctx context.Context, poolID string, options *GetPoolOptions) (GetPoolResponse, error) {
@@ -3487,24 +2955,17 @@ func (client *Client) GetPool(ctx context.Context, poolID string, options *GetPo
 	if err != nil {
 		return GetPoolResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetPoolResponse{}, err
-	}
-	resp, err := client.getPoolHandleResponse(httpResp)
-	return resp, err
+	return client.getPoolHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPoolCreateRequest creates the GetPool request.
 func (client *Client) getPoolCreateRequest(ctx context.Context, poolID string, options *GetPoolOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3512,32 +2973,32 @@ func (client *Client) getPoolCreateRequest(ctx context.Context, poolID string, o
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", strings.Join(options.Expand, ","))
 	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3546,23 +3007,26 @@ func (client *Client) getPoolCreateRequest(ctx context.Context, poolID string, o
 }
 
 // getPoolHandleResponse handles the GetPool response.
-func (client *Client) getPoolHandleResponse(resp *http.Response) (GetPoolResponse, error) {
+func (client *Client) getPoolHandleResponse(resp *http.Response, successCodes ...int) (GetPoolResponse, error) {
 	result := GetPoolResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetPoolResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return GetPoolResponse{}, err
@@ -3576,8 +3040,6 @@ func (client *Client) getPoolHandleResponse(resp *http.Response) (GetPoolRespons
 // nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
 // information about subtasks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job that contains the Task.
 //   - taskID - The ID of the Task to get information about.
 //   - options - GetTaskOptions contains the optional parameters for the Client.GetTask method.
@@ -3593,18 +3055,11 @@ func (client *Client) GetTask(ctx context.Context, jobID string, taskID string, 
 	if err != nil {
 		return GetTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetTaskResponse{}, err
-	}
-	resp, err := client.getTaskHandleResponse(httpResp)
-	return resp, err
+	return client.getTaskHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTaskCreateRequest creates the GetTask request.
 func (client *Client) getTaskCreateRequest(ctx context.Context, jobID string, taskID string, options *GetTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -3614,7 +3069,7 @@ func (client *Client) getTaskCreateRequest(ctx context.Context, jobID string, ta
 		return nil, errors.New("parameter taskID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3622,32 +3077,32 @@ func (client *Client) getTaskCreateRequest(ctx context.Context, jobID string, ta
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", strings.Join(options.Expand, ","))
 	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", strings.Join(options.Select, ","))
 	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3656,26 +3111,29 @@ func (client *Client) getTaskCreateRequest(ctx context.Context, jobID string, ta
 }
 
 // getTaskHandleResponse handles the GetTask response.
-func (client *Client) getTaskHandleResponse(resp *http.Response) (GetTaskResponse, error) {
+func (client *Client) getTaskHandleResponse(resp *http.Response, successCodes ...int) (GetTaskResponse, error) {
 	result := GetTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetTaskResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return GetTaskResponse{}, err
@@ -3685,8 +3143,6 @@ func (client *Client) getTaskHandleResponse(resp *http.Response) (GetTaskRespons
 
 // GetTaskFile - Returns the content of the specified Task file.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job that contains the Task.
 //   - taskID - The ID of the Task whose file you want to retrieve.
 //   - filePath - The path to the Task file that you want to get the content of.
@@ -3703,18 +3159,11 @@ func (client *Client) GetTaskFile(ctx context.Context, jobID string, taskID stri
 	if err != nil {
 		return GetTaskFileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetTaskFileResponse{}, err
-	}
-	resp, err := client.getTaskFileHandleResponse(httpResp)
-	return resp, err
+	return client.getTaskFileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTaskFileCreateRequest creates the GetTaskFile request.
 func (client *Client) getTaskFileCreateRequest(ctx context.Context, jobID string, taskID string, filePath string, options *GetTaskFileOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}/files/{filePath}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -3728,32 +3177,32 @@ func (client *Client) getTaskFileCreateRequest(ctx context.Context, jobID string
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
-	if options != nil && options.OCPRange != nil {
-		req.Raw().Header["ocp-range"] = []string{*options.OCPRange}
+	if options != nil && options.OcpRange != nil {
+		req.Raw().Header["ocp-range"] = []string{*options.OcpRange}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3762,9 +3211,12 @@ func (client *Client) getTaskFileCreateRequest(ctx context.Context, jobID string
 }
 
 // getTaskFileHandleResponse handles the GetTaskFile response.
-func (client *Client) getTaskFileHandleResponse(resp *http.Response) (GetTaskFileResponse, error) {
-	result := GetTaskFileResponse{Body: resp.Body}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+func (client *Client) getTaskFileHandleResponse(resp *http.Response, successCodes ...int) (GetTaskFileResponse, error) {
+	result := GetTaskFileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -3774,49 +3226,48 @@ func (client *Client) getTaskFileHandleResponse(resp *http.Response) (GetTaskFil
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("content-type"); val != "" {
+	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetTaskFileResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("ocp-batch-file-isdirectory"); val != "" {
-		ocpBatchFileIsdirectory, err := strconv.ParseBool(val)
+	if val := resp.Header.Get("Ocp-Batch-File-Isdirectory"); val != "" {
+		ocpbatchfileisdirectory, err := strconv.ParseBool(val)
 		if err != nil {
 			return GetTaskFileResponse{}, err
 		}
-		result.OCPBatchFileIsDirectory = &ocpBatchFileIsdirectory
+		result.Ocpbatchfileisdirectory = &ocpbatchfileisdirectory
 	}
-	if val := resp.Header.Get("ocp-batch-file-mode"); val != "" {
-		result.OCPBatchFileMode = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Mode"); val != "" {
+		result.Ocpbatchfilemode = &val
 	}
-	if val := resp.Header.Get("ocp-batch-file-url"); val != "" {
-		result.OCPBatchFileURL = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Url"); val != "" {
+		result.Ocpbatchfileurl = &val
 	}
-	if val := resp.Header.Get("ocp-creation-time"); val != "" {
-		ocpCreationTime, err := time.Parse(time.RFC1123, val)
+	if val := resp.Header.Get("Ocp-Creation-Time"); val != "" {
+		ocpcreationtime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetTaskFileResponse{}, err
 		}
-		result.OCPCreationTime = &ocpCreationTime
+		result.Ocpcreationtime = &ocpcreationtime
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
 // GetTaskFileProperties - Gets the properties of the specified Task file.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job that contains the Task.
 //   - taskID - The ID of the Task whose file you want to retrieve.
 //   - filePath - The path to the Task file that you want to get the content of.
@@ -3833,18 +3284,11 @@ func (client *Client) GetTaskFileProperties(ctx context.Context, jobID string, t
 	if err != nil {
 		return GetTaskFilePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetTaskFilePropertiesResponse{}, err
-	}
-	resp, err := client.getTaskFilePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getTaskFilePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTaskFilePropertiesCreateRequest creates the GetTaskFileProperties request.
 func (client *Client) getTaskFilePropertiesCreateRequest(ctx context.Context, jobID string, taskID string, filePath string, options *GetTaskFilePropertiesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}/files/{filePath}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -3858,28 +3302,27 @@ func (client *Client) getTaskFilePropertiesCreateRequest(ctx context.Context, jo
 		return nil, errors.New("parameter filePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filePath}", url.PathEscape(filePath))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -3888,9 +3331,12 @@ func (client *Client) getTaskFilePropertiesCreateRequest(ctx context.Context, jo
 }
 
 // getTaskFilePropertiesHandleResponse handles the GetTaskFileProperties response.
-func (client *Client) getTaskFilePropertiesHandleResponse(resp *http.Response) (GetTaskFilePropertiesResponse, error) {
+func (client *Client) getTaskFilePropertiesHandleResponse(resp *http.Response, successCodes ...int) (GetTaskFilePropertiesResponse, error) {
 	result := GetTaskFilePropertiesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -3900,38 +3346,38 @@ func (client *Client) getTaskFilePropertiesHandleResponse(resp *http.Response) (
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetTaskFilePropertiesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("ocp-batch-file-isdirectory"); val != "" {
-		ocpBatchFileIsdirectory, err := strconv.ParseBool(val)
+	if val := resp.Header.Get("Ocp-Batch-File-Isdirectory"); val != "" {
+		ocpbatchfileisdirectory, err := strconv.ParseBool(val)
 		if err != nil {
 			return GetTaskFilePropertiesResponse{}, err
 		}
-		result.OCPBatchFileIsDirectory = &ocpBatchFileIsdirectory
+		result.Ocpbatchfileisdirectory = &ocpbatchfileisdirectory
 	}
-	if val := resp.Header.Get("ocp-batch-file-mode"); val != "" {
-		result.OCPBatchFileMode = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Mode"); val != "" {
+		result.Ocpbatchfilemode = &val
 	}
-	if val := resp.Header.Get("ocp-batch-file-url"); val != "" {
-		result.OCPBatchFileURL = &val
+	if val := resp.Header.Get("Ocp-Batch-File-Url"); val != "" {
+		result.Ocpbatchfileurl = &val
 	}
-	if val := resp.Header.Get("ocp-creation-time"); val != "" {
-		ocpCreationTime, err := time.Parse(time.RFC1123, val)
+	if val := resp.Header.Get("Ocp-Creation-Time"); val != "" {
+		ocpcreationtime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return GetTaskFilePropertiesResponse{}, err
 		}
-		result.OCPCreationTime = &ocpCreationTime
+		result.Ocpcreationtime = &ocpcreationtime
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -3940,8 +3386,6 @@ func (client *Client) getTaskFilePropertiesHandleResponse(resp *http.Response) (
 //
 // Checks the specified Job Schedule exists.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule which you want to check.
 //   - options - JobScheduleExistsOptions contains the optional parameters for the Client.JobScheduleExists method.
 func (client *Client) JobScheduleExists(ctx context.Context, jobScheduleID string, options *JobScheduleExistsOptions) (JobScheduleExistsResponse, error) {
@@ -3956,51 +3400,43 @@ func (client *Client) JobScheduleExists(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return JobScheduleExistsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return JobScheduleExistsResponse{}, err
-	}
-	resp, err := client.jobScheduleExistsHandleResponse(httpResp)
-	return resp, err
+	return client.jobScheduleExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
 }
 
 // jobScheduleExistsCreateRequest creates the JobScheduleExists request.
 func (client *Client) jobScheduleExistsCreateRequest(ctx context.Context, jobScheduleID string, options *JobScheduleExistsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -4009,23 +3445,26 @@ func (client *Client) jobScheduleExistsCreateRequest(ctx context.Context, jobSch
 }
 
 // jobScheduleExistsHandleResponse handles the JobScheduleExists response.
-func (client *Client) jobScheduleExistsHandleResponse(resp *http.Response) (JobScheduleExistsResponse, error) {
+func (client *Client) jobScheduleExistsHandleResponse(resp *http.Response, successCodes ...int) (JobScheduleExistsResponse, error) {
 	result := JobScheduleExistsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return JobScheduleExistsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -4037,8 +3476,6 @@ func (client *Client) jobScheduleExistsHandleResponse(resp *http.Response) (JobS
 // administrator information about applications and versions that are not yet
 // available to Compute Nodes, use the Azure portal or the Azure Resource Manager
 // API.
-//
-// Generated from API version 2024-07-01.20.0
 //   - options - ListApplicationsOptions contains the optional parameters for the Client.NewListApplicationsPager method.
 func (client *Client) NewListApplicationsPager(options *ListApplicationsOptions) *runtime.Pager[ListApplicationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListApplicationsResponse]{
@@ -4050,160 +3487,82 @@ func (client *Client) NewListApplicationsPager(options *ListApplicationsOptions)
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listApplicationsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listApplicationsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListApplicationsResponse{}, err
 			}
-			return client.listApplicationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListApplicationsResponse{}, err
+			}
+			return client.listApplicationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listApplicationsCreateRequest creates the ListApplications request.
-func (client *Client) listApplicationsCreateRequest(ctx context.Context, options *ListApplicationsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/applications"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+func (client *Client) listApplicationsCreateRequest(ctx context.Context, nextLink string, options *ListApplicationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/applications"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listApplicationsHandleResponse handles the ListApplications response.
-func (client *Client) listApplicationsHandleResponse(resp *http.Response) (ListApplicationsResponse, error) {
+func (client *Client) listApplicationsHandleResponse(resp *http.Response, successCodes ...int) (ListApplicationsResponse, error) {
 	result := ListApplicationsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListApplicationsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationListResult); err != nil {
 		return ListApplicationsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListCertificatesPager - Lists all of the Certificates that have been added to the specified Account.
-//
-// Lists all of the Certificates that have been added to the specified Account.
-//
-// Generated from API version 2024-07-01.20.0
-//   - options - ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
-func (client *Client) NewListCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListCertificatesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListCertificatesResponse]{
-		More: func(page ListCertificatesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListCertificatesResponse) (ListCertificatesResponse, error) {
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCertificatesCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ListCertificatesResponse{}, err
-			}
-			return client.listCertificatesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCertificatesCreateRequest creates the ListCertificates request.
-func (client *Client) listCertificatesCreateRequest(ctx context.Context, options *ListCertificatesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/certificates"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// listCertificatesHandleResponse handles the ListCertificates response.
-func (client *Client) listCertificatesHandleResponse(resp *http.Response) (ListCertificatesResponse, error) {
-	result := ListCertificatesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return ListCertificatesResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
-		return ListCertificatesResponse{}, err
 	}
 	return result, nil
 }
@@ -4218,8 +3577,6 @@ func (client *Client) listCertificatesHandleResponse(resp *http.Response) (ListC
 // invoked on a Job which has no Job Preparation or Job Release Task, the Batch
 // service returns HTTP status code 409 (Conflict) with an error code of
 // JobPreparationTaskNotSpecified.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job.
 //   - options - ListJobPreparationAndReleaseTaskStatusOptions contains the optional parameters for the Client.NewListJobPreparationAndReleaseTaskStatusPager
 //     method.
@@ -4233,77 +3590,89 @@ func (client *Client) NewListJobPreparationAndReleaseTaskStatusPager(jobID strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listJobPreparationAndReleaseTaskStatusCreateRequest(ctx, jobID, options)
-			}, nil)
+			req, err := client.listJobPreparationAndReleaseTaskStatusCreateRequest(ctx, jobID, nextLink, options)
 			if err != nil {
 				return ListJobPreparationAndReleaseTaskStatusResponse{}, err
 			}
-			return client.listJobPreparationAndReleaseTaskStatusHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListJobPreparationAndReleaseTaskStatusResponse{}, err
+			}
+			return client.listJobPreparationAndReleaseTaskStatusHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listJobPreparationAndReleaseTaskStatusCreateRequest creates the ListJobPreparationAndReleaseTaskStatus request.
-func (client *Client) listJobPreparationAndReleaseTaskStatusCreateRequest(ctx context.Context, jobID string, options *ListJobPreparationAndReleaseTaskStatusOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobs/{jobId}/jobpreparationandreleasetaskstatus"
-	if jobID == "" {
-		return nil, errors.New("parameter jobID cannot be empty")
+func (client *Client) listJobPreparationAndReleaseTaskStatusCreateRequest(ctx context.Context, jobID string, nextLink string, options *ListJobPreparationAndReleaseTaskStatusOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobs/{jobId}/jobpreparationandreleasetaskstatus"
+		if jobID == "" {
+			return nil, errors.New("parameter jobID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listJobPreparationAndReleaseTaskStatusHandleResponse handles the ListJobPreparationAndReleaseTaskStatus response.
-func (client *Client) listJobPreparationAndReleaseTaskStatusHandleResponse(resp *http.Response) (ListJobPreparationAndReleaseTaskStatusResponse, error) {
+func (client *Client) listJobPreparationAndReleaseTaskStatusHandleResponse(resp *http.Response, successCodes ...int) (ListJobPreparationAndReleaseTaskStatusResponse, error) {
 	result := ListJobPreparationAndReleaseTaskStatusResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListJobPreparationAndReleaseTaskStatusResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobPreparationAndReleaseTaskStatusListResult); err != nil {
 		return ListJobPreparationAndReleaseTaskStatusResponse{}, err
@@ -4314,8 +3683,6 @@ func (client *Client) listJobPreparationAndReleaseTaskStatusHandleResponse(resp 
 // NewListJobSchedulesPager - Lists all of the Job Schedules in the specified Account.
 //
 // Lists all of the Job Schedules in the specified Account.
-//
-// Generated from API version 2024-07-01.20.0
 //   - options - ListJobSchedulesOptions contains the optional parameters for the Client.NewListJobSchedulesPager method.
 func (client *Client) NewListJobSchedulesPager(options *ListJobSchedulesOptions) *runtime.Pager[ListJobSchedulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListJobSchedulesResponse]{
@@ -4327,76 +3694,88 @@ func (client *Client) NewListJobSchedulesPager(options *ListJobSchedulesOptions)
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listJobSchedulesCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listJobSchedulesCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListJobSchedulesResponse{}, err
 			}
-			return client.listJobSchedulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListJobSchedulesResponse{}, err
+			}
+			return client.listJobSchedulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listJobSchedulesCreateRequest creates the ListJobSchedules request.
-func (client *Client) listJobSchedulesCreateRequest(ctx context.Context, options *ListJobSchedulesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobschedules"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+func (client *Client) listJobSchedulesCreateRequest(ctx context.Context, nextLink string, options *ListJobSchedulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobschedules"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", strings.Join(options.Expand, ","))
-	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", strings.Join(options.Expand, ","))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listJobSchedulesHandleResponse handles the ListJobSchedules response.
-func (client *Client) listJobSchedulesHandleResponse(resp *http.Response) (ListJobSchedulesResponse, error) {
+func (client *Client) listJobSchedulesHandleResponse(resp *http.Response, successCodes ...int) (ListJobSchedulesResponse, error) {
 	result := ListJobSchedulesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListJobSchedulesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobScheduleListResult); err != nil {
 		return ListJobSchedulesResponse{}, err
@@ -4404,104 +3783,9 @@ func (client *Client) listJobSchedulesHandleResponse(resp *http.Response) (ListJ
 	return result, nil
 }
 
-// NewListJobsPager - Lists all of the Jobs in the specified Account.
-//
-// Lists all of the Jobs in the specified Account.
-//
-// Generated from API version 2024-07-01.20.0
-//   - options - ListJobsOptions contains the optional parameters for the Client.NewListJobsPager method.
-func (client *Client) NewListJobsPager(options *ListJobsOptions) *runtime.Pager[ListJobsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListJobsResponse]{
-		More: func(page ListJobsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListJobsResponse) (ListJobsResponse, error) {
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listJobsCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ListJobsResponse{}, err
-			}
-			return client.listJobsHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listJobsCreateRequest creates the ListJobs request.
-func (client *Client) listJobsCreateRequest(ctx context.Context, options *ListJobsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobs"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", strings.Join(options.Expand, ","))
-	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// listJobsHandleResponse handles the ListJobs response.
-func (client *Client) listJobsHandleResponse(resp *http.Response) (ListJobsResponse, error) {
-	result := ListJobsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return ListJobsResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResult); err != nil {
-		return ListJobsResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListJobsFromSchedulePager - Lists the Jobs that have been created under the specified Job Schedule.
 //
 // Lists the Jobs that have been created under the specified Job Schedule.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule from which you want to get a list of Jobs.
 //   - options - ListJobsFromScheduleOptions contains the optional parameters for the Client.NewListJobsFromSchedulePager method.
 func (client *Client) NewListJobsFromSchedulePager(jobScheduleID string, options *ListJobsFromScheduleOptions) *runtime.Pager[ListJobsFromScheduleResponse] {
@@ -4514,80 +3798,92 @@ func (client *Client) NewListJobsFromSchedulePager(jobScheduleID string, options
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listJobsFromScheduleCreateRequest(ctx, jobScheduleID, options)
-			}, nil)
+			req, err := client.listJobsFromScheduleCreateRequest(ctx, jobScheduleID, nextLink, options)
 			if err != nil {
 				return ListJobsFromScheduleResponse{}, err
 			}
-			return client.listJobsFromScheduleHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListJobsFromScheduleResponse{}, err
+			}
+			return client.listJobsFromScheduleHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listJobsFromScheduleCreateRequest creates the ListJobsFromSchedule request.
-func (client *Client) listJobsFromScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *ListJobsFromScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobschedules/{jobScheduleId}/jobs"
-	if jobScheduleID == "" {
-		return nil, errors.New("parameter jobScheduleID cannot be empty")
+func (client *Client) listJobsFromScheduleCreateRequest(ctx context.Context, jobScheduleID string, nextLink string, options *ListJobsFromScheduleOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobschedules/{jobScheduleId}/jobs"
+		if jobScheduleID == "" {
+			return nil, errors.New("parameter jobScheduleID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", strings.Join(options.Expand, ","))
-	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", strings.Join(options.Expand, ","))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listJobsFromScheduleHandleResponse handles the ListJobsFromSchedule response.
-func (client *Client) listJobsFromScheduleHandleResponse(resp *http.Response) (ListJobsFromScheduleResponse, error) {
+func (client *Client) listJobsFromScheduleHandleResponse(resp *http.Response, successCodes ...int) (ListJobsFromScheduleResponse, error) {
 	result := ListJobsFromScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListJobsFromScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResult); err != nil {
 		return ListJobsFromScheduleResponse{}, err
@@ -4595,11 +3891,112 @@ func (client *Client) listJobsFromScheduleHandleResponse(resp *http.Response) (L
 	return result, nil
 }
 
+// NewListJobsPager - Lists all of the Jobs in the specified Account.
+//
+// Lists all of the Jobs in the specified Account.
+//   - options - ListJobsOptions contains the optional parameters for the Client.NewListJobsPager method.
+func (client *Client) NewListJobsPager(options *ListJobsOptions) *runtime.Pager[ListJobsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListJobsResponse]{
+		More: func(page ListJobsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListJobsResponse) (ListJobsResponse, error) {
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listJobsCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ListJobsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListJobsResponse{}, err
+			}
+			return client.listJobsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listJobsCreateRequest creates the ListJobs request.
+func (client *Client) listJobsCreateRequest(ctx context.Context, nextLink string, options *ListJobsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobs"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", strings.Join(options.Expand, ","))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
+	}
+	return req, nil
+}
+
+// listJobsHandleResponse handles the ListJobs response.
+func (client *Client) listJobsHandleResponse(resp *http.Response, successCodes ...int) (ListJobsResponse, error) {
+	result := ListJobsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastmodified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ListJobsResponse{}, err
+		}
+		result.Lastmodified = &lastmodified
+	}
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResult); err != nil {
+		return ListJobsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListNodeExtensionsPager - Lists the Compute Nodes Extensions in the specified Pool.
 //
 // Lists the Compute Nodes Extensions in the specified Pool.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to list extensions.
 //   - options - ListNodeExtensionsOptions contains the optional parameters for the Client.NewListNodeExtensionsPager method.
@@ -4613,78 +4010,90 @@ func (client *Client) NewListNodeExtensionsPager(poolID string, nodeID string, o
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNodeExtensionsCreateRequest(ctx, poolID, nodeID, options)
-			}, nil)
+			req, err := client.listNodeExtensionsCreateRequest(ctx, poolID, nodeID, nextLink, options)
 			if err != nil {
 				return ListNodeExtensionsResponse{}, err
 			}
-			return client.listNodeExtensionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListNodeExtensionsResponse{}, err
+			}
+			return client.listNodeExtensionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNodeExtensionsCreateRequest creates the ListNodeExtensions request.
-func (client *Client) listNodeExtensionsCreateRequest(ctx context.Context, poolID string, nodeID string, options *ListNodeExtensionsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/pools/{poolId}/nodes/{nodeId}/extensions"
-	if poolID == "" {
-		return nil, errors.New("parameter poolID cannot be empty")
+func (client *Client) listNodeExtensionsCreateRequest(ctx context.Context, poolID string, nodeID string, nextLink string, options *ListNodeExtensionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/pools/{poolId}/nodes/{nodeId}/extensions"
+		if poolID == "" {
+			return nil, errors.New("parameter poolID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
+		if nodeID == "" {
+			return nil, errors.New("parameter nodeID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	if nodeID == "" {
-		return nil, errors.New("parameter nodeID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listNodeExtensionsHandleResponse handles the ListNodeExtensions response.
-func (client *Client) listNodeExtensionsHandleResponse(resp *http.Response) (ListNodeExtensionsResponse, error) {
+func (client *Client) listNodeExtensionsHandleResponse(resp *http.Response, successCodes ...int) (ListNodeExtensionsResponse, error) {
 	result := ListNodeExtensionsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListNodeExtensionsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeVMExtensionListResult); err != nil {
 		return ListNodeExtensionsResponse{}, err
@@ -4695,8 +4104,6 @@ func (client *Client) listNodeExtensionsHandleResponse(resp *http.Response) (Lis
 // NewListNodeFilesPager - Lists all of the files in Task directories on the specified Compute Node.
 //
 // Lists all of the files in Task directories on the specified Compute Node.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node whose files you want to list.
 //   - options - ListNodeFilesOptions contains the optional parameters for the Client.NewListNodeFilesPager method.
@@ -4710,81 +4117,93 @@ func (client *Client) NewListNodeFilesPager(poolID string, nodeID string, option
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNodeFilesCreateRequest(ctx, poolID, nodeID, options)
-			}, nil)
+			req, err := client.listNodeFilesCreateRequest(ctx, poolID, nodeID, nextLink, options)
 			if err != nil {
 				return ListNodeFilesResponse{}, err
 			}
-			return client.listNodeFilesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListNodeFilesResponse{}, err
+			}
+			return client.listNodeFilesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNodeFilesCreateRequest creates the ListNodeFiles request.
-func (client *Client) listNodeFilesCreateRequest(ctx context.Context, poolID string, nodeID string, options *ListNodeFilesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/pools/{poolId}/nodes/{nodeId}/files"
-	if poolID == "" {
-		return nil, errors.New("parameter poolID cannot be empty")
+func (client *Client) listNodeFilesCreateRequest(ctx context.Context, poolID string, nodeID string, nextLink string, options *ListNodeFilesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/pools/{poolId}/nodes/{nodeId}/files"
+		if poolID == "" {
+			return nil, errors.New("parameter poolID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
+		if nodeID == "" {
+			return nil, errors.New("parameter nodeID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	if nodeID == "" {
-		return nil, errors.New("parameter nodeID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Recursive != nil {
-		reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Recursive != nil {
+			reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listNodeFilesHandleResponse handles the ListNodeFiles response.
-func (client *Client) listNodeFilesHandleResponse(resp *http.Response) (ListNodeFilesResponse, error) {
+func (client *Client) listNodeFilesHandleResponse(resp *http.Response, successCodes ...int) (ListNodeFilesResponse, error) {
 	result := ListNodeFilesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListNodeFilesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeFileListResult); err != nil {
 		return ListNodeFilesResponse{}, err
@@ -4795,8 +4214,6 @@ func (client *Client) listNodeFilesHandleResponse(resp *http.Response) (ListNode
 // NewListNodesPager - Lists the Compute Nodes in the specified Pool.
 //
 // Lists the Compute Nodes in the specified Pool.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool from which you want to list Compute Nodes.
 //   - options - ListNodesOptions contains the optional parameters for the Client.NewListNodesPager method.
 func (client *Client) NewListNodesPager(poolID string, options *ListNodesOptions) *runtime.Pager[ListNodesResponse] {
@@ -4809,77 +4226,89 @@ func (client *Client) NewListNodesPager(poolID string, options *ListNodesOptions
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNodesCreateRequest(ctx, poolID, options)
-			}, nil)
+			req, err := client.listNodesCreateRequest(ctx, poolID, nextLink, options)
 			if err != nil {
 				return ListNodesResponse{}, err
 			}
-			return client.listNodesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListNodesResponse{}, err
+			}
+			return client.listNodesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNodesCreateRequest creates the ListNodes request.
-func (client *Client) listNodesCreateRequest(ctx context.Context, poolID string, options *ListNodesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/pools/{poolId}/nodes"
-	if poolID == "" {
-		return nil, errors.New("parameter poolID cannot be empty")
+func (client *Client) listNodesCreateRequest(ctx context.Context, poolID string, nextLink string, options *ListNodesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/pools/{poolId}/nodes"
+		if poolID == "" {
+			return nil, errors.New("parameter poolID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listNodesHandleResponse handles the ListNodes response.
-func (client *Client) listNodesHandleResponse(resp *http.Response) (ListNodesResponse, error) {
+func (client *Client) listNodesHandleResponse(resp *http.Response, successCodes ...int) (ListNodesResponse, error) {
 	result := ListNodesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListNodesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeListResult); err != nil {
 		return ListNodesResponse{}, err
@@ -4890,8 +4319,6 @@ func (client *Client) listNodesHandleResponse(resp *http.Response) (ListNodesRes
 // NewListPoolNodeCountsPager - Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
 // numbers returned may not always be up to date. If you need exact node counts,
 // use a list query.
-//
-// Generated from API version 2024-07-01.20.0
 //   - options - ListPoolNodeCountsOptions contains the optional parameters for the Client.NewListPoolNodeCountsPager method.
 func (client *Client) NewListPoolNodeCountsPager(options *ListPoolNodeCountsOptions) *runtime.Pager[ListPoolNodeCountsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPoolNodeCountsResponse]{
@@ -4903,70 +4330,82 @@ func (client *Client) NewListPoolNodeCountsPager(options *ListPoolNodeCountsOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPoolNodeCountsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listPoolNodeCountsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListPoolNodeCountsResponse{}, err
 			}
-			return client.listPoolNodeCountsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListPoolNodeCountsResponse{}, err
+			}
+			return client.listPoolNodeCountsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPoolNodeCountsCreateRequest creates the ListPoolNodeCounts request.
-func (client *Client) listPoolNodeCountsCreateRequest(ctx context.Context, options *ListPoolNodeCountsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/nodecounts"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+func (client *Client) listPoolNodeCountsCreateRequest(ctx context.Context, nextLink string, options *ListPoolNodeCountsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/nodecounts"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listPoolNodeCountsHandleResponse handles the ListPoolNodeCounts response.
-func (client *Client) listPoolNodeCountsHandleResponse(resp *http.Response) (ListPoolNodeCountsResponse, error) {
+func (client *Client) listPoolNodeCountsHandleResponse(resp *http.Response, successCodes ...int) (ListPoolNodeCountsResponse, error) {
 	result := ListPoolNodeCountsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListPoolNodeCountsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPoolNodeCountsResult); err != nil {
 		return ListPoolNodeCountsResponse{}, err
@@ -4974,11 +4413,9 @@ func (client *Client) listPoolNodeCountsHandleResponse(resp *http.Response) (Lis
 	return result, nil
 }
 
-// NewListPoolsPager - Lists all of the Pools which be mounted.
+// NewListPoolsPager - Lists all of the Pools in the specified Account.
 //
-// Lists all of the Pools which be mounted.
-//
-// Generated from API version 2024-07-01.20.0
+// Lists all of the Pools in the specified Account.
 //   - options - ListPoolsOptions contains the optional parameters for the Client.NewListPoolsPager method.
 func (client *Client) NewListPoolsPager(options *ListPoolsOptions) *runtime.Pager[ListPoolsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPoolsResponse]{
@@ -4990,76 +4427,88 @@ func (client *Client) NewListPoolsPager(options *ListPoolsOptions) *runtime.Page
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPoolsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listPoolsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListPoolsResponse{}, err
 			}
-			return client.listPoolsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListPoolsResponse{}, err
+			}
+			return client.listPoolsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPoolsCreateRequest creates the ListPools request.
-func (client *Client) listPoolsCreateRequest(ctx context.Context, options *ListPoolsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/pools"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+func (client *Client) listPoolsCreateRequest(ctx context.Context, nextLink string, options *ListPoolsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/pools"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", strings.Join(options.Expand, ","))
-	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", strings.Join(options.Expand, ","))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listPoolsHandleResponse handles the ListPools response.
-func (client *Client) listPoolsHandleResponse(resp *http.Response) (ListPoolsResponse, error) {
+func (client *Client) listPoolsHandleResponse(resp *http.Response, successCodes ...int) (ListPoolsResponse, error) {
 	result := ListPoolsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListPoolsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolListResult); err != nil {
 		return ListPoolsResponse{}, err
@@ -5071,8 +4520,6 @@ func (client *Client) listPoolsHandleResponse(resp *http.Response) (ListPoolsRes
 // Task.
 //
 // If the Task is not a multi-instance Task then this returns an empty collection.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job.
 //   - taskID - The ID of the Task.
 //   - options - ListSubTasksOptions contains the optional parameters for the Client.NewListSubTasksPager method.
@@ -5086,75 +4533,87 @@ func (client *Client) NewListSubTasksPager(jobID string, taskID string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSubTasksCreateRequest(ctx, jobID, taskID, options)
-			}, nil)
+			req, err := client.listSubTasksCreateRequest(ctx, jobID, taskID, nextLink, options)
 			if err != nil {
 				return ListSubTasksResponse{}, err
 			}
-			return client.listSubTasksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListSubTasksResponse{}, err
+			}
+			return client.listSubTasksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSubTasksCreateRequest creates the ListSubTasks request.
-func (client *Client) listSubTasksCreateRequest(ctx context.Context, jobID string, taskID string, options *ListSubTasksOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobs/{jobId}/tasks/{taskId}/subtasksinfo"
-	if jobID == "" {
-		return nil, errors.New("parameter jobID cannot be empty")
+func (client *Client) listSubTasksCreateRequest(ctx context.Context, jobID string, taskID string, nextLink string, options *ListSubTasksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobs/{jobId}/tasks/{taskId}/subtasksinfo"
+		if jobID == "" {
+			return nil, errors.New("parameter jobID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
+		if taskID == "" {
+			return nil, errors.New("parameter taskID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	if taskID == "" {
-		return nil, errors.New("parameter taskID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listSubTasksHandleResponse handles the ListSubTasks response.
-func (client *Client) listSubTasksHandleResponse(resp *http.Response) (ListSubTasksResponse, error) {
+func (client *Client) listSubTasksHandleResponse(resp *http.Response, successCodes ...int) (ListSubTasksResponse, error) {
 	result := ListSubTasksResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListSubTasksResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskListSubtasksResult); err != nil {
 		return ListSubTasksResponse{}, err
@@ -5165,8 +4624,6 @@ func (client *Client) listSubTasksHandleResponse(resp *http.Response) (ListSubTa
 // NewListSupportedImagesPager - Lists all Virtual Machine Images supported by the Azure Batch service.
 //
 // Lists all Virtual Machine Images supported by the Azure Batch service.
-//
-// Generated from API version 2024-07-01.20.0
 //   - options - ListSupportedImagesOptions contains the optional parameters for the Client.NewListSupportedImagesPager method.
 func (client *Client) NewListSupportedImagesPager(options *ListSupportedImagesOptions) *runtime.Pager[ListSupportedImagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListSupportedImagesResponse]{
@@ -5178,70 +4635,82 @@ func (client *Client) NewListSupportedImagesPager(options *ListSupportedImagesOp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSupportedImagesCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listSupportedImagesCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListSupportedImagesResponse{}, err
 			}
-			return client.listSupportedImagesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListSupportedImagesResponse{}, err
+			}
+			return client.listSupportedImagesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSupportedImagesCreateRequest creates the ListSupportedImages request.
-func (client *Client) listSupportedImagesCreateRequest(ctx context.Context, options *ListSupportedImagesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/supportedimages"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+func (client *Client) listSupportedImagesCreateRequest(ctx context.Context, nextLink string, options *ListSupportedImagesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/supportedimages"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listSupportedImagesHandleResponse handles the ListSupportedImages response.
-func (client *Client) listSupportedImagesHandleResponse(resp *http.Response) (ListSupportedImagesResponse, error) {
+func (client *Client) listSupportedImagesHandleResponse(resp *http.Response, successCodes ...int) (ListSupportedImagesResponse, error) {
 	result := ListSupportedImagesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListSupportedImagesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListSupportedImagesResult); err != nil {
 		return ListSupportedImagesResponse{}, err
@@ -5252,8 +4721,6 @@ func (client *Client) listSupportedImagesHandleResponse(resp *http.Response) (Li
 // NewListTaskFilesPager - Lists the files in a Task's directory on its Compute Node.
 //
 // Lists the files in a Task's directory on its Compute Node.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job that contains the Task.
 //   - taskID - The ID of the Task whose files you want to list.
 //   - options - ListTaskFilesOptions contains the optional parameters for the Client.NewListTaskFilesPager method.
@@ -5267,81 +4734,93 @@ func (client *Client) NewListTaskFilesPager(jobID string, taskID string, options
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTaskFilesCreateRequest(ctx, jobID, taskID, options)
-			}, nil)
+			req, err := client.listTaskFilesCreateRequest(ctx, jobID, taskID, nextLink, options)
 			if err != nil {
 				return ListTaskFilesResponse{}, err
 			}
-			return client.listTaskFilesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListTaskFilesResponse{}, err
+			}
+			return client.listTaskFilesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTaskFilesCreateRequest creates the ListTaskFiles request.
-func (client *Client) listTaskFilesCreateRequest(ctx context.Context, jobID string, taskID string, options *ListTaskFilesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobs/{jobId}/tasks/{taskId}/files"
-	if jobID == "" {
-		return nil, errors.New("parameter jobID cannot be empty")
+func (client *Client) listTaskFilesCreateRequest(ctx context.Context, jobID string, taskID string, nextLink string, options *ListTaskFilesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobs/{jobId}/tasks/{taskId}/files"
+		if jobID == "" {
+			return nil, errors.New("parameter jobID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
+		if taskID == "" {
+			return nil, errors.New("parameter taskID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	if taskID == "" {
-		return nil, errors.New("parameter taskID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Recursive != nil {
-		reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Recursive != nil {
+			reqQP.Set("recursive", strconv.FormatBool(*options.Recursive))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listTaskFilesHandleResponse handles the ListTaskFiles response.
-func (client *Client) listTaskFilesHandleResponse(resp *http.Response) (ListTaskFilesResponse, error) {
+func (client *Client) listTaskFilesHandleResponse(resp *http.Response, successCodes ...int) (ListTaskFilesResponse, error) {
 	result := ListTaskFilesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListTaskFilesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeFileListResult); err != nil {
 		return ListTaskFilesResponse{}, err
@@ -5354,8 +4833,6 @@ func (client *Client) listTaskFilesHandleResponse(resp *http.Response) (ListTask
 // For multi-instance Tasks, information such as affinityId, executionInfo and
 // nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
 // information about subtasks.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job.
 //   - options - ListTasksOptions contains the optional parameters for the Client.NewListTasksPager method.
 func (client *Client) NewListTasksPager(jobID string, options *ListTasksOptions) *runtime.Pager[ListTasksResponse] {
@@ -5368,80 +4845,92 @@ func (client *Client) NewListTasksPager(jobID string, options *ListTasksOptions)
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTasksCreateRequest(ctx, jobID, options)
-			}, nil)
+			req, err := client.listTasksCreateRequest(ctx, jobID, nextLink, options)
 			if err != nil {
 				return ListTasksResponse{}, err
 			}
-			return client.listTasksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListTasksResponse{}, err
+			}
+			return client.listTasksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTasksCreateRequest creates the ListTasks request.
-func (client *Client) listTasksCreateRequest(ctx context.Context, jobID string, options *ListTasksOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/jobs/{jobId}/tasks"
-	if jobID == "" {
-		return nil, errors.New("parameter jobID cannot be empty")
+func (client *Client) listTasksCreateRequest(ctx context.Context, jobID string, nextLink string, options *ListTasksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/jobs/{jobId}/tasks"
+		if jobID == "" {
+			return nil, errors.New("parameter jobID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", strings.Join(options.Expand, ","))
-	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SelectParam != nil {
-		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", strings.Join(options.Expand, ","))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", strings.Join(options.Select, ","))
+		}
+		reqQP.Set("api-version", version20261001)
+		if options != nil && options.MaxResults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+		}
+		if options != nil && options.Timeout != nil {
+			reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+		}
+		if options != nil && options.Ocpdate != nil {
+			req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
+		}
+		if options != nil && options.ReturnClientRequestID != nil {
+			req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+		}
 	}
 	return req, nil
 }
 
 // listTasksHandleResponse handles the ListTasks response.
-func (client *Client) listTasksHandleResponse(resp *http.Response) (ListTasksResponse, error) {
+func (client *Client) listTasksHandleResponse(resp *http.Response, successCodes ...int) (ListTasksResponse, error) {
 	result := ListTasksResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ListTasksResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskListResult); err != nil {
 		return ListTasksResponse{}, err
@@ -5451,8 +4940,6 @@ func (client *Client) listTasksHandleResponse(resp *http.Response) (ListTasksRes
 
 // PoolExists - Gets basic properties of a Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
 //   - options - PoolExistsOptions contains the optional parameters for the Client.PoolExists method.
 func (client *Client) PoolExists(ctx context.Context, poolID string, options *PoolExistsOptions) (PoolExistsResponse, error) {
@@ -5467,51 +4954,43 @@ func (client *Client) PoolExists(ctx context.Context, poolID string, options *Po
 	if err != nil {
 		return PoolExistsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolExistsResponse{}, err
-	}
-	resp, err := client.poolExistsHandleResponse(httpResp)
-	return resp, err
+	return client.poolExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
 }
 
 // poolExistsCreateRequest creates the PoolExists request.
 func (client *Client) poolExistsCreateRequest(ctx context.Context, poolID string, options *PoolExistsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -5520,23 +4999,26 @@ func (client *Client) poolExistsCreateRequest(ctx context.Context, poolID string
 }
 
 // poolExistsHandleResponse handles the PoolExists response.
-func (client *Client) poolExistsHandleResponse(resp *http.Response) (PoolExistsResponse, error) {
+func (client *Client) poolExistsHandleResponse(resp *http.Response, successCodes ...int) (PoolExistsResponse, error) {
 	result := PoolExistsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return PoolExistsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -5552,8 +5034,6 @@ func (client *Client) poolExistsHandleResponse(resp *http.Response) (PoolExistsR
 // previously completed successfully (with an exit code of 0). Additionally, it
 // will fail if the Job has completed (or is terminating or deleting).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job containing the Task.
 //   - taskID - The ID of the Task to reactivate.
 //   - options - ReactivateTaskOptions contains the optional parameters for the Client.ReactivateTask method.
@@ -5569,18 +5049,11 @@ func (client *Client) ReactivateTask(ctx context.Context, jobID string, taskID s
 	if err != nil {
 		return ReactivateTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ReactivateTaskResponse{}, err
-	}
-	resp, err := client.reactivateTaskHandleResponse(httpResp)
-	return resp, err
+	return client.reactivateTaskHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // reactivateTaskCreateRequest creates the ReactivateTask request.
 func (client *Client) reactivateTaskCreateRequest(ctx context.Context, jobID string, taskID string, options *ReactivateTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}/reactivate"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -5590,34 +5063,33 @@ func (client *Client) reactivateTaskCreateRequest(ctx context.Context, jobID str
 		return nil, errors.New("parameter taskID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -5626,26 +5098,29 @@ func (client *Client) reactivateTaskCreateRequest(ctx context.Context, jobID str
 }
 
 // reactivateTaskHandleResponse handles the ReactivateTask response.
-func (client *Client) reactivateTaskHandleResponse(resp *http.Response) (ReactivateTaskResponse, error) {
+func (client *Client) reactivateTaskHandleResponse(resp *http.Response, successCodes ...int) (ReactivateTaskResponse, error) {
 	result := ReactivateTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReactivateTaskResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -5654,8 +5129,6 @@ func (client *Client) reactivateTaskHandleResponse(resp *http.Response) (Reactiv
 //
 // You can restart a Compute Node only if it is in an idle or running state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to restart.
 //   - options - RebootNodeOptions contains the optional parameters for the Client.RebootNode method.
@@ -5671,18 +5144,11 @@ func (client *Client) RebootNode(ctx context.Context, poolID string, nodeID stri
 	if err != nil {
 		return RebootNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return RebootNodeResponse{}, err
-	}
-	resp, err := client.rebootNodeHandleResponse(httpResp)
-	return resp, err
+	return client.rebootNodeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // rebootNodeCreateRequest creates the RebootNode request.
 func (client *Client) rebootNodeCreateRequest(ctx context.Context, poolID string, nodeID string, options *RebootNodeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/reboot"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -5692,29 +5158,28 @@ func (client *Client) rebootNodeCreateRequest(ctx context.Context, poolID string
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
-	if options != nil && options.Parameters != nil {
+	if options != nil && options.Options != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Options); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -5723,26 +5188,29 @@ func (client *Client) rebootNodeCreateRequest(ctx context.Context, poolID string
 }
 
 // rebootNodeHandleResponse handles the RebootNode response.
-func (client *Client) rebootNodeHandleResponse(resp *http.Response) (RebootNodeResponse, error) {
+func (client *Client) rebootNodeHandleResponse(resp *http.Response, successCodes ...int) (RebootNodeResponse, error) {
 	result := RebootNodeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return RebootNodeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -5753,8 +5221,6 @@ func (client *Client) rebootNodeHandleResponse(resp *http.Response) (RebootNodeR
 // idle or running state. This API can be invoked only on Pools created with the
 // cloud service configuration property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to restart.
 //   - options - ReimageNodeOptions contains the optional parameters for the Client.ReimageNode method.
@@ -5770,18 +5236,11 @@ func (client *Client) ReimageNode(ctx context.Context, poolID string, nodeID str
 	if err != nil {
 		return ReimageNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ReimageNodeResponse{}, err
-	}
-	resp, err := client.reimageNodeHandleResponse(httpResp)
-	return resp, err
+	return client.reimageNodeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // reimageNodeCreateRequest creates the ReimageNode request.
 func (client *Client) reimageNodeCreateRequest(ctx context.Context, poolID string, nodeID string, options *ReimageNodeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/reimage"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -5791,29 +5250,28 @@ func (client *Client) reimageNodeCreateRequest(ctx context.Context, poolID strin
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
-	if options != nil && options.Parameters != nil {
+	if options != nil && options.Options != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Options); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -5822,26 +5280,29 @@ func (client *Client) reimageNodeCreateRequest(ctx context.Context, poolID strin
 }
 
 // reimageNodeHandleResponse handles the ReimageNode response.
-func (client *Client) reimageNodeHandleResponse(resp *http.Response) (ReimageNodeResponse, error) {
+func (client *Client) reimageNodeHandleResponse(resp *http.Response, successCodes ...int) (ReimageNodeResponse, error) {
 	result := ReimageNodeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReimageNodeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -5852,16 +5313,14 @@ func (client *Client) reimageNodeHandleResponse(resp *http.Response) (ReimageNod
 // When this operation runs, the allocation state changes from steady to resizing.
 // Each request may remove up to 100 nodes.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
-//   - content - The options to use for removing the node.
+//   - removeOptions - The options to use for removing the node.
 //   - options - RemoveNodesOptions contains the optional parameters for the Client.RemoveNodes method.
-func (client *Client) RemoveNodes(ctx context.Context, poolID string, content RemoveNodeContent, options *RemoveNodesOptions) (RemoveNodesResponse, error) {
+func (client *Client) RemoveNodes(ctx context.Context, poolID string, removeOptions RemoveNodeOptions, options *RemoveNodesOptions) (RemoveNodesResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.RemoveNodes", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.removeNodesCreateRequest(ctx, poolID, content, options)
+	req, err := client.removeNodesCreateRequest(ctx, poolID, removeOptions, options)
 	if err != nil {
 		return RemoveNodesResponse{}, err
 	}
@@ -5869,83 +5328,78 @@ func (client *Client) RemoveNodes(ctx context.Context, poolID string, content Re
 	if err != nil {
 		return RemoveNodesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return RemoveNodesResponse{}, err
-	}
-	resp, err := client.removeNodesHandleResponse(httpResp)
-	return resp, err
+	return client.removeNodesHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // removeNodesCreateRequest creates the RemoveNodes request.
-func (client *Client) removeNodesCreateRequest(ctx context.Context, poolID string, content RemoveNodeContent, options *RemoveNodesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) removeNodesCreateRequest(ctx context.Context, poolID string, removeOptions RemoveNodeOptions, options *RemoveNodesOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/removenodes"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, removeOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // removeNodesHandleResponse handles the RemoveNodes response.
-func (client *Client) removeNodesHandleResponse(resp *http.Response) (RemoveNodesResponse, error) {
+func (client *Client) removeNodesHandleResponse(resp *http.Response, successCodes ...int) (RemoveNodesResponse, error) {
 	result := RemoveNodesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return RemoveNodesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -5956,8 +5410,6 @@ func (client *Client) removeNodesHandleResponse(resp *http.Response) (RemoveNode
 // the Job has constraints associated with it and if constraints is not specified
 // with this request, then the Batch service will remove the existing constraints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job whose properties you want to update.
 //   - job - A job with updated properties
 //   - options - ReplaceJobOptions contains the optional parameters for the Client.ReplaceJob method.
@@ -5973,51 +5425,43 @@ func (client *Client) ReplaceJob(ctx context.Context, jobID string, job Job, opt
 	if err != nil {
 		return ReplaceJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplaceJobResponse{}, err
-	}
-	resp, err := client.replaceJobHandleResponse(httpResp)
-	return resp, err
+	return client.replaceJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // replaceJobCreateRequest creates the ReplaceJob request.
 func (client *Client) replaceJobCreateRequest(ctx context.Context, jobID string, job Job, options *ReplaceJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6030,26 +5474,29 @@ func (client *Client) replaceJobCreateRequest(ctx context.Context, jobID string,
 }
 
 // replaceJobHandleResponse handles the ReplaceJob response.
-func (client *Client) replaceJobHandleResponse(resp *http.Response) (ReplaceJobResponse, error) {
+func (client *Client) replaceJobHandleResponse(resp *http.Response, successCodes ...int) (ReplaceJobResponse, error) {
 	result := ReplaceJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReplaceJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6062,8 +5509,6 @@ func (client *Client) replaceJobHandleResponse(resp *http.Response) (ReplaceJobR
 // impact Jobs created by the schedule after the update has taken place; currently
 // running Jobs are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to update.
 //   - jobSchedule - A Job Schedule with updated properties
 //   - options - ReplaceJobScheduleOptions contains the optional parameters for the Client.ReplaceJobSchedule method.
@@ -6079,51 +5524,43 @@ func (client *Client) ReplaceJobSchedule(ctx context.Context, jobScheduleID stri
 	if err != nil {
 		return ReplaceJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplaceJobScheduleResponse{}, err
-	}
-	resp, err := client.replaceJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.replaceJobScheduleHandleResponse(httpResp, http.StatusOK)
 }
 
 // replaceJobScheduleCreateRequest creates the ReplaceJobSchedule request.
 func (client *Client) replaceJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, jobSchedule JobSchedule, options *ReplaceJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6136,26 +5573,29 @@ func (client *Client) replaceJobScheduleCreateRequest(ctx context.Context, jobSc
 }
 
 // replaceJobScheduleHandleResponse handles the ReplaceJobSchedule response.
-func (client *Client) replaceJobScheduleHandleResponse(resp *http.Response) (ReplaceJobScheduleResponse, error) {
+func (client *Client) replaceJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (ReplaceJobScheduleResponse, error) {
 	result := ReplaceJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReplaceJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6167,18 +5607,16 @@ func (client *Client) replaceJobScheduleHandleResponse(resp *http.Response) (Rep
 // replaced with the default value, not left unmodified. You can update a user
 // Account on a Compute Node only when it is in the idle or running state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the machine on which you want to update a user Account.
 //   - userName - The name of the user Account to update.
-//   - content - The options to use for updating the user.
+//   - updateOptions - The options to use for updating the user.
 //   - options - ReplaceNodeUserOptions contains the optional parameters for the Client.ReplaceNodeUser method.
-func (client *Client) ReplaceNodeUser(ctx context.Context, poolID string, nodeID string, userName string, content UpdateNodeUserContent, options *ReplaceNodeUserOptions) (ReplaceNodeUserResponse, error) {
+func (client *Client) ReplaceNodeUser(ctx context.Context, poolID string, nodeID string, userName string, updateOptions UpdateNodeUserOptions, options *ReplaceNodeUserOptions) (ReplaceNodeUserResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.ReplaceNodeUser", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.replaceNodeUserCreateRequest(ctx, poolID, nodeID, userName, content, options)
+	req, err := client.replaceNodeUserCreateRequest(ctx, poolID, nodeID, userName, updateOptions, options)
 	if err != nil {
 		return ReplaceNodeUserResponse{}, err
 	}
@@ -6186,18 +5624,11 @@ func (client *Client) ReplaceNodeUser(ctx context.Context, poolID string, nodeID
 	if err != nil {
 		return ReplaceNodeUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplaceNodeUserResponse{}, err
-	}
-	resp, err := client.replaceNodeUserHandleResponse(httpResp)
-	return resp, err
+	return client.replaceNodeUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // replaceNodeUserCreateRequest creates the ReplaceNodeUser request.
-func (client *Client) replaceNodeUserCreateRequest(ctx context.Context, poolID string, nodeID string, userName string, content UpdateNodeUserContent, options *ReplaceNodeUserOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) replaceNodeUserCreateRequest(ctx context.Context, poolID string, nodeID string, userName string, updateOptions UpdateNodeUserOptions, options *ReplaceNodeUserOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/users/{userName}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -6211,54 +5642,56 @@ func (client *Client) replaceNodeUserCreateRequest(ctx context.Context, poolID s
 		return nil, errors.New("parameter userName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userName}", url.PathEscape(userName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, updateOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // replaceNodeUserHandleResponse handles the ReplaceNodeUser response.
-func (client *Client) replaceNodeUserHandleResponse(resp *http.Response) (ReplaceNodeUserResponse, error) {
+func (client *Client) replaceNodeUserHandleResponse(resp *http.Response, successCodes ...int) (ReplaceNodeUserResponse, error) {
 	result := ReplaceNodeUserResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReplaceNodeUserResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6269,12 +5702,10 @@ func (client *Client) replaceNodeUserHandleResponse(resp *http.Response) (Replac
 // the Pool has a StartTask associated with it and if StartTask is not specified
 // with this request, then the Batch service will remove the existing StartTask.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to update.
 //   - pool - The options to use for replacing properties on the pool.
 //   - options - ReplacePoolPropertiesOptions contains the optional parameters for the Client.ReplacePoolProperties method.
-func (client *Client) ReplacePoolProperties(ctx context.Context, poolID string, pool ReplacePoolContent, options *ReplacePoolPropertiesOptions) (ReplacePoolPropertiesResponse, error) {
+func (client *Client) ReplacePoolProperties(ctx context.Context, poolID string, pool ReplacePoolOptions, options *ReplacePoolPropertiesOptions) (ReplacePoolPropertiesResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.ReplacePoolProperties", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -6286,39 +5717,31 @@ func (client *Client) ReplacePoolProperties(ctx context.Context, poolID string, 
 	if err != nil {
 		return ReplacePoolPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplacePoolPropertiesResponse{}, err
-	}
-	resp, err := client.replacePoolPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.replacePoolPropertiesHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // replacePoolPropertiesCreateRequest creates the ReplacePoolProperties request.
-func (client *Client) replacePoolPropertiesCreateRequest(ctx context.Context, poolID string, pool ReplacePoolContent, options *ReplacePoolPropertiesOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) replacePoolPropertiesCreateRequest(ctx context.Context, poolID string, pool ReplacePoolOptions, options *ReplacePoolPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/updateproperties"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6331,34 +5754,35 @@ func (client *Client) replacePoolPropertiesCreateRequest(ctx context.Context, po
 }
 
 // replacePoolPropertiesHandleResponse handles the ReplacePoolProperties response.
-func (client *Client) replacePoolPropertiesHandleResponse(resp *http.Response) (ReplacePoolPropertiesResponse, error) {
+func (client *Client) replacePoolPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ReplacePoolPropertiesResponse, error) {
 	result := ReplacePoolPropertiesResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReplacePoolPropertiesResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
 
 // ReplaceTask - Updates the properties of the specified Task.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job containing the Task.
 //   - taskID - The ID of the Task to update.
 //   - task - The Task to update.
@@ -6375,18 +5799,11 @@ func (client *Client) ReplaceTask(ctx context.Context, jobID string, taskID stri
 	if err != nil {
 		return ReplaceTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplaceTaskResponse{}, err
-	}
-	resp, err := client.replaceTaskHandleResponse(httpResp)
-	return resp, err
+	return client.replaceTaskHandleResponse(httpResp, http.StatusOK)
 }
 
 // replaceTaskCreateRequest creates the ReplaceTask request.
 func (client *Client) replaceTaskCreateRequest(ctx context.Context, jobID string, taskID string, task Task, options *ReplaceTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -6396,34 +5813,33 @@ func (client *Client) replaceTaskCreateRequest(ctx context.Context, jobID string
 		return nil, errors.New("parameter taskID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6436,26 +5852,29 @@ func (client *Client) replaceTaskCreateRequest(ctx context.Context, jobID string
 }
 
 // replaceTaskHandleResponse handles the ReplaceTask response.
-func (client *Client) replaceTaskHandleResponse(resp *http.Response) (ReplaceTaskResponse, error) {
+func (client *Client) replaceTaskHandleResponse(resp *http.Response, successCodes ...int) (ReplaceTaskResponse, error) {
 	result := ReplaceTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ReplaceTaskResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6470,16 +5889,14 @@ func (client *Client) replaceTaskHandleResponse(resp *http.Response) (ReplaceTas
 // Batch service chooses which Compute Nodes to remove. To remove specific Compute
 // Nodes, use the Pool remove Compute Nodes API instead.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
-//   - content - The options to use for resizing the pool.
+//   - resizeOptions - The options to use for resizing the pool.
 //   - options - ResizePoolOptions contains the optional parameters for the Client.ResizePool method.
-func (client *Client) ResizePool(ctx context.Context, poolID string, content ResizePoolContent, options *ResizePoolOptions) (ResizePoolResponse, error) {
+func (client *Client) ResizePool(ctx context.Context, poolID string, resizeOptions ResizePoolOptions, options *ResizePoolOptions) (ResizePoolResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.ResizePool", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.resizePoolCreateRequest(ctx, poolID, content, options)
+	req, err := client.resizePoolCreateRequest(ctx, poolID, resizeOptions, options)
 	if err != nil {
 		return ResizePoolResponse{}, err
 	}
@@ -6487,83 +5904,78 @@ func (client *Client) ResizePool(ctx context.Context, poolID string, content Res
 	if err != nil {
 		return ResizePoolResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ResizePoolResponse{}, err
-	}
-	resp, err := client.resizePoolHandleResponse(httpResp)
-	return resp, err
+	return client.resizePoolHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // resizePoolCreateRequest creates the ResizePool request.
-func (client *Client) resizePoolCreateRequest(ctx context.Context, poolID string, content ResizePoolContent, options *ResizePoolOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) resizePoolCreateRequest(ctx context.Context, poolID string, resizeOptions ResizePoolOptions, options *ResizePoolOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/resize"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, resizeOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // resizePoolHandleResponse handles the ResizePool response.
-func (client *Client) resizePoolHandleResponse(resp *http.Response) (ResizePoolResponse, error) {
+func (client *Client) resizePoolHandleResponse(resp *http.Response, successCodes ...int) (ResizePoolResponse, error) {
 	result := ResizePoolResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ResizePoolResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6572,8 +5984,6 @@ func (client *Client) resizePoolHandleResponse(resp *http.Response) (ResizePoolR
 //
 // You can start a Compute Node only if it has been deallocated.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node that you want to restart.
 //   - options - StartNodeOptions contains the optional parameters for the Client.StartNode method.
@@ -6589,18 +5999,11 @@ func (client *Client) StartNode(ctx context.Context, poolID string, nodeID strin
 	if err != nil {
 		return StartNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return StartNodeResponse{}, err
-	}
-	resp, err := client.startNodeHandleResponse(httpResp)
-	return resp, err
+	return client.startNodeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // startNodeCreateRequest creates the StartNode request.
 func (client *Client) startNodeCreateRequest(ctx context.Context, poolID string, nodeID string, options *StartNodeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/start"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -6610,22 +6013,21 @@ func (client *Client) startNodeCreateRequest(ctx context.Context, poolID string,
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6634,26 +6036,29 @@ func (client *Client) startNodeCreateRequest(ctx context.Context, poolID string,
 }
 
 // startNodeHandleResponse handles the StartNode response.
-func (client *Client) startNodeHandleResponse(resp *http.Response) (StartNodeResponse, error) {
+func (client *Client) startNodeHandleResponse(resp *http.Response, successCodes ...int) (StartNodeResponse, error) {
 	result := StartNodeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return StartNodeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6668,8 +6073,6 @@ func (client *Client) startNodeHandleResponse(resp *http.Response) (StartNodeRes
 // resize operation need not be an explicit resize Pool request; this API can also
 // be used to halt the initial sizing of the Pool when it is created.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
 //   - options - StopPoolResizeOptions contains the optional parameters for the Client.StopPoolResize method.
 func (client *Client) StopPoolResize(ctx context.Context, poolID string, options *StopPoolResizeOptions) (StopPoolResizeResponse, error) {
@@ -6684,51 +6087,43 @@ func (client *Client) StopPoolResize(ctx context.Context, poolID string, options
 	if err != nil {
 		return StopPoolResizeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return StopPoolResizeResponse{}, err
-	}
-	resp, err := client.stopPoolResizeHandleResponse(httpResp)
-	return resp, err
+	return client.stopPoolResizeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // stopPoolResizeCreateRequest creates the StopPoolResize request.
 func (client *Client) stopPoolResizeCreateRequest(ctx context.Context, poolID string, options *StopPoolResizeOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/pools/{poolId}/stopresize"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6737,26 +6132,29 @@ func (client *Client) stopPoolResizeCreateRequest(ctx context.Context, poolID st
 }
 
 // stopPoolResizeHandleResponse handles the StopPoolResize response.
-func (client *Client) stopPoolResizeHandleResponse(resp *http.Response) (StopPoolResizeResponse, error) {
+func (client *Client) stopPoolResizeHandleResponse(resp *http.Response, successCodes ...int) (StopPoolResizeResponse, error) {
 	result := StopPoolResizeResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return StopPoolResizeResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6770,8 +6168,6 @@ func (client *Client) stopPoolResizeHandleResponse(resp *http.Response) (StopPoo
 // state, they will remain in the active state. Once a Job is terminated, new
 // Tasks cannot be added and any remaining active Tasks will not be scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job to terminate.
 //   - options - TerminateJobOptions contains the optional parameters for the Client.TerminateJob method.
 func (client *Client) TerminateJob(ctx context.Context, jobID string, options *TerminateJobOptions) (TerminateJobResponse, error) {
@@ -6786,61 +6182,53 @@ func (client *Client) TerminateJob(ctx context.Context, jobID string, options *T
 	if err != nil {
 		return TerminateJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return TerminateJobResponse{}, err
-	}
-	resp, err := client.terminateJobHandleResponse(httpResp)
-	return resp, err
+	return client.terminateJobHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // terminateJobCreateRequest creates the TerminateJob request.
 func (client *Client) terminateJobCreateRequest(ctx context.Context, jobID string, options *TerminateJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/terminate"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
-	if options != nil && options.Parameters != nil {
+	if options != nil && options.Options != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Options); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -6849,26 +6237,29 @@ func (client *Client) terminateJobCreateRequest(ctx context.Context, jobID strin
 }
 
 // terminateJobHandleResponse handles the TerminateJob response.
-func (client *Client) terminateJobHandleResponse(resp *http.Response) (TerminateJobResponse, error) {
+func (client *Client) terminateJobHandleResponse(resp *http.Response, successCodes ...int) (TerminateJobResponse, error) {
 	result := TerminateJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return TerminateJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6877,8 +6268,6 @@ func (client *Client) terminateJobHandleResponse(resp *http.Response) (Terminate
 //
 // Terminates a Job Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to terminates.
 //   - options - TerminateJobScheduleOptions contains the optional parameters for the Client.TerminateJobSchedule method.
 func (client *Client) TerminateJobSchedule(ctx context.Context, jobScheduleID string, options *TerminateJobScheduleOptions) (TerminateJobScheduleResponse, error) {
@@ -6893,54 +6282,46 @@ func (client *Client) TerminateJobSchedule(ctx context.Context, jobScheduleID st
 	if err != nil {
 		return TerminateJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return TerminateJobScheduleResponse{}, err
-	}
-	resp, err := client.terminateJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.terminateJobScheduleHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // terminateJobScheduleCreateRequest creates the TerminateJobSchedule request.
 func (client *Client) terminateJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, options *TerminateJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobschedules/{jobScheduleId}/terminate"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -6949,26 +6330,29 @@ func (client *Client) terminateJobScheduleCreateRequest(ctx context.Context, job
 }
 
 // terminateJobScheduleHandleResponse handles the TerminateJobSchedule response.
-func (client *Client) terminateJobScheduleHandleResponse(resp *http.Response) (TerminateJobScheduleResponse, error) {
+func (client *Client) terminateJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (TerminateJobScheduleResponse, error) {
 	result := TerminateJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return TerminateJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -6979,8 +6363,6 @@ func (client *Client) terminateJobScheduleHandleResponse(resp *http.Response) (T
 // multi-instance Tasks, the terminate Task operation applies synchronously to the
 // primary task; subtasks are then terminated asynchronously in the background.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job containing the Task.
 //   - taskID - The ID of the Task to terminate.
 //   - options - TerminateTaskOptions contains the optional parameters for the Client.TerminateTask method.
@@ -6996,18 +6378,11 @@ func (client *Client) TerminateTask(ctx context.Context, jobID string, taskID st
 	if err != nil {
 		return TerminateTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TerminateTaskResponse{}, err
-	}
-	resp, err := client.terminateTaskHandleResponse(httpResp)
-	return resp, err
+	return client.terminateTaskHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // terminateTaskCreateRequest creates the TerminateTask request.
 func (client *Client) terminateTaskCreateRequest(ctx context.Context, jobID string, taskID string, options *TerminateTaskOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/jobs/{jobId}/tasks/{taskId}/terminate"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
@@ -7017,34 +6392,33 @@ func (client *Client) terminateTaskCreateRequest(ctx context.Context, jobID stri
 		return nil, errors.New("parameter taskID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskId}", url.PathEscape(taskID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -7053,26 +6427,29 @@ func (client *Client) terminateTaskCreateRequest(ctx context.Context, jobID stri
 }
 
 // terminateTaskHandleResponse handles the TerminateTask response.
-func (client *Client) terminateTaskHandleResponse(resp *http.Response) (TerminateTaskResponse, error) {
+func (client *Client) terminateTaskHandleResponse(resp *http.Response, successCodes ...int) (TerminateTaskResponse, error) {
 	result := TerminateTaskResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return TerminateTaskResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -7083,12 +6460,10 @@ func (client *Client) terminateTaskHandleResponse(resp *http.Response) (Terminat
 // the Job has constraints, and a request does not specify the constraints
 // element, then the Job keeps the existing constraints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobID - The ID of the Job whose properties you want to update.
 //   - job - The options to use for updating the Job.
 //   - options - UpdateJobOptions contains the optional parameters for the Client.UpdateJob method.
-func (client *Client) UpdateJob(ctx context.Context, jobID string, job UpdateJobContent, options *UpdateJobOptions) (UpdateJobResponse, error) {
+func (client *Client) UpdateJob(ctx context.Context, jobID string, job UpdateJobOptions, options *UpdateJobOptions) (UpdateJobResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateJob", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -7100,51 +6475,43 @@ func (client *Client) UpdateJob(ctx context.Context, jobID string, job UpdateJob
 	if err != nil {
 		return UpdateJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateJobResponse{}, err
-	}
-	resp, err := client.updateJobHandleResponse(httpResp)
-	return resp, err
+	return client.updateJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateJobCreateRequest creates the UpdateJob request.
-func (client *Client) updateJobCreateRequest(ctx context.Context, jobID string, job UpdateJobContent, options *UpdateJobOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) updateJobCreateRequest(ctx context.Context, jobID string, job UpdateJobOptions, options *UpdateJobOptions) (*policy.Request, error) {
 	urlPath := "/jobs/{jobId}"
 	if jobID == "" {
 		return nil, errors.New("parameter jobID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -7157,26 +6524,29 @@ func (client *Client) updateJobCreateRequest(ctx context.Context, jobID string, 
 }
 
 // updateJobHandleResponse handles the UpdateJob response.
-func (client *Client) updateJobHandleResponse(resp *http.Response) (UpdateJobResponse, error) {
+func (client *Client) updateJobHandleResponse(resp *http.Response, successCodes ...int) (UpdateJobResponse, error) {
 	result := UpdateJobResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return UpdateJobResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -7189,12 +6559,10 @@ func (client *Client) updateJobHandleResponse(resp *http.Response) (UpdateJobRes
 // impact Jobs created by the schedule after the update has taken place; currently
 // running Jobs are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - jobScheduleID - The ID of the Job Schedule to update.
 //   - jobSchedule - The options to use for updating the Job Schedule.
 //   - options - UpdateJobScheduleOptions contains the optional parameters for the Client.UpdateJobSchedule method.
-func (client *Client) UpdateJobSchedule(ctx context.Context, jobScheduleID string, jobSchedule UpdateJobScheduleContent, options *UpdateJobScheduleOptions) (UpdateJobScheduleResponse, error) {
+func (client *Client) UpdateJobSchedule(ctx context.Context, jobScheduleID string, jobSchedule UpdateJobScheduleOptions, options *UpdateJobScheduleOptions) (UpdateJobScheduleResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateJobSchedule", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -7206,51 +6574,43 @@ func (client *Client) UpdateJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return UpdateJobScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateJobScheduleResponse{}, err
-	}
-	resp, err := client.updateJobScheduleHandleResponse(httpResp)
-	return resp, err
+	return client.updateJobScheduleHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateJobScheduleCreateRequest creates the UpdateJobSchedule request.
-func (client *Client) updateJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, jobSchedule UpdateJobScheduleContent, options *UpdateJobScheduleOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) updateJobScheduleCreateRequest(ctx context.Context, jobScheduleID string, jobSchedule UpdateJobScheduleOptions, options *UpdateJobScheduleOptions) (*policy.Request, error) {
 	urlPath := "/jobschedules/{jobScheduleId}"
 	if jobScheduleID == "" {
 		return nil, errors.New("parameter jobScheduleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobScheduleId}", url.PathEscape(jobScheduleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -7263,26 +6623,29 @@ func (client *Client) updateJobScheduleCreateRequest(ctx context.Context, jobSch
 }
 
 // updateJobScheduleHandleResponse handles the UpdateJobSchedule response.
-func (client *Client) updateJobScheduleHandleResponse(resp *http.Response) (UpdateJobScheduleResponse, error) {
+func (client *Client) updateJobScheduleHandleResponse(resp *http.Response, successCodes ...int) (UpdateJobScheduleResponse, error) {
 	result := UpdateJobScheduleResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return UpdateJobScheduleResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -7293,12 +6656,10 @@ func (client *Client) updateJobScheduleHandleResponse(resp *http.Response) (Upda
 // if the Pool has a StartTask associated with it, and a request does not specify
 // a StartTask element, then the Pool keeps the existing StartTask.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool to get.
 //   - pool - The pool properties to update.
 //   - options - UpdatePoolOptions contains the optional parameters for the Client.UpdatePool method.
-func (client *Client) UpdatePool(ctx context.Context, poolID string, pool UpdatePoolContent, options *UpdatePoolOptions) (UpdatePoolResponse, error) {
+func (client *Client) UpdatePool(ctx context.Context, poolID string, pool UpdatePoolOptions, options *UpdatePoolOptions) (UpdatePoolResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdatePool", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -7310,51 +6671,43 @@ func (client *Client) UpdatePool(ctx context.Context, poolID string, pool Update
 	if err != nil {
 		return UpdatePoolResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdatePoolResponse{}, err
-	}
-	resp, err := client.updatePoolHandleResponse(httpResp)
-	return resp, err
+	return client.updatePoolHandleResponse(httpResp, http.StatusOK)
 }
 
 // updatePoolCreateRequest creates the UpdatePool request.
-func (client *Client) updatePoolCreateRequest(ctx context.Context, poolID string, pool UpdatePoolContent, options *UpdatePoolOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) updatePoolCreateRequest(ctx context.Context, poolID string, pool UpdatePoolOptions, options *UpdatePoolOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolId}", url.PathEscape(poolID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
@@ -7367,26 +6720,29 @@ func (client *Client) updatePoolCreateRequest(ctx context.Context, poolID string
 }
 
 // updatePoolHandleResponse handles the UpdatePool response.
-func (client *Client) updatePoolHandleResponse(resp *http.Response) (UpdatePoolResponse, error) {
+func (client *Client) updatePoolHandleResponse(resp *http.Response, successCodes ...int) (UpdatePoolResponse, error) {
 	result := UpdatePoolResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("DataServiceId"); val != "" {
+	if val := resp.Header.Get("Dataserviceid"); val != "" {
 		result.DataServiceID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return UpdatePoolResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	return result, nil
 }
@@ -7399,18 +6755,16 @@ func (client *Client) updatePoolHandleResponse(resp *http.Response) (UpdatePoolR
 // Azure support. The Azure Batch service log files should be shared with Azure
 // support to aid in debugging issues with the Batch service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01.20.0
 //   - poolID - The ID of the Pool that contains the Compute Node.
 //   - nodeID - The ID of the Compute Node for which you want to get the Remote Desktop
 //     Protocol file.
-//   - content - The Azure Batch service log files upload options.
+//   - uploadOptions - The Azure Batch service log files upload options.
 //   - options - UploadNodeLogsOptions contains the optional parameters for the Client.UploadNodeLogs method.
-func (client *Client) UploadNodeLogs(ctx context.Context, poolID string, nodeID string, content UploadNodeLogsContent, options *UploadNodeLogsOptions) (UploadNodeLogsResponse, error) {
+func (client *Client) UploadNodeLogs(ctx context.Context, poolID string, nodeID string, uploadOptions UploadNodeLogsOptions, options *UploadNodeLogsOptions) (UploadNodeLogsResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.UploadNodeLogs", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.uploadNodeLogsCreateRequest(ctx, poolID, nodeID, content, options)
+	req, err := client.uploadNodeLogsCreateRequest(ctx, poolID, nodeID, uploadOptions, options)
 	if err != nil {
 		return UploadNodeLogsResponse{}, err
 	}
@@ -7418,18 +6772,11 @@ func (client *Client) UploadNodeLogs(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return UploadNodeLogsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UploadNodeLogsResponse{}, err
-	}
-	resp, err := client.uploadNodeLogsHandleResponse(httpResp)
-	return resp, err
+	return client.uploadNodeLogsHandleResponse(httpResp, http.StatusOK)
 }
 
 // uploadNodeLogsCreateRequest creates the UploadNodeLogs request.
-func (client *Client) uploadNodeLogsCreateRequest(ctx context.Context, poolID string, nodeID string, content UploadNodeLogsContent, options *UploadNodeLogsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+func (client *Client) uploadNodeLogsCreateRequest(ctx context.Context, poolID string, nodeID string, uploadOptions UploadNodeLogsOptions, options *UploadNodeLogsOptions) (*policy.Request, error) {
 	urlPath := "/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs"
 	if poolID == "" {
 		return nil, errors.New("parameter poolID cannot be empty")
@@ -7439,153 +6786,57 @@ func (client *Client) uploadNodeLogsCreateRequest(ctx context.Context, poolID st
 		return nil, errors.New("parameter nodeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01.20.0")
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
 	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	if options != nil && options.Ocpdate != nil {
+		req.Raw().Header["ocp-date"] = []string{datetime.RFC7231(*options.Ocpdate).String()}
 	}
 	if options != nil && options.ReturnClientRequestID != nil {
 		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
-	if err := runtime.MarshalAsJSON(req, content); err != nil {
+	if err := runtime.MarshalAsJSON(req, uploadOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // uploadNodeLogsHandleResponse handles the UploadNodeLogs response.
-func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response) (UploadNodeLogsResponse, error) {
+func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response, successCodes ...int) (UploadNodeLogsResponse, error) {
 	result := UploadNodeLogsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
+		lastmodified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return UploadNodeLogsResponse{}, err
 		}
-		result.LastModified = &lastModified
+		result.Lastmodified = &lastmodified
 	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
+	if val := resp.Header.Get("Request-Id"); val != "" {
+		result.Requestid = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UploadNodeLogsResult); err != nil {
 		return UploadNodeLogsResponse{}, err
-	}
-	return result, nil
-}
-
-// newListPoolUsageMetricsPager - Lists the usage metrics, aggregated by Pool across individual time intervals,
-// for the specified Account.
-//
-// If you do not specify a $filter clause including a poolId, the response
-// includes all Pools that existed in the Account in the time range of the
-// returned aggregation intervals. If you do not specify a $filter clause
-// including a startTime or endTime these filters default to the start and end
-// times of the last aggregation interval currently available; that is, only the
-// last aggregation interval is returned.
-//
-// Generated from API version 2024-07-01.20.0
-//   - options - listPoolUsageMetricsOptions contains the optional parameters for the Client.NewlistPoolUsageMetricsPager method.
-func (client *Client) newListPoolUsageMetricsPager(options *listPoolUsageMetricsOptions) *runtime.Pager[listPoolUsageMetricsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[listPoolUsageMetricsResponse]{
-		More: func(page listPoolUsageMetricsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *listPoolUsageMetricsResponse) (listPoolUsageMetricsResponse, error) {
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPoolUsageMetricsCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return listPoolUsageMetricsResponse{}, err
-			}
-			return client.listPoolUsageMetricsHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listPoolUsageMetricsCreateRequest creates the listPoolUsageMetrics request.
-func (client *Client) listPoolUsageMetricsCreateRequest(ctx context.Context, options *listPoolUsageMetricsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
-	urlPath := "/poolusagemetrics"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01.20.0")
-	if options != nil && options.Endtime != nil {
-		reqQP.Set("endtime", options.Endtime.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	if options != nil && options.Starttime != nil {
-		reqQP.Set("startTime", options.Starttime.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.OCPDate != nil {
-		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
-	}
-	if options != nil && options.ReturnClientRequestID != nil {
-		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
-	}
-	return req, nil
-}
-
-// listPoolUsageMetricsHandleResponse handles the listPoolUsageMetrics response.
-func (client *Client) listPoolUsageMetricsHandleResponse(resp *http.Response) (listPoolUsageMetricsResponse, error) {
-	result := listPoolUsageMetricsResponse{}
-	if val := resp.Header.Get("client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return listPoolUsageMetricsResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.listPoolUsageMetricsResult); err != nil {
-		return listPoolUsageMetricsResponse{}, err
 	}
 	return result, nil
 }

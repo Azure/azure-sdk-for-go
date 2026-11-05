@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
-func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccessPolicyAssignmentCreateUpdate() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -48,7 +48,6 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccess
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/default-TestEntraApp1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@all ~*"),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -58,54 +57,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccess
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
-func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccessPolicyAssignmentClient().BeginCreateUpdate(ctx, "rg1", "cache1", "default", "defaultTestEntraApp1", armredisenterprise.AccessPolicyAssignment{
-		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
-			AccessPolicyName: to.Ptr("default"),
-			AccessString:     to.Ptr("+@read ~cache:*"),
-			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
-				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.AccessPolicyAssignmentClientCreateUpdateResponse{
-	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
-	// 		Name: to.Ptr("defaultTestEntraApp1"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/default-TestEntraApp1"),
-	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
-	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@read ~cache:*"),
-	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
-	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentDelete.json
 func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,8 +78,8 @@ func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
-func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignmentGet() {
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentGet.json
+func ExampleAccessPolicyAssignmentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -151,7 +103,6 @@ func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignme
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@all ~*"),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -161,47 +112,7 @@ func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignme
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
-func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccessPolicyAssignmentClient().Get(ctx, "rg1", "cache1", "default", "accessPolicyAssignmentName1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.AccessPolicyAssignmentClientGetResponse{
-	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
-	// 		Name: to.Ptr("accessPolicyAssignmentName1"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
-	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
-	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@invalid-syntax"),
-	// 			ProvisioningError: &armredisenterprise.AccessPolicyAssignmentProvisioningError{
-	// 				Code: to.Ptr("InvalidAccessString"),
-	// 				Message: to.Ptr("ERR Error in ACL SETUSER modifier '+@invalid-syntax': Adding a subcommand of a command already fully added is not allowed. A full command can only be added to a rule"),
-	// 				Target: to.Ptr("properties.accessString"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateFailed),
-	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
-	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentsList.json
 func ExampleAccessPolicyAssignmentClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +143,6 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
-		// 					AccessString: to.Ptr("+@all ~*"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 		// 					User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 		// 						ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -245,7 +155,6 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName2"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
-		// 					AccessString: to.Ptr("+@all ~*"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 		// 					User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 		// 						ObjectID: to.Ptr("7497c918-11ad-41e7-1b0f-7c518a87d0b0"),

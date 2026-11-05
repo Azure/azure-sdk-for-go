@@ -21,13 +21,13 @@ import (
 
 // RaiPoliciesServer is a fake server for instances of the armcognitiveservices.RaiPoliciesClient type.
 type RaiPoliciesServer struct {
-	// CreateOrUpdate is the fake for method RaiPoliciesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy armcognitiveservices.RaiPolicy, options *armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method RaiPoliciesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *armcognitiveservices.RaiPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.RaiPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method RaiPoliciesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy armcognitiveservices.RaiPolicy, options *armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RaiPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (r *RaiPoliciesServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "RaiPoliciesClient.CreateOrUpdate":
-				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "RaiPoliciesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RaiPoliciesClient.CreateOrUpdate":
+				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "RaiPoliciesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RaiPoliciesClient.NewListPager":
@@ -100,6 +100,61 @@ func (r *RaiPoliciesServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/raiPolicies/(?P<raiPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcognitiveservices.RaiPoliciesClientBeginDeleteOptions
+		if ifMatchParam != nil {
+			options = &armcognitiveservices.RaiPoliciesClientBeginDeleteOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -128,7 +183,16 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -140,54 +204,9 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	if val := server.GetResponse(respr).EtagHeader; val != nil {
+		resp.Header.Set("Etag", *val)
 	}
-	beginDelete := r.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/raiPolicies/(?P<raiPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		r.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		r.beginDelete.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -224,6 +243,9 @@ func (r *RaiPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).EtagHeader; val != nil {
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

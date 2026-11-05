@@ -42,13 +42,13 @@ type AgentApplicationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *armcognitiveservices.AgentApplicationsClientGetOptions) (resp azfake.Responder[armcognitiveservices.AgentApplicationsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AgentApplicationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, projectName string, options *armcognitiveservices.AgentApplicationsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.AgentApplicationsClientListResponse])
-
 	// ListAgents is the fake for method AgentApplicationsClient.ListAgents
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAgents func(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *armcognitiveservices.AgentApplicationsClientListAgentsOptions) (resp azfake.Responder[armcognitiveservices.AgentApplicationsClientListAgentsResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method AgentApplicationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, projectName string, options *armcognitiveservices.AgentApplicationsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.AgentApplicationsClientListResponse])
 }
 
 // NewAgentApplicationsServerTransport creates a new instance of AgentApplicationsServerTransport with the provided implementation.
@@ -103,10 +103,10 @@ func (a *AgentApplicationsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = a.dispatchEnable(req)
 			case "AgentApplicationsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AgentApplicationsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AgentApplicationsClient.ListAgents":
 				res.resp, res.err = a.dispatchListAgents(req)
+			case "AgentApplicationsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -354,6 +354,47 @@ func (a *AgentApplicationsServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
+func (a *AgentApplicationsServerTransport) dispatchListAgents(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAgents == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAgents not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/applications/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAgents`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListAgents(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgentReferenceResourceArmPaginatedResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AgentApplicationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -435,47 +476,6 @@ func (a *AgentApplicationsServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AgentApplicationsServerTransport) dispatchListAgents(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAgents == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAgents not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/applications/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAgents`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ListAgents(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgentReferenceResourceArmPaginatedResult, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

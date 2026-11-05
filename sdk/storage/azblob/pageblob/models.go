@@ -288,7 +288,7 @@ func (o *ClearPagesOptions) format() *generated.PageBlobClientClearPagesOptions 
 // GetPageRangesOptions contains the optional parameters for the Client.NewGetPageRangesPager method.
 type GetPageRangesOptions struct {
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
+	// Specifies the maximum number of page ranges to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
@@ -345,13 +345,13 @@ func (o *GetPageRangesOptions) format() *generated.PageBlobClientGetPageRangesOp
 
 // GetPageRangesDiffOptions contains the optional parameters for the Client.NewGetPageRangesDiffPager method.
 type GetPageRangesDiffOptions struct {
-	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// A string value that identifies the portion of the list of page ranges to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
-	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// operation did not return all page ranges remaining to be listed with the current page. The NextMarker value can be used
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
+	// Specifies the maximum number of page ranges to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will

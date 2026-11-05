@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/AddRaiBlocklistItems.json
+// Generated from example definition: 2026-09-15-preview/AddRaiBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_BatchAdd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleRaiBlocklistItemsClient_BatchAdd() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteRaiBlocklistItems.json
+// Generated from example definition: 2026-09-15-preview/DeleteRaiBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_BatchDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,28 @@ func ExampleRaiBlocklistItemsClient_BatchDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/PutRaiBlocklistItem.json
+// Generated from example definition: 2026-09-15-preview/DeleteRaiBlocklistItem.json
+func ExampleRaiBlocklistItemsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRaiBlocklistItemsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "raiBlocklistName", "raiBlocklistItemName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/PutRaiBlocklistItem.json
 func ExampleRaiBlocklistItemsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,28 +132,7 @@ func ExampleRaiBlocklistItemsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteRaiBlocklistItem.json
-func ExampleRaiBlocklistItemsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRaiBlocklistItemsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "raiBlocklistName", "raiBlocklistItemName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/GetRaiBlocklistItem.json
+// Generated from example definition: 2026-09-15-preview/GetRaiBlocklistItem.json
 func ExampleRaiBlocklistItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleRaiBlocklistItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListBlocklistItems.json
+// Generated from example definition: 2026-09-15-preview/ListBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

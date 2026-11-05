@@ -5,10 +5,12 @@ package azcore
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 	"time"
@@ -191,6 +193,7 @@ func TestClientWithClientName(t *testing.T) {
 						require.True(t, ok)
 						attrString = attr.Key + ":" + v
 					}
+
 				}
 				return ctx, tracing.Span{}
 			}, nil)
@@ -227,6 +230,91 @@ func TestNewKeyCredential(t *testing.T) {
 
 func TestNewSASCredential(t *testing.T) {
 	require.NotNil(t, NewSASCredential("foo"))
+}
+
+func TestClientTracingSanitizer(t *testing.T) {
+	for _, operation := range []string{"operation", "renamed", "rewritten", "pager", "poller"} {
+		t.Run(operation, func(t *testing.T) {
+			srv, close := mock.NewServer()
+			defer close()
+			endpoint := srv.URL() + "?client=visible&pipeline=visible&sig=secret"
+			expectedErr := &url.Error{Op: "Get", URL: endpoint, Err: errors.New("failed")}
+			var perRetry []policy.Policy
+			if operation == "rewritten" {
+				expectedErr.URL = srv.URL() + "/alternate?client=visible&pipeline=visible&sig=secret"
+				perRetry = []policy.Policy{exported.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
+					u, err := url.Parse(expectedErr.URL)
+					require.NoError(t, err)
+					req.Raw().URL = u
+					return req.Next()
+				})}
+			}
+			srv.SetError(expectedErr)
+			descriptions := map[string]string{}
+			client, err := NewClient("module", "v1.0.0", runtime.PipelineOptions{
+				AllowedQueryParameters: []string{"pipeline"},
+			}, &ClientOptions{
+				Transport:        srv,
+				Retry:            policy.RetryOptions{MaxRetries: -1},
+				Logging:          policy.LogOptions{AllowedQueryParams: []string{"client"}},
+				PerRetryPolicies: perRetry,
+				TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+					return tracing.NewTracer(func(ctx context.Context, name string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+						return ctx, tracing.NewSpan(tracing.SpanImpl{
+							SetStatus: func(_ tracing.SpanStatus, desc string) { descriptions[name] = desc },
+						})
+					}, nil)
+				}, nil),
+			})
+			require.NoError(t, err)
+			if operation == "renamed" {
+				client = client.WithClientName("renamed")
+			}
+			fetch := func(ctx context.Context) (*http.Response, error) {
+				req, err := runtime.NewRequest(ctx, http.MethodGet, endpoint)
+				require.NoError(t, err)
+				return client.Pipeline().Do(req)
+			}
+			var operationSpan string
+			switch operation {
+			case "operation", "renamed", "rewritten":
+				operationSpan = "Client.Operation"
+				ctx, end := runtime.StartSpan(context.Background(), operationSpan, client.Tracer(), nil)
+				_, err = fetch(ctx)
+				end(err)
+			case "pager":
+				operationSpan = "Pager[int].NextPage"
+				pager := runtime.NewPager(runtime.PagingHandler[int]{
+					Tracer: client.Tracer(),
+					More:   func(int) bool { return true },
+					Fetcher: func(ctx context.Context, _ *int) (int, error) {
+						_, err := fetch(ctx)
+						return 0, err
+					},
+				})
+				_, err = pager.NextPage(context.Background())
+			case "poller":
+				operationSpan = "Poller[int].PollUntilDone"
+				req, reqErr := runtime.NewRequest(context.Background(), http.MethodPost, endpoint)
+				require.NoError(t, reqErr)
+				poller, pollerErr := runtime.NewPoller[int](&http.Response{
+					StatusCode: http.StatusAccepted,
+					Header:     http.Header{"Location": []string{endpoint}},
+					Body:       http.NoBody,
+					Request:    req.Raw(),
+				}, client.Pipeline(), &runtime.NewPollerOptions[int]{Tracer: client.Tracer()})
+				require.NoError(t, pollerErr)
+				_, err = poller.PollUntilDone(context.Background(), nil)
+			}
+			require.Same(t, expectedErr, err)
+			require.Contains(t, err.Error(), "sig=secret")
+			require.Contains(t, descriptions, operationSpan)
+			require.Contains(t, descriptions[operationSpan], "?client=visible&pipeline=visible&sig=REDACTED")
+			require.NotContains(t, descriptions[operationSpan], "secret")
+			require.Contains(t, descriptions, "HTTP GET")
+			require.NotContains(t, descriptions["HTTP GET"], "secret")
+		})
+	}
 }
 
 // Test to ensure our default transport handles IPv6 automatically

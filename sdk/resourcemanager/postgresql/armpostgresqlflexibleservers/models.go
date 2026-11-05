@@ -594,57 +594,6 @@ type DatabaseProperties struct {
 	Collation *string
 }
 
-// DbAgent - The database agent configuration for a PostgreSQL flexible server.
-type DbAgent struct {
-	// The resource-specific properties for this resource.
-	Properties *DbAgentProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// DbAgentForUpdate - A request to enable or disable the database agent.
-type DbAgentForUpdate struct {
-	// REQUIRED; The requested database agent properties.
-	Properties *DbAgentForUpdateProperties
-}
-
-// DbAgentForUpdateProperties - Writable properties of the database agent configuration.
-type DbAgentForUpdateProperties struct {
-	// REQUIRED; The requested state of the database agent.
-	State *DbAgentForUpdateState
-}
-
-// DbAgentListResult - The response of a DbAgent list operation.
-type DbAgentListResult struct {
-	// REQUIRED; The DbAgent items on this page
-	Value []*DbAgent
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// DbAgentProperties - Properties of the database agent configuration.
-type DbAgentProperties struct {
-	// READ-ONLY; The state of the database agent.
-	State *DbAgentState
-
-	// READ-ONLY; The time when the database agent configuration was last modified.
-	LastModifiedTime *time.Time
-
-	// READ-ONLY; The provisioning state of the database agent resource.
-	ProvisioningState *DbAgentProvisioningState
-}
-
 // DbLevelValidationStatus - Validation status summary for a database.
 type DbLevelValidationStatus struct {
 	// Name of database.
@@ -1021,7 +970,7 @@ type MajorVersionUpgradePrecheckResourceProperties struct {
 	Status *MajorVersionUpgradePrecheckStatus
 
 	// The target PostgreSQL major version for the upgrade.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // MetricSpecification - Metric specification for an operation.
@@ -1871,7 +1820,7 @@ type ServerProperties struct {
 	Storage *Storage
 
 	// Major version of PostgreSQL database engine.
-	Version *PostgresMajorVersion
+	Version *string
 
 	// READ-ONLY; Fully qualified domain name of a server.
 	FullyQualifiedDomainName *string
@@ -1940,7 +1889,7 @@ type ServerPropertiesForPatch struct {
 	Storage *Storage
 
 	// Major version of PostgreSQL database engine.
-	Version *PostgresMajorVersion
+	Version *string
 
 	// READ-ONLY; Name of the login designated as the first password based administrator assigned to your instance of PostgreSQL.
 	// Must be specified the first time that you enable password based authentication on a server. Once set to a given value,
@@ -2021,7 +1970,7 @@ type ServiceSpecification struct {
 // StartMajorVersionUpgradePrecheckRequest - Request model for starting a major version upgrade precheck.
 type StartMajorVersionUpgradePrecheckRequest struct {
 	// REQUIRED; The target major version to upgrade to.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // StartMajorVersionUpgradePrecheckResponse - Response model for starting a major version upgrade precheck.
@@ -2199,10 +2148,10 @@ type TuningOptionsProperties struct {
 // UpgradeSequence - Upgrade sequence information.
 type UpgradeSequence struct {
 	// The source PostgreSQL version.
-	SourceVersion *PostgresMajorVersion
+	SourceVersion *string
 
 	// The target PostgreSQL version.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // UserAssignedIdentity - Identities associated with a server.

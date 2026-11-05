@@ -19,7 +19,7 @@ import (
 // OffersClient contains the methods for the Offers group.
 // Don't use this type directly, use NewOffersClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type OffersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -99,7 +99,7 @@ func (client *OffersClient) getCreateRequest(ctx context.Context, resourceGroupN
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *OffersClient) listByClusterCreateRequest(ctx context.Context, reso
 		if options != nil && options.Expand != nil {
 			reqQP.Set("$expand", *options.Expand)
 		}
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -263,7 +263,7 @@ func (client *OffersClient) listByPublisherCreateRequest(ctx context.Context, re
 		if options != nil && options.Expand != nil {
 			reqQP.Set("$expand", *options.Expand)
 		}
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

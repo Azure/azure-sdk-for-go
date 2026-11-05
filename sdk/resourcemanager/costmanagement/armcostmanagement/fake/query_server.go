@@ -97,10 +97,7 @@ func (q *QueryServerTransport) dispatchUsage(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	respr, errRespr := q.srv.Usage(req.Context(), scopeParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr

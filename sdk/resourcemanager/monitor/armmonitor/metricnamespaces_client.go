@@ -52,42 +52,56 @@ func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return MetricNamespacesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MetricNamespacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricNamespacesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *MetricNamespacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201)
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240201)
+		if options != nil && options.StartTime != nil {
+			reqQP.Set("startTime", *options.StartTime)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MetricNamespacesClient) listHandleResponse(resp *http.Response) (MetricNamespacesClientListResponse, error) {
+func (client *MetricNamespacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (MetricNamespacesClientListResponse, error) {
 	result := MetricNamespacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricNamespaceCollection); err != nil {
 		return MetricNamespacesClientListResponse{}, err
 	}

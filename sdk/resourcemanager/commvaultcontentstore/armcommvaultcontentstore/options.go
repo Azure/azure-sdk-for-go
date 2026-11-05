@@ -193,6 +193,18 @@ type StoragesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// StoragesClientDisableComplianceLockOptions contains the optional parameters for the StoragesClient.DisableComplianceLock
+// method.
+type StoragesClientDisableComplianceLockOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesClientEnableComplianceLockOptions contains the optional parameters for the StoragesClient.EnableComplianceLock
+// method.
+type StoragesClientEnableComplianceLockOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StoragesClientGetOptions contains the optional parameters for the StoragesClient.Get method.
 type StoragesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -201,5 +213,10 @@ type StoragesClientGetOptions struct {
 // StoragesClientListByCloudAccountOptions contains the optional parameters for the StoragesClient.NewListByCloudAccountPager
 // method.
 type StoragesClientListByCloudAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesClientRefreshOptions contains the optional parameters for the StoragesClient.Refresh method.
+type StoragesClientRefreshOptions struct {
 	// placeholder for future optional parameters
 }

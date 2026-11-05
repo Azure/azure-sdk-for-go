@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/fileImports/CreateFileImport.json
+// Generated from example definition: 2025-10-01-preview/fileImports/CreateFileImport.json
 func ExampleFileImportsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleFileImportsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/DeleteFileImport.json
+// Generated from example definition: 2025-10-01-preview/fileImports/DeleteFileImport.json
 func ExampleFileImportsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFileImportsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/GetFileImportById.json
+// Generated from example definition: 2025-10-01-preview/fileImports/GetFileImportById.json
 func ExampleFileImportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleFileImportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/GetFileImports.json
+// Generated from example definition: 2025-10-01-preview/fileImports/GetFileImports.json
 func ExampleFileImportsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

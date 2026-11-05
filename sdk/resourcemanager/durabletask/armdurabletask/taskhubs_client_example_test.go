@@ -6,12 +6,13 @@ package armdurabletask_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/TaskHubs_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/TaskHubs_CreateOrUpdate.json
 func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +24,11 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewTaskHubsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "testscheduler", "testtaskhub", armdurabletask.TaskHub{
-		Properties: &armdurabletask.TaskHubProperties{},
+		Properties: &armdurabletask.TaskHubProperties{
+			Capabilities: []*string{
+				to.Ptr("ExampleFutureCapability"),
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -40,6 +45,9 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armdurabletask.TaskHubProperties{
 	// 			ProvisioningState: to.Ptr(armdurabletask.ProvisioningStateSucceeded),
 	// 			DashboardURL: to.Ptr("https://test-db.northcentralus.1.durabletask.io/taskhubs/testtaskhub"),
+	// 			Capabilities: []*string{
+	// 				to.Ptr("ExampleFutureCapability"),
+	// 			},
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler/taskHubs/testtaskhub"),
 	// 		Name: to.Ptr("testtaskhub"),
@@ -56,7 +64,7 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/TaskHubs_Delete.json
+// Generated from example definition: 2026-07-01-preview/TaskHubs_Delete.json
 func ExampleTaskHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +85,7 @@ func ExampleTaskHubsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/TaskHubs_Get.json
+// Generated from example definition: 2026-07-01-preview/TaskHubs_Get.json
 func ExampleTaskHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +124,7 @@ func ExampleTaskHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/TaskHubs_ListByScheduler.json
+// Generated from example definition: 2026-07-01-preview/TaskHubs_ListByScheduler.json
 func ExampleTaskHubsClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

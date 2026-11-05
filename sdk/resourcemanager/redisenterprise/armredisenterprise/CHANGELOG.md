@@ -1,44 +1,6 @@
 # Release History
 
-## 4.0.0-beta.2 (2026-08-27)
-### Other Changes
-
-- Retract version `v4.0.0-beta.1`. It contains an API spec bug in an operation ID; do not use it.
-
-### Breaking Changes
-
-- Function `*ClientFactory.NewMigrationClient` has been removed
-- Function `NewMigrationClient` has been removed
-- Function `*MigrationClient.BeginCancel` has been removed
-- Function `*MigrationClient.Get` has been removed
-- Function `*MigrationClient.NewListPager` has been removed
-- Function `*MigrationClient.BeginStart` has been removed
-
-### Features Added
-
-- New value `MigrationProvisioningStateCancellationFailed` added to enum type `MigrationProvisioningState`
-- New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
-- New function `NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error)`
-- New function `*MigrationsClient.BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginCancelOptions) (*runtime.Poller[MigrationsClientCancelResponse], error)`
-- New function `*MigrationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error)`
-- New function `*MigrationsClient.NewListPager(resourceGroupName string, clusterName string, options *MigrationsClientListOptions) *runtime.Pager[MigrationsClientListResponse]`
-- New function `*MigrationsClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*runtime.Poller[MigrationsClientStartResponse], error)`
-- New function `*MigrationsClient.Validate(ctx context.Context, resourceGroupName string, clusterName string, body MigrationValidationRequest, options *MigrationsClientValidateOptions) (MigrationsClientValidateResponse, error)`
-- New struct `AccessPolicyAssignmentProvisioningError`
-- New struct `MigrationValidationDisparity`
-- New struct `MigrationValidationError`
-- New struct `MigrationValidationRequest`
-- New struct `MigrationValidationResponse`
-- New struct `MigrationValidationWarning`
-- New field `AccessString`, `ProvisioningError` in struct `AccessPolicyAssignmentProperties`
-- New field `ForceMigrate` in struct `AzureCacheForRedisMigrationProperties`
-- New field `MigratedEndpoint` in struct `ClusterCreateProperties`
-- New field `MigratedEndpoint` in struct `ClusterUpdateProperties`
-- New field `NotifyKeyspaceEvents` in struct `DatabaseCreateProperties`
-- New field `NotifyKeyspaceEvents` in struct `DatabaseUpdateProperties`
-
-
-## 4.0.0-beta.1 (2026-03-19)
+## 4.0.0 (2026-10-13)
 ### Breaking Changes
 
 - Type of `ClusterCreateProperties.Encryption` has been changed from `*ClusterCommonPropertiesEncryption` to `*ClusterPropertiesEncryption`
@@ -63,16 +25,22 @@
 
 - New enum type `MaintenanceDayOfWeek` with values `MaintenanceDayOfWeekFriday`, `MaintenanceDayOfWeekMonday`, `MaintenanceDayOfWeekSaturday`, `MaintenanceDayOfWeekSunday`, `MaintenanceDayOfWeekThursday`, `MaintenanceDayOfWeekTuesday`, `MaintenanceDayOfWeekWednesday`
 - New enum type `MaintenanceWindowType` with values `MaintenanceWindowTypeWeekly`
-- New enum type `MigrationProvisioningState` with values `MigrationProvisioningStateAccepted`, `MigrationProvisioningStateCancelled`, `MigrationProvisioningStateCancelling`, `MigrationProvisioningStateFailed`, `MigrationProvisioningStateInProgress`, `MigrationProvisioningStateReadyForDNSSwitch`, `MigrationProvisioningStateSucceeded`
+- New enum type `MigrationProvisioningState` with values `MigrationProvisioningStateAccepted`, `MigrationProvisioningStateCancellationFailed`, `MigrationProvisioningStateCancelled`, `MigrationProvisioningStateCancelling`, `MigrationProvisioningStateFailed`, `MigrationProvisioningStateInProgress`, `MigrationProvisioningStateReadyForDNSSwitch`, `MigrationProvisioningStateSucceeded`, `MigrationProvisioningStateUnlinkFailed`, `MigrationProvisioningStateUnlinked`, `MigrationProvisioningStateUnlinking`
+- New enum type `MigrationRollbackReason` with values `MigrationRollbackReasonClientConnection`, `MigrationRollbackReasonCompatibility`, `MigrationRollbackReasonCost`, `MigrationRollbackReasonDataLoss`, `MigrationRollbackReasonOther`, `MigrationRollbackReasonPerformance`, `MigrationRollbackReasonStability`, `MigrationRollbackReasonTesting`
 - New enum type `SourceType` with values `SourceTypeAzureCacheForRedis`
 - New function `*AzureCacheForRedisMigrationProperties.GetMigrationProperties() *MigrationProperties`
-- New function `*ClientFactory.NewMigrationClient() *MigrationClient`
-- New function `NewMigrationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationClient, error)`
-- New function `*MigrationClient.BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationClientBeginCancelOptions) (*runtime.Poller[MigrationClientCancelResponse], error)`
-- New function `*MigrationClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationClientGetOptions) (MigrationClientGetResponse, error)`
-- New function `*MigrationClient.NewListPager(resourceGroupName string, clusterName string, options *MigrationClientListOptions) *runtime.Pager[MigrationClientListResponse]`
-- New function `*MigrationClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationClientBeginStartOptions) (*runtime.Poller[MigrationClientStartResponse], error)`
+- New function `*ClientFactory.NewClustersClient() *ClustersClient`
+- New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
+- New function `NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error)`
+- New function `*ClustersClient.BeginUnlinkMigratedEndpoint(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginUnlinkMigratedEndpointOptions) (*runtime.Poller[ClustersClientUnlinkMigratedEndpointResponse], error)`
 - New function `*MigrationProperties.GetMigrationProperties() *MigrationProperties`
+- New function `NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error)`
+- New function `*MigrationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error)`
+- New function `*MigrationsClient.NewListPager(resourceGroupName string, clusterName string, options *MigrationsClientListOptions) *runtime.Pager[MigrationsClientListResponse]`
+- New function `*MigrationsClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*runtime.Poller[MigrationsClientStartResponse], error)`
+- New function `*MigrationsClient.BeginUndo(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUndoOptions) (*runtime.Poller[MigrationsClientUndoResponse], error)`
+- New function `*MigrationsClient.BeginUnlinkMigratedEndpoint(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUnlinkMigratedEndpointOptions) (*runtime.Poller[MigrationsClientUnlinkMigratedEndpointResponse], error)`
+- New function `*MigrationsClient.Validate(ctx context.Context, resourceGroupName string, clusterName string, body MigrationValidationRequest, options *MigrationsClientValidateOptions) (MigrationsClientValidateResponse, error)`
 - New struct `AzureCacheForRedisMigrationProperties`
 - New struct `ClusterPropertiesEncryption`
 - New struct `ClusterPropertiesEncryptionCustomerManagedKeyEncryption`
@@ -83,10 +51,18 @@
 - New struct `MaintenanceWindowSchedule`
 - New struct `Migration`
 - New struct `MigrationList`
+- New struct `MigrationUndoRequest`
+- New struct `MigrationValidationDisparity`
+- New struct `MigrationValidationError`
+- New struct `MigrationValidationRequest`
+- New struct `MigrationValidationResponse`
+- New struct `MigrationValidationWarning`
 - New field `SystemData` in struct `AccessPolicyAssignment`
 - New field `SystemData` in struct `Cluster`
-- New field `MaintenanceConfiguration` in struct `ClusterCreateProperties`
-- New field `MaintenanceConfiguration` in struct `ClusterUpdateProperties`
+- New field `MaintenanceConfiguration`, `MigratedEndpoint` in struct `ClusterCreateProperties`
+- New field `MaintenanceConfiguration`, `MigratedEndpoint` in struct `ClusterUpdateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseCreateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseUpdateProperties`
 - New field `SystemData` in struct `PrivateEndpointConnection`
 - New field `NextLink` in struct `PrivateEndpointConnectionListResult`
 - New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`

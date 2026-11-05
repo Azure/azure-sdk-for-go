@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,19 +382,6 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 			},
 			Mode:         to.Ptr(armcomputefleet.FleetModeLaunch),
 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
-			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
-				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
-				ZonePreferences: []*armcomputefleet.ZonePreference{
-					{
-						Zone: to.Ptr("1"),
-						Rank: to.Ptr[int32](0),
-					},
-					{
-						Zone: to.Ptr("2"),
-						Rank: to.Ptr[int32](1),
-					},
-				},
-			},
 			VMAttributes: &armcomputefleet.VMAttributes{
 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
 					Min: to.Ptr[int32](2),
@@ -1180,19 +1167,6 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 			Mode: to.Ptr(armcomputefleet.FleetModeLaunch),
 	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
 	// 			VMNamePrefix: to.Ptr("test-vm"),
-	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
-	// 				ZonePreferences: []*armcomputefleet.ZonePreference{
-	// 					{
-	// 						Zone: to.Ptr("1"),
-	// 						Rank: to.Ptr[int32](0),
-	// 					},
-	// 					{
-	// 						Zone: to.Ptr("2"),
-	// 						Rank: to.Ptr[int32](1),
-	// 					},
-	// 				},
-	// 			},
 	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
 	// 			VMAttributes: &armcomputefleet.VMAttributes{
 	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
@@ -1628,7 +1602,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_Delete_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1649,7 +1623,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_Get_MaximumSet_Gen.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2028,9 +2002,6 @@ func ExampleFleetsClient_Get() {
 	// 			Mode: to.Ptr(armcomputefleet.FleetModeLaunch),
 	// 			VMNamePrefix: to.Ptr("test-vm"),
 	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
-	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
-	// 			},
 	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
 	// 			VMAttributes: &armcomputefleet.VMAttributes{
 	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
@@ -2467,7 +2438,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2891,7 +2862,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_ListBySubscription_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3315,7 +3286,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3368,7 +3339,7 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_ListVirtualMachines_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3450,7 +3421,7 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/Fleets_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01/Fleets_Update_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4219,9 +4190,6 @@ func ExampleFleetsClient_BeginUpdate() {
 			},
 			Mode:         to.Ptr(armcomputefleet.FleetModeManaged),
 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
-			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
-				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
-			},
 		},
 		Plan: &armcomputefleet.ResourcePlanUpdate{
 			Name:          to.Ptr("jwgrcrnrtfoxn"),
@@ -4602,9 +4570,6 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 			},
 	// 			Mode: to.Ptr(armcomputefleet.FleetModeManaged),
 	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
-	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
-	// 			},
 	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
 	// 			VMAttributes: &armcomputefleet.VMAttributes{
 	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{

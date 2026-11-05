@@ -11,7 +11,51 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-06-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/Operations_List_MaximumSet_Gen copy.json
+func ExampleOperationsClient_NewListPager_twoOperationsListMaximumSetGenExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOperationsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.OperationsClientListResponse{
+		// 	OperationListResult: armbulkactions.OperationListResult{
+		// 		Value: []*armbulkactions.Operation{
+		// 			{
+		// 				Name: to.Ptr("ecnqrvixqzvpakdwjtuqfqefea"),
+		// 				IsDataAction: to.Ptr(true),
+		// 				Display: &armbulkactions.OperationDisplay{
+		// 					Provider: to.Ptr("hebgqucdqhz"),
+		// 					Resource: to.Ptr("sfmntcssufduur"),
+		// 					Operation: to.Ptr("lmogjdp"),
+		// 					Description: to.Ptr("qiegbrwnshzndwsbthmf"),
+		// 				},
+		// 				Origin: to.Ptr(armbulkactions.OriginUser),
+		// 				ActionType: to.Ptr(armbulkactions.ActionTypeInternal),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/amvyn"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-06-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +99,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -44,6 +44,78 @@ func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.T
 	return client, nil
 }
 
+// BeginDelete - The operation to delete the restore point collection. This operation will also delete all the contained restore
+// points.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - restorePointCollectionName - The name of the restore point collection.
+//   - options - RestorePointCollectionsClientBeginDeleteOptions contains the optional parameters for the RestorePointCollectionsClient.BeginDelete
+//     method.
+func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*runtime.Poller[RestorePointCollectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestorePointCollectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestorePointCollectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - The operation to delete the restore point collection. This operation will also delete all the contained
+// restore points.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RestorePointCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RestorePointCollectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, restorePointCollectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *RestorePointCollectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, _ *RestorePointCollectionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if restorePointCollectionName == "" {
+		return nil, errors.New("parameter restorePointCollectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{restorePointCollectionName}", url.PathEscape(restorePointCollectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints
 // for more details. When updating a restore point collection, only tags may be modified.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -111,78 +183,6 @@ func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *
 	return result, nil
 }
 
-// BeginDelete - The operation to delete the restore point collection. This operation will also delete all the contained restore
-// points.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - restorePointCollectionName - The name of the restore point collection.
-//   - options - RestorePointCollectionsClientBeginDeleteOptions contains the optional parameters for the RestorePointCollectionsClient.BeginDelete
-//     method.
-func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*runtime.Poller[RestorePointCollectionsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestorePointCollectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestorePointCollectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - The operation to delete the restore point collection. This operation will also delete all the contained restore
-// points.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RestorePointCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RestorePointCollectionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, restorePointCollectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *RestorePointCollectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, _ *RestorePointCollectionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if restorePointCollectionName == "" {
-		return nil, errors.New("parameter restorePointCollectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{restorePointCollectionName}", url.PathEscape(restorePointCollectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // Get - The operation to get the restore point collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -243,6 +243,74 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
 		return RestorePointCollectionsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Gets the list of restore point collections in the subscription. Use nextLink property in the response
+// to get the next page of restore point collections. Do this till nextLink is not null to fetch all the restore point collections.
+//   - options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.NewListAllPager
+//     method.
+func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RestorePointCollectionsClientListAllResponse]{
+		More: func(page RestorePointCollectionsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListAllResponse) (RestorePointCollectionsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointCollectionsClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return RestorePointCollectionsClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RestorePointCollectionsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *RestorePointCollectionsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/restorePointCollections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (RestorePointCollectionsClientListAllResponse, error) {
+	result := RestorePointCollectionsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
+		return RestorePointCollectionsClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -315,74 +383,6 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
 		return RestorePointCollectionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets the list of restore point collections in the subscription. Use nextLink property in the response
-// to get the next page of restore point collections. Do this till nextLink is not null to fetch all the restore point collections.
-//   - options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.NewListAllPager
-//     method.
-func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RestorePointCollectionsClientListAllResponse]{
-		More: func(page RestorePointCollectionsClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListAllResponse) (RestorePointCollectionsClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointCollectionsClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return RestorePointCollectionsClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RestorePointCollectionsClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *RestorePointCollectionsClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/restorePointCollections"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (RestorePointCollectionsClientListAllResponse, error) {
-	result := RestorePointCollectionsClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
-		return RestorePointCollectionsClientListAllResponse{}, err
 	}
 	return result, nil
 }

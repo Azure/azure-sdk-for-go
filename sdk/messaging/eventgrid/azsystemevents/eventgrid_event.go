@@ -46,7 +46,7 @@ func (e EventGridEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "data", e.Data)
 	populate(objectMap, "dataVersion", e.DataVersion)
-	populateTime[datetime.RFC3339](objectMap, "eventTime", e.EventTime)
+	populateTime[datetime.RFC3339](objectMap, "eventTime", e.EventTime, true)
 	populate(objectMap, "eventType", e.EventType)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "metadataVersion", e.MetadataVersion)

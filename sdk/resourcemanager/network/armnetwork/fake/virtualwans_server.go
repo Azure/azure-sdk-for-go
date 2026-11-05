@@ -33,13 +33,13 @@ type VirtualWansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, virtualWANName string, options *armnetwork.VirtualWansClientGetOptions) (resp azfake.Responder[armnetwork.VirtualWansClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualWansClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VirtualWansClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualWansClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method VirtualWansClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualWansClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualWansClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VirtualWansClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.VirtualWansClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualWansClientListResponse])
 
 	// UpdateTags is the fake for method VirtualWansClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewVirtualWansServerTransport(srv *VirtualWansServer) *VirtualWansServerTra
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VirtualWansClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VirtualWansClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualWansClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualWansClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualWansClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type VirtualWansServerTransport struct {
 	srv                         *VirtualWansServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VirtualWansClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VirtualWansClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualWansClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualWansClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualWansClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualWansServerTransport.
@@ -96,10 +96,10 @@ func (v *VirtualWansServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VirtualWansClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualWansClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualWansClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualWansClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualWansClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -243,39 +243,6 @@ func (v *VirtualWansServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (v *VirtualWansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualWans`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualWansClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualWansServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -309,6 +276,39 @@ func (v *VirtualWansServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualWansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualWans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualWansClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

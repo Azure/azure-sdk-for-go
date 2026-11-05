@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2021-10-01/NSPForDataCollectionEndpoints_Reconcile.json
+func ExampleDataCollectionEndpointsClient_BeginReconcileNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataCollectionEndpointsClient().BeginReconcileNSP(ctx, "exampleRG", "someDataCollectionEndpoint", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2024-03-11/DataCollectionEndpointsCreate.json
 func ExampleDataCollectionEndpointsClient_Create_createADataCollectionEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -61,10 +82,10 @@ func ExampleDataCollectionEndpointsClient_Create_createADataCollectionEndpoint()
 	// 			ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user1"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -122,10 +143,10 @@ func ExampleDataCollectionEndpointsClient_Create_updateADataCollectionEndpoint()
 	// 			ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:51:04.551992Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 51, 4, 551992000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user1"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -202,10 +223,10 @@ func ExampleDataCollectionEndpointsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user1"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -315,10 +336,10 @@ func ExampleDataCollectionEndpointsClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user1"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -346,10 +367,10 @@ func ExampleDataCollectionEndpointsClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578873Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 9, 15, 20, 578873000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user2"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578873Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 9, 15, 20, 578873000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -411,10 +432,10 @@ func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user1"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -442,10 +463,10 @@ func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578873Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 9, 15, 20, 578873000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user2"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578873Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 9, 15, 20, 578873000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -522,27 +543,6 @@ func ExampleDataCollectionEndpointsClient_NewListNSPPager() {
 	}
 }
 
-// Generated from example definition: 2021-10-01/NSPForDataCollectionEndpoints_Reconcile.json
-func ExampleDataCollectionEndpointsClient_BeginReconcileNSP() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmonitor.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataCollectionEndpointsClient().BeginReconcileNSP(ctx, "exampleRG", "someDataCollectionEndpoint", "somePerimeterConfiguration", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
 // Generated from example definition: 2024-03-11/DataCollectionEndpointsPatch.json
 func ExampleDataCollectionEndpointsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -589,10 +589,10 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.2431682Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 22, 8, 40, 59, 243168200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T11:55:22.5074142Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 22, 11, 55, 22, 507414200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user1"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},

@@ -56,7 +56,7 @@ type BackupCriteriaClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AdlsBlobBackupDatasourceParameters, *AdlsBlobBackupDatasourceParametersForAutoProtection, *BackupDatasourceParameters,
 // - *BlobBackupDatasourceParameters, *BlobBackupDatasourceParametersForAutoProtection, *GenericBackupDatasourceParameters,
-// - *KubernetesClusterBackupDatasourceParameters
+// - *KubernetesClusterBackupDatasourceParameters, *PostgreSQLFlexibleServerBackupDatasourceParameters
 type BackupDatasourceParametersClassification interface {
 	// GetBackupDatasourceParameters returns the BackupDatasourceParameters content of the underlying type.
 	GetBackupDatasourceParameters() *BackupDatasourceParameters

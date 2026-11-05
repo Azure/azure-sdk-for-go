@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/ConfigureProtection.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/ConfigureProtection.json
 func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaasVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,9 +25,10 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaas
 	}
 	poller, err := clientFactory.NewProtectedItemsClient().BeginCreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", armrecoveryservicesbackup.ProtectedItemResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSComputeVMProtectedItem{
-			PolicyID:          to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"),
-			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),
-			SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
+			PolicyID:                  to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"),
+			ProtectedItemType:         to.Ptr("Microsoft.Compute/virtualMachines"),
+			ExistingBasicVMProtection: to.Ptr(armrecoveryservicesbackup.ExistingBasicVMProtectionDisableWithDeleteRPsNow),
+			SourceResourceID:          to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
 		},
 	}, nil)
 	if err != nil {
@@ -65,7 +66,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaas
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/StopProtection.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/StopProtection.json
 func ExampleProtectedItemsClient_BeginCreateOrUpdate_stopProtectionWithRetainDataOnAzureIaasVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +119,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_stopProtectionWithRetainDat
 	// }
 }
 
-// Generated from example definition: 2026-08-01/Common/ProtectedItem_Delete.json
+// Generated from example definition: 2026-10-01/Common/ProtectedItem_Delete.json
 func ExampleProtectedItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +141,7 @@ func ExampleProtectedItemsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +186,7 @@ func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() 
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/Compute_ProtectedItem_Get.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/Compute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get_getProtectedVirtualMachineDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

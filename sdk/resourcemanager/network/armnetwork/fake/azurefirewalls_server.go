@@ -30,18 +30,6 @@ type AzureFirewallsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, azureFirewallName string, options *armnetwork.AzureFirewallsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AzureFirewallsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, azureFirewallName string, options *armnetwork.AzureFirewallsClientGetOptions) (resp azfake.Responder[armnetwork.AzureFirewallsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method AzureFirewallsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.AzureFirewallsClientListOptions) (resp azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse])
-
-	// NewListAllPager is the fake for method AzureFirewallsClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.AzureFirewallsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse])
-
 	// BeginListLearnedPrefixes is the fake for method AzureFirewallsClient.BeginListLearnedPrefixes
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListLearnedPrefixes func(ctx context.Context, resourceGroupName string, azureFirewallName string, options *armnetwork.AzureFirewallsClientBeginListLearnedPrefixesOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse], errResp azfake.ErrorResponder)
@@ -57,6 +45,18 @@ type AzureFirewallsServer struct {
 	// BeginUpdateTags is the fake for method AzureFirewallsClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters armnetwork.TagsObject, options *armnetwork.AzureFirewallsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AzureFirewallsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, azureFirewallName string, options *armnetwork.AzureFirewallsClientGetOptions) (resp azfake.Responder[armnetwork.AzureFirewallsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListAllPager is the fake for method AzureFirewallsClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.AzureFirewallsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse])
+
+	// NewListPager is the fake for method AzureFirewallsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.AzureFirewallsClientListOptions) (resp azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse])
 }
 
 // NewAzureFirewallsServerTransport creates a new instance of AzureFirewallsServerTransport with the provided implementation.
@@ -67,12 +67,12 @@ func NewAzureFirewallsServerTransport(srv *AzureFirewallsServer) *AzureFirewalls
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]](),
-		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]](),
 		beginListLearnedPrefixes:    newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]](),
 		beginPacketCapture:          newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]](),
 		beginPacketCaptureOperation: newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureOperationResponse]](),
 		beginUpdateTags:             newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]](),
 	}
 }
 
@@ -82,12 +82,12 @@ type AzureFirewallsServerTransport struct {
 	srv                         *AzureFirewallsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]]
-	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]]
 	beginListLearnedPrefixes    *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]]
 	beginPacketCapture          *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]]
 	beginPacketCaptureOperation *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureOperationResponse]]
 	beginUpdateTags             *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureFirewallsServerTransport.
@@ -115,12 +115,6 @@ func (a *AzureFirewallsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AzureFirewallsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AzureFirewallsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AzureFirewallsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
-			case "AzureFirewallsClient.NewListAllPager":
-				res.resp, res.err = a.dispatchNewListAllPager(req)
 			case "AzureFirewallsClient.BeginListLearnedPrefixes":
 				res.resp, res.err = a.dispatchBeginListLearnedPrefixes(req)
 			case "AzureFirewallsClient.BeginPacketCapture":
@@ -129,6 +123,12 @@ func (a *AzureFirewallsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = a.dispatchBeginPacketCaptureOperation(req)
 			case "AzureFirewallsClient.BeginUpdateTags":
 				res.resp, res.err = a.dispatchBeginUpdateTags(req)
+			case "AzureFirewallsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AzureFirewallsClient.NewListAllPager":
+				res.resp, res.err = a.dispatchNewListAllPager(req)
+			case "AzureFirewallsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -245,109 +245,6 @@ func (a *AzureFirewallsServerTransport) dispatchBeginDelete(req *http.Request) (
 		a.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (a *AzureFirewallsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	azureFirewallNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, azureFirewallNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureFirewall, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AzureFirewallsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AzureFirewallsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AzureFirewallsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := a.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		a.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.AzureFirewallsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		a.newListAllPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -536,6 +433,109 @@ func (a *AzureFirewallsServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		a.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AzureFirewallsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	azureFirewallNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, azureFirewallNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureFirewall, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AzureFirewallsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := a.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		a.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.AzureFirewallsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		a.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AzureFirewallsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/azureFirewalls`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AzureFirewallsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -19,7 +19,7 @@ import (
 // SchedulersClient contains the methods for the Schedulers group.
 // Don't use this type directly, use NewSchedulersClient() instead.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-07-01-preview
 type SchedulersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *SchedulersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create or update a Scheduler
+// createOrUpdate - Create or update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, options *SchedulersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, _ *SchedulersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -145,7 +145,7 @@ func (client *SchedulersClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx
 	}
 }
 
-// CreateOrUpdatePrivateEndpointConnection - Create or update a private endpoint connection for the durable task scheduler
+// createOrUpdatePrivateEndpointConnection - Create or update a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulersClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
@@ -167,7 +167,7 @@ func (client *SchedulersClient) createOrUpdatePrivateEndpointConnection(ctx cont
 	return httpResp, nil
 }
 
-// createOrUpdatePrivateEndpointConnectionCreateRequest creates the CreateOrUpdatePrivateEndpointConnection request.
+// createOrUpdatePrivateEndpointConnectionCreateRequest creates the createOrUpdatePrivateEndpointConnection request.
 func (client *SchedulersClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, _ *SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -191,7 +191,7 @@ func (client *SchedulersClient) createOrUpdatePrivateEndpointConnectionCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -223,7 +223,7 @@ func (client *SchedulersClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a Scheduler
+// deleteOperation - Delete a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -245,7 +245,7 @@ func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *SchedulersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
 	if client.subscriptionID == "" {
@@ -265,7 +265,7 @@ func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -294,7 +294,7 @@ func (client *SchedulersClient) BeginDeletePrivateEndpointConnection(ctx context
 	}
 }
 
-// DeletePrivateEndpointConnection - Delete a private endpoint connection for the durable task scheduler
+// deletePrivateEndpointConnection - Delete a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulersClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, options *SchedulersClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
@@ -316,7 +316,7 @@ func (client *SchedulersClient) deletePrivateEndpointConnection(ctx context.Cont
 	return httpResp, nil
 }
 
-// deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
+// deletePrivateEndpointConnectionCreateRequest creates the deletePrivateEndpointConnection request.
 func (client *SchedulersClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, _ *SchedulersClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -340,8 +340,164 @@ func (client *SchedulersClient) deletePrivateEndpointConnectionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a Scheduler
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - schedulerName - The name of the Scheduler
+//   - properties - The resource properties to be updated.
+//   - options - SchedulersClientBeginUpdateOptions contains the optional parameters for the SchedulersClient.BeginUpdate method.
+func (client *SchedulersClient) BeginUpdate(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*runtime.Poller[SchedulersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, schedulerName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Scheduler
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SchedulersClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchedulersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, schedulerName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, _ *SchedulersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if schedulerName == "" {
+		return nil, errors.New("parameter schedulerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - schedulerName - The name of the Scheduler
+//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
+//   - properties - The resource properties to be updated.
+//   - options - SchedulersClientBeginUpdatePrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.BeginUpdatePrivateEndpointConnection
+//     method.
+func (client *SchedulersClient) BeginUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[SchedulersClientUpdatePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePrivateEndpointConnection(ctx, resourceGroupName, schedulerName, privateEndpointConnectionName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientUpdatePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientUpdatePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SchedulersClient) updatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchedulersClient.BeginUpdatePrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, schedulerName, privateEndpointConnectionName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updatePrivateEndpointConnectionCreateRequest creates the updatePrivateEndpointConnection request.
+func (client *SchedulersClient) updatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, _ *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if schedulerName == "" {
+		return nil, errors.New("parameter schedulerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -387,7 +543,7 @@ func (client *SchedulersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -453,7 +609,7 @@ func (client *SchedulersClient) getPrivateEndpointConnectionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -519,7 +675,7 @@ func (client *SchedulersClient) getPrivateLinkCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -590,7 +746,7 @@ func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -657,7 +813,7 @@ func (client *SchedulersClient) listBySubscriptionCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -734,7 +890,7 @@ func (client *SchedulersClient) listPrivateEndpointConnectionsCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -811,7 +967,7 @@ func (client *SchedulersClient) listPrivateLinksCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -830,54 +986,34 @@ func (client *SchedulersClient) listPrivateLinksHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginUpdate - Update a Scheduler
+// Restart - Restart a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
-//   - properties - The resource properties to be updated.
-//   - options - SchedulersClientBeginUpdateOptions contains the optional parameters for the SchedulersClient.BeginUpdate method.
-func (client *SchedulersClient) BeginUpdate(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*runtime.Poller[SchedulersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, schedulerName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Scheduler
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SchedulersClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*http.Response, error) {
+//   - options - SchedulersClientRestartOptions contains the optional parameters for the SchedulersClient.Restart method.
+func (client *SchedulersClient) Restart(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientRestartOptions) (SchedulersClientRestartResponse, error) {
 	var err error
-	const operationName = "SchedulersClient.BeginUpdate"
+	const operationName = "SchedulersClient.Restart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, schedulerName, properties, options)
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, schedulerName, options)
 	if err != nil {
-		return nil, err
+		return SchedulersClientRestartResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return SchedulersClientRestartResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		return SchedulersClientRestartResponse{}, runtime.NewResponseError(httpResp)
 	}
-	return httpResp, nil
+	return SchedulersClientRestartResponse{}, nil
 }
 
-// updateCreateRequest creates the Update request.
-func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, _ *SchedulersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+// restartCreateRequest creates the Restart request.
+func (client *SchedulersClient) restartCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *SchedulersClientRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -890,98 +1026,12 @@ func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter schedulerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - schedulerName - The name of the Scheduler
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
-//   - properties - The resource properties to be updated.
-//   - options - SchedulersClientBeginUpdatePrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.BeginUpdatePrivateEndpointConnection
-//     method.
-func (client *SchedulersClient) BeginUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[SchedulersClientUpdatePrivateEndpointConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updatePrivateEndpointConnection(ctx, resourceGroupName, schedulerName, privateEndpointConnectionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientUpdatePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientUpdatePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SchedulersClient) updatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SchedulersClient.BeginUpdatePrivateEndpointConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, schedulerName, privateEndpointConnectionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updatePrivateEndpointConnectionCreateRequest creates the UpdatePrivateEndpointConnection request.
-func (client *SchedulersClient) updatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, _ *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schedulerName == "" {
-		return nil, errors.New("parameter schedulerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
 	return req, nil
 }

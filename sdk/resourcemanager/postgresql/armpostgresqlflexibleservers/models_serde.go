@@ -431,6 +431,7 @@ func (b Backup) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupRetentionDays", b.BackupRetentionDays)
 	populateTime[datetime.RFC3339](objectMap, "earliestRestoreDate", b.EarliestRestoreDate, true)
 	populate(objectMap, "geoRedundantBackup", b.GeoRedundantBackup)
+	populate(objectMap, "immutableBackup", b.ImmutableBackup)
 	return json.Marshal(objectMap)
 }
 
@@ -451,6 +452,9 @@ func (b *Backup) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "geoRedundantBackup":
 			err = unpopulate(val, "GeoRedundantBackup", &b.GeoRedundantBackup)
+			delete(rawMsg, key)
+		case "immutableBackup":
+			err = unpopulate(val, "ImmutableBackup", &b.ImmutableBackup)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -575,6 +579,7 @@ func (b BackupForPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupRetentionDays", b.BackupRetentionDays)
 	populateTime[datetime.RFC3339](objectMap, "earliestRestoreDate", b.EarliestRestoreDate, true)
 	populate(objectMap, "geoRedundantBackup", b.GeoRedundantBackup)
+	populate(objectMap, "immutableBackup", b.ImmutableBackup)
 	return json.Marshal(objectMap)
 }
 
@@ -595,6 +600,9 @@ func (b *BackupForPatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "geoRedundantBackup":
 			err = unpopulate(val, "GeoRedundantBackup", &b.GeoRedundantBackup)
+			delete(rawMsg, key)
+		case "immutableBackup":
+			err = unpopulate(val, "ImmutableBackup", &b.ImmutableBackup)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4366,6 +4374,7 @@ func (s ServerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cluster", s.Cluster)
 	populate(objectMap, "createMode", s.CreateMode)
 	populate(objectMap, "dataEncryption", s.DataEncryption)
+	populate(objectMap, "fipsMode", s.FipsMode)
 	populate(objectMap, "fullyQualifiedDomainName", s.FullyQualifiedDomainName)
 	populate(objectMap, "highAvailability", s.HighAvailability)
 	populate(objectMap, "maintenanceWindow", s.MaintenanceWindow)
@@ -4415,6 +4424,9 @@ func (s *ServerProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "dataEncryption":
 			err = unpopulate(val, "DataEncryption", &s.DataEncryption)
+			delete(rawMsg, key)
+		case "fipsMode":
+			err = unpopulate(val, "FipsMode", &s.FipsMode)
 			delete(rawMsg, key)
 		case "fullyQualifiedDomainName":
 			err = unpopulate(val, "FullyQualifiedDomainName", &s.FullyQualifiedDomainName)
@@ -4477,11 +4489,13 @@ func (s ServerPropertiesForPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cluster", s.Cluster)
 	populate(objectMap, "createMode", s.CreateMode)
 	populate(objectMap, "dataEncryption", s.DataEncryption)
+	populate(objectMap, "fipsMode", s.FipsMode)
 	populate(objectMap, "highAvailability", s.HighAvailability)
 	populate(objectMap, "maintenanceWindow", s.MaintenanceWindow)
 	populate(objectMap, "network", s.Network)
 	populate(objectMap, "replica", s.Replica)
 	populate(objectMap, "replicationRole", s.ReplicationRole)
+	populate(objectMap, "sourceServerResourceId", s.SourceServerResourceID)
 	populate(objectMap, "storage", s.Storage)
 	populate(objectMap, "version", s.Version)
 	return json.Marshal(objectMap)
@@ -4520,6 +4534,9 @@ func (s *ServerPropertiesForPatch) UnmarshalJSON(data []byte) error {
 		case "dataEncryption":
 			err = unpopulate(val, "DataEncryption", &s.DataEncryption)
 			delete(rawMsg, key)
+		case "fipsMode":
+			err = unpopulate(val, "FipsMode", &s.FipsMode)
+			delete(rawMsg, key)
 		case "highAvailability":
 			err = unpopulate(val, "HighAvailability", &s.HighAvailability)
 			delete(rawMsg, key)
@@ -4534,6 +4551,9 @@ func (s *ServerPropertiesForPatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "replicationRole":
 			err = unpopulate(val, "ReplicationRole", &s.ReplicationRole)
+			delete(rawMsg, key)
+		case "sourceServerResourceId":
+			err = unpopulate(val, "SourceServerResourceID", &s.SourceServerResourceID)
 			delete(rawMsg, key)
 		case "storage":
 			err = unpopulate(val, "Storage", &s.Storage)
@@ -4783,6 +4803,8 @@ func (s *StartMajorVersionUpgradePrecheckResponse) UnmarshalJSON(data []byte) er
 func (s Storage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoGrow", s.AutoGrow)
+	populate(objectMap, "autoGrowIncrementPercent", s.AutoGrowIncrementPercent)
+	populate(objectMap, "autoGrowMaxThresholdMb", s.AutoGrowMaxThresholdMb)
 	populate(objectMap, "iops", s.Iops)
 	populate(objectMap, "storageSizeGB", s.StorageSizeGB)
 	populate(objectMap, "throughput", s.Throughput)
@@ -4802,6 +4824,12 @@ func (s *Storage) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "autoGrow":
 			err = unpopulate(val, "AutoGrow", &s.AutoGrow)
+			delete(rawMsg, key)
+		case "autoGrowIncrementPercent":
+			err = unpopulate(val, "AutoGrowIncrementPercent", &s.AutoGrowIncrementPercent)
+			delete(rawMsg, key)
+		case "autoGrowMaxThresholdMb":
+			err = unpopulate(val, "AutoGrowMaxThresholdMb", &s.AutoGrowMaxThresholdMb)
 			delete(rawMsg, key)
 		case "iops":
 			err = unpopulate(val, "Iops", &s.Iops)

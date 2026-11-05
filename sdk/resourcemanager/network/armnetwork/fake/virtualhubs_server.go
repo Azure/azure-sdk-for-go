@@ -30,10 +30,6 @@ type VirtualHubsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualHubName string, options *armnetwork.VirtualHubsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.VirtualHubsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualHubsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualHubName string, options *armnetwork.VirtualHubsClientGetOptions) (resp azfake.Responder[armnetwork.VirtualHubsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetEffectiveVirtualHubRoutes is the fake for method VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetEffectiveVirtualHubRoutes func(ctx context.Context, resourceGroupName string, virtualHubName string, options *armnetwork.VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions) (resp azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], errResp azfake.ErrorResponder)
@@ -46,13 +42,17 @@ type VirtualHubsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetOutboundRoutes func(ctx context.Context, resourceGroupName string, virtualHubName string, getOutboundRoutesParameters armnetwork.GetOutboundRoutesParameters, options *armnetwork.VirtualHubsClientBeginGetOutboundRoutesOptions) (resp azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualHubsClient.NewListPager
+	// Get is the fake for method VirtualHubsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VirtualHubsClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse])
+	Get func(ctx context.Context, resourceGroupName string, virtualHubName string, options *armnetwork.VirtualHubsClientGetOptions) (resp azfake.Responder[armnetwork.VirtualHubsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method VirtualHubsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualHubsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VirtualHubsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.VirtualHubsClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse])
 
 	// UpdateTags is the fake for method VirtualHubsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -70,8 +70,8 @@ func NewVirtualHubsServerTransport(srv *VirtualHubsServer) *VirtualHubsServerTra
 		beginGetEffectiveVirtualHubRoutes: newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]](),
 		beginGetInboundRoutes:             newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetInboundRoutesResponse]](),
 		beginGetOutboundRoutes:            newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse]](),
-		newListPager:                      newTracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]](),
 		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]](),
 	}
 }
 
@@ -84,8 +84,8 @@ type VirtualHubsServerTransport struct {
 	beginGetEffectiveVirtualHubRoutes *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]]
 	beginGetInboundRoutes             *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetInboundRoutesResponse]]
 	beginGetOutboundRoutes            *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse]]
-	newListPager                      *tracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]]
 	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse]]
+	newListPager                      *tracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHubsServerTransport.
@@ -113,18 +113,18 @@ func (v *VirtualHubsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualHubsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualHubsClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes":
 				res.resp, res.err = v.dispatchBeginGetEffectiveVirtualHubRoutes(req)
 			case "VirtualHubsClient.BeginGetInboundRoutes":
 				res.resp, res.err = v.dispatchBeginGetInboundRoutes(req)
 			case "VirtualHubsClient.BeginGetOutboundRoutes":
 				res.resp, res.err = v.dispatchBeginGetOutboundRoutes(req)
-			case "VirtualHubsClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
+			case "VirtualHubsClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualHubsClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualHubsClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualHubsClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -232,39 +232,6 @@ func (v *VirtualHubsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		v.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (v *VirtualHubsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualHubs/(?P<virtualHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualHubName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualHubNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualHub, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -418,35 +385,35 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetOutboundRoutes(req *http.Re
 	return resp, nil
 }
 
-func (v *VirtualHubsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (v *VirtualHubsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualHubs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualHubsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualHubs/(?P<virtualHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	virtualHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualHubName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualHubNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualHub, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -484,6 +451,39 @@ func (v *VirtualHubsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualHubsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualHubs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualHubsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

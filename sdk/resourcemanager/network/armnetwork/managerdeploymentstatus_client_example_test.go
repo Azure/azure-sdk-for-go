@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerDeploymentStatusList.json
+// Generated from example definition: 2026-03-01/NetworkManagerDeploymentStatusList.json
 func ExampleManagerDeploymentStatusClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

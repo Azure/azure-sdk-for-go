@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingAccountId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingProfileId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingAccountId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileIdReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDaily.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDaily.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesDaily() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +310,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthly.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthly.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesMonthly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesDailyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +425,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesMonthlyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

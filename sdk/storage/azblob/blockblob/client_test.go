@@ -6401,7 +6401,7 @@ func TestUploadFileMultipleUploadDefaultThreshold(t *testing.T) {
 	size := 2*blob.DefaultDownloadBlockSize + 1
 	file, err := os.CreateTemp(t.TempDir(), "upload")
 	require.NoError(t, err)
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	_, err = file.Write(make([]byte, size))
 	require.NoError(t, err)
 

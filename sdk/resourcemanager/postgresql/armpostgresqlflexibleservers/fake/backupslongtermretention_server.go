@@ -21,6 +21,10 @@ import (
 
 // BackupsLongTermRetentionServer is a fake server for instances of the armpostgresqlflexibleservers.BackupsLongTermRetentionClient type.
 type BackupsLongTermRetentionServer struct {
+	// BeginStart is the fake for method BackupsLongTermRetentionClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStart func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.BackupsLongTermRetentionRequest, options *armpostgresqlflexibleservers.BackupsLongTermRetentionClientBeginStartOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientStartResponse], errResp azfake.ErrorResponder)
+
 	// CheckPrerequisites is the fake for method BackupsLongTermRetentionClient.CheckPrerequisites
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckPrerequisites func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.LtrPreBackupRequest, options *armpostgresqlflexibleservers.BackupsLongTermRetentionClientCheckPrerequisitesOptions) (resp azfake.Responder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientCheckPrerequisitesResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type BackupsLongTermRetentionServer struct {
 	// NewListByServerPager is the fake for method BackupsLongTermRetentionClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse])
-
-	// BeginStart is the fake for method BackupsLongTermRetentionClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStart func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.BackupsLongTermRetentionRequest, options *armpostgresqlflexibleservers.BackupsLongTermRetentionClientBeginStartOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientStartResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBackupsLongTermRetentionServerTransport creates a new instance of BackupsLongTermRetentionServerTransport with the provided implementation.
@@ -44,8 +44,8 @@ type BackupsLongTermRetentionServer struct {
 func NewBackupsLongTermRetentionServerTransport(srv *BackupsLongTermRetentionServer) *BackupsLongTermRetentionServerTransport {
 	return &BackupsLongTermRetentionServerTransport{
 		srv:                  srv,
-		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse]](),
 		beginStart:           newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientStartResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse]](),
 	}
 }
 
@@ -53,8 +53,8 @@ func NewBackupsLongTermRetentionServerTransport(srv *BackupsLongTermRetentionSer
 // Don't use this type directly, use NewBackupsLongTermRetentionServerTransport instead.
 type BackupsLongTermRetentionServerTransport struct {
 	srv                  *BackupsLongTermRetentionServer
-	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse]]
 	beginStart           *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientStartResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupsLongTermRetentionServerTransport.
@@ -78,14 +78,14 @@ func (b *BackupsLongTermRetentionServerTransport) dispatchToMethodFake(req *http
 		}
 		if !intercepted {
 			switch method {
+			case "BackupsLongTermRetentionClient.BeginStart":
+				res.resp, res.err = b.dispatchBeginStart(req)
 			case "BackupsLongTermRetentionClient.CheckPrerequisites":
 				res.resp, res.err = b.dispatchCheckPrerequisites(req)
 			case "BackupsLongTermRetentionClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BackupsLongTermRetentionClient.NewListByServerPager":
 				res.resp, res.err = b.dispatchNewListByServerPager(req)
-			case "BackupsLongTermRetentionClient.BeginStart":
-				res.resp, res.err = b.dispatchBeginStart(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,6 +100,54 @@ func (b *BackupsLongTermRetentionServerTransport) dispatchToMethodFake(req *http
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (b *BackupsLongTermRetentionServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := b.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startLtrBackup`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.BackupsLongTermRetentionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginStart(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		b.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		b.beginStart.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (b *BackupsLongTermRetentionServerTransport) dispatchCheckPrerequisites(req *http.Request) (*http.Response, error) {
@@ -217,54 +265,6 @@ func (b *BackupsLongTermRetentionServerTransport) dispatchNewListByServerPager(r
 	if !server.PagerResponderMore(newListByServerPager) {
 		b.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (b *BackupsLongTermRetentionServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := b.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startLtrBackup`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.BackupsLongTermRetentionRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := b.srv.BeginStart(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		b.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		b.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		b.beginStart.remove(req)
-	}
-
 	return resp, nil
 }
 

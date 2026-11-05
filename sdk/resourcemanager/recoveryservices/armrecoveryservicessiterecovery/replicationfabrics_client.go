@@ -19,7 +19,7 @@ import (
 // ReplicationFabricsClient contains the methods for the ReplicationFabrics group.
 // Don't use this type directly, use NewReplicationFabricsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationFabricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *ReplicationFabricsClient) BeginCheckConsistency(ctx context.Contex
 	}
 }
 
-// CheckConsistency - Checks the consistency of the ASR fabric.
+// checkConsistency - Checks the consistency of the ASR fabric.
 //
 // The operation to perform a consistency check on the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, re
 	return httpResp, nil
 }
 
-// checkConsistencyCreateRequest creates the CheckConsistency request.
+// checkConsistencyCreateRequest creates the checkConsistency request.
 func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginCheckConsistencyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/checkConsistency"
 	if client.subscriptionID == "" {
@@ -118,7 +118,7 @@ func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -151,7 +151,7 @@ func (client *ReplicationFabricsClient) BeginCreate(ctx context.Context, resourc
 	}
 }
 
-// Create - Creates an Azure Site Recovery fabric.
+// create - Creates an Azure Site Recovery fabric.
 //
 // The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,7 +175,7 @@ func (client *ReplicationFabricsClient) create(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, input FabricCreationInput, _ *ReplicationFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
 	if client.subscriptionID == "" {
@@ -199,7 +199,7 @@ func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -235,7 +235,7 @@ func (client *ReplicationFabricsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes the site.
+// deleteOperation - Deletes the site.
 //
 // The operation to delete or remove an Azure Site Recovery fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -259,7 +259,7 @@ func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/remove"
 	if client.subscriptionID == "" {
@@ -283,8 +283,415 @@ func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginMigrateToAAD - Migrates the site to AAD.
+//
+// The operation to migrate an Azure Site Recovery fabric to AAD.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - options - ReplicationFabricsClientBeginMigrateToAADOptions contains the optional parameters for the ReplicationFabricsClient.BeginMigrateToAAD
+//     method.
+func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*runtime.Poller[ReplicationFabricsClientMigrateToAADResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateToAAD(ctx, resourceGroupName, resourceName, fabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientMigrateToAADResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientMigrateToAADResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrateToAAD - Migrates the site to AAD.
+//
+// The operation to migrate an Azure Site Recovery fabric to AAD.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationFabricsClient.BeginMigrateToAAD"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateToAADCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateToAADCreateRequest creates the migrateToAAD request.
+func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginMigrateToAADOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPurge - Purges the site.
+//
+// The operation to purge(force delete) an Azure Site Recovery fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - options - ReplicationFabricsClientBeginPurgeOptions contains the optional parameters for the ReplicationFabricsClient.BeginPurge
+//     method.
+func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*runtime.Poller[ReplicationFabricsClientPurgeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purge(ctx, resourceGroupName, resourceName, fabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purge - Purges the site.
+//
+// The operation to purge(force delete) an Azure Site Recovery fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) purge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationFabricsClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeCreateRequest creates the purge request.
+func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginPurgeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginReassociateGateway - Perform failover of the process server.
+//
+// The operation to move replications from a process server to another process server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - failoverProcessServerRequest - The input to the failover process server operation.
+//   - options - ReplicationFabricsClientBeginReassociateGatewayOptions contains the optional parameters for the ReplicationFabricsClient.BeginReassociateGateway
+//     method.
+func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*runtime.Poller[ReplicationFabricsClientReassociateGatewayResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reassociateGateway(ctx, resourceGroupName, resourceName, fabricName, failoverProcessServerRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientReassociateGatewayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientReassociateGatewayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reassociateGateway - Perform failover of the process server.
+//
+// The operation to move replications from a process server to another process server.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationFabricsClient.BeginReassociateGateway"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reassociateGatewayCreateRequest(ctx, resourceGroupName, resourceName, fabricName, failoverProcessServerRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reassociateGatewayCreateRequest creates the reassociateGateway request.
+func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, _ *ReplicationFabricsClientBeginReassociateGatewayOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, failoverProcessServerRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRemoveInfra - Removes the appliance's infrastructure under the fabric.
+//
+// Removes the appliance's infrastructure under the fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the recovery services vault.
+//   - fabricName - Fabric name.
+//   - options - ReplicationFabricsClientBeginRemoveInfraOptions contains the optional parameters for the ReplicationFabricsClient.BeginRemoveInfra
+//     method.
+func (client *ReplicationFabricsClient) BeginRemoveInfra(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginRemoveInfraOptions) (*runtime.Poller[ReplicationFabricsClientRemoveInfraResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeInfra(ctx, resourceGroupName, resourceName, fabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientRemoveInfraResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientRemoveInfraResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeInfra - Removes the appliance's infrastructure under the fabric.
+//
+// Removes the appliance's infrastructure under the fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) removeInfra(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginRemoveInfraOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationFabricsClient.BeginRemoveInfra"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeInfraCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeInfraCreateRequest creates the removeInfra request.
+func (client *ReplicationFabricsClient) removeInfraCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginRemoveInfraOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/removeInfra"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRenewCertificate - Renews certificate for the fabric.
+//
+// Renews the connection certificate for the ASR replication fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - renewCertificate - Renew certificate input.
+//   - options - ReplicationFabricsClientBeginRenewCertificateOptions contains the optional parameters for the ReplicationFabricsClient.BeginRenewCertificate
+//     method.
+func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*runtime.Poller[ReplicationFabricsClientRenewCertificateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.renewCertificate(ctx, resourceGroupName, resourceName, fabricName, renewCertificate, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientRenewCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientRenewCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// renewCertificate - Renews certificate for the fabric.
+//
+// Renews the connection certificate for the ASR replication fabric.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationFabricsClient.BeginRenewCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.renewCertificateCreateRequest(ctx, resourceGroupName, resourceName, fabricName, renewCertificate, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// renewCertificateCreateRequest creates the renewCertificate request.
+func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, _ *ReplicationFabricsClientBeginRenewCertificateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, renewCertificate); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,7 +747,7 @@ func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, re
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -418,7 +825,7 @@ func (client *ReplicationFabricsClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -435,411 +842,4 @@ func (client *ReplicationFabricsClient) listHandleResponse(resp *http.Response, 
 		return ReplicationFabricsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginMigrateToAAD - Migrates the site to AAD.
-//
-// The operation to migrate an Azure Site Recovery fabric to AAD.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - options - ReplicationFabricsClientBeginMigrateToAADOptions contains the optional parameters for the ReplicationFabricsClient.BeginMigrateToAAD
-//     method.
-func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*runtime.Poller[ReplicationFabricsClientMigrateToAADResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrateToAAD(ctx, resourceGroupName, resourceName, fabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientMigrateToAADResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientMigrateToAADResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrateToAAD - Migrates the site to AAD.
-//
-// The operation to migrate an Azure Site Recovery fabric to AAD.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationFabricsClient.BeginMigrateToAAD"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateToAADCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateToAADCreateRequest creates the MigrateToAAD request.
-func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginMigrateToAADOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginPurge - Purges the site.
-//
-// The operation to purge(force delete) an Azure Site Recovery fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - options - ReplicationFabricsClientBeginPurgeOptions contains the optional parameters for the ReplicationFabricsClient.BeginPurge
-//     method.
-func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*runtime.Poller[ReplicationFabricsClientPurgeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purge(ctx, resourceGroupName, resourceName, fabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Purge - Purges the site.
-//
-// The operation to purge(force delete) an Azure Site Recovery fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationFabricsClient) purge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationFabricsClient.BeginPurge"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// purgeCreateRequest creates the Purge request.
-func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginPurgeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginReassociateGateway - Perform failover of the process server.
-//
-// The operation to move replications from a process server to another process server.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - failoverProcessServerRequest - The input to the failover process server operation.
-//   - options - ReplicationFabricsClientBeginReassociateGatewayOptions contains the optional parameters for the ReplicationFabricsClient.BeginReassociateGateway
-//     method.
-func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*runtime.Poller[ReplicationFabricsClientReassociateGatewayResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reassociateGateway(ctx, resourceGroupName, resourceName, fabricName, failoverProcessServerRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientReassociateGatewayResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientReassociateGatewayResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReassociateGateway - Perform failover of the process server.
-//
-// The operation to move replications from a process server to another process server.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationFabricsClient.BeginReassociateGateway"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reassociateGatewayCreateRequest(ctx, resourceGroupName, resourceName, fabricName, failoverProcessServerRequest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reassociateGatewayCreateRequest creates the ReassociateGateway request.
-func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, _ *ReplicationFabricsClientBeginReassociateGatewayOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, failoverProcessServerRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRemoveInfra - Removes the appliance's infrastructure under the fabric.
-//
-// Removes the appliance's infrastructure under the fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the recovery services vault.
-//   - fabricName - Fabric name.
-//   - options - ReplicationFabricsClientBeginRemoveInfraOptions contains the optional parameters for the ReplicationFabricsClient.BeginRemoveInfra
-//     method.
-func (client *ReplicationFabricsClient) BeginRemoveInfra(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginRemoveInfraOptions) (*runtime.Poller[ReplicationFabricsClientRemoveInfraResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeInfra(ctx, resourceGroupName, resourceName, fabricName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientRemoveInfraResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientRemoveInfraResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveInfra - Removes the appliance's infrastructure under the fabric.
-//
-// Removes the appliance's infrastructure under the fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationFabricsClient) removeInfra(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientBeginRemoveInfraOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationFabricsClient.BeginRemoveInfra"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeInfraCreateRequest(ctx, resourceGroupName, resourceName, fabricName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeInfraCreateRequest creates the RemoveInfra request.
-func (client *ReplicationFabricsClient) removeInfraCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginRemoveInfraOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/removeInfra"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRenewCertificate - Renews certificate for the fabric.
-//
-// Renews the connection certificate for the ASR replication fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - renewCertificate - Renew certificate input.
-//   - options - ReplicationFabricsClientBeginRenewCertificateOptions contains the optional parameters for the ReplicationFabricsClient.BeginRenewCertificate
-//     method.
-func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*runtime.Poller[ReplicationFabricsClientRenewCertificateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.renewCertificate(ctx, resourceGroupName, resourceName, fabricName, renewCertificate, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientRenewCertificateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientRenewCertificateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RenewCertificate - Renews certificate for the fabric.
-//
-// Renews the connection certificate for the ASR replication fabric.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationFabricsClient.BeginRenewCertificate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.renewCertificateCreateRequest(ctx, resourceGroupName, resourceName, fabricName, renewCertificate, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// renewCertificateCreateRequest creates the RenewCertificate request.
-func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, _ *ReplicationFabricsClientBeginRenewCertificateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, renewCertificate); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

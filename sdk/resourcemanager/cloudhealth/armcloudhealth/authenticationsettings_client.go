@@ -19,7 +19,7 @@ import (
 // AuthenticationSettingsClient contains the methods for the AuthenticationSettings group.
 // Don't use this type directly, use NewAuthenticationSettingsClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type AuthenticationSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *AuthenticationSettingsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create a AuthenticationSetting
+// createOrUpdate - Create a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, options *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, _ *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +149,7 @@ func (client *AuthenticationSettingsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a AuthenticationSetting
+// deleteOperation - Delete a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *AuthenticationSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
@@ -195,7 +195,7 @@ func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +248,7 @@ func (client *AuthenticationSettingsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *AuthenticationSettingsClient) listByHealthModelCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

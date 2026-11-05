@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-10-01/GetPredictiveMetric.json
+// Generated from example definition: 2025-09-01-preview/GetPredictiveMetric.json
 func ExamplePredictiveMetricClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,19 +33,19 @@ func ExamplePredictiveMetricClient_Get() {
 	// 	PredictiveResponse: armmonitor.PredictiveResponse{
 	// 		Data: []*armmonitor.PredictiveValue{
 	// 			{
-	// 				TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:00:00Z"); return t}()),
+	// 				TimeStamp: to.Ptr(time.Date(2021, time.October, 14, 22, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](123),
 	// 			},
 	// 			{
-	// 				TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00Z"); return t}()),
+	// 				TimeStamp: to.Ptr(time.Date(2021, time.October, 14, 22, 2, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](120),
 	// 			},
 	// 			{
-	// 				TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00Z"); return t}()),
+	// 				TimeStamp: to.Ptr(time.Date(2021, time.October, 14, 22, 2, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](88),
 	// 			},
 	// 			{
-	// 				TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:03:00Z"); return t}()),
+	// 				TimeStamp: to.Ptr(time.Date(2021, time.October, 14, 22, 3, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](100),
 	// 			},
 	// 		},

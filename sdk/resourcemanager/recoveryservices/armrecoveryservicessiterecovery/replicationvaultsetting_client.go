@@ -19,7 +19,7 @@ import (
 // ReplicationVaultSettingClient contains the methods for the ReplicationVaultSetting group.
 // Don't use this type directly, use NewReplicationVaultSettingClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationVaultSettingClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *ReplicationVaultSettingClient) BeginCreate(ctx context.Context, re
 	}
 }
 
-// Create - Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
+// create - Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
 //
 // The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ReplicationVaultSettingClient) create(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, vaultSettingName string, input VaultSettingCreationInput, _ *ReplicationVaultSettingClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}"
 	if client.subscriptionID == "" {
@@ -119,7 +119,7 @@ func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,7 +179,7 @@ func (client *ReplicationVaultSettingClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +257,7 @@ func (client *ReplicationVaultSettingClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

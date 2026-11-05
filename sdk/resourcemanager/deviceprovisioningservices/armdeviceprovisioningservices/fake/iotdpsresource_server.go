@@ -21,10 +21,6 @@ import (
 
 // IotDpsResourceServer is a fake server for instances of the armdeviceprovisioningservices.IotDpsResourceClient type.
 type IotDpsResourceServer struct {
-	// CheckProvisioningServiceNameAvailability is the fake for method IotDpsResourceClient.CheckProvisioningServiceNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckProvisioningServiceNameAvailability func(ctx context.Context, arguments armdeviceprovisioningservices.OperationInputs, options *armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method IotDpsResourceClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription armdeviceprovisioningservices.ProvisioningServiceDescription, options *armdeviceprovisioningservices.IotDpsResourceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -40,6 +36,14 @@ type IotDpsResourceServer struct {
 	// BeginDeletePrivateEndpointConnection is the fake for method IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *armdeviceprovisioningservices.IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method IotDpsResourceClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags armdeviceprovisioningservices.TagsResource, options *armdeviceprovisioningservices.IotDpsResourceClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckProvisioningServiceNameAvailability is the fake for method IotDpsResourceClient.CheckProvisioningServiceNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckProvisioningServiceNameAvailability func(ctx context.Context, arguments armdeviceprovisioningservices.OperationInputs, options *armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method IotDpsResourceClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -57,18 +61,6 @@ type IotDpsResourceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateLinkResources func(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *armdeviceprovisioningservices.IotDpsResourceClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method IotDpsResourceClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method IotDpsResourceClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse])
-
-	// NewListKeysPager is the fake for method IotDpsResourceClient.NewListKeysPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListKeysPager func(provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse])
-
 	// ListKeysForKeyName is the fake for method IotDpsResourceClient.ListKeysForKeyName
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeysForKeyName func(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse], errResp azfake.ErrorResponder)
@@ -81,13 +73,21 @@ type IotDpsResourceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListPrivateLinkResources func(ctx context.Context, resourceGroupName string, resourceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
+	// NewListByResourceGroupPager is the fake for method IotDpsResourceClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method IotDpsResourceClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse])
+
+	// NewListKeysPager is the fake for method IotDpsResourceClient.NewListKeysPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListKeysPager func(provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse])
+
 	// NewListValidSKUsPager is the fake for method IotDpsResourceClient.NewListValidSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListValidSKUsPager func(provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse])
-
-	// BeginUpdate is the fake for method IotDpsResourceClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags armdeviceprovisioningservices.TagsResource, options *armdeviceprovisioningservices.IotDpsResourceClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIotDpsResourceServerTransport creates a new instance of IotDpsResourceServerTransport with the provided implementation.
@@ -100,11 +100,11 @@ func NewIotDpsResourceServerTransport(srv *IotDpsResourceServer) *IotDpsResource
 		beginCreateOrUpdatePrivateEndpointConnection: newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]](),
 		beginDelete:                          newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeleteResponse]](),
 		beginDeletePrivateEndpointConnection: newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeletePrivateEndpointConnectionResponse]](),
+		beginUpdate:                          newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]](),
 		newListByResourceGroupPager:          newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:           newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse]](),
 		newListKeysPager:                     newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse]](),
 		newListValidSKUsPager:                newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse]](),
-		beginUpdate:                          newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]](),
 	}
 }
 
@@ -116,11 +116,11 @@ type IotDpsResourceServerTransport struct {
 	beginCreateOrUpdatePrivateEndpointConnection *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]]
 	beginDelete                                  *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeleteResponse]]
 	beginDeletePrivateEndpointConnection         *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeletePrivateEndpointConnectionResponse]]
+	beginUpdate                                  *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]]
 	newListByResourceGroupPager                  *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                   *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse]]
 	newListKeysPager                             *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse]]
 	newListValidSKUsPager                        *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse]]
-	beginUpdate                                  *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for IotDpsResourceServerTransport.
@@ -144,8 +144,6 @@ func (i *IotDpsResourceServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "IotDpsResourceClient.CheckProvisioningServiceNameAvailability":
-				res.resp, res.err = i.dispatchCheckProvisioningServiceNameAvailability(req)
 			case "IotDpsResourceClient.BeginCreateOrUpdate":
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection":
@@ -154,6 +152,10 @@ func (i *IotDpsResourceServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = i.dispatchBeginDelete(req)
 			case "IotDpsResourceClient.BeginDeletePrivateEndpointConnection":
 				res.resp, res.err = i.dispatchBeginDeletePrivateEndpointConnection(req)
+			case "IotDpsResourceClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
+			case "IotDpsResourceClient.CheckProvisioningServiceNameAvailability":
+				res.resp, res.err = i.dispatchCheckProvisioningServiceNameAvailability(req)
 			case "IotDpsResourceClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "IotDpsResourceClient.GetOperationResult":
@@ -162,22 +164,20 @@ func (i *IotDpsResourceServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = i.dispatchGetPrivateEndpointConnection(req)
 			case "IotDpsResourceClient.GetPrivateLinkResources":
 				res.resp, res.err = i.dispatchGetPrivateLinkResources(req)
-			case "IotDpsResourceClient.NewListByResourceGroupPager":
-				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
-			case "IotDpsResourceClient.NewListBySubscriptionPager":
-				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
-			case "IotDpsResourceClient.NewListKeysPager":
-				res.resp, res.err = i.dispatchNewListKeysPager(req)
 			case "IotDpsResourceClient.ListKeysForKeyName":
 				res.resp, res.err = i.dispatchListKeysForKeyName(req)
 			case "IotDpsResourceClient.ListPrivateEndpointConnections":
 				res.resp, res.err = i.dispatchListPrivateEndpointConnections(req)
 			case "IotDpsResourceClient.ListPrivateLinkResources":
 				res.resp, res.err = i.dispatchListPrivateLinkResources(req)
+			case "IotDpsResourceClient.NewListByResourceGroupPager":
+				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "IotDpsResourceClient.NewListBySubscriptionPager":
+				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
+			case "IotDpsResourceClient.NewListKeysPager":
+				res.resp, res.err = i.dispatchNewListKeysPager(req)
 			case "IotDpsResourceClient.NewListValidSKUsPager":
 				res.resp, res.err = i.dispatchNewListValidSKUsPager(req)
-			case "IotDpsResourceClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -192,35 +192,6 @@ func (i *IotDpsResourceServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (i *IotDpsResourceServerTransport) dispatchCheckProvisioningServiceNameAvailability(req *http.Request) (*http.Response, error) {
-	if i.srv.CheckProvisioningServiceNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckProvisioningServiceNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/checkProvisioningServiceNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdeviceprovisioningservices.OperationInputs](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.CheckProvisioningServiceNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (i *IotDpsResourceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -415,6 +386,83 @@ func (i *IotDpsResourceServerTransport) dispatchBeginDeletePrivateEndpointConnec
 	return resp, nil
 }
 
+func (i *IotDpsResourceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceprovisioningservices.TagsResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *IotDpsResourceServerTransport) dispatchCheckProvisioningServiceNameAvailability(req *http.Request) (*http.Response, error) {
+	if i.srv.CheckProvisioningServiceNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckProvisioningServiceNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/checkProvisioningServiceNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdeviceprovisioningservices.OperationInputs](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.CheckProvisioningServiceNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityInfo, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *IotDpsResourceServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -560,6 +608,109 @@ func (i *IotDpsResourceServerTransport) dispatchGetPrivateLinkResources(req *htt
 	return resp, nil
 }
 
+func (i *IotDpsResourceServerTransport) dispatchListKeysForKeyName(req *http.Request) (*http.Response, error) {
+	if i.srv.ListKeysForKeyName == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeysForKeyName not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keys/(?P<keyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	keyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListKeysForKeyName(req.Context(), provisioningServiceNameParam, keyNameParam, resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedAccessSignatureAuthorizationRuleAccessRightsDescription, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *IotDpsResourceServerTransport) dispatchListPrivateEndpointConnections(req *http.Request) (*http.Response, error) {
+	if i.srv.ListPrivateEndpointConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPrivateEndpointConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListPrivateEndpointConnections(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *IotDpsResourceServerTransport) dispatchListPrivateLinkResources(req *http.Request) (*http.Response, error) {
+	if i.srv.ListPrivateLinkResources == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPrivateLinkResources not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListPrivateLinkResources(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResources, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *IotDpsResourceServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -671,109 +822,6 @@ func (i *IotDpsResourceServerTransport) dispatchNewListKeysPager(req *http.Reque
 	return resp, nil
 }
 
-func (i *IotDpsResourceServerTransport) dispatchListKeysForKeyName(req *http.Request) (*http.Response, error) {
-	if i.srv.ListKeysForKeyName == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeysForKeyName not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keys/(?P<keyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	keyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.ListKeysForKeyName(req.Context(), provisioningServiceNameParam, keyNameParam, resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedAccessSignatureAuthorizationRuleAccessRightsDescription, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *IotDpsResourceServerTransport) dispatchListPrivateEndpointConnections(req *http.Request) (*http.Response, error) {
-	if i.srv.ListPrivateEndpointConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPrivateEndpointConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.ListPrivateEndpointConnections(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *IotDpsResourceServerTransport) dispatchListPrivateLinkResources(req *http.Request) (*http.Response, error) {
-	if i.srv.ListPrivateLinkResources == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPrivateLinkResources not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.ListPrivateLinkResources(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResources, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (i *IotDpsResourceServerTransport) dispatchNewListValidSKUsPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListValidSKUsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListValidSKUsPager not implemented")}
@@ -812,54 +860,6 @@ func (i *IotDpsResourceServerTransport) dispatchNewListValidSKUsPager(req *http.
 	if !server.PagerResponderMore(newListValidSKUsPager) {
 		i.newListValidSKUsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *IotDpsResourceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceprovisioningservices.TagsResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

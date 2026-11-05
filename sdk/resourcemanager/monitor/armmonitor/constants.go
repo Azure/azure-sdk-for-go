@@ -12,7 +12,6 @@ const (
 	version20190301        string = "2019-03-01"
 	version20210501Preview string = "2021-05-01-preview"
 	version20211001        string = "2021-10-01"
-	version20221001        string = "2022-10-01"
 	version20230101Preview string = "2023-01-01-preview"
 	version20230501Preview string = "2023-05-01-preview"
 	version20230601Preview string = "2023-06-01-preview"
@@ -20,6 +19,7 @@ const (
 	version20240311        string = "2024-03-11"
 	version20241001Preview string = "2024-10-01-preview"
 	version20250101Preview string = "2025-01-01-preview"
+	version20250901Preview string = "2025-09-01-preview"
 	version20260101        string = "2026-01-01"
 )
 
@@ -1381,13 +1381,21 @@ func PossibleNamespaceClassificationValues() []NamespaceClassification {
 type NetworkSecurityPerimeterConfigurationProvisioningState string
 
 const (
-	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
-	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
-	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateAccepted - The configuration request was accepted and provisioning
+	// has not started yet.
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCanceled - The configuration provisioning was canceled.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCreating - The configuration is being created.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateDeleting - The configuration is being deleted.
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateFailed - The configuration failed to provision.
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded - The configuration was provisioned successfully.
 	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
-	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateUpdating - The configuration is being updated.
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
 )
 
 // PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
@@ -1801,7 +1809,9 @@ func PossibleScopedResourceProvisioningStateValues() []ScopedResourceProvisionin
 type Severity string
 
 const (
-	SeverityError   Severity = "Error"
+	// SeverityError - The issue is an error and prevents the configuration from being applied.
+	SeverityError Severity = "Error"
+	// SeverityWarning - The issue is a warning and does not prevent the configuration from being applied.
 	SeverityWarning Severity = "Warning"
 )
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/SubnetCreate.json
+// Generated from example definition: 2026-03-01/SubnetCreate.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetCreateServiceEndpoint.json
+// Generated from example definition: 2026-03-01/SubnetCreateServiceEndpoint.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpoints()
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetCreateServiceEndpointNetworkIdentifier.json
+// Generated from example definition: 2026-03-01/SubnetCreateServiceEndpointNetworkIdentifier.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpointsWithNetworkIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpointsWi
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetCreateWithDelegation.json
+// Generated from example definition: 2026-03-01/SubnetCreateWithDelegation.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithADelegation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithADelegation() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetCreateWithServiceGateway.json
+// Generated from example definition: 2026-03-01/SubnetCreateWithServiceGateway.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetCreateWithSharingScope.json
+// Generated from example definition: 2026-03-01/SubnetCreateWithSharingScope.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithSharingScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithSharingScope() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetDelete.json
+// Generated from example definition: 2026-03-01/SubnetDelete.json
 func ExampleSubnetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,63 @@ func ExampleSubnetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetGet.json
+// Generated from example definition: 2026-03-01/SubnetPrepareNetworkPolicies.json
+func ExampleSubnetsClient_BeginPrepareNetworkPolicies() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubnetsClient().BeginPrepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.PrepareNetworkPoliciesRequest{
+		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.SubnetsClientPrepareNetworkPoliciesResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/SubnetUnprepareNetworkPolicies.json
+func ExampleSubnetsClient_BeginUnprepareNetworkPolicies() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubnetsClient().BeginUnprepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.UnprepareNetworkPoliciesRequest{
+		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.SubnetsClientUnprepareNetworkPoliciesResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/SubnetGet.json
 func ExampleSubnetsClient_Get_getSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +409,7 @@ func ExampleSubnetsClient_Get_getSubnet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetGetWithDelegation.json
+// Generated from example definition: 2026-03-01/SubnetGetWithDelegation.json
 func ExampleSubnetsClient_Get_getSubnetWithADelegation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -396,7 +452,7 @@ func ExampleSubnetsClient_Get_getSubnetWithADelegation() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetGetWithSharingScope.json
+// Generated from example definition: 2026-03-01/SubnetGetWithSharingScope.json
 func ExampleSubnetsClient_Get_getSubnetWithSharingScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +484,7 @@ func ExampleSubnetsClient_Get_getSubnetWithSharingScope() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SubnetList.json
+// Generated from example definition: 2026-03-01/SubnetList.json
 func ExampleSubnetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,60 +529,4 @@ func ExampleSubnetsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01/SubnetPrepareNetworkPolicies.json
-func ExampleSubnetsClient_BeginPrepareNetworkPolicies() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubnetsClient().BeginPrepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.PrepareNetworkPoliciesRequest{
-		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.SubnetsClientPrepareNetworkPoliciesResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/SubnetUnprepareNetworkPolicies.json
-func ExampleSubnetsClient_BeginUnprepareNetworkPolicies() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubnetsClient().BeginUnprepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.UnprepareNetworkPoliciesRequest{
-		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.SubnetsClientUnprepareNetworkPoliciesResponse{
-	// }
 }

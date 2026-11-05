@@ -30,21 +30,9 @@ type VirtualNetworkGatewayConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualNetworkGatewayConnectionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewayConnectionsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetIkeSas is the fake for method VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetIkeSas func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse], errResp azfake.ErrorResponder)
-
-	// GetSharedKey is the fake for method VirtualNetworkGatewayConnectionsClient.GetSharedKey
-	// HTTP status codes to indicate success: http.StatusOK
-	GetSharedKey func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method VirtualNetworkGatewayConnectionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse])
 
 	// BeginResetConnection is the fake for method VirtualNetworkGatewayConnectionsClient.BeginResetConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -69,6 +57,18 @@ type VirtualNetworkGatewayConnectionsServer struct {
 	// BeginUpdateTags is the fake for method VirtualNetworkGatewayConnectionsClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters armnetwork.TagsObject, options *armnetwork.VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualNetworkGatewayConnectionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewayConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetSharedKey is the fake for method VirtualNetworkGatewayConnectionsClient.GetSharedKey
+	// HTTP status codes to indicate success: http.StatusOK
+	GetSharedKey func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method VirtualNetworkGatewayConnectionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkGatewayConnectionsClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse])
 }
 
 // NewVirtualNetworkGatewayConnectionsServerTransport creates a new instance of VirtualNetworkGatewayConnectionsServerTransport with the provided implementation.
@@ -80,13 +80,13 @@ func NewVirtualNetworkGatewayConnectionsServerTransport(srv *VirtualNetworkGatew
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse]](),
 		beginGetIkeSas:          newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]](),
-		newListPager:            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]](),
 		beginResetConnection:    newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetConnectionResponse]](),
 		beginResetSharedKey:     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]](),
 		beginSetSharedKey:       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]](),
 		beginStartPacketCapture: newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]](),
 		beginStopPacketCapture:  newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]](),
 		beginUpdateTags:         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]](),
 	}
 }
 
@@ -97,13 +97,13 @@ type VirtualNetworkGatewayConnectionsServerTransport struct {
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse]]
 	beginGetIkeSas          *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]]
-	newListPager            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]]
 	beginResetConnection    *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetConnectionResponse]]
 	beginResetSharedKey     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]]
 	beginSetSharedKey       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]]
 	beginStartPacketCapture *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]]
 	beginStopPacketCapture  *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]]
 	beginUpdateTags         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]]
+	newListPager            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkGatewayConnectionsServerTransport.
@@ -131,14 +131,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchToMethodFake(r
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualNetworkGatewayConnectionsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualNetworkGatewayConnectionsClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas":
 				res.resp, res.err = v.dispatchBeginGetIkeSas(req)
-			case "VirtualNetworkGatewayConnectionsClient.GetSharedKey":
-				res.resp, res.err = v.dispatchGetSharedKey(req)
-			case "VirtualNetworkGatewayConnectionsClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualNetworkGatewayConnectionsClient.BeginResetConnection":
 				res.resp, res.err = v.dispatchBeginResetConnection(req)
 			case "VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey":
@@ -151,6 +145,12 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchToMethodFake(r
 				res.resp, res.err = v.dispatchBeginStopPacketCapture(req)
 			case "VirtualNetworkGatewayConnectionsClient.BeginUpdateTags":
 				res.resp, res.err = v.dispatchBeginUpdateTags(req)
+			case "VirtualNetworkGatewayConnectionsClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualNetworkGatewayConnectionsClient.GetSharedKey":
+				res.resp, res.err = v.dispatchGetSharedKey(req)
+			case "VirtualNetworkGatewayConnectionsClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -259,39 +259,6 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginDelete(re
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualNetworkGatewayConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualNetworkGatewayConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkGatewayConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginGetIkeSas == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetIkeSas not implemented")}
@@ -333,76 +300,6 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginGetIkeSas
 		v.beginGetIkeSas.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGetSharedKey(req *http.Request) (*http.Response, error) {
-	if v.srv.GetSharedKey == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetSharedKey not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedkey`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualNetworkGatewayConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.GetSharedKey(req.Context(), resourceGroupNameParam, virtualNetworkGatewayConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionSharedKey, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworkGatewayConnectionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -693,6 +590,109 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginUpdateTag
 		v.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualNetworkGatewayConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkGatewayConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGetSharedKey(req *http.Request) (*http.Response, error) {
+	if v.srv.GetSharedKey == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSharedKey not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedkey`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.GetSharedKey(req.Context(), resourceGroupNameParam, virtualNetworkGatewayConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionSharedKey, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworkGatewayConnectionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

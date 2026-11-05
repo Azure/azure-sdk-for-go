@@ -8,7 +8,7 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 
 ### Prerequisites
 
-* Go versions 1.21 or higher
+* Go versions 1.26 or higher
 * An Azure subscription or free Azure Cosmos DB trial account
 
 Note: If you don't have an Azure subscription, create a free account before you begin.
@@ -98,6 +98,80 @@ handle(err)
 client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```
+
+### Connection management
+
+The default native HTTP transport shares a pool across Cosmos clients and limits
+each endpoint to **32 TCP connections**, including connections being established,
+serving requests, idle, or draining after HTTP/2 GOAWAY. An endpoint is a URL
+scheme, hostname, and port, not an IP address. Regional endpoints have separate
+budgets; metadata and data requests to the same endpoint share its budget.
+This is not a process-wide connection limit.
+
+HTTP/2 multiplexes requests up to each connection's server-advertised stream
+limit. More connections are opened on demand when existing connections are full;
+there is no CPU-based scaling or fixed streams-per-connection target. HTTP/1.1
+fallback uses the same connection budget, with one active request per connection.
+When the budget is exhausted, requests wait for capacity. Waits are cancellable
+and consume the existing 65-second HTTP-attempt timeout; ordering is not
+guaranteed to be FIFO. A connection retains its budget slot until its socket
+closes, including while it drains existing requests.
+
+This intentionally changes the previous unbounded behavior. A lower socket count
+can increase queueing and tail latency or reduce throughput, especially with
+HTTP/1.1 or small HTTP/2 stream limits. **32 is a resource budget, not a claim of
+production-optimal throughput.** Size it against your workload, latency budget,
+service stream limits, and deployment's connection/SNAT capacity.
+
+Use `NewHTTPClient` to change the budget without recreating the Cosmos transport
+settings. For example, to allow 64 connections per endpoint:
+
+```go
+httpClient, err := azcosmos.NewHTTPClient(&azcosmos.HTTPClientOptions{
+    MaxConnectionsPerEndpoint: 64,
+})
+handle(err)
+defer httpClient.CloseIdleConnections()
+
+client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, &azcosmos.ClientOptions{
+    ClientOptions: azcore.ClientOptions{Transport: httpClient},
+})
+handle(err)
+```
+
+Zero selects 32; **-1 restores the previous unbounded `net/http.Transport`**.
+Other negative values are invalid. Each returned HTTP client owns an independent
+budget. Reuse it across Cosmos clients to share that budget. Explicitly supplied
+`ClientOptions.Transport` values are preserved unchanged.
+
+The bounded transport retains the 5-second connect timeout, 10-second TLS
+handshake timeout, TLS 1.2 minimum, environment proxy support, 2-second H2 health
+check interval, and 1-second ping-response timeout. Idle connections expire after
+90 seconds, with at most 100 per endpoint and 1000 per pool (also subject to the
+connection budget). `CloseIdleConnections` releases idle connections without
+interrupting active response bodies. Always close response bodies when using the
+HTTP client directly. `Client.Close` does not close the shared default transport.
+
+To keep concurrent TCP attempts within the budget, bounded dialing tries resolved
+addresses sequentially rather than using parallel IPv4/IPv6 Happy Eyeballs
+attempts. Connection failures are returned to the SDK retry policies: the pool
+does not independently replay requests, including writes. This differs from
+`net/http.Transport`'s transparent retries on some stale-connection errors.
+WebAssembly retains platform-managed networking; TCP connection budgets cannot
+be enforced there, and `NewHTTPClient` requires `MaxConnectionsPerEndpoint: -1`.
+
+The local benchmark compares unbounded and 32-connection pools with HTTP/1.1 and
+HTTP/2 stream limits of 1 and 100, a 1 KiB response, and 2 ms simulated service
+time. It reports successful throughput, successful-request tail latency,
+connection-acquisition latency (queueing plus setup), connection peaks,
+retained connections, and request errors:
+
+```text
+go test . -run '^$' -bench '^BenchmarkCosmosConnectionPool$' -benchtime=4000x -count=3
+```
+
+This is a loopback transport workload, not a Cosmos service benchmark. Unbounded
+bursts can overload a local listener; compare error counts as well as latency.
 
 ### Create Database
 
@@ -241,4 +315,3 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

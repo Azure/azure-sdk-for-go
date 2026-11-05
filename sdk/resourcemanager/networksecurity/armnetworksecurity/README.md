@@ -1,6 +1,6 @@
-# Azure Network Security Module for Go
+# Azure Networksecurity Module for Go
 
-The `armnetworksecurity` module provides management operations for NeuroShield resources in Azure Network Security.
+The `armnetworksecurity` module provides operations for working with Azure Networksecurity.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/networksecurity/armnetworksecurity)
 
@@ -15,7 +15,7 @@ The `armnetworksecurity` module provides management operations for NeuroShield r
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Network Security module:
+Install the Azure Networksecurity module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networksecurity/armnetworksecurity
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networksecurity/arm
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Network Security.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Networksecurity.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Network Security module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Networksecurity module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armnetworksecurity.NewClientFactory(<subscription ID>, cred, nil)

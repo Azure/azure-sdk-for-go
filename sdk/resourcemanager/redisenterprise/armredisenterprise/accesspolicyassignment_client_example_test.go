@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
 func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	// res = armredisenterprise.AccessPolicyAssignmentClientCreateUpdateResponse{
 	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
 	// 		Name: to.Ptr("defaultTestEntraApp1"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/accessPolicyAssignments"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/default-TestEntraApp1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
@@ -57,7 +57,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentDelete.json
 func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentGet.json
 func ExampleAccessPolicyAssignmentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,8 +99,8 @@ func ExampleAccessPolicyAssignmentClient_Get() {
 	// res = armredisenterprise.AccessPolicyAssignmentClientGetResponse{
 	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
 	// 		Name: to.Ptr("accessPolicyAssignmentName1"),
-	// 		Type: to.Ptr("Microsoft.Cache/Redis/accessPolicyAssignments"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1/accessPolicyAssignments/accessPolicyAssignmentName1"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
+	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
@@ -112,7 +112,7 @@ func ExampleAccessPolicyAssignmentClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentsList.json
 func ExampleAccessPolicyAssignmentClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,8 +139,8 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 		Value: []*armredisenterprise.AccessPolicyAssignment{
 		// 			{
 		// 				Name: to.Ptr("accessPolicyAssignmentName1"),
-		// 				Type: to.Ptr("Microsoft.Cache/Redis/accessPolicyAssignments"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1/accessPolicyAssignments/accessPolicyAssignmentName1"),
+		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
+		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
@@ -151,8 +151,8 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("accessPolicyAssignmentName2"),
-		// 				Type: to.Ptr("Microsoft.Cache/Redis/accessPolicyAssignments"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1/accessPolicyAssignments/accessPolicyAssignmentName2"),
+		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments"),
+		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName2"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),

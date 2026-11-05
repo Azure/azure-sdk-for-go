@@ -19,7 +19,7 @@ import (
 // ScheduledActionsClient contains the methods for the ScheduledActions group.
 // Don't use this type directly, use NewScheduledActionsClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-10-06-preview
 type ScheduledActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ScheduledActionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,11 +44,12 @@ func NewScheduledActionsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginAttachResources - Attach resources to the scheduled action so they are included in future occurrences.
+// BeginAttachResources - Adds resources to the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - body - The resources to add to the recurring bulk action.
 //   - options - ScheduledActionsClientBeginAttachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginAttachResources
 //     method.
 func (client *ScheduledActionsClient) BeginAttachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, options *ScheduledActionsClientBeginAttachResourcesOptions) (*runtime.Poller[ScheduledActionsClientAttachResourcesResponse], error) {
@@ -65,7 +69,7 @@ func (client *ScheduledActionsClient) BeginAttachResources(ctx context.Context, 
 	}
 }
 
-// AttachResources - Attach resources to the scheduled action so they are included in future occurrences.
+// attachResources - Adds resources to the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) attachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, options *ScheduledActionsClientBeginAttachResourcesOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +91,11 @@ func (client *ScheduledActionsClient) attachResources(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// attachResourcesCreateRequest creates the AttachResources request.
+// attachResourcesCreateRequest creates the attachResources request.
 func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, _ *ScheduledActionsClientBeginAttachResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/attachResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +111,7 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,11 +121,13 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginCancelNextOccurrence - Cancel the next scheduled occurrence of the scheduled action.
+// BeginCancelNextOccurrence - Cancels the next occurrence of the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - body - The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is canceled for
+//     all resources.
 //   - options - ScheduledActionsClientBeginCancelNextOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginCancelNextOccurrence
 //     method.
 func (client *ScheduledActionsClient) BeginCancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientCancelNextOccurrenceResponse], error) {
@@ -141,7 +147,7 @@ func (client *ScheduledActionsClient) BeginCancelNextOccurrence(ctx context.Cont
 	}
 }
 
-// CancelNextOccurrence - Cancel the next scheduled occurrence of the scheduled action.
+// cancelNextOccurrence - Cancels the next occurrence of the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) cancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*http.Response, error) {
 	var err error
@@ -163,11 +169,11 @@ func (client *ScheduledActionsClient) cancelNextOccurrence(ctx context.Context, 
 	return httpResp, nil
 }
 
-// cancelNextOccurrenceCreateRequest creates the CancelNextOccurrence request.
+// cancelNextOccurrenceCreateRequest creates the cancelNextOccurrence request.
 func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, _ *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/cancelNextOccurrence"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -183,7 +189,7 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -193,11 +199,12 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 	return req, nil
 }
 
-// BeginCreateOrUpdate - Create a ScheduledAction
+// BeginCreateOrUpdate - Creates or updates a recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - resource - Resource create parameters.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - resource - The recurring bulk action to create or update.
 //   - options - ScheduledActionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginCreateOrUpdate
 //     method.
 func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScheduledActionsClientCreateOrUpdateResponse], error) {
@@ -217,7 +224,7 @@ func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a ScheduledAction
+// createOrUpdate - Creates or updates a recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -239,11 +246,11 @@ func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, _ *ScheduledActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,7 +266,7 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -269,10 +276,11 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// BeginDelete - Delete a ScheduledAction
+// BeginDelete - Deletes the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete
 //     method.
 func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*runtime.Poller[ScheduledActionsClientDeleteResponse], error) {
@@ -292,7 +300,7 @@ func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ScheduledAction
+// deleteOperation - Deletes the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -314,11 +322,11 @@ func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -334,16 +342,17 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginDetachResources - Detach resources from the scheduled action so they are excluded from future occurrences.
+// BeginDetachResources - Removes resources from the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - body - The resources to remove from the recurring bulk action.
 //   - options - ScheduledActionsClientBeginDetachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginDetachResources
 //     method.
 func (client *ScheduledActionsClient) BeginDetachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, options *ScheduledActionsClientBeginDetachResourcesOptions) (*runtime.Poller[ScheduledActionsClientDetachResourcesResponse], error) {
@@ -363,7 +372,7 @@ func (client *ScheduledActionsClient) BeginDetachResources(ctx context.Context, 
 	}
 }
 
-// DetachResources - Detach resources from the scheduled action so they are excluded from future occurrences.
+// detachResources - Removes resources from the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) detachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, options *ScheduledActionsClientBeginDetachResourcesOptions) (*http.Response, error) {
 	var err error
@@ -385,11 +394,11 @@ func (client *ScheduledActionsClient) detachResources(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// detachResourcesCreateRequest creates the DetachResources request.
+// detachResourcesCreateRequest creates the detachResources request.
 func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, _ *ScheduledActionsClientBeginDetachResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/detachResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -405,7 +414,7 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -415,10 +424,11 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginDisable - Disable the scheduled action so its future occurrences do not run.
+// BeginDisable - Disables the specified recurring bulk action so future occurrences do not run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - ScheduledActionsClientBeginDisableOptions contains the optional parameters for the ScheduledActionsClient.BeginDisable
 //     method.
 func (client *ScheduledActionsClient) BeginDisable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDisableOptions) (*runtime.Poller[ScheduledActionsClientDisableResponse], error) {
@@ -438,7 +448,7 @@ func (client *ScheduledActionsClient) BeginDisable(ctx context.Context, resource
 	}
 }
 
-// Disable - Disable the scheduled action so its future occurrences do not run.
+// disable - Disables the specified recurring bulk action so future occurrences do not run.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) disable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDisableOptions) (*http.Response, error) {
 	var err error
@@ -460,11 +470,11 @@ func (client *ScheduledActionsClient) disable(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// disableCreateRequest creates the Disable request.
+// disableCreateRequest creates the disable request.
 func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -480,15 +490,16 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginEnable - Enable a previously disabled scheduled action so its future occurrences run.
+// BeginEnable - Enables the specified recurring bulk action so new occurrences run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - ScheduledActionsClientBeginEnableOptions contains the optional parameters for the ScheduledActionsClient.BeginEnable
 //     method.
 func (client *ScheduledActionsClient) BeginEnable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginEnableOptions) (*runtime.Poller[ScheduledActionsClientEnableResponse], error) {
@@ -508,7 +519,7 @@ func (client *ScheduledActionsClient) BeginEnable(ctx context.Context, resourceG
 	}
 }
 
-// Enable - Enable a previously disabled scheduled action so its future occurrences run.
+// enable - Enables the specified recurring bulk action so new occurrences run.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) enable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginEnableOptions) (*http.Response, error) {
 	var err error
@@ -530,11 +541,11 @@ func (client *ScheduledActionsClient) enable(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// enableCreateRequest creates the Enable request.
+// enableCreateRequest creates the enable request.
 func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/enable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -550,15 +561,165 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get a ScheduledAction
+// BeginTriggerManualOccurrence - Runs the specified recurring bulk action immediately.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - options - ScheduledActionsClientBeginTriggerManualOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginTriggerManualOccurrence
+//     method.
+func (client *ScheduledActionsClient) BeginTriggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientTriggerManualOccurrenceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.triggerManualOccurrence(ctx, resourceGroupName, scheduledActionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientTriggerManualOccurrenceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientTriggerManualOccurrenceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// triggerManualOccurrence - Runs the specified recurring bulk action immediately.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScheduledActionsClient) triggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.BeginTriggerManualOccurrence"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.triggerManualOccurrenceCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// triggerManualOccurrenceCreateRequest creates the triggerManualOccurrence request.
+func (client *ScheduledActionsClient) triggerManualOccurrenceCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/triggerManualOccurrence"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261006Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates the specified recurring bulk action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - properties - The recurring bulk action properties to update. Omitted properties keep their current values.
+//   - options - ScheduledActionsClientBeginUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginUpdate
+//     method.
+func (client *ScheduledActionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*runtime.Poller[ScheduledActionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, scheduledActionName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the specified recurring bulk action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScheduledActionsClient) update(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, scheduledActionName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ScheduledActionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, _ *ScheduledActionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261006Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// Get - Gets the specified recurring bulk action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - ScheduledActionsClientGetOptions contains the optional parameters for the ScheduledActionsClient.Get method.
 func (client *ScheduledActionsClient) Get(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientGetOptions) (ScheduledActionsClientGetResponse, error) {
 	var err error
@@ -581,7 +742,7 @@ func (client *ScheduledActionsClient) Get(ctx context.Context, resourceGroupName
 func (client *ScheduledActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -597,7 +758,7 @@ func (client *ScheduledActionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -615,7 +776,7 @@ func (client *ScheduledActionsClient) getHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List ScheduledAction resources by resource group
+// NewListByResourceGroupPager - Lists recurring bulk actions in the specified resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ScheduledActionsClientListByResourceGroupOptions contains the optional parameters for the ScheduledActionsClient.NewListByResourceGroupPager
 //     method.
@@ -652,7 +813,7 @@ func (client *ScheduledActionsClient) listByResourceGroupCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -668,7 +829,7 @@ func (client *ScheduledActionsClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -687,7 +848,7 @@ func (client *ScheduledActionsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List ScheduledAction resources by subscription ID
+// NewListBySubscriptionPager - Lists recurring bulk actions in the specified subscription.
 //   - options - ScheduledActionsClientListBySubscriptionOptions contains the optional parameters for the ScheduledActionsClient.NewListBySubscriptionPager
 //     method.
 func (client *ScheduledActionsClient) NewListBySubscriptionPager(options *ScheduledActionsClientListBySubscriptionOptions) *runtime.Pager[ScheduledActionsClientListBySubscriptionResponse] {
@@ -723,7 +884,7 @@ func (client *ScheduledActionsClient) listBySubscriptionCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/scheduledActions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -735,7 +896,7 @@ func (client *ScheduledActionsClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -754,9 +915,10 @@ func (client *ScheduledActionsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListResourcesPager - List resources attached to Scheduled Actions
+// NewListResourcesPager - Lists resources associated with the specified recurring bulk action.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
 //   - options - ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
 //     method.
 func (client *ScheduledActionsClient) NewListResourcesPager(resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientListResourcesOptions) *runtime.Pager[ScheduledActionsClientListResourcesResponse] {
@@ -792,7 +954,7 @@ func (client *ScheduledActionsClient) listResourcesCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/resources"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -812,7 +974,7 @@ func (client *ScheduledActionsClient) listResourcesCreateRequest(ctx context.Con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -831,11 +993,12 @@ func (client *ScheduledActionsClient) listResourcesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// PatchResources - A synchronous resource action.
+// PatchResources - Updates resource-specific settings for the specified recurring bulk action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the recurring bulk action. It must be 3 to 24 characters and can contain only letters,
+//     numbers, and hyphens.
+//   - body - The resource-specific settings to update.
 //   - options - ScheduledActionsClientPatchResourcesOptions contains the optional parameters for the ScheduledActionsClient.PatchResources
 //     method.
 func (client *ScheduledActionsClient) PatchResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourcePatchRequest, options *ScheduledActionsClientPatchResourcesOptions) (ScheduledActionsClientPatchResourcesResponse, error) {
@@ -859,7 +1022,7 @@ func (client *ScheduledActionsClient) PatchResources(ctx context.Context, resour
 func (client *ScheduledActionsClient) patchResourcesCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourcePatchRequest, _ *ScheduledActionsClientPatchResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/patchResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -875,7 +1038,7 @@ func (client *ScheduledActionsClient) patchResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -895,151 +1058,4 @@ func (client *ScheduledActionsClient) patchResourcesHandleResponse(resp *http.Re
 		return ScheduledActionsClientPatchResourcesResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginTriggerManualOccurrence - Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - options - ScheduledActionsClientBeginTriggerManualOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginTriggerManualOccurrence
-//     method.
-func (client *ScheduledActionsClient) BeginTriggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientTriggerManualOccurrenceResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.triggerManualOccurrence(ctx, resourceGroupName, scheduledActionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientTriggerManualOccurrenceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientTriggerManualOccurrenceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TriggerManualOccurrence - Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScheduledActionsClient) triggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScheduledActionsClient.BeginTriggerManualOccurrence"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.triggerManualOccurrenceCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// triggerManualOccurrenceCreateRequest creates the TriggerManualOccurrence request.
-func (client *ScheduledActionsClient) triggerManualOccurrenceCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/triggerManualOccurrence"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Update a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - properties - The resource properties to be updated.
-//   - options - ScheduledActionsClientBeginUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginUpdate
-//     method.
-func (client *ScheduledActionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*runtime.Poller[ScheduledActionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, scheduledActionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScheduledActionsClient) update(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScheduledActionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, scheduledActionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ScheduledActionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, _ *ScheduledActionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

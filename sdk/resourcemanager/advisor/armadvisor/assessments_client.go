@@ -30,6 +30,9 @@ type AssessmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *AssessmentsClient) Delete(ctx context.Context, assessmentName stri
 func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, assessmentName string, _ *AssessmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentName == "" {
@@ -111,7 +114,7 @@ func (client *AssessmentsClient) Get(ctx context.Context, assessmentName string,
 func (client *AssessmentsClient) getCreateRequest(ctx context.Context, assessmentName string, _ *AssessmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentName == "" {
@@ -176,7 +179,7 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, nextLink
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -239,7 +242,7 @@ func (client *AssessmentsClient) Put(ctx context.Context, assessmentName string,
 func (client *AssessmentsClient) putCreateRequest(ctx context.Context, assessmentName string, assessmentContract AssessmentResult, _ *AssessmentsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentName == "" {

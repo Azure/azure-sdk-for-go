@@ -1,5 +1,89 @@
 # Release History
 
+## 4.0.0 (2026-09-02)
+### Breaking Changes
+
+- Type of `ResourceType.ResourceDeletionPolicy` has been changed from `*ManifestResourceDeletionPolicy` to `*ResourceDeletionPolicy`
+- Type of `ResourceTypeRegistrationProperties.ResourceDeletionPolicy` has been changed from `*ResourceDeletionPolicy` to `*RPaaSResourceDeletionPolicy`
+- `ResourceAccessPolicyAcisActionAllowed`, `ResourceAccessPolicyAcisReadAllowed` from enum `ResourceAccessPolicy` has been removed
+- `ResourceDeletionPolicyCascadeDeleteAll`, `ResourceDeletionPolicyCascadeDeleteProxyOnlyChildren` from enum `ResourceDeletionPolicy` has been removed
+- Enum `AvailableCheckInManifestEnvironment` has been removed
+- Enum `ManifestResourceDeletionPolicy` has been removed
+- Enum `Readiness` has been removed
+- Enum `ServiceFeatureFlagAction` has been removed
+- Function `*ClientFactory.NewNewRegionFrontloadReleaseClient` has been removed
+- Function `NewNewRegionFrontloadReleaseClient` has been removed
+- Function `*NewRegionFrontloadReleaseClient.CreateOrUpdate` has been removed
+- Function `*NewRegionFrontloadReleaseClient.GenerateManifest` has been removed
+- Function `*NewRegionFrontloadReleaseClient.Get` has been removed
+- Function `*NewRegionFrontloadReleaseClient.Stop` has been removed
+- Struct `FanoutLinkedNotificationRuleDstsConfiguration` has been removed
+- Struct `FrontloadPayload` has been removed
+- Struct `FrontloadPayloadProperties` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideEndpointLevelFields` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideManifestLevelFields` has been removed
+- Struct `ResourceProviderManifestPropertiesDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseFeaturesRule` has been removed
+- Struct `ResourceTypeEndpointDstsConfiguration` has been removed
+- Struct `ResourceTypeRegistrationPropertiesDstsConfiguration` has been removed
+- Struct `ServiceTreeInfo` has been removed
+- Field `DstsConfiguration` of struct `FanoutLinkedNotificationRule` has been removed
+- Field `OperationsDefinitionArray` of struct `OperationsClientListByProviderRegistrationResponse` has been removed
+- Field `DstsConfiguration` of struct `ProviderRegistrationProperties` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceProviderManifestManagement` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceProviderManifestPropertiesManagement` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceType` has been removed
+- Field `DstsConfiguration` of struct `ResourceTypeEndpoint` has been removed
+- Field `DstsConfiguration`, `ServiceTreeInfos` of struct `ResourceTypeRegistrationProperties` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceTypeRegistrationPropertiesManagement` has been removed
+
+### Features Added
+
+- New value `ExtensionCategoryResourceBillingNotification` added to enum type `ExtensionCategory`
+- New value `MarketplaceTypeProviderHub` added to enum type `MarketplaceType`
+- New value `ResourceDeletionPolicyCascade`, `ResourceDeletionPolicyForce`, `ResourceDeletionPolicySoftDelete` added to enum type `ResourceDeletionPolicy`
+- New value `ResourceProviderTypeDecommissioned` added to enum type `ResourceProviderType`
+- New enum type `LinkedAccessCheckOptions` with values `LinkedAccessCheckOptionsIgnoreEmptyStringLinkedType`, `LinkedAccessCheckOptionsNotSpecified`
+- New enum type `ManifestCheckinOption` with values `ManifestCheckinOptionAttemptAutomaticManifestCheckin`, `ManifestCheckinOptionDoNotAttemptAutomaticManifestCheckin`
+- New enum type `RPaaSResourceDeletionPolicy` with values `RPaaSResourceDeletionPolicyCascade`, `RPaaSResourceDeletionPolicyCascadeDeleteAll`, `RPaaSResourceDeletionPolicyCascadeDeleteProxyOnlyChildren`, `RPaaSResourceDeletionPolicyForce`, `RPaaSResourceDeletionPolicyNotSpecified`
+- New enum type `WriteLockState` with values `WriteLockStateDisabled`, `WriteLockStateEnabled`
+- New function `*ClientFactory.NewManifestsClient() *ManifestsClient`
+- New function `NewManifestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManifestsClient, error)`
+- New function `*ManifestsClient.CreateOrUpdate(ctx context.Context, providerNamespace string, environment string, properties ManifestInfo, options *ManifestsClientCreateOrUpdateOptions) (ManifestsClientCreateOrUpdateResponse, error)`
+- New function `*ManifestsClient.Get(ctx context.Context, providerNamespace string, environment string, options *ManifestsClientGetOptions) (ManifestsClientGetResponse, error)`
+- New struct `ActionConfiguration`
+- New struct `AppliedManifestInfo`
+- New struct `GroupConnectivityInformation`
+- New struct `LocalizedOperationDisplayDefinitionQPSPloc`
+- New struct `ManagedResourceGroupDenyAssignmentConfiguration`
+- New struct `ManifestCheckinSpecification`
+- New struct `ManifestInfo`
+- New struct `ManifestInfoProperties`
+- New struct `PrivateEndpointConfiguration`
+- New struct `ResourceDeletionPolicyAndProperties`
+- New struct `ResourceDeletionPolicyProperties`
+- New struct `ResourceTypeManagedResourceGroupConfiguration`
+- New struct `WriteLockConfiguration`
+- New field `ExcludeApplicationIDFromManifest` in struct `ApplicationDataAuthorization`
+- New field `ManifestCheckinSpecification`, `RolloutID` in struct `CustomRolloutPropertiesSpecification`
+- New field `CompletedRegionsInfo` in struct `CustomRolloutPropertiesStatus`
+- New field `ManifestCheckinSpecification` in struct `DefaultRolloutPropertiesSpecification`
+- New field `Options` in struct `LinkedAccessCheck`
+- New field `Properties` in struct `LocalizedOperationDefinition`
+- New field `QPSPloc` in struct `LocalizedOperationDefinitionDisplay`
+- New anonymous field `OperationsPutContent` in struct `OperationsClientListByProviderRegistrationResponse`
+- New field `EnablePresetResourceTypes`, `OboSubscriptionID` in struct `ProviderRegistrationProperties`
+- New field `TokenAuthConfiguration` in struct `ResourceProviderManifest`
+- New field `FeatureManagementOwners` in struct `ResourceProviderManifestManagement`
+- New field `FeatureManagementOwners` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `ResourceDeletionPolicies` in struct `ResourceType`
+- New field `ManagedResourceGroupConfiguration`, `PrivateEndpointConfiguration`, `ResourceDeletionPolicies`, `SuperScaleEnabled`, `WriteLock` in struct `ResourceTypeRegistrationProperties`
+- New field `FeatureManagementOwners` in struct `ResourceTypeRegistrationPropertiesManagement`
+- New field `ActionConfigurations`, `BatchContractVersion`, `MaxBatchSize`, `MaxNestedBatchSize`, `RequiredFeatures` in struct `ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport`
+- New field `BucketSize` in struct `ThrottlingMetric`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

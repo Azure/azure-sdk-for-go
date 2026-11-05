@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/AIModels_CalculateCost.json
+// Generated from example definition: 2026-09-02-preview/AIModels_CalculateCost.json
 func ExampleAIModelsClient_CalculateCost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAIModelsClient().CalculateCost(ctx, "eastus", "9806f0c862fdd920", armcontainerserviceaimanager.CalculateCostRequest{}, nil)
+	res, err := clientFactory.NewAIModelsClient().CalculateCost(ctx, "eastus", "9806f0c862fdd920", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -44,7 +44,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	// 				},
 	// 				VMHourlyPrice: to.Ptr[float64](3.67),
 	// 				TotalHourlyPrice: to.Ptr[float64](3.67),
-	// 				PriceAsOf: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-05T06:05:51.775Z"); return t}()),
+	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
 	// 				Feasible: to.Ptr(true),
 	// 			},
 	// 			{
@@ -57,7 +57,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	// 					RelativeThroughputScore: to.Ptr[float32](1),
 	// 				},
 	// 				VMHourlyPrice: to.Ptr[float64](98.32),
-	// 				PriceAsOf: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-05T06:05:51.775Z"); return t}()),
+	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
 	// 				Feasible: to.Ptr(false),
 	// 				InfeasibilityReason: &armcontainerserviceaimanager.InfeasibilityReason{
 	// 					Code: to.Ptr(armcontainerserviceaimanager.InfeasibleCodeInsufficientQuota),
@@ -69,7 +69,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIModels_Get.json
+// Generated from example definition: 2026-09-02-preview/AIModels_Get.json
 func ExampleAIModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,16 +104,16 @@ func ExampleAIModelsClient_Get() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIModels_List.json
+// Generated from example definition: 2026-09-02-preview/AIModels_List.json
 func ExampleAIModelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,14 +154,14 @@ func ExampleAIModelsClient_NewListPager() {
 		// 				SystemData: &armcontainerserviceaimanager.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels?api-version=2026-05-02-preview&$skiptoken=token"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels?api-version=2026-09-02-preview&$skiptoken=token"),
 		// 	},
 		// }
 	}

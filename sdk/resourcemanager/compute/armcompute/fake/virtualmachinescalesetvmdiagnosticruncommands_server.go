@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,17 @@ type VirtualMachineScaleSetVMDiagnosticRunCommandsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// NewDiagnosticListPager is the fake for method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewDiagnosticListPager func(resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse])
+	// BeginUpdate is the fake for method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	BeginUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand armcompute.VirtualMachineRunCommandUpdate, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand armcompute.VirtualMachineRunCommandUpdate, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewDiagnosticListPager is the fake for method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewDiagnosticListPager func(resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse])
 }
 
 // NewVirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport creates a new instance of VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewVirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport(srv *Virtua
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDeleteResponse]](),
-		newDiagnosticListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]](),
+		newDiagnosticListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport struct {
 	srv                    *VirtualMachineScaleSetVMDiagnosticRunCommandsServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDeleteResponse]]
-	newDiagnosticListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]]
+	newDiagnosticListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport.
@@ -90,12 +90,12 @@ func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchT
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager":
-				res.resp, res.err = v.dispatchNewDiagnosticListPager(req)
-			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager":
+				res.resp, res.err = v.dispatchNewDiagnosticListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchB
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRunCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRunCommands/(?P<runCommandName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchB
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRunCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRunCommands/(?P<runCommandName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,115 +220,13 @@ func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchB
 	return resp, nil
 }
 
-func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchNewDiagnosticListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewDiagnosticListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewDiagnosticListPager not implemented")}
-	}
-	newDiagnosticListPager := v.newDiagnosticListPager.get(req)
-	if newDiagnosticListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRunCommands`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions
-		if expandParam != nil {
-			options = &armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := v.srv.NewDiagnosticListPager(resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, options)
-		newDiagnosticListPager = &resp
-		v.newDiagnosticListPager.add(req, newDiagnosticListPager)
-		server.PagerResponderInjectNextLinks(newDiagnosticListPager, req, func(page *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newDiagnosticListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newDiagnosticListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newDiagnosticListPager) {
-		v.newDiagnosticListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRunCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
-	if err != nil {
-		return nil, err
-	}
-	runCommandNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runCommandName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions
-	if expandParam != nil {
-		options = &armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, runCommandNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineDiagnosticRunCommand, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRunCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRunCommands/(?P<runCommandName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -375,6 +273,108 @@ func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchB
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRunCommands/(?P<runCommandName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
+	if err != nil {
+		return nil, err
+	}
+	runCommandNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runCommandName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions
+	if expandParam != nil {
+		options = &armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, runCommandNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineDiagnosticRunCommand, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetVMDiagnosticRunCommandsServerTransport) dispatchNewDiagnosticListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewDiagnosticListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewDiagnosticListPager not implemented")}
+	}
+	newDiagnosticListPager := v.newDiagnosticListPager.get(req)
+	if newDiagnosticListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRunCommands`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions
+		if expandParam != nil {
+			options = &armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := v.srv.NewDiagnosticListPager(resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, options)
+		newDiagnosticListPager = &resp
+		v.newDiagnosticListPager.add(req, newDiagnosticListPager)
+		server.PagerResponderInjectNextLinks(newDiagnosticListPager, req, func(page *armcompute.VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newDiagnosticListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newDiagnosticListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newDiagnosticListPager) {
+		v.newDiagnosticListPager.remove(req)
+	}
 	return resp, nil
 }
 

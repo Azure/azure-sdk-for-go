@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,10 +24,6 @@ type VirtualMachineScaleSetRollingUpgradesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCancel func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse], errResp azfake.ErrorResponder)
 
-	// GetLatest is the fake for method VirtualMachineScaleSetRollingUpgradesClient.GetLatest
-	// HTTP status codes to indicate success: http.StatusOK
-	GetLatest func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse], errResp azfake.ErrorResponder)
-
 	// BeginStartExtensionUpgrade is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStartExtensionUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], errResp azfake.ErrorResponder)
@@ -35,6 +31,10 @@ type VirtualMachineScaleSetRollingUpgradesServer struct {
 	// BeginStartOSUpgrade is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStartOSUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// GetLatest is the fake for method VirtualMachineScaleSetRollingUpgradesClient.GetLatest
+	// HTTP status codes to indicate success: http.StatusOK
+	GetLatest func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineScaleSetRollingUpgradesServerTransport creates a new instance of VirtualMachineScaleSetRollingUpgradesServerTransport with the provided implementation.
@@ -81,12 +81,12 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchToMethodF
 			switch method {
 			case "VirtualMachineScaleSetRollingUpgradesClient.BeginCancel":
 				res.resp, res.err = v.dispatchBeginCancel(req)
-			case "VirtualMachineScaleSetRollingUpgradesClient.GetLatest":
-				res.resp, res.err = v.dispatchGetLatest(req)
 			case "VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade":
 				res.resp, res.err = v.dispatchBeginStartExtensionUpgrade(req)
 			case "VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade":
 				res.resp, res.err = v.dispatchBeginStartOSUpgrade(req)
+			case "VirtualMachineScaleSetRollingUpgradesClient.GetLatest":
+				res.resp, res.err = v.dispatchGetLatest(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -109,7 +109,7 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginCanc
 	}
 	beginCancel := v.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rollingUpgrades/cancel`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rollingUpgrades/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -147,46 +147,13 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginCanc
 	return resp, nil
 }
 
-func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchGetLatest(req *http.Request) (*http.Response, error) {
-	if v.srv.GetLatest == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetLatest not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rollingUpgrades/latest`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.GetLatest(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RollingUpgradeStatusInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStartExtensionUpgrade(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginStartExtensionUpgrade == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartExtensionUpgrade not implemented")}
 	}
 	beginStartExtensionUpgrade := v.beginStartExtensionUpgrade.get(req)
 	if beginStartExtensionUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionRollingUpgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionRollingUpgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -230,7 +197,7 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStar
 	}
 	beginStartOSUpgrade := v.beginStartOSUpgrade.get(req)
 	if beginStartOSUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/osRollingUpgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/osRollingUpgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -265,6 +232,39 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStar
 		v.beginStartOSUpgrade.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchGetLatest(req *http.Request) (*http.Response, error) {
+	if v.srv.GetLatest == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetLatest not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rollingUpgrades/latest`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.GetLatest(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RollingUpgradeStatusInfo, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

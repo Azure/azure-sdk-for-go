@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type GalleryInVMAccessControlProfileVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GalleryInVMAccessControlProfileVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersionUpdate, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GalleryInVMAccessControlProfileVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryInVMAccessControlProfileVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type GalleryInVMAccessControlProfileVersionsServer struct {
 	// NewListByGalleryInVMAccessControlProfilePager is the fake for method GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByGalleryInVMAccessControlProfilePager func(resourceGroupName string, galleryName string, inVMAccessControlProfileName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions) (resp azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse])
-
-	// BeginUpdate is the fake for method GalleryInVMAccessControlProfileVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersionUpdate, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryInVMAccessControlProfileVersionsServerTransport creates a new instance of GalleryInVMAccessControlProfileVersionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewGalleryInVMAccessControlProfileVersionsServerTransport(srv *GalleryInVMA
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]](),
 		newListByGalleryInVMAccessControlProfilePager: newTracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type GalleryInVMAccessControlProfileVersionsServerTransport struct {
 	srv                                           *GalleryInVMAccessControlProfileVersionsServer
 	beginCreateOrUpdate                           *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]]
 	beginDelete                                   *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]]
-	newListByGalleryInVMAccessControlProfilePager *tracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]]
 	beginUpdate                                   *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]]
+	newListByGalleryInVMAccessControlProfilePager *tracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryInVMAccessControlProfileVersionsServerTransport.
@@ -90,12 +90,12 @@ func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchToMetho
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GalleryInVMAccessControlProfileVersionsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GalleryInVMAccessControlProfileVersionsClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GalleryInVMAccessControlProfileVersionsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager":
 				res.resp, res.err = g.dispatchNewListByGalleryInVMAccessControlProfilePager(req)
-			case "GalleryInVMAccessControlProfileVersionsClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchBeginCr
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<inVMAccessControlProfileVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<inVMAccessControlProfileVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchBeginDe
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<inVMAccessControlProfileVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<inVMAccessControlProfileVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,99 +220,13 @@ func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchBeginDe
 	return resp, nil
 }
 
-func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<inVMAccessControlProfileVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-	if err != nil {
-		return nil, err
-	}
-	inVMAccessControlProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileName")])
-	if err != nil {
-		return nil, err
-	}
-	inVMAccessControlProfileVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileVersionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryNameParam, inVMAccessControlProfileNameParam, inVMAccessControlProfileVersionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryInVMAccessControlProfileVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchNewListByGalleryInVMAccessControlProfilePager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListByGalleryInVMAccessControlProfilePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryInVMAccessControlProfilePager not implemented")}
-	}
-	newListByGalleryInVMAccessControlProfilePager := g.newListByGalleryInVMAccessControlProfilePager.get(req)
-	if newListByGalleryInVMAccessControlProfilePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		inVMAccessControlProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListByGalleryInVMAccessControlProfilePager(resourceGroupNameParam, galleryNameParam, inVMAccessControlProfileNameParam, nil)
-		newListByGalleryInVMAccessControlProfilePager = &resp
-		g.newListByGalleryInVMAccessControlProfilePager.add(req, newListByGalleryInVMAccessControlProfilePager)
-		server.PagerResponderInjectNextLinks(newListByGalleryInVMAccessControlProfilePager, req, func(page *armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByGalleryInVMAccessControlProfilePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListByGalleryInVMAccessControlProfilePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByGalleryInVMAccessControlProfilePager) {
-		g.newListByGalleryInVMAccessControlProfilePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<inVMAccessControlProfileVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<inVMAccessControlProfileVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +273,92 @@ func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchBeginUp
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<inVMAccessControlProfileVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	inVMAccessControlProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	inVMAccessControlProfileVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryNameParam, inVMAccessControlProfileNameParam, inVMAccessControlProfileVersionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryInVMAccessControlProfileVersion, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GalleryInVMAccessControlProfileVersionsServerTransport) dispatchNewListByGalleryInVMAccessControlProfilePager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListByGalleryInVMAccessControlProfilePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryInVMAccessControlProfilePager not implemented")}
+	}
+	newListByGalleryInVMAccessControlProfilePager := g.newListByGalleryInVMAccessControlProfilePager.get(req)
+	if newListByGalleryInVMAccessControlProfilePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inVMAccessControlProfiles/(?P<inVMAccessControlProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		inVMAccessControlProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inVMAccessControlProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListByGalleryInVMAccessControlProfilePager(resourceGroupNameParam, galleryNameParam, inVMAccessControlProfileNameParam, nil)
+		newListByGalleryInVMAccessControlProfilePager = &resp
+		g.newListByGalleryInVMAccessControlProfilePager.add(req, newListByGalleryInVMAccessControlProfilePager)
+		server.PagerResponderInjectNextLinks(newListByGalleryInVMAccessControlProfilePager, req, func(page *armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByGalleryInVMAccessControlProfilePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByGalleryInVMAccessControlProfilePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByGalleryInVMAccessControlProfilePager) {
+		g.newListByGalleryInVMAccessControlProfilePager.remove(req)
+	}
 	return resp, nil
 }
 

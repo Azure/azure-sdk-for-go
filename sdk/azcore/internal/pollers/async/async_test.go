@@ -107,7 +107,7 @@ func TestFinalGetLocation(t *testing.T) {
 	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, locURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakePollingURL {
 			return &http.Response{
 				StatusCode: http.StatusOK,
@@ -137,7 +137,7 @@ func TestFinalGetLocation(t *testing.T) {
 func TestFinalGetOrigin(t *testing.T) {
 	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakePollingURL {
 			return &http.Response{
 				StatusCode: http.StatusOK,
@@ -167,7 +167,7 @@ func TestFinalGetOrigin(t *testing.T) {
 func TestNoFinalGet(t *testing.T) {
 	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "circle" }`)),
@@ -188,7 +188,7 @@ func TestNoFinalGet(t *testing.T) {
 func TestPatchNoFinalGet(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "circle" }`)),
@@ -209,7 +209,7 @@ func TestPatchNoFinalGet(t *testing.T) {
 func TestPollFailed(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{},
@@ -232,7 +232,7 @@ func TestPollFailed(t *testing.T) {
 func TestPollError(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNotFound,
 			Header:     http.Header{},
@@ -257,7 +257,7 @@ func TestPollError(t *testing.T) {
 func TestPollFailedError(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return nil, errors.New("failed")
 	})), resp, "")
 	require.NoError(t, err)

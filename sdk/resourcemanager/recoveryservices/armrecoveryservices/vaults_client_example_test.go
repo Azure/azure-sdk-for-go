@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/PUTVault.json
+// Generated from example definition: 2026-11-01/PUTVault.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateRecoveryServicesVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateRecoveryServicesVault
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_ResourceGuardEnabled.json
+// Generated from example definition: 2026-11-01/PUTVault_ResourceGuardEnabled.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultPerformingCriticalOperationWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultPerformingCritic
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithCMK.json
+// Generated from example definition: 2026-11-01/PUTVault_WithCMK.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCustomerMana
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithCostManagementSettings.json
+// Generated from example definition: 2026-11-01/PUTVault_WithCostManagementSettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCostManagementSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCostManageme
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithImmutabilityConfig.json
+// Generated from example definition: 2026-11-01/PUTVault_WithImmutabilityConfig.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithImmutabilityConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithImmutability
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithMonitoringSettings.json
+// Generated from example definition: 2026-11-01/PUTVault_WithMonitoringSettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithMonitoringSetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithMonitoringSe
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithRedundancySettings.json
+// Generated from example definition: 2026-11-01/PUTVault_WithRedundancySettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRedundancySetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +539,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRedundancySe
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithRegionOfChoiceSettings.json
+// Generated from example definition: 2026-11-01/PUTVault_WithRegionOfChoiceSettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRegionOfChoiceSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +605,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRegionOfChoi
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithSourceScanConfiguration.json
+// Generated from example definition: 2026-11-01/PUTVault_WithSourceScanConfiguration.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithSourceScanConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -680,7 +680,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithSourceScanCo
 	// }
 }
 
-// Generated from example definition: 2026-07-01/PUTVault_WithUserAssignedIdentity.json
+// Generated from example definition: 2026-11-01/PUTVault_WithUserAssignedIdentity.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +746,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithUserAssigned
 	// }
 }
 
-// Generated from example definition: 2026-07-01/DeleteVault.json
+// Generated from example definition: 2026-11-01/DeleteVault.json
 func ExampleVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -767,7 +767,736 @@ func ExampleVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/GETVault.json
+// Generated from example definition: 2026-11-01/PATCHVault.json
+func ExampleVaultsClient_BeginUpdate_updateResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithCMK.json
+func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
+			},
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
+				KekIdentity: &armrecoveryservices.CmkKekIdentity{
+					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+				},
+				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
+					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
+	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
+	// 					UseSystemAssignedIdentity: to.Ptr(false),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+	// 				},
+	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
+	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithCMK3.json
+func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys3() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
+			},
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
+					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
+	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
+	// 					UseSystemAssignedIdentity: to.Ptr(false),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+	// 				},
+	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
+	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithCostManagementSettings.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithCostManagementSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Properties: &armrecoveryservices.VaultProperties{
+			CostManagementSettings: &armrecoveryservices.CostManagementSettings{
+				GranularityLevel: to.Ptr(armrecoveryservices.GranularityLevelProtectedItemLevel),
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			CostManagementSettings: &armrecoveryservices.CostManagementSettings{
+	// 				GranularityLevel: to.Ptr(armrecoveryservices.GranularityLevelProtectedItemLevel),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithImmutabilityConfig.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithImmutabilityConfig() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Properties: &armrecoveryservices.VaultProperties{
+			SecuritySettings: &armrecoveryservices.SecuritySettings{
+				ImmutabilitySettings: &armrecoveryservices.ImmutabilitySettings{
+					Configuration: &armrecoveryservices.ImmutabilityConfiguration{
+						Type:           to.Ptr(armrecoveryservices.ImmutabilityTypeTimeBased),
+						DurationInDays: to.Ptr[int32](30),
+					},
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			SecuritySettings: &armrecoveryservices.SecuritySettings{
+	// 				ImmutabilitySettings: &armrecoveryservices.ImmutabilitySettings{
+	// 					State: to.Ptr(armrecoveryservices.ImmutabilityStateUnlocked),
+	// 					Configuration: &armrecoveryservices.ImmutabilityConfiguration{
+	// 						Type: to.Ptr(armrecoveryservices.ImmutabilityTypeTimeBased),
+	// 						DurationInDays: to.Ptr[int32](30),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithMonitoringSettings.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithMonitoringSetting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Properties: &armrecoveryservices.VaultProperties{
+			MonitoringSettings: &armrecoveryservices.MonitoringSettings{
+				AzureMonitorAlertSettings: &armrecoveryservices.AzureMonitorAlertSettings{
+					AlertsForAllFailoverIssues:    to.Ptr(armrecoveryservices.AlertsStateDisabled),
+					AlertsForAllJobFailures:       to.Ptr(armrecoveryservices.AlertsStateEnabled),
+					AlertsForAllReplicationIssues: to.Ptr(armrecoveryservices.AlertsStateEnabled),
+				},
+				ClassicAlertSettings: &armrecoveryservices.ClassicAlertSettings{
+					AlertsForCriticalOperations:       to.Ptr(armrecoveryservices.AlertsStateDisabled),
+					EmailNotificationsForSiteRecovery: to.Ptr(armrecoveryservices.AlertsStateEnabled),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			MonitoringSettings: &armrecoveryservices.MonitoringSettings{
+	// 				AzureMonitorAlertSettings: &armrecoveryservices.AzureMonitorAlertSettings{
+	// 					AlertsForAllFailoverIssues: to.Ptr(armrecoveryservices.AlertsStateDisabled),
+	// 					AlertsForAllJobFailures: to.Ptr(armrecoveryservices.AlertsStateEnabled),
+	// 					AlertsForAllReplicationIssues: to.Ptr(armrecoveryservices.AlertsStateEnabled),
+	// 				},
+	// 				ClassicAlertSettings: &armrecoveryservices.ClassicAlertSettings{
+	// 					AlertsForCriticalOperations: to.Ptr(armrecoveryservices.AlertsStateDisabled),
+	// 					EmailNotificationsForSiteRecovery: to.Ptr(armrecoveryservices.AlertsStateEnabled),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithRedundancySettings.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithRedundancySetting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Properties: &armrecoveryservices.VaultProperties{
+			RedundancySettings: &armrecoveryservices.VaultPropertiesRedundancySettings{
+				CrossRegionRestore:            to.Ptr(armrecoveryservices.CrossRegionRestoreEnabled),
+				StandardTierStorageRedundancy: to.Ptr(armrecoveryservices.StandardTierStorageRedundancyGeoRedundant),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 			RedundancySettings: &armrecoveryservices.VaultPropertiesRedundancySettings{
+	// 				CrossRegionRestore: to.Ptr(armrecoveryservices.CrossRegionRestoreEnabled),
+	// 				StandardTierStorageRedundancy: to.Ptr(armrecoveryservices.StandardTierStorageRedundancyGeoRedundant),
+	// 			},
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithRegionOfChoiceSettings.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithRegionOfChoiceSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Properties: &armrecoveryservices.VaultProperties{
+			RegionOfChoiceSettings: &armrecoveryservices.RegionOfChoiceSettings{
+				Status: to.Ptr(armrecoveryservices.StateEnabled),
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 			RegionOfChoiceSettings: &armrecoveryservices.RegionOfChoiceSettings{
+	// 				Status: to.Ptr(armrecoveryservices.StateEnabled),
+	// 			},
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithSourceScanConfiguration.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithSourceScanConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
+			},
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			SecuritySettings: &armrecoveryservices.SecuritySettings{
+				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
+						UserAssignedIdentity:  to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+					},
+					State: to.Ptr(armrecoveryservices.StateEnabled),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 			SecuritySettings: &armrecoveryservices.SecuritySettings{
+	// 				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+	// 					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+	// 						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
+	// 						UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+	// 					},
+	// 					State: to.Ptr(armrecoveryservices.StateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PATCHVault_WithUserAssignedIdentity.json
+func ExampleVaultsClient_BeginUpdate_updateResourceWithUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/PatchVault_WithCMK2.json
+func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeSystemAssigned),
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+				KekIdentity: &armrecoveryservices.CmkKekIdentity{
+					UseSystemAssignedIdentity: to.Ptr(true),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.VaultsClientUpdateResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
+	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
+	// 					UseSystemAssignedIdentity: to.Ptr(true),
+	// 				},
+	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
+	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/GETVault.json
 func ExampleVaultsClient_Get_getRecoveryServicesResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -869,7 +1598,7 @@ func ExampleVaultsClient_Get_getRecoveryServicesResource() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/GETVault_WithRegionOfChoiceSettings.json
+// Generated from example definition: 2026-11-01/GETVault_WithRegionOfChoiceSettings.json
 func ExampleVaultsClient_Get_getRecoveryServicesVaultWithRegionOfChoiceSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +1645,7 @@ func ExampleVaultsClient_Get_getRecoveryServicesVaultWithRegionOfChoiceSettings(
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ListResources.json
+// Generated from example definition: 2026-11-01/ListResources.json
 func ExampleVaultsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +1724,7 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ListBySubscriptionIds.json
+// Generated from example definition: 2026-11-01/ListBySubscriptionIds.json
 func ExampleVaultsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1072,733 +1801,4 @@ func ExampleVaultsClient_NewListBySubscriptionIDPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault.json
-func ExampleVaultsClient_BeginUpdate_updateResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithCMK.json
-func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Identity: &armrecoveryservices.IdentityData{
-			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
-			},
-		},
-		Properties: &armrecoveryservices.VaultProperties{
-			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
-				KekIdentity: &armrecoveryservices.CmkKekIdentity{
-					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
-				},
-				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
-					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Identity: &armrecoveryservices.IdentityData{
-	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
-	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
-	// 					UseSystemAssignedIdentity: to.Ptr(false),
-	// 					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
-	// 				},
-	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
-	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithCMK3.json
-func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys3() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Identity: &armrecoveryservices.IdentityData{
-			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
-			},
-		},
-		Properties: &armrecoveryservices.VaultProperties{
-			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
-					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Identity: &armrecoveryservices.IdentityData{
-	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
-	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
-	// 					UseSystemAssignedIdentity: to.Ptr(false),
-	// 					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
-	// 				},
-	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
-	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithCostManagementSettings.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithCostManagementSettings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Properties: &armrecoveryservices.VaultProperties{
-			CostManagementSettings: &armrecoveryservices.CostManagementSettings{
-				GranularityLevel: to.Ptr(armrecoveryservices.GranularityLevelProtectedItemLevel),
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			CostManagementSettings: &armrecoveryservices.CostManagementSettings{
-	// 				GranularityLevel: to.Ptr(armrecoveryservices.GranularityLevelProtectedItemLevel),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithImmutabilityConfig.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithImmutabilityConfig() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Properties: &armrecoveryservices.VaultProperties{
-			SecuritySettings: &armrecoveryservices.SecuritySettings{
-				ImmutabilitySettings: &armrecoveryservices.ImmutabilitySettings{
-					Configuration: &armrecoveryservices.ImmutabilityConfiguration{
-						Type:           to.Ptr(armrecoveryservices.ImmutabilityTypeTimeBased),
-						DurationInDays: to.Ptr[int32](30),
-					},
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			SecuritySettings: &armrecoveryservices.SecuritySettings{
-	// 				ImmutabilitySettings: &armrecoveryservices.ImmutabilitySettings{
-	// 					State: to.Ptr(armrecoveryservices.ImmutabilityStateUnlocked),
-	// 					Configuration: &armrecoveryservices.ImmutabilityConfiguration{
-	// 						Type: to.Ptr(armrecoveryservices.ImmutabilityTypeTimeBased),
-	// 						DurationInDays: to.Ptr[int32](30),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithMonitoringSettings.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithMonitoringSetting() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Properties: &armrecoveryservices.VaultProperties{
-			MonitoringSettings: &armrecoveryservices.MonitoringSettings{
-				AzureMonitorAlertSettings: &armrecoveryservices.AzureMonitorAlertSettings{
-					AlertsForAllFailoverIssues:    to.Ptr(armrecoveryservices.AlertsStateDisabled),
-					AlertsForAllJobFailures:       to.Ptr(armrecoveryservices.AlertsStateEnabled),
-					AlertsForAllReplicationIssues: to.Ptr(armrecoveryservices.AlertsStateEnabled),
-				},
-				ClassicAlertSettings: &armrecoveryservices.ClassicAlertSettings{
-					AlertsForCriticalOperations:       to.Ptr(armrecoveryservices.AlertsStateDisabled),
-					EmailNotificationsForSiteRecovery: to.Ptr(armrecoveryservices.AlertsStateEnabled),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			MonitoringSettings: &armrecoveryservices.MonitoringSettings{
-	// 				AzureMonitorAlertSettings: &armrecoveryservices.AzureMonitorAlertSettings{
-	// 					AlertsForAllFailoverIssues: to.Ptr(armrecoveryservices.AlertsStateDisabled),
-	// 					AlertsForAllJobFailures: to.Ptr(armrecoveryservices.AlertsStateEnabled),
-	// 					AlertsForAllReplicationIssues: to.Ptr(armrecoveryservices.AlertsStateEnabled),
-	// 				},
-	// 				ClassicAlertSettings: &armrecoveryservices.ClassicAlertSettings{
-	// 					AlertsForCriticalOperations: to.Ptr(armrecoveryservices.AlertsStateDisabled),
-	// 					EmailNotificationsForSiteRecovery: to.Ptr(armrecoveryservices.AlertsStateEnabled),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithRedundancySettings.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithRedundancySetting() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Properties: &armrecoveryservices.VaultProperties{
-			RedundancySettings: &armrecoveryservices.VaultPropertiesRedundancySettings{
-				CrossRegionRestore:            to.Ptr(armrecoveryservices.CrossRegionRestoreEnabled),
-				StandardTierStorageRedundancy: to.Ptr(armrecoveryservices.StandardTierStorageRedundancyGeoRedundant),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 			RedundancySettings: &armrecoveryservices.VaultPropertiesRedundancySettings{
-	// 				CrossRegionRestore: to.Ptr(armrecoveryservices.CrossRegionRestoreEnabled),
-	// 				StandardTierStorageRedundancy: to.Ptr(armrecoveryservices.StandardTierStorageRedundancyGeoRedundant),
-	// 			},
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithRegionOfChoiceSettings.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithRegionOfChoiceSettings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Properties: &armrecoveryservices.VaultProperties{
-			RegionOfChoiceSettings: &armrecoveryservices.RegionOfChoiceSettings{
-				Status: to.Ptr(armrecoveryservices.StateEnabled),
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 			RegionOfChoiceSettings: &armrecoveryservices.RegionOfChoiceSettings{
-	// 				Status: to.Ptr(armrecoveryservices.StateEnabled),
-	// 			},
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithSourceScanConfiguration.json
-func ExampleVaultsClient_BeginUpdate_updateVaultWithSourceScanConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Identity: &armrecoveryservices.IdentityData{
-			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
-			},
-		},
-		Properties: &armrecoveryservices.VaultProperties{
-			SecuritySettings: &armrecoveryservices.SecuritySettings{
-				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
-					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
-						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
-						UserAssignedIdentity:  to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
-					},
-					State: to.Ptr(armrecoveryservices.StateEnabled),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Identity: &armrecoveryservices.IdentityData{
-	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 			SecuritySettings: &armrecoveryservices.SecuritySettings{
-	// 				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
-	// 					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
-	// 						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
-	// 						UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
-	// 					},
-	// 					State: to.Ptr(armrecoveryservices.StateEnabled),
-	// 				},
-	// 			},
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PATCHVault_WithUserAssignedIdentity.json
-func ExampleVaultsClient_BeginUpdate_updateResourceWithUserAssignedIdentity() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Identity: &armrecoveryservices.IdentityData{
-			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Identity: &armrecoveryservices.IdentityData{
-	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/PatchVault_WithCMK2.json
-func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys2() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
-		Identity: &armrecoveryservices.IdentityData{
-			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeSystemAssigned),
-		},
-		Properties: &armrecoveryservices.VaultProperties{
-			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-				KekIdentity: &armrecoveryservices.CmkKekIdentity{
-					UseSystemAssignedIdentity: to.Ptr(true),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"PatchKey": to.Ptr("PatchKeyUpdated"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: armrecoveryservices.Vault{
-	// 		Name: to.Ptr("swaggerExample"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
-	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 		Identity: &armrecoveryservices.IdentityData{
-	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
-	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armrecoveryservices.VaultProperties{
-	// 			Encryption: &armrecoveryservices.VaultPropertiesEncryption{
-	// 				InfrastructureEncryption: to.Ptr(armrecoveryservices.InfrastructureEncryptionStateEnabled),
-	// 				KekIdentity: &armrecoveryservices.CmkKekIdentity{
-	// 					UseSystemAssignedIdentity: to.Ptr(true),
-	// 				},
-	// 				KeyVaultProperties: &armrecoveryservices.CmkKeyVaultProperties{
-	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
-	// 		},
-	// 		SKU: &armrecoveryservices.SKU{
-	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
-	// 		},
-	// 	},
-	// }
 }

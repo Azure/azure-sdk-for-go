@@ -9,6 +9,7 @@
     "cbindgen",
     "EASTUS",
     "enableaadauthentication",
+    "gofmt",
     "itemdb",
     "LINUXVMIMAGE",
     "myaccount",

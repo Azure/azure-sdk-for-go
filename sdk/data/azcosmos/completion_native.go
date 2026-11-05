@@ -513,19 +513,24 @@ func syntheticSessionCompletion() ItemResponse {
 // dispatchSyntheticCompletion borrows C buffers, not Rust backing. The caller must keep them
 // alive until preparation finishes; real backing and side handles are exercised by emulator tests.
 func dispatchSyntheticCompletion(r *reactor, cookie uintptr, status int, body string) (bool, func()) {
+	var source C.cosmos_completion_t
+	return dispatchSyntheticCompletionInSlot(r, &source, cookie, status, body)
+}
+
+func dispatchSyntheticCompletionInSlot(r *reactor, source *C.cosmos_completion_t, cookie uintptr, status int, body string) (bool, func()) {
 	var memory unsafe.Pointer
 	if body != "" {
 		memory = C.CBytes([]byte(body))
 	}
-	source := C.cosmos_completion_t{
+	*source = C.cosmos_completion_t{
 		outcome: C.COSMOS_COMPLETION_OUTCOME_OK, user_data: C.intptr_t(cookie),
 		http_status_code: C.uint16_t(status), body: (*C.uint8_t)(memory), body_len: C.uintptr_t(len(body)),
 	}
-	r.deliver(&source)
-	cleared := source == (C.cosmos_completion_t{})
+	r.deliver(source)
+	cleared := *source == (C.cosmos_completion_t{})
 	// Reusing the slot must not change the record handed to the caller.
 	source.http_status_code = 599
-	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	C.cosmos_completion_queue_free_completions(source, 1)
 	return cleared, func() { C.free(memory) }
 }
 

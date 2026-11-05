@@ -133,7 +133,8 @@ func Example_share_Client_NewFileClientByFileID() {
 	handleError(err)
 
 	// a client that addresses the file by its file ID only supports GetProperties and GetFileLinks
-	fileClient := shareClient.NewFileClientByFileID(*props.ID)
+	fileClient, err := shareClient.NewFileClientByFileID(*props.ID)
+	handleError(err)
 	fmt.Println(fileClient.URL())
 
 	fileProps, err := fileClient.GetProperties(context.TODO(), nil)

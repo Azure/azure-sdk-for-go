@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -195,7 +196,7 @@ func newSessionTestClients(t *testing.T, tr *sessionAPITransport) (*blob.Client,
 			Retry:     policy.RetryOptions{MaxRetries: -1},
 		},
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:     to.Ptr(true),
 			AccountName: sessionTestAccount,
 		},
 	}
@@ -437,7 +438,7 @@ func newSessionTestServiceClient(t *testing.T, tr *sessionAPITransport) *service
 	t.Helper()
 	opts := &service.ClientOptions{
 		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
-		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, AccountName: sessionTestAccount},
+		Session:       azblob.SessionOptions{Enabled: to.Ptr(true), AccountName: sessionTestAccount},
 	}
 	svcClient, err := service.NewClient(sessionTestServiceURL, sessionTestTokenCredential{}, opts)
 	require.NoError(t, err)

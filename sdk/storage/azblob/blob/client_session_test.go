@@ -97,7 +97,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -153,7 +153,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionAccountNameDerivedFr
 	// AccountName is intentionally not set here
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode: azblob.SessionModeEnabled,
+			Enabled: to.Ptr(true),
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -176,8 +176,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionAccountNameDerivedFr
 	_require.Equal(1, sessionAuthCount, "expected the download to use session auth with the derived account name")
 }
 
-// Sessions are only used when explicitly enabled, so neither the disabled mode nor the zero-value
-// default mode may create or use one.
+// Sessions are only used when explicitly enabled, so neither an explicit false nor the nil default
+// may create or use one.
 func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -209,11 +209,11 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 
 	sessionTracker := &authRequestTracker{}
 
-	// SessionModeAuto is the zero value, so it covers clients that never mention sessions
-	for _, mode := range []azblob.SessionMode{azblob.SessionModeDisabled, azblob.SessionModeAuto} {
+	// nil is the zero value, so it covers clients that never mention sessions
+	for _, enabled := range []*bool{to.Ptr(false), nil} {
 		sessionOptions := &service.ClientOptions{
 			Session: azblob.SessionOptions{
-				Mode: mode,
+				Enabled: enabled,
 			},
 		}
 		testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -273,7 +273,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionContainerResolvedFro
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -340,7 +340,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -434,7 +434,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -506,7 +506,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -588,7 +588,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -676,7 +676,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -737,7 +737,7 @@ func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSe
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:        to.Ptr(true),
 			AccountName: accountName,
 		},
 	}

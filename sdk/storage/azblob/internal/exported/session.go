@@ -6,7 +6,6 @@ package exported
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,54 +20,31 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
 )
 
-// SessionMode specifies whether eligible requests are authenticated with a session.
-type SessionMode string
-
-const (
-	// SessionModeAuto is the zero value, and therefore the default when no value is specified.
-	// The client library decides whether sessions are used, and that decision may change in a
-	// future release. Currently, SessionModeAuto resolves to SessionModeDisabled.
-	SessionModeAuto SessionMode = ""
-
-	// SessionModeDisabled authenticates every request with a bearer token.
-	SessionModeDisabled SessionMode = "Disabled"
-
-	// SessionModeEnabled authenticates eligible requests with a session, created and cached per
-	// container. It requires the storage account name: when it can be determined from neither
-	// SessionOptions.AccountName nor the client's URL, client construction fails.
-	SessionModeEnabled SessionMode = "Enabled"
-)
-
-// PossibleSessionModeValues returns the possible values for SessionMode.
-func PossibleSessionModeValues() []SessionMode {
-	return []SessionMode{
-		SessionModeAuto,
-		SessionModeDisabled,
-		SessionModeEnabled,
+// ResolveSessionEnabled resolves SessionOptions.Enabled. Nil leaves the decision to the client
+// library, which may change it in a future release; currently it resolves to disabled.
+func ResolveSessionEnabled(enabled *bool) bool {
+	if enabled == nil {
+		return false
 	}
-}
-
-// ResolveSessionMode resolves SessionModeAuto to the mode it currently stands for.
-func ResolveSessionMode(mode SessionMode) SessionMode {
-	if mode == SessionModeAuto {
-		return SessionModeDisabled
-	}
-	return mode
+	return *enabled
 }
 
 // SessionOptions configures session authentication. Sessions apply only to clients
 // authenticated with an azcore.TokenCredential; clients using a shared key, a SAS or no
 // credential ignore these options.
 type SessionOptions struct {
-	// Mode specifies whether sessions are used. The default, SessionModeAuto, currently resolves
-	// to SessionModeDisabled.
-	Mode SessionMode
+	// Enabled specifies whether eligible requests are authenticated with a session, created and
+	// cached per container. When false, every request is authenticated with a bearer token. When
+	// true, the storage account name is required: if it can be determined from neither AccountName
+	// nor the client's URL, client construction fails. The default, nil, leaves the decision to the
+	// client library, which may change it in a future release; currently it resolves to disabled.
+	Enabled *bool
 
 	// AccountName is the storage account name used to sign requests with the session key. When
 	// empty, it is derived from the client's URL. Set it when the URL is a custom domain from
 	// which the account name can't be derived.
 	// When the account name can be determined from neither this field nor the URL, client
-	// construction fails if Mode is SessionModeEnabled; otherwise the client authenticates every
+	// construction fails if Enabled is true; otherwise the client authenticates every
 	// request with a bearer token.
 	AccountName string
 }
@@ -264,13 +240,4 @@ func isSessionFallbackError(err error) bool {
 	return respErr.StatusCode >= http.StatusInternalServerError ||
 		respErr.StatusCode == http.StatusForbidden ||
 		(respErr.StatusCode == http.StatusBadRequest && strings.EqualFold(respErr.ErrorCode, featureNotEnabled))
-}
-
-// ValidateSessionMode returns an error for a mode that isn't one of the SessionMode constants.
-func ValidateSessionMode(mode SessionMode) error {
-	switch mode {
-	case SessionModeAuto, SessionModeDisabled, SessionModeEnabled:
-		return nil
-	}
-	return fmt.Errorf("unsupported session mode %q", mode)
 }

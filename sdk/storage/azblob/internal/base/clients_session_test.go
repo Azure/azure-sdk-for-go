@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 )
@@ -49,11 +50,11 @@ func (w *wireTransport) lastScheme() string {
 	return w.schemes[len(w.schemes)-1]
 }
 
-func newWireClient(t *testing.T, tr *wireTransport, cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, mode exported.SessionMode, rawURL string) *azcore.Client {
+func newWireClient(t *testing.T, tr *wireTransport, cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, enabled *bool, rawURL string) *azcore.Client {
 	t.Helper()
 	opts := &ClientOptions{
 		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
-		Session:       exported.SessionOptions{Mode: mode},
+		Session:       exported.SessionOptions{Enabled: enabled},
 	}
 	c, err := GetAzClient(rawURL, cred, sharedKey, opts)
 	require.NoError(t, err)
@@ -86,19 +87,19 @@ func TestSessionAuthOnTheWire(t *testing.T) {
 		cred       azcore.TokenCredential
 		sharedKey  *exported.SharedKeyCredential
 		url        string
-		mode       exported.SessionMode
+		enabled    *bool
 		wantScheme string
 	}{
-		{"TokenEnabled", fakeTokenCredential{}, nil, wireBlobURL, exported.SessionModeEnabled, "Session"},
-		{"TokenAuto", fakeTokenCredential{}, nil, wireBlobURL, exported.SessionModeAuto, "Bearer"},
-		{"TokenDisabled", fakeTokenCredential{}, nil, wireBlobURL, exported.SessionModeDisabled, "Bearer"},
-		{"SharedKeyEnabled", nil, sharedKey, wireBlobURL, exported.SessionModeEnabled, "SharedKey"},
-		{"SASEnabled", nil, nil, wireBlobURL + "?sv=2026-12-06&sig=x", exported.SessionModeEnabled, ""},
-		{"AnonymousEnabled", nil, nil, wireBlobURL, exported.SessionModeEnabled, ""},
+		{"TokenEnabled", fakeTokenCredential{}, nil, wireBlobURL, to.Ptr(true), "Session"},
+		{"TokenNil", fakeTokenCredential{}, nil, wireBlobURL, nil, "Bearer"},
+		{"TokenDisabled", fakeTokenCredential{}, nil, wireBlobURL, to.Ptr(false), "Bearer"},
+		{"SharedKeyEnabled", nil, sharedKey, wireBlobURL, to.Ptr(true), "SharedKey"},
+		{"SASEnabled", nil, nil, wireBlobURL + "?sv=2026-12-06&sig=x", to.Ptr(true), ""},
+		{"AnonymousEnabled", nil, nil, wireBlobURL, to.Ptr(true), ""},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			tr := &wireTransport{}
-			c := newWireClient(t, tr, tt.cred, tt.sharedKey, tt.mode, tt.url)
+			c := newWireClient(t, tr, tt.cred, tt.sharedKey, tt.enabled, tt.url)
 			require.Equal(t, tt.wantScheme, sendThrough(t, c, tr, http.MethodGet, tt.url, nil))
 			if tt.wantScheme != "Session" {
 				require.Zero(t, tr.createSessions, "only token credential clients with sessions enabled create sessions")
@@ -111,7 +112,7 @@ func TestSessionAuthOnTheWire(t *testing.T) {
 // session. The public preview signs only Get Blob, so these use the bearer token.
 func TestPrivateDropSessionOperationsUseBearer(t *testing.T) {
 	tr := &wireTransport{}
-	c := newWireClient(t, tr, fakeTokenCredential{}, nil, exported.SessionModeEnabled, wireBlobURL)
+	c := newWireClient(t, tr, fakeTokenCredential{}, nil, to.Ptr(true), wireBlobURL)
 
 	require.Equal(t, "Session", sendThrough(t, c, tr, http.MethodGet, wireBlobURL, nil), "Get Blob uses a session")
 	require.Equal(t, "Bearer", sendThrough(t, c, tr, http.MethodHead, wireBlobURL, nil), "Get Blob Properties")
@@ -124,7 +125,7 @@ func TestPrivateDropSessionOperationsUseBearer(t *testing.T) {
 
 func TestNoCredentialHasNoAuthPolicy(t *testing.T) {
 	tr := &wireTransport{}
-	c := newWireClient(t, tr, nil, nil, exported.SessionModeAuto, wireBlobURL)
+	c := newWireClient(t, tr, nil, nil, nil, wireBlobURL)
 	require.Equal(t, "", sendThrough(t, c, tr, http.MethodGet, wireBlobURL, nil))
 }
 
@@ -142,7 +143,7 @@ func TestCreateSessionResponseBodyIsNotLogged(t *testing.T) {
 			Retry:     policy.RetryOptions{MaxRetries: -1},
 			Logging:   policy.LogOptions{IncludeBody: true},
 		},
-		Session: exported.SessionOptions{Mode: exported.SessionModeEnabled},
+		Session: exported.SessionOptions{Enabled: to.Ptr(true)},
 	}
 	c, err := GetAzClient(wireBlobURL, fakeTokenCredential{}, nil, opts)
 	require.NoError(t, err)
@@ -169,7 +170,7 @@ func TestSessionAuthRequiresHTTPS(t *testing.T) {
 					Retry:                           policy.RetryOptions{MaxRetries: -1},
 					InsecureAllowCredentialWithHTTP: allowHTTP,
 				},
-				Session: exported.SessionOptions{Mode: exported.SessionModeEnabled},
+				Session: exported.SessionOptions{Enabled: to.Ptr(true)},
 			}
 			c, err := GetAzClient(httpBlobURL, fakeTokenCredential{}, nil, opts)
 			require.NoError(t, err)
@@ -194,6 +195,6 @@ func TestSessionAuthRequiresHTTPS(t *testing.T) {
 func TestSessionAuthUppercaseHost(t *testing.T) {
 	const upperURL = "https://account.BLOB.core.windows.net/container/blob"
 	tr := &wireTransport{}
-	c := newWireClient(t, tr, fakeTokenCredential{}, nil, exported.SessionModeEnabled, upperURL)
+	c := newWireClient(t, tr, fakeTokenCredential{}, nil, to.Ptr(true), upperURL)
 	require.Equal(t, "Session", sendThrough(t, c, tr, http.MethodGet, upperURL, nil))
 }

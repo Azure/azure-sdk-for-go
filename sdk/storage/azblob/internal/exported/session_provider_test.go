@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 	"github.com/stretchr/testify/require"
@@ -484,17 +485,11 @@ func TestProviderRequiresContainer(t *testing.T) {
 	p.invalidateSession(blobRequest(t, context.Background(), "https://testaccount.blob.core.windows.net/"), sessionCredential{})
 }
 
-func TestSessionModeResolution(t *testing.T) {
-	require.Equal(t, SessionModeDisabled, ResolveSessionMode(SessionModeAuto), "Auto currently resolves to Disabled")
-	require.Equal(t, SessionModeDisabled, ResolveSessionMode(SessionModeDisabled))
-	require.Equal(t, SessionModeEnabled, ResolveSessionMode(SessionModeEnabled))
-	require.Equal(t, SessionModeAuto, SessionMode(""), "Auto is the zero value")
-	require.ElementsMatch(t, []SessionMode{SessionModeAuto, SessionModeDisabled, SessionModeEnabled}, PossibleSessionModeValues())
-
-	for _, m := range PossibleSessionModeValues() {
-		require.NoError(t, ValidateSessionMode(m))
-	}
-	require.Error(t, ValidateSessionMode("enabled"), "values are case-sensitive")
+func TestSessionEnabledResolution(t *testing.T) {
+	require.False(t, ResolveSessionEnabled(nil), "nil currently resolves to disabled")
+	require.False(t, ResolveSessionEnabled(to.Ptr(false)))
+	require.True(t, ResolveSessionEnabled(to.Ptr(true)))
+	require.Nil(t, SessionOptions{}.Enabled, "the zero value leaves the decision to the client library")
 }
 
 // Layout routing replaces the URL host with the layout endpoint and keeps the account authority in

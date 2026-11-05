@@ -9,10 +9,10 @@ Locality is reachable only through the managed downloads described here: Get Blo
 models, the download hint and per-read endpoint routing are unexported while the feature is not
 generally available, and `LayoutAwareRouting` is its only public setting.
 
-Layout aware routing is **opt-in**. `LayoutAwareRouting` defaults to `LayoutAwareRoutingAuto`,
+Layout aware routing is **opt-in**. `LayoutAwareRouting` is a `*bool` that defaults to nil,
 which currently resolves to disabled, matching the other Azure Storage SDKs for the STG105
-public preview. Only an explicit `LayoutAwareRoutingEnabled` turns it on; with anything else
-(including nil options) a download never calls GetLayout.
+public preview. Only an explicit `true` turns it on; with nil or `false` (including nil
+options) a download never calls GetLayout.
 
 ## The flow
 
@@ -35,9 +35,9 @@ DownloadBuffer / DownloadFile
         ├─ initial chunk covered the request?  → DONE. No GetLayout, no parallel reads.
         │
         └─ data remains:
-              ├─ routing not explicitly Enabled → parallel reads, account endpoint
+              ├─ routing not explicitly true   → parallel reads, account endpoint
               ├─ hint absent or not "layout"    → parallel reads, account endpoint
-              └─ routing Enabled AND hint == layout
+              └─ routing true AND hint == layout
                     → GetLayout for the remaining range only, cached
                     → fallback / no ranges → account endpoint
                     → usable layout → per-chunk endpoint selection
@@ -45,8 +45,8 @@ DownloadBuffer / DownloadFile
 
 The three conditions are `o.layoutAwareRoutingEnabled() && downloadHint != nil && *downloadHint
 == generated.DownloadHintLayout`, evaluated only after the initial read has been consumed and
-only when `initialChunkSize < count`. `layoutAwareRoutingEnabled` is true only for
-`LayoutAwareRoutingEnabled`.
+only when `initialChunkSize < count`. `layoutAwareRoutingEnabled` is true only when
+`LayoutAwareRouting` is set to `true`.
 
 ## Why the initial read always uses the account endpoint
 

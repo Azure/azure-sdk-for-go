@@ -22,6 +22,10 @@ import (
 
 // BlobContainersServer is a fake server for instances of the armstorage.BlobContainersClient type.
 type BlobContainersServer struct {
+	// BeginObjectLevelWorm is the fake for method BlobContainersClient.BeginObjectLevelWorm
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginObjectLevelWorm func(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *armstorage.BlobContainersClientBeginObjectLevelWormOptions) (resp azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse], errResp azfake.ErrorResponder)
+
 	// ClearLegalHold is the fake for method BlobContainersClient.ClearLegalHold
 	// HTTP status codes to indicate success: http.StatusOK
 	ClearLegalHold func(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold armstorage.LegalHold, options *armstorage.BlobContainersClientClearLegalHoldOptions) (resp azfake.Responder[armstorage.BlobContainersClientClearLegalHoldResponse], errResp azfake.ErrorResponder)
@@ -58,17 +62,13 @@ type BlobContainersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Lease func(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *armstorage.BlobContainersClientLeaseOptions) (resp azfake.Responder[armstorage.BlobContainersClientLeaseResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method BlobContainersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armstorage.BlobContainersClientListOptions) (resp azfake.PagerResponder[armstorage.BlobContainersClientListResponse])
-
 	// LockImmutabilityPolicy is the fake for method BlobContainersClient.LockImmutabilityPolicy
 	// HTTP status codes to indicate success: http.StatusOK
 	LockImmutabilityPolicy func(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *armstorage.BlobContainersClientLockImmutabilityPolicyOptions) (resp azfake.Responder[armstorage.BlobContainersClientLockImmutabilityPolicyResponse], errResp azfake.ErrorResponder)
 
-	// BeginObjectLevelWorm is the fake for method BlobContainersClient.BeginObjectLevelWorm
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginObjectLevelWorm func(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *armstorage.BlobContainersClientBeginObjectLevelWormOptions) (resp azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method BlobContainersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, options *armstorage.BlobContainersClientListOptions) (resp azfake.PagerResponder[armstorage.BlobContainersClientListResponse])
 
 	// SetLegalHold is the fake for method BlobContainersClient.SetLegalHold
 	// HTTP status codes to indicate success: http.StatusOK
@@ -85,8 +85,8 @@ type BlobContainersServer struct {
 func NewBlobContainersServerTransport(srv *BlobContainersServer) *BlobContainersServerTransport {
 	return &BlobContainersServerTransport{
 		srv:                  srv,
-		newListPager:         newTracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]](),
 		beginObjectLevelWorm: newTracker[azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]](),
 	}
 }
 
@@ -94,8 +94,8 @@ func NewBlobContainersServerTransport(srv *BlobContainersServer) *BlobContainers
 // Don't use this type directly, use NewBlobContainersServerTransport instead.
 type BlobContainersServerTransport struct {
 	srv                  *BlobContainersServer
-	newListPager         *tracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]]
 	beginObjectLevelWorm *tracker[azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BlobContainersServerTransport.
@@ -119,6 +119,8 @@ func (b *BlobContainersServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
+			case "BlobContainersClient.BeginObjectLevelWorm":
+				res.resp, res.err = b.dispatchBeginObjectLevelWorm(req)
 			case "BlobContainersClient.ClearLegalHold":
 				res.resp, res.err = b.dispatchClearLegalHold(req)
 			case "BlobContainersClient.Create":
@@ -137,12 +139,10 @@ func (b *BlobContainersServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = b.dispatchGetImmutabilityPolicy(req)
 			case "BlobContainersClient.Lease":
 				res.resp, res.err = b.dispatchLease(req)
-			case "BlobContainersClient.NewListPager":
-				res.resp, res.err = b.dispatchNewListPager(req)
 			case "BlobContainersClient.LockImmutabilityPolicy":
 				res.resp, res.err = b.dispatchLockImmutabilityPolicy(req)
-			case "BlobContainersClient.BeginObjectLevelWorm":
-				res.resp, res.err = b.dispatchBeginObjectLevelWorm(req)
+			case "BlobContainersClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
 			case "BlobContainersClient.SetLegalHold":
 				res.resp, res.err = b.dispatchSetLegalHold(req)
 			case "BlobContainersClient.Update":
@@ -163,11 +163,59 @@ func (b *BlobContainersServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
+func (b *BlobContainersServerTransport) dispatchBeginObjectLevelWorm(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginObjectLevelWorm == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginObjectLevelWorm not implemented")}
+	}
+	beginObjectLevelWorm := b.beginObjectLevelWorm.get(req)
+	if beginObjectLevelWorm == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginObjectLevelWorm(req.Context(), resourceGroupNameParam, accountNameParam, containerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginObjectLevelWorm = &respr
+		b.beginObjectLevelWorm.add(req, beginObjectLevelWorm)
+	}
+
+	resp, err := server.PollerResponderNext(beginObjectLevelWorm, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		b.beginObjectLevelWorm.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginObjectLevelWorm) {
+		b.beginObjectLevelWorm.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BlobContainersServerTransport) dispatchClearLegalHold(req *http.Request) (*http.Response, error) {
 	if b.srv.ClearLegalHold == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ClearLegalHold not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clearLegalHold`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clearLegalHold`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -208,7 +256,7 @@ func (b *BlobContainersServerTransport) dispatchCreate(req *http.Request) (*http
 	if b.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -249,7 +297,7 @@ func (b *BlobContainersServerTransport) dispatchCreateOrUpdateImmutabilityPolicy
 	if b.srv.CreateOrUpdateImmutabilityPolicy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateImmutabilityPolicy not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/immutabilityPolicies/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/immutabilityPolicies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -291,7 +339,7 @@ func (b *BlobContainersServerTransport) dispatchCreateOrUpdateImmutabilityPolicy
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -300,7 +348,7 @@ func (b *BlobContainersServerTransport) dispatchDelete(req *http.Request) (*http
 	if b.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -337,7 +385,7 @@ func (b *BlobContainersServerTransport) dispatchDeleteImmutabilityPolicy(req *ht
 	if b.srv.DeleteImmutabilityPolicy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteImmutabilityPolicy not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/immutabilityPolicies/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/immutabilityPolicies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -368,7 +416,7 @@ func (b *BlobContainersServerTransport) dispatchDeleteImmutabilityPolicy(req *ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -377,7 +425,7 @@ func (b *BlobContainersServerTransport) dispatchExtendImmutabilityPolicy(req *ht
 	if b.srv.ExtendImmutabilityPolicy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExtendImmutabilityPolicy not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/immutabilityPolicies/default/extend`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/immutabilityPolicies/default/extend`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -418,7 +466,7 @@ func (b *BlobContainersServerTransport) dispatchExtendImmutabilityPolicy(req *ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -427,7 +475,7 @@ func (b *BlobContainersServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -464,7 +512,7 @@ func (b *BlobContainersServerTransport) dispatchGetImmutabilityPolicy(req *http.
 	if b.srv.GetImmutabilityPolicy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetImmutabilityPolicy not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/immutabilityPolicies/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/immutabilityPolicies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -502,7 +550,7 @@ func (b *BlobContainersServerTransport) dispatchGetImmutabilityPolicy(req *http.
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -511,7 +559,7 @@ func (b *BlobContainersServerTransport) dispatchLease(req *http.Request) (*http.
 	if b.srv.Lease == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Lease not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/lease`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/lease`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -554,13 +602,53 @@ func (b *BlobContainersServerTransport) dispatchLease(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (b *BlobContainersServerTransport) dispatchLockImmutabilityPolicy(req *http.Request) (*http.Response, error) {
+	if b.srv.LockImmutabilityPolicy == nil {
+		return nil, &nonRetriableError{errors.New("fake for method LockImmutabilityPolicy not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/immutabilityPolicies/default/lock`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.LockImmutabilityPolicy(req.Context(), resourceGroupNameParam, accountNameParam, containerNameParam, getHeaderValue(req.Header, "If-Match"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImmutabilityPolicy, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).ETag; val != nil {
+		resp.Header.Set("Etag", *val)
+	}
+	return resp, nil
+}
+
 func (b *BlobContainersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -607,99 +695,11 @@ func (b *BlobContainersServerTransport) dispatchNewListPager(req *http.Request) 
 	return resp, nil
 }
 
-func (b *BlobContainersServerTransport) dispatchLockImmutabilityPolicy(req *http.Request) (*http.Response, error) {
-	if b.srv.LockImmutabilityPolicy == nil {
-		return nil, &nonRetriableError{errors.New("fake for method LockImmutabilityPolicy not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/immutabilityPolicies/default/lock`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.LockImmutabilityPolicy(req.Context(), resourceGroupNameParam, accountNameParam, containerNameParam, getHeaderValue(req.Header, "If-Match"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImmutabilityPolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
-	}
-	return resp, nil
-}
-
-func (b *BlobContainersServerTransport) dispatchBeginObjectLevelWorm(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginObjectLevelWorm == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginObjectLevelWorm not implemented")}
-	}
-	beginObjectLevelWorm := b.beginObjectLevelWorm.get(req)
-	if beginObjectLevelWorm == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := b.srv.BeginObjectLevelWorm(req.Context(), resourceGroupNameParam, accountNameParam, containerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginObjectLevelWorm = &respr
-		b.beginObjectLevelWorm.add(req, beginObjectLevelWorm)
-	}
-
-	resp, err := server.PollerResponderNext(beginObjectLevelWorm, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		b.beginObjectLevelWorm.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginObjectLevelWorm) {
-		b.beginObjectLevelWorm.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (b *BlobContainersServerTransport) dispatchSetLegalHold(req *http.Request) (*http.Response, error) {
 	if b.srv.SetLegalHold == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SetLegalHold not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setLegalHold`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLegalHold`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -740,7 +740,7 @@ func (b *BlobContainersServerTransport) dispatchUpdate(req *http.Request) (*http
 	if b.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/blobServices/default/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

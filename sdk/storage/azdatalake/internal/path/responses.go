@@ -33,6 +33,22 @@ type CreateResponse = generated.PathClientCreateResponse
 // DeleteResponse contains the response fields for the Delete operation.
 type DeleteResponse = generated.PathClientDeleteResponse
 
+// FormatDeleteResponse translates the generated response envelope to the hand-written one.
+func FormatDeleteResponse(resp generated.PathClientDeleteResponseInternal) DeleteResponse {
+	// note propagation of duplicate response headers Continuation, RequestID, and Version
+	return DeleteResponse{
+		ClientRequestID: resp.ClientRequestID,
+		Continuation:    resp.Continuation,
+		Date:            resp.Date,
+		DeletionID:      resp.DeletionID,
+		RequestID:       resp.RequestID,
+		Version:         resp.Version,
+		XMSContinuation: resp.Continuation,
+		XMSRequestID:    resp.RequestID,
+		XMSVersion:      resp.Version,
+	}
+}
+
 type RenameResponse struct {
 	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64

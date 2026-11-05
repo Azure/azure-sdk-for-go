@@ -49,6 +49,14 @@ type ScheduledActionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginEnable func(ctx context.Context, resourceGroupName string, scheduledActionName string, options *armbulkactions.ScheduledActionsClientBeginEnableOptions) (resp azfake.PollerResponder[armbulkactions.ScheduledActionsClientEnableResponse], errResp azfake.ErrorResponder)
 
+	// BeginTriggerManualOccurrence is the fake for method ScheduledActionsClient.BeginTriggerManualOccurrence
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTriggerManualOccurrence func(ctx context.Context, resourceGroupName string, scheduledActionName string, options *armbulkactions.ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (resp azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ScheduledActionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpdate func(ctx context.Context, resourceGroupName string, scheduledActionName string, properties armbulkactions.ScheduledActionUpdate, options *armbulkactions.ScheduledActionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ScheduledActionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, scheduledActionName string, options *armbulkactions.ScheduledActionsClientGetOptions) (resp azfake.Responder[armbulkactions.ScheduledActionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -68,14 +76,6 @@ type ScheduledActionsServer struct {
 	// PatchResources is the fake for method ScheduledActionsClient.PatchResources
 	// HTTP status codes to indicate success: http.StatusOK
 	PatchResources func(ctx context.Context, resourceGroupName string, scheduledActionName string, body armbulkactions.ResourcePatchRequest, options *armbulkactions.ScheduledActionsClientPatchResourcesOptions) (resp azfake.Responder[armbulkactions.ScheduledActionsClientPatchResourcesResponse], errResp azfake.ErrorResponder)
-
-	// BeginTriggerManualOccurrence is the fake for method ScheduledActionsClient.BeginTriggerManualOccurrence
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTriggerManualOccurrence func(ctx context.Context, resourceGroupName string, scheduledActionName string, options *armbulkactions.ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (resp azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ScheduledActionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpdate func(ctx context.Context, resourceGroupName string, scheduledActionName string, properties armbulkactions.ScheduledActionUpdate, options *armbulkactions.ScheduledActionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScheduledActionsServerTransport creates a new instance of ScheduledActionsServerTransport with the provided implementation.
@@ -91,11 +91,11 @@ func NewScheduledActionsServerTransport(srv *ScheduledActionsServer) *ScheduledA
 		beginDetachResources:         newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientDetachResourcesResponse]](),
 		beginDisable:                 newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientDisableResponse]](),
 		beginEnable:                  newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientEnableResponse]](),
+		beginTriggerManualOccurrence: newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse]](),
 		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:   newTracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListBySubscriptionResponse]](),
 		newListResourcesPager:        newTracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListResourcesResponse]](),
-		beginTriggerManualOccurrence: newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse]](),
-		beginUpdate:                  newTracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse]](),
 	}
 }
 
@@ -110,11 +110,11 @@ type ScheduledActionsServerTransport struct {
 	beginDetachResources         *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientDetachResourcesResponse]]
 	beginDisable                 *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientDisableResponse]]
 	beginEnable                  *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientEnableResponse]]
+	beginTriggerManualOccurrence *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse]]
 	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager   *tracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListBySubscriptionResponse]]
 	newListResourcesPager        *tracker[azfake.PagerResponder[armbulkactions.ScheduledActionsClientListResourcesResponse]]
-	beginTriggerManualOccurrence *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse]]
-	beginUpdate                  *tracker[azfake.PollerResponder[armbulkactions.ScheduledActionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScheduledActionsServerTransport.
@@ -152,6 +152,10 @@ func (s *ScheduledActionsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchBeginDisable(req)
 			case "ScheduledActionsClient.BeginEnable":
 				res.resp, res.err = s.dispatchBeginEnable(req)
+			case "ScheduledActionsClient.BeginTriggerManualOccurrence":
+				res.resp, res.err = s.dispatchBeginTriggerManualOccurrence(req)
+			case "ScheduledActionsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "ScheduledActionsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScheduledActionsClient.NewListByResourceGroupPager":
@@ -162,10 +166,6 @@ func (s *ScheduledActionsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchNewListResourcesPager(req)
 			case "ScheduledActionsClient.PatchResources":
 				res.resp, res.err = s.dispatchPatchResources(req)
-			case "ScheduledActionsClient.BeginTriggerManualOccurrence":
-				res.resp, res.err = s.dispatchBeginTriggerManualOccurrence(req)
-			case "ScheduledActionsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -506,6 +506,98 @@ func (s *ScheduledActionsServerTransport) dispatchBeginEnable(req *http.Request)
 	return resp, nil
 }
 
+func (s *ScheduledActionsServerTransport) dispatchBeginTriggerManualOccurrence(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginTriggerManualOccurrence == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerManualOccurrence not implemented")}
+	}
+	beginTriggerManualOccurrence := s.beginTriggerManualOccurrence.get(req)
+	if beginTriggerManualOccurrence == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerManualOccurrence`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginTriggerManualOccurrence(req.Context(), resourceGroupNameParam, scheduledActionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTriggerManualOccurrence = &respr
+		s.beginTriggerManualOccurrence.add(req, beginTriggerManualOccurrence)
+	}
+
+	resp, err := server.PollerResponderNext(beginTriggerManualOccurrence, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginTriggerManualOccurrence.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTriggerManualOccurrence) {
+		s.beginTriggerManualOccurrence.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ScheduledActionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbulkactions.ScheduledActionUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, scheduledActionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *ScheduledActionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -684,98 +776,6 @@ func (s *ScheduledActionsServerTransport) dispatchPatchResources(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *ScheduledActionsServerTransport) dispatchBeginTriggerManualOccurrence(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginTriggerManualOccurrence == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerManualOccurrence not implemented")}
-	}
-	beginTriggerManualOccurrence := s.beginTriggerManualOccurrence.get(req)
-	if beginTriggerManualOccurrence == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerManualOccurrence`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginTriggerManualOccurrence(req.Context(), resourceGroupNameParam, scheduledActionNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginTriggerManualOccurrence = &respr
-		s.beginTriggerManualOccurrence.add(req, beginTriggerManualOccurrence)
-	}
-
-	resp, err := server.PollerResponderNext(beginTriggerManualOccurrence, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginTriggerManualOccurrence.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginTriggerManualOccurrence) {
-		s.beginTriggerManualOccurrence.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *ScheduledActionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbulkactions.ScheduledActionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, scheduledActionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

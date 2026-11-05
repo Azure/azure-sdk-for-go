@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/dataConnectorDefinitions/CreateCustomizableDataConnectorDefinition.json
+// Generated from example definition: 2025-10-01-preview/dataConnectorDefinitions/CreateCustomizableDataConnectorDefinition.json
 func ExampleDataConnectorDefinitionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleDataConnectorDefinitionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectorDefinitions/DeleteDataConnectorDefinitionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectorDefinitions/DeleteDataConnectorDefinitionById.json
 func ExampleDataConnectorDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleDataConnectorDefinitionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectorDefinitions/GetCustomizableDataConnectorDefinitionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectorDefinitions/GetCustomizableDataConnectorDefinitionById.json
 func ExampleDataConnectorDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleDataConnectorDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectorDefinitions/GetDataConnectorDefinitions.json
+// Generated from example definition: 2025-10-01-preview/dataConnectorDefinitions/GetDataConnectorDefinitions.json
 func ExampleDataConnectorDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

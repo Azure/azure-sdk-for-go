@@ -28,8 +28,8 @@ type ClientOptions struct {
 
 	// Session configures session authentication. It applies only to clients authenticated with an
 	// azcore.TokenCredential, and only to the file reads they send to the blob endpoint; requests
-	// to the DFS endpoint always use the bearer token. The default, SessionModeAuto, currently
-	// resolves to disabled.
+	// to the DFS endpoint always use the bearer token. The default, a nil Session.Enabled,
+	// currently resolves to disabled.
 	Session azblob.SessionOptions
 }
 

@@ -5,7 +5,7 @@
 package armcommvaultcontentstore
 
 const (
-	version20260703Preview string = "2026-07-03-preview"
+	version20260930 string = "2026-09-30"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -104,6 +104,28 @@ func PossibleBackupRuleTypeValues() []BackupRuleType {
 		BackupRuleTypeQuarterlyFulls,
 		BackupRuleTypeWeeklyFulls,
 		BackupRuleTypeYearlyFulls,
+	}
+}
+
+// ComplianceLockStatus - Compliance lock status of a Commvault Storage.
+type ComplianceLockStatus string
+
+const (
+	// ComplianceLockStatusDisabled - Compliance lock is disabled.
+	ComplianceLockStatusDisabled ComplianceLockStatus = "Disabled"
+	// ComplianceLockStatusDisablementPending - Disablement is pending multi-person authorization (MPA) approval. Status transitions
+	// to 'Disabled' once approved.
+	ComplianceLockStatusDisablementPending ComplianceLockStatus = "DisablementPending"
+	// ComplianceLockStatusEnabled - Compliance lock is enabled — storage is protected.
+	ComplianceLockStatusEnabled ComplianceLockStatus = "Enabled"
+)
+
+// PossibleComplianceLockStatusValues returns the possible values for the ComplianceLockStatus const type.
+func PossibleComplianceLockStatusValues() []ComplianceLockStatus {
+	return []ComplianceLockStatus{
+		ComplianceLockStatusDisabled,
+		ComplianceLockStatusDisablementPending,
+		ComplianceLockStatusEnabled,
 	}
 }
 
@@ -475,7 +497,8 @@ func PossibleRetentionTimeValues() []RetentionTime {
 	}
 }
 
-// RoleName - Supported Commvault role names
+// RoleName - Supported Commvault role names. Extensible enum — additional roles may be added in future versions without a
+// breaking change.
 type RoleName string
 
 const (

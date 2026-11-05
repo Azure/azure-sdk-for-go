@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Create.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Create.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientCreateOrUpdateResponse{
 	// 	GalleryImage: armcompute.GalleryImage{
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/images/myGalleryImageName"),
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -66,7 +66,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Delete.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,93 +92,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Get.json
-func ExampleGalleryImagesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleryImagesClient().Get(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.GalleryImagesClientGetResponse{
-	// 	GalleryImage: armcompute.GalleryImage{
-	// 		ID: to.Ptr("/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
-	// 		Properties: &armcompute.GalleryImageProperties{
-	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-	// 			Identifier: &armcompute.GalleryImageIdentifier{
-	// 				Publisher: to.Ptr("myPublisherName"),
-	// 				Offer: to.Ptr("myOfferName"),
-	// 				SKU: to.Ptr("mySkuName"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		Name: to.Ptr("myGalleryImageName"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_ListByGallery.json
-func ExampleGalleryImagesClient_NewListByGalleryPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGalleryImagesClient().NewListByGalleryPager("myResourceGroup", "myGalleryName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.GalleryImagesClientListByGalleryResponse{
-		// 	GalleryImageList: armcompute.GalleryImageList{
-		// 		Value: []*armcompute.GalleryImage{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName"),
-		// 				Properties: &armcompute.GalleryImageProperties{
-		// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-		// 					HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-		// 					Identifier: &armcompute.GalleryImageIdentifier{
-		// 						Publisher: to.Ptr("myPublisherName"),
-		// 						Offer: to.Ptr("myOfferName"),
-		// 						SKU: to.Ptr("mySkuName"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-		// 				},
-		// 				Location: to.Ptr("West US"),
-		// 				Name: to.Ptr("myGalleryImageName"),
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("http://svchost:99/subscriptions/subscriptionId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images?$skiptoken=token/Subscriptions/subscriptionId/ResourceGroups/myResourceGroup/galleries/myGalleryName/images/myGalleryImageName"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Update.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Update.json
 func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +144,7 @@ func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_UpdateFeatures.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_UpdateFeatures.json
 func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,4 +209,90 @@ func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	// 		Name: to.Ptr("myGalleryImageName"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Get.json
+func ExampleGalleryImagesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleryImagesClient().Get(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.GalleryImagesClientGetResponse{
+	// 	GalleryImage: armcompute.GalleryImage{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images/myGalleryImageName"),
+	// 		Properties: &armcompute.GalleryImageProperties{
+	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+	// 			Identifier: &armcompute.GalleryImageIdentifier{
+	// 				Publisher: to.Ptr("myPublisherName"),
+	// 				Offer: to.Ptr("myOfferName"),
+	// 				SKU: to.Ptr("mySkuName"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		Name: to.Ptr("myGalleryImageName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_ListByGallery.json
+func ExampleGalleryImagesClient_NewListByGalleryPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGalleryImagesClient().NewListByGalleryPager("myResourceGroup", "myGalleryName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.GalleryImagesClientListByGalleryResponse{
+		// 	GalleryImageList: armcompute.GalleryImageList{
+		// 		Value: []*armcompute.GalleryImage{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images/myGalleryImageName"),
+		// 				Properties: &armcompute.GalleryImageProperties{
+		// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+		// 					HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+		// 					Identifier: &armcompute.GalleryImageIdentifier{
+		// 						Publisher: to.Ptr("myPublisherName"),
+		// 						Offer: to.Ptr("myOfferName"),
+		// 						SKU: to.Ptr("mySkuName"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+		// 				},
+		// 				Location: to.Ptr("West US"),
+		// 				Name: to.Ptr("myGalleryImageName"),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("http://svchost:99/subscriptions/subscriptionId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images?$skiptoken=token/Subscriptions/subscriptionId/ResourceGroups/myResourceGroup/galleries/myGalleryName/images/myGalleryImageName"),
+		// 	},
+		// }
+	}
 }

@@ -29,7 +29,8 @@ const (
 )
 
 var (
-	versionLineRegex = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	// Keep the declaration names aligned with Get-GoModuleVersionInfo in eng/scripts/Language-Settings.ps1.
+	versionLineRegex = regexp.MustCompile(`(?m)^(\s*(?:const\s+)?(?:moduleVersion|serviceLibVersion|version)\s*(?:string\s*)?=\s*)"v[^"\r\n]+"`)
 	// Matches the generator's API version constants in constants.go,
 	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
 	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)
@@ -105,7 +106,7 @@ func UpdateAutorestMdVersion(autorestMdPath, newVersion string) error {
 	return os.WriteFile(autorestMdPath, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// UpdateVersionGoFile updates the moduleVersion const in version.go file
+// UpdateVersionGoFile updates the SDK version constant in version.go.
 func UpdateVersionGoFile(modulePath string, version *semver.Version) error {
 	log.Printf("Updating version.go to %s...", version.String())
 
@@ -116,7 +117,7 @@ func UpdateVersionGoFile(modulePath string, version *semver.Version) error {
 		return err
 	}
 
-	contents := versionLineRegex.ReplaceAllString(string(data), "moduleVersion = \"v"+version.String()+"\"")
+	contents := versionLineRegex.ReplaceAllString(string(data), "${1}\"v"+version.String()+"\"")
 	if contents == string(data) {
 		return nil
 	}

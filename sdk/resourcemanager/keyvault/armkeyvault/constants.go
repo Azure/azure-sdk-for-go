@@ -5,7 +5,7 @@
 package armkeyvault
 
 const (
-	version20260201 string = "2026-02-01"
+	version20260515 string = "2026-05-15"
 )
 
 type AccessPolicyUpdateKind string
@@ -249,6 +249,7 @@ type JSONWebKeyType string
 const (
 	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
 	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
 	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
 	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
@@ -258,6 +259,7 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{
 		JSONWebKeyTypeEC,
 		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeOctHSM,
 		JSONWebKeyTypeRSA,
 		JSONWebKeyTypeRSAHSM,
 	}
@@ -352,11 +354,26 @@ func PossibleManagedHsmSKUFamilyValues() []ManagedHsmSKUFamily {
 type ManagedHsmSKUName string
 
 const (
-	ManagedHsmSKUNameCustomB32  ManagedHsmSKUName = "Custom_B32"
-	ManagedHsmSKUNameCustomB6   ManagedHsmSKUName = "Custom_B6"
-	ManagedHsmSKUNameCustomC10  ManagedHsmSKUName = "Custom_C10"
-	ManagedHsmSKUNameCustomC42  ManagedHsmSKUName = "Custom_C42"
+	// ManagedHsmSKUNameCustomB32 - Custom_B32 SKU
+	ManagedHsmSKUNameCustomB32 ManagedHsmSKUName = "Custom_B32"
+	// ManagedHsmSKUNameCustomB6 - Custom_B6 SKU
+	ManagedHsmSKUNameCustomB6 ManagedHsmSKUName = "Custom_B6"
+	// ManagedHsmSKUNameCustomC10 - Custom_C10 SKU
+	ManagedHsmSKUNameCustomC10 ManagedHsmSKUName = "Custom_C10"
+	// ManagedHsmSKUNameCustomC42 - Custom_C42 SKU
+	ManagedHsmSKUNameCustomC42 ManagedHsmSKUName = "Custom_C42"
+	// ManagedHsmSKUNameStandardB1 - Standard_B1 SKU
 	ManagedHsmSKUNameStandardB1 ManagedHsmSKUName = "Standard_B1"
+	// ManagedHsmSKUNameStandardB10V2 - Standard_B10v2 SKU
+	ManagedHsmSKUNameStandardB10V2 ManagedHsmSKUName = "Standard_B10v2"
+	// ManagedHsmSKUNameStandardB15V2 - Standard_B15v2 SKU
+	ManagedHsmSKUNameStandardB15V2 ManagedHsmSKUName = "Standard_B15v2"
+	// ManagedHsmSKUNameStandardB1V2 - Standard_B1v2 SKU
+	ManagedHsmSKUNameStandardB1V2 ManagedHsmSKUName = "Standard_B1v2"
+	// ManagedHsmSKUNameStandardB20V2 - Standard_B20v2 SKU
+	ManagedHsmSKUNameStandardB20V2 ManagedHsmSKUName = "Standard_B20v2"
+	// ManagedHsmSKUNameStandardB5V2 - Standard_B5v2 SKU
+	ManagedHsmSKUNameStandardB5V2 ManagedHsmSKUName = "Standard_B5v2"
 )
 
 // PossibleManagedHsmSKUNameValues returns the possible values for the ManagedHsmSKUName const type.
@@ -367,6 +384,11 @@ func PossibleManagedHsmSKUNameValues() []ManagedHsmSKUName {
 		ManagedHsmSKUNameCustomC10,
 		ManagedHsmSKUNameCustomC42,
 		ManagedHsmSKUNameStandardB1,
+		ManagedHsmSKUNameStandardB10V2,
+		ManagedHsmSKUNameStandardB15V2,
+		ManagedHsmSKUNameStandardB1V2,
+		ManagedHsmSKUNameStandardB20V2,
+		ManagedHsmSKUNameStandardB5V2,
 	}
 }
 

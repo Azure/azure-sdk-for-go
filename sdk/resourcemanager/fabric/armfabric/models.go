@@ -62,7 +62,7 @@ type CapacityProperties struct {
 	// REQUIRED; The capacity administration
 	Administration *CapacityAdministration
 
-	// The capacity overage properties of the Fabric capacity resource.
+	// REQUIRED; The capacity overage properties of the Fabric capacity resource.
 	Overage *CapacityOverageProperties
 
 	// READ-ONLY; The current deployment state of Microsoft Fabric resource. The provisioningState is to indicate states for resource

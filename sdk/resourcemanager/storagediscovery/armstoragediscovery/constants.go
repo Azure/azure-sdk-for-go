@@ -5,7 +5,7 @@
 package armstoragediscovery
 
 const (
-	version20250901 string = "2025-09-01"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,24 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// CapabilityStatus - The enablement status of a storage discovery capability.
+type CapabilityStatus string
+
+const (
+	// CapabilityStatusDisabled - The capability is disabled.
+	CapabilityStatusDisabled CapabilityStatus = "Disabled"
+	// CapabilityStatusEnabled - The capability is enabled.
+	CapabilityStatusEnabled CapabilityStatus = "Enabled"
+)
+
+// PossibleCapabilityStatusValues returns the possible values for the CapabilityStatus const type.
+func PossibleCapabilityStatusValues() []CapabilityStatus {
+	return []CapabilityStatus{
+		CapabilityStatusDisabled,
+		CapabilityStatusEnabled,
 	}
 }
 

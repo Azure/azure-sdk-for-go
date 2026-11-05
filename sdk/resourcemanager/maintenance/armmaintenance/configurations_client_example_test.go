@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
 func ExampleConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
 func ExampleConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_GetForResource.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_GetForResource.json
 func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResource() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
 func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGuestOSPatchLinux() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGues
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
 func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGuestOSPatchWindows() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGues
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_List.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_List.json
 func ExampleConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2023-10-01-preview/MaintenanceConfigurations_UpdateForResource.json
+// Generated from example definition: 2025-10-01-preview/MaintenanceConfigurations_UpdateForResource.json
 func ExampleConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

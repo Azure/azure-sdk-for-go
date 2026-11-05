@@ -1,5 +1,62 @@
 # Release History
 
+## 0.7.0 (2026-10-13)
+### Breaking Changes
+
+- Enum `PartialFulfillmentMode` has been removed
+- Enum `PartialFulfillmentReason` has been removed
+- Struct `BulkCreateCustomPriorityProfile` has been removed
+- Struct `PartialFulfillmentPolicy` has been removed
+- Struct `PriorityProfile` has been removed
+- Field `MinCapacity`, `PartialFulfillmentPolicy`, `PriorityProfile` of struct `BulkCreateCustomProperties` has been removed
+- Field `MinCapacity`, `PartialFulfillmentPolicy`, `PriorityProfile` of struct `BulkCreateProperties` has been removed
+
+### Features Added
+
+- New enum type `ExtendedLocationType` with values `ExtendedLocationTypeCustomLocation`, `ExtendedLocationTypeEdgeZone`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAny`, `ZonePlacementPolicyTypeAuto`
+- New struct `BillingProfile`
+- New struct `ExtendedLocation`
+- New struct `Placement`
+- New field `ExtendedLocation`, `Placement`, `Zone` in struct `BulkCreateCustomOverride`
+- New field `BillingProfile`, `EvictionPolicy`, `Priority` in struct `BulkactionVMProperties`
+- New field `ExtendedLocation`, `Placement` in struct `LocationBasedBulkCreate`
+- New field `ExtendedLocation`, `Placement` in struct `LocationBasedBulkCreateCustom`
+
+
+## 0.6.0 (2026-09-29)
+### Features Added
+
+- New function `*VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, options *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error)`
+- New struct `AcknowledgeBulkOperationErrorsRequest`
+- New struct `AcknowledgeBulkOperationErrorsResponse`
+
+
+## 0.5.0 (2026-09-25)
+### Breaking Changes
+
+- Enum `AllocationStrategy` has been removed
+- Enum `BulkCreateCustomAllocationStrategy` has been removed
+- Enum `BulkCreateCustomDistributionStrategy` has been removed
+- Enum `DistributionStrategy` has been removed
+- Struct `BulkCreateCustomOverrideBase` has been removed
+- Struct `BulkCreateCustomVMSizeProfile` has been removed
+- Struct `BulkCreateCustomZoneAllocationPolicy` has been removed
+- Struct `BulkCreateVMSizeProfile` has been removed
+- Struct `ZoneAllocationPolicy` has been removed
+- Struct `ZonePreference` has been removed
+- Field `AllocationStrategy` of struct `BulkCreateCustomPriorityProfile` has been removed
+- Field `VMSizesProfile`, `ZoneAllocationPolicy` of struct `BulkCreateCustomProperties` has been removed
+- Field `VMSizesProfile`, `ZoneAllocationPolicy` of struct `BulkCreateProperties` has been removed
+- Field `AllocationStrategy` of struct `PriorityProfile` has been removed
+
+### Features Added
+
+- New function `*VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager(resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) *runtime.Pager[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse]`
+- New struct `ListBulkOperationErrorsResponse`
+- New field `AdditionalCreateParameters` in struct `ExecutionParameters`
+
+
 ## 0.4.0 (2026-09-11)
 ### Breaking Changes
 

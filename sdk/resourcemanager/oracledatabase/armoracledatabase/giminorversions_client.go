@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // GiMinorVersionsClient contains the methods for the GiMinorVersions group.
 // Don't use this type directly, use NewGiMinorVersionsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-06-01
 type GiMinorVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +92,7 @@ func (client *GiMinorVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,9 +168,18 @@ func (client *GiMinorVersionsClient) listByParentCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260601)
+		if options != nil && options.IsGiVersionForProvisioning != nil {
+			reqQP.Set("isGiVersionForProvisioning", strconv.FormatBool(*options.IsGiVersionForProvisioning))
+		}
+		if options != nil && options.Shape != nil {
+			reqQP.Set("shape", *options.Shape)
+		}
 		if options != nil && options.ShapeFamily != nil {
 			reqQP.Set("shapeFamily", string(*options.ShapeFamily))
+		}
+		if options != nil && options.SortOrder != nil {
+			reqQP.Set("sortOrder", string(*options.SortOrder))
 		}
 		if options != nil && options.Zone != nil {
 			reqQP.Set("zone", *options.Zone)

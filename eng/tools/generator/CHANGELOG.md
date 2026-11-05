@@ -1,6 +1,10 @@
 # Release History
 
-## 0.4.18 (unreleased)
+## 0.4.18 (2026-11-03)
+
+### Bugs Fixed
+
+- Updated the Go version pin for SDK dependency updates to `go@1.26.0`, fixing generation failures with dependencies that require Go 1.26.
 
 ### Other Changes
 

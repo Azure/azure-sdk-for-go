@@ -110,10 +110,7 @@ func (r *ReservationsDetailsServerTransport) dispatchNewListPager(req *http.Requ
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
-		if err != nil {
-			return nil, err
-		}
+		resourceScopeParam := matches[regex.SubexpIndex("resourceScope")]
 		startDateParam := getOptional(qp.Get("startDate"))
 		endDateParam := getOptional(qp.Get("endDate"))
 		filterParam := getOptional(qp.Get("$filter"))

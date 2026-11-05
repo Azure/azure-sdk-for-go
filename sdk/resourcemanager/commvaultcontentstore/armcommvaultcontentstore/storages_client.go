@@ -19,7 +19,7 @@ import (
 // StoragesClient contains the methods for the Storages group.
 // Don't use this type directly, use NewStoragesClient() instead.
 //
-// Generated from API version 2026-09-30
+// Generated from API version 2026-11-03
 type StoragesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
 func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*runtime.Poller[StoragesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, storageName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, storageName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Delete a Storage
+// deleteOperation - Delete a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragesClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -194,7 +194,7 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -249,7 +249,7 @@ func (client *StoragesClient) disableComplianceLockCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +315,7 @@ func (client *StoragesClient) enableComplianceLockCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +380,7 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -456,7 +456,7 @@ func (client *StoragesClient) listByCloudAccountCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260930)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -523,7 +523,7 @@ func (client *StoragesClient) refreshCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

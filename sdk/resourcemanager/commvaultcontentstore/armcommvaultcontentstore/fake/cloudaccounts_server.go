@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -35,7 +35,7 @@ type CloudAccountsServer struct {
 
 	// BeginUpdate is the fake for method CloudAccountsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudAccountName string, properties armcommvaultcontentstore.CloudAccount, options *armcommvaultcontentstore.CloudAccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.CloudAccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudAccountName string, properties armcommvaultcontentstore.CloudAccountUpdate, options *armcommvaultcontentstore.CloudAccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.CloudAccountsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CloudAccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -286,7 +286,7 @@ func (c *CloudAccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcommvaultcontentstore.CloudAccount](req)
+		body, err := server.UnmarshalRequestAsJSON[armcommvaultcontentstore.CloudAccountUpdate](req)
 		if err != nil {
 			return nil, err
 		}

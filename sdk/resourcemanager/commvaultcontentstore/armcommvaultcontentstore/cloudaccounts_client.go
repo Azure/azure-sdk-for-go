@@ -19,7 +19,7 @@ import (
 // CloudAccountsClient contains the methods for the CloudAccounts group.
 // Don't use this type directly, use NewCloudAccountsClient() instead.
 //
-// Generated from API version 2026-09-30
+// Generated from API version 2026-11-03
 type CloudAccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *CloudAccountsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *CloudAccountsClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*runtime.Poller[CloudAccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Delete a CloudAccount
+// deleteOperation - Delete a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudAccountsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -185,7 +185,7 @@ func (client *CloudAccountsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -261,7 +261,7 @@ func (client *CloudAccountsClient) linkSaaSCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -278,7 +278,7 @@ func (client *CloudAccountsClient) linkSaaSCreateRequest(ctx context.Context, re
 //   - properties - The resource properties to be updated.
 //   - options - CloudAccountsClientBeginUpdateOptions contains the optional parameters for the CloudAccountsClient.BeginUpdate
 //     method.
-func (client *CloudAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, options *CloudAccountsClientBeginUpdateOptions) (*runtime.Poller[CloudAccountsClientUpdateResponse], error) {
+func (client *CloudAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*runtime.Poller[CloudAccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, cloudAccountName, properties, options)
 		if err != nil {
@@ -297,7 +297,7 @@ func (client *CloudAccountsClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // update - Update a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, options *CloudAccountsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudAccountsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -318,7 +318,7 @@ func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the update request.
-func (client *CloudAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, _ *CloudAccountsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *CloudAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, _ *CloudAccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -337,7 +337,7 @@ func (client *CloudAccountsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -389,7 +389,7 @@ func (client *CloudAccountsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -450,7 +450,7 @@ func (client *CloudAccountsClient) latestLinkedSaaSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -521,7 +521,7 @@ func (client *CloudAccountsClient) listByResourceGroupCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260930)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -588,7 +588,7 @@ func (client *CloudAccountsClient) listBySubscriptionCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260930)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

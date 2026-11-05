@@ -1,5 +1,33 @@
 # Release History
 
+## 4.3.0-beta.1 (2026-09-28)
+### Features Added
+
+- New enum type `BackupSolutionType` with values `BackupSolutionTypeLogicalBackup`, `BackupSolutionTypePhysicalBackup`
+- New enum type `ImmutabilityType` with values `ImmutabilityTypeAsPerPolicy`, `ImmutabilityTypeTimeBased`
+- New function `*PostgreSQLFlexibleServerBackupDatasourceParameters.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New struct `ImmutabilityConfiguration`
+- New struct `PostgreSQLFlexibleServerBackupDatasourceParameters`
+- New struct `RecoveryPointImmutabilityProperties`
+- New field `ImmutabilityProperties` in struct `AzureBackupDiscreteRecoveryPoint`
+- New field `Configuration` in struct `ImmutabilitySettings`
+
+
+## 4.2.0 (2026-09-04)
+### Features Added
+
+- New enum type `GranularityLevel` with values `GranularityLevelProtectedItemLevel`, `GranularityLevelProtectedItemWithParentTag`, `GranularityLevelVaultLevel`
+- New function `*GenericBackupDatasourceParameters.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*GenericRestoreDatasourceCriteria.GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria`
+- New struct `CostManagementSettings`
+- New struct `GenericBackupDatasourceParameters`
+- New struct `GenericRestoreDatasourceCriteria`
+- New struct `ResourceListSelectionCriteria`
+- New field `CostManagementSettings` in struct `BackupVault`
+- New field `CostManagementSettings` in struct `DeletedBackupVault`
+- New field `CostManagementSettings` in struct `PatchBackupVaultInput`
+
+
 ## 4.1.0 (2026-06-24)
 ### Features Added
 

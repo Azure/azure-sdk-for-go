@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // RestorableDroppedDatabasesServer is a fake server for instances of the armsql.RestorableDroppedDatabasesClient type.
@@ -147,6 +148,7 @@ func (r *RestorableDroppedDatabasesServerTransport) dispatchNewListByServerPager
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -155,7 +157,25 @@ func (r *RestorableDroppedDatabasesServerTransport) dispatchNewListByServerPager
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.RestorableDroppedDatabasesClientListByServerOptions
+		if skiptokenParam != nil || topParam != nil {
+			options = &armsql.RestorableDroppedDatabasesClientListByServerOptions{
+				Skiptoken: skiptokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := r.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, options)
 		newListByServerPager = &resp
 		r.newListByServerPager.add(req, newListByServerPager)
 		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.RestorableDroppedDatabasesClientListByServerResponse, createLink func() string) {

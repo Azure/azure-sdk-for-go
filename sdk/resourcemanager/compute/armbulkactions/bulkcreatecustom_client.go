@@ -20,7 +20,7 @@ import (
 // BulkCreateCustomClient contains the methods for the BulkCreateCustom group.
 // Don't use this type directly, use NewBulkCreateCustomClient() instead.
 //
-// Generated from API version 2026-08-06-preview
+// Generated from API version 2026-10-06-preview
 type BulkCreateCustomClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *BulkCreateCustomClient) BeginCancel(ctx context.Context, resourceG
 	}
 }
 
-// Cancel - Cancels BulkCreateCustom instances that have not yet launched.
+// cancel - Cancels BulkCreateCustom instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -145,7 +145,7 @@ func (client *BulkCreateCustomClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates BulkCreateCustoms.
+// createOrUpdate - Creates or updates BulkCreateCustoms.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -167,7 +167,7 @@ func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, _ *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
@@ -191,7 +191,7 @@ func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -225,7 +225,7 @@ func (client *BulkCreateCustomClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes BulkCreateCustoms.
+// deleteOperation - Deletes BulkCreateCustoms.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
@@ -271,7 +271,7 @@ func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
@@ -326,7 +326,7 @@ func (client *BulkCreateCustomClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,7 +387,7 @@ func (client *BulkCreateCustomClient) getAsyncOperationStatusCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -463,7 +463,7 @@ func (client *BulkCreateCustomClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -535,7 +535,7 @@ func (client *BulkCreateCustomClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -617,7 +617,7 @@ func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusCreateReq
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20261006Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

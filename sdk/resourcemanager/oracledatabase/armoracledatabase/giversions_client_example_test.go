@@ -8,104 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/GiVersions_Get_MaximumSet_Gen.json
-func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "giversion1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: armoracledatabase.GiVersion{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
-	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
-	// 		Properties: &armoracledatabase.GiVersionProperties{
-	// 			Version: to.Ptr("19.0.0.0"),
-	// 		},
-	// 		Name: to.Ptr("hitornrpyhizxmoirxa"),
-	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
-	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
-	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/GiVersions_Get_MinimumSet_Gen.json
-func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "Replace this value with a string matching RegExp .*", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: armoracledatabase.GiVersion{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/giVersions_get.json
-func ExampleGiVersionsClient_Get_giVersionsGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "19.0.0.0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: armoracledatabase.GiVersion{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
-	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
-	// 		Properties: &armoracledatabase.GiVersionProperties{
-	// 			Version: to.Ptr("19.0.0.0"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/GiVersions_ListByLocation_MaximumSet_Gen.json
-func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMaximumSet() {
+// Generated from example definition: 2026-06-01/GiVersions_ListByLocation_MaximumSet_Gen.json
+func ExampleGiVersionsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -116,8 +24,9 @@ func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMaxi
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGiVersionsClient().NewListByLocationPager("eastus", &armoracledatabase.GiVersionsClientListByLocationOptions{
-		Shape: to.Ptr(armoracledatabase.SystemShapesExadataX9M),
-		Zone:  to.Ptr("hpzuyaemum")})
+		ShapeAttribute: to.Ptr("bmr"),
+		Shape:          to.Ptr(armoracledatabase.SystemShapesExadataX9M),
+		Zone:           to.Ptr("example")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -132,57 +41,23 @@ func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMaxi
 		// 	GiVersionListResult: armoracledatabase.GiVersionListResult{
 		// 		Value: []*armoracledatabase.GiVersion{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
-		// 				Type: to.Ptr("Oracle.Database/locations/giVersions"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+		// 				Type: to.Ptr("Oracle.Database/resource"),
 		// 				Properties: &armoracledatabase.GiVersionProperties{
 		// 					Version: to.Ptr("19.0.0.0"),
 		// 				},
-		// 				Name: to.Ptr("hitornrpyhizxmoirxa"),
+		// 				Name: to.Ptr("resource1"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedBy: to.Ptr("ns"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("example"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-09-01/GiVersions_ListByLocation_MinimumSet_Gen.json
-func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGiVersionsClient().NewListByLocationPager("eastus", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoracledatabase.GiVersionsClientListByLocationResponse{
-		// 	GiVersionListResult: armoracledatabase.GiVersionListResult{
-		// 		Value: []*armoracledatabase.GiVersion{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
-		// 			},
-		// 		},
 		// 	},
 		// }
 	}

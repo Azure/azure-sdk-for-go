@@ -29,6 +29,10 @@ type HealthModelsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, healthModelName string, options *armcloudhealth.HealthModelsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcloudhealth.HealthModelsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method HealthModelsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, properties armcloudhealth.HealthModelUpdate, options *armcloudhealth.HealthModelsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method HealthModelsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, healthModelName string, options *armcloudhealth.HealthModelsClientGetOptions) (resp azfake.Responder[armcloudhealth.HealthModelsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type HealthModelsServer struct {
 	// NewListBySubscriptionPager is the fake for method HealthModelsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcloudhealth.HealthModelsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcloudhealth.HealthModelsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method HealthModelsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, properties armcloudhealth.HealthModelUpdate, options *armcloudhealth.HealthModelsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewHealthModelsServerTransport creates a new instance of HealthModelsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewHealthModelsServerTransport(srv *HealthModelsServer) *HealthModelsServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcloudhealth.HealthModelsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcloudhealth.HealthModelsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type HealthModelsServerTransport struct {
 	srv                         *HealthModelsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcloudhealth.HealthModelsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcloudhealth.HealthModelsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcloudhealth.HealthModelsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for HealthModelsServerTransport.
@@ -96,14 +96,14 @@ func (h *HealthModelsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = h.dispatchBeginCreate(req)
 			case "HealthModelsClient.BeginDelete":
 				res.resp, res.err = h.dispatchBeginDelete(req)
+			case "HealthModelsClient.BeginUpdate":
+				res.resp, res.err = h.dispatchBeginUpdate(req)
 			case "HealthModelsClient.Get":
 				res.resp, res.err = h.dispatchGet(req)
 			case "HealthModelsClient.NewListByResourceGroupPager":
 				res.resp, res.err = h.dispatchNewListByResourceGroupPager(req)
 			case "HealthModelsClient.NewListBySubscriptionPager":
 				res.resp, res.err = h.dispatchNewListBySubscriptionPager(req)
-			case "HealthModelsClient.BeginUpdate":
-				res.resp, res.err = h.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (h *HealthModelsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (h *HealthModelsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if h.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := h.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.HealthModelUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := h.srv.BeginUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		h.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		h.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		h.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (h *HealthModelsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if h.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (h *HealthModelsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		h.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (h *HealthModelsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if h.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := h.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.HealthModelUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := h.srv.BeginUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		h.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		h.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		h.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

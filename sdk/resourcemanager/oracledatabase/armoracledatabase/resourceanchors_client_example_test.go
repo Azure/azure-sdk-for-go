@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/ResourceAnchors_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleResourceAnchorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,14 +23,14 @@ func ExampleResourceAnchorsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewResourceAnchorsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "resourceanchor1", armoracledatabase.ResourceAnchor{
+	poller, err := clientFactory.NewResourceAnchorsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "resource1", armoracledatabase.ResourceAnchor{
 		Properties: &armoracledatabase.ResourceAnchorProperties{
 			LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		},
 		Tags: map[string]*string{
-			"key236": to.Ptr("wbucrnidikivbujndfk"),
+			"key2309": to.Ptr("example"),
 		},
-		Location: to.Ptr("at"),
+		Location: to.Ptr("qbkti"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,25 +49,25 @@ func ExampleResourceAnchorsClient_BeginCreateOrUpdate() {
 	// 			LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key236": to.Ptr("wbucrnidikivbujndfk"),
+	// 			"key2309": to.Ptr("example"),
 	// 		},
-	// 		Location: to.Ptr("at"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-	// 		Name: to.Ptr("resourceanchor1"),
-	// 		Type: to.Ptr("nqczsjcelq"),
+	// 		Location: to.Ptr("qbkti"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("p"),
+	// 		Type: to.Ptr("Oracle.Database/resource"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedBy: to.Ptr("ns"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/ResourceAnchors_Delete_MaximumSet_Gen.json
 func ExampleResourceAnchorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleResourceAnchorsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewResourceAnchorsClient().BeginDelete(ctx, "rgopenapi", "resourceanchor1", nil)
+	poller, err := clientFactory.NewResourceAnchorsClient().BeginDelete(ctx, "rgopenapi", "resource1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +88,7 @@ func ExampleResourceAnchorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/ResourceAnchors_Get_MaximumSet_Gen.json
 func ExampleResourceAnchorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleResourceAnchorsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceAnchorsClient().Get(ctx, "rgopenapi", "resourceanchor1", nil)
+	res, err := clientFactory.NewResourceAnchorsClient().Get(ctx, "rgopenapi", "resource1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,26 +113,26 @@ func ExampleResourceAnchorsClient_Get() {
 	// 			LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key236": to.Ptr("wbucrnidikivbujndfk"),
+	// 			"key2309": to.Ptr("example"),
 	// 		},
-	// 		Location: to.Ptr("at"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-	// 		Name: to.Ptr("resourceanchor1"),
-	// 		Type: to.Ptr("nqczsjcelq"),
+	// 		Location: to.Ptr("qbkti"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("p"),
+	// 		Type: to.Ptr("Oracle.Database/resource"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedBy: to.Ptr("ns"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleResourceAnchorsClient_NewListByResourceGroupPager_resourceAnchorsListByResourceGroupMaximumSet() {
+// Generated from example definition: 2026-06-01/ResourceAnchors_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleResourceAnchorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,65 +162,30 @@ func ExampleResourceAnchorsClient_NewListByResourceGroupPager_resourceAnchorsLis
 		// 					LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key236": to.Ptr("wbucrnidikivbujndfk"),
+		// 					"key2309": to.Ptr("example"),
 		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-		// 				Name: to.Ptr("resourceanchor1"),
-		// 				Type: to.Ptr("nqczsjcelq"),
+		// 				Location: to.Ptr("qbkti"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+		// 				Name: to.Ptr("p"),
+		// 				Type: to.Ptr("Oracle.Database/resource"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedBy: to.Ptr("ns"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("example"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://microsoft.com/avabszlj"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_ListByResourceGroup_MinimumSet_Gen.json
-func ExampleResourceAnchorsClient_NewListByResourceGroupPager_resourceAnchorsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewResourceAnchorsClient().NewListByResourceGroupPager("rgopenapi", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoracledatabase.ResourceAnchorsClientListByResourceGroupResponse{
-		// 	ResourceAnchorListResult: armoracledatabase.ResourceAnchorListResult{
-		// 		Value: []*armoracledatabase.ResourceAnchor{
-		// 			{
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-09-01/ResourceAnchors_ListBySubscription_MaximumSet_Gen.json
-func ExampleResourceAnchorsClient_NewListBySubscriptionPager_resourceAnchorsListBySubscriptionMaximumSet() {
+// Generated from example definition: 2026-06-01/ResourceAnchors_ListBySubscription_MaximumSet_Gen.json
+func ExampleResourceAnchorsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -250,64 +215,29 @@ func ExampleResourceAnchorsClient_NewListBySubscriptionPager_resourceAnchorsList
 		// 					LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key236": to.Ptr("wbucrnidikivbujndfk"),
+		// 					"key2309": to.Ptr("example"),
 		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-		// 				Name: to.Ptr("i"),
-		// 				Type: to.Ptr("nqczsjcelq"),
+		// 				Location: to.Ptr("qbkti"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+		// 				Name: to.Ptr("p"),
+		// 				Type: to.Ptr("Oracle.Database/resource"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedBy: to.Ptr("ns"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("example"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://microsoft.com/avabszlj"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-09-01/ResourceAnchors_ListBySubscription_MinimumSet_Gen.json
-func ExampleResourceAnchorsClient_NewListBySubscriptionPager_resourceAnchorsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewResourceAnchorsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoracledatabase.ResourceAnchorsClientListBySubscriptionResponse{
-		// 	ResourceAnchorListResult: armoracledatabase.ResourceAnchorListResult{
-		// 		Value: []*armoracledatabase.ResourceAnchor{
-		// 			{
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-09-01/ResourceAnchors_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/ResourceAnchors_Update_MaximumSet_Gen.json
 func ExampleResourceAnchorsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,9 +248,9 @@ func ExampleResourceAnchorsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewResourceAnchorsClient().BeginUpdate(ctx, "rgopenapi", "resourceanchor1", armoracledatabase.ResourceAnchorUpdate{
+	poller, err := clientFactory.NewResourceAnchorsClient().BeginUpdate(ctx, "rgopenapi", "resource1", armoracledatabase.ResourceAnchorUpdate{
 		Tags: map[string]*string{
-			"key3998": to.Ptr("beigadznkpzbohlefgofq"),
+			"key7593": to.Ptr("example"),
 		},
 	}, nil)
 	if err != nil {
@@ -340,19 +270,19 @@ func ExampleResourceAnchorsClient_BeginUpdate() {
 	// 			LinkedCompartmentID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key236": to.Ptr("wbucrnidikivbujndfk"),
+	// 			"key2309": to.Ptr("example"),
 	// 		},
-	// 		Location: to.Ptr("at"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-4025-0000-000000000000/resourceGroups/rg001/providers/Oracle.Database/resourceAnchors/resourceanchor1"),
-	// 		Name: to.Ptr("resourceanchor1"),
-	// 		Type: to.Ptr("nqczsjcelq"),
+	// 		Location: to.Ptr("qbkti"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("p"),
+	// 		Type: to.Ptr("Oracle.Database/resource"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedBy: to.Ptr("ns"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

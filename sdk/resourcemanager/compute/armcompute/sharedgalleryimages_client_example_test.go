@@ -7,11 +7,11 @@ package armcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImage_Get.json
+// Generated from example definition: 2026-03-03/sharedGalleryExamples/SharedGalleryImage_Get.json
 func ExampleSharedGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleSharedGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImages_List.json
+// Generated from example definition: 2026-03-03/sharedGalleryExamples/SharedGalleryImages_List.json
 func ExampleSharedGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

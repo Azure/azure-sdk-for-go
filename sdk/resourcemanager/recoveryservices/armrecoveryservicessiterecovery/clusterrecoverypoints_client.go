@@ -19,7 +19,7 @@ import (
 // ClusterRecoveryPointsClient contains the methods for the ClusterRecoveryPoints group.
 // Don't use this type directly, use NewClusterRecoveryPointsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ClusterRecoveryPointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -119,7 +119,7 @@ func (client *ClusterRecoveryPointsClient) listByReplicationProtectionClusterCre
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

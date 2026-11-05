@@ -1,5 +1,19 @@
 # Release History
 
+## 9.0.0 (2026-10-15)
+### Breaking Changes
+
+- Operation `*CapacityReservationGroupsClient.Delete` has been changed to LRO, use `*CapacityReservationGroupsClient.BeginDelete` instead.
+
+### Features Added
+
+- New struct `FlexProfile`
+- New field `PrivateIPAddressPrefixLength` in struct `VirtualMachineNetworkInterfaceIPConfigurationProperties`
+- New field `FlexProfile` in struct `VirtualMachineProperties`
+- New field `PrivateIPAddressPrefixLength` in struct `VirtualMachineScaleSetIPConfigurationProperties`
+- New field `PrivateIPAddressPrefixLength` in struct `VirtualMachineScaleSetUpdateIPConfigurationProperties`
+
+
 ## 8.4.0 (2026-09-20)
 ### Features Added
 

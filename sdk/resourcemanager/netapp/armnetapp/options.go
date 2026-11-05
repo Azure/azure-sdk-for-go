@@ -328,6 +328,17 @@ type CachesClientListPeeringPassphrasesOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClusterPeersClientGetOptions contains the optional parameters for the ClusterPeersClient.Get method.
+type ClusterPeersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterPeersClientListByParentOptions contains the optional parameters for the ClusterPeersClient.NewListByParentPager
+// method.
+type ClusterPeersClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ElasticAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticAccountsClient.BeginCreateOrUpdate
 // method.
 type ElasticAccountsClientBeginCreateOrUpdateOptions struct {
@@ -601,6 +612,121 @@ type ElasticVolumesClientListByElasticPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExternalCacheConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalCacheConnectionsClient.BeginCreateOrUpdate
+// method.
+type ExternalCacheConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalCacheConnectionsClientBeginDeleteOptions contains the optional parameters for the ExternalCacheConnectionsClient.BeginDelete
+// method.
+type ExternalCacheConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalCacheConnectionsClientBeginUpdateOptions contains the optional parameters for the ExternalCacheConnectionsClient.BeginUpdate
+// method.
+type ExternalCacheConnectionsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalCacheConnectionsClientGetOptions contains the optional parameters for the ExternalCacheConnectionsClient.Get method.
+type ExternalCacheConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalCacheConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExternalCacheConnectionsClient.NewListByResourceGroupPager
+// method.
+type ExternalCacheConnectionsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalCacheConnectionsClientListBySubscriptionOptions contains the optional parameters for the ExternalCacheConnectionsClient.NewListBySubscriptionPager
+// method.
+type ExternalCacheConnectionsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalCachesClientGetOptions contains the optional parameters for the ExternalCachesClient.Get method.
+type ExternalCachesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalCachesClientListByParentOptions contains the optional parameters for the ExternalCachesClient.NewListByParentPager
+// method.
+type ExternalCachesClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalClustersClient.BeginCreateOrUpdate
+// method.
+type ExternalClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalClustersClientBeginDeleteOptions contains the optional parameters for the ExternalClustersClient.BeginDelete method.
+type ExternalClustersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalClustersClientBeginUpdateOptions contains the optional parameters for the ExternalClustersClient.BeginUpdate method.
+type ExternalClustersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalClustersClientGetOptions contains the optional parameters for the ExternalClustersClient.Get method.
+type ExternalClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalClustersClientListByResourceGroupOptions contains the optional parameters for the ExternalClustersClient.NewListByResourceGroupPager
+// method.
+type ExternalClustersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalClustersClientListBySubscriptionOptions contains the optional parameters for the ExternalClustersClient.NewListBySubscriptionPager
+// method.
+type ExternalClustersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalSVMsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginCreateOrUpdate
+// method.
+type ExternalSVMsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalSVMsClientBeginDeleteOptions contains the optional parameters for the ExternalSVMsClient.BeginDelete method.
+type ExternalSVMsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalSVMsClientBeginUpdateOptions contains the optional parameters for the ExternalSVMsClient.BeginUpdate method.
+type ExternalSVMsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExternalSVMsClientGetOptions contains the optional parameters for the ExternalSVMsClient.Get method.
+type ExternalSVMsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExternalSVMsClientListByParentOptions contains the optional parameters for the ExternalSVMsClient.NewListByParentPager
+// method.
+type ExternalSVMsClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -726,6 +852,16 @@ type ResourceUsagesClientGetOptions struct {
 
 // ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
 type ResourceUsagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SVMPeersClientGetOptions contains the optional parameters for the SVMPeersClient.Get method.
+type SVMPeersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SVMPeersClientListByParentOptions contains the optional parameters for the SVMPeersClient.NewListByParentPager method.
+type SVMPeersClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 

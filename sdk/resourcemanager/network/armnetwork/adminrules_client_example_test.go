@@ -12,7 +12,34 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerAdminRulePut.json
+// Generated from example definition: 2026-03-01/NetworkManagerAdminRuleDelete.json
+func ExampleAdminRulesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAdminRulesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRulesClientBeginDeleteOptions{
+		Force: to.Ptr(false)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.AdminRulesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerAdminRulePut.json
 func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +129,7 @@ func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
+// Generated from example definition: 2026-03-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
 func ExampleAdminRulesClient_CreateOrUpdate_createAAdminRuleWithNetworkGroupAsSourceOrDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,34 +218,7 @@ func ExampleAdminRulesClient_CreateOrUpdate_createAAdminRuleWithNetworkGroupAsSo
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleDelete.json
-func ExampleAdminRulesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAdminRulesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRulesClientBeginDeleteOptions{
-		Force: to.Ptr(false)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.AdminRulesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerAdminRuleGet.json
 func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerDefaultAdminRuleGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerDefaultAdminRuleGet.json
 func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleList.json
+// Generated from example definition: 2026-03-01/NetworkManagerAdminRuleList.json
 func ExampleAdminRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

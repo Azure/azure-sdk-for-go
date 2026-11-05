@@ -1,10 +1,22 @@
 # Release History
 
-## 1.14.2-beta.1 (Unreleased)
+## 1.15.1-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.15.0 (2026-10-14)
+
+### Features Added
+
+- `ManagedIdentityCredential` and `DefaultAzureCredential` support user-assigned managed identities
+  on Azure Arc when the agent supports them
+- `WorkloadIdentityCredential` supports identity binding mode via `WorkloadIdentityCredentialOptions.EnableAzureProxy`
 
 ### Bugs Fixed
 

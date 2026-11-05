@@ -20,13 +20,13 @@ import (
 
 // SubscriptionRaiPolicyServer is a fake server for instances of the armcognitiveservices.SubscriptionRaiPolicyClient type.
 type SubscriptionRaiPolicyServer struct {
-	// CreateOrUpdate is the fake for method SubscriptionRaiPolicyClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, raiPolicyName string, raiPolicy armcognitiveservices.RaiPolicy, options *armcognitiveservices.SubscriptionRaiPolicyClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.SubscriptionRaiPolicyClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SubscriptionRaiPolicyClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, raiPolicyName string, options *armcognitiveservices.SubscriptionRaiPolicyClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.SubscriptionRaiPolicyClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method SubscriptionRaiPolicyClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, raiPolicyName string, raiPolicy armcognitiveservices.RaiPolicy, options *armcognitiveservices.SubscriptionRaiPolicyClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.SubscriptionRaiPolicyClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SubscriptionRaiPolicyClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,10 +71,10 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchToMethodFake(req *http.Re
 		}
 		if !intercepted {
 			switch method {
-			case "SubscriptionRaiPolicyClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SubscriptionRaiPolicyClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SubscriptionRaiPolicyClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SubscriptionRaiPolicyClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			default:
@@ -91,39 +91,6 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchToMethodFake(req *http.Re
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SubscriptionRaiPolicyServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/raiPolicy/(?P<raiPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.RaiPolicy](req)
-	if err != nil {
-		return nil, err
-	}
-	raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), raiPolicyNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SubscriptionRaiPolicyServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -163,6 +130,39 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchBeginDelete(req *http.Req
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SubscriptionRaiPolicyServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/raiPolicy/(?P<raiPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.RaiPolicy](req)
+	if err != nil {
+		return nil, err
+	}
+	raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), raiPolicyNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

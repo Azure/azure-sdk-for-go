@@ -48,15 +48,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 		Properties: &armbulkactions.BulkCreateProperties{
 			Capacity:     to.Ptr[int32](2),
 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-			MinCapacity:  to.Ptr[int32](1),
-			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
-				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
-			},
-			PriorityProfile: &armbulkactions.PriorityProfile{
-				Type:           to.Ptr(armbulkactions.PriorityTypeSpot),
-				MaxPricePerVM:  to.Ptr[float32](0.2),
-				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-			},
 			ComputeProfile: &armbulkactions.ComputeProfile{
 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 					StorageProfile: &armbulkactions.StorageProfile{
@@ -117,6 +108,11 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 							},
 						},
 					},
+					Priority:       to.Ptr(armbulkactions.PriorityTypeSpot),
+					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
+					BillingProfile: &armbulkactions.BillingProfile{
+						MaxPrice: to.Ptr[float64](0.05),
+					},
 				},
 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 			},
@@ -130,6 +126,20 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 		Zones: []*string{
 			to.Ptr("1"),
 			to.Ptr("2"),
+		},
+		ExtendedLocation: &armbulkactions.ExtendedLocation{
+			Name: to.Ptr("microsoftlosangeles1"),
+			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		},
+		Placement: &armbulkactions.Placement{
+			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+			IncludeZones: []*string{
+				to.Ptr("1"),
+				to.Ptr("2"),
+			},
+			ExcludeZones: []*string{
+				to.Ptr("3"),
+			},
 		},
 		Tags: map[string]*string{
 			"workload": to.Ptr("batch-render"),
@@ -156,17 +166,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](2),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-	// 			MinCapacity: to.Ptr[int32](1),
-	// 			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
-	// 				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
-	// 				FulfilledCapacity: to.Ptr[int32](1),
-	// 				Reason: to.Ptr(armbulkactions.PartialFulfillmentReasonInsufficientCapacity),
-	// 			},
-	// 			PriorityProfile: &armbulkactions.PriorityProfile{
-	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-	// 				MaxPricePerVM: to.Ptr[float32](0.2),
-	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 	// 					StorageProfile: &armbulkactions.StorageProfile{
@@ -227,6 +226,11 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 							},
 	// 						},
 	// 					},
+	// 					Priority: to.Ptr(armbulkactions.PriorityTypeSpot),
+	// 					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
+	// 					BillingProfile: &armbulkactions.BillingProfile{
+	// 						MaxPrice: to.Ptr[float64](0.05),
+	// 					},
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 			},
@@ -240,6 +244,20 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
+	// 		},
+	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
+	// 			Name: to.Ptr("microsoftlosangeles1"),
+	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		Placement: &armbulkactions.Placement{
+	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+	// 			IncludeZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 			},
+	// 			ExcludeZones: []*string{
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"workload": to.Ptr("batch-render"),
@@ -312,11 +330,6 @@ func ExampleBulkCreateClient_Get() {
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](10),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-	// 			PriorityProfile: &armbulkactions.PriorityProfile{
-	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-	// 				MaxPricePerVM: to.Ptr[float32](0.2),
-	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 	// 					StorageProfile: &armbulkactions.StorageProfile{
@@ -387,6 +400,20 @@ func ExampleBulkCreateClient_Get() {
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
+	// 		},
+	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
+	// 			Name: to.Ptr("microsoftlosangeles1"),
+	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		Placement: &armbulkactions.Placement{
+	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+	// 			IncludeZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 			},
+	// 			ExcludeZones: []*string{
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"workload": to.Ptr("batch-render"),
@@ -513,11 +540,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.PriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -588,6 +610,20 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -616,11 +652,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.PriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -691,6 +722,20 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -751,11 +796,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.PriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -826,6 +866,20 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -854,11 +908,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.PriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -929,6 +978,20 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),

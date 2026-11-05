@@ -30,29 +30,29 @@ type LoadBalancersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, loadBalancerName string, options *armnetwork.LoadBalancersClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method LoadBalancersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, loadBalancerName string, options *armnetwork.LoadBalancersClientGetOptions) (resp azfake.Responder[armnetwork.LoadBalancersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method LoadBalancersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.LoadBalancersClientListOptions) (resp azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse])
-
-	// NewListAllPager is the fake for method LoadBalancersClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.LoadBalancersClientListAllOptions) (resp azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse])
-
 	// BeginListInboundNatRulePortMappings is the fake for method LoadBalancersClient.BeginListInboundNatRulePortMappings
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListInboundNatRulePortMappings func(ctx context.Context, groupName string, loadBalancerName string, backendPoolName string, parameters armnetwork.QueryInboundNatRulePortMappingRequest, options *armnetwork.LoadBalancersClientBeginListInboundNatRulePortMappingsOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse], errResp azfake.ErrorResponder)
+
+	// BeginSwapPublicIPAddresses is the fake for method LoadBalancersClient.BeginSwapPublicIPAddresses
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginSwapPublicIPAddresses func(ctx context.Context, location string, parameters armnetwork.LoadBalancerVipSwapRequest, options *armnetwork.LoadBalancersClientBeginSwapPublicIPAddressesOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method LoadBalancersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, loadBalancerName string, options *armnetwork.LoadBalancersClientGetOptions) (resp azfake.Responder[armnetwork.LoadBalancersClientGetResponse], errResp azfake.ErrorResponder)
 
 	// MigrateToIPBased is the fake for method LoadBalancersClient.MigrateToIPBased
 	// HTTP status codes to indicate success: http.StatusOK
 	MigrateToIPBased func(ctx context.Context, groupName string, loadBalancerName string, options *armnetwork.LoadBalancersClientMigrateToIPBasedOptions) (resp azfake.Responder[armnetwork.LoadBalancersClientMigrateToIPBasedResponse], errResp azfake.ErrorResponder)
 
-	// BeginSwapPublicIPAddresses is the fake for method LoadBalancersClient.BeginSwapPublicIPAddresses
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSwapPublicIPAddresses func(ctx context.Context, location string, parameters armnetwork.LoadBalancerVipSwapRequest, options *armnetwork.LoadBalancersClientBeginSwapPublicIPAddressesOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse], errResp azfake.ErrorResponder)
+	// NewListAllPager is the fake for method LoadBalancersClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.LoadBalancersClientListAllOptions) (resp azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse])
+
+	// NewListPager is the fake for method LoadBalancersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.LoadBalancersClientListOptions) (resp azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse])
 
 	// UpdateTags is the fake for method LoadBalancersClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -67,10 +67,10 @@ func NewLoadBalancersServerTransport(srv *LoadBalancersServer) *LoadBalancersSer
 		srv:                                 srv,
 		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientCreateOrUpdateResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse]](),
-		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]](),
-		newListAllPager:                     newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]](),
 		beginListInboundNatRulePortMappings: newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse]](),
 		beginSwapPublicIPAddresses:          newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse]](),
+		newListAllPager:                     newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]](),
+		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]](),
 	}
 }
 
@@ -80,10 +80,10 @@ type LoadBalancersServerTransport struct {
 	srv                                 *LoadBalancersServer
 	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientCreateOrUpdateResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse]]
-	newListPager                        *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]]
-	newListAllPager                     *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]]
 	beginListInboundNatRulePortMappings *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse]]
 	beginSwapPublicIPAddresses          *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse]]
+	newListAllPager                     *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]]
+	newListPager                        *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LoadBalancersServerTransport.
@@ -111,18 +111,18 @@ func (l *LoadBalancersServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = l.dispatchBeginCreateOrUpdate(req)
 			case "LoadBalancersClient.BeginDelete":
 				res.resp, res.err = l.dispatchBeginDelete(req)
-			case "LoadBalancersClient.Get":
-				res.resp, res.err = l.dispatchGet(req)
-			case "LoadBalancersClient.NewListPager":
-				res.resp, res.err = l.dispatchNewListPager(req)
-			case "LoadBalancersClient.NewListAllPager":
-				res.resp, res.err = l.dispatchNewListAllPager(req)
 			case "LoadBalancersClient.BeginListInboundNatRulePortMappings":
 				res.resp, res.err = l.dispatchBeginListInboundNatRulePortMappings(req)
-			case "LoadBalancersClient.MigrateToIPBased":
-				res.resp, res.err = l.dispatchMigrateToIPBased(req)
 			case "LoadBalancersClient.BeginSwapPublicIPAddresses":
 				res.resp, res.err = l.dispatchBeginSwapPublicIPAddresses(req)
+			case "LoadBalancersClient.Get":
+				res.resp, res.err = l.dispatchGet(req)
+			case "LoadBalancersClient.MigrateToIPBased":
+				res.resp, res.err = l.dispatchMigrateToIPBased(req)
+			case "LoadBalancersClient.NewListAllPager":
+				res.resp, res.err = l.dispatchNewListAllPager(req)
+			case "LoadBalancersClient.NewListPager":
+				res.resp, res.err = l.dispatchNewListPager(req)
 			case "LoadBalancersClient.UpdateTags":
 				res.resp, res.err = l.dispatchUpdateTags(req)
 			default:
@@ -233,119 +233,6 @@ func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (l *LoadBalancersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	detailLevelParam := getOptional(armnetwork.LoadBalancerDetailLevel(qp.Get("detailLevel")))
-	var options *armnetwork.LoadBalancersClientGetOptions
-	if expandParam != nil || detailLevelParam != nil {
-		options = &armnetwork.LoadBalancersClientGetOptions{
-			Expand:      expandParam,
-			DetailLevel: detailLevelParam,
-		}
-	}
-	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, loadBalancerNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := l.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := l.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		l.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.LoadBalancersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		l.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := l.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := l.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		l.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.LoadBalancersClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		l.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappings(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginListInboundNatRulePortMappings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListInboundNatRulePortMappings not implemented")}
@@ -398,6 +285,93 @@ func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappin
 	return resp, nil
 }
 
+func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginSwapPublicIPAddresses == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSwapPublicIPAddresses not implemented")}
+	}
+	beginSwapPublicIPAddresses := l.beginSwapPublicIPAddresses.get(req)
+	if beginSwapPublicIPAddresses == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLoadBalancerFrontendPublicIpAddresses`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.LoadBalancerVipSwapRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginSwapPublicIPAddresses(req.Context(), locationParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSwapPublicIPAddresses = &respr
+		l.beginSwapPublicIPAddresses.add(req, beginSwapPublicIPAddresses)
+	}
+
+	resp, err := server.PollerResponderNext(beginSwapPublicIPAddresses, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		l.beginSwapPublicIPAddresses.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSwapPublicIPAddresses) {
+		l.beginSwapPublicIPAddresses.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LoadBalancersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if l.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	detailLevelParam := getOptional(armnetwork.LoadBalancerDetailLevel(qp.Get("detailLevel")))
+	var options *armnetwork.LoadBalancersClientGetOptions
+	if expandParam != nil || detailLevelParam != nil {
+		options = &armnetwork.LoadBalancersClientGetOptions{
+			Expand:      expandParam,
+			DetailLevel: detailLevelParam,
+		}
+	}
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, loadBalancerNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (l *LoadBalancersServerTransport) dispatchMigrateToIPBased(req *http.Request) (*http.Response, error) {
 	if l.srv.MigrateToIPBased == nil {
 		return nil, &nonRetriableError{errors.New("fake for method MigrateToIPBased not implemented")}
@@ -441,47 +415,73 @@ func (l *LoadBalancersServerTransport) dispatchMigrateToIPBased(req *http.Reques
 	return resp, nil
 }
 
-func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *http.Request) (*http.Response, error) {
-	if l.srv.BeginSwapPublicIPAddresses == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSwapPublicIPAddresses not implemented")}
+func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	beginSwapPublicIPAddresses := l.beginSwapPublicIPAddresses.get(req)
-	if beginSwapPublicIPAddresses == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLoadBalancerFrontendPublicIpAddresses`
+	newListAllPager := l.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := l.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		l.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.LoadBalancersClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		l.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.LoadBalancerVipSwapRequest](req)
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := l.srv.BeginSwapPublicIPAddresses(req.Context(), locationParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSwapPublicIPAddresses = &respr
-		l.beginSwapPublicIPAddresses.add(req, beginSwapPublicIPAddresses)
+		resp := l.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.LoadBalancersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginSwapPublicIPAddresses, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		l.beginSwapPublicIPAddresses.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginSwapPublicIPAddresses) {
-		l.beginSwapPublicIPAddresses.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

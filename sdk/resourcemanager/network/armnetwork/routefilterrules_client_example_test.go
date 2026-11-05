@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/RouteFilterRuleCreate.json
+// Generated from example definition: 2026-03-01/RouteFilterRuleCreate.json
 func ExampleRouteFilterRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleRouteFilterRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterRuleDelete.json
+// Generated from example definition: 2026-03-01/RouteFilterRuleDelete.json
 func ExampleRouteFilterRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleRouteFilterRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterRuleGet.json
+// Generated from example definition: 2026-03-01/RouteFilterRuleGet.json
 func ExampleRouteFilterRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleRouteFilterRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterRuleListByRouteFilter.json
+// Generated from example definition: 2026-03-01/RouteFilterRuleListByRouteFilter.json
 func ExampleRouteFilterRulesClient_NewListByRouteFilterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

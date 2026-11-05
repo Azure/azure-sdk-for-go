@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Commvault.ContentStore": "2026-07-03-preview"
+    "Commvault.ContentStore": "2026-09-30"
   },
-  "emitterVersion": "0.17.4"
+  "emitterVersion": "0.17.5"
 }

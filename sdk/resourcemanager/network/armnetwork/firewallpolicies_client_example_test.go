@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/FirewallPolicyPut.json
+// Generated from example definition: 2026-03-01/FirewallPolicyPut.json
 func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyDelete.json
+// Generated from example definition: 2026-03-01/FirewallPolicyDelete.json
 func ExampleFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleFirewallPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyGet.json
+// Generated from example definition: 2026-03-01/FirewallPolicyGet.json
 func ExampleFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,78 +416,7 @@ func ExampleFirewallPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyListByResourceGroup.json
-func ExampleFirewallPoliciesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewFirewallPoliciesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.FirewallPoliciesClientListResponse{
-		// 	FirewallPolicyListResult: armnetwork.FirewallPolicyListResult{
-		// 		Value: []*armnetwork.FirewallPolicy{
-		// 			{
-		// 				Name: to.Ptr("firewallPolicy"),
-		// 				Type: to.Ptr("Microsoft.Network/firewallPolicies"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.FirewallPolicyPropertiesFormat{
-		// 					DNSSettings: &armnetwork.DNSSettings{
-		// 						EnableProxy: to.Ptr(true),
-		// 						RequireProxyForNetworkRules: to.Ptr(false),
-		// 						Servers: []*string{
-		// 							to.Ptr("30.3.4.5"),
-		// 						},
-		// 					},
-		// 					Firewalls: []*armnetwork.SubResource{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					RuleCollectionGroups: []*armnetwork.SubResource{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy/ruleCollectionGroups/ruleCollectionGroup1"),
-		// 						},
-		// 					},
-		// 					SKU: &armnetwork.FirewallPolicySKU{
-		// 						Tier: to.Ptr(armnetwork.FirewallPolicySKUTierStandard),
-		// 					},
-		// 					Snat: &armnetwork.FirewallPolicySNAT{
-		// 						PrivateRanges: []*string{
-		// 							to.Ptr("IANAPrivateRanges"),
-		// 						},
-		// 					},
-		// 					SQL: &armnetwork.FirewallPolicySQL{
-		// 						AllowSQLRedirect: to.Ptr(true),
-		// 					},
-		// 					ThreatIntelMode: to.Ptr(armnetwork.AzureFirewallThreatIntelModeAlert),
-		// 					AfcManaged: to.Ptr(true),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/FirewallPolicyListBySubscription.json
+// Generated from example definition: 2026-03-01/FirewallPolicyListBySubscription.json
 func ExampleFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -558,7 +487,78 @@ func ExampleFirewallPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyPatch.json
+// Generated from example definition: 2026-03-01/FirewallPolicyListByResourceGroup.json
+func ExampleFirewallPoliciesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFirewallPoliciesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.FirewallPoliciesClientListResponse{
+		// 	FirewallPolicyListResult: armnetwork.FirewallPolicyListResult{
+		// 		Value: []*armnetwork.FirewallPolicy{
+		// 			{
+		// 				Name: to.Ptr("firewallPolicy"),
+		// 				Type: to.Ptr("Microsoft.Network/firewallPolicies"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.FirewallPolicyPropertiesFormat{
+		// 					DNSSettings: &armnetwork.DNSSettings{
+		// 						EnableProxy: to.Ptr(true),
+		// 						RequireProxyForNetworkRules: to.Ptr(false),
+		// 						Servers: []*string{
+		// 							to.Ptr("30.3.4.5"),
+		// 						},
+		// 					},
+		// 					Firewalls: []*armnetwork.SubResource{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					RuleCollectionGroups: []*armnetwork.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy/ruleCollectionGroups/ruleCollectionGroup1"),
+		// 						},
+		// 					},
+		// 					SKU: &armnetwork.FirewallPolicySKU{
+		// 						Tier: to.Ptr(armnetwork.FirewallPolicySKUTierStandard),
+		// 					},
+		// 					Snat: &armnetwork.FirewallPolicySNAT{
+		// 						PrivateRanges: []*string{
+		// 							to.Ptr("IANAPrivateRanges"),
+		// 						},
+		// 					},
+		// 					SQL: &armnetwork.FirewallPolicySQL{
+		// 						AllowSQLRedirect: to.Ptr(true),
+		// 					},
+		// 					ThreatIntelMode: to.Ptr(armnetwork.AzureFirewallThreatIntelModeAlert),
+		// 					AfcManaged: to.Ptr(true),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/FirewallPolicyPatch.json
 func ExampleFirewallPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

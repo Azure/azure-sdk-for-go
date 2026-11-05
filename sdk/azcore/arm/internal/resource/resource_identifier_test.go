@@ -5,11 +5,46 @@ package resource
 
 import (
 	"encoding"
+	"fmt"
 	"sync"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestParseResourceIDLocationCasing(t *testing.T) {
+	const subscriptionID = "00000000-0000-0000-0000-000000000000"
+	for _, locationKey := range []string{"locations", "Locations", "LOCATIONS", "lOcAtIoNs"} {
+		for name, path := range map[string]string{
+			"subscription location": "/subscriptions/%s/%s/WestEurope",
+			"provider location":     "/subscriptions/%s/providers/Microsoft.Compute/%s/WestEurope",
+			"child resource":        "/subscriptions/%s/providers/Microsoft.Compute/%s/WestEurope/publishers/myPublisher",
+			"extension resource":    "/subscriptions/%s/%s/WestEurope/providers/Microsoft.Authorization/roleAssignments/myRole",
+		} {
+			t.Run(name+"/"+locationKey, func(t *testing.T) {
+				input := fmt.Sprintf(path, subscriptionID, locationKey)
+				id, err := ParseResourceID(input)
+				require.NoError(t, err)
+				assert.Equal(t, "WestEurope", id.Location)
+				assert.Equal(t, subscriptionID, id.SubscriptionID)
+				assert.Equal(t, input, id.String())
+				if name == "child resource" || name == "extension resource" {
+					assert.Equal(t, "WestEurope", id.Parent.Location)
+				}
+			})
+		}
+	}
+	for _, resourceType := range []string{"location", "myLocations"} {
+		t.Run(resourceType, func(t *testing.T) {
+			input := fmt.Sprintf("/subscriptions/%s/providers/Microsoft.Compute/%s/WestEurope", subscriptionID, resourceType)
+			id, err := ParseResourceID(input)
+			require.NoError(t, err)
+			assert.Empty(t, id.Location)
+			assert.Equal(t, input, id.String())
+		})
+	}
+}
 
 func TestRace(t *testing.T) {
 	rid, err := ParseResourceID("/subscriptions/0/resourceGroups/foo")

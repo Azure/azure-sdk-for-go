@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitConnectionCreate.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitConnectionCreate.json
 func ExampleExpressRouteCircuitConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleExpressRouteCircuitConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitConnectionDelete.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitConnectionDelete.json
 func ExampleExpressRouteCircuitConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleExpressRouteCircuitConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitConnectionGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitConnectionGet.json
 func ExampleExpressRouteCircuitConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleExpressRouteCircuitConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitConnectionList.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitConnectionList.json
 func ExampleExpressRouteCircuitConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

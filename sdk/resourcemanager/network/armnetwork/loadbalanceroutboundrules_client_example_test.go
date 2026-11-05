@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/LoadBalancerOutboundRuleGet.json
+// Generated from example definition: 2026-03-01/LoadBalancerOutboundRuleGet.json
 func ExampleLoadBalancerOutboundRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLoadBalancerOutboundRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LoadBalancerOutboundRuleList.json
+// Generated from example definition: 2026-03-01/LoadBalancerOutboundRuleList.json
 func ExampleLoadBalancerOutboundRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

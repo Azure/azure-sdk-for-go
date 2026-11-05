@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/AddressPrefixSetCreate.json
+// Generated from example definition: 2026-03-01/AddressPrefixSetCreate.json
 func ExampleAddressPrefixSetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleAddressPrefixSetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/AddressPrefixSetDelete.json
+// Generated from example definition: 2026-03-01/AddressPrefixSetDelete.json
 func ExampleAddressPrefixSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleAddressPrefixSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/AddressPrefixSetGet.json
+// Generated from example definition: 2026-03-01/AddressPrefixSetGet.json
 func ExampleAddressPrefixSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleAddressPrefixSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/AddressPrefixSetList.json
+// Generated from example definition: 2026-03-01/AddressPrefixSetList.json
 func ExampleAddressPrefixSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

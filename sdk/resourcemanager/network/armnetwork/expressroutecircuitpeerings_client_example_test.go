@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringCreate.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitPeeringCreate.json
 func ExampleExpressRouteCircuitPeeringsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringDelete.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitPeeringDelete.json
 func ExampleExpressRouteCircuitPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitPeeringGet.json
 func ExampleExpressRouteCircuitPeeringsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleExpressRouteCircuitPeeringsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringList.json
+// Generated from example definition: 2026-03-01/ExpressRouteCircuitPeeringList.json
 func ExampleExpressRouteCircuitPeeringsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

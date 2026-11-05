@@ -33,13 +33,13 @@ type AuthenticationPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, authenticationPolicyName string, options *armnetwork.AuthenticationPoliciesClientGetOptions) (resp azfake.Responder[armnetwork.AuthenticationPoliciesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AuthenticationPoliciesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.AuthenticationPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse])
-
 	// NewListAllPager is the fake for method AuthenticationPoliciesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.AuthenticationPoliciesClientListAllOptions) (resp azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListAllResponse])
+
+	// NewListPager is the fake for method AuthenticationPoliciesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.AuthenticationPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse])
 
 	// Update is the fake for method AuthenticationPoliciesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ func NewAuthenticationPoliciesServerTransport(srv *AuthenticationPoliciesServer)
 	return &AuthenticationPoliciesServerTransport{
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.AuthenticationPoliciesClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse]](),
 	}
 }
 
@@ -63,8 +63,8 @@ func NewAuthenticationPoliciesServerTransport(srv *AuthenticationPoliciesServer)
 type AuthenticationPoliciesServerTransport struct {
 	srv                 *AuthenticationPoliciesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.AuthenticationPoliciesClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.AuthenticationPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AuthenticationPoliciesServerTransport.
@@ -94,10 +94,10 @@ func (a *AuthenticationPoliciesServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = a.dispatchDelete(req)
 			case "AuthenticationPoliciesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AuthenticationPoliciesClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AuthenticationPoliciesClient.NewListAllPager":
 				res.resp, res.err = a.dispatchNewListAllPager(req)
+			case "AuthenticationPoliciesClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AuthenticationPoliciesClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
 			default:
@@ -230,6 +230,39 @@ func (a *AuthenticationPoliciesServerTransport) dispatchGet(req *http.Request) (
 	return resp, nil
 }
 
+func (a *AuthenticationPoliciesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := a.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/authenticationPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		a.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.AuthenticationPoliciesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		a.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *AuthenticationPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -263,39 +296,6 @@ func (a *AuthenticationPoliciesServerTransport) dispatchNewListPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AuthenticationPoliciesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := a.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/authenticationPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		a.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.AuthenticationPoliciesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		a.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/CloudServiceSwapPut.json
+// Generated from example definition: 2026-03-01/CloudServiceSwapPut.json
 func ExampleVipSwapClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleVipSwapClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/CloudServiceSwapGet.json
+// Generated from example definition: 2026-03-01/CloudServiceSwapGet.json
 func ExampleVipSwapClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVipSwapClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/CloudServiceSwapList.json
+// Generated from example definition: 2026-03-01/CloudServiceSwapList.json
 func ExampleVipSwapClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -29,6 +29,14 @@ type InterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginGetEffectiveRouteTable is the fake for method InterfacesClient.BeginGetEffectiveRouteTable
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetEffectiveRouteTable func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientBeginGetEffectiveRouteTableOptions) (resp azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse], errResp azfake.ErrorResponder)
+
+	// BeginListEffectiveNetworkSecurityGroups is the fake for method InterfacesClient.BeginListEffectiveNetworkSecurityGroups
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginListEffectiveNetworkSecurityGroups func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions) (resp azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InterfacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientGetOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +45,6 @@ type InterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCloudServiceNetworkInterface func(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, options *armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceResponse], errResp azfake.ErrorResponder)
 
-	// BeginGetEffectiveRouteTable is the fake for method InterfacesClient.BeginGetEffectiveRouteTable
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetEffectiveRouteTable func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientBeginGetEffectiveRouteTableOptions) (resp azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse], errResp azfake.ErrorResponder)
-
 	// GetVirtualMachineScaleSetIPConfiguration is the fake for method InterfacesClient.GetVirtualMachineScaleSetIPConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVirtualMachineScaleSetIPConfiguration func(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type InterfacesServer struct {
 	// GetVirtualMachineScaleSetNetworkInterface is the fake for method InterfacesClient.GetVirtualMachineScaleSetNetworkInterface
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVirtualMachineScaleSetNetworkInterface func(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method InterfacesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.InterfacesClientListOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListResponse])
 
 	// NewListAllPager is the fake for method InterfacesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -65,9 +65,9 @@ type InterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCloudServiceRoleInstanceNetworkInterfacesPager func(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse])
 
-	// BeginListEffectiveNetworkSecurityGroups is the fake for method InterfacesClient.BeginListEffectiveNetworkSecurityGroups
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginListEffectiveNetworkSecurityGroups func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armnetwork.InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions) (resp azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method InterfacesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.InterfacesClientListOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListResponse])
 
 	// NewListVirtualMachineScaleSetIPConfigurationsPager is the fake for method InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -91,15 +91,15 @@ type InterfacesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewInterfacesServerTransport(srv *InterfacesServer) *InterfacesServerTransport {
 	return &InterfacesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]](),
-		beginGetEffectiveRouteTable: newTracker[azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]](),
-		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]](),
+		srv:                                     srv,
+		beginCreateOrUpdate:                     newTracker[azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]](),
+		beginDelete:                             newTracker[azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]](),
+		beginGetEffectiveRouteTable:             newTracker[azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]](),
+		beginListEffectiveNetworkSecurityGroups: newTracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]](),
+		newListAllPager:                         newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]](),
 		newListCloudServiceNetworkInterfacesPager:             newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse]](),
 		newListCloudServiceRoleInstanceNetworkInterfacesPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]](),
-		beginListEffectiveNetworkSecurityGroups:               newTracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]](),
 		newListVirtualMachineScaleSetIPConfigurationsPager:    newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]](),
 		newListVirtualMachineScaleSetNetworkInterfacesPager:   newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]](),
 		newListVirtualMachineScaleSetVMNetworkInterfacesPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]](),
@@ -113,11 +113,11 @@ type InterfacesServerTransport struct {
 	beginCreateOrUpdate                                   *tracker[azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]]
 	beginDelete                                           *tracker[azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]]
 	beginGetEffectiveRouteTable                           *tracker[azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]]
-	newListPager                                          *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]]
+	beginListEffectiveNetworkSecurityGroups               *tracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]]
 	newListAllPager                                       *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]]
 	newListCloudServiceNetworkInterfacesPager             *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse]]
 	newListCloudServiceRoleInstanceNetworkInterfacesPager *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]]
-	beginListEffectiveNetworkSecurityGroups               *tracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]]
+	newListPager                                          *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]]
 	newListVirtualMachineScaleSetIPConfigurationsPager    *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]]
 	newListVirtualMachineScaleSetNetworkInterfacesPager   *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]]
 	newListVirtualMachineScaleSetVMNetworkInterfacesPager *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]]
@@ -148,26 +148,26 @@ func (i *InterfacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InterfacesClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InterfacesClient.BeginGetEffectiveRouteTable":
+				res.resp, res.err = i.dispatchBeginGetEffectiveRouteTable(req)
+			case "InterfacesClient.BeginListEffectiveNetworkSecurityGroups":
+				res.resp, res.err = i.dispatchBeginListEffectiveNetworkSecurityGroups(req)
 			case "InterfacesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InterfacesClient.GetCloudServiceNetworkInterface":
 				res.resp, res.err = i.dispatchGetCloudServiceNetworkInterface(req)
-			case "InterfacesClient.BeginGetEffectiveRouteTable":
-				res.resp, res.err = i.dispatchBeginGetEffectiveRouteTable(req)
 			case "InterfacesClient.GetVirtualMachineScaleSetIPConfiguration":
 				res.resp, res.err = i.dispatchGetVirtualMachineScaleSetIPConfiguration(req)
 			case "InterfacesClient.GetVirtualMachineScaleSetNetworkInterface":
 				res.resp, res.err = i.dispatchGetVirtualMachineScaleSetNetworkInterface(req)
-			case "InterfacesClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InterfacesClient.NewListAllPager":
 				res.resp, res.err = i.dispatchNewListAllPager(req)
 			case "InterfacesClient.NewListCloudServiceNetworkInterfacesPager":
 				res.resp, res.err = i.dispatchNewListCloudServiceNetworkInterfacesPager(req)
 			case "InterfacesClient.NewListCloudServiceRoleInstanceNetworkInterfacesPager":
 				res.resp, res.err = i.dispatchNewListCloudServiceRoleInstanceNetworkInterfacesPager(req)
-			case "InterfacesClient.BeginListEffectiveNetworkSecurityGroups":
-				res.resp, res.err = i.dispatchBeginListEffectiveNetworkSecurityGroups(req)
+			case "InterfacesClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager":
 				res.resp, res.err = i.dispatchNewListVirtualMachineScaleSetIPConfigurationsPager(req)
 			case "InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager":
@@ -284,6 +284,94 @@ func (i *InterfacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (i *InterfacesServerTransport) dispatchBeginGetEffectiveRouteTable(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginGetEffectiveRouteTable == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetEffectiveRouteTable not implemented")}
+	}
+	beginGetEffectiveRouteTable := i.beginGetEffectiveRouteTable.get(req)
+	if beginGetEffectiveRouteTable == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/effectiveRouteTable`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginGetEffectiveRouteTable(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetEffectiveRouteTable = &respr
+		i.beginGetEffectiveRouteTable.add(req, beginGetEffectiveRouteTable)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetEffectiveRouteTable, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginGetEffectiveRouteTable.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetEffectiveRouteTable) {
+		i.beginGetEffectiveRouteTable.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InterfacesServerTransport) dispatchBeginListEffectiveNetworkSecurityGroups(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginListEffectiveNetworkSecurityGroups == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListEffectiveNetworkSecurityGroups not implemented")}
+	}
+	beginListEffectiveNetworkSecurityGroups := i.beginListEffectiveNetworkSecurityGroups.get(req)
+	if beginListEffectiveNetworkSecurityGroups == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/effectiveNetworkSecurityGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginListEffectiveNetworkSecurityGroups(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListEffectiveNetworkSecurityGroups = &respr
+		i.beginListEffectiveNetworkSecurityGroups.add(req, beginListEffectiveNetworkSecurityGroups)
+	}
+
+	resp, err := server.PollerResponderNext(beginListEffectiveNetworkSecurityGroups, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginListEffectiveNetworkSecurityGroups.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListEffectiveNetworkSecurityGroups) {
+		i.beginListEffectiveNetworkSecurityGroups.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *InterfacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -371,50 +459,6 @@ func (i *InterfacesServerTransport) dispatchGetCloudServiceNetworkInterface(req 
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (i *InterfacesServerTransport) dispatchBeginGetEffectiveRouteTable(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginGetEffectiveRouteTable == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetEffectiveRouteTable not implemented")}
-	}
-	beginGetEffectiveRouteTable := i.beginGetEffectiveRouteTable.get(req)
-	if beginGetEffectiveRouteTable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/effectiveRouteTable`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginGetEffectiveRouteTable(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetEffectiveRouteTable = &respr
-		i.beginGetEffectiveRouteTable.add(req, beginGetEffectiveRouteTable)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetEffectiveRouteTable, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginGetEffectiveRouteTable.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetEffectiveRouteTable) {
-		i.beginGetEffectiveRouteTable.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -516,43 +560,6 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetNetworkInte
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *InterfacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.InterfacesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -676,47 +683,40 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceRoleInstanceNetwo
 	return resp, nil
 }
 
-func (i *InterfacesServerTransport) dispatchBeginListEffectiveNetworkSecurityGroups(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginListEffectiveNetworkSecurityGroups == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListEffectiveNetworkSecurityGroups not implemented")}
+func (i *InterfacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginListEffectiveNetworkSecurityGroups := i.beginListEffectiveNetworkSecurityGroups.get(req)
-	if beginListEffectiveNetworkSecurityGroups == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/effectiveNetworkSecurityGroups`
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginListEffectiveNetworkSecurityGroups(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListEffectiveNetworkSecurityGroups = &respr
-		i.beginListEffectiveNetworkSecurityGroups.add(req, beginListEffectiveNetworkSecurityGroups)
+		resp := i.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.InterfacesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginListEffectiveNetworkSecurityGroups, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginListEffectiveNetworkSecurityGroups.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginListEffectiveNetworkSecurityGroups) {
-		i.beginListEffectiveNetworkSecurityGroups.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

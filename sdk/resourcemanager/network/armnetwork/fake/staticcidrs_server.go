@@ -22,13 +22,13 @@ import (
 
 // StaticCidrsServer is a fake server for instances of the armnetwork.StaticCidrsClient type.
 type StaticCidrsServer struct {
-	// Create is the fake for method StaticCidrsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, body armnetwork.StaticCidr, options *armnetwork.StaticCidrsClientCreateOptions) (resp azfake.Responder[armnetwork.StaticCidrsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method StaticCidrsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *armnetwork.StaticCidrsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.StaticCidrsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method StaticCidrsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, body armnetwork.StaticCidr, options *armnetwork.StaticCidrsClientCreateOptions) (resp azfake.Responder[armnetwork.StaticCidrsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method StaticCidrsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (s *StaticCidrsServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "StaticCidrsClient.Create":
-				res.resp, res.err = s.dispatchCreate(req)
 			case "StaticCidrsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StaticCidrsClient.Create":
+				res.resp, res.err = s.dispatchCreate(req)
 			case "StaticCidrsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StaticCidrsClient.NewListPager":
@@ -101,51 +101,6 @@ func (s *StaticCidrsServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *StaticCidrsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if s.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/staticCidrs/(?P<staticCidrName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.StaticCidr](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	staticCidrNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("staticCidrName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, poolNameParam, staticCidrNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticCidr, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *StaticCidrsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -197,6 +152,51 @@ func (s *StaticCidrsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *StaticCidrsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if s.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/staticCidrs/(?P<staticCidrName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.StaticCidr](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	staticCidrNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("staticCidrName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, poolNameParam, staticCidrNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticCidr, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

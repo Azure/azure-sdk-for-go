@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/PeerExpressRouteCircuitConnectionGet.json
+// Generated from example definition: 2026-03-01/PeerExpressRouteCircuitConnectionGet.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PeerExpressRouteCircuitConnectionList.json
+// Generated from example definition: 2026-03-01/PeerExpressRouteCircuitConnectionList.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

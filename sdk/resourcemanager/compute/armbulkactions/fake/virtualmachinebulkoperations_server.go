@@ -46,10 +46,6 @@ type VirtualMachineBulkOperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkHibernateOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteHibernateContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkHibernateOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkHibernateOperationResponse], errResp azfake.ErrorResponder)
 
-	// NewBulkListOperationErrorsPager is the fake for method VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewBulkListOperationErrorsPager func(resourceGroupName string, location string, options *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (resp azfake.PagerResponder[armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse])
-
 	// BulkReimageOperation is the fake for method VirtualMachineBulkOperationsClient.BulkReimageOperation
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkReimageOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteReimageRequest, options *armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse], errResp azfake.ErrorResponder)
@@ -57,6 +53,10 @@ type VirtualMachineBulkOperationsServer struct {
 	// BulkStartOperation is the fake for method VirtualMachineBulkOperationsClient.BulkStartOperation
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkStartOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteStartContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationResponse], errResp azfake.ErrorResponder)
+
+	// NewBulkListOperationErrorsPager is the fake for method VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewBulkListOperationErrorsPager func(resourceGroupName string, location string, options *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (resp azfake.PagerResponder[armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse])
 }
 
 // NewVirtualMachineBulkOperationsServerTransport creates a new instance of VirtualMachineBulkOperationsServerTransport with the provided implementation.
@@ -109,12 +109,12 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = v.dispatchBulkGetOperationsStatus(req)
 			case "VirtualMachineBulkOperationsClient.BulkHibernateOperation":
 				res.resp, res.err = v.dispatchBulkHibernateOperation(req)
-			case "VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager":
-				res.resp, res.err = v.dispatchNewBulkListOperationErrorsPager(req)
 			case "VirtualMachineBulkOperationsClient.BulkReimageOperation":
 				res.resp, res.err = v.dispatchBulkReimageOperation(req)
 			case "VirtualMachineBulkOperationsClient.BulkStartOperation":
 				res.resp, res.err = v.dispatchBulkStartOperation(req)
+			case "VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager":
+				res.resp, res.err = v.dispatchNewBulkListOperationErrorsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -353,64 +353,6 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkHibernateOpera
 	return resp, nil
 }
 
-func (v *VirtualMachineBulkOperationsServerTransport) dispatchNewBulkListOperationErrorsPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewBulkListOperationErrorsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewBulkListOperationErrorsPager not implemented")}
-	}
-	newBulkListOperationErrorsPager := v.newBulkListOperationErrorsPager.get(req)
-	if newBulkListOperationErrorsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listBulkOperationErrors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		lookbackInMinutesParam, err := parseOptional(qp.Get("lookbackInMinutes"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions
-		if lookbackInMinutesParam != nil {
-			options = &armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions{
-				LookbackInMinutes: lookbackInMinutesParam,
-			}
-		}
-		resp := v.srv.NewBulkListOperationErrorsPager(resourceGroupNameParam, locationParam, options)
-		newBulkListOperationErrorsPager = &resp
-		v.newBulkListOperationErrorsPager.add(req, newBulkListOperationErrorsPager)
-		server.PagerResponderInjectNextLinks(newBulkListOperationErrorsPager, req, func(page *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newBulkListOperationErrorsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newBulkListOperationErrorsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newBulkListOperationErrorsPager) {
-		v.newBulkListOperationErrorsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkReimageOperation(req *http.Request) (*http.Response, error) {
 	if v.srv.BulkReimageOperation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BulkReimageOperation not implemented")}
@@ -481,6 +423,64 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkStartOperation
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StartResourceOperationResponse, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineBulkOperationsServerTransport) dispatchNewBulkListOperationErrorsPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewBulkListOperationErrorsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewBulkListOperationErrorsPager not implemented")}
+	}
+	newBulkListOperationErrorsPager := v.newBulkListOperationErrorsPager.get(req)
+	if newBulkListOperationErrorsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listBulkOperationErrors`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		lookbackInMinutesParam, err := parseOptional(qp.Get("lookbackInMinutes"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions
+		if lookbackInMinutesParam != nil {
+			options = &armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions{
+				LookbackInMinutes: lookbackInMinutesParam,
+			}
+		}
+		resp := v.srv.NewBulkListOperationErrorsPager(resourceGroupNameParam, locationParam, options)
+		newBulkListOperationErrorsPager = &resp
+		v.newBulkListOperationErrorsPager.add(req, newBulkListOperationErrorsPager)
+		server.PagerResponderInjectNextLinks(newBulkListOperationErrorsPager, req, func(page *armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newBulkListOperationErrorsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newBulkListOperationErrorsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newBulkListOperationErrorsPager) {
+		v.newBulkListOperationErrorsPager.remove(req)
 	}
 	return resp, nil
 }

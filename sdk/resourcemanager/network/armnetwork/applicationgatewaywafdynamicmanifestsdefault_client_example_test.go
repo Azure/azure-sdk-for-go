@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/GetApplicationGatewayWafDynamicManifestsDefault.json
+// Generated from example definition: 2026-03-01/GetApplicationGatewayWafDynamicManifestsDefault.json
 func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -112,6 +112,14 @@ func (c *ClientFactory) NewCachesClient() *CachesClient {
 	}
 }
 
+// NewClusterPeersClient creates a new instance of ClusterPeersClient.
+func (c *ClientFactory) NewClusterPeersClient() *ClusterPeersClient {
+	return &ClusterPeersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewElasticAccountsClient creates a new instance of ElasticAccountsClient.
 func (c *ClientFactory) NewElasticAccountsClient() *ElasticAccountsClient {
 	return &ElasticAccountsClient{
@@ -176,6 +184,38 @@ func (c *ClientFactory) NewElasticVolumesClient() *ElasticVolumesClient {
 	}
 }
 
+// NewExternalCacheConnectionsClient creates a new instance of ExternalCacheConnectionsClient.
+func (c *ClientFactory) NewExternalCacheConnectionsClient() *ExternalCacheConnectionsClient {
+	return &ExternalCacheConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalCachesClient creates a new instance of ExternalCachesClient.
+func (c *ClientFactory) NewExternalCachesClient() *ExternalCachesClient {
+	return &ExternalCachesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalClustersClient creates a new instance of ExternalClustersClient.
+func (c *ClientFactory) NewExternalClustersClient() *ExternalClustersClient {
+	return &ExternalClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExternalSVMsClient creates a new instance of ExternalSVMsClient.
+func (c *ClientFactory) NewExternalSVMsClient() *ExternalSVMsClient {
+	return &ExternalSVMsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -234,6 +274,14 @@ func (c *ClientFactory) NewResourceRegionInfosClient() *ResourceRegionInfosClien
 // NewResourceUsagesClient creates a new instance of ResourceUsagesClient.
 func (c *ClientFactory) NewResourceUsagesClient() *ResourceUsagesClient {
 	return &ResourceUsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSVMPeersClient creates a new instance of SVMPeersClient.
+func (c *ClientFactory) NewSVMPeersClient() *SVMPeersClient {
+	return &SVMPeersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

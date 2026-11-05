@@ -15,8 +15,8 @@ import (
 
 // ConnectionScenarioSuite mirrors .NET ConnectionTests (matrix row #32, promoted to the
 // source-of-truth matrix on 2026-05-20). Exercises Storage Mover Connection op-group CRUD against
-// the shared PrivateLinkService `test-pls-wcs` in subscription `b6b34ad8-…`. Requires API version
-// 2025-08-01 or later.
+// the shared PrivateLinkService selected by STORAGEMOVER_PRIVATE_LINK_SERVICE_NAME
+// (test-pls-wcs in recordings). Requires API version 2025-08-01 or later.
 //
 // Cross-language note: do NOT assert on `ConnectionStatus`. It is `Pending` immediately after
 // create (PLS-side provisioning is async) and only transitions to `Approved` after the PE on the
@@ -58,7 +58,7 @@ func (s *ConnectionScenarioSuite) TestCreateGetListUpdateDelete() {
 
 	createResp, err := client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.connectionName, armstoragemover.Connection{
 		Properties: &armstoragemover.ConnectionProperties{
-			PrivateLinkServiceID: to.Ptr(scenarioPrivateLinkServiceID),
+			PrivateLinkServiceID: to.Ptr(s.privateLinkServiceID),
 			Description:          to.Ptr(initialDescription),
 		},
 	}, nil)
@@ -68,7 +68,7 @@ func (s *ConnectionScenarioSuite) TestCreateGetListUpdateDelete() {
 	// ID comparison uses suffix match because the cross-sub sanitizer may rewrite subscription IDs
 	// in recordings.
 	s.Require().NotNil(createResp.Properties.PrivateLinkServiceID)
-	s.True(strings.HasSuffix(*createResp.Properties.PrivateLinkServiceID, "/privateLinkServices/"+scenarioPrivateLinkServiceName),
+	s.True(strings.HasSuffix(*createResp.Properties.PrivateLinkServiceID, "/privateLinkServices/"+s.privateLinkServiceName),
 		"unexpected PrivateLinkServiceID suffix: %s", *createResp.Properties.PrivateLinkServiceID)
 
 	// Get
@@ -97,7 +97,7 @@ func (s *ConnectionScenarioSuite) TestCreateGetListUpdateDelete() {
 	// returns the new value.
 	_, err = client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.connectionName, armstoragemover.Connection{
 		Properties: &armstoragemover.ConnectionProperties{
-			PrivateLinkServiceID: to.Ptr(scenarioPrivateLinkServiceID),
+			PrivateLinkServiceID: to.Ptr(s.privateLinkServiceID),
 			Description:          to.Ptr(updatedDescription),
 		},
 	}, nil)

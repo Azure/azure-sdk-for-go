@@ -19,7 +19,7 @@ import (
 // ModelDeploymentsClient contains the methods for the ModelDeployments group.
 // Don't use this type directly, use NewModelDeploymentsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-09-02-preview
 type ModelDeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -126,7 +126,7 @@ func (client *ModelDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -217,7 +217,7 @@ func (client *ModelDeploymentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -277,7 +277,7 @@ func (client *ModelDeploymentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -358,7 +358,7 @@ func (client *ModelDeploymentsClient) listByAIManagerNamespaceCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

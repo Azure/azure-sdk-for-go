@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/acquirePolicyToken.json
+// Generated from example definition: 2026-06-01/acquirePolicyToken.json
 func ExampleTokensClient_Acquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleTokensClient_Acquire() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/acquirePolicyTokenAtManagementGroup.json
+// Generated from example definition: 2026-06-01/acquirePolicyTokenAtManagementGroup.json
 func ExampleTokensClient_AcquireAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

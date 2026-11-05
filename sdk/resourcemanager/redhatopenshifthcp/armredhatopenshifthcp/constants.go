@@ -5,7 +5,7 @@
 package armredhatopenshifthcp
 
 const (
-	version20260901Preview string = "2026-09-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -271,6 +271,24 @@ func PossibleKeyVaultVisibilityValues() []KeyVaultVisibility {
 	return []KeyVaultVisibility{
 		KeyVaultVisibilityPrivate,
 		KeyVaultVisibilityPublic,
+	}
+}
+
+// KmsKeyVaultType - The type of keyvault used for KMS encryption.
+type KmsKeyVaultType string
+
+const (
+	// KmsKeyVaultTypeKeyVault - Standard Azure Key Vault.
+	KmsKeyVaultTypeKeyVault KmsKeyVaultType = "KeyVault"
+	// KmsKeyVaultTypeManagedHSM - Azure Managed Hardware Security Module.
+	KmsKeyVaultTypeManagedHSM KmsKeyVaultType = "ManagedHSM"
+)
+
+// PossibleKmsKeyVaultTypeValues returns the possible values for the KmsKeyVaultType const type.
+func PossibleKmsKeyVaultTypeValues() []KmsKeyVaultType {
+	return []KmsKeyVaultType{
+		KmsKeyVaultTypeKeyVault,
+		KmsKeyVaultTypeManagedHSM,
 	}
 }
 

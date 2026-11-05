@@ -1,8 +1,30 @@
 # Release History
 
-## 1.8.1-beta.2 (Unreleased)
+## 1.8.3-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+
+* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
+
+## 1.8.2 (2026-10-01)
+
+### Bugs Fixed
+
+* Fixed `blob.Client.GetSASURL()` generating a SAS that omitted the pinned blob version from the signed string-to-sign when called on a client returned by `WithVersionID`. The resulting SAS was byte-for-byte identical to an ordinary base-blob (`sr=b`) SAS and, once corrected to include `sr=bv`, would still fail to authenticate because the version identifier was never included in the signed payload. Both the resource-type binding and the signed version identifier are now correctly propagated for `SignWithSharedKey` and `SignWithUserDelegation`.
+* Fixed `GetSASURL()` on `blob.Client`, `container.Client`, and `service.Client` (and the specialized blob clients `blockblob.Client`, `appendblob.Client`, `pageblob.Client` which delegate to `blob.Client`) appending a duplicated `?` to the resulting URL when called on a client whose URL already contained a query string (e.g. a client returned by `WithSnapshot` or `WithVersionID`, or a custom endpoint with pre-existing query parameters), which produced a malformed SAS URL.
+
+### Other Changes
+
+* Updated `azcore` version to `1.23.2`
+
+## 1.8.1 (2026-09-09)
 
 ### Breaking Changes
 * `DownloadBuffer` and `DownloadFile` now use ETag locking to ensure consistency across parallel chunk requests when the blob size is not specified upfront (i.e., `Range.Count` is zero). If a blob is modified during a multi-chunk download, subsequent requests will fail with `ConditionNotMet` instead of silently returning data from mixed blob versions.
@@ -22,6 +44,7 @@
 
 ### Other Changes
 * Optimized `DownloadBuffer` and `DownloadFile` to use an initial GET request instead of a HEAD (GetProperties) call for blob size discovery. For small blobs (<=4MB), the entire content is returned in a single request, reducing download latency by ~50%.
+* Updated `azcore` to `v1.23.1`.
 
 ## 1.8.1-beta.1 (2026-07-24)
 

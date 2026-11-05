@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-09-01-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,7 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

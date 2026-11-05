@@ -150,10 +150,7 @@ func (f *ForecastServerTransport) dispatchUsage(req *http.Request) (*http.Respon
 		return nil, err
 	}
 	filterParam := getOptional(qp.Get("$filter"))
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	var options *armcostmanagement.ForecastClientUsageOptions
 	if filterParam != nil {
 		options = &armcostmanagement.ForecastClientUsageOptions{

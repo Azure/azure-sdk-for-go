@@ -324,9 +324,6 @@ type FleetProperties struct {
 	// VirtualMachine prefix to be used for the virtual machines launched by Fleet. Can be used only with Launch mode.
 	VMNamePrefix *string
 
-	// Zone Allocation Policy for Fleet.
-	ZoneAllocationPolicy *ZoneAllocationPolicy
-
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
 
@@ -1677,24 +1674,4 @@ type WindowsVMGuestPatchAutomaticByPlatformSettings struct {
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation
 	// operations.
 	RebootSetting *WindowsVMGuestPatchAutomaticByPlatformRebootSetting
-}
-
-// ZoneAllocationPolicy for Compute Fleet.
-type ZoneAllocationPolicy struct {
-	// REQUIRED; Distribution strategy used for zone allocation policy.
-	DistributionStrategy *ZoneDistributionStrategy
-
-	// Zone preferences, required when zone distribution strategy is Prioritized.
-	ZonePreferences []*ZonePreference
-}
-
-// ZonePreference - Zone preferences for Compute Fleet zone allocation policy.
-type ZonePreference struct {
-	// REQUIRED; Name of the zone.
-	Zone *string
-
-	// The rank of the zone. This is used with 'Prioritized' ZoneDistributionStrategy.
-	// The lower the number, the higher the priority, starting with 0.
-	// 0 is the highest rank. If not specified, defaults to lowest rank.
-	Rank *int32
 }

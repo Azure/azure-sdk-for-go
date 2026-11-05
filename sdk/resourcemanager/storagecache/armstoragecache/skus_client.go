@@ -19,7 +19,7 @@ import (
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-08-01
 type SKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, nextLink string
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

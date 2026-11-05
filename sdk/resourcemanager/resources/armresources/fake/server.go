@@ -198,14 +198,8 @@ func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-	if err != nil {
-		return nil, err
-	}
-	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
@@ -236,10 +230,7 @@ func (s *ServerTransport) dispatchCheckExistenceByID(req *http.Request) (*http.R
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	respr, errRespr := s.srv.CheckExistenceByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -280,14 +271,8 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
+		parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+		resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
@@ -333,10 +318,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateByID(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		respr, errRespr := s.srv.BeginCreateOrUpdateByID(req.Context(), resourceIDParam, qp.Get("api-version"), body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -382,14 +364,8 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 		if err != nil {
 			return nil, err
 		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
+		parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+		resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
@@ -431,10 +407,7 @@ func (s *ServerTransport) dispatchBeginDeleteByID(req *http.Request) (*http.Resp
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		respr, errRespr := s.srv.BeginDeleteByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -478,14 +451,8 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if err != nil {
 		return nil, err
 	}
-	parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-	if err != nil {
-		return nil, err
-	}
-	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
@@ -516,10 +483,7 @@ func (s *ServerTransport) dispatchGetByID(req *http.Request) (*http.Response, er
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	respr, errRespr := s.srv.GetByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -716,14 +680,8 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 		if err != nil {
 			return nil, err
 		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
+		parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+		resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
@@ -769,10 +727,7 @@ func (s *ServerTransport) dispatchBeginUpdateByID(req *http.Request) (*http.Resp
 		if err != nil {
 			return nil, err
 		}
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		respr, errRespr := s.srv.BeginUpdateByID(req.Context(), resourceIDParam, qp.Get("api-version"), body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr

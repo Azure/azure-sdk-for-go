@@ -432,6 +432,174 @@ type ApplicationGateway struct {
 	Type *string
 }
 
+// ApplicationGatewayAdvancedRoutingCondition - A condition evaluated as part of an advanced routing condition set.
+type ApplicationGatewayAdvancedRoutingCondition struct {
+	// REQUIRED; The type of request property the condition is evaluated against.
+	ConditionType *ApplicationGatewayAdvancedRoutingConditionType
+
+	// Name of the request property the condition is evaluated against. Required when conditionType is Header or QueryString,
+	// and not applicable when conditionType is Path, ClientIP or Method.
+	PropertyName *string
+
+	// Pattern the request property is matched against. Exactly one of propertyValues or propertyValueMatcher must be specified.
+	// Not applicable when conditionType is ClientIP or Method.
+	PropertyValueMatcher *ApplicationGatewayAdvancedRoutingPropertyValueMatcher
+
+	// Values the request property is matched against. Exactly one of propertyValues or propertyValueMatcher must be specified.
+	PropertyValues []*string
+}
+
+// ApplicationGatewayAdvancedRoutingConditionSet - Advanced routing condition set of an application gateway. Referenced by
+// advanced routing rules to determine whether a request matches.
+type ApplicationGatewayAdvancedRoutingConditionSet struct {
+	// Resource ID.
+	ID *string
+
+	// Name of the advanced routing condition set that is unique within an Application Gateway.
+	Name *string
+
+	// Properties of the application gateway advanced routing condition set.
+	Properties *ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat - Properties of advanced routing condition set of the application
+// gateway.
+type ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat struct {
+	// REQUIRED; Routing conditions of the condition set. All conditions must be satisfied for the referencing advanced routing
+	// rule to match.
+	RoutingConditions []*ApplicationGatewayAdvancedRoutingCondition
+
+	// READ-ONLY; The provisioning state of the advanced routing condition set resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ApplicationGatewayAdvancedRoutingMap - Advanced routing map of an application gateway. Holds the advanced routing rules
+// evaluated for requests handled by an AdvancedRouting request routing rule, along with the configuration applied when no
+// rule matches.
+type ApplicationGatewayAdvancedRoutingMap struct {
+	// Resource ID.
+	ID *string
+
+	// Name of the advanced routing map that is unique within an Application Gateway.
+	Name *string
+
+	// Properties of the application gateway advanced routing map.
+	Properties *ApplicationGatewayAdvancedRoutingMapPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// ApplicationGatewayAdvancedRoutingMapPropertiesFormat - Properties of advanced routing map of the application gateway.
+type ApplicationGatewayAdvancedRoutingMapPropertiesFormat struct {
+	// REQUIRED; Advanced routing rules of the advanced routing map. Each rule must specify a priority that is unique within the
+	// map.
+	AdvancedRoutingRules []*ApplicationGatewayAdvancedRoutingRule
+
+	// Default authentication configuration bindings of the advanced routing map. Only one authentication configuration is supported.
+	// Authentication configuration names must be unique across the Application Gateway, and an Application Gateway can reference
+	// at most 100 distinct authentication policies. Authentication policies can only be bound to Application Gateways using the
+	// Standard_v2 or WAF_v2 SKU.
+	DefaultAuthConfigs []*ApplicationGatewayAuthConfig
+
+	// Default backend address pool resource of the advanced routing map. Required unless defaultRedirectConfiguration is specified.
+	DefaultBackendAddressPool *SubResource
+
+	// Default backend http settings resource of the advanced routing map. Required unless defaultRedirectConfiguration is specified.
+	DefaultBackendHTTPSettings *SubResource
+
+	// Default redirect configuration resource of the advanced routing map. Cannot be combined with defaultBackendAddressPool
+	// or defaultBackendHttpSettings.
+	DefaultRedirectConfiguration *SubResource
+
+	// Default rewrite rule set resource of the advanced routing map.
+	DefaultRewriteRuleSet *SubResource
+
+	// READ-ONLY; The provisioning state of the advanced routing map resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ApplicationGatewayAdvancedRoutingPropertyValueMatcher - Matches the value of a request property against a fixed string
+// or regular expression.
+type ApplicationGatewayAdvancedRoutingPropertyValueMatcher struct {
+	// REQUIRED; The pattern, either fixed string or regular expression, that the request property value is evaluated against.
+	Pattern *string
+
+	// Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
+	IgnoreCase *bool
+
+	// Setting this value as truth will force to check the negation of the condition given by the user in the pattern field.
+	Negate *bool
+}
+
+// ApplicationGatewayAdvancedRoutingRule - Advanced routing rule of an application gateway.
+type ApplicationGatewayAdvancedRoutingRule struct {
+	// Resource ID.
+	ID *string
+
+	// Name of the advanced routing rule that is unique within an advanced routing map.
+	Name *string
+
+	// Properties of the application gateway advanced routing rule.
+	Properties *ApplicationGatewayAdvancedRoutingRulePropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// ApplicationGatewayAdvancedRoutingRulePropertiesFormat - Properties of advanced routing rule of the application gateway.
+type ApplicationGatewayAdvancedRoutingRulePropertiesFormat struct {
+	// REQUIRED; Priority of the advanced routing rule. Must be unique within the containing advanced routing map. Rules are evaluated
+	// in ascending priority order.
+	Priority *int32
+
+	// Advanced routing condition set resource evaluated by this rule.
+	AdvancedRoutingConditionSet *SubResource
+
+	// Authentication configuration bindings of the advanced routing rule. Only one authentication configuration is supported.
+	// Authentication configuration names must be unique across the Application Gateway, and an Application Gateway can reference
+	// at most 100 distinct authentication policies. Authentication policies can only be bound to Application Gateways using the
+	// Standard_v2 or WAF_v2 SKU.
+	AuthConfigs []*ApplicationGatewayAuthConfig
+
+	// Backend address pool resource of the advanced routing rule. Required unless redirectConfiguration is specified.
+	BackendAddressPool *SubResource
+
+	// Backend http settings resource of the advanced routing rule. Required unless redirectConfiguration is specified.
+	BackendHTTPSettings *SubResource
+
+	// Redirect configuration resource of the advanced routing rule. Cannot be combined with backendAddressPool or backendHttpSettings.
+	RedirectConfiguration *SubResource
+
+	// Rewrite rule set resource of the advanced routing rule.
+	RewriteRuleSet *SubResource
+
+	// READ-ONLY; The provisioning state of the advanced routing rule resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ApplicationGatewayAuthConfig - An authentication configuration binding for an Application Gateway routing rule or routing
+// map.
+type ApplicationGatewayAuthConfig struct {
+	// REQUIRED; Reference to the authentication policy (Microsoft.Network/authenticationPolicies) resource.
+	AuthenticationPolicy *SubResource
+
+	// REQUIRED; The name of the auth configuration.
+	Name *string
+}
+
 // ApplicationGatewayAuthenticationCertificate - Authentication certificates of an application gateway.
 type ApplicationGatewayAuthenticationCertificate struct {
 	// Resource ID.
@@ -833,6 +1001,9 @@ type ApplicationGatewayFirewallManifestRuleSet struct {
 	// REQUIRED; The version of the web application firewall rule set type.
 	RuleSetVersion *string
 
+	// Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+	DisplayName *string
+
 	// The rule set status
 	Status *ApplicationGatewayRuleSetStatusOptions
 
@@ -850,6 +1021,9 @@ type ApplicationGatewayFirewallRule struct {
 
 	// The description of the web application firewall rule.
 	Description *string
+
+	// OWASP CRS paranoia level of a managed rule. Applicable only for DRS and OWASP rules.
+	ParanoiaLevel *ApplicationGatewayWafRuleParanoiaLevel
 
 	// The string representation of the web application firewall rule identifier.
 	RuleIDString *string
@@ -904,6 +1078,9 @@ type ApplicationGatewayFirewallRuleSetPropertiesFormat struct {
 
 	// REQUIRED; The version of the web application firewall rule set type.
 	RuleSetVersion *string
+
+	// Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+	DisplayName *string
 
 	// Tier of an application gateway that support the rule set.
 	Tiers []*ApplicationGatewayTierTypes
@@ -1503,6 +1680,12 @@ type ApplicationGatewayProbePropertiesFormat struct {
 
 // ApplicationGatewayPropertiesFormat - Properties of the application gateway.
 type ApplicationGatewayPropertiesFormat struct {
+	// Advanced routing condition sets of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+	AdvancedRoutingConditionSets []*ApplicationGatewayAdvancedRoutingConditionSet
+
+	// Advanced routing maps of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+	AdvancedRoutingMaps []*ApplicationGatewayAdvancedRoutingMap
+
 	// Authentication certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	AuthenticationCertificates []*ApplicationGatewayAuthenticationCertificate
 
@@ -1569,6 +1752,9 @@ type ApplicationGatewayPropertiesFormat struct {
 
 	// Request routing rules of the application gateway resource.
 	RequestRoutingRules []*ApplicationGatewayRequestRoutingRule
+
+	// The reserved capacity of the application gateway resource. Applicable to the Basic_v2 and Basic_WAF_v2 SKU tiers.
+	ReservedCapacity *int32
 
 	// Rewrite rules for the application gateway resource.
 	RewriteRuleSets []*ApplicationGatewayRewriteRuleSet
@@ -1681,6 +1867,15 @@ type ApplicationGatewayRequestRoutingRule struct {
 
 // ApplicationGatewayRequestRoutingRulePropertiesFormat - Properties of request routing rule of the application gateway.
 type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
+	// Advanced routing map resource of the application gateway.
+	AdvancedRoutingMap *SubResource
+
+	// Authentication configuration bindings of the request routing rule. Only one authentication configuration is supported.
+	// Authentication configuration names must be unique across the Application Gateway, and an Application Gateway can reference
+	// at most 100 distinct authentication policies. Authentication policies can only be bound to Application Gateways using the
+	// Standard_v2 or WAF_v2 SKU.
+	AuthConfigs []*ApplicationGatewayAuthConfig
+
 	// Backend address pool resource of the application gateway.
 	BackendAddressPool *SubResource
 
@@ -2228,6 +2423,119 @@ type ApplicationSecurityGroupPropertiesFormat struct {
 	ResourceGUID *string
 }
 
+// ApprovalReference - Reference to an existing approved private endpoint used to inherit its connection approval state.
+type ApprovalReference struct {
+	// The ARM resource id of an existing approved private endpoint whose approval state is inherited by this connection.
+	PrivateEndpointID *string
+}
+
+// AuthenticationPolicy - Authentication policy resource for identity integration.
+type AuthenticationPolicy struct {
+	// Resource ID.
+	ID *string
+
+	// The user-assigned identity used by a user sign-in policy to access its Key Vault client secret.
+	Identity *ManagedServiceIdentity
+
+	// Resource location.
+	Location *string
+
+	// Properties of the authentication policy.
+	Properties *AuthenticationPolicyPropertiesFormat
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// AuthenticationPolicyListResult - The response of a AuthenticationPolicy list operation.
+type AuthenticationPolicyListResult struct {
+	// REQUIRED; The AuthenticationPolicy items on this page
+	Value []*AuthenticationPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AuthenticationPolicyPropertiesFormat - Properties of the authentication policy.
+type AuthenticationPolicyPropertiesFormat struct {
+	// REQUIRED; The authentication provider configuration for the policy.
+	AuthenticationProperties *AuthenticationProviderProperties
+
+	// REQUIRED; The type of the user trust provider. Only Microsoft Entra is supported, using the serialized value `entra`.
+	UserTrustProviderType *UserTrustProviderType
+
+	// The action to take when a request is unauthenticated. When omitted, user sign-in policies default to `authenticate` and
+	// JWT validation policies default to `deny`.
+	OnUnauthenticatedRequest *OnUnauthenticatedRequest
+
+	// READ-ONLY; A collection of resource IDs that reference this authentication policy.
+	AssociatedResources []*string
+
+	// READ-ONLY; The provisioning state of the authentication policy resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resource GUID property of the authentication policy resource.
+	ResourceGUID *string
+}
+
+// AuthenticationPolicyUpdateParameters - Parameters supplied to update an authentication policy.
+type AuthenticationPolicyUpdateParameters struct {
+	// The user-assigned identity used by a user sign-in policy to access its Key Vault client secret.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// AuthenticationProviderProperties - Properties for authentication provider configuration. A policy must configure either
+// JWT validation fields or user sign-in fields; the two configurations are mutually exclusive and cannot be combined.
+type AuthenticationProviderProperties struct {
+	// REQUIRED; The Application (client) ID for the related application registered in Microsoft Entra ID, formatted as a GUID.
+	ClientID *string
+
+	// REQUIRED; The absolute HTTPS URL of the Secure Token Service. Include a trailing slash at the end of the value. Example:
+	// https://login.microsoftonline.com/{Microsoft Entra Tenant ID}/
+	Issuer *string
+
+	// The intended audience for the JWT. Only a single audience value is supported in this API version. Example: https://audience.com/{application-id}
+	Audience *string
+
+	// The absolute HTTPS Key Vault secret URL identifying the client secret used for authentication. This property is required
+	// for user sign-in policies. It holds only the Key Vault reference; the secret value itself is never accepted or returned
+	// by this API and is read from Key Vault at runtime using the resource's user-assigned identity. The secret value stored
+	// in Key Vault can contain up to 4096 characters. Example: https://myvault.vault.azure.net/secrets/mysecret
+	ClientSecret *string
+
+	// The JSON Web Key Set (JWKS) URI used to retrieve the public keys for JWT validation. Example: https://login.microsoftonline.com/{Microsoft
+	// Entra Tenant ID}/discovery/v2.0/keys
+	JwksURI *string
+
+	// The scopes used by an application during authentication to authorize access to a user's details. A maximum of 10 scopes
+	// is supported, each scope can contain up to 128 characters, and all scopes can contain up to 256 characters combined.
+	Scope []*string
+
+	// The name of the session cookie used for user authentication. Applicable to the Application Gateway post-OIDC workflow.
+	SessionCookieName *string
+
+	// The timeout of the session cookie used for user authentication. The service accepts and returns this value as a string
+	// containing a base-10 unsigned integer number of seconds with no sign, decimal point, unit suffix, or whitespace (for example
+	// `86400`). The supported range is 1 to 604800 seconds, and the default is 86400 seconds. Applicable to the Application Gateway
+	// post-OIDC workflow.
+	SessionTimeout *string
+}
+
 // AuthorizationListResult - Paged collection of ExpressRouteCircuitAuthorization items
 type AuthorizationListResult struct {
 	// REQUIRED; The ExpressRouteCircuitAuthorization items on this page
@@ -2768,6 +3076,9 @@ type AzureFirewallPropertiesFormat struct {
 	// The additional properties used to further config this azure firewall.
 	AdditionalProperties map[string]*string
 
+	// Indicates whether the AI security add-on is enabled for the Azure Firewall.
+	AiSecurityAddOn *bool
+
 	// Collection of application rule collections used by Azure Firewall.
 	ApplicationRuleCollections []*AzureFirewallApplicationRuleCollection
 
@@ -3086,6 +3397,9 @@ type BastionHost struct {
 	// Resource ID.
 	ID *string
 
+	// The identity assigned to the Bastion Host resource
+	Identity *ManagedServiceIdentity
+
 	// Resource location.
 	Location *string
 
@@ -3189,6 +3503,9 @@ type BastionHostPropertiesFormat struct {
 	// The scale units for the Bastion Host resource.
 	ScaleUnits *int32
 
+	// The storage account and identity to use for session recording
+	SessionRecordingConfiguration *BastionSessionRecordingConfiguration
+
 	// Reference to an existing virtual network required for Developer Bastion Host only.
 	VirtualNetwork *SubResource
 
@@ -3201,6 +3518,15 @@ type BastionHostPropertiesFormatNetworkACLs struct {
 	IPRules []*IPRule
 }
 
+// BastionHostUpdate - Parameters supplied to update the Bastion Host identity or tags.
+type BastionHostUpdate struct {
+	// The identity of the BastionHost, if configured.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // BastionSessionDeleteResult - Response for DisconnectActiveSessions.
 type BastionSessionDeleteResult struct {
 	// REQUIRED; The BastionSessionState items on this page
@@ -3208,6 +3534,15 @@ type BastionSessionDeleteResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// BastionSessionRecordingConfiguration - Bastion Session Recording Configuration.
+type BastionSessionRecordingConfiguration struct {
+	// REQUIRED; The blob container to store the recordings. Ex: https://contosostorage.blob.core.windows.net/contosorecordings.
+	BlobContainerURI *string
+
+	// REQUIRED; The identity to use for accessing the blob container where recordings will be stored
+	Identity *SessionRecordingIdentity
 }
 
 // BastionSessionState - The session state detail for a target.
@@ -4538,6 +4873,9 @@ type DdosCustomPolicyPropertiesFormat struct {
 	// The list of frontend IP configurations associated with the custom policy.
 	FrontEndIPConfiguration []*SubResource
 
+	// The list of DDoS mitigation rules associated with the custom policy.
+	MitigationRules []*DdosMitigationRule
+
 	// READ-ONLY; The provisioning state of the DDoS custom policy resource.
 	ProvisioningState *ProvisioningState
 
@@ -4583,6 +4921,55 @@ type DdosDetectionRulePropertiesFormat struct {
 type DdosFrontendIPConfigurationSettings struct {
 	// The reference to the DDoS Custom Policy resource.
 	DdosCustomPolicy *SubResource
+}
+
+// DdosGeoMatch - A geographic source match. The service validates that at least one of continent or countryCode is specified.
+// If both are specified, the service validates that the country belongs to the continent according to the service-defined
+// mapping. For example, RU, TR, and KZ map to Asia, EG maps to Africa, and CY maps to Europe.
+type DdosGeoMatch struct {
+	// The continent to match. Country membership follows the service-defined mapping documented on DdosGeoMatch.
+	Continent *DdosContinent
+
+	// The uppercase two-letter ISO 3166-1 alpha-2 code for the country or territory to match.
+	CountryCode *string
+}
+
+// DdosMitigationRule - A DDoS mitigation rule resource.
+type DdosMitigationRule struct {
+	// REQUIRED; The name of the DDoS mitigation rule.
+	Name *string
+
+	// REQUIRED; Properties of the DDoS mitigation rule.
+	Properties *DdosMitigationRulePropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; The resource ID of the DDoS mitigation rule.
+	ID *string
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// DdosMitigationRulePropertiesFormat - DDoS mitigation rule properties. The service validates that each rule specifies at
+// least one applicable default mitigation or source policy override and that the default mitigations match the selected trafficScope.
+type DdosMitigationRulePropertiesFormat struct {
+	// REQUIRED; The traffic protocol to which the mitigation rule applies.
+	TrafficScope *DdosMitigationTrafficScope
+
+	// Source-specific actions that override the default mitigations. A rule supports at most one Deny override and one Permit
+	// override.
+	SourcePolicyOverrides []*DdosSourcePolicyOverride
+
+	// The default TCP mitigations. This property is valid only when trafficScope is Tcp.
+	TCPDefaultMitigations *DdosTCPDefaultMitigations
+
+	// The default UDP mitigations. This property is valid only when trafficScope is Udp.
+	UDPDefaultMitigations *DdosUDPDefaultMitigations
+
+	// READ-ONLY; The provisioning state of the DDoS mitigation rule.
+	ProvisioningState *ProvisioningState
 }
 
 // DdosProtectionPlan - A DDoS protection plan in a resource group.
@@ -4644,6 +5031,64 @@ type DdosSettings struct {
 
 	// The DDoS protection mode of the public IP
 	ProtectionMode *DdosSettingsProtectionMode
+}
+
+// DdosSourceMatchConditions - Source conditions for a DDoS source policy override. A source matches when it matches any IP
+// prefix or any geographic match.
+type DdosSourceMatchConditions struct {
+	// The geographic matches. Entries are evaluated with OR semantics.
+	GeoMatches []*DdosGeoMatch
+
+	// The IPv4 or IPv6 CIDR prefixes in `<address>/<prefix-length>` format. Entries are evaluated with OR semantics.
+	IPPrefixes []*string
+}
+
+// DdosSourcePolicyAction - The action to apply to traffic matching a source policy override.
+type DdosSourcePolicyAction struct {
+	// REQUIRED; The source policy action type.
+	ActionType *DdosSourcePolicyActionType
+}
+
+// DdosSourcePolicyOverride - A source-specific action that overrides the default mitigations.
+type DdosSourcePolicyOverride struct {
+	// REQUIRED; The source conditions that select traffic for the action.
+	Conditions *DdosSourceMatchConditions
+
+	// REQUIRED; The action to apply to matching traffic.
+	PolicyAction *DdosSourcePolicyAction
+}
+
+// DdosTCPDefaultMitigations - Default mitigations for TCP traffic.
+type DdosTCPDefaultMitigations struct {
+	// The per-source rate limit for new TCP connection establishments.
+	PerSourceConnectionRateLimiting *DdosTCPPerSourceConnectionRateLimitPolicy
+
+	// The per-source TCP packet rate limit.
+	PerSourceRateLimiting *DdosTCPPerSourceRateLimitPolicy
+}
+
+// DdosTCPPerSourceConnectionRateLimitPolicy - A per-source TCP connection establishment rate limit.
+type DdosTCPPerSourceConnectionRateLimitPolicy struct {
+	// REQUIRED; The maximum number of new TCP connections established per second from a source IP.
+	ConnectionsPerSecond *int32
+}
+
+// DdosTCPPerSourceRateLimitPolicy - A per-source TCP packet rate limit.
+type DdosTCPPerSourceRateLimitPolicy struct {
+	// REQUIRED; The maximum number of TCP packets allowed per second from a source IP.
+	PacketsPerSecond *int32
+}
+
+// DdosUDPDefaultMitigations - Default mitigations for UDP traffic.
+type DdosUDPDefaultMitigations struct {
+	// The per-source UDP packet rate limit.
+	PerSourceRateLimiting *DdosUDPPerSourceRateLimitPolicy
+}
+
+// DdosUDPPerSourceRateLimitPolicy - A per-source UDP packet rate limit.
+type DdosUDPPerSourceRateLimitPolicy struct {
+	// REQUIRED; The maximum number of UDP packets allowed per second from a source IP.
+	PacketsPerSecond *int32
 }
 
 // DefaultAdminPropertiesFormat - Security default admin rule resource.
@@ -4725,6 +5170,9 @@ func (d *DefaultAdminRule) GetBaseAdminRule() *BaseAdminRule {
 
 // DefaultRuleSetPropertyFormat - the default web application firewall rule set.
 type DefaultRuleSetPropertyFormat struct {
+	// Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+	DisplayName *string
+
 	// The type of the web application firewall rule set.
 	RuleSetType *string
 
@@ -5281,6 +5729,12 @@ type ExplicitProxySettings struct {
 	PacFilePort *int32
 }
 
+// ExpressRouteAuthorizationKey - The authorization key.
+type ExpressRouteAuthorizationKey struct {
+	// The authorization key used to establish connection between resources in different subscriptions.
+	AuthorizationKey *string
+}
+
 // ExpressRouteCircuit resource.
 type ExpressRouteCircuit struct {
 	// Resource ID.
@@ -5543,6 +5997,9 @@ type ExpressRouteCircuitPropertiesFormat struct {
 
 	// Flag denoting rate-limiting status of the ExpressRoute direct-port circuit.
 	EnableDirectPortRateLimit *bool
+
+	// The reference to the ExpressRouteLag resource when the circuit is provisioned on an ExpressRouteLag resource.
+	ExpressRouteLag *SubResource
 
 	// The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.
 	ExpressRoutePort *SubResource
@@ -6114,6 +6571,51 @@ type ExpressRouteLag struct {
 	Type *string
 }
 
+// ExpressRouteLagAuthorization - ExpressRoute Lag Authorization
+//
+// ExpressRouteLag Authorization resource definition.
+type ExpressRouteLagAuthorization struct {
+	// ExpressRouteLag authorization properties.
+	Properties *ExpressRouteLagAuthorizationPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ExpressRouteLagAuthorizationListResult - ExpressRoute Lag Authorization List Result
+//
+// Paged collection of ExpressRouteLagAuthorization items
+type ExpressRouteLagAuthorizationListResult struct {
+	// REQUIRED; The ExpressRouteLagAuthorization items on this page
+	Value []*ExpressRouteLagAuthorization
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExpressRouteLagAuthorizationPropertiesFormat - ExpressRoute Lag Authorization Properties
+//
+// Properties of ExpressRouteLag Authorization.
+type ExpressRouteLagAuthorizationPropertiesFormat struct {
+	// READ-ONLY; The authorization use status.
+	AuthorizationUseStatus *ExpressRouteLagAuthorizationUseStatus
+
+	// READ-ONLY; The reference to the ExpressRoute circuit resource using the authorization.
+	CircuitResourceURI *string
+
+	// READ-ONLY; The provisioning state of the authorization resource.
+	ProvisioningState *ProvisioningState
+}
+
 // ExpressRouteLagLink
 //
 // ExpressRouteLagLink child resource definition.
@@ -6242,6 +6744,11 @@ type ExpressRouteLagMemberPropertiesFormat struct {
 //
 // Properties specific to ExpressRouteLag resources.
 type ExpressRouteLagPropertiesFormat struct {
+	// ExpressRouteLagAuthorizations Child-Resources
+	//
+	// The set of authorizations of the ExpressRouteLag resource.
+	Authorizations []*ExpressRouteLagAuthorization
+
 	// Bandwidth of procured LAG in Gbps.
 	BandwidthInGbps *int32
 
@@ -6270,6 +6777,9 @@ type ExpressRouteLagPropertiesFormat struct {
 
 	// READ-ONLY; The date and time when the ExpressRouteLag was allocated.
 	AllocationDate *string
+
+	// READ-ONLY; Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRouteLag resource.
+	Circuits []*SubResource
 
 	// READ-ONLY; Ether type of the LAG.
 	EtherType *string
@@ -8106,7 +8616,7 @@ type HubVirtualNetworkConnectionProperties struct {
 	EnableInternetSecurity *bool
 
 	// Enable Only IPv6 Peering for this connection.
-	EnableOnlyIPv6Peering *EnableOnlyIPv6PeeringState
+	EnableOnlyIPv6Peering *bool
 
 	// Reference to the remote virtual network.
 	RemoteVirtualNetwork *SubResource
@@ -9066,6 +9576,14 @@ type IpamPoolProperties struct {
 	// String representing a friendly name for the resource.
 	DisplayName *string
 
+	// Maximum number of IP addresses allowed for allocations from this IpamPool to be compliant. Must be greater than or equal
+	// to the minimum allocation size. If not specified or empty, no maximum is enforced.
+	MaxAllocationSize *string
+
+	// Minimum number of IP addresses required for allocations from this IpamPool to be compliant. Must be less than or equal
+	// to the maximum allocation size. If not specified or empty, no minimum is enforced.
+	MinAllocationSize *string
+
 	// String representing parent IpamPool resource name. If empty the IpamPool will be a root pool.
 	ParentPoolName *string
 
@@ -9091,6 +9609,14 @@ type IpamPoolUpdateProperties struct {
 
 	// String representing a friendly name for the resource.
 	DisplayName *string
+
+	// Maximum number of IP addresses allowed for allocations from this IpamPool to be compliant. Must be greater than or equal
+	// to the minimum allocation size. Omit to leave the current value unchanged; set to an empty string to clear it.
+	MaxAllocationSize *string
+
+	// Minimum number of IP addresses required for allocations from this IpamPool to be compliant. Must be less than or equal
+	// to the maximum allocation size. Omit to leave the current value unchanged; set to an empty string to clear it.
+	MinAllocationSize *string
 }
 
 // KubeLabelSelector - Kubernetes Label Selector for matching labels in Kubernetes Selector Groups.
@@ -9715,7 +10241,7 @@ type ManagedRuleSetRuleGroup struct {
 	RuleGroupName *string
 
 	// List of rules within the rule group
-	Rules []*string
+	Rules []*int32
 }
 
 // ManagedRulesDefinition - Allow to exclude some variable satisfy the condition for the WAF check.
@@ -10038,6 +10564,18 @@ type MatchedRule struct {
 	RuleName *string
 }
 
+// Metric entry for migration peering statistics.
+type Metric struct {
+	// The metric name.
+	Name *string
+
+	// The metric unit.
+	Unit *string
+
+	// The metric value.
+	Value *float64
+}
+
 // MetricSpecification - Description of metrics specification.
 type MetricSpecification struct {
 	// The aggregation type.
@@ -10083,6 +10621,71 @@ type MetricSpecification struct {
 	Unit *string
 }
 
+// MigrateExpressRouteCircuitHealthCheckDetails - Detailed migration health information.
+type MigrateExpressRouteCircuitHealthCheckDetails struct {
+	// Per-port migration details.
+	PortMigrationInfos []*PortMigrationInfo
+}
+
+// MigrateExpressRouteCircuitHealthCheckResponse - Response for express route circuit migration health check and migration
+// operations.
+type MigrateExpressRouteCircuitHealthCheckResponse struct {
+	// Detailed health check information for migration.
+	Details *MigrateExpressRouteCircuitHealthCheckDetails
+
+	// The failure reason if the migration operation failed.
+	FailureReason *string
+
+	// The URL of the new cross connection after migration.
+	NewCrossConnectionURL *string
+
+	// The new service tag assigned after migration.
+	NewSTag *string
+
+	// The current phase of the migration operation.
+	Phase *string
+
+	// The expiry time for the prepare phase.
+	PrepareExpiryTime *time.Time
+
+	// The timestamp when the migration was prepared.
+	PreparedAt *time.Time
+
+	// Indicates whether rollback should be performed.
+	ShouldRollback *bool
+
+	// The overall status of the migration operation.
+	Status *string
+}
+
+// MigrateExpressRouteCircuitRequest - Request model for express route circuit migration operations.
+type MigrateExpressRouteCircuitRequest struct {
+	// The port identifier used for shutDownBgp, migrate, restoreBgp, and rollback operations.
+	PortID *string
+
+	// The target peering location for circuit migration.
+	TargetPeeringLocation *string
+
+	// The source-to-target port mappings for circuit migration.
+	TargetPortMapping []*PortMapping
+}
+
+// MigrateExpressRouteCircuitValidateAndHealthCheckRequest - Request model used by validate and health check circuit migration
+// operations.
+type MigrateExpressRouteCircuitValidateAndHealthCheckRequest struct {
+	// REQUIRED; The target peering location for circuit migration.
+	TargetPeeringLocation *string
+
+	// REQUIRED; The source-to-target port mappings for circuit migration.
+	TargetPortMapping []*PortMapping
+}
+
+// MigrateExpressRouteCircuitValidateResponse - Response for express route circuit migration validation operation.
+type MigrateExpressRouteCircuitValidateResponse struct {
+	// The validation status.
+	Status *string
+}
+
 // MigrateLoadBalancerToIPBasedRequest - The request for a migrateToIpBased API.
 type MigrateLoadBalancerToIPBasedRequest struct {
 	// A list of pool names that should be migrated from Nic based to IP based pool
@@ -10114,6 +10717,44 @@ type MoveIPConfigurationResourceReference struct {
 type MoveIPConfigurationsRequest struct {
 	// REQUIRED; A list of IP configuration move items.
 	MoveIPConfigurationItems []*MoveIPConfigurationItem
+}
+
+// NAT64Capability - The NAT64 capability. Enables stateful NAT64 translation (IPv6-only workloads reaching IPv4
+// destinations) on the appliance's floating NIC; supported on a dual-stack appliance. This kind is
+// property-less: it carries no `ipVersion` (the parent appliance's dual-stack configuration is the
+// precondition, service-validated) beyond the properties common to every capability.
+type NAT64Capability struct {
+	// CONSTANT; The NAT64 capability kind.
+	// Field has constant value VirtualNetworkApplianceCapabilityKindNAT64, any specified value is ignored.
+	Kind *VirtualNetworkApplianceCapabilityKind
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkApplianceCapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
+// NAT64Capability.
+func (n *NAT64Capability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+	return &VirtualNetworkApplianceCapability{
+		ID:         n.ID,
+		Kind:       n.Kind,
+		Name:       n.Name,
+		Properties: n.Properties,
+		SystemData: n.SystemData,
+		Type:       n.Type,
+	}
 }
 
 // NatGateway - Nat Gateway resource.
@@ -10919,6 +11560,117 @@ type P2SVPNProfileParameters struct {
 	AuthenticationMethod *AuthenticationMethod
 }
 
+// PLGatewayCapability - The Private Link Gateway (slow-path) capability. Private Link programming offloaded to the appliance's
+// gateway;
+// IPv6 on a dual-stack appliance.
+type PLGatewayCapability struct {
+	// CONSTANT; The Private Link Gateway (slow-path) capability kind.
+	// Field has constant value VirtualNetworkApplianceCapabilityKindPLGateway, any specified value is ignored.
+	Kind *VirtualNetworkApplianceCapabilityKind
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkApplianceCapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
+// PLGatewayCapability.
+func (p *PLGatewayCapability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+	return &VirtualNetworkApplianceCapability{
+		ID:         p.ID,
+		Kind:       p.Kind,
+		Name:       p.Name,
+		Properties: p.Properties,
+		SystemData: p.SystemData,
+		Type:       p.Type,
+	}
+}
+
+// PLGatewayFastpathCapability - The Private Link Gateway FastPath capability. Private Link fast-path programming on the appliance's
+// gateway;
+// supported on a dual-stack appliance.
+type PLGatewayFastpathCapability struct {
+	// CONSTANT; The Private Link Gateway FastPath capability kind.
+	// Field has constant value VirtualNetworkApplianceCapabilityKindPLGatewayFastpath, any specified value is ignored.
+	Kind *VirtualNetworkApplianceCapabilityKind
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkApplianceCapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
+// PLGatewayFastpathCapability.
+func (p *PLGatewayFastpathCapability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+	return &VirtualNetworkApplianceCapability{
+		ID:         p.ID,
+		Kind:       p.Kind,
+		Name:       p.Name,
+		Properties: p.Properties,
+		SystemData: p.SystemData,
+		Type:       p.Type,
+	}
+}
+
+// PLIPForwardersCapability - The Private Link IP-forwarders (NVA) capability. Private Link programming offloaded to the appliance
+// NVA;
+// IPv6 on a dual-stack appliance.
+type PLIPForwardersCapability struct {
+	// CONSTANT; The Private Link IP-forwarders (NVA) capability kind.
+	// Field has constant value VirtualNetworkApplianceCapabilityKindPLIPForwarders, any specified value is ignored.
+	Kind *VirtualNetworkApplianceCapabilityKind
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkApplianceCapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
+// PLIPForwardersCapability.
+func (p *PLIPForwardersCapability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+	return &VirtualNetworkApplianceCapability{
+		ID:         p.ID,
+		Kind:       p.Kind,
+		Name:       p.Name,
+		Properties: p.Properties,
+		SystemData: p.SystemData,
+		Type:       p.Type,
+	}
+}
+
 // PacketCapture - Parameters that define the create packet capture operation.
 type PacketCapture struct {
 	// REQUIRED; Properties of the packet capture.
@@ -11213,6 +11965,27 @@ type PeerRoute struct {
 	Weight *int32
 }
 
+// PeeringHealth - Health information for a peering connection.
+type PeeringHealth struct {
+	// The peering statistics captured at prepare phase.
+	StatsAtPrepare *PeeringStats
+
+	// The current peering statistics.
+	StatsCurrent *PeeringStats
+
+	// The type of peering (for example, Private, Microsoft, Public).
+	Type *string
+}
+
+// PeeringStats - Statistical information for a peering connection.
+type PeeringStats struct {
+	// The collection of peering metrics.
+	Metrics []*Metric
+
+	// The timestamp when these statistics were captured.
+	Timestamp *time.Time
+}
+
 // PerimeterAssociableResource - Resource that is onboarded to use network security perimeter. Also referred as perimeter
 // associable resource.
 type PerimeterAssociableResource struct {
@@ -11389,6 +12162,39 @@ type PoolUsage struct {
 
 	// READ-ONLY; Total number of IP addresses managed in the IpamPool.
 	TotalNumberOfIPAddresses *string
+}
+
+// PortMapping - A mapping between source and target ports for migration.
+type PortMapping struct {
+	// REQUIRED; The source port identifier.
+	SourcePortID *string
+
+	// REQUIRED; The target port identifier.
+	TargetPortID *string
+}
+
+// PortMigrationInfo - Information about a port migration status.
+type PortMigrationInfo struct {
+	// The reason for failure if migration failed for the port.
+	FailureReason *string
+
+	// The peering health details for the port.
+	Peerings []*PeeringHealth
+
+	// The current migration phase for the port.
+	Phase *string
+
+	// The identifier of the port being migrated.
+	PortID *string
+
+	// The source port identifier before migration.
+	SourcePortID *string
+
+	// The source port statistics before migration.
+	SourcePortStats *SourcePortStats
+
+	// The migration status for the port.
+	Status *string
 }
 
 // PrepareNetworkPoliciesRequest - Details of PrepareNetworkPolicies for Subnet.
@@ -11643,6 +12449,10 @@ type PrivateLinkServiceConnection struct {
 
 // PrivateLinkServiceConnectionProperties - Properties of the PrivateLinkServiceConnection.
 type PrivateLinkServiceConnectionProperties struct {
+	// A reference to an existing approved private endpoint whose connection approval state should be inherited by this connection
+	// at creation time.
+	ApprovalReference *ApprovalReference
+
 	// The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
 	GroupIDs []*string
 
@@ -12883,6 +13693,9 @@ type Rule struct {
 	// List of destination FQDNs.
 	DestinationFqdns []*string
 
+	// List of destination geographic location filters (ISO 3166-1 alpha-2 country codes, e.g. "US", "CA") for this rule.
+	DestinationGeoLocations []*string
+
 	// List of destination IpGroups for this rule.
 	DestinationIPGroups []*string
 
@@ -12897,6 +13710,9 @@ type Rule struct {
 
 	// List of source IP addresses for this rule.
 	SourceAddresses []*string
+
+	// List of source geographic location filters (ISO 3166-1 alpha-2 country codes, e.g. "US", "CA") for this rule.
+	SourceGeoLocations []*string
 
 	// List of source IpGroups for this rule.
 	SourceIPGroups []*string
@@ -13879,6 +14695,16 @@ type SessionIDs struct {
 	SessionIDs []*string
 }
 
+// SessionRecordingIdentity - The identity to use for accessing the blob container where recordings will be stored
+type SessionRecordingIdentity struct {
+	// REQUIRED; The type of identity to use
+	Type *SessionRecordingIdentityType
+
+	// User assigned identity to use for accessing blob container Uri. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identity type systemAssigned.
+	UserAssignedIdentityID *string
+}
+
 // SharedKeyProperties - Parameters for SharedKey.
 type SharedKeyProperties struct {
 	// The value of the shared key for the vpn link connection.
@@ -13964,6 +14790,12 @@ type SingleQueryResult struct {
 
 	// Describes the list of source ports related to this signature
 	SourcePorts []*string
+}
+
+// SourcePortStats - Statistics from the source port before migration.
+type SourcePortStats struct {
+	// The peering health information from the source port.
+	Peerings []*PeeringHealth
 }
 
 // StaticCidr - Instance of StaticCidr resource.
@@ -16157,6 +16989,62 @@ type VirtualNetworkAppliance struct {
 	Type *string
 }
 
+// VirtualNetworkApplianceCapability - A capability enabled on a virtual network appliance. The top-level `kind` discriminator
+// selects the
+// capability family; every kind shares the same `properties` schema (see
+// VirtualNetworkApplianceCapabilityProperties). One capability of a given kind may exist per appliance.
+type VirtualNetworkApplianceCapability struct {
+	// REQUIRED; The kind of capability (the top-level discriminator).
+	Kind *VirtualNetworkApplianceCapabilityKind
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkApplianceCapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
+// VirtualNetworkApplianceCapability.
+func (v *VirtualNetworkApplianceCapability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+	return v
+}
+
+// VirtualNetworkApplianceCapabilityListResult - The response of a VirtualNetworkApplianceCapability list operation.
+type VirtualNetworkApplianceCapabilityListResult struct {
+	// REQUIRED; The VirtualNetworkApplianceCapability items on this page
+	Value []VirtualNetworkApplianceCapabilityClassification
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VirtualNetworkApplianceCapabilityProperties - Properties common to every virtual network appliance capability, independent
+// of kind.
+type VirtualNetworkApplianceCapabilityProperties struct {
+	// The IP version the capability applies to. Private Link Gateway FastPath (`PLGatewayFastpath`)
+	// only accepts `DualStack`; Private Link Gateway (`PLGateway`) and Private Link IP-forwarders
+	// (`PLIPForwarders`) only accept `IPv6`. Not applicable to `NAT64`, which is property-less and must
+	// omit this value. The service validates the value against the resource's `kind` when the
+	// capability is created or updated.
+	IPVersion *VirtualNetworkApplianceCapabilityIPVersion
+
+	// READ-ONLY; The Azure resource ID of the owning virtual network. System-derived and read-only.
+	LinkedResourceID *string
+
+	// READ-ONLY; The provisioning state of the capability resource.
+	ProvisioningState *ProvisioningState
+}
+
 // VirtualNetworkApplianceIPConfiguration - The virtual network appliance ip configuration.
 type VirtualNetworkApplianceIPConfiguration struct {
 	// Resource ID.
@@ -16206,6 +17094,9 @@ type VirtualNetworkApplianceListResult struct {
 type VirtualNetworkAppliancePropertiesFormat struct {
 	// Bandwidth of the VirtualNetworkAppliance resource in Gbps.
 	BandwidthInGbps *float64
+
+	// The reference to the capacity provider resource.
+	CapacityProvider *SubResource
 
 	// Whether the specific virtual network appliance is IPv4 or Dual Stack. Default is IPv4.
 	PrivateIPAddressVersion *VirtualNetworkApplianceIPVersionType
@@ -17380,6 +18271,9 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 
 	// The PolicySettings for policy.
 	PolicySettings *PolicySettings
+
+	// Tier of a web application firewall policy.
+	Tier *WebApplicationFirewallPolicyTier
 
 	// READ-ONLY; A collection of references to application gateway for containers.
 	ApplicationGatewayForContainers []*ApplicationGatewayForContainersReferenceDefinition

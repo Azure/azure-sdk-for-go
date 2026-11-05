@@ -5,7 +5,7 @@
 package armtrafficmanager
 
 const (
-	version20240401Preview string = "2024-04-01-preview"
+	version20260901 string = "2026-09-01"
 )
 
 // AllowedEndpointRecordType - The allowed type DNS record types for this profile.

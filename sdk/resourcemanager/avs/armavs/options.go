@@ -186,6 +186,11 @@ type HostsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// HostsClientUpdateOptions contains the optional parameters for the HostsClient.Update method.
+type HostsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // IscsiPathsClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiPathsClient.BeginCreateOrUpdate
 // method.
 type IscsiPathsClientBeginCreateOrUpdateOptions struct {

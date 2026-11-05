@@ -98,10 +98,7 @@ func (j *JobsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
 	if err != nil {
 		return nil, err
@@ -133,10 +130,7 @@ func (j *JobsServerTransport) dispatchNewListByTargetPager(req *http.Request) (*
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := j.srv.NewListByTargetPager(resourceURIParam, nil)
 		newListByTargetPager = &resp
 		j.newListByTargetPager.add(req, newListByTargetPager)

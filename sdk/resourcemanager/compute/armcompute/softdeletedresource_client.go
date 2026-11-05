@@ -19,7 +19,7 @@ import (
 // SoftDeletedResourceClient contains the methods for the SoftDeletedResource group.
 // Don't use this type directly, use NewSoftDeletedResourceClient() instead.
 //
-// Generated from API version 2025-12-03
+// Generated from API version 2026-03-03
 type SoftDeletedResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -114,7 +114,7 @@ func (client *SoftDeletedResourceClient) listByArtifactNameCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251203)
+		reqQP.Set("api-version", version20260303)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

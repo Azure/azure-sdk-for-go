@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBLocationGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBLocationGet.json
 func ExampleLocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,25 +31,25 @@ func ExampleLocationsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.LocationsClientGetResponse{
 	// 	LocationGetResult: armcosmos.LocationGetResult{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/locations"),
 	// 		Name: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/locations"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),
 	// 		Properties: &armcosmos.LocationProperties{
-	// 			SupportsAvailabilityZone: to.Ptr(true),
-	// 			IsResidencyRestricted: to.Ptr(true),
 	// 			BackupStorageRedundancies: []*armcosmos.BackupStorageRedundancy{
 	// 				to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 	// 				to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 	// 			},
-	// 			IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
+	// 			IsResidencyRestricted: to.Ptr(true),
 	// 			IsSubscriptionRegionAccessAllowedForAz: to.Ptr(true),
+	// 			IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
 	// 			Status: to.Ptr(armcosmos.StatusOnline),
+	// 			SupportsAvailabilityZone: to.Ptr(true),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBLocationList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBLocationList.json
 func ExampleLocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,35 +75,35 @@ func ExampleLocationsClient_NewListPager() {
 		// 	LocationListResult: armcosmos.LocationListResult{
 		// 		Value: []*armcosmos.LocationGetResult{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations"),
 		// 				Name: to.Ptr("westus"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),
 		// 				Properties: &armcosmos.LocationProperties{
-		// 					SupportsAvailabilityZone: to.Ptr(false),
-		// 					IsResidencyRestricted: to.Ptr(false),
 		// 					BackupStorageRedundancies: []*armcosmos.BackupStorageRedundancy{
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 		// 					},
-		// 					IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
+		// 					IsResidencyRestricted: to.Ptr(false),
 		// 					IsSubscriptionRegionAccessAllowedForAz: to.Ptr(false),
+		// 					IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
 		// 					Status: to.Ptr(armcosmos.StatusOnline),
+		// 					SupportsAvailabilityZone: to.Ptr(false),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/centralus"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations"),
 		// 				Name: to.Ptr("centralus"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/centralus"),
 		// 				Properties: &armcosmos.LocationProperties{
-		// 					SupportsAvailabilityZone: to.Ptr(true),
-		// 					IsResidencyRestricted: to.Ptr(false),
 		// 					BackupStorageRedundancies: []*armcosmos.BackupStorageRedundancy{
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyZone),
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 		// 					},
-		// 					IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(false),
+		// 					IsResidencyRestricted: to.Ptr(false),
 		// 					IsSubscriptionRegionAccessAllowedForAz: to.Ptr(true),
+		// 					IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(false),
 		// 					Status: to.Ptr(armcosmos.StatusOnline),
+		// 					SupportsAvailabilityZone: to.Ptr(true),
 		// 				},
 		// 			},
 		// 		},

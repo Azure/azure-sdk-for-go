@@ -19,7 +19,7 @@ import (
 // AppLinksClient contains the methods for the AppLinks group.
 // Don't use this type directly, use NewAppLinksClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-08-01-preview
 type AppLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,7 +44,7 @@ func NewAppLinksClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create an AppLink.
+// BeginCreateOrUpdate - Create an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -68,7 +68,7 @@ func (client *AppLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create an AppLink.
+// CreateOrUpdate - Create an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, appLinkName string, resource AppLink, options *AppLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -110,7 +110,7 @@ func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,7 +120,7 @@ func (client *AppLinksClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// BeginDelete - Delete an AppLink.
+// BeginDelete - Delete an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -142,7 +142,7 @@ func (client *AppLinksClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete an AppLink.
+// Delete - Delete an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, appLinkName string, options *AppLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -184,12 +184,12 @@ func (client *AppLinksClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get an AppLink.
+// Get - Get the details of an Azure Kubernetes Application Network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -231,7 +231,7 @@ func (client *AppLinksClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,7 +249,7 @@ func (client *AppLinksClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List AppLink resources by resource group.
+// NewListByResourceGroupPager - List Azure Kubernetes Application Network resources by resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AppLinksClientListByResourceGroupOptions contains the optional parameters for the AppLinksClient.NewListByResourceGroupPager
 //     method.
@@ -302,7 +302,7 @@ func (client *AppLinksClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -321,7 +321,7 @@ func (client *AppLinksClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List AppLink resources by subscription.
+// NewListBySubscriptionPager - List Azure Kubernetes Application Network resources by subscription.
 //   - options - AppLinksClientListBySubscriptionOptions contains the optional parameters for the AppLinksClient.NewListBySubscriptionPager
 //     method.
 func (client *AppLinksClient) NewListBySubscriptionPager(options *AppLinksClientListBySubscriptionOptions) *runtime.Pager[AppLinksClientListBySubscriptionResponse] {
@@ -369,7 +369,7 @@ func (client *AppLinksClient) listBySubscriptionCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -388,7 +388,7 @@ func (client *AppLinksClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginUpdate - Update an AppLink.
+// BeginUpdate - Update an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
@@ -412,7 +412,7 @@ func (client *AppLinksClient) BeginUpdate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Update - Update an AppLink.
+// Update - Update an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinksClient) update(ctx context.Context, resourceGroupName string, appLinkName string, properties AppLinkUpdate, options *AppLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -454,7 +454,7 @@ func (client *AppLinksClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

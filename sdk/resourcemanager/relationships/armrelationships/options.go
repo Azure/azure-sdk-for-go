@@ -4,6 +4,46 @@
 
 package armrelationships
 
+// ContainsRelationshipsClientListByResourceGroupOptions contains the optional parameters for the ContainsRelationshipsClient.NewListByResourceGroupPager
+// method.
+type ContainsRelationshipsClientListByResourceGroupOptions struct {
+	// Filters the results by target resource type. Example: properties.metadata.targetType eq 'Microsoft.Compute/virtualMachines'
+	Filter *string
+}
+
+// ContainsRelationshipsClientListBySubscriptionOptions contains the optional parameters for the ContainsRelationshipsClient.NewListBySubscriptionPager
+// method.
+type ContainsRelationshipsClientListBySubscriptionOptions struct {
+	// Filters the results by target resource type. Example: properties.metadata.targetType eq 'Microsoft.Compute/virtualMachines'
+	Filter *string
+}
+
+// DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.BeginCreateOrUpdate
+// method.
+type DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.BeginDelete
+// method.
+type DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DependencyOfRelationshipsByServiceGroupClientGetOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.Get
+// method.
+type DependencyOfRelationshipsByServiceGroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DependencyOfRelationshipsByServiceGroupClientListOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.NewListPager
+// method.
+type DependencyOfRelationshipsByServiceGroupClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DependencyOfRelationshipsClientBeginCreateOrUpdateOptions contains the optional parameters for the DependencyOfRelationshipsClient.BeginCreateOrUpdate
 // method.
 type DependencyOfRelationshipsClientBeginCreateOrUpdateOptions struct {
@@ -21,6 +61,12 @@ type DependencyOfRelationshipsClientBeginDeleteOptions struct {
 // DependencyOfRelationshipsClientGetOptions contains the optional parameters for the DependencyOfRelationshipsClient.Get
 // method.
 type DependencyOfRelationshipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DependencyOfRelationshipsClientListByParentOptions contains the optional parameters for the DependencyOfRelationshipsClient.NewListByParentPager
+// method.
+type DependencyOfRelationshipsClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -46,5 +92,11 @@ type ServiceGroupMemberRelationshipsClientBeginDeleteOptions struct {
 // ServiceGroupMemberRelationshipsClientGetOptions contains the optional parameters for the ServiceGroupMemberRelationshipsClient.Get
 // method.
 type ServiceGroupMemberRelationshipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGroupMemberRelationshipsClientListByParentOptions contains the optional parameters for the ServiceGroupMemberRelationshipsClient.NewListByParentPager
+// method.
+type ServiceGroupMemberRelationshipsClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }

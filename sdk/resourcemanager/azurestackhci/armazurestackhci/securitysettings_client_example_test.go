@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/PutSecuritySettings.json
+// Generated from example definition: 2026-10-01/PutSecuritySettings.json
 func ExampleSecuritySettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleSecuritySettingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/DeleteSecuritySettings.json
+// Generated from example definition: 2026-10-01/DeleteSecuritySettings.json
 func ExampleSecuritySettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleSecuritySettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/GetSecuritySettings.json
+// Generated from example definition: 2026-10-01/GetSecuritySettings.json
 func ExampleSecuritySettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleSecuritySettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListSecuritySettingsByCluster.json
+// Generated from example definition: 2026-10-01/ListSecuritySettingsByCluster.json
 func ExampleSecuritySettingsClient_NewListByClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // SaaSOperationGroupClient contains the methods for the SaaSOperationGroup group.
 // Don't use this type directly, use NewSaaSOperationGroupClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-09-30
 type SaaSOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,7 @@ func (client *SaaSOperationGroupClient) BeginActivateResource(ctx context.Contex
 	}
 }
 
-// ActivateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
+// activateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SaaSOperationGroupClient) activateResource(ctx context.Context, body ActivateSaaSParameterRequest, options *SaaSOperationGroupClientBeginActivateResourceOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *SaaSOperationGroupClient) activateResource(ctx context.Context, bo
 	return httpResp, nil
 }
 
-// activateResourceCreateRequest creates the ActivateResource request.
+// activateResourceCreateRequest creates the activateResource request.
 func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSParameterRequest, _ *SaaSOperationGroupClientBeginActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Commvault.ContentStore/activateSaaS"
 	if client.subscriptionID == "" {
@@ -100,7 +100,7 @@ func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

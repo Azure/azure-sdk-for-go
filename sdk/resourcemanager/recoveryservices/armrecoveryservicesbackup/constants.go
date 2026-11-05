@@ -5,7 +5,7 @@
 package armrecoveryservicesbackup
 
 const (
-	version20260801 string = "2026-08-01"
+	version20261001 string = "2026-10-01"
 )
 
 // AccessType - Whether access to the storage account is key-based or identity-based.
@@ -94,10 +94,12 @@ const (
 	BackupItemTypeSAPHanaDatabase   BackupItemType = "SAPHanaDatabase"
 	BackupItemTypeSQLDB             BackupItemType = "SQLDB"
 	BackupItemTypeSQLDataBase       BackupItemType = "SQLDataBase"
-	BackupItemTypeSharepoint        BackupItemType = "Sharepoint"
-	BackupItemTypeSystemState       BackupItemType = "SystemState"
-	BackupItemTypeVM                BackupItemType = "VM"
-	BackupItemTypeVMwareVM          BackupItemType = "VMwareVM"
+	// BackupItemTypeSQLInstance - A SQL Server instance.
+	BackupItemTypeSQLInstance BackupItemType = "SQLInstance"
+	BackupItemTypeSharepoint  BackupItemType = "Sharepoint"
+	BackupItemTypeSystemState BackupItemType = "SystemState"
+	BackupItemTypeVM          BackupItemType = "VM"
+	BackupItemTypeVMwareVM    BackupItemType = "VMwareVM"
 )
 
 // PossibleBackupItemTypeValues returns the possible values for the BackupItemType const type.
@@ -115,6 +117,7 @@ func PossibleBackupItemTypeValues() []BackupItemType {
 		BackupItemTypeSAPHanaDatabase,
 		BackupItemTypeSQLDB,
 		BackupItemTypeSQLDataBase,
+		BackupItemTypeSQLInstance,
 		BackupItemTypeSharepoint,
 		BackupItemTypeSystemState,
 		BackupItemTypeVM,
@@ -278,10 +281,12 @@ const (
 	DataSourceTypeSAPHanaDatabase   DataSourceType = "SAPHanaDatabase"
 	DataSourceTypeSQLDB             DataSourceType = "SQLDB"
 	DataSourceTypeSQLDataBase       DataSourceType = "SQLDataBase"
-	DataSourceTypeSharepoint        DataSourceType = "Sharepoint"
-	DataSourceTypeSystemState       DataSourceType = "SystemState"
-	DataSourceTypeVM                DataSourceType = "VM"
-	DataSourceTypeVMwareVM          DataSourceType = "VMwareVM"
+	// DataSourceTypeSQLInstance - A SQL Server instance.
+	DataSourceTypeSQLInstance DataSourceType = "SQLInstance"
+	DataSourceTypeSharepoint  DataSourceType = "Sharepoint"
+	DataSourceTypeSystemState DataSourceType = "SystemState"
+	DataSourceTypeVM          DataSourceType = "VM"
+	DataSourceTypeVMwareVM    DataSourceType = "VMwareVM"
 )
 
 // PossibleDataSourceTypeValues returns the possible values for the DataSourceType const type.
@@ -299,6 +304,7 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 		DataSourceTypeSAPHanaDatabase,
 		DataSourceTypeSQLDB,
 		DataSourceTypeSQLDataBase,
+		DataSourceTypeSQLInstance,
 		DataSourceTypeSharepoint,
 		DataSourceTypeSystemState,
 		DataSourceTypeVM,
@@ -382,6 +388,22 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 		EnhancedSecurityStateDisabled,
 		EnhancedSecurityStateEnabled,
 		EnhancedSecurityStateInvalid,
+	}
+}
+
+// ExistingBasicVMProtection - Specifies how existing Basic VM protection is handled when configuring protection.
+type ExistingBasicVMProtection string
+
+const (
+	// ExistingBasicVMProtectionDisableWithDeleteRPsNow - Disables existing Basic VM protection and immediately deletes its recovery
+	// points.
+	ExistingBasicVMProtectionDisableWithDeleteRPsNow ExistingBasicVMProtection = "DisableWithDeleteRPsNow"
+)
+
+// PossibleExistingBasicVMProtectionValues returns the possible values for the ExistingBasicVMProtection const type.
+func PossibleExistingBasicVMProtectionValues() []ExistingBasicVMProtection {
+	return []ExistingBasicVMProtection{
+		ExistingBasicVMProtectionDisableWithDeleteRPsNow,
 	}
 }
 
@@ -589,6 +611,33 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 		InquiryStatusFailed,
 		InquiryStatusInvalid,
 		InquiryStatusSuccess,
+	}
+}
+
+// InstanceProtectionReadiness - The state of instance protection.
+type InstanceProtectionReadiness string
+
+const (
+	// InstanceProtectionReadinessPartialProtection - Instance is partially protected
+	InstanceProtectionReadinessPartialProtection InstanceProtectionReadiness = "PartialProtection"
+	// InstanceProtectionReadinessProtectionError - Instance protection encountered an error
+	InstanceProtectionReadinessProtectionError InstanceProtectionReadiness = "ProtectionError"
+	// InstanceProtectionReadinessReady - Instance is ready for protection
+	InstanceProtectionReadinessReady InstanceProtectionReadiness = "Ready"
+	// InstanceProtectionReadinessScheduleDisabled - Backup schedule is disabled for this instance
+	InstanceProtectionReadinessScheduleDisabled InstanceProtectionReadiness = "ScheduleDisabled"
+	// InstanceProtectionReadinessUnknown - Instance protection readiness is unknown
+	InstanceProtectionReadinessUnknown InstanceProtectionReadiness = "Unknown"
+)
+
+// PossibleInstanceProtectionReadinessValues returns the possible values for the InstanceProtectionReadiness const type.
+func PossibleInstanceProtectionReadinessValues() []InstanceProtectionReadiness {
+	return []InstanceProtectionReadiness{
+		InstanceProtectionReadinessPartialProtection,
+		InstanceProtectionReadinessProtectionError,
+		InstanceProtectionReadinessReady,
+		InstanceProtectionReadinessScheduleDisabled,
+		InstanceProtectionReadinessUnknown,
 	}
 }
 
@@ -966,6 +1015,24 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 	}
 }
 
+// ProtectionLevel - Protection type in case protected as part of a parent.
+type ProtectionLevel string
+
+const (
+	// ProtectionLevelDatabase - Protected at database level
+	ProtectionLevelDatabase ProtectionLevel = "Database"
+	// ProtectionLevelDatabaseUnderInstance - Database protected under an instance
+	ProtectionLevelDatabaseUnderInstance ProtectionLevel = "DatabaseUnderInstance"
+)
+
+// PossibleProtectionLevelValues returns the possible values for the ProtectionLevel const type.
+func PossibleProtectionLevelValues() []ProtectionLevel {
+	return []ProtectionLevel{
+		ProtectionLevelDatabase,
+		ProtectionLevelDatabaseUnderInstance,
+	}
+}
+
 // ProtectionState - Backup state of this backup item.
 type ProtectionState string
 
@@ -1086,8 +1153,10 @@ type RecoveryPointTierType string
 const (
 	RecoveryPointTierTypeArchivedRP RecoveryPointTierType = "ArchivedRP"
 	RecoveryPointTierTypeHardenedRP RecoveryPointTierType = "HardenedRP"
-	RecoveryPointTierTypeInstantRP  RecoveryPointTierType = "InstantRP"
-	RecoveryPointTierTypeInvalid    RecoveryPointTierType = "Invalid"
+	// RecoveryPointTierTypeIASnapshotRP - Instant Access snapshot tier, retained for the policy's instantAccessDurationMinutes.
+	RecoveryPointTierTypeIASnapshotRP RecoveryPointTierType = "IASnapshotRP"
+	RecoveryPointTierTypeInstantRP    RecoveryPointTierType = "InstantRP"
+	RecoveryPointTierTypeInvalid      RecoveryPointTierType = "Invalid"
 )
 
 // PossibleRecoveryPointTierTypeValues returns the possible values for the RecoveryPointTierType const type.
@@ -1095,6 +1164,7 @@ func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
 	return []RecoveryPointTierType{
 		RecoveryPointTierTypeArchivedRP,
 		RecoveryPointTierTypeHardenedRP,
+		RecoveryPointTierTypeIASnapshotRP,
 		RecoveryPointTierTypeInstantRP,
 		RecoveryPointTierTypeInvalid,
 	}
@@ -1577,6 +1647,30 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 	}
 }
 
+// VMWorkloadPolicyType - Type of the protection policy
+type VMWorkloadPolicyType string
+
+const (
+	// VMWorkloadPolicyTypeInvalid - Invalid policy type
+	VMWorkloadPolicyTypeInvalid VMWorkloadPolicyType = "Invalid"
+	// VMWorkloadPolicyTypeSnapshotV1 - Snapshot V1 policy type
+	VMWorkloadPolicyTypeSnapshotV1 VMWorkloadPolicyType = "SnapshotV1"
+	// VMWorkloadPolicyTypeSnapshotV2 - Snapshot V2 policy type
+	VMWorkloadPolicyTypeSnapshotV2 VMWorkloadPolicyType = "SnapshotV2"
+	// VMWorkloadPolicyTypeStreaming - Streaming policy type
+	VMWorkloadPolicyTypeStreaming VMWorkloadPolicyType = "Streaming"
+)
+
+// PossibleVMWorkloadPolicyTypeValues returns the possible values for the VMWorkloadPolicyType const type.
+func PossibleVMWorkloadPolicyTypeValues() []VMWorkloadPolicyType {
+	return []VMWorkloadPolicyType{
+		VMWorkloadPolicyTypeInvalid,
+		VMWorkloadPolicyTypeSnapshotV1,
+		VMWorkloadPolicyTypeSnapshotV2,
+		VMWorkloadPolicyTypeStreaming,
+	}
+}
+
 // ValidationStatus - Validation Status
 type ValidationStatus string
 
@@ -1680,10 +1774,12 @@ const (
 	WorkloadTypeSAPHanaDatabase   WorkloadType = "SAPHanaDatabase"
 	WorkloadTypeSQLDB             WorkloadType = "SQLDB"
 	WorkloadTypeSQLDataBase       WorkloadType = "SQLDataBase"
-	WorkloadTypeSharepoint        WorkloadType = "Sharepoint"
-	WorkloadTypeSystemState       WorkloadType = "SystemState"
-	WorkloadTypeVM                WorkloadType = "VM"
-	WorkloadTypeVMwareVM          WorkloadType = "VMwareVM"
+	// WorkloadTypeSQLInstance - A SQL Server instance.
+	WorkloadTypeSQLInstance WorkloadType = "SQLInstance"
+	WorkloadTypeSharepoint  WorkloadType = "Sharepoint"
+	WorkloadTypeSystemState WorkloadType = "SystemState"
+	WorkloadTypeVM          WorkloadType = "VM"
+	WorkloadTypeVMwareVM    WorkloadType = "VMwareVM"
 )
 
 // PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
@@ -1701,6 +1797,7 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 		WorkloadTypeSAPHanaDatabase,
 		WorkloadTypeSQLDB,
 		WorkloadTypeSQLDataBase,
+		WorkloadTypeSQLInstance,
 		WorkloadTypeSharepoint,
 		WorkloadTypeSystemState,
 		WorkloadTypeVM,

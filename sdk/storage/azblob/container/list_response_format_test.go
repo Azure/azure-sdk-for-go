@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -150,4 +151,66 @@ func TestListBlobsArrowResponseReportsRequestValues(t *testing.T) {
 	}
 	require.Len(t, arrowFlat.Segment.BlobItems, 1)
 	require.Equal(t, "blob", *arrowFlat.Segment.BlobItems[0].Name)
+}
+
+// hnsTransport answers list requests the way an account with a hierarchical namespace does: it
+// doesn't support Arrow listings, so it returns XML even when Arrow is accepted, including the
+// properties only such an account returns.
+type hnsTransport struct{ reqs []*http.Request }
+
+func (h *hnsTransport) Do(req *http.Request) (*http.Response, error) {
+	h.reqs = append(h.reqs, req)
+	props := `<Properties><Expiry-Time>Wed, 01 Jan 2031 00:00:00 GMT</Expiry-Time>` +
+		`<Owner>owner-id</Owner><Group>group-id</Group><Permissions>rwxr-x---</Permissions><Acl>user::rwx,group::r-x,other::---</Acl></Properties>`
+	body := `<?xml version="1.0" encoding="utf-8"?><EnumerationResults ServiceEndpoint="https://account.blob.core.windows.net/" ContainerName="container">` +
+		`<Blobs><Blob><Name>dir/file</Name>` + props + `</Blob></Blobs><NextMarker /></EnumerationResults>`
+	return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {"application/xml"}}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
+}
+
+// The default listing accepts Arrow with XML fallback. An account with a hierarchical namespace
+// answers it with XML, and the properties only XML carries (Arrow has no columns for them) must
+// still be returned.
+func TestListBlobsDefaultFormatXMLResponseKeepsHNSProperties(t *testing.T) {
+	expiresOn := time.Date(2031, time.January, 1, 0, 0, 0, 0, time.UTC)
+	for _, tt := range []struct {
+		name      string
+		flat      *container.ListBlobsFlatOptions
+		hierarchy *container.ListBlobsHierarchyOptions
+	}{
+		{"Nil", nil, nil},
+		{"IncludePermissions", &container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Permissions: true}}, &container.ListBlobsHierarchyOptions{Include: container.ListBlobsInclude{Permissions: true}}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &hnsTransport{}
+			c, err := container.NewClientWithNoCredential("https://account.blob.core.windows.net/container", &container.ClientOptions{
+				ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
+			})
+			require.NoError(t, err)
+
+			flat, err := c.NewListBlobsFlatPager(tt.flat).NextPage(context.Background())
+			require.NoError(t, err)
+			hier, err := c.NewListBlobsHierarchyPager("/", tt.hierarchy).NextPage(context.Background())
+			require.NoError(t, err)
+
+			require.Len(t, tr.reqs, 2)
+			for _, req := range tr.reqs {
+				accept := req.Header.Values("Accept")
+				if len(accept) == 0 {
+					accept = req.Header["accept"]
+				}
+				require.Equal(t, []string{"application/vnd.apache.arrow.stream,application/xml"}, accept, "the default accepts Arrow with XML fallback")
+				require.Equal(t, tt.flat != nil, strings.Contains(req.URL.Query().Get("include"), "permissions"))
+			}
+			for name, items := range map[string][]*container.BlobItem{"flat": flat.Segment.BlobItems, "hierarchy": hier.Segment.BlobItems} {
+				require.Len(t, items, 1, name)
+				p := items[0].Properties
+				require.NotNil(t, p, name)
+				require.Equal(t, "owner-id", *p.Owner, name)
+				require.Equal(t, "group-id", *p.Group, name)
+				require.Equal(t, "rwxr-x---", *p.Permissions, name)
+				require.Equal(t, "user::rwx,group::r-x,other::---", *p.ACL, name)
+				require.True(t, expiresOn.Equal(*p.ExpiresOn), name)
+			}
+		})
+	}
 }

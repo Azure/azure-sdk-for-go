@@ -361,18 +361,18 @@ type fatalError struct {
 	s string
 }
 
-func (f fatalError) Error() string {
+func (f *fatalError) Error() string {
 	return f.s
 }
 
-func (f fatalError) NonRetriable() {
+func (*fatalError) NonRetriable() {
 	// marker method
 }
 
 var _ errorinfo.NonRetriable = (*fatalError)(nil)
 
 func TestRetryPolicyIsNotRetriable(t *testing.T) {
-	theErr := fatalError{s: "it's dead Jim"}
+	theErr := &fatalError{s: "it's dead Jim"}
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
@@ -898,7 +898,7 @@ func BenchmarkCalcDelay_defaultSettings(b *testing.B) {
 	retryOptions := policy.RetryOptions{}
 	setDefaults(&retryOptions)
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		calcDelay(retryOptions, 32)
 	}
 }
@@ -910,7 +910,7 @@ func BenchmarkCalcDelay_overflow(b *testing.B) {
 	}
 	setDefaults(&retryOptions)
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		calcDelay(retryOptions, 100)
 	}
 }

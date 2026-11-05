@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseCreate.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseCreate.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDelete.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,245 +189,7 @@ func ExampleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseGet.json
-func ExampleClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().Get(ctx, "rg1", "cache1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.ClientGetResponse{
-	// 	Cluster: armredisenterprise.Cluster{
-	// 		Name: to.Ptr("cache1"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
-	// 		Kind: to.Ptr(armredisenterprise.KindV1),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armredisenterprise.ClusterCreateProperties{
-	// 			HostName: to.Ptr("cache1.westus.something.azure.com"),
-	// 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
-	// 			PrivateEndpointConnections: []*armredisenterprise.PrivateEndpointConnection{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/privateEndpointConnections/cachePec"),
-	// 					Properties: &armredisenterprise.PrivateEndpointConnectionProperties{
-	// 						PrivateEndpoint: &armredisenterprise.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/cachePe"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armredisenterprise.PrivateLinkServiceConnectionState{
-	// 							Description: to.Ptr("Please approve my connection"),
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusApproved),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
-	// 			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
-	// 				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
-	// 					{
-	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
-	// 						Duration: to.Ptr("PT6H"),
-	// 						StartHourUTC: to.Ptr[int32](3),
-	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
-	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
-	// 						},
-	// 					},
-	// 					{
-	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
-	// 						Duration: to.Ptr("PT6H"),
-	// 						StartHourUTC: to.Ptr[int32](3),
-	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
-	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
-	// 						},
-	// 					},
-	// 					{
-	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
-	// 						Duration: to.Ptr("PT6H"),
-	// 						StartHourUTC: to.Ptr[int32](3),
-	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
-	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			RedisVersion: to.Ptr("6"),
-	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
-	// 		},
-	// 		SKU: &armredisenterprise.SKU{
-	// 			Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-	// 			Capacity: to.Ptr[int32](3),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("1"),
-	// 			to.Ptr("2"),
-	// 			to.Ptr("3"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseList.json
-func ExampleClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armredisenterprise.ClientListResponse{
-		// 	ClusterList: armredisenterprise.ClusterList{
-		// 		Value: []*armredisenterprise.Cluster{
-		// 			{
-		// 				Name: to.Ptr("cache1"),
-		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
-		// 				Kind: to.Ptr(armredisenterprise.KindV1),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armredisenterprise.ClusterCreateProperties{
-		// 					HostName: to.Ptr("cache1.westus.something.azure.com"),
-		// 					MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
-		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
-		// 					RedisVersion: to.Ptr("6"),
-		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
-		// 				},
-		// 				SKU: &armredisenterprise.SKU{
-		// 					Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-		// 					Capacity: to.Ptr[int32](3),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseListByResourceGroup.json
-func ExampleClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClient().NewListByResourceGroupPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armredisenterprise.ClientListByResourceGroupResponse{
-		// 	ClusterList: armredisenterprise.ClusterList{
-		// 		Value: []*armredisenterprise.Cluster{
-		// 			{
-		// 				Name: to.Ptr("cache1"),
-		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
-		// 				Kind: to.Ptr(armredisenterprise.KindV1),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armredisenterprise.ClusterCreateProperties{
-		// 					HostName: to.Ptr("cache1.westus.something.azure.com"),
-		// 					MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
-		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
-		// 					RedisVersion: to.Ptr("5"),
-		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
-		// 				},
-		// 				SKU: &armredisenterprise.SKU{
-		// 					Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-		// 					Capacity: to.Ptr[int32](3),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("1"),
-		// 					to.Ptr("2"),
-		// 					to.Ptr("3"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseListSkusForScaling.json
-func ExampleClient_ListSKUsForScaling() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().ListSKUsForScaling(ctx, "rg1", "cache1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.ClientListSKUsForScalingResponse{
-	// 	SKUDetailsList: armredisenterprise.SKUDetailsList{
-	// 		SKUs: []*armredisenterprise.SKUDetails{
-	// 			{
-	// 				Name: to.Ptr("MemoryOptimized_M100"),
-	// 				SizeInGB: to.Ptr[float32](120),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("ComputeOptimized_X700"),
-	// 				SizeInGB: to.Ptr[float32](720),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Balanced_B5"),
-	// 				SizeInGB: to.Ptr[float32](6),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseUpdate.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,4 +311,242 @@ func ExampleClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseGet.json
+func ExampleClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Get(ctx, "rg1", "cache1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.ClientGetResponse{
+	// 	Cluster: armredisenterprise.Cluster{
+	// 		Name: to.Ptr("cache1"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
+	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+	// 		Kind: to.Ptr(armredisenterprise.KindV1),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armredisenterprise.ClusterCreateProperties{
+	// 			HostName: to.Ptr("cache1.westus.something.azure.com"),
+	// 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
+	// 			PrivateEndpointConnections: []*armredisenterprise.PrivateEndpointConnection{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/privateEndpointConnections/cachePec"),
+	// 					Properties: &armredisenterprise.PrivateEndpointConnectionProperties{
+	// 						PrivateEndpoint: &armredisenterprise.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/cachePe"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armredisenterprise.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("Please approve my connection"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusApproved),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+	// 			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+	// 				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+	// 					{
+	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 						Duration: to.Ptr("PT6H"),
+	// 						StartHourUTC: to.Ptr[int32](3),
+	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+	// 						},
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 						Duration: to.Ptr("PT6H"),
+	// 						StartHourUTC: to.Ptr[int32](3),
+	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+	// 						},
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 						Duration: to.Ptr("PT6H"),
+	// 						StartHourUTC: to.Ptr[int32](3),
+	// 						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			RedisVersion: to.Ptr("6"),
+	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
+	// 		},
+	// 		SKU: &armredisenterprise.SKU{
+	// 			Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
+	// 			Capacity: to.Ptr[int32](3),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
+	// 			to.Ptr("3"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseListSkusForScaling.json
+func ExampleClient_ListSKUsForScaling() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().ListSKUsForScaling(ctx, "rg1", "cache1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.ClientListSKUsForScalingResponse{
+	// 	SKUDetailsList: armredisenterprise.SKUDetailsList{
+	// 		SKUs: []*armredisenterprise.SKUDetails{
+	// 			{
+	// 				Name: to.Ptr("MemoryOptimized_M100"),
+	// 				SizeInGB: to.Ptr[float32](120),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("ComputeOptimized_X700"),
+	// 				SizeInGB: to.Ptr[float32](720),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Balanced_B5"),
+	// 				SizeInGB: to.Ptr[float32](6),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseListByResourceGroup.json
+func ExampleClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armredisenterprise.ClientListByResourceGroupResponse{
+		// 	ClusterList: armredisenterprise.ClusterList{
+		// 		Value: []*armredisenterprise.Cluster{
+		// 			{
+		// 				Name: to.Ptr("cache1"),
+		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
+		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+		// 				Kind: to.Ptr(armredisenterprise.KindV1),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armredisenterprise.ClusterCreateProperties{
+		// 					HostName: to.Ptr("cache1.westus.something.azure.com"),
+		// 					MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
+		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+		// 					RedisVersion: to.Ptr("5"),
+		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
+		// 				},
+		// 				SKU: &armredisenterprise.SKU{
+		// 					Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
+		// 					Capacity: to.Ptr[int32](3),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 					to.Ptr("2"),
+		// 					to.Ptr("3"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseList.json
+func ExampleClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armredisenterprise.ClientListResponse{
+		// 	ClusterList: armredisenterprise.ClusterList{
+		// 		Value: []*armredisenterprise.Cluster{
+		// 			{
+		// 				Name: to.Ptr("cache1"),
+		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
+		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
+		// 				Kind: to.Ptr(armredisenterprise.KindV1),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armredisenterprise.ClusterCreateProperties{
+		// 					HostName: to.Ptr("cache1.westus.something.azure.com"),
+		// 					MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
+		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+		// 					RedisVersion: to.Ptr("6"),
+		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
+		// 				},
+		// 				SKU: &armredisenterprise.SKU{
+		// 					Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
+		// 					Capacity: to.Ptr[int32](3),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

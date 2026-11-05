@@ -38,9 +38,6 @@
   blocks. Such uploads now return the block limit error before sending any request.
 
 ### Other Changes
-* List blobs operations now request the Apache Arrow response format by default: `StorageResponseFormatAuto` resolves
-  to `StorageResponseFormatArrow`, including when no options are passed. The service returns XML when Arrow isn't
-  available, and both are handled transparently. Set `ResponseFormat` to `StorageResponseFormatXML` to opt out.
 * Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
 * Updated the service version to `2027-03-07`.
 * Updated `sdk/storage/internal` version to `0.2.0`

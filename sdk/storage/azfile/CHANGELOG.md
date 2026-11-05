@@ -1,5 +1,15 @@
 # Release History
 
+## 1.7.2 (Unreleased)
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+* Updated `azcore` version to `1.23.3`
+* Updated `azidentity` version to `1.14.0`
+* Updated `azblob` version to `1.8.3`
+
 ## 1.7.1 (2026-10-05)
 
 ### Bugs Fixed

@@ -79,7 +79,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -167,7 +167,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 							MinFailingPeriodsToAlert:  to.Ptr[float32](4),
 							NumberOfEvaluationPeriods: to.Ptr[float32](4),
 						},
-						IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t }()),
+						IgnoreDataBefore: to.Ptr(time.Date(2019, time.April, 4, 21, 0, 0, 0, time.UTC)),
 						MetricName:       to.Ptr("Percentage CPU"),
 						MetricNamespace:  to.Ptr("microsoft.compute/virtualmachines"),
 						Operator:         to.Ptr(armmonitor.DynamicThresholdOperatorGreaterOrLessThan),
@@ -195,7 +195,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -221,7 +221,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// 							MinFailingPeriodsToAlert: to.Ptr[float32](4),
 	// 							NumberOfEvaluationPeriods: to.Ptr[float32](4),
 	// 						},
-	// 						IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t}()),
+	// 						IgnoreDataBefore: to.Ptr(time.Date(2019, time.April, 4, 21, 0, 0, 0, time.UTC)),
 	// 						MetricName: to.Ptr("Percentage CPU"),
 	// 						MetricNamespace: to.Ptr("microsoft.compute/virtualmachines"),
 	// 						Operator: to.Ptr(armmonitor.DynamicThresholdOperatorGreaterOrLessThan),
@@ -309,7 +309,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForMultip
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -425,7 +425,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Identity: &armmonitor.Identity{
 	// 			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -517,7 +517,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 						Name:             to.Ptr("Metric1"),
 						AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
 						CriterionType:    to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
-						IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t }()),
+						IgnoreDataBefore: to.Ptr(time.Date(2019, time.April, 4, 21, 0, 0, 0, time.UTC)),
 						Operator:         to.Ptr(armmonitor.DynamicThresholdOperatorLessThan),
 						Query:            to.Ptr("avg({\"system.cpu.utilization\"})"),
 					},
@@ -553,7 +553,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Identity: &armmonitor.Identity{
 	// 			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -581,7 +581,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 	// 						Name: to.Ptr("Metric1"),
 	// 						AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
 	// 						CriterionType: to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
-	// 						IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t}()),
+	// 						IgnoreDataBefore: to.Ptr(time.Date(2019, time.April, 4, 21, 0, 0, 0, time.UTC)),
 	// 						Operator: to.Ptr(armmonitor.DynamicThresholdOperatorLessThan),
 	// 						Query: to.Ptr("avg({\"system.cpu.utilization\"})"),
 	// 					},
@@ -681,7 +681,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQuer
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Identity: &armmonitor.Identity{
 	// 			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -806,7 +806,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQuer
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Identity: &armmonitor.Identity{
 	// 			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -925,7 +925,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnResourc
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest1/providers/providers/microsoft.insights/metricalerts/MetricAlertAtResourceGroupLevel"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest1/providers/microsoft.insights/metricalerts/MetricAlertAtResourceGroupLevel"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1031,7 +1031,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingle
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1136,7 +1136,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnSubscri
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertAtSubscriptionLevel"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertAtSubscriptionLevel"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1257,7 +1257,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRulesWithDime
 	// res = armmonitor.MetricAlertsClientCreateOrUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertWithDimensions"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertWithDimensions"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1436,7 +1436,7 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForMultipleResources() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1509,7 +1509,7 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForSingleResource() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1579,7 +1579,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForMultipleResources() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertOnMultipleResources"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1648,7 +1648,7 @@ func ExampleMetricAlertsClient_Get_getAQueryBasedAlertRule() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Identity: &armmonitor.Identity{
 	// 			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -1720,7 +1720,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnResourceGroupS() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest1/providers/providers/microsoft.insights/metricalerts/MetricAlertAtResourceGroupLevel"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest1/providers/microsoft.insights/metricalerts/MetricAlertAtResourceGroupLevel"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1789,7 +1789,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForSingleResource() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1854,7 +1854,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnSubscription() {
 	// res = armmonitor.MetricAlertsClientGetResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/MetricAlertAtSubscriptionLevel"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/MetricAlertAtSubscriptionLevel"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),
@@ -1979,7 +1979,7 @@ func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armmonitor.MetricAlertResource{
 		// 			{
 		// 				Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/highcpu"),
+		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/highcpu"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armmonitor.MetricAlertProperties{
 		// 					Description: to.Ptr("This is the description of the rule1"),
@@ -2021,7 +2021,7 @@ func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			{
 		// 				Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/mediumcpu"),
+		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/mediumcpu"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armmonitor.MetricAlertProperties{
 		// 					Description: to.Ptr("Med cpu alert"),
@@ -2094,7 +2094,7 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		// 		Value: []*armmonitor.MetricAlertResource{
 		// 			{
 		// 				Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/highcpu"),
+		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/highcpu"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armmonitor.MetricAlertProperties{
 		// 					Description: to.Ptr("This is the description of the rule1"),
@@ -2136,7 +2136,7 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			{
 		// 				Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/mediumcpu"),
+		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/mediumcpu"),
 		// 				Location: to.Ptr("global"),
 		// 				Properties: &armmonitor.MetricAlertProperties{
 		// 					Description: to.Ptr("Med cpu alert"),
@@ -2239,7 +2239,7 @@ func ExampleMetricAlertsClient_Update() {
 	// res = armmonitor.MetricAlertsClientUpdateResponse{
 	// 	MetricAlertResource: armmonitor.MetricAlertResource{
 	// 		Type: to.Ptr("Microsoft.Insights/metricAlerts"),
-	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 		ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.insights/metricalerts/chiricutin"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armmonitor.MetricAlertProperties{
 	// 			Description: to.Ptr("This is the description of the rule1"),

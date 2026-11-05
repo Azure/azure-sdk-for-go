@@ -78,31 +78,8 @@ func PossibleStateTypeValues() []StateType {
 	return lease.PossibleStateTypeValues()
 }
 
-// SessionMode specifies whether eligible requests are authenticated with a session. Sessions apply
+// SessionOptions configures session authentication; set it as ClientOptions.Session. Sessions apply
 // only to clients authenticated with an azcore.TokenCredential, and only to the file reads they send
-// to the blob endpoint; requests to the DFS endpoint always use the bearer token.
-type SessionMode = azblob.SessionMode
-
-const (
-	// SessionModeAuto is the zero value, and therefore the default when no value is specified.
-	// The client library decides whether sessions are used, and that decision may change in a
-	// future release. Currently, SessionModeAuto resolves to SessionModeDisabled.
-	SessionModeAuto SessionMode = azblob.SessionModeAuto
-
-	// SessionModeDisabled authenticates every request with a bearer token.
-	SessionModeDisabled SessionMode = azblob.SessionModeDisabled
-
-	// SessionModeEnabled authenticates file reads with a session, created and cached per file
-	// system. It requires the storage account name: when it can be determined from neither
-	// SessionOptions.AccountName nor the client's URL, client construction fails.
-	SessionModeEnabled SessionMode = azblob.SessionModeEnabled
-)
-
-// PossibleSessionModeValues returns the possible values for the SessionMode const type.
-func PossibleSessionModeValues() []SessionMode {
-	return azblob.PossibleSessionModeValues()
-}
-
-// SessionOptions configures session authentication; set it as ClientOptions.Session. Clients using
-// a shared key, a SAS or no credential ignore it.
+// to the blob endpoint, with a session created and cached per file system; requests to the DFS
+// endpoint always use the bearer token. Clients using a shared key, a SAS or no credential ignore it.
 type SessionOptions = azblob.SessionOptions

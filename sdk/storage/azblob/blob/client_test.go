@@ -2158,7 +2158,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() 
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:               4 * 1024,
-		LayoutAwareRouting:      blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting:      to.Ptr(false),
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -2273,7 +2273,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferSMCRC64ParallelChunks() {
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:               4 * 1024, // 4 KB → 8 parallel chunks
 		Concurrency:             4,
-		LayoutAwareRouting:      blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting:      to.Ptr(false),
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -4628,7 +4628,7 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	// GetLayout API, so opt out of layout-aware routing (on by default).
 	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{
 		BlockSize:          blockSize,
-		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 	})
 	_require.NoError(err)
 	_require.Equal(numChunks, atomic.LoadUint64(&fbb.numGets))
@@ -4728,7 +4728,7 @@ func TestDownloadETagConsistency(t *testing.T) {
 	buff := make([]byte, fileSize)
 	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
 		BlockSize:          blockSize,
-		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 	})
 	_require.NoError(err)
 
@@ -5575,7 +5575,7 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
 	// Test with LayoutAwareRouting = true
 	buff := make([]byte, blobSize)
 	_, err = bbClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
-		LayoutAwareRouting: blob.LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          4 * 1024 * 1024, // 4 MiB blocks
 	})
 	_require.NoError(err)

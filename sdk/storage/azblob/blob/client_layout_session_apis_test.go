@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -216,7 +217,7 @@ func newLayoutSessionClient(t *testing.T, tr *layoutSessionTransport) (*blob.Cli
 			Retry:     policy.RetryOptions{MaxRetries: -1},
 		},
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:     to.Ptr(true),
 			AccountName: sessionTestAccount,
 		},
 	}
@@ -233,7 +234,7 @@ func TestLayoutAwareDownloadUsesSessionOnEveryChunk(t *testing.T) {
 	blobClient, _ := newLayoutSessionClient(t, tr)
 
 	n, err := blobClient.DownloadBuffer(context.Background(), make([]byte, 300), &blob.DownloadBufferOptions{
-		LayoutAwareRouting: blob.LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -264,7 +265,7 @@ func TestGetLayoutUsesBearerWhileReadsUseSession(t *testing.T) {
 	blobClient, _ := newLayoutSessionClient(t, tr)
 
 	_, err := blobClient.DownloadBuffer(context.Background(), make([]byte, 300), &blob.DownloadBufferOptions{
-		LayoutAwareRouting: blob.LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -283,7 +284,7 @@ func TestLayoutDisabledDownloadStillUsesSession(t *testing.T) {
 	blobClient, _ := newLayoutSessionClient(t, tr)
 
 	_, err := blobClient.DownloadBuffer(context.Background(), make([]byte, 300), &blob.DownloadBufferOptions{
-		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -501,7 +502,7 @@ func TestLocalityRoutedRetryReappliesSession(t *testing.T) {
 			Retry:     policy.RetryOptions{MaxRetries: -1},
 		},
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:     to.Ptr(true),
 			AccountName: sessionTestAccount,
 		},
 	}

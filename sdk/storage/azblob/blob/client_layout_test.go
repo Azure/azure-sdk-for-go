@@ -18,6 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/stretchr/testify/require"
 )
@@ -376,7 +377,7 @@ func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
 	// 412 should trigger an error
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusPreconditionFailed)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.Error(t, err)
@@ -388,7 +389,7 @@ func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
 	f.reset()
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -411,7 +412,7 @@ func TestDownloadBufferWithLayoutAwareRoutingNoLayout(t *testing.T) {
 	buff := make([]byte, 300)
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(300, "etag", generated.BlobLayout{}, http.StatusOK)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -439,7 +440,7 @@ func TestDownloadBufferWithLayoutAwareRoutingWithLayout(t *testing.T) {
 
 	buff := make([]byte, 300)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -469,7 +470,7 @@ func TestDownloadBufferWithLayoutAwareRoutingMultiplePages(t *testing.T) {
 
 	buff := make([]byte, 500)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -493,7 +494,7 @@ func TestDownloadBufferLayoutFetchedOncePerDownload(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          rangeSize, // one chunk per layout range
 		Concurrency:        8,
 	})
@@ -518,7 +519,7 @@ func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 2000), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100, // 20 chunks
 		Concurrency:        8,
 	})
@@ -538,7 +539,7 @@ func TestDownloadBufferLayoutDisabled(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 300), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -568,7 +569,7 @@ func TestDownloadBufferFallbackETagLock(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 300), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -595,7 +596,7 @@ func TestDownloadBufferUserETagAnchorsInitialRead(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 		AccessConditions: &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &blobETag},
@@ -621,7 +622,7 @@ func TestDownloadBufferStaleUserETagFails(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 		AccessConditions: &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &staleETag},
@@ -634,8 +635,8 @@ func TestDownloadBufferStaleUserETagFails(t *testing.T) {
 	require.Zero(t, layoutCalls, "the download fails before a layout is ever requested")
 }
 
-// TestDownloadLayoutRoutingDefaultDisabled verifies that leaving LayoutAwareRouting unset (the
-// zero value, LayoutAwareRoutingAuto) resolves to disabled: even when the service sends the layout
+// TestDownloadLayoutRoutingDefaultDisabled verifies that leaving LayoutAwareRouting nil (the zero
+// value) resolves to disabled, as does an explicit false: even when the service sends the layout
 // download hint, no layout is fetched and every read goes to the configured endpoint.
 func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
 	etag := azcore.ETag("etag")
@@ -654,10 +655,17 @@ func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
 			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{BlockSize: 100})
 			return err
 		}},
-		{"DownloadBufferExplicitAuto", func(t *testing.T, client *Client) error {
+		{"DownloadBufferExplicitNil", func(t *testing.T, client *Client) error {
 			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
 				BlockSize:          100,
-				LayoutAwareRouting: LayoutAwareRoutingAuto,
+				LayoutAwareRouting: nil,
+			})
+			return err
+		}},
+		{"DownloadBufferFalse", func(t *testing.T, client *Client) error {
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+				BlockSize:          100,
+				LayoutAwareRouting: to.Ptr(false),
 			})
 			return err
 		}},
@@ -666,6 +674,13 @@ func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
 			require.NoError(t, err)
 			defer func() { require.NoError(t, file.Close()) }()
 			_, err = client.DownloadFile(context.Background(), file, &DownloadFileOptions{BlockSize: 100})
+			return err
+		}},
+		{"DownloadFileFalse", func(t *testing.T, client *Client) error {
+			file, err := os.CreateTemp(t.TempDir(), "download")
+			require.NoError(t, err)
+			defer func() { require.NoError(t, file.Close()) }()
+			_, err = client.DownloadFile(context.Background(), file, &DownloadFileOptions{BlockSize: 100, LayoutAwareRouting: to.Ptr(false)})
 			return err
 		}},
 	} {
@@ -683,7 +698,7 @@ func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
 	}
 }
 
-// TestDownloadLayoutRoutingExplicitlyEnabled verifies that LayoutAwareRoutingEnabled opts in: with
+// TestDownloadLayoutRoutingExplicitlyEnabled verifies that LayoutAwareRouting set to true opts in: with
 // the layout download hint, the remaining reads are routed by layout.
 func TestDownloadLayoutRoutingExplicitlyEnabled(t *testing.T) {
 	etag := azcore.ETag("etag")
@@ -694,7 +709,7 @@ func TestDownloadLayoutRoutingExplicitlyEnabled(t *testing.T) {
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
 		BlockSize:          100,
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 	})
 	require.NoError(t, err)
 
@@ -715,7 +730,7 @@ func TestDownloadBufferLayoutETagLock(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 		Concurrency:        4,
 	})
@@ -758,7 +773,7 @@ func TestDownloadBufferExpiredLayoutHardRefetchErrorFails(t *testing.T) {
 	client, f, l := newExpiringLayoutClient(t, http.StatusForbidden)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 		Concurrency:        1,
 	})
@@ -781,7 +796,7 @@ func TestDownloadBufferExpiredLayoutSoftRefetchErrorFallsBack(t *testing.T) {
 			client, f, l := newExpiringLayoutClient(t, status)
 
 			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				LayoutAwareRouting: to.Ptr(true),
 				BlockSize:          100,
 				Concurrency:        1,
 			})
@@ -824,7 +839,7 @@ func TestDownloadBufferCountSkipsGetProperties(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 200), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 		Range:              HTTPRange{Offset: 0, Count: 200},
 		BlockSize:          100,
 	})
@@ -853,7 +868,7 @@ func TestDownloadBufferCountWithLayoutStillETagLocks(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 200), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		Range:              HTTPRange{Offset: 0, Count: 200},
 		BlockSize:          100,
 	})
@@ -931,7 +946,7 @@ func TestDownloadBufferDoesNotMutateCallerAccessConditions(t *testing.T) {
 	mac := &ModifiedAccessConditions{IfMatch: &blobETag, IfTags: &tags}
 	ac := &AccessConditions{ModifiedAccessConditions: mac}
 	opts := &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 		AccessConditions:   ac,
 	}
@@ -956,7 +971,7 @@ func TestDownloadBufferLeavesNilAccessConditionsNil(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	opts := &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	}
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), opts)
@@ -980,7 +995,7 @@ func TestDownloadBufferNoDownloadHintSkipsGetLayout(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -1002,7 +1017,7 @@ func TestDownloadBufferDownloadHintTriggersGetLayout(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
@@ -1025,7 +1040,7 @@ func TestDownloadBufferSmallBlobWithHintSkipsGetLayout(t *testing.T) {
 
 	// one block covers the whole blob
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          l.contentLength,
 	})
 	require.NoError(t, err)
@@ -1045,13 +1060,13 @@ func TestDownloadBufferHintIgnoredWhenRoutingDisabled(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 		BlockSize:          100,
 	})
 	require.NoError(t, err)
 
 	layoutCalls, localityGets, _, _ := f.counts()
-	require.Zero(t, layoutCalls, "the hint must not override an explicit LayoutAwareRoutingDisabled")
+	require.Zero(t, layoutCalls, "the hint must not override an explicit false")
 	require.Zero(t, localityGets)
 }
 
@@ -1093,7 +1108,7 @@ func TestDownloadBufferLayoutUnavailableFallsBack(t *testing.T) {
 			require.NoError(t, err)
 
 			n, err := client.DownloadBuffer(context.Background(), make([]byte, 1000), &DownloadBufferOptions{
-				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				LayoutAwareRouting: to.Ptr(true),
 				BlockSize:          100,
 				Concurrency:        4,
 			})
@@ -1130,7 +1145,7 @@ func TestDownloadBufferLayoutAuthorizationErrorIsNotSwallowed(t *testing.T) {
 			client := newFakeLayoutClient(t, f)
 
 			_, err := client.DownloadBuffer(context.Background(), make([]byte, 1000), &DownloadBufferOptions{
-				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				LayoutAwareRouting: to.Ptr(true),
 				BlockSize:          100,
 			})
 			var respErr *azcore.ResponseError
@@ -1146,13 +1161,27 @@ func TestDownloadBufferLayoutAuthorizationErrorIsNotSwallowed(t *testing.T) {
 	}
 }
 
-// TestLayoutAwareRoutingPublicValues pins the public values of the one Data Locality setting that
-// remains public.
-func TestLayoutAwareRoutingPublicValues(t *testing.T) {
-	require.Equal(t, LayoutAwareRouting(""), LayoutAwareRoutingAuto)
-	require.Equal(t, LayoutAwareRouting("Enabled"), LayoutAwareRoutingEnabled)
-	require.Equal(t, LayoutAwareRouting("Disabled"), LayoutAwareRoutingDisabled)
-	require.Equal(t, []LayoutAwareRouting{LayoutAwareRoutingAuto, LayoutAwareRoutingEnabled, LayoutAwareRoutingDisabled}, PossibleLayoutAwareRoutingValues())
+// TestLayoutAwareRoutingResolution pins how the one Data Locality setting that remains public
+// resolves: nil, the zero value, is currently disabled, and only an explicit true enables it.
+func TestLayoutAwareRoutingResolution(t *testing.T) {
 	var opts DownloadBufferOptions
-	require.Equal(t, LayoutAwareRoutingAuto, opts.LayoutAwareRouting, "the zero value is Auto")
+	require.Nil(t, opts.LayoutAwareRouting, "the zero value is nil")
+	require.False(t, (*downloadOptions)(nil).layoutAwareRoutingEnabled())
+
+	for _, tt := range []struct {
+		name  string
+		value *bool
+		want  bool
+	}{
+		{"Nil", nil, false},
+		{"False", to.Ptr(false), false},
+		{"True", to.Ptr(true), true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			buffer := DownloadBufferOptions{LayoutAwareRouting: tt.value}
+			require.Equal(t, tt.want, (*downloadOptions)(&buffer).layoutAwareRoutingEnabled())
+			file := DownloadFileOptions{LayoutAwareRouting: tt.value}
+			require.Equal(t, tt.want, (*downloadOptions)(&file).layoutAwareRoutingEnabled())
+		})
+	}
 }

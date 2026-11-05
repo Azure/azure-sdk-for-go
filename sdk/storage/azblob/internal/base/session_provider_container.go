@@ -9,6 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -31,7 +32,7 @@ func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential,
 	if options != nil {
 		opts = *options
 	}
-	opts.Session = exported.SessionOptions{Mode: exported.SessionModeDisabled}
+	opts.Session = exported.SessionOptions{Enabled: to.Ptr(false)}
 	// The Create Session response body holds the session key, so it is never logged.
 	opts.Logging.IncludeBody = false
 	azClient, err := GetAzClient(svcURL, cred, nil, &opts)
@@ -46,20 +47,17 @@ func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential,
 // bearerTokenPolicy itself.
 //
 // The account name signs session requests. It comes from Session.AccountName or, failing that,
-// from clientURL. When neither yields one, an explicit SessionModeEnabled is a configuration
-// error, while a mode that merely resolves to enabled leaves the client on bearer tokens.
+// from clientURL. When neither yields one, an explicit Enabled of true is a configuration error,
+// while a nil Enabled that merely resolves to enabled leaves the client on bearer tokens.
 //
 // The session provider is created here and lives in the client's pipeline, so it is shared with
 // every client derived from this one.
 func newSessionAuthPolicy(clientURL string, cred azcore.TokenCredential, bearerTokenPolicy policy.Policy, options *ClientOptions) (policy.Policy, error) {
 	sessionOpts := options.Session
-	if err := exported.ValidateSessionMode(sessionOpts.Mode); err != nil {
-		return nil, err
-	}
-	if exported.ResolveSessionMode(sessionOpts.Mode) != exported.SessionModeEnabled {
+	if !exported.ResolveSessionEnabled(sessionOpts.Enabled) {
 		return bearerTokenPolicy, nil
 	}
-	explicit := sessionOpts.Mode == exported.SessionModeEnabled
+	explicit := sessionOpts.Enabled != nil
 
 	accountName := sessionOpts.AccountName
 	if accountName == "" {

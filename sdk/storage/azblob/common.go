@@ -54,33 +54,8 @@ const (
 // header to operations that include a request body.
 type ExpectContinueOptions = exported.ExpectContinueOptions
 
-// SessionMode specifies whether eligible requests are authenticated with a session. Sessions
-// apply only to clients authenticated with an azcore.TokenCredential.
-type SessionMode = exported.SessionMode
-
-const (
-	// SessionModeAuto is the zero value, and therefore the default when no value is specified.
-	// The client library decides whether sessions are used, and that decision may change in a
-	// future release. Currently, SessionModeAuto resolves to SessionModeDisabled.
-	SessionModeAuto SessionMode = exported.SessionModeAuto
-
-	// SessionModeDisabled authenticates every request with a bearer token.
-	SessionModeDisabled SessionMode = exported.SessionModeDisabled
-
-	// SessionModeEnabled authenticates eligible requests with a session, created and cached per
-	// container. Currently, Get Blob (blob.Client.DownloadStream and the downloads built on it) is
-	// the only eligible operation. It requires the storage account name: when it can be
-	// determined from neither SessionOptions.AccountName nor the client's URL, client
-	// construction fails.
-	SessionModeEnabled SessionMode = exported.SessionModeEnabled
-)
-
-// PossibleSessionModeValues returns the possible values for the SessionMode const type.
-func PossibleSessionModeValues() []SessionMode {
-	return exported.PossibleSessionModeValues()
-}
-
 // SessionOptions configures session authentication. Sessions apply only to clients
 // authenticated with an azcore.TokenCredential; clients using a shared key, a SAS or no
-// credential ignore these options.
+// credential ignore these options. Currently, Get Blob (blob.Client.DownloadStream and the
+// downloads built on it) is the only operation eligible for a session.
 type SessionOptions = exported.SessionOptions

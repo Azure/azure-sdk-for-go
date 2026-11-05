@@ -1916,7 +1916,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	destBuffer := make([]byte, 4*1024)
 	_, err = srcBBClient.DownloadBuffer(context.Background(), destBuffer, &blob.DownloadBufferOptions{
 		Range:              blob.HTTPRange{Count: int64(contentSize)},
-		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+		LayoutAwareRouting: to.Ptr(false),
 	})
 	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)

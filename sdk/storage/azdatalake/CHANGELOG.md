@@ -6,17 +6,17 @@
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
   clients authenticated with an `azcore.TokenCredential`, and only to the file reads they send to the blob endpoint;
   requests to the DFS endpoint, writes and every other operation keep using the bearer token. With
-  `SessionModeEnabled`, reads are authenticated with a session created and cached per file system. The default,
-  `SessionModeAuto`, currently resolves to `SessionModeDisabled`.
+  `SessionOptions.Enabled` set to true, reads are authenticated with a session created and cached per file system.
+  The default, nil, currently resolves to disabled; false disables sessions explicitly.
   * Each client creates its own session cache, shared with the clients derived from it.
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
-    fails if `SessionModeEnabled` was set explicitly.
+    fails if `SessionOptions.Enabled` was set to true.
 * Added support for data locality in managed downloads through `LayoutAwareRouting` on `file.DownloadBufferOptions`
-  and `file.DownloadFileOptions`. With `LayoutAwareRoutingEnabled`, when the initial read carries the service's layout
-  download hint, the remaining chunks are routed to the endpoint that serves each one. The default,
-  `LayoutAwareRoutingAuto`, currently resolves to `LayoutAwareRoutingDisabled`. When the service can't provide a
-  layout, downloads use the client's configured endpoint.
+  and `file.DownloadFileOptions`. When it is set to true and the initial read carries the service's layout download
+  hint, the remaining chunks are routed to the endpoint that serves each one. The default, nil, currently resolves to
+  disabled; false disables it explicitly. When the service can't provide a layout, downloads use the client's
+  configured endpoint.
 
 ### Breaking Changes
 

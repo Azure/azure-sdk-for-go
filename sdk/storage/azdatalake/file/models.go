@@ -471,9 +471,13 @@ type DownloadBufferOptions struct {
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
 	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
-	// each range, based on the file's layout. The default, LayoutAwareRoutingAuto, currently resolves to
-	// disabled; set LayoutAwareRoutingEnabled to opt in.
-	LayoutAwareRouting LayoutAwareRouting
+	// each range, based on the file's layout. It is a performance optimization only: the data downloaded
+	// is the same either way. When true and the initial read carries the layout download hint, the layout
+	// of the remaining range is fetched and cached (with automatic background refresh), and each remaining
+	// range is read from the endpoint that serves it. When false, every read goes to the client's
+	// configured endpoint. The default, nil, leaves the decision to the client library, which may change
+	// it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
 }
 
 func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
@@ -538,9 +542,13 @@ type DownloadFileOptions struct {
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
 	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
-	// each range, based on the file's layout. The default, LayoutAwareRoutingAuto, currently resolves to
-	// disabled; set LayoutAwareRoutingEnabled to opt in.
-	LayoutAwareRouting LayoutAwareRouting
+	// each range, based on the file's layout. It is a performance optimization only: the data downloaded
+	// is the same either way. When true and the initial read carries the layout download hint, the layout
+	// of the remaining range is fetched and cached (with automatic background refresh), and each remaining
+	// range is read from the endpoint that serves it. When false, every read goes to the client's
+	// configured endpoint. The default, nil, leaves the decision to the client library, which may change
+	// it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
 }
 
 func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {

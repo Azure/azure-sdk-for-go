@@ -19,6 +19,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
@@ -290,7 +291,7 @@ func readAll(t *testing.T, c *file.Client, opts *file.DownloadStreamOptions) {
 	require.NoError(t, resp.Body.Close())
 }
 
-var enabled = azdatalake.SessionOptions{Mode: azdatalake.SessionModeEnabled}
+var enabled = azdatalake.SessionOptions{Enabled: to.Ptr(true)}
 
 // ---- Session ---------------------------------------------------------------------------------
 
@@ -310,10 +311,10 @@ func TestDataLakeFileReadUsesSession(t *testing.T) {
 }
 
 func TestDataLakeSessionDefaultAndDisabledUseBearer(t *testing.T) {
-	for _, mode := range []azdatalake.SessionMode{azdatalake.SessionModeAuto, azdatalake.SessionModeDisabled} {
-		t.Run(string(mode), func(t *testing.T) {
+	for name, enabled := range map[string]*bool{"Nil": nil, "False": to.Ptr(false)} {
+		t.Run(name, func(t *testing.T) {
 			a := newDLAccount()
-			c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{Mode: mode})
+			c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{Enabled: enabled})
 			readAll(t, c, nil)
 			require.Equal(t, "Bearer", a.last().scheme)
 			_, sessions := a.snapshot()
@@ -456,10 +457,10 @@ func TestDataLakeSessionAccountName(t *testing.T) {
 	require.NotContains(t, err.Error(), "secret")
 
 	_, err = file.NewClient("https://files.contoso.com/fs/file.txt", dlTokenCredential{}, opts(azdatalake.SessionOptions{}))
-	require.NoError(t, err, "the default mode never fails construction")
+	require.NoError(t, err, "the nil default never fails construction")
 
 	c, err := file.NewClient("https://files.contoso.com/fs/file.txt", dlTokenCredential{},
-		opts(azdatalake.SessionOptions{Mode: azdatalake.SessionModeEnabled, AccountName: dlAccount}))
+		opts(azdatalake.SessionOptions{Enabled: to.Ptr(true), AccountName: dlAccount}))
 	require.NoError(t, err)
 	readAll(t, c, nil)
 	require.Equal(t, "Session", a.last().scheme)
@@ -467,24 +468,34 @@ func TestDataLakeSessionAccountName(t *testing.T) {
 
 // ---- Data locality ---------------------------------------------------------------------------
 
+// Leaving LayoutAwareRouting nil, the default, or setting it to false never fetches a layout or
+// routes by one, even when the service sends the layout download hint.
 func TestDataLakeManagedDownloadRoutingDefaultDisabled(t *testing.T) {
-	a := newDLAccount()
-	a.downloadHint = true
-	a.layoutPages = []string{layoutPage("", [3]int64{0, 299, 0})}
-	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+	for name, routing := range map[string]*bool{"Nil": nil, "False": to.Ptr(false)} {
+		t.Run(name, func(t *testing.T) {
+			a := newDLAccount()
+			a.downloadHint = true
+			a.layoutPages = []string{layoutPage("", [3]int64{0, 299, 0})}
+			c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
 
-	_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{ChunkSize: 100})
-	require.NoError(t, err)
-	tmp, err := os.CreateTemp(t.TempDir(), "dl")
-	require.NoError(t, err)
-	defer func() { require.NoError(t, tmp.Close()) }()
-	_, err = c.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: 100})
-	require.NoError(t, err)
+			_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
+				ChunkSize: 100, LayoutAwareRouting: routing,
+			})
+			require.NoError(t, err)
+			tmp, err := os.CreateTemp(t.TempDir(), "dl")
+			require.NoError(t, err)
+			defer func() { require.NoError(t, tmp.Close()) }()
+			_, err = c.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{
+				ChunkSize: 100, LayoutAwareRouting: routing,
+			})
+			require.NoError(t, err)
 
-	reqs, _ := a.snapshot()
-	for _, r := range reqs {
-		require.NotEqual(t, "layout", r.comp, "the default doesn't fetch a layout")
-		require.NotEqual(t, dlLayoutHost, r.urlHost, "the default doesn't route by layout")
+			reqs, _ := a.snapshot()
+			for _, r := range reqs {
+				require.NotEqual(t, "layout", r.comp, "no layout is fetched unless routing is true")
+				require.NotEqual(t, dlLayoutHost, r.urlHost, "no read is routed unless routing is true")
+			}
+		})
 	}
 }
 
@@ -495,7 +506,7 @@ func TestDataLakeManagedDownloadRoutingEnabled(t *testing.T) {
 	}{
 		{"DownloadBuffer", func(t *testing.T, c *file.Client) error {
 			_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
-				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
 			})
 			return err
 		}},
@@ -504,7 +515,7 @@ func TestDataLakeManagedDownloadRoutingEnabled(t *testing.T) {
 			require.NoError(t, err)
 			defer func() { require.NoError(t, tmp.Close()) }()
 			_, err = c.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{
-				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
 			})
 			return err
 		}},
@@ -555,7 +566,7 @@ func TestDataLakeManagedDownloadLayoutUnavailableFallsBack(t *testing.T) {
 
 	buf := make([]byte, dlFileSize)
 	n, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
-		ChunkSize: 100, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+		ChunkSize: 100, LayoutAwareRouting: to.Ptr(true),
 	})
 	require.NoError(t, err)
 	require.Equal(t, int64(dlFileSize), n)
@@ -587,7 +598,7 @@ func TestDataLakeManagedDownloadLayoutAuthorizationErrorFails(t *testing.T) {
 	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
 
 	_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
-		ChunkSize: 100, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+		ChunkSize: 100, LayoutAwareRouting: to.Ptr(true),
 	})
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -604,7 +615,7 @@ func TestDataLakeManagedDownloadRetryStaysOnLayoutEndpoint(t *testing.T) {
 
 	buf := make([]byte, dlFileSize)
 	_, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
-		ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: file.LayoutAwareRoutingEnabled,
+		ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
 		RetryReaderOptionsPerChunk: &file.RetryReaderOptions{MaxRetries: 2},
 	})
 	require.NoError(t, err)

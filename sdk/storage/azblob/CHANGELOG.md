@@ -5,20 +5,20 @@
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
   clients authenticated with an `azcore.TokenCredential`; clients using a shared key, a SAS or no credential ignore
-  these options. With `SessionModeEnabled`, Get Blob requests (`blob.Client.DownloadStream` and the downloads built on
-  it) are authenticated with a session created and cached per container; every other request keeps using the bearer
-  token. The default, `SessionModeAuto`, currently resolves to `SessionModeDisabled`.
+  these options. With `SessionOptions.Enabled` set to true, Get Blob requests (`blob.Client.DownloadStream` and the
+  downloads built on it) are authenticated with a session created and cached per container; every other request keeps
+  using the bearer token. The default, nil, currently resolves to disabled; false disables sessions explicitly.
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
-    fails if `SessionModeEnabled` was set explicitly.
+    fails if `SessionOptions.Enabled` was set to true.
   * Each client creates its own session cache, shared with the clients derived from it.
   * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
     unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
 * Added support for data locality in managed downloads through `LayoutAwareRouting` on `DownloadBufferOptions` and
-  `DownloadFileOptions`. With `LayoutAwareRoutingEnabled`, when the initial read carries the service's layout download
-  hint, the remaining blocks are routed to the endpoint that serves each one, using a cached layout that is refreshed
-  in the background. The default, `LayoutAwareRoutingAuto`, currently resolves to `LayoutAwareRoutingDisabled`. When
-  the service can't provide a layout, downloads use the client's configured endpoint.
+  `DownloadFileOptions`. When it is set to true and the initial read carries the service's layout download hint, the
+  remaining blocks are routed to the endpoint that serves each one, using a cached layout that is refreshed in the
+  background. The default, nil, currently resolves to disabled; false disables it explicitly. When the service can't
+  provide a layout, downloads use the client's configured endpoint.
 
 ### Breaking Changes
 * `UploadBuffer` and `UploadFile` on `blockblob.Client` and `azblob.Client` now size the initial request the same as

@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -103,7 +104,7 @@ func newSessionServiceClient(s *BlobRecordedTestsSuite, tracker *layoutAuthTrack
 	}
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -209,7 +210,7 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferLayoutAwareRoutingWithSessi
 	tracker := &layoutAuthTracker{}
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Mode:        azblob.SessionModeEnabled,
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -222,7 +223,7 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferLayoutAwareRoutingWithSessi
 
 	buff := make([]byte, blobSize)
 	n, err := sessionBlobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
-		LayoutAwareRouting: blob.LayoutAwareRoutingEnabled,
+		LayoutAwareRouting: to.Ptr(true),
 		BlockSize:          blockSize,
 		Concurrency:        2,
 	})

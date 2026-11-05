@@ -97,7 +97,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -273,7 +273,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionContainerResolvedFro
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -340,7 +340,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -434,7 +434,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -506,7 +506,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -588,7 +588,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	// Create service client with TokenCredential and session-based authentication enabled
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -676,7 +676,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}
@@ -737,7 +737,7 @@ func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSe
 
 	sessionOptions := &service.ClientOptions{
 		Session: azblob.SessionOptions{
-			Enabled:        to.Ptr(true),
+			Enabled:     to.Ptr(true),
 			AccountName: accountName,
 		},
 	}

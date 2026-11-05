@@ -8,11 +8,32 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/VerifierWorkspacePut.json
+// Generated from example definition: 2026-03-01/VerifierWorkspaceDelete.json
+func ExampleVerifierWorkspacesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVerifierWorkspacesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/VerifierWorkspacePut.json
 func ExampleVerifierWorkspacesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,28 +79,7 @@ func ExampleVerifierWorkspacesClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VerifierWorkspaceDelete.json
-func ExampleVerifierWorkspacesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVerifierWorkspacesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-09-01/VerifierWorkspaceGet.json
+// Generated from example definition: 2026-03-01/VerifierWorkspaceGet.json
 func ExampleVerifierWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleVerifierWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VerifierWorkspaceList.json
+// Generated from example definition: 2026-03-01/VerifierWorkspaceList.json
 func ExampleVerifierWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleVerifierWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/VerifierWorkspacePatch.json
+// Generated from example definition: 2026-03-01/VerifierWorkspacePatch.json
 func ExampleVerifierWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

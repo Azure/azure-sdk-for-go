@@ -132,6 +132,9 @@ type ServerFactory struct {
 	// ProtectionContainerRefreshOperationResultsServer contains the fakes for client ProtectionContainerRefreshOperationResultsClient
 	ProtectionContainerRefreshOperationResultsServer ProtectionContainerRefreshOperationResultsServer
 
+	// ProtectionContainerRefreshOperationStatusesServer contains the fakes for client ProtectionContainerRefreshOperationStatusesClient
+	ProtectionContainerRefreshOperationStatusesServer ProtectionContainerRefreshOperationStatusesServer
+
 	// ProtectionContainersServer contains the fakes for client ProtectionContainersClient
 	ProtectionContainersServer ProtectionContainersServer
 
@@ -190,62 +193,63 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armrecoveryservicesbackup.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                                *ServerFactory
-	trMu                                               sync.Mutex
-	trBMSPrepareDataMoveOperationResultServer          *BMSPrepareDataMoveOperationResultServerTransport
-	trBackupEnginesServer                              *BackupEnginesServerTransport
-	trBackupJobsServer                                 *BackupJobsServerTransport
-	trBackupOperationResultsServer                     *BackupOperationResultsServerTransport
-	trBackupOperationStatusesServer                    *BackupOperationStatusesServerTransport
-	trBackupPoliciesServer                             *BackupPoliciesServerTransport
-	trBackupProtectableItemsServer                     *BackupProtectableItemsServerTransport
-	trBackupProtectedItemsServer                       *BackupProtectedItemsServerTransport
-	trBackupProtectionContainersServer                 *BackupProtectionContainersServerTransport
-	trBackupProtectionIntentServer                     *BackupProtectionIntentServerTransport
-	trBackupResourceEncryptionConfigsServer            *BackupResourceEncryptionConfigsServerTransport
-	trBackupResourceStorageConfigsNonCRRServer         *BackupResourceStorageConfigsNonCRRServerTransport
-	trBackupResourceVaultConfigsServer                 *BackupResourceVaultConfigsServerTransport
-	trBackupStatusServer                               *BackupStatusServerTransport
-	trBackupUsageSummariesServer                       *BackupUsageSummariesServerTransport
-	trBackupWorkloadItemsServer                        *BackupWorkloadItemsServerTransport
-	trBackupsServer                                    *BackupsServerTransport
-	trServer                                           *ServerTransport
-	trConfigureSourceScanServer                        *ConfigureSourceScanServerTransport
-	trDeletedProtectionContainersServer                *DeletedProtectionContainersServerTransport
-	trExportJobsOperationResultsServer                 *ExportJobsOperationResultsServerTransport
-	trFeatureSupportServer                             *FeatureSupportServerTransport
-	trFetchTieringCostServer                           *FetchTieringCostServerTransport
-	trGetTieringCostOperationResultServer              *GetTieringCostOperationResultServerTransport
-	trItemLevelRecoveryConnectionsServer               *ItemLevelRecoveryConnectionsServerTransport
-	trJobCancellationsServer                           *JobCancellationsServerTransport
-	trJobDetailsServer                                 *JobDetailsServerTransport
-	trJobOperationResultsServer                        *JobOperationResultsServerTransport
-	trJobsServer                                       *JobsServerTransport
-	trOperationServer                                  *OperationServerTransport
-	trOperationsServer                                 *OperationsServerTransport
-	trPrivateEndpointServer                            *PrivateEndpointServerTransport
-	trPrivateEndpointConnectionServer                  *PrivateEndpointConnectionServerTransport
-	trProtectableContainersServer                      *ProtectableContainersServerTransport
-	trProtectedItemOperationResultsServer              *ProtectedItemOperationResultsServerTransport
-	trProtectedItemOperationStatusesServer             *ProtectedItemOperationStatusesServerTransport
-	trProtectedItemsServer                             *ProtectedItemsServerTransport
-	trProtectionContainerOperationResultsServer        *ProtectionContainerOperationResultsServerTransport
-	trProtectionContainerRefreshOperationResultsServer *ProtectionContainerRefreshOperationResultsServerTransport
-	trProtectionContainersServer                       *ProtectionContainersServerTransport
-	trProtectionIntentServer                           *ProtectionIntentServerTransport
-	trProtectionPoliciesServer                         *ProtectionPoliciesServerTransport
-	trProtectionPolicyOperationResultsServer           *ProtectionPolicyOperationResultsServerTransport
-	trProtectionPolicyOperationStatusesServer          *ProtectionPolicyOperationStatusesServerTransport
-	trRecoveryPointsServer                             *RecoveryPointsServerTransport
-	trRecoveryPointsRecommendedForMoveServer           *RecoveryPointsRecommendedForMoveServerTransport
-	trResourceGuardProxiesServer                       *ResourceGuardProxiesServerTransport
-	trResourceGuardProxyServer                         *ResourceGuardProxyServerTransport
-	trRestoresServer                                   *RestoresServerTransport
-	trSecurityPINsServer                               *SecurityPINsServerTransport
-	trTieringCostOperationStatusServer                 *TieringCostOperationStatusServerTransport
-	trValidateOperationServer                          *ValidateOperationServerTransport
-	trValidateOperationResultsServer                   *ValidateOperationResultsServerTransport
-	trValidateOperationStatusesServer                  *ValidateOperationStatusesServerTransport
+	srv                                                 *ServerFactory
+	trMu                                                sync.Mutex
+	trBMSPrepareDataMoveOperationResultServer           *BMSPrepareDataMoveOperationResultServerTransport
+	trBackupEnginesServer                               *BackupEnginesServerTransport
+	trBackupJobsServer                                  *BackupJobsServerTransport
+	trBackupOperationResultsServer                      *BackupOperationResultsServerTransport
+	trBackupOperationStatusesServer                     *BackupOperationStatusesServerTransport
+	trBackupPoliciesServer                              *BackupPoliciesServerTransport
+	trBackupProtectableItemsServer                      *BackupProtectableItemsServerTransport
+	trBackupProtectedItemsServer                        *BackupProtectedItemsServerTransport
+	trBackupProtectionContainersServer                  *BackupProtectionContainersServerTransport
+	trBackupProtectionIntentServer                      *BackupProtectionIntentServerTransport
+	trBackupResourceEncryptionConfigsServer             *BackupResourceEncryptionConfigsServerTransport
+	trBackupResourceStorageConfigsNonCRRServer          *BackupResourceStorageConfigsNonCRRServerTransport
+	trBackupResourceVaultConfigsServer                  *BackupResourceVaultConfigsServerTransport
+	trBackupStatusServer                                *BackupStatusServerTransport
+	trBackupUsageSummariesServer                        *BackupUsageSummariesServerTransport
+	trBackupWorkloadItemsServer                         *BackupWorkloadItemsServerTransport
+	trBackupsServer                                     *BackupsServerTransport
+	trServer                                            *ServerTransport
+	trConfigureSourceScanServer                         *ConfigureSourceScanServerTransport
+	trDeletedProtectionContainersServer                 *DeletedProtectionContainersServerTransport
+	trExportJobsOperationResultsServer                  *ExportJobsOperationResultsServerTransport
+	trFeatureSupportServer                              *FeatureSupportServerTransport
+	trFetchTieringCostServer                            *FetchTieringCostServerTransport
+	trGetTieringCostOperationResultServer               *GetTieringCostOperationResultServerTransport
+	trItemLevelRecoveryConnectionsServer                *ItemLevelRecoveryConnectionsServerTransport
+	trJobCancellationsServer                            *JobCancellationsServerTransport
+	trJobDetailsServer                                  *JobDetailsServerTransport
+	trJobOperationResultsServer                         *JobOperationResultsServerTransport
+	trJobsServer                                        *JobsServerTransport
+	trOperationServer                                   *OperationServerTransport
+	trOperationsServer                                  *OperationsServerTransport
+	trPrivateEndpointServer                             *PrivateEndpointServerTransport
+	trPrivateEndpointConnectionServer                   *PrivateEndpointConnectionServerTransport
+	trProtectableContainersServer                       *ProtectableContainersServerTransport
+	trProtectedItemOperationResultsServer               *ProtectedItemOperationResultsServerTransport
+	trProtectedItemOperationStatusesServer              *ProtectedItemOperationStatusesServerTransport
+	trProtectedItemsServer                              *ProtectedItemsServerTransport
+	trProtectionContainerOperationResultsServer         *ProtectionContainerOperationResultsServerTransport
+	trProtectionContainerRefreshOperationResultsServer  *ProtectionContainerRefreshOperationResultsServerTransport
+	trProtectionContainerRefreshOperationStatusesServer *ProtectionContainerRefreshOperationStatusesServerTransport
+	trProtectionContainersServer                        *ProtectionContainersServerTransport
+	trProtectionIntentServer                            *ProtectionIntentServerTransport
+	trProtectionPoliciesServer                          *ProtectionPoliciesServerTransport
+	trProtectionPolicyOperationResultsServer            *ProtectionPolicyOperationResultsServerTransport
+	trProtectionPolicyOperationStatusesServer           *ProtectionPolicyOperationStatusesServerTransport
+	trRecoveryPointsServer                              *RecoveryPointsServerTransport
+	trRecoveryPointsRecommendedForMoveServer            *RecoveryPointsRecommendedForMoveServerTransport
+	trResourceGuardProxiesServer                        *ResourceGuardProxiesServerTransport
+	trResourceGuardProxyServer                          *ResourceGuardProxyServerTransport
+	trRestoresServer                                    *RestoresServerTransport
+	trSecurityPINsServer                                *SecurityPINsServerTransport
+	trTieringCostOperationStatusServer                  *TieringCostOperationStatusServerTransport
+	trValidateOperationServer                           *ValidateOperationServerTransport
+	trValidateOperationResultsServer                    *ValidateOperationResultsServerTransport
+	trValidateOperationStatusesServer                   *ValidateOperationStatusesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -440,6 +444,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProtectionContainerRefreshOperationResultsServerTransport(&s.srv.ProtectionContainerRefreshOperationResultsServer)
 		})
 		resp, err = s.trProtectionContainerRefreshOperationResultsServer.Do(req)
+	case "ProtectionContainerRefreshOperationStatusesClient":
+		initServer(&s.trMu, &s.trProtectionContainerRefreshOperationStatusesServer, func() *ProtectionContainerRefreshOperationStatusesServerTransport {
+			return NewProtectionContainerRefreshOperationStatusesServerTransport(&s.srv.ProtectionContainerRefreshOperationStatusesServer)
+		})
+		resp, err = s.trProtectionContainerRefreshOperationStatusesServer.Do(req)
 	case "ProtectionContainersClient":
 		initServer(&s.trMu, &s.trProtectionContainersServer, func() *ProtectionContainersServerTransport {
 			return NewProtectionContainersServerTransport(&s.srv.ProtectionContainersServer)

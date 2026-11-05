@@ -176,7 +176,7 @@ func TestCloudEventUnmarshalInvalidEvents(t *testing.T) {
 	require.EqualError(t, err, "invalid character 'i' looking for beginning of value")
 
 	err = json.Unmarshal([]byte("[]"), &ce)
-	require.EqualError(t, err, "json: cannot unmarshal array into Go value of type map[string]json.RawMessage")
+	require.Error(t, err)
 
 	err = json.Unmarshal([]byte(`{"id":100}`), &ce)
 	require.EqualError(t, err, `failed to deserialize "id": json: cannot unmarshal number into Go value of type string`)

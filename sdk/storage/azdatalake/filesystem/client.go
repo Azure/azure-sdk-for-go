@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -391,9 +392,7 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 		return "", err
 	}
 
-	endpoint := fs.BlobURL() + "?" + qps.Encode()
-
-	return endpoint, nil
+	return sasurl.Append(fs.BlobURL(), qps.Encode()), nil
 }
 
 // CreateFile Creates a new file within a file system.

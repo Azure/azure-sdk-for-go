@@ -80,6 +80,48 @@ type AdvancedNetworkingSecurityTransitEncryption struct {
 	Type *TransitEncryptionType
 }
 
+// AgentFabricMembership - The AgentFabric membership of a managed cluster. A cluster may belong to at most one AgentFabric,
+// so this resource always has the name 'default'. See https://aka.ms/aks/agentfabric-membership.
+type AgentFabricMembership struct {
+	// REQUIRED; Resource ID of the AgentFabric that this cluster is a member of. The AgentFabric must be in the same tenant and
+	// subscription as the managed cluster. As the ARM envelope property, it also stops a complete mode deployment from deleting
+	// the membership and silently detaching the cluster.
+	ManagedBy *string
+
+	// The resource-specific properties for this resource.
+	Properties *AgentFabricMembershipProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentFabricMembershipProperties - Properties of the AgentFabric membership of a managed cluster.
+type AgentFabricMembershipProperties struct {
+	// REQUIRED; The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed to the cluster.
+	SKU *AgentFabricMembershipSKUName
+
+	// READ-ONLY; The current provisioning state of the AgentFabric membership.
+	ProvisioningState *AgentFabricMembershipProvisioningState
+}
+
+// AgentFabricMembershipsListResult - The result of a request to list the AgentFabric memberships of a managed cluster.
+type AgentFabricMembershipsListResult struct {
+	// REQUIRED; The list of AgentFabric memberships.
+	Value []*AgentFabricMembership
+
+	// The URL to get the next set of AgentFabric membership results.
+	NextLink *string
+}
+
 // AgentPool - Agent Pool.
 type AgentPool struct {
 	// Properties of an agent pool.
@@ -176,6 +218,25 @@ type AgentPoolGatewayProfile struct {
 	PublicIPPrefixSize *int32
 }
 
+// AgentPoolGenerateUpgradeInsightsContent - Request body to evaluate a single agent pool Kubernetes version upgrade.
+type AgentPoolGenerateUpgradeInsightsContent struct {
+	// REQUIRED; The name of the agent pool to evaluate.
+	AgentPoolName *string
+
+	// REQUIRED; The target Kubernetes version to evaluate.
+	TargetKubernetesVersion *string
+
+	// CONSTANT; Field has constant value UpgradeTypeAgentPool, any specified value is ignored.
+	UpgradeType *UpgradeType
+}
+
+// GetGenerateUpgradeInsightsContent implements the GenerateUpgradeInsightsContentClassification interface for type AgentPoolGenerateUpgradeInsightsContent.
+func (a *AgentPoolGenerateUpgradeInsightsContent) GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent {
+	return &GenerateUpgradeInsightsContent{
+		UpgradeType: a.UpgradeType,
+	}
+}
+
 // AgentPoolListResult - The response of a AgentPool list operation.
 type AgentPoolListResult struct {
 	// REQUIRED; The AgentPool items on this page
@@ -261,6 +322,35 @@ type AgentPoolRecentlyUsedVersion struct {
 	Timestamp *time.Time
 }
 
+// AgentPoolScopeEvaluation - The readiness evaluation for a single agent pool within a combined evaluation.
+type AgentPoolScopeEvaluation struct {
+	// READ-ONLY; The name of the agent pool this evaluation applies to.
+	AgentPoolName *string
+
+	// READ-ONLY; Contextual information about how this upgrade is managed, such as the upgrade strategy, next maintenance window,
+	// and last successful upgrade time.
+	Context *UpgradeContext
+
+	// READ-ONLY; The Kubernetes version the scope was evaluated from (the upgrade source version the scope is currently running).
+	// Lets consumers read the result as "from X to targetKubernetesVersion" and detect a stale cached record by comparing against
+	// the live cluster version. Populated for Kubernetes version upgrades.
+	CurrentKubernetesVersion *string
+
+	// READ-ONLY; The evaluation result, including overall status, evaluation time, and any detected issues.
+	Evaluation *UpgradeInsightEvaluation
+
+	// READ-ONLY; The date on which support ends for the Kubernetes version the scope is currently
+	// running (its end-of-support date). Returned as an absolute date so clients can apply
+	// their own "approaching end of support" threshold and compute the remaining days against
+	// the current time; a precomputed remaining-days value is intentionally not returned so
+	// that cached results do not go stale. Populated for Kubernetes version upgrades.
+	KubernetesVersionEndOfSupportDate *time.Time
+
+	// READ-ONLY; The support status of the Kubernetes version the scope is currently running (not the target version). Populated
+	// for Kubernetes version upgrades.
+	KubernetesVersionSupportStatus *KubernetesVersionSupportStatus
+}
+
 // AgentPoolSecurityProfile - The security settings of an agent pool.
 type AgentPoolSecurityProfile struct {
 	// Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more
@@ -316,6 +406,69 @@ type AgentPoolUpdateScaleProfile struct {
 type AgentPoolUpdateVirtualMachinesProfile struct {
 	// Specifications on how to scale a VirtualMachines agent pool.
 	Scale *AgentPoolUpdateScaleProfile
+}
+
+// AgentPoolUpgradeInsightProperties - Properties for a single agent pool Kubernetes version upgrade insight.
+type AgentPoolUpgradeInsightProperties struct {
+	// REQUIRED; The type of upgrade this insight evaluates.
+	UpgradeType *UpgradeType
+
+	// READ-ONLY; The name of the agent pool this insight applies to.
+	AgentPoolName *string
+
+	// READ-ONLY; Contextual information about how this upgrade is managed, such as the upgrade strategy, next maintenance window,
+	// and last successful upgrade time.
+	Context *UpgradeContext
+
+	// READ-ONLY; The Kubernetes version the scope was evaluated from (the upgrade source version the scope is currently running).
+	// Lets consumers read the result as "from X to targetKubernetesVersion" and detect a stale cached record by comparing against
+	// the live cluster version. Populated for Kubernetes version upgrades.
+	CurrentKubernetesVersion *string
+
+	// READ-ONLY; The evaluation result, including overall status, evaluation time, and any detected issues.
+	Evaluation *UpgradeInsightEvaluation
+
+	// READ-ONLY; The UTC time at which this stored upgrade insight expires and is removed from the
+	// data store (currently `lastEvaluatedAt` plus a 14-day retention window). After this
+	// time a GET for the resource returns 404 Not Found and it no longer appears in the
+	// list, indicating the caller should call the compute operation to produce a fresh
+	// evaluation. Exposing the expiry lets clients decide when to recompute without
+	// hardcoding the retention period.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The date on which support ends for the Kubernetes version the scope is currently
+	// running (its end-of-support date). Returned as an absolute date so clients can apply
+	// their own "approaching end of support" threshold and compute the remaining days against
+	// the current time; a precomputed remaining-days value is intentionally not returned so
+	// that cached results do not go stale. Populated for Kubernetes version upgrades.
+	KubernetesVersionEndOfSupportDate *time.Time
+
+	// READ-ONLY; The support status of the Kubernetes version the scope is currently running (not the target version). Populated
+	// for Kubernetes version upgrades.
+	KubernetesVersionSupportStatus *KubernetesVersionSupportStatus
+
+	// READ-ONLY; The UTC time at which this upgrade insight was last computed (the last time the
+	// compute operation ran for this resource). This is the resource-level "last run"
+	// marker and, for a cached record, indicates how stale the stored evaluation is. For
+	// a combined evaluation it is the umbrella run time across all scopes, whereas each
+	// scope's `evaluation.evaluatedAt` records when that specific snapshot was produced.
+	LastEvaluatedAt *time.Time
+
+	// READ-ONLY; The provisioning state of the upgrade insight evaluation.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The target Kubernetes version that was evaluated.
+	TargetKubernetesVersion *string
+}
+
+// GetUpgradeInsightProperties implements the UpgradeInsightPropertiesClassification interface for type AgentPoolUpgradeInsightProperties.
+func (a *AgentPoolUpgradeInsightProperties) GetUpgradeInsightProperties() *UpgradeInsightProperties {
+	return &UpgradeInsightProperties{
+		ExpiresAt:         a.ExpiresAt,
+		LastEvaluatedAt:   a.LastEvaluatedAt,
+		ProvisioningState: a.ProvisioningState,
+		UpgradeType:       a.UpgradeType,
+	}
 }
 
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
@@ -403,6 +556,12 @@ type AgentPoolUpgradeSettings struct {
 	// Budgets (PDBs), but other issues, such as pod termination grace period is exceeding the remaining per-node drain timeout
 	// or pod is still being in a running state, can also cause undrainable nodes.
 	UndrainableNodeBehavior *UndrainableNodeBehavior
+
+	// Settings for upgrade gating on upgrades of this agent pool. Health signals are `HealthSignal` custom resources published
+	// by monitoring components running in the cluster. When the cluster-level `enabled` is unset or `false`, this agent pool
+	// can opt in independently. When the cluster-level `enabled` is `true`, gating is inherited and setting this agent pool's
+	// `enabled` to `false` is rejected; an omitted value on a newly created agent pool is defaulted to `true`.
+	UpgradeGateSettings *UpgradeGateSettings
 }
 
 // AgentPoolWindowsProfile - The Windows agent pool's specific profile.
@@ -479,6 +638,27 @@ type AllowedSubject struct {
 	ServiceAccountSelector *LabelSelector
 }
 
+// ArmImpactedResource - An Azure Resource Manager (ARM) resource impacted by a detected upgrade issue, identified by its
+// ARM resource ID.
+type ArmImpactedResource struct {
+	// READ-ONLY; The category of the impacted resource.
+	Kind *ImpactedResourceKind
+
+	// READ-ONLY; The ARM resource ID of the impacted resource.
+	ResourceID *string
+
+	// READ-ONLY; The type of the impacted resource (for example, Microsoft.Network/virtualNetworks/subnets or PodDisruptionBudget).
+	ResourceType *string
+}
+
+// GetUpgradeInsightImpactedResource implements the UpgradeInsightImpactedResourceClassification interface for type ArmImpactedResource.
+func (a *ArmImpactedResource) GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource {
+	return &UpgradeInsightImpactedResource{
+		Kind:         a.Kind,
+		ResourceType: a.ResourceType,
+	}
+}
+
 // AutoScaleProfile - Specifications on auto-scaling.
 type AutoScaleProfile struct {
 	// The maximum number of nodes of the specified sizes.
@@ -496,9 +676,11 @@ type AzureKeyVaultKms struct {
 	// Whether to enable Azure Key Vault key management service. The default is false.
 	Enabled *bool
 
-	// Identifier of Azure Key Vault key. See [key identifier format](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name)
-	// for more details. When Azure Key Vault key management service is enabled, this field is required and must be a valid key
-	// identifier. When Azure Key Vault key management service is disabled, leave the field empty.
+	// The identifier of the Azure Key Vault key. For more information, see [Azure Key Vault key identifiers](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name).
+	// This property is required when Azure Key Vault key management service is enabled and must be omitted when the service is
+	// disabled. Starting with API versions 2026-07-01 and 2026-07-02-preview, a versioned key identifier uses the legacy KMS
+	// experience, while an unversioned key identifier uses the new KMS experience. For more information, see [KMS data encryption
+	// concepts](https://learn.microsoft.com/en-us/azure/aks/kms-data-encryption-concepts).
 	KeyID *string
 
 	// Network access of the key vault. Network access of key vault. The possible values are `Public` and `Private`. `Public`
@@ -625,10 +807,82 @@ type CapacityReservationGroup struct {
 	ID *string
 }
 
+// CloudShellNetworkProfile - Network resources used by Cloud Shell. AKS peers the subnet's virtual network with the cluster
+// virtual network.
+// For Custom resources, their address spaces must not overlap. See https://aka.ms/aks/CloudShellConnect.
+type CloudShellNetworkProfile struct {
+	// Azure Relay namespace used by Cloud Shell. For Custom networking, this existing namespace is required
+	// with subnetId. Grant the cluster identity Reader and the Azure Container Instance service principal Contributor
+	// on the namespace. Required when Cloud Shell mode is Custom.
+	RelayNamespaceID *string
+
+	// Dedicated IPv4 subnet used by Cloud Shell containers. For Custom networking, this subnet must be
+	// delegated to Microsoft.ContainerInstance/containerGroups and be /24 or larger. Grant the cluster identity
+	// Network Contributor on the containing virtual network and grant the Azure Container Instance service principal
+	// Network Contributor on this subnet or its containing virtual network. Required when Cloud Shell mode is Custom.
+	SubnetID *string
+}
+
+// CloudShellProfile - Cloud Shell connectivity and storage settings for a private managed cluster.
+// For more information, see https://aka.ms/aks/CloudShellConnect.
+type CloudShellProfile struct {
+	// Whether Cloud Shell connectivity is disabled, uses AKS-managed network resources, or uses user-provided
+	// network resources. Defaults to Disabled when omitted during create. On update, omission preserves the existing
+	// mode. Setting this property to Disabled removes AKS-created resources and connectivity artifacts. For Custom
+	// mode, AKS unregisters the user-provided resources but does not delete them.
+	Mode *CloudShellProfileMode
+
+	// Network resources used by Cloud Shell. When configuring Custom networking, users must provide
+	// both subnetId and relayNamespaceId. When updating an existing Custom configuration, either resource ID can be
+	// changed independently; omitted fields preserve their existing values. In Custom mode, AKS returns the user-provided
+	// values. In Managed mode, AKS populates the effective values. Users may omit Managed values or resubmit values
+	// returned by GET unchanged; different values are rejected. This property must be omitted when mode is Disabled.
+	// See https://aka.ms/aks/CloudShellConnect for Custom networking requirements.
+	Network *CloudShellNetworkProfile
+
+	// Storage resources used for Cloud Shell file persistence. When configuring Custom storage, users
+	// must provide both storageAccountId and fileShareName. When updating an existing Custom configuration, either
+	// property can be changed independently; omitted fields preserve their existing values. In Custom mode, AKS returns
+	// the user-provided values. In Managed mode, AKS populates the effective values. Users may omit Managed values or
+	// resubmit values returned by GET unchanged; different values are rejected. Both properties must be omitted when
+	// mode is Disabled. See https://aka.ms/aks/CloudShellConnect for Custom storage requirements.
+	Storage *CloudShellStorageProfile
+}
+
+// CloudShellStorageProfile - Storage used for Cloud Shell file persistence.
+type CloudShellStorageProfile struct {
+	// File share used for Cloud Shell files. Required when mode is Custom.
+	FileShareName *string
+
+	// Whether persistent storage is disabled, managed by AKS, or provided by the user. Defaults to Disabled when
+	// omitted during initial Cloud Shell enablement. On update, omission preserves the existing mode.
+	Mode *CloudShellStorageProfileMode
+
+	// Storage account used for Cloud Shell files. For Custom storage, grant the cluster identity
+	// Storage File Data SMB Share Contributor on this existing storage account. Required when mode is Custom.
+	StorageAccountID *string
+}
+
+// ClusterAPIConnectivityProfile - Configuration for accessing the managed cluster API through Bastion or Cloud Shell.
+type ClusterAPIConnectivityProfile struct {
+	// Azure Bastion connectivity settings.
+	// See https://aka.ms/aks/BastionConnect for more details.
+	Bastion *BastionProfile
+
+	// Cloud Shell connectivity settings.
+	// For more information, see https://aka.ms/aks/CloudShellConnect.
+	CloudShell *CloudShellProfile
+}
+
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
 type ClusterUpgradeSettings struct {
 	// Settings for overrides.
 	OverrideSettings *UpgradeOverrideSettings
+
+	// Settings for upgrade gating on upgrades in this managed cluster. Health signals are `HealthSignal` custom resources published
+	// by monitoring components running in the cluster. Setting `enabled` to `true` here is a cluster-wide opt-in that applies
+	// to all agent pool upgrades in this cluster; an agent pool cannot opt out of it.
+	UpgradeGateSettings *UpgradeGateSettings
 }
 
 // CommandResultProperties - The results of a run command
@@ -681,6 +935,148 @@ type ComponentsByRelease struct {
 
 	// The Kubernetes version (major.minor).
 	KubernetesVersion *string
+}
+
+// ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent - Request body to evaluate the combined control plane and agent
+// pools Kubernetes version upgrade.
+type ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent struct {
+	// REQUIRED; The target Kubernetes version to evaluate for all scopes.
+	TargetKubernetesVersion *string
+
+	// CONSTANT; Field has constant value UpgradeTypeControlPlaneAndAgentPools, any specified value is ignored.
+	UpgradeType *UpgradeType
+}
+
+// GetGenerateUpgradeInsightsContent implements the GenerateUpgradeInsightsContentClassification interface for type ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent.
+func (c *ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent) GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent {
+	return &GenerateUpgradeInsightsContent{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ControlPlaneAndAgentPoolsUpgradeInsightProperties - Properties for a combined control plane and agent pools Kubernetes
+// version upgrade
+// insight: a single evaluation of the control plane plus every agent pool for one
+// target Kubernetes version. This scope is Kubernetes-version-only — node OS image
+// upgrades are never part of a combined evaluation and must be requested separately
+// with a `nodeImage-<agentPoolName>-<nodeImageVersion>` insight.
+type ControlPlaneAndAgentPoolsUpgradeInsightProperties struct {
+	// REQUIRED; The type of upgrade this insight evaluates.
+	UpgradeType *UpgradeType
+
+	// READ-ONLY; The readiness evaluation for each agent pool Kubernetes version upgrade, one entry per agent pool.
+	AgentPools []*AgentPoolScopeEvaluation
+
+	// READ-ONLY; The readiness evaluation for the control plane Kubernetes version upgrade.
+	ControlPlane *ScopeEvaluationResult
+
+	// READ-ONLY; The UTC time at which this stored upgrade insight expires and is removed from the
+	// data store (currently `lastEvaluatedAt` plus a 14-day retention window). After this
+	// time a GET for the resource returns 404 Not Found and it no longer appears in the
+	// list, indicating the caller should call the compute operation to produce a fresh
+	// evaluation. Exposing the expiry lets clients decide when to recompute without
+	// hardcoding the retention period.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The UTC time at which this upgrade insight was last computed (the last time the
+	// compute operation ran for this resource). This is the resource-level "last run"
+	// marker and, for a cached record, indicates how stale the stored evaluation is. For
+	// a combined evaluation it is the umbrella run time across all scopes, whereas each
+	// scope's `evaluation.evaluatedAt` records when that specific snapshot was produced.
+	LastEvaluatedAt *time.Time
+
+	// READ-ONLY; The provisioning state of the upgrade insight evaluation.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The target Kubernetes version that was evaluated for all scopes.
+	TargetKubernetesVersion *string
+}
+
+// GetUpgradeInsightProperties implements the UpgradeInsightPropertiesClassification interface for type ControlPlaneAndAgentPoolsUpgradeInsightProperties.
+func (c *ControlPlaneAndAgentPoolsUpgradeInsightProperties) GetUpgradeInsightProperties() *UpgradeInsightProperties {
+	return &UpgradeInsightProperties{
+		ExpiresAt:         c.ExpiresAt,
+		LastEvaluatedAt:   c.LastEvaluatedAt,
+		ProvisioningState: c.ProvisioningState,
+		UpgradeType:       c.UpgradeType,
+	}
+}
+
+// ControlPlaneGenerateUpgradeInsightsContent - Request body to evaluate a control plane (managed cluster) Kubernetes version
+// upgrade.
+type ControlPlaneGenerateUpgradeInsightsContent struct {
+	// REQUIRED; The target Kubernetes version to evaluate.
+	TargetKubernetesVersion *string
+
+	// CONSTANT; Field has constant value UpgradeTypeControlPlane, any specified value is ignored.
+	UpgradeType *UpgradeType
+}
+
+// GetGenerateUpgradeInsightsContent implements the GenerateUpgradeInsightsContentClassification interface for type ControlPlaneGenerateUpgradeInsightsContent.
+func (c *ControlPlaneGenerateUpgradeInsightsContent) GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent {
+	return &GenerateUpgradeInsightsContent{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ControlPlaneUpgradeInsightProperties - Properties for a control plane (managed cluster) Kubernetes version upgrade insight.
+type ControlPlaneUpgradeInsightProperties struct {
+	// REQUIRED; The type of upgrade this insight evaluates.
+	UpgradeType *UpgradeType
+
+	// READ-ONLY; Contextual information about how this upgrade is managed, such as the upgrade strategy, next maintenance window,
+	// and last successful upgrade time.
+	Context *UpgradeContext
+
+	// READ-ONLY; The Kubernetes version the scope was evaluated from (the upgrade source version the scope is currently running).
+	// Lets consumers read the result as "from X to targetKubernetesVersion" and detect a stale cached record by comparing against
+	// the live cluster version. Populated for Kubernetes version upgrades.
+	CurrentKubernetesVersion *string
+
+	// READ-ONLY; The evaluation result, including overall status, evaluation time, and any detected issues.
+	Evaluation *UpgradeInsightEvaluation
+
+	// READ-ONLY; The UTC time at which this stored upgrade insight expires and is removed from the
+	// data store (currently `lastEvaluatedAt` plus a 14-day retention window). After this
+	// time a GET for the resource returns 404 Not Found and it no longer appears in the
+	// list, indicating the caller should call the compute operation to produce a fresh
+	// evaluation. Exposing the expiry lets clients decide when to recompute without
+	// hardcoding the retention period.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The date on which support ends for the Kubernetes version the scope is currently
+	// running (its end-of-support date). Returned as an absolute date so clients can apply
+	// their own "approaching end of support" threshold and compute the remaining days against
+	// the current time; a precomputed remaining-days value is intentionally not returned so
+	// that cached results do not go stale. Populated for Kubernetes version upgrades.
+	KubernetesVersionEndOfSupportDate *time.Time
+
+	// READ-ONLY; The support status of the Kubernetes version the scope is currently running (not the target version). Populated
+	// for Kubernetes version upgrades.
+	KubernetesVersionSupportStatus *KubernetesVersionSupportStatus
+
+	// READ-ONLY; The UTC time at which this upgrade insight was last computed (the last time the
+	// compute operation ran for this resource). This is the resource-level "last run"
+	// marker and, for a cached record, indicates how stale the stored evaluation is. For
+	// a combined evaluation it is the umbrella run time across all scopes, whereas each
+	// scope's `evaluation.evaluatedAt` records when that specific snapshot was produced.
+	LastEvaluatedAt *time.Time
+
+	// READ-ONLY; The provisioning state of the upgrade insight evaluation.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The target Kubernetes version that was evaluated.
+	TargetKubernetesVersion *string
+}
+
+// GetUpgradeInsightProperties implements the UpgradeInsightPropertiesClassification interface for type ControlPlaneUpgradeInsightProperties.
+func (c *ControlPlaneUpgradeInsightProperties) GetUpgradeInsightProperties() *UpgradeInsightProperties {
+	return &UpgradeInsightProperties{
+		ExpiresAt:         c.ExpiresAt,
+		LastEvaluatedAt:   c.LastEvaluatedAt,
+		ProvisioningState: c.ProvisioningState,
+		UpgradeType:       c.UpgradeType,
+	}
 }
 
 // CreationData - Data used when creating a target resource from a source resource.
@@ -738,6 +1134,28 @@ type DelegatedResource struct {
 
 	// The tenant id of the delegated resource - internal use only.
 	TenantID *string
+}
+
+// DetectedUpgradeIssue - A detected upgrade issue for a managed cluster.
+type DetectedUpgradeIssue struct {
+	// READ-ONLY; The Azure or Kubernetes resources impacted by this issue. A single issue can affect multiple resources (for
+	// example, one removed Kubernetes API version affecting several objects).
+	ImpactedResources []UpgradeInsightImpactedResourceClassification
+
+	// READ-ONLY; The type of the detected upgrade issue.
+	IssueType *UpgradeIssueType
+
+	// READ-ONLY; A human-readable description of the issue and why it may block or risk the upgrade.
+	Message *string
+
+	// READ-ONLY; The recommended actions to resolve this issue. Today this always contains a
+	// single action whose documentation link covers all of the options the user could
+	// take to remediate the issue; it is modeled as an array so that additional distinct
+	// actions can be returned in the future without a breaking change.
+	RecommendedActions []*UpgradeInsightRecommendedAction
+
+	// READ-ONLY; The severity of the detected issue.
+	Severity *UpgradeIssueSeverity
 }
 
 // EndpointDependency - A domain name that AKS agent nodes are reaching at.
@@ -814,6 +1232,22 @@ type GPUProfile struct {
 	Nvidia *NvidiaGPUProfile
 }
 
+// GenerateUpgradeInsightsContent - The base request body for the generateUpgradeInsights action. The concrete shape is
+// determined by `upgradeType`, so that each scope declares exactly the inputs it needs:
+// the schema itself enforces which of `targetKubernetesVersion`,
+// `targetNodeImageVersion`, and `agentPoolName` are required or optional, rather than
+// relying on documented conventions plus server-side validation. The server generates
+// (or refreshes) the corresponding UpgradeInsight and returns it.
+type GenerateUpgradeInsightsContent struct {
+	// REQUIRED; The type of upgrade to evaluate.
+	UpgradeType *UpgradeType
+}
+
+// GetGenerateUpgradeInsightsContent implements the GenerateUpgradeInsightsContentClassification interface for type GenerateUpgradeInsightsContent.
+func (g *GenerateUpgradeInsightsContent) GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent {
+	return g
+}
+
 // GuardrailsAvailableVersion - Available Guardrails Version
 type GuardrailsAvailableVersion struct {
 	// REQUIRED; Whether the version is default or not and support info.
@@ -880,6 +1314,11 @@ type IPTag struct {
 
 // IdentityBinding - The IdentityBinding resource.
 type IdentityBinding struct {
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template
+	// since it is managed by another resource.
+	ManagedBy *string
+
 	// The resource-specific properties for this resource.
 	Properties *IdentityBindingProperties
 
@@ -1228,6 +1667,30 @@ type KubeletConfig struct {
 	TopologyManagerPolicy *string
 }
 
+// KubernetesImpactedResource - A Kubernetes resource impacted by a detected upgrade issue, identified by its namespace and
+// name.
+type KubernetesImpactedResource struct {
+	// READ-ONLY; The category of the impacted resource.
+	Kind *ImpactedResourceKind
+
+	// READ-ONLY; The name of the impacted Kubernetes resource.
+	Name *string
+
+	// READ-ONLY; The Kubernetes namespace of the impacted resource, if applicable.
+	Namespace *string
+
+	// READ-ONLY; The type of the impacted resource (for example, Microsoft.Network/virtualNetworks/subnets or PodDisruptionBudget).
+	ResourceType *string
+}
+
+// GetUpgradeInsightImpactedResource implements the UpgradeInsightImpactedResourceClassification interface for type KubernetesImpactedResource.
+func (k *KubernetesImpactedResource) GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource {
+	return &UpgradeInsightImpactedResource{
+		Kind:         k.Kind,
+		ResourceType: k.ResourceType,
+	}
+}
+
 // KubernetesPatchVersion - Kubernetes patch version profile
 type KubernetesPatchVersion struct {
 	// Possible upgrade path for given patch version
@@ -1543,6 +2006,9 @@ type MachineNetworkProperties struct {
 
 	// IPTags of instance-level public IPs.
 	NodePublicIPTags []*IPTag
+
+	// Pod IP Allocation Mode. The IP allocation mode for pods on the machine. Must be used with podSubnetID. The default is 'DynamicIndividual'.
+	PodIPAllocationMode *PodIPAllocationMode
 
 	// The ID of the subnet which pods will join when launched. If omitted, pod IPs are statically assigned on the node subnet
 	// (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
@@ -2452,6 +2918,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ProvisioningState *string
 }
 
+// ManagedClusterAgentSandboxProfile - Settings for the Agent Sandbox core extension managed by Azure Kubernetes Service (AKS).
+type ManagedClusterAgentSandboxProfile struct {
+	// Whether the Agent Sandbox core extension is enabled for the cluster. On cluster creation, the default is false.
+	Enabled *bool
+}
+
 // ManagedClusterAppRoutingIstio - Configuration for using a sidecar-less Istio control plane for managed ingress via the
 // Gateway API with App Routing. See https://aka.ms/gateway-on-istio for information on using Istio for ingress via the Gateway
 // API.
@@ -2993,6 +3465,12 @@ type ManagedClusterPodIdentityProvisioningInfo struct {
 	Error *ManagedClusterPodIdentityProvisioningError
 }
 
+// ManagedClusterPodSnapshotProfile - The Pod Snapshot Restore profile for the managed cluster.
+type ManagedClusterPodSnapshotProfile struct {
+	// Whether the Pod Snapshot Restore core extension is enabled for the managed cluster.
+	Enabled *bool
+}
+
 // ManagedClusterPoolUpgradeProfile - The list of available upgrade versions.
 type ManagedClusterPoolUpgradeProfile struct {
 	// REQUIRED; The Kubernetes version (major.minor.patch).
@@ -3037,6 +3515,9 @@ type ManagedClusterProperties struct {
 	// The agent pool properties.
 	AgentPoolProfiles []*ManagedClusterAgentPoolProfile
 
+	// Agent Sandbox settings that apply to the whole cluster.
+	AgentSandboxProfile *ManagedClusterAgentSandboxProfile
+
 	// AI toolchain operator settings that apply to the whole cluster.
 	AiToolchainOperatorProfile *ManagedClusterAIToolchainOperatorProfile
 
@@ -3073,7 +3554,9 @@ type ManagedClusterProperties struct {
 	// Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all AKS-managed
 	// components, such as the node operating system, addons, and [managed containerized components](https://aka.ms/aks/components/docs).
 	// See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools
-	// in the cluster must also be FIPS-enabled.
+	// in the cluster must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS
+	// remains a preview feature. Write requests whose resulting cluster state has this property set to true require the `Microsoft.ContainerService/EnableFIPSPreview`
+	// subscription feature registration.
 	EnableFIPS *bool
 
 	// Enable namespace as Azure resource. The default value is false. It can be enabled/disabled on creation and updating of
@@ -3146,6 +3629,9 @@ type ManagedClusterProperties struct {
 	// The pod identity profile of the Managed Cluster. See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity)
 	// for more details on AAD pod identity integration.
 	PodIdentityProfile *ManagedClusterPodIdentityProfile
+
+	// The Pod Snapshot Restore profile for the managed cluster.
+	PodSnapshotProfile *ManagedClusterPodSnapshotProfile
 
 	// Private link resources associated with the cluster.
 	PrivateLinkResources []*PrivateLinkResource
@@ -3533,6 +4019,24 @@ type ManagedClusterStorageProfileBlobCSIDriver struct {
 type ManagedClusterStorageProfileDiskCSIDriver struct {
 	// Whether to enable AzureDisk CSI Driver. The default value is true.
 	Enabled *bool
+
+	// Quick Attach Detach settings for the AzureDisk CSI driver. Quick Attach Detach enables faster, higher-scale Azure Disk
+	// attach and detach operations for stateful AKS workloads by bypassing ARM/CRP control-plane bottlenecks. For more information,
+	// see https://aka.ms/aks/qad.
+	QuickAttachDetach *ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach
+}
+
+// ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach - Quick Attach Detach settings for the AzureDisk CSI driver.
+type ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach struct {
+	// Whether to enable Quick Attach Detach for the AzureDisk CSI driver. The default value is false.
+	Enabled *bool
+
+	// READ-ONLY; Identity used by Quick Attach Detach. This property is returned by GET and cannot be set by clients. The Quick
+	// Attach Detach feature uses a managed identity that is automatically created and managed by the AKS resource provider. In
+	// most scenarios, no user action is required. An exception applies when using customer-managed disks that are located outside
+	// of the AKS node resource group (Bring Your Own Disk scenario). In this case, users must grant the Quick Attach Detach managed
+	// identity the required permissions on the resource group containing the disk.
+	Identity *UserAssignedIdentity
 }
 
 // ManagedClusterStorageProfileFileCSIDriver - AzureFile CSI Driver settings for the storage profile.
@@ -3887,9 +4391,8 @@ type NetworkProfile struct {
 	// aka.ms/aksadvancednetworking.
 	AdvancedNetworking *AdvancedNetworking
 
-	// Profile of the Bastion Host associated with the managed cluster.
-	// See https://aka.ms/aks/BastionConnect for more details.
-	BastionProfile *BastionProfile
+	// Configuration for accessing the managed cluster API through Bastion or Cloud Shell.
+	ClusterAPIConnectivityProfile *ClusterAPIConnectivityProfile
 
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
 	// in serviceCidr.
@@ -4019,6 +4522,78 @@ type NodeDisruptionProfile struct {
 	NodeDisruptionPolicy *NodeDisruptionPolicy
 }
 
+// NodeImageGenerateUpgradeInsightsContent - Request body to evaluate a single agent pool node OS image upgrade.
+type NodeImageGenerateUpgradeInsightsContent struct {
+	// REQUIRED; The name of the agent pool to evaluate.
+	AgentPoolName *string
+
+	// CONSTANT; Field has constant value UpgradeTypeNodeImage, any specified value is ignored.
+	UpgradeType *UpgradeType
+
+	// The target node OS image version to evaluate. If omitted, the server resolves and evaluates the latest available node image.
+	// The resolved full version is always returned in the generated insight's read-only `targetNodeImageVersion` property.
+	TargetNodeImageVersion *string
+}
+
+// GetGenerateUpgradeInsightsContent implements the GenerateUpgradeInsightsContentClassification interface for type NodeImageGenerateUpgradeInsightsContent.
+func (n *NodeImageGenerateUpgradeInsightsContent) GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent {
+	return &GenerateUpgradeInsightsContent{
+		UpgradeType: n.UpgradeType,
+	}
+}
+
+// NodeImageUpgradeInsightProperties - Properties for a single agent pool node OS image upgrade insight.
+type NodeImageUpgradeInsightProperties struct {
+	// REQUIRED; The type of upgrade this insight evaluates.
+	UpgradeType *UpgradeType
+
+	// READ-ONLY; The name of the agent pool this insight applies to.
+	AgentPoolName *string
+
+	// READ-ONLY; Contextual information about how this upgrade is managed, such as the upgrade strategy, next maintenance window,
+	// and last successful upgrade time.
+	Context *UpgradeContext
+
+	// READ-ONLY; The node OS image version the agent pool was evaluated from (the upgrade source version it is currently running).
+	// Lets consumers read the result as "from X to targetNodeImageVersion" and detect a stale cached record by comparing against
+	// the live node image version.
+	CurrentNodeImageVersion *string
+
+	// READ-ONLY; The evaluation result, including overall status, evaluation time, and any detected issues.
+	Evaluation *UpgradeInsightEvaluation
+
+	// READ-ONLY; The UTC time at which this stored upgrade insight expires and is removed from the
+	// data store (currently `lastEvaluatedAt` plus a 14-day retention window). After this
+	// time a GET for the resource returns 404 Not Found and it no longer appears in the
+	// list, indicating the caller should call the compute operation to produce a fresh
+	// evaluation. Exposing the expiry lets clients decide when to recompute without
+	// hardcoding the retention period.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The UTC time at which this upgrade insight was last computed (the last time the
+	// compute operation ran for this resource). This is the resource-level "last run"
+	// marker and, for a cached record, indicates how stale the stored evaluation is. For
+	// a combined evaluation it is the umbrella run time across all scopes, whereas each
+	// scope's `evaluation.evaluatedAt` records when that specific snapshot was produced.
+	LastEvaluatedAt *time.Time
+
+	// READ-ONLY; The provisioning state of the upgrade insight evaluation.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The target node OS image version that was evaluated.
+	TargetNodeImageVersion *string
+}
+
+// GetUpgradeInsightProperties implements the UpgradeInsightPropertiesClassification interface for type NodeImageUpgradeInsightProperties.
+func (n *NodeImageUpgradeInsightProperties) GetUpgradeInsightProperties() *UpgradeInsightProperties {
+	return &UpgradeInsightProperties{
+		ExpiresAt:         n.ExpiresAt,
+		LastEvaluatedAt:   n.LastEvaluatedAt,
+		ProvisioningState: n.ProvisioningState,
+		UpgradeType:       n.UpgradeType,
+	}
+}
+
 // NodeImageVersion - node image version profile for given major.minor.patch release.
 type NodeImageVersion struct {
 	// The OS + SKU + version of the node image. Example: AKSUbuntu-1804gen2containerd-2024.02.02
@@ -4052,6 +4627,13 @@ type NvidiaGPUProfile struct {
 	// The Managed GPU experience installs additional components, such as the Data Center GPU Manager (DCGM) metrics for monitoring,
 	// on top of the GPU driver for you. For more details of what is installed, check out aka.ms/aks/managed-gpu.
 	ManagementMode *ManagementMode
+
+	// The ordered list of MIG (Multi-Instance GPU) partition profiles to assign to each supported NVIDIA GPU. When `migStrategy`
+	// is `Single`, exactly one profile must be specified. When `migStrategy` is `Mixed`, one or more profiles may be specified
+	// and the combination is validated against the supported MIG geometry for the agent pool's GPU VM size. The same value may
+	// appear more than once to request multiple partitions of that size. This field is mutually exclusive with the top-level
+	// `gpuInstanceProfile` property. For more information, see https://aka.ms/aks/managed-gpu.
+	MigProfiles []*GPUInstanceProfile
 
 	// Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG support. For more information about the different
 	// strategies, visit aka.ms/aks/managed-gpu. When not specified, the default is None.
@@ -4563,6 +5145,34 @@ type SchedulerProfile struct {
 	Upstream *SchedulerInstanceProfile
 }
 
+// ScopeEvaluationResult - The readiness evaluation details shared by a single scope: the support status of the
+// version the scope is currently running, the upgrade context, and the evaluation
+// result. All fields are server-computed and read-only.
+type ScopeEvaluationResult struct {
+	// READ-ONLY; Contextual information about how this upgrade is managed, such as the upgrade strategy, next maintenance window,
+	// and last successful upgrade time.
+	Context *UpgradeContext
+
+	// READ-ONLY; The Kubernetes version the scope was evaluated from (the upgrade source version the scope is currently running).
+	// Lets consumers read the result as "from X to targetKubernetesVersion" and detect a stale cached record by comparing against
+	// the live cluster version. Populated for Kubernetes version upgrades.
+	CurrentKubernetesVersion *string
+
+	// READ-ONLY; The evaluation result, including overall status, evaluation time, and any detected issues.
+	Evaluation *UpgradeInsightEvaluation
+
+	// READ-ONLY; The date on which support ends for the Kubernetes version the scope is currently
+	// running (its end-of-support date). Returned as an absolute date so clients can apply
+	// their own "approaching end of support" threshold and compute the remaining days against
+	// the current time; a precomputed remaining-days value is intentionally not returned so
+	// that cached results do not go stale. Populated for Kubernetes version upgrades.
+	KubernetesVersionEndOfSupportDate *time.Time
+
+	// READ-ONLY; The support status of the Kubernetes version the scope is currently running (not the target version). Populated
+	// for Kubernetes version upgrades.
+	KubernetesVersionSupportStatus *KubernetesVersionSupportStatus
+}
+
 // ServiceAccountImagePullProfile - Profile for configuring image pull authentication to use service account scoped managed
 // identities for authentication instead of node scoped managed identity (kubelet identity) for authentication to Azure Container
 // Registry. For more information, refer to https://aka.ms/aks/identity-binding/acr-image-pull/docs
@@ -4895,6 +5505,174 @@ type TrustedAccessRoleRule struct {
 
 	// READ-ONLY; List of allowed verbs
 	Verbs []*string
+}
+
+// UpgradeContext - Contextual information for a specific upgrade type (Kubernetes version or node OS
+// image). Because the Kubernetes version and node OS image can be managed
+// independently — for example, auto-upgrade for the node image but manual for the
+// Kubernetes version — this context is reported per upgrade type rather than once
+// for the whole cluster.
+type UpgradeContext struct {
+	// READ-ONLY; The strategy currently used to perform this type of upgrade (manual or auto-upgrade).
+	CurrentUpgradeStrategy *UpgradeInsightStrategy
+
+	// READ-ONLY; The UTC time of the last successful upgrade of this type for this scope.
+	// Clients can compute "days since last successful upgrade" from this value and the
+	// current time; the server intentionally does not return a precomputed value so that
+	// cached results do not go stale.
+	LastSuccessfulUpgradeTime *time.Time
+
+	// READ-ONLY; The next scheduled automatic upgrade maintenance window for this upgrade type, if auto-upgrade is configured.
+	NextMaintenanceWindow *UpgradeInsightMaintenanceWindow
+}
+
+// UpgradeGateSettings - Settings for health-aware upgrade gating.
+type UpgradeGateSettings struct {
+	// Whether upgrade gating is enabled. Defaults to `false` when unset, except on a newly created agent pool in a cluster where
+	// upgrade gating is enabled, which defaults to `true`. When `true`, upgrade-gated health checks are enabled for upgrades
+	// in the corresponding scope. Setting this to `true` at the cluster scope enables gating for the entire cluster, including
+	// all agent pool upgrades. When the cluster scope is unset or `false`, an agent pool can opt in independently by setting
+	// this to `true`. When the cluster scope is `true`, an agent pool cannot set this to `false`. Force upgrade (`overrideSettings.forceUpgrade`)
+	// overrides the gate: while the override window is active, the upgrade skips health signal validation and proceeds.
+	Enabled *bool
+}
+
+// UpgradeInsight - An upgrade insight for a managed cluster: an on-demand readiness evaluation for an
+// upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
+// and addressable by a server-generated name. The name identifies
+// the scope and evaluated target —
+// `controlPlane-<targetKubernetesVersion>` (for example `controlPlane-1.33.5`),
+// `controlPlaneAndAgentPools-<targetKubernetesVersion>`,
+// `agentPool-<agentPoolName>-<targetKubernetesVersion>` (for example
+// `agentPool-nodepool1-1.33.5`), or
+// `nodeImage-<agentPoolName>-<nodeImageVersion>` (for example
+// `nodeImage-nodepool1-202607.01.0`). The node image segment contains only the numeric
+// image version, while `properties.targetNodeImageVersion` returns the full image name.
+// The resource itself
+// is read-only: GET returns the stored evaluation and LIST returns the stored
+// evaluations for the cluster. Evaluations are (re)generated via the managed cluster's
+// generateUpgradeInsights action, whose response body is the same UpgradeInsight
+// representation returned by GET.
+type UpgradeInsight struct {
+	// The resource-specific properties for this resource.
+	Properties UpgradeInsightPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UpgradeInsightEvaluation - The evaluation payload shared by all upgrade insight results, containing the
+// overall status, evaluation time, and any detected issues. Whenever this object is
+// present the evaluation has run, so `status` and `evaluatedAt` are always populated;
+// the "not yet evaluated" state is signaled by the absence of this `evaluation` object
+// (and by `provisioningState`), never by a present evaluation with an absent status.
+type UpgradeInsightEvaluation struct {
+	// READ-ONLY; The UTC time at which the upgrade insight evaluation was performed.
+	EvaluatedAt *time.Time
+
+	// READ-ONLY; The overall upgrade insight status indicating whether issues were detected. Always present when the evaluation
+	// has run; absence of the enclosing `evaluation` object—not an absent status—represents "not yet evaluated".
+	Status *UpgradeInsightStatus
+
+	// READ-ONLY; The list of detected upgrade issues, if any. Empty or absent for a `Passed` status.
+	DetectedIssues []*DetectedUpgradeIssue
+}
+
+// UpgradeInsightImpactedResource - A resource impacted by a detected upgrade issue. The concrete shape is determined
+// by `kind`: an ARM resource is identified by its ARM resource ID, while a Kubernetes
+// resource is identified by its namespace and name.
+type UpgradeInsightImpactedResource struct {
+	// READ-ONLY; The category of the impacted resource.
+	Kind *ImpactedResourceKind
+
+	// READ-ONLY; The type of the impacted resource (for example, Microsoft.Network/virtualNetworks/subnets or PodDisruptionBudget).
+	ResourceType *string
+}
+
+// GetUpgradeInsightImpactedResource implements the UpgradeInsightImpactedResourceClassification interface for type UpgradeInsightImpactedResource.
+func (u *UpgradeInsightImpactedResource) GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource {
+	return u
+}
+
+// UpgradeInsightListResult - The response of a UpgradeInsight list operation.
+type UpgradeInsightListResult struct {
+	// REQUIRED; The UpgradeInsight items on this page
+	Value []*UpgradeInsight
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// UpgradeInsightMaintenanceWindow - A scheduled maintenance window during which an automatic upgrade of this type is
+// expected to run. The window is derived from the maintenance configuration that
+// governs this upgrade type — the cluster auto-upgrade schedule for Kubernetes
+// version upgrades or the node OS upgrade schedule for node image upgrades — so the
+// same model describes both without duplicating types.
+type UpgradeInsightMaintenanceWindow struct {
+	// READ-ONLY; The UTC end time of the next scheduled maintenance window.
+	EndTime *time.Time
+
+	// READ-ONLY; The name of the maintenance configuration that governs this window (for example, aksManagedAutoUpgradeSchedule
+	// or aksManagedNodeOSUpgradeSchedule).
+	MaintenanceConfigurationName *string
+
+	// READ-ONLY; The auto-upgrade schedule that this window is derived from.
+	Source *MaintenanceWindowSource
+
+	// READ-ONLY; The UTC start time of the next scheduled maintenance window.
+	StartTime *time.Time
+}
+
+// UpgradeInsightProperties - The base properties of an upgrade insight. The concrete shape is determined by
+// `upgradeType`, which is encoded in the resource name: single-scope evaluations
+// (`ControlPlane`, `AgentPool`, `NodeImage`) carry a flat per-scope result, while a
+// combined evaluation (`ControlPlaneAndAgentPools`) carries a nested control plane
+// result plus a per-agent-pool array.
+type UpgradeInsightProperties struct {
+	// READ-ONLY; The type of upgrade this insight evaluates. Derived from the resource name.
+	UpgradeType *UpgradeType
+
+	// READ-ONLY; The UTC time at which this stored upgrade insight expires and is removed from the
+	// data store (currently `lastEvaluatedAt` plus a 14-day retention window). After this
+	// time a GET for the resource returns 404 Not Found and it no longer appears in the
+	// list, indicating the caller should call the compute operation to produce a fresh
+	// evaluation. Exposing the expiry lets clients decide when to recompute without
+	// hardcoding the retention period.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The UTC time at which this upgrade insight was last computed (the last time the
+	// compute operation ran for this resource). This is the resource-level "last run"
+	// marker and, for a cached record, indicates how stale the stored evaluation is. For
+	// a combined evaluation it is the umbrella run time across all scopes, whereas each
+	// scope's `evaluation.evaluatedAt` records when that specific snapshot was produced.
+	LastEvaluatedAt *time.Time
+
+	// READ-ONLY; The provisioning state of the upgrade insight evaluation.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// GetUpgradeInsightProperties implements the UpgradeInsightPropertiesClassification interface for type UpgradeInsightProperties.
+func (u *UpgradeInsightProperties) GetUpgradeInsightProperties() *UpgradeInsightProperties { return u }
+
+// UpgradeInsightRecommendedAction - A recommended action to resolve a detected upgrade issue.
+type UpgradeInsightRecommendedAction struct {
+	// READ-ONLY; A detailed description of the recommended action and how to perform it.
+	Details *string
+
+	// READ-ONLY; A link to customer-facing documentation describing the available options for remediating the issue.
+	DocumentationLink *string
+
+	// READ-ONLY; A short title describing the recommended action.
+	Title *string
 }
 
 // UpgradeOverrideSettings - Settings for overrides when upgrading a cluster.

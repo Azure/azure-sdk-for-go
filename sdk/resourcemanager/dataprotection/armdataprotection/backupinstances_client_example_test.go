@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithGenericBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithGe
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,7 +534,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -670,7 +670,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithBl
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKubernetesClusterBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,7 +818,108 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKu
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_PostgreSqlFlexibleServerBackupDatasourceParameters.json
+func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithPostgreSqlFlexibleServerBackupDatasourceParameters() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("62b829ee-7936-40c9-a1c9-47a93f9f3965", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "pgflexrg", "pgflexvault", "pgflexbi", armdataprotection.BackupInstanceResource{
+		Properties: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+				ResourceLocation: to.Ptr("eastus2euap"),
+				ResourceName:     to.Ptr("pgflexserver"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+				ResourceURI:      to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+				ResourceLocation: to.Ptr("eastus2euap"),
+				ResourceName:     to.Ptr("pgflexserver"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+				ResourceURI:      to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+			},
+			FriendlyName: to.Ptr("pgflexbi"),
+			ObjectType:   to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/BackupVaults/pgflexvault/backupPolicies/pgflexpolicy"),
+				PolicyParameters: &armdataprotection.PolicyParameters{
+					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+						&armdataprotection.PostgreSQLFlexibleServerBackupDatasourceParameters{
+							ObjectType:         to.Ptr("PostgreSqlFlexibleServerBackupDatasourceParameters"),
+							BackupSolutionType: to.Ptr(armdataprotection.BackupSolutionTypePhysicalBackup),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("pgflexbi"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/backupVaults/pgflexvault/backupInstances/pgflexbi"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+	// 				ResourceLocation: to.Ptr("eastus2euap"),
+	// 				ResourceName: to.Ptr("pgflexserver"),
+	// 				ResourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 				ResourceURI: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"),
+	// 				ResourceLocation: to.Ptr("eastus2euap"),
+	// 				ResourceName: to.Ptr("pgflexserver"),
+	// 				ResourceType: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 			},
+	// 			FriendlyName: to.Ptr("pgflexbi"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/backupVaults/pgflexvault/backupPolicies/pgflexpolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.PostgreSQLFlexibleServerBackupDatasourceParameters{
+	// 							ObjectType: to.Ptr("PostgreSqlFlexibleServerBackupDatasourceParameters"),
+	// 							BackupSolutionType: to.Ptr(armdataprotection.BackupSolutionTypePhysicalBackup),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Provisioned"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerformCriticalOperationWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,7 +1035,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerf
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -960,7 +1061,7 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1021,7 +1122,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1103,7 +1204,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoPro
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1171,7 +1272,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1253,7 +1354,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtect
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
 func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1310,7 +1411,7 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1376,7 +1477,7 @@ func ExampleBackupInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ResumeBackups.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ResumeBackups.json
 func ExampleBackupInstancesClient_BeginResumeBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1402,7 +1503,7 @@ func ExampleBackupInstancesClient_BeginResumeBackups() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ResumeProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ResumeProtection.json
 func ExampleBackupInstancesClient_BeginResumeProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1428,7 +1529,7 @@ func ExampleBackupInstancesClient_BeginResumeProtection() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/StopProtection.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/StopProtection.json
 func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1454,7 +1555,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1485,7 +1586,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1516,7 +1617,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/SuspendBackups.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/SuspendBackups.json
 func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1542,7 +1643,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/SyncBackupInstance.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/SyncBackupInstance.json
 func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1570,7 +1671,7 @@ func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/CrossRegionRestore/TriggerCrossRegionRestore.json
+// Generated from example definition: 2026-07-01/CrossRegionRestore/TriggerCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1641,7 +1742,7 @@ func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerRehydrate.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRehydrate.json
 func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1666,7 +1767,7 @@ func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerRestore.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestore.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1735,7 +1836,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1780,7 +1881,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithGenericRestoreDatasourceCriteria() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1852,7 +1953,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithGenericR
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1912,7 +2013,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydrat
 	// }
 }
 
-// Generated from example definition: 2026-06-01/CrossRegionRestore/ValidateCrossRegionRestore.json
+// Generated from example definition: 2026-07-01/CrossRegionRestore/ValidateCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1983,7 +2084,7 @@ func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ValidateForBackup.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateForBackup.json
 func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2050,7 +2151,7 @@ func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ValidateForModifyBackup.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateForModifyBackup.json
 func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2108,7 +2209,7 @@ func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/BackupInstanceOperations/ValidateRestore.json
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ValidateRestore.json
 func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -114,10 +114,7 @@ func (b *BudgetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	budgetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("budgetName")])
 	if err != nil {
 		return nil, err
@@ -147,10 +144,7 @@ func (b *BudgetsServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	budgetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("budgetName")])
 	if err != nil {
 		return nil, err
@@ -180,10 +174,7 @@ func (b *BudgetsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	budgetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("budgetName")])
 	if err != nil {
 		return nil, err
@@ -215,10 +206,7 @@ func (b *BudgetsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		resp := b.srv.NewListPager(scopeParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)

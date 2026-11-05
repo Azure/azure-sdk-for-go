@@ -28,7 +28,21 @@ func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, 
 	}
 	for _, t := range tpl.Templates() {
 		fName, _ := strings.CutSuffix(t.Name(), ".tpl")
-		w, err := os.OpenFile(filepath.Join(outputDir, fName), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+		outputPath := filepath.Join(outputDir, fName)
+		// Unreleased modules repeat onboarding; retain their customized README.
+		if fName == "README.md" {
+			info, err := os.Stat(outputPath)
+			if err == nil {
+				if info.IsDir() {
+					return fmt.Errorf("README path %q is a directory", outputPath)
+				}
+				continue
+			}
+			if !os.IsNotExist(err) {
+				return fmt.Errorf("failed to check README %q: %w", outputPath, err)
+			}
+		}
+		w, err := os.OpenFile(outputPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
 		if err != nil {
 			return err
 		}

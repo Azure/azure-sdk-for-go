@@ -14,7 +14,7 @@
 
 ### Other Changes
 
-* Migrated the default HTTP/2 transport configuration to `net/http`, preserving the 2-second idle health check interval and 1-second ping-response timeout.
+* Migrated the default HTTP/2 transport configuration to `net/http`, preserving the 2-second idle health check interval and 1-second ping-response timeout. See [PR 27925](https://github.com/Azure/azure-sdk-for-go/pull/27925).
 
 ## 1.6.0-beta.4 (2026-10-14)
 

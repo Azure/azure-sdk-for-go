@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -88,15 +87,14 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchGet(req *http.
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
-	if err != nil {
-		return nil, err
-	}
+	resourceScopeParam := matches[regex.SubexpIndex("resourceScope")]
 	filterParam := getOptional(qp.Get("$filter"))
+	managementGroupIDParam := getOptional(qp.Get("managementGroupId"))
 	var options *armconsumption.ReservationRecommendationDetailsClientGetOptions
-	if filterParam != nil {
+	if filterParam != nil || managementGroupIDParam != nil {
 		options = &armconsumption.ReservationRecommendationDetailsClientGetOptions{
-			Filter: filterParam,
+			Filter:            filterParam,
+			ManagementGroupID: managementGroupIDParam,
 		}
 	}
 	respr, errRespr := r.srv.Get(req.Context(), resourceScopeParam, armconsumption.Scope(qp.Get("scope")), qp.Get("region"), armconsumption.Term(qp.Get("term")), armconsumption.LookBackPeriod(qp.Get("lookBackPeriod")), qp.Get("product"), options)

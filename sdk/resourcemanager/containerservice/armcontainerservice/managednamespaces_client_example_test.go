@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesCreate_Update.json
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesCreate_Update.json
 func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesDelete.json
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesDelete.json
 func ExampleManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleManagedNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesGet.json
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesGet.json
 func ExampleManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,37 @@ func ExampleManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesList.json
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesListCredentialResult.json
+func ExampleManagedNamespacesClient_ListCredential() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedNamespacesClient().ListCredential(ctx, "rg1", "clustername1", "namespace1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.ManagedNamespacesClientListCredentialResponse{
+	// 	CredentialResults: armcontainerservice.CredentialResults{
+	// 		Kubeconfigs: []*armcontainerservice.CredentialResult{
+	// 			{
+	// 				Name: to.Ptr("credentialName1"),
+	// 				Value: []byte("Y3JlZGVudGlhbFZhbHVlMQ=="),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesList.json
 func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,37 +257,7 @@ func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesListCredentialResult.json
-func ExampleManagedNamespacesClient_ListCredential() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedNamespacesClient().ListCredential(ctx, "rg1", "clustername1", "namespace1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.ManagedNamespacesClientListCredentialResponse{
-	// 	CredentialResults: armcontainerservice.CredentialResults{
-	// 		Kubeconfigs: []*armcontainerservice.CredentialResult{
-	// 			{
-	// 				Name: to.Ptr("credentialName1"),
-	// 				Value: []byte("Y3JlZGVudGlhbFZhbHVlMQ=="),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/ManagedNamespacesUpdateTags.json
+// Generated from example definition: 2026-08-02-preview/ManagedNamespacesUpdateTags.json
 func ExampleManagedNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

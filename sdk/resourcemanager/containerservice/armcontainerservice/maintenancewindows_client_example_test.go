@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsCreateOrUpdate.json
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsCreateOrUpdate.json
 func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsDelete.json
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsDelete.json
 func ExampleMaintenanceWindowsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleMaintenanceWindowsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsGet.json
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsGet.json
 func ExampleMaintenanceWindowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,100 +177,7 @@ func ExampleMaintenanceWindowsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsList.json
-func ExampleMaintenanceWindowsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewMaintenanceWindowsClient().NewListPager("rg-maintenance", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.MaintenanceWindowsClientListResponse{
-		// 	MaintenanceWindowResourceListResult: armcontainerservice.MaintenanceWindowResourceListResult{
-		// 		Value: []*armcontainerservice.MaintenanceWindowResource{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-maintenance/providers/Microsoft.ContainerService/maintenanceWindows/production-weekends"),
-		// 				Name: to.Ptr("production-weekends"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/maintenanceWindows"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Properties: &armcontainerservice.MaintenanceWindowResourceProperties{
-		// 					ProvisioningState: to.Ptr(armcontainerservice.ResourceProvisioningStateSucceeded),
-		// 					Schedule: &armcontainerservice.Schedule{
-		// 						Weekly: &armcontainerservice.WeeklySchedule{
-		// 							IntervalWeeks: to.Ptr[int32](1),
-		// 							DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
-		// 						},
-		// 					},
-		// 					StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
-		// 					StartTime: to.Ptr("02:00"),
-		// 					DurationHours: to.Ptr[int32](8),
-		// 					UTCOffset: to.Ptr("-07:00"),
-		// 					NotAllowedDates: []*armcontainerservice.DateSpan{
-		// 					},
-		// 				},
-		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-maintenance/providers/Microsoft.ContainerService/maintenanceWindows/dev-nightly"),
-		// 				Name: to.Ptr("dev-nightly"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/maintenanceWindows"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("development"),
-		// 				},
-		// 				Properties: &armcontainerservice.MaintenanceWindowResourceProperties{
-		// 					ProvisioningState: to.Ptr(armcontainerservice.ResourceProvisioningStateSucceeded),
-		// 					Schedule: &armcontainerservice.Schedule{
-		// 						Daily: &armcontainerservice.DailySchedule{
-		// 							IntervalDays: to.Ptr[int32](1),
-		// 						},
-		// 					},
-		// 					StartTime: to.Ptr("22:00"),
-		// 					DurationHours: to.Ptr[int32](6),
-		// 					UTCOffset: to.Ptr("+00:00"),
-		// 					NotAllowedDates: []*armcontainerservice.DateSpan{
-		// 					},
-		// 				},
-		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedBy: to.Ptr("admin@contoso.com"),
-		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsListBySubscription.json
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsListBySubscription.json
 func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +270,100 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsUpdateTags.json
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsList.json
+func ExampleMaintenanceWindowsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMaintenanceWindowsClient().NewListPager("rg-maintenance", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.MaintenanceWindowsClientListResponse{
+		// 	MaintenanceWindowResourceListResult: armcontainerservice.MaintenanceWindowResourceListResult{
+		// 		Value: []*armcontainerservice.MaintenanceWindowResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-maintenance/providers/Microsoft.ContainerService/maintenanceWindows/production-weekends"),
+		// 				Name: to.Ptr("production-weekends"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/maintenanceWindows"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Properties: &armcontainerservice.MaintenanceWindowResourceProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerservice.ResourceProvisioningStateSucceeded),
+		// 					Schedule: &armcontainerservice.Schedule{
+		// 						Weekly: &armcontainerservice.WeeklySchedule{
+		// 							IntervalWeeks: to.Ptr[int32](1),
+		// 							DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
+		// 						},
+		// 					},
+		// 					StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
+		// 					StartTime: to.Ptr("02:00"),
+		// 					DurationHours: to.Ptr[int32](8),
+		// 					UTCOffset: to.Ptr("-07:00"),
+		// 					NotAllowedDates: []*armcontainerservice.DateSpan{
+		// 					},
+		// 				},
+		// 				SystemData: &armcontainerservice.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-maintenance/providers/Microsoft.ContainerService/maintenanceWindows/dev-nightly"),
+		// 				Name: to.Ptr("dev-nightly"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/maintenanceWindows"),
+		// 				Location: to.Ptr("westus2"),
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("development"),
+		// 				},
+		// 				Properties: &armcontainerservice.MaintenanceWindowResourceProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerservice.ResourceProvisioningStateSucceeded),
+		// 					Schedule: &armcontainerservice.Schedule{
+		// 						Daily: &armcontainerservice.DailySchedule{
+		// 							IntervalDays: to.Ptr[int32](1),
+		// 						},
+		// 					},
+		// 					StartTime: to.Ptr("22:00"),
+		// 					DurationHours: to.Ptr[int32](6),
+		// 					UTCOffset: to.Ptr("+00:00"),
+		// 					NotAllowedDates: []*armcontainerservice.DateSpan{
+		// 					},
+		// 				},
+		// 				SystemData: &armcontainerservice.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-02-preview/MaintenanceWindowsUpdateTags.json
 func ExampleMaintenanceWindowsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

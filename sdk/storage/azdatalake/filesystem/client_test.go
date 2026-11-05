@@ -5,6 +5,7 @@ package filesystem_test
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 	"testing"
@@ -14,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
@@ -1417,6 +1419,62 @@ func (s *RecordedTestSuite) TestCreateFileClientFromDirectoryClientWithSpecialFi
 	_require.NoError(err)
 }
 
+func createListPathsFixtures(t *testing.T, fsClient *filesystem.Client, testName string) []string {
+	t.Helper()
+	_require := require.New(t)
+	parentName, _, found := strings.Cut(testName, "/")
+	_require.True(found)
+
+	// Existing recordings predate explicit parent creation and sanitize returned path names.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		parentClient := fsClient.NewDirectoryClient(parentName)
+		_, err := parentClient.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+
+	names := []string{
+		testName + "file1",
+		testName + "file2",
+		testName + "dir1",
+		testName + "dir2",
+	}
+
+	client := fsClient.NewFileClient(names[0])
+	_, err := client.Create(context.Background(), nil)
+	_require.NoError(err)
+	client = fsClient.NewFileClient(names[1])
+	_, err = client.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(names[2])
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(names[3])
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	return append([]string{parentName}, names...)
+}
+
+func requireListPathNames(t *testing.T, paths []*filesystem.Path, expected []string) {
+	t.Helper()
+	_require := require.New(t)
+	_require.Len(paths, len(expected))
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
+	actual := make([]string, 0, len(paths))
+	seen := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		_require.NotNil(path.Name)
+		_require.NotContains(seen, *path.Name, "duplicate path %q", *path.Name)
+		seen[*path.Name] = struct{}{}
+		actual = append(actual, *path.Name)
+	}
+	_require.ElementsMatch(expected, actual)
+}
+
 func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1429,18 +1487,7 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
 	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, nil)
@@ -1448,13 +1495,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		paths = append(paths, resp.Paths...)
-
-		if err != nil {
-			break
-		}
 	}
-	_require.Equal(5, len(paths))
-	_require.NotNil(paths[0].IsDirectory)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsRecursiveWithEtagCheck() {
@@ -1502,16 +1544,17 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient("file1")
+	expectedNames := []string{"file1", "file2", "dir1", "dir2"}
+	client := fsClient.NewFileClient(expectedNames[0])
 	_, err = client.Create(context.Background(), nil)
 	_require.NoError(err)
-	client = fsClient.NewFileClient("file2")
+	client = fsClient.NewFileClient(expectedNames[1])
 	_, err = client.Create(context.Background(), nil)
 	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient("dir1")
+	dirClient := fsClient.NewDirectoryClient(expectedNames[2])
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient("dir2")
+	dirClient = fsClient.NewDirectoryClient(expectedNames[3])
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
@@ -1521,12 +1564,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		paths = append(paths, resp.Paths...)
-		if err != nil {
-			break
-		}
 	}
-	_require.Equal(4, len(paths))
-	_require.NotNil(paths[0].IsDirectory)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
@@ -1541,28 +1580,16 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(false, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(1, len(resp.Paths))
-		if err != nil {
-			break
-		}
+		paths = append(paths, resp.Paths...)
 	}
+	requireListPathNames(s.T(), paths, expectedNames[:1])
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
@@ -1577,34 +1604,21 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	const maxResults = int32(2)
 	opts := filesystem.ListPathsOptions{
-		MaxResults: to.Ptr(int32(2)),
+		MaxResults: to.Ptr(maxResults),
 	}
-	pages := 3
-	count := 0
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, &opts)
 	for pager.More() {
-		_, err = pager.NextPage(context.Background())
+		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		count += 1
-		if err != nil {
-			break
-		}
+		_require.LessOrEqual(len(resp.Paths), int(maxResults))
+		paths = append(paths, resp.Paths...)
 	}
-	_require.Equal(pages, count)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
@@ -1619,31 +1633,19 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
 	opts := filesystem.ListPathsOptions{
 		Prefix: to.Ptr("Test"),
 	}
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, &opts)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(4, len(resp.Paths))
-		if err != nil {
-			break
-		}
+		paths = append(paths, resp.Paths...)
 	}
+	requireListPathNames(s.T(), paths, expectedNames[1:])
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
@@ -1658,37 +1660,36 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	const maxResults = int32(3)
 	opts := filesystem.ListPathsOptions{
-		MaxResults: to.Ptr(int32(3)),
+		MaxResults: to.Ptr(maxResults),
 	}
 	pager := fsClient.NewListPathsPager(true, &opts)
 
 	resp, err := pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(3, len(resp.Paths))
+	_require.LessOrEqual(len(resp.Paths), int(maxResults))
 	_require.NotNil(resp.Continuation)
 
+	paths := append([]*filesystem.Path(nil), resp.Paths...)
 	token := resp.Continuation
-	pager = fsClient.NewListPathsPager(true, &filesystem.ListPathsOptions{
+	resumeOptions := filesystem.ListPathsOptions{
 		Marker: token,
-	})
-	resp, err = pager.NextPage(context.Background())
-	_require.NoError(err)
-	_require.Equal(2, len(resp.Paths))
-	_require.Nil(resp.Continuation)
+	}
+	// The existing recording resumed without maxResults, so only live runs can add the page bound.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		resumeOptions.MaxResults = to.Ptr(maxResults)
+	}
+	pager = fsClient.NewListPathsPager(true, &resumeOptions)
+	for pager.More() {
+		resp, err = pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.LessOrEqual(len(resp.Paths), int(maxResults))
+		paths = append(paths, resp.Paths...)
+	}
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {
@@ -2234,6 +2235,30 @@ func (s *RecordedTestSuite) TestFSCreateDefaultAudience() {
 	_, err = fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 
+}
+
+// TestFileSystemGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's underlying blob URL
+// already contained a query string (e.g. a customer-provided endpoint with pre-existing
+// custom query parameters), which previously produced a malformed SAS URL.
+func TestFileSystemGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	fsURL := fmt.Sprintf("https://%s.dfs.core.windows.net/filesystem?customparam=value", accountName)
+	fsClient, err := filesystem.NewClientWithSharedKeyCredential(fsURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := fsClient.GetSASURL(sas.FileSystemPermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
 }
 
 func (s *RecordedTestSuite) TestFSCreateCustomAudience() {

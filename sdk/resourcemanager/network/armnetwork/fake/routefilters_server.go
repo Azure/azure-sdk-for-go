@@ -33,13 +33,13 @@ type RouteFiltersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, routeFilterName string, options *armnetwork.RouteFiltersClientGetOptions) (resp azfake.Responder[armnetwork.RouteFiltersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RouteFiltersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.RouteFiltersClientListOptions) (resp azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method RouteFiltersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.RouteFiltersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.RouteFiltersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method RouteFiltersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.RouteFiltersClientListOptions) (resp azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse])
 
 	// UpdateTags is the fake for method RouteFiltersClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewRouteFiltersServerTransport(srv *RouteFiltersServer) *RouteFiltersServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.RouteFiltersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.RouteFiltersClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type RouteFiltersServerTransport struct {
 	srv                         *RouteFiltersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.RouteFiltersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.RouteFiltersClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.RouteFiltersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RouteFiltersServerTransport.
@@ -96,10 +96,10 @@ func (r *RouteFiltersServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "RouteFiltersClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "RouteFiltersClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RouteFiltersClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
+			case "RouteFiltersClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			case "RouteFiltersClient.UpdateTags":
 				res.resp, res.err = r.dispatchUpdateTags(req)
 			default:
@@ -251,39 +251,6 @@ func (r *RouteFiltersServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (r *RouteFiltersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/routeFilters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListPager(nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.RouteFiltersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RouteFiltersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -317,6 +284,39 @@ func (r *RouteFiltersServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		r.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RouteFiltersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/routeFilters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListPager(nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.RouteFiltersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

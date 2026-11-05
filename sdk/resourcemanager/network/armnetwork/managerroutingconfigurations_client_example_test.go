@@ -12,7 +12,33 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationPut.json
+// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationDelete.json
+func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagerRoutingConfigurationsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestRoutingConfig", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ManagerRoutingConfigurationsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationPut.json
 func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,33 +84,7 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationDelete.json
-func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagerRoutingConfigurationsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestRoutingConfig", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ManagerRoutingConfigurationsClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationGet.json
 func ExampleManagerRoutingConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleManagerRoutingConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationList.json
+// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationList.json
 func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

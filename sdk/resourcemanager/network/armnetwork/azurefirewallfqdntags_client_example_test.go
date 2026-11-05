@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/AzureFirewallFqdnTagsListBySubscription.json
+// Generated from example definition: 2026-03-01/AzureFirewallFqdnTagsListBySubscription.json
 func ExampleAzureFirewallFqdnTagsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

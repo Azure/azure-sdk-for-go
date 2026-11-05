@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualHubBgpConnectionPut.json
+// Generated from example definition: 2026-03-01/VirtualHubBgpConnectionPut.json
 func ExampleVirtualHubBgpConnectionClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleVirtualHubBgpConnectionClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubBgpConnectionDelete.json
+// Generated from example definition: 2026-03-01/VirtualHubBgpConnectionDelete.json
 func ExampleVirtualHubBgpConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleVirtualHubBgpConnectionClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubBgpConnectionGet.json
+// Generated from example definition: 2026-03-01/VirtualHubBgpConnectionGet.json
 func ExampleVirtualHubBgpConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

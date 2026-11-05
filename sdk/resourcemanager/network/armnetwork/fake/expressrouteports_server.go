@@ -37,13 +37,13 @@ type ExpressRoutePortsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *armnetwork.ExpressRoutePortsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRoutePortsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ExpressRoutePortsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.ExpressRoutePortsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ExpressRoutePortsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.ExpressRoutePortsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ExpressRoutePortsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.ExpressRoutePortsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse])
 
 	// UpdateTags is the fake for method ExpressRoutePortsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,8 +58,8 @@ func NewExpressRoutePortsServerTransport(srv *ExpressRoutePortsServer) *ExpressR
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ type ExpressRoutePortsServerTransport struct {
 	srv                         *ExpressRoutePortsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRoutePortsServerTransport.
@@ -102,10 +102,10 @@ func (e *ExpressRoutePortsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = e.dispatchGenerateLOA(req)
 			case "ExpressRoutePortsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
-			case "ExpressRoutePortsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRoutePortsClient.NewListByResourceGroupPager":
 				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
+			case "ExpressRoutePortsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRoutePortsClient.UpdateTags":
 				res.resp, res.err = e.dispatchUpdateTags(req)
 			default:
@@ -286,39 +286,6 @@ func (e *ExpressRoutePortsServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
-func (e *ExpressRoutePortsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/ExpressRoutePorts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := e.srv.NewListPager(nil)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRoutePortsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *ExpressRoutePortsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -352,6 +319,39 @@ func (e *ExpressRoutePortsServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		e.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRoutePortsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/ExpressRoutePorts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := e.srv.NewListPager(nil)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRoutePortsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }

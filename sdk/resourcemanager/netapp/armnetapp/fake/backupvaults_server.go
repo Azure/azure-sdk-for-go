@@ -29,6 +29,10 @@ type BackupVaultsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *armnetapp.BackupVaultsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.BackupVaultsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BackupVaultsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body armnetapp.BackupVaultPatch, options *armnetapp.BackupVaultsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BackupVaultsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BackupVaultsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *armnetapp.BackupVaultsClientGetOptions) (resp azfake.Responder[armnetapp.BackupVaultsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type BackupVaultsServer struct {
 	// NewListByNetAppAccountPager is the fake for method BackupVaultsClient.NewListByNetAppAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNetAppAccountPager func(resourceGroupName string, accountName string, options *armnetapp.BackupVaultsClientListByNetAppAccountOptions) (resp azfake.PagerResponder[armnetapp.BackupVaultsClientListByNetAppAccountResponse])
-
-	// BeginUpdate is the fake for method BackupVaultsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body armnetapp.BackupVaultPatch, options *armnetapp.BackupVaultsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BackupVaultsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBackupVaultsServerTransport creates a new instance of BackupVaultsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewBackupVaultsServerTransport(srv *BackupVaultsServer) *BackupVaultsServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetapp.BackupVaultsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetapp.BackupVaultsClientDeleteResponse]](),
-		newListByNetAppAccountPager: newTracker[azfake.PagerResponder[armnetapp.BackupVaultsClientListByNetAppAccountResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.BackupVaultsClientUpdateResponse]](),
+		newListByNetAppAccountPager: newTracker[azfake.PagerResponder[armnetapp.BackupVaultsClientListByNetAppAccountResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type BackupVaultsServerTransport struct {
 	srv                         *BackupVaultsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetapp.BackupVaultsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetapp.BackupVaultsClientDeleteResponse]]
-	newListByNetAppAccountPager *tracker[azfake.PagerResponder[armnetapp.BackupVaultsClientListByNetAppAccountResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.BackupVaultsClientUpdateResponse]]
+	newListByNetAppAccountPager *tracker[azfake.PagerResponder[armnetapp.BackupVaultsClientListByNetAppAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupVaultsServerTransport.
@@ -90,12 +90,12 @@ func (b *BackupVaultsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BackupVaultsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BackupVaultsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
 			case "BackupVaultsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BackupVaultsClient.NewListByNetAppAccountPager":
 				res.resp, res.err = b.dispatchNewListByNetAppAccountPager(req)
-			case "BackupVaultsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (b *BackupVaultsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (b *BackupVaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := b.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.BackupVaultPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		b.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		b.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BackupVaultsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (b *BackupVaultsServerTransport) dispatchNewListByNetAppAccountPager(req *h
 	if !server.PagerResponderMore(newListByNetAppAccountPager) {
 		b.newListByNetAppAccountPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (b *BackupVaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := b.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.BackupVaultPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		b.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		b.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		b.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

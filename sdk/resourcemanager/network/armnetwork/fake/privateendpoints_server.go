@@ -33,13 +33,13 @@ type PrivateEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateEndpointName string, options *armnetwork.PrivateEndpointsClientGetOptions) (resp azfake.Responder[armnetwork.PrivateEndpointsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateEndpointsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.PrivateEndpointsClientListOptions) (resp azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method PrivateEndpointsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetwork.PrivateEndpointsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetwork.PrivateEndpointsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method PrivateEndpointsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.PrivateEndpointsClientListOptions) (resp azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse])
 }
 
 // NewPrivateEndpointsServerTransport creates a new instance of PrivateEndpointsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewPrivateEndpointsServerTransport(srv *PrivateEndpointsServer) *PrivateEnd
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armnetwork.PrivateEndpointsClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armnetwork.PrivateEndpointsClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type PrivateEndpointsServerTransport struct {
 	srv                        *PrivateEndpointsServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armnetwork.PrivateEndpointsClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armnetwork.PrivateEndpointsClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armnetwork.PrivateEndpointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointsServerTransport.
@@ -92,10 +92,10 @@ func (p *PrivateEndpointsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PrivateEndpointsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateEndpointsClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateEndpointsClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
+			case "PrivateEndpointsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -245,6 +245,39 @@ func (p *PrivateEndpointsServerTransport) dispatchGet(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (p *PrivateEndpointsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.PrivateEndpointsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PrivateEndpointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -278,39 +311,6 @@ func (p *PrivateEndpointsServerTransport) dispatchNewListPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PrivateEndpointsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.PrivateEndpointsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		p.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

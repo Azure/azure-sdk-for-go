@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/InboundNatRuleCreate.json
+// Generated from example definition: 2026-03-01/InboundNatRuleCreate.json
 func ExampleInboundNatRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleInboundNatRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/InboundNatRuleDelete.json
+// Generated from example definition: 2026-03-01/InboundNatRuleDelete.json
 func ExampleInboundNatRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleInboundNatRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/InboundNatRuleGet.json
+// Generated from example definition: 2026-03-01/InboundNatRuleGet.json
 func ExampleInboundNatRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleInboundNatRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/InboundNatRuleList.json
+// Generated from example definition: 2026-03-01/InboundNatRuleList.json
 func ExampleInboundNatRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

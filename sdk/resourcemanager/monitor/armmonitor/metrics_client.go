@@ -31,6 +31,9 @@ type MetricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,12 +63,7 @@ func (client *MetricsClient) List(ctx context.Context, resourceURI string, optio
 	if err != nil {
 		return MetricsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -123,8 +121,11 @@ func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI 
 }
 
 // listHandleResponse handles the List response.
-func (client *MetricsClient) listHandleResponse(resp *http.Response) (MetricsClientListResponse, error) {
+func (client *MetricsClient) listHandleResponse(resp *http.Response, successCodes ...int) (MetricsClientListResponse, error) {
 	result := MetricsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
 		return MetricsClientListResponse{}, err
 	}
@@ -150,19 +151,14 @@ func (client *MetricsClient) ListAtSubscriptionScope(ctx context.Context, region
 	if err != nil {
 		return MetricsClientListAtSubscriptionScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricsClientListAtSubscriptionScopeResponse{}, err
-	}
-	resp, err := client.listAtSubscriptionScopeHandleResponse(httpResp)
-	return resp, err
+	return client.listAtSubscriptionScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
 func (client *MetricsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, region string, options *MetricsClientListAtSubscriptionScopeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -214,8 +210,11 @@ func (client *MetricsClient) listAtSubscriptionScopeCreateRequest(ctx context.Co
 }
 
 // listAtSubscriptionScopeHandleResponse handles the ListAtSubscriptionScope response.
-func (client *MetricsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (MetricsClientListAtSubscriptionScopeResponse, error) {
+func (client *MetricsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response, successCodes ...int) (MetricsClientListAtSubscriptionScopeResponse, error) {
 	result := MetricsClientListAtSubscriptionScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
 		return MetricsClientListAtSubscriptionScopeResponse{}, err
 	}
@@ -242,19 +241,14 @@ func (client *MetricsClient) ListAtSubscriptionScopePost(ctx context.Context, re
 	if err != nil {
 		return MetricsClientListAtSubscriptionScopePostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricsClientListAtSubscriptionScopePostResponse{}, err
-	}
-	resp, err := client.listAtSubscriptionScopePostHandleResponse(httpResp)
-	return resp, err
+	return client.listAtSubscriptionScopePostHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAtSubscriptionScopePostCreateRequest creates the ListAtSubscriptionScopePost request.
 func (client *MetricsClient) listAtSubscriptionScopePostCreateRequest(ctx context.Context, region string, options *MetricsClientListAtSubscriptionScopePostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -313,8 +307,11 @@ func (client *MetricsClient) listAtSubscriptionScopePostCreateRequest(ctx contex
 }
 
 // listAtSubscriptionScopePostHandleResponse handles the ListAtSubscriptionScopePost response.
-func (client *MetricsClient) listAtSubscriptionScopePostHandleResponse(resp *http.Response) (MetricsClientListAtSubscriptionScopePostResponse, error) {
+func (client *MetricsClient) listAtSubscriptionScopePostHandleResponse(resp *http.Response, successCodes ...int) (MetricsClientListAtSubscriptionScopePostResponse, error) {
 	result := MetricsClientListAtSubscriptionScopePostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
 		return MetricsClientListAtSubscriptionScopePostResponse{}, err
 	}

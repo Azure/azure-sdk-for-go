@@ -1,5 +1,18 @@
 # Release History
 
+## 1.8.3-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+
+* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
+
 ## 1.8.2 (2026-10-01)
 
 ### Bugs Fixed

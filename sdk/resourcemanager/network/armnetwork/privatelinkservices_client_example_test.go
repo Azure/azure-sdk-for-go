@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/CheckPrivateLinkServiceVisibility.json
+// Generated from example definition: 2026-03-01/CheckPrivateLinkServiceVisibility.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
+// Generated from example definition: 2026-03-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByRe
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceCreate.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceCreate.json
 func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceDelete.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceDelete.json
 func ExamplePrivateLinkServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExamplePrivateLinkServicesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceDeletePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceGet.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceGet.json
 func ExamplePrivateLinkServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExamplePrivateLinkServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceGetPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,208 +367,7 @@ func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceList.json
-func ExamplePrivateLinkServicesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateLinkServicesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.PrivateLinkServicesClientListResponse{
-		// 	PrivateLinkServiceListResult: armnetwork.PrivateLinkServiceListResult{
-		// 		Value: []*armnetwork.PrivateLinkService{
-		// 			{
-		// 				Name: to.Ptr("testPls1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateLinkServices"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.PrivateLinkServiceProperties{
-		// 					Alias: to.Ptr("ContosoService.{guid}.azure.privatelinkservice"),
-		// 					AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
-		// 						Subscriptions: []*string{
-		// 							to.Ptr("subscription1"),
-		// 						},
-		// 					},
-		// 					Fqdns: []*string{
-		// 						to.Ptr("fqdn1"),
-		// 						to.Ptr("fqdn2"),
-		// 					},
-		// 					IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("ipconfig1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/ipConfigurations/ipconfig1"),
-		// 							Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
-		// 								PrivateIPAddress: to.Ptr("10.0.1.4"),
-		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
-		// 								Subnet: &armnetwork.Subnet{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb1"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					LoadBalancerFrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb1"),
-		// 						},
-		// 					},
-		// 					NetworkInterfaces: []*armnetwork.Interface{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/testPls1.nic.abcd1234"),
-		// 						},
-		// 					},
-		// 					PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("pec1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/privateEndpointConnections/pec1"),
-		// 							Properties: &armnetwork.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armnetwork.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testPe1"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("approved it for some reason."),
-		// 									Status: to.Ptr("Approved"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Visibility: &armnetwork.PrivateLinkServicePropertiesVisibility{
-		// 						Subscriptions: []*string{
-		// 							to.Ptr("subscription1"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testPls2"),
-		// 				Type: to.Ptr("Microsoft.Network/privateLinkServices"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.PrivateLinkServiceProperties{
-		// 					Alias: to.Ptr("ContosoService.{guid}.azure.privatelinkservice"),
-		// 					AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
-		// 						Subscriptions: []*string{
-		// 							to.Ptr("subscription1"),
-		// 							to.Ptr("subscription2"),
-		// 						},
-		// 					},
-		// 					Fqdns: []*string{
-		// 						to.Ptr("fqdn1"),
-		// 						to.Ptr("fqdn2"),
-		// 						to.Ptr("fqdn3"),
-		// 					},
-		// 					IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("ipconfig2"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/ipConfigurations/ipconfig2"),
-		// 							Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
-		// 								PrivateIPAddress: to.Ptr("10.0.1.5"),
-		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
-		// 								Subnet: &armnetwork.Subnet{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb2"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					LoadBalancerFrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb2"),
-		// 						},
-		// 					},
-		// 					NetworkInterfaces: []*armnetwork.Interface{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/testPls2.nic.efgh5678"),
-		// 						},
-		// 					},
-		// 					PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("pec2"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/privateEndpointConnections/pec2"),
-		// 							Properties: &armnetwork.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armnetwork.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testPe2"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("approved it for some reason."),
-		// 									Status: to.Ptr("Approved"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Visibility: &armnetwork.PrivateLinkServicePropertiesVisibility{
-		// 						Subscriptions: []*string{
-		// 							to.Ptr("subscription1"),
-		// 							to.Ptr("subscription2"),
-		// 							to.Ptr("subscription3"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/AutoApprovedPrivateLinkServicesGet.json
-func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateLinkServicesClient().NewListAutoApprovedPrivateLinkServicesPager("regionName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{
-		// 	AutoApprovedPrivateLinkServicesResult: armnetwork.AutoApprovedPrivateLinkServicesResult{
-		// 		Value: []*armnetwork.AutoApprovedPrivateLinkService{
-		// 			{
-		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
-		// 			},
-		// 			{
-		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
-		// 			},
-		// 			{
-		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls3"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/AutoApprovedPrivateLinkServicesResourceGroupGet.json
+// Generated from example definition: 2026-03-01/AutoApprovedPrivateLinkServicesResourceGroupGet.json
 func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +407,47 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByRe
 	}
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceListAll.json
+// Generated from example definition: 2026-03-01/AutoApprovedPrivateLinkServicesGet.json
+func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListAutoApprovedPrivateLinkServicesPager("regionName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{
+		// 	AutoApprovedPrivateLinkServicesResult: armnetwork.AutoApprovedPrivateLinkServicesResult{
+		// 		Value: []*armnetwork.AutoApprovedPrivateLinkService{
+		// 			{
+		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
+		// 			},
+		// 			{
+		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
+		// 			},
+		// 			{
+		// 				PrivateLinkService: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls3"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/PrivateLinkServiceListAll.json
 func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +610,168 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceListPrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceList.json
+func ExamplePrivateLinkServicesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.PrivateLinkServicesClientListResponse{
+		// 	PrivateLinkServiceListResult: armnetwork.PrivateLinkServiceListResult{
+		// 		Value: []*armnetwork.PrivateLinkService{
+		// 			{
+		// 				Name: to.Ptr("testPls1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateLinkServices"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.PrivateLinkServiceProperties{
+		// 					Alias: to.Ptr("ContosoService.{guid}.azure.privatelinkservice"),
+		// 					AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
+		// 						Subscriptions: []*string{
+		// 							to.Ptr("subscription1"),
+		// 						},
+		// 					},
+		// 					Fqdns: []*string{
+		// 						to.Ptr("fqdn1"),
+		// 						to.Ptr("fqdn2"),
+		// 					},
+		// 					IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ipconfig1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/ipConfigurations/ipconfig1"),
+		// 							Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
+		// 								PrivateIPAddress: to.Ptr("10.0.1.4"),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb1"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					LoadBalancerFrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb1"),
+		// 						},
+		// 					},
+		// 					NetworkInterfaces: []*armnetwork.Interface{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/testPls1.nic.abcd1234"),
+		// 						},
+		// 					},
+		// 					PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("pec1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/privateEndpointConnections/pec1"),
+		// 							Properties: &armnetwork.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armnetwork.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testPe1"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("approved it for some reason."),
+		// 									Status: to.Ptr("Approved"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Visibility: &armnetwork.PrivateLinkServicePropertiesVisibility{
+		// 						Subscriptions: []*string{
+		// 							to.Ptr("subscription1"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testPls2"),
+		// 				Type: to.Ptr("Microsoft.Network/privateLinkServices"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.PrivateLinkServiceProperties{
+		// 					Alias: to.Ptr("ContosoService.{guid}.azure.privatelinkservice"),
+		// 					AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
+		// 						Subscriptions: []*string{
+		// 							to.Ptr("subscription1"),
+		// 							to.Ptr("subscription2"),
+		// 						},
+		// 					},
+		// 					Fqdns: []*string{
+		// 						to.Ptr("fqdn1"),
+		// 						to.Ptr("fqdn2"),
+		// 						to.Ptr("fqdn3"),
+		// 					},
+		// 					IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ipconfig2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/ipConfigurations/ipconfig2"),
+		// 							Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
+		// 								PrivateIPAddress: to.Ptr("10.0.1.5"),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb2"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					LoadBalancerFrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb2"),
+		// 						},
+		// 					},
+		// 					NetworkInterfaces: []*armnetwork.Interface{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/testPls2.nic.efgh5678"),
+		// 						},
+		// 					},
+		// 					PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("pec2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/privateEndpointConnections/pec2"),
+		// 							Properties: &armnetwork.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armnetwork.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testPe2"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("approved it for some reason."),
+		// 									Status: to.Ptr("Approved"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Visibility: &armnetwork.PrivateLinkServicePropertiesVisibility{
+		// 						Subscriptions: []*string{
+		// 							to.Ptr("subscription1"),
+		// 							to.Ptr("subscription2"),
+		// 							to.Ptr("subscription3"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/PrivateLinkServiceListPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,7 +828,7 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/PrivateLinkServiceUpdatePrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01/PrivateLinkServiceUpdatePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

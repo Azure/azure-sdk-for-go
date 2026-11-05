@@ -22,10 +22,6 @@ import (
 
 // ManagementServer is a fake server for instances of the armnetwork.ManagementClient type.
 type ManagementServer struct {
-	// CheckDNSNameAvailability is the fake for method ManagementClient.CheckDNSNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckDNSNameAvailability func(ctx context.Context, location string, domainNameLabel string, options *armnetwork.ManagementClientCheckDNSNameAvailabilityOptions) (resp azfake.Responder[armnetwork.ManagementClientCheckDNSNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginDeleteBastionShareableLink is the fake for method ManagementClient.BeginDeleteBastionShareableLink
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteBastionShareableLink func(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientBeginDeleteBastionShareableLinkOptions) (resp azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse], errResp azfake.ErrorResponder)
@@ -33,14 +29,6 @@ type ManagementServer struct {
 	// BeginDeleteBastionShareableLinkByToken is the fake for method ManagementClient.BeginDeleteBastionShareableLinkByToken
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteBastionShareableLinkByToken func(ctx context.Context, resourceGroupName string, bastionHostName string, bslTokenRequest armnetwork.BastionShareableLinkTokenListRequest, options *armnetwork.ManagementClientBeginDeleteBastionShareableLinkByTokenOptions) (resp azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse], errResp azfake.ErrorResponder)
-
-	// NewDisconnectActiveSessionsPager is the fake for method ManagementClient.NewDisconnectActiveSessionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewDisconnectActiveSessionsPager func(resourceGroupName string, bastionHostName string, sessionIDs armnetwork.SessionIDs, options *armnetwork.ManagementClientDisconnectActiveSessionsOptions) (resp azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse])
-
-	// ExpressRouteProviderPort is the fake for method ManagementClient.ExpressRouteProviderPort
-	// HTTP status codes to indicate success: http.StatusOK
-	ExpressRouteProviderPort func(ctx context.Context, providerport string, options *armnetwork.ManagementClientExpressRouteProviderPortOptions) (resp azfake.Responder[armnetwork.ManagementClientExpressRouteProviderPortResponse], errResp azfake.ErrorResponder)
 
 	// BeginGeneratevirtualwanvpnserverconfigurationvpnprofile is the fake for method ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -50,9 +38,17 @@ type ManagementServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetActiveSessions func(ctx context.Context, resourceGroupName string, bastionHostName string, options *armnetwork.ManagementClientBeginGetActiveSessionsOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]], errResp azfake.ErrorResponder)
 
-	// NewGetBastionShareableLinkPager is the fake for method ManagementClient.NewGetBastionShareableLinkPager
+	// BeginPutBastionShareableLink is the fake for method ManagementClient.BeginPutBastionShareableLink
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPutBastionShareableLink func(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientBeginPutBastionShareableLinkOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientPutBastionShareableLinkResponse]], errResp azfake.ErrorResponder)
+
+	// CheckDNSNameAvailability is the fake for method ManagementClient.CheckDNSNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetBastionShareableLinkPager func(resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientGetBastionShareableLinkOptions) (resp azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse])
+	CheckDNSNameAvailability func(ctx context.Context, location string, domainNameLabel string, options *armnetwork.ManagementClientCheckDNSNameAvailabilityOptions) (resp azfake.Responder[armnetwork.ManagementClientCheckDNSNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// ExpressRouteProviderPort is the fake for method ManagementClient.ExpressRouteProviderPort
+	// HTTP status codes to indicate success: http.StatusOK
+	ExpressRouteProviderPort func(ctx context.Context, providerport string, options *armnetwork.ManagementClientExpressRouteProviderPortOptions) (resp azfake.Responder[armnetwork.ManagementClientExpressRouteProviderPortResponse], errResp azfake.ErrorResponder)
 
 	// ListActiveConnectivityConfigurations is the fake for method ManagementClient.ListActiveConnectivityConfigurations
 	// HTTP status codes to indicate success: http.StatusOK
@@ -70,9 +66,13 @@ type ManagementServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListNetworkManagerEffectiveSecurityAdminRules func(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters armnetwork.QueryRequestOptions, options *armnetwork.ManagementClientListNetworkManagerEffectiveSecurityAdminRulesOptions) (resp azfake.Responder[armnetwork.ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse], errResp azfake.ErrorResponder)
 
-	// BeginPutBastionShareableLink is the fake for method ManagementClient.BeginPutBastionShareableLink
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginPutBastionShareableLink func(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientBeginPutBastionShareableLinkOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientPutBastionShareableLinkResponse]], errResp azfake.ErrorResponder)
+	// NewDisconnectActiveSessionsPager is the fake for method ManagementClient.NewDisconnectActiveSessionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewDisconnectActiveSessionsPager func(resourceGroupName string, bastionHostName string, sessionIDs armnetwork.SessionIDs, options *armnetwork.ManagementClientDisconnectActiveSessionsOptions) (resp azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse])
+
+	// NewGetBastionShareableLinkPager is the fake for method ManagementClient.NewGetBastionShareableLinkPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetBastionShareableLinkPager func(resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientGetBastionShareableLinkOptions) (resp azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse])
 
 	// SupportedSecurityProviders is the fake for method ManagementClient.SupportedSecurityProviders
 	// HTTP status codes to indicate success: http.StatusOK
@@ -87,11 +87,11 @@ func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransp
 		srv:                                    srv,
 		beginDeleteBastionShareableLink:        newTracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse]](),
 		beginDeleteBastionShareableLinkByToken: newTracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse]](),
-		newDisconnectActiveSessionsPager:       newTracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]](),
 		beginGeneratevirtualwanvpnserverconfigurationvpnprofile: newTracker[azfake.PollerResponder[armnetwork.ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]](),
-		beginGetActiveSessions:          newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]]](),
-		newGetBastionShareableLinkPager: newTracker[azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse]](),
-		beginPutBastionShareableLink:    newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientPutBastionShareableLinkResponse]]](),
+		beginGetActiveSessions:           newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]]](),
+		beginPutBastionShareableLink:     newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientPutBastionShareableLinkResponse]]](),
+		newDisconnectActiveSessionsPager: newTracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]](),
+		newGetBastionShareableLinkPager:  newTracker[azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse]](),
 	}
 }
 
@@ -101,11 +101,11 @@ type ManagementServerTransport struct {
 	srv                                                     *ManagementServer
 	beginDeleteBastionShareableLink                         *tracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse]]
 	beginDeleteBastionShareableLinkByToken                  *tracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse]]
-	newDisconnectActiveSessionsPager                        *tracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]]
 	beginGeneratevirtualwanvpnserverconfigurationvpnprofile *tracker[azfake.PollerResponder[armnetwork.ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]]
 	beginGetActiveSessions                                  *tracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]]]
-	newGetBastionShareableLinkPager                         *tracker[azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse]]
 	beginPutBastionShareableLink                            *tracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientPutBastionShareableLinkResponse]]]
+	newDisconnectActiveSessionsPager                        *tracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]]
+	newGetBastionShareableLinkPager                         *tracker[azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagementServerTransport.
@@ -129,22 +129,20 @@ func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "ManagementClient.CheckDNSNameAvailability":
-				res.resp, res.err = m.dispatchCheckDNSNameAvailability(req)
 			case "ManagementClient.BeginDeleteBastionShareableLink":
 				res.resp, res.err = m.dispatchBeginDeleteBastionShareableLink(req)
 			case "ManagementClient.BeginDeleteBastionShareableLinkByToken":
 				res.resp, res.err = m.dispatchBeginDeleteBastionShareableLinkByToken(req)
-			case "ManagementClient.NewDisconnectActiveSessionsPager":
-				res.resp, res.err = m.dispatchNewDisconnectActiveSessionsPager(req)
-			case "ManagementClient.ExpressRouteProviderPort":
-				res.resp, res.err = m.dispatchExpressRouteProviderPort(req)
 			case "ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile":
 				res.resp, res.err = m.dispatchBeginGeneratevirtualwanvpnserverconfigurationvpnprofile(req)
 			case "ManagementClient.BeginGetActiveSessions":
 				res.resp, res.err = m.dispatchBeginGetActiveSessions(req)
-			case "ManagementClient.NewGetBastionShareableLinkPager":
-				res.resp, res.err = m.dispatchNewGetBastionShareableLinkPager(req)
+			case "ManagementClient.BeginPutBastionShareableLink":
+				res.resp, res.err = m.dispatchBeginPutBastionShareableLink(req)
+			case "ManagementClient.CheckDNSNameAvailability":
+				res.resp, res.err = m.dispatchCheckDNSNameAvailability(req)
+			case "ManagementClient.ExpressRouteProviderPort":
+				res.resp, res.err = m.dispatchExpressRouteProviderPort(req)
 			case "ManagementClient.ListActiveConnectivityConfigurations":
 				res.resp, res.err = m.dispatchListActiveConnectivityConfigurations(req)
 			case "ManagementClient.ListActiveSecurityAdminRules":
@@ -153,8 +151,10 @@ func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = m.dispatchListNetworkManagerEffectiveConnectivityConfigurations(req)
 			case "ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules":
 				res.resp, res.err = m.dispatchListNetworkManagerEffectiveSecurityAdminRules(req)
-			case "ManagementClient.BeginPutBastionShareableLink":
-				res.resp, res.err = m.dispatchBeginPutBastionShareableLink(req)
+			case "ManagementClient.NewDisconnectActiveSessionsPager":
+				res.resp, res.err = m.dispatchNewDisconnectActiveSessionsPager(req)
+			case "ManagementClient.NewGetBastionShareableLinkPager":
+				res.resp, res.err = m.dispatchNewGetBastionShareableLinkPager(req)
 			case "ManagementClient.SupportedSecurityProviders":
 				res.resp, res.err = m.dispatchSupportedSecurityProviders(req)
 			default:
@@ -171,36 +171,6 @@ func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *ManagementServerTransport) dispatchCheckDNSNameAvailability(req *http.Request) (*http.Response, error) {
-	if m.srv.CheckDNSNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckDNSNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkDnsNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.CheckDNSNameAvailability(req.Context(), locationParam, qp.Get("domainNameLabel"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req *http.Request) (*http.Response, error) {
@@ -299,80 +269,6 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLinkByTok
 	return resp, nil
 }
 
-func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewDisconnectActiveSessionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewDisconnectActiveSessionsPager not implemented")}
-	}
-	newDisconnectActiveSessionsPager := m.newDisconnectActiveSessionsPager.get(req)
-	if newDisconnectActiveSessionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disconnectActiveSessions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.SessionIDs](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		bastionHostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewDisconnectActiveSessionsPager(resourceGroupNameParam, bastionHostNameParam, body, nil)
-		newDisconnectActiveSessionsPager = &resp
-		m.newDisconnectActiveSessionsPager.add(req, newDisconnectActiveSessionsPager)
-		server.PagerResponderInjectNextLinks(newDisconnectActiveSessionsPager, req, func(page *armnetwork.ManagementClientDisconnectActiveSessionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newDisconnectActiveSessionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newDisconnectActiveSessionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newDisconnectActiveSessionsPager) {
-		m.newDisconnectActiveSessionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagementServerTransport) dispatchExpressRouteProviderPort(req *http.Request) (*http.Response, error) {
-	if m.srv.ExpressRouteProviderPort == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExpressRouteProviderPort not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteProviderPorts/(?P<providerport>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	providerportParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerport")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.ExpressRouteProviderPort(req.Context(), providerportParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteProviderPort, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (m *ManagementServerTransport) dispatchBeginGeneratevirtualwanvpnserverconfigurationvpnprofile(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGeneratevirtualwanvpnserverconfigurationvpnprofile not implemented")}
@@ -465,13 +361,13 @@ func (m *ManagementServerTransport) dispatchBeginGetActiveSessions(req *http.Req
 	return resp, nil
 }
 
-func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewGetBastionShareableLinkPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetBastionShareableLinkPager not implemented")}
+func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginPutBastionShareableLink == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPutBastionShareableLink not implemented")}
 	}
-	newGetBastionShareableLinkPager := m.newGetBastionShareableLinkPager.get(req)
-	if newGetBastionShareableLinkPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getShareableLinks`
+	beginPutBastionShareableLink := m.beginPutBastionShareableLink.get(req)
+	if beginPutBastionShareableLink == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createShareableLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -489,23 +385,85 @@ func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req 
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewGetBastionShareableLinkPager(resourceGroupNameParam, bastionHostNameParam, body, nil)
-		newGetBastionShareableLinkPager = &resp
-		m.newGetBastionShareableLinkPager.add(req, newGetBastionShareableLinkPager)
-		server.PagerResponderInjectNextLinks(newGetBastionShareableLinkPager, req, func(page *armnetwork.ManagementClientGetBastionShareableLinkResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+		respr, errRespr := m.srv.BeginPutBastionShareableLink(req.Context(), resourceGroupNameParam, bastionHostNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPutBastionShareableLink = &respr
+		m.beginPutBastionShareableLink.add(req, beginPutBastionShareableLink)
 	}
-	resp, err := server.PagerResponderNext(newGetBastionShareableLinkPager, req)
+
+	resp, err := server.PollerResponderNext(beginPutBastionShareableLink, req)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newGetBastionShareableLinkPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginPutBastionShareableLink.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newGetBastionShareableLinkPager) {
-		m.newGetBastionShareableLinkPager.remove(req)
+	if !server.PollerResponderMore(beginPutBastionShareableLink) {
+		m.beginPutBastionShareableLink.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagementServerTransport) dispatchCheckDNSNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckDNSNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckDNSNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkDnsNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckDNSNameAvailability(req.Context(), locationParam, qp.Get("domainNameLabel"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagementServerTransport) dispatchExpressRouteProviderPort(req *http.Request) (*http.Response, error) {
+	if m.srv.ExpressRouteProviderPort == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExpressRouteProviderPort not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteProviderPorts/(?P<providerport>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	providerportParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerport")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ExpressRouteProviderPort(req.Context(), providerportParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteProviderPort, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -726,13 +684,58 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityA
 	return resp, nil
 }
 
-func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginPutBastionShareableLink == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPutBastionShareableLink not implemented")}
+func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewDisconnectActiveSessionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewDisconnectActiveSessionsPager not implemented")}
 	}
-	beginPutBastionShareableLink := m.beginPutBastionShareableLink.get(req)
-	if beginPutBastionShareableLink == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createShareableLinks`
+	newDisconnectActiveSessionsPager := m.newDisconnectActiveSessionsPager.get(req)
+	if newDisconnectActiveSessionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disconnectActiveSessions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.SessionIDs](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewDisconnectActiveSessionsPager(resourceGroupNameParam, bastionHostNameParam, body, nil)
+		newDisconnectActiveSessionsPager = &resp
+		m.newDisconnectActiveSessionsPager.add(req, newDisconnectActiveSessionsPager)
+		server.PagerResponderInjectNextLinks(newDisconnectActiveSessionsPager, req, func(page *armnetwork.ManagementClientDisconnectActiveSessionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newDisconnectActiveSessionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newDisconnectActiveSessionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newDisconnectActiveSessionsPager) {
+		m.newDisconnectActiveSessionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewGetBastionShareableLinkPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetBastionShareableLinkPager not implemented")}
+	}
+	newGetBastionShareableLinkPager := m.newGetBastionShareableLinkPager.get(req)
+	if newGetBastionShareableLinkPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getShareableLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -750,27 +753,24 @@ func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginPutBastionShareableLink(req.Context(), resourceGroupNameParam, bastionHostNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPutBastionShareableLink = &respr
-		m.beginPutBastionShareableLink.add(req, beginPutBastionShareableLink)
+		resp := m.srv.NewGetBastionShareableLinkPager(resourceGroupNameParam, bastionHostNameParam, body, nil)
+		newGetBastionShareableLinkPager = &resp
+		m.newGetBastionShareableLinkPager.add(req, newGetBastionShareableLinkPager)
+		server.PagerResponderInjectNextLinks(newGetBastionShareableLinkPager, req, func(page *armnetwork.ManagementClientGetBastionShareableLinkResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginPutBastionShareableLink, req)
+	resp, err := server.PagerResponderNext(newGetBastionShareableLinkPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginPutBastionShareableLink.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newGetBastionShareableLinkPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginPutBastionShareableLink) {
-		m.beginPutBastionShareableLink.remove(req)
+	if !server.PagerResponderMore(newGetBastionShareableLinkPager) {
+		m.newGetBastionShareableLinkPager.remove(req)
 	}
-
 	return resp, nil
 }
 

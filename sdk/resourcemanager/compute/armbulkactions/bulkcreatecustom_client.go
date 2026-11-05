@@ -69,7 +69,7 @@ func (client *BulkCreateCustomClient) BeginCancel(ctx context.Context, resourceG
 	}
 }
 
-// Cancel - Cancels BulkCreateCustom instances that have not yet launched.
+// cancel - Cancels BulkCreateCustom instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel"
 	if client.subscriptionID == "" {
@@ -145,7 +145,7 @@ func (client *BulkCreateCustomClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates BulkCreateCustoms.
+// createOrUpdate - Creates or updates BulkCreateCustoms.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -167,7 +167,7 @@ func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, _ *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
@@ -225,7 +225,7 @@ func (client *BulkCreateCustomClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes BulkCreateCustoms.
+// deleteOperation - Deletes BulkCreateCustoms.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {

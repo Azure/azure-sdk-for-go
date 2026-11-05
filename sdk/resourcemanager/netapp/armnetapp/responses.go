@@ -306,6 +306,18 @@ type CachesClientUpdateResponse struct {
 	Cache
 }
 
+// ClusterPeersClientGetResponse contains the response from method ClusterPeersClient.Get.
+type ClusterPeersClientGetResponse struct {
+	// Cluster Peer resource, represents a peer relationship between an external cluster and an Azure NetApp Files cluster
+	ClusterPeer
+}
+
+// ClusterPeersClientListByParentResponse contains the response from method ClusterPeersClient.NewListByParentPager.
+type ClusterPeersClientListByParentResponse struct {
+	// The response of a ClusterPeer list operation.
+	ClusterPeerListResult
+}
+
 // ElasticAccountsClientCreateOrUpdateResponse contains the response from method ElasticAccountsClient.BeginCreateOrUpdate.
 type ElasticAccountsClientCreateOrUpdateResponse struct {
 	// NetApp elastic account resource
@@ -562,6 +574,120 @@ type ElasticVolumesClientUpdateResponse struct {
 	ElasticVolume
 }
 
+// ExternalCacheConnectionsClientCreateOrUpdateResponse contains the response from method ExternalCacheConnectionsClient.BeginCreateOrUpdate.
+type ExternalCacheConnectionsClientCreateOrUpdateResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCacheConnectionsClientDeleteResponse contains the response from method ExternalCacheConnectionsClient.BeginDelete.
+type ExternalCacheConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalCacheConnectionsClientGetResponse contains the response from method ExternalCacheConnectionsClient.Get.
+type ExternalCacheConnectionsClientGetResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCacheConnectionsClientListByResourceGroupResponse contains the response from method ExternalCacheConnectionsClient.NewListByResourceGroupPager.
+type ExternalCacheConnectionsClientListByResourceGroupResponse struct {
+	// List of External Cache Connection resources
+	ExternalCacheConnectionList
+}
+
+// ExternalCacheConnectionsClientListBySubscriptionResponse contains the response from method ExternalCacheConnectionsClient.NewListBySubscriptionPager.
+type ExternalCacheConnectionsClientListBySubscriptionResponse struct {
+	// List of External Cache Connection resources
+	ExternalCacheConnectionList
+}
+
+// ExternalCacheConnectionsClientUpdateResponse contains the response from method ExternalCacheConnectionsClient.BeginUpdate.
+type ExternalCacheConnectionsClientUpdateResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCachesClientGetResponse contains the response from method ExternalCachesClient.Get.
+type ExternalCachesClientGetResponse struct {
+	// External Cache resource, representing a cache volume on an external ONTAP system
+	ExternalCache
+}
+
+// ExternalCachesClientListByParentResponse contains the response from method ExternalCachesClient.NewListByParentPager.
+type ExternalCachesClientListByParentResponse struct {
+	// The response of a ExternalCache list operation.
+	ExternalCacheListResult
+}
+
+// ExternalClustersClientCreateOrUpdateResponse contains the response from method ExternalClustersClient.BeginCreateOrUpdate.
+type ExternalClustersClientCreateOrUpdateResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalClustersClientDeleteResponse contains the response from method ExternalClustersClient.BeginDelete.
+type ExternalClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalClustersClientGetResponse contains the response from method ExternalClustersClient.Get.
+type ExternalClustersClientGetResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalClustersClientListByResourceGroupResponse contains the response from method ExternalClustersClient.NewListByResourceGroupPager.
+type ExternalClustersClientListByResourceGroupResponse struct {
+	// List of External Cluster resources
+	ExternalClusterList
+}
+
+// ExternalClustersClientListBySubscriptionResponse contains the response from method ExternalClustersClient.NewListBySubscriptionPager.
+type ExternalClustersClientListBySubscriptionResponse struct {
+	// List of External Cluster resources
+	ExternalClusterList
+}
+
+// ExternalClustersClientUpdateResponse contains the response from method ExternalClustersClient.BeginUpdate.
+type ExternalClustersClientUpdateResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalSVMsClientCreateOrUpdateResponse contains the response from method ExternalSVMsClient.BeginCreateOrUpdate.
+type ExternalSVMsClientCreateOrUpdateResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
+// ExternalSVMsClientDeleteResponse contains the response from method ExternalSVMsClient.BeginDelete.
+type ExternalSVMsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalSVMsClientGetResponse contains the response from method ExternalSVMsClient.Get.
+type ExternalSVMsClientGetResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
+// ExternalSVMsClientListByParentResponse contains the response from method ExternalSVMsClient.NewListByParentPager.
+type ExternalSVMsClientListByParentResponse struct {
+	// The response of a ExternalSvm list operation.
+	ExternalSvmListResult
+}
+
+// ExternalSVMsClientUpdateResponse contains the response from method ExternalSVMsClient.BeginUpdate.
+type ExternalSVMsClientUpdateResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -701,6 +827,18 @@ type ResourceUsagesClientGetResponse struct {
 type ResourceUsagesClientListResponse struct {
 	// Usages result
 	UsagesListResult
+}
+
+// SVMPeersClientGetResponse contains the response from method SVMPeersClient.Get.
+type SVMPeersClientGetResponse struct {
+	// SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
+	SVMPeer
+}
+
+// SVMPeersClientListByParentResponse contains the response from method SVMPeersClient.NewListByParentPager.
+type SVMPeersClientListByParentResponse struct {
+	// The response of a SvmPeer list operation.
+	SvmPeerListResult
 }
 
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.

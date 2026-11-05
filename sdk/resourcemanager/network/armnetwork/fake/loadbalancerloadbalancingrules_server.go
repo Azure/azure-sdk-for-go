@@ -21,13 +21,13 @@ import (
 
 // LoadBalancerLoadBalancingRulesServer is a fake server for instances of the armnetwork.LoadBalancerLoadBalancingRulesClient type.
 type LoadBalancerLoadBalancingRulesServer struct {
-	// Get is the fake for method LoadBalancerLoadBalancingRulesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *armnetwork.LoadBalancerLoadBalancingRulesClientGetOptions) (resp azfake.Responder[armnetwork.LoadBalancerLoadBalancingRulesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginHealth is the fake for method LoadBalancerLoadBalancingRulesClient.BeginHealth
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHealth func(ctx context.Context, groupName string, loadBalancerName string, loadBalancingRuleName string, options *armnetwork.LoadBalancerLoadBalancingRulesClientBeginHealthOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientHealthResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method LoadBalancerLoadBalancingRulesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *armnetwork.LoadBalancerLoadBalancingRulesClientGetOptions) (resp azfake.Responder[armnetwork.LoadBalancerLoadBalancingRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method LoadBalancerLoadBalancingRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -74,10 +74,10 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchToMethodFake(req
 		}
 		if !intercepted {
 			switch method {
-			case "LoadBalancerLoadBalancingRulesClient.Get":
-				res.resp, res.err = l.dispatchGet(req)
 			case "LoadBalancerLoadBalancingRulesClient.BeginHealth":
 				res.resp, res.err = l.dispatchBeginHealth(req)
+			case "LoadBalancerLoadBalancingRulesClient.Get":
+				res.resp, res.err = l.dispatchGet(req)
 			case "LoadBalancerLoadBalancingRulesClient.NewListPager":
 				res.resp, res.err = l.dispatchNewListPager(req)
 			default:
@@ -94,43 +94,6 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchToMethodFake(req
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancingRules/(?P<loadBalancingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
-	if err != nil {
-		return nil, err
-	}
-	loadBalancingRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancingRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, loadBalancerNameParam, loadBalancingRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancingRule, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchBeginHealth(req *http.Request) (*http.Response, error) {
@@ -178,6 +141,43 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchBeginHealth(req 
 		l.beginHealth.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if l.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancingRules/(?P<loadBalancingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancingRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancingRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, loadBalancerNameParam, loadBalancingRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancingRule, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

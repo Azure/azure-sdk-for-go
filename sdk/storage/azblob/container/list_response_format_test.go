@@ -201,9 +201,12 @@ func TestListBlobsArrowFormatXMLResponseKeepsHNSProperties(t *testing.T) {
 
 			require.Len(t, tr.reqs, 2)
 			for _, req := range tr.reqs {
-				accept := req.Header.Values("Accept")
-				if len(accept) == 0 {
-					accept = req.Header["accept"]
+				// the generated code may set the header under a non-canonical key
+				var accept []string
+				for k, v := range req.Header {
+					if strings.EqualFold(k, "Accept") {
+						accept = append(accept, v...)
+					}
 				}
 				require.Equal(t, []string{"application/vnd.apache.arrow.stream,application/xml"}, accept, "Arrow is accepted with XML fallback")
 				require.Equal(t, tt.permissions, strings.Contains(req.URL.Query().Get("include"), "permissions"))

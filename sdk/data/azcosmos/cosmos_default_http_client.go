@@ -5,12 +5,15 @@ package azcosmos
 
 import (
 	"crypto/tls"
+	"errors"
 	"net"
 	"net/http"
 	"time"
 )
 
 const (
+	defaultMaxConnectionsPerEndpoint = 32
+
 	// defaultConnectTimeout is the default timeout for establishing a new TCP
 	// connection to the Cosmos service. Cosmos accounts are expected to be
 	// reachable from the configured/preferred region within a few hundred
@@ -53,8 +56,8 @@ const (
 
 // defaultCosmosHTTPClient is the http.Client used by Cosmos clients when the
 // caller does not provide a custom Transport via ClientOptions. It mirrors the
-// azcore default transport but uses Cosmos-specific connect and request
-// timeouts.
+// azcore default transport but uses Cosmos-specific timeouts and a bounded
+// connection pool. Its budget is shared by clients using the default transport.
 var defaultCosmosHTTPClient *http.Client
 
 func init() {
@@ -62,7 +65,71 @@ func init() {
 }
 
 func newDefaultCosmosHTTPClient() *http.Client {
-	transport := &http.Transport{
+	if transport := newCosmosHTTPTransport(); transport.DialContext == nil {
+		// Browser/WASI networking is managed by the platform, not a TCP pool.
+		return &http.Client{Transport: transport, Timeout: defaultHTTPRoundTripTimeout}
+	}
+	client, err := NewHTTPClient(nil)
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
+
+// HTTPClientOptions configures the HTTP client returned by [NewHTTPClient].
+type HTTPClientOptions struct {
+	// MaxConnectionsPerEndpoint limits connections to each scheme/host/port.
+	// The limit includes dialing, active, idle, and retiring connections, and
+	// applies to both HTTP/1.1 and HTTP/2. HTTP/2 streams share connections.
+	// Requests wait for capacity, subject to their context and the HTTP client's
+	// timeout. The default (zero) is 32. Set -1 to use the unbounded standard
+	// transport instead. Values less than -1 are invalid.
+	MaxConnectionsPerEndpoint int
+}
+
+// NewHTTPClient creates an HTTP client with Cosmos-specific transport settings.
+// Pass it as ClientOptions.Transport to customize the connection budget.
+// A budget is shared by all Cosmos clients using the returned HTTP client, not
+// by independently created HTTP clients. Explicitly supplied transports are
+// never modified by Cosmos client constructors.
+//
+// The client has a 65-second timeout per HTTP attempt, including pool waits and
+// response body reads. Close response bodies, and use CloseIdleConnections to
+// release unused connections. Bounded pooling does not replay failed requests;
+// retries remain the responsibility of the SDK pipeline.
+//
+// Bounded pooling is unavailable on WebAssembly, where the runtime owns
+// networking. On that platform, specify -1 to use the platform transport.
+func NewHTTPClient(options *HTTPClientOptions) (*http.Client, error) {
+	limit := defaultMaxConnectionsPerEndpoint
+	if options != nil && options.MaxConnectionsPerEndpoint != 0 {
+		limit = options.MaxConnectionsPerEndpoint
+	}
+	if limit < -1 {
+		return nil, errors.New("MaxConnectionsPerEndpoint must be -1, zero, or positive")
+	}
+	transport := newCosmosHTTPTransport()
+	var roundTripper http.RoundTripper = transport
+	if limit > 0 {
+		if transport.DialContext == nil {
+			return nil, errors.New("bounded Cosmos connection pooling requires a native TCP transport")
+		}
+		// Avoid parallel address attempts consuming more than one socket per slot.
+		transport.DialContext = (&net.Dialer{
+			Timeout:       defaultConnectTimeout,
+			KeepAlive:     30 * time.Second,
+			FallbackDelay: -1,
+		}).DialContext
+		roundTripper = newCosmosConnectionPool(transport, limit)
+	}
+	return &http.Client{
+		Transport: roundTripper,
+		Timeout:   defaultHTTPRoundTripTimeout,
+	}, nil
+}
+
+func newCosmosHTTPTransport() *http.Transport {
+	return &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: defaultCosmosTransportDialContext(&net.Dialer{
 			Timeout:   defaultConnectTimeout,
@@ -83,9 +150,5 @@ func newDefaultCosmosHTTPClient() *http.Client {
 			SendPingTimeout: 2 * time.Second,
 			PingTimeout:     1 * time.Second,
 		},
-	}
-	return &http.Client{
-		Transport: transport,
-		Timeout:   defaultHTTPRoundTripTimeout,
 	}
 }

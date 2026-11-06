@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // FrontendEndpointsClient contains the methods for the FrontendEndpoints group.
 // Don't use this type directly, use NewFrontendEndpointsClient() instead.
+//
+// Generated from API version 2026-04-01
 type FrontendEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type FrontendEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FrontendEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +46,6 @@ func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginDisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -68,8 +70,6 @@ func (client *FrontendEndpointsClient) BeginDisableHTTPS(ctx context.Context, re
 
 // DisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginDisableHTTPS"
@@ -85,8 +85,7 @@ func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +94,7 @@ func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourc
 func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, _ *FrontendEndpointsClientBeginDisableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,15 +114,13 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginEnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -149,8 +146,6 @@ func (client *FrontendEndpointsClient) BeginEnableHTTPS(ctx context.Context, res
 
 // EnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginEnableHTTPS"
@@ -166,8 +161,7 @@ func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,7 +170,7 @@ func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resource
 func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, _ *FrontendEndpointsClientBeginEnableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -196,8 +190,8 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customHTTPSConfiguration); err != nil {
 		return nil, err
@@ -207,8 +201,6 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 
 // Get - Gets a Frontend endpoint with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -227,19 +219,14 @@ func (client *FrontendEndpointsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return FrontendEndpointsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FrontendEndpointsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, _ *FrontendEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,15 +246,18 @@ func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (FrontendEndpointsClientGetResponse, error) {
+func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FrontendEndpointsClientGetResponse, error) {
 	result := FrontendEndpointsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FrontendEndpoint); err != nil {
 		return FrontendEndpointsClientGetResponse{}, err
 	}
@@ -275,8 +265,6 @@ func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (F
 }
 
 // NewListByFrontDoorPager - Lists all of the frontend endpoints within a Front Door.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontendEndpointsClientListByFrontDoorOptions contains the optional parameters for the FrontendEndpointsClient.NewListByFrontDoorPager
@@ -292,47 +280,61 @@ func (client *FrontendEndpointsClient) NewListByFrontDoorPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFrontDoorCreateRequest(ctx, resourceGroupName, frontDoorName, options)
-			}, nil)
+			req, err := client.listByFrontDoorCreateRequest(ctx, resourceGroupName, frontDoorName, nextLink, options)
 			if err != nil {
 				return FrontendEndpointsClientListByFrontDoorResponse{}, err
 			}
-			return client.listByFrontDoorHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FrontendEndpointsClientListByFrontDoorResponse{}, err
+			}
+			return client.listByFrontDoorHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFrontDoorCreateRequest creates the ListByFrontDoor request.
-func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, _ *FrontendEndpointsClientListByFrontDoorOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, nextLink string, _ *FrontendEndpointsClientListByFrontDoorOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if frontDoorName == "" {
+			return nil, errors.New("parameter frontDoorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{frontDoorName}", url.PathEscape(frontDoorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if frontDoorName == "" {
-		return nil, errors.New("parameter frontDoorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{frontDoorName}", url.PathEscape(frontDoorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFrontDoorHandleResponse handles the ListByFrontDoor response.
-func (client *FrontendEndpointsClient) listByFrontDoorHandleResponse(resp *http.Response) (FrontendEndpointsClientListByFrontDoorResponse, error) {
+func (client *FrontendEndpointsClient) listByFrontDoorHandleResponse(resp *http.Response, successCodes ...int) (FrontendEndpointsClientListByFrontDoorResponse, error) {
 	result := FrontendEndpointsClientListByFrontDoorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FrontendEndpointsListResult); err != nil {
 		return FrontendEndpointsClientListByFrontDoorResponse{}, err
 	}

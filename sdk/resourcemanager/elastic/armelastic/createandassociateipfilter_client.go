@@ -19,7 +19,7 @@ import (
 // CreateAndAssociateIPFilterClient contains the methods for the CreateAndAssociateIPFilter group.
 // Don't use this type directly, use NewCreateAndAssociateIPFilterClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type CreateAndAssociateIPFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -109,7 +109,7 @@ func (client *CreateAndAssociateIPFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	if options != nil && options.IPs != nil {
 		reqQP.Set("ips", *options.IPs)
 	}

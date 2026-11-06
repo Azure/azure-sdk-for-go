@@ -19,7 +19,7 @@ import (
 // CreateAndAssociatePLFilterClient contains the methods for the CreateAndAssociatePLFilter group.
 // Don't use this type directly, use NewCreateAndAssociatePLFilterClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type CreateAndAssociatePLFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -109,7 +109,7 @@ func (client *CreateAndAssociatePLFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}

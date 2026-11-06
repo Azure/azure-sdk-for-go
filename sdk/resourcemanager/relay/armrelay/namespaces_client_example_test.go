@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCreate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
+// Generated from example definition: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceDelete.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceGet.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+// Generated from example definition: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceListBySubscription.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +472,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +526,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -811,7 +811,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,7 +840,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +871,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceUpdate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -6,6 +6,8 @@
 
 ### Features Added
 
+* Added `ItemOptions.ReplaySafe` to bypass write-safety retry guards and defer replay decisions to the existing outer azcore retry policy. The default remains false; independent retry vetoes, Cosmos recovery, and write routing are preserved.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -68,7 +68,49 @@ The following section provides several code snippets covering some of the most c
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Replay-safe item writes](#replay-safe-item-writes "Replay-safe item writes")
 * [Request diagnostics](#request-diagnostics "Request diagnostics")
+
+### Replay-safe item writes
+
+Set `ItemOptions.ReplaySafe` to `true` only when your application can safely repeat
+the entire item write, including triggers. The default is `false`; reads are unchanged.
+This applies to `CreateItem`, `UpsertItem`, `ReplaceItem`, `DeleteItem`, and `PatchItem`,
+not transactional batches.
+
+```go
+// Repeating this fixed-value patch must be safe for the application's concurrency model.
+patch := azcosmos.PatchOperations{}
+patch.AppendSet("/state", "complete")
+response, err := container.PatchItem(ctx, pk, id, patch, &azcosmos.ItemOptions{
+    ReplaySafe: true,
+})
+handle(err)
+```
+
+The flag bypasses only mutation replay-safety guards. Replay-safe writes use the
+same native retry eligibility and budgets as reads for transport failures and
+HTTP 408/500/502/504, subject to write endpoint eligibility. Shared stop conditions
+still apply: disabled regional retries, absent or exhausted preferred regions,
+native retry exhaustion, and downstream non-retriable errors do not gain an outer
+retry solely because the flag is set. HTTP 503 retains its existing recovery
+rules, including the requirement for multiple write locations on writes.
+
+The existing outer azcore policy handles only failures the read path already
+delegates, such as attempt timeouts. For those failures, `RetryOptions` still
+control `MaxRetries`, delays, status checks, `ShouldRetry`, `Retry-After`, and
+attempt timeouts. Parent cancellation stops retries. Terminal statuses remain
+errors and are not automatically retried.
+
+There is no new policy, loop, or regional retry logic. Requests retain their write
+classification and never gain permission to target read-only regions. Existing
+safe-before-send, endpoint, and session recovery remain in place.
+
+Replay safety is an application assertion, not exactly-once execution. A lost response
+may mean the first write committed. Replaying a create, delete, or ETag-conditional write
+can return 409, 404, or 412; these remain errors. Increment patches and side-effecting
+triggers generally must not opt in. Even a fixed-value write can overwrite concurrent
+updates, so assess the complete operation rather than its HTTP method.
 
 ### Create Cosmos DB Client
 
@@ -241,4 +283,3 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

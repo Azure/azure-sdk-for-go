@@ -115,8 +115,8 @@ type retryContext struct {
 	sessionRetryCount      int
 	preferredLocationIndex int
 	// serverErrorRetryCount tracks the number of retries attempted for a
-	// transient 5xx server error (500/502/504). Only reads are retried;
-	// the budget is one in-region retry followed by one cross-region retry.
+	// transient 5xx server error (500/502/504). Reads and replay-safe writes
+	// are eligible for one in-region retry followed by one cross-region retry.
 	serverErrorRetryCount int
 	// sameRegionRetryCount tracks the number of consecutive retries we have
 	// attempted against the currently-resolved endpoint for a connection
@@ -129,8 +129,7 @@ type retryContext struct {
 	// without additional retries.
 	crossRegionFailoverDone bool
 	// requestTimeoutRetryDone is set once this request has performed its
-	// single cross-region retry for an HTTP 408. Only reads are retried
-	// on 408; writes are returned to the caller immediately.
+	// single retry for an HTTP 408. Unsafe writes are returned immediately.
 	requestTimeoutRetryDone bool
 	// resolveFromHead is a one-shot signal to the outer Do loop to use
 	// locationIndex 0 instead of retryCount. Set by retry paths that
@@ -217,7 +216,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				return nil, err
 			}
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				if !o.isWriteOperation {
+				if !o.isWriteOperation || o.replaySafe {
 					// A send or body read failed with a done request context
 					// (attempt timeout or caller cancellation/deadline). Let
 					// azcore check the caller and decide on a fresh attempt.
@@ -227,11 +226,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
-				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
+				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o, err, &retryContext)
 				if errRetry != nil {
 					// The internal retry wait may have been interrupted by context expiry.
-					// Let azcore decide whether another read attempt is allowed.
-					if !o.isWriteOperation {
+					// Replay permission also applies when the attempt expires during backoff.
+					if !o.isWriteOperation || o.replaySafe {
 						return nil, errRetry
 					}
 					return nil, errorinfo.NonRetriableError(errRetry)
@@ -276,11 +275,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusRequestTimeout:
-				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
+				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o, &retryContext)
 				if err != nil {
 					// The HTTP 408 retry wait was interrupted by context expiry.
-					// Let azcore decide whether another read attempt is allowed.
-					if !o.isWriteOperation {
+					// Let azcore decide whether another replay-safe attempt is allowed.
+					if !o.isWriteOperation || o.replaySafe {
 						return nil, err
 					}
 					return nil, errorinfo.NonRetriableError(err)
@@ -289,7 +288,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
-				shouldRetry, inRegion := p.attemptRetryOnServerError(o.isWriteOperation, &retryContext)
+				shouldRetry, inRegion := p.attemptRetryOnServerError(o, &retryContext)
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
@@ -336,14 +335,14 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 
 // attemptRetryOnNetworkError handles transport-level failures. With
 // cross-region retries enabled, it allows up to maxSameRegionConnectionRetries
-// against the current region (reads always, writes only when
-// connectionErrorNotSent so non-idempotent mutations are never replayed),
+// against the current region (reads, replay-safe writes, or writes with
+// connectionErrorNotSent so unsafe mutations are never replayed),
 // then performs at most one cross-region failover.
 //
 // MarkEndpointUnavailable* is only invoked for connectionErrorNotSent;
 // a single mid-exchange failure is too weak a signal to declare the
 // whole region unavailable for concurrent and future traffic. As a
-// result, the ambiguous-read failover cannot rely on demote-to-tail —
+// result, an ambiguous failure's failover cannot rely on demote-to-tail —
 // it bumps retryContext.retryCount so the Do loop resolves a different
 // locationIndex on the next iteration (mirroring the 503/408 paths).
 //
@@ -351,7 +350,7 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 // the backoff is interrupted by ctx cancellation, so callers can
 // errors.Is against both context.DeadlineExceeded and the transport
 // error class.
-func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
+func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, o pipelineRequestOptions, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil
 	}
@@ -360,12 +359,11 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return false, nil
 	}
 
-	// Same-region budget: reads always, writes only when we can prove
-	// the request never reached the service (avoids replaying
-	// non-idempotent mutations).
+	canReplay := !o.isWriteOperation || o.replaySafe || kind == connectionErrorNotSent
+	// Replay eligibility does not change the shared retry budget or write routing.
 	if !retryContext.crossRegionFailoverDone &&
 		retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries &&
-		(!isWriteOperation || kind == connectionErrorNotSent) {
+		canReplay {
 		retryContext.sameRegionRetryCount += 1
 		if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
 			return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
@@ -378,9 +376,9 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return false, nil
 	}
 
-	canCrossRegionWrite := !isWriteOperation || p.gem.CanUseMultipleWriteLocations()
-	if isWriteOperation && (kind != connectionErrorNotSent || !canCrossRegionWrite) {
-		// Ambiguous write OR single-master write: cannot safely retry.
+	canCrossRegionWrite := !o.isWriteOperation || p.gem.CanUseMultipleWriteLocations()
+	if !canReplay || !canCrossRegionWrite {
+		// Unsafe ambiguous write OR single-master write: cannot fail over.
 		// Only mark when NotSent (single-master write); ambiguous is
 		// too weak a signal. No forced gem.Update: invalidate() inside
 		// MarkEndpointUnavailable* arms the next non-force Update.
@@ -397,22 +395,21 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return false, nil
 	}
 
-	// Cross-region failover: reads (any kind) or NotSent multi-master
-	// writes (ambiguous writes are gated above).
+	// Cross-region failover requires both replay eligibility and a writable target.
 	if kind == connectionErrorNotSent {
 		// Mark + demote-to-tail; resolveFromHead pins the next resolve
 		// to index 0, which now points at the failover region.
 		if _, err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 			return false, err
 		}
-		if isWriteOperation {
+		if o.isWriteOperation {
 			if _, err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
 				return false, err
 			}
 		}
 		retryContext.resolveFromHead = true
 	} else {
-		// Ambiguous read: don't mark. Route to the next region by
+		// Ambiguous failure: don't mark. Route to the next region by
 		// bumping retryCount (Do loop uses it as locationIndex when
 		// resolveFromHead is not set). Mirrors the 503/408 paths.
 		retryContext.retryCount += 1
@@ -534,17 +531,16 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bo
 
 // attemptRetryOnServerError applies the 5xx retry policy for transient server
 // errors (500 Internal Server Error, 502 Bad Gateway, 504 Gateway Timeout).
-// Consistent with the other Cosmos SDKs (.NET, Python, Java), only read
-// operations are retried. The retry budget is one in-region retry followed by
+// Reads and replay-safe writes share one in-region retry followed by
 // one cross-region retry, after which the error is surfaced to the caller. The
 // cross-region retry is only attempted when cross-region retries are enabled, a
 // preferred location is available to fail over to, and the location cache has
-// resolved more than one read endpoint -- otherwise the "cross-region" retry
-// would just hit the same endpoint as the in-region retry. The returned
-// inRegion flag tells the caller whether to keep targeting the current endpoint
+// more than one eligible endpoint (writable for writes) -- otherwise the
+// "cross-region" retry would just hit the same endpoint as the in-region retry.
+// The returned inRegion flag tells the caller whether to keep targeting the current endpoint
 // (true) or to advance to the next preferred region (false).
-func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
-	if isWriteOperation {
+func (p *clientRetryPolicy) attemptRetryOnServerError(o pipelineRequestOptions, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
+	if o.isWriteOperation && !o.replaySafe {
 		return false, false
 	}
 	if retryContext.serverErrorRetryCount >= maxServerErrorRetryCount {
@@ -557,7 +553,12 @@ func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, ret
 	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false, false
 	}
-	if p.gem.locationCache.readEndpointCount() <= 1 {
+	if o.isWriteOperation {
+		multiWrite, _, writeN := p.gem.locationCache.sessionRetrySnapshot()
+		if !multiWrite || writeN <= 1 {
+			return false, false
+		}
+	} else if p.gem.locationCache.readEndpointCount() <= 1 {
 		return false, false
 	}
 	retryContext.serverErrorRetryCount += 1
@@ -568,11 +569,10 @@ func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, ret
 // attemptRetryOnRequestTimeout handles an HTTP 408 from the service. A
 // 408 is ambiguous from a write-safety standpoint (the request may or
 // may not have been processed before the server timed out), so only
-// reads are retried — and at most once, against another region. Writes
-// are returned to the caller immediately so a duplicate write cannot
-// occur.
-func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, isWriteOperation bool, retryContext *retryContext) (bool, error) {
-	if isWriteOperation {
+// reads and replay-safe writes are retried, at most once. Endpoint resolution
+// retains the operation's write classification.
+func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, o pipelineRequestOptions, retryContext *retryContext) (bool, error) {
+	if o.isWriteOperation && !o.replaySafe {
 		return false, nil
 	}
 	if !p.gem.locationCache.enableCrossRegionRetries {

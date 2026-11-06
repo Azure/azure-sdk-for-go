@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/CryptoCertificates_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/CryptoCertificates_ListByFirmware_MaximumSet_Gen.json
 func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesLi
 	}
 }
 
-// Generated from example definition: 2025-08-02/CryptoCertificates_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/CryptoCertificates_ListByFirmware_MinimumSet_Gen.json
 func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

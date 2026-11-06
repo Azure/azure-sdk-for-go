@@ -49,12 +49,50 @@ type RecoveryGroupBaseActionClassification interface {
 	GetRecoveryGroupBaseAction() *RecoveryGroupBaseAction
 }
 
+// RecoveryGroupResiliencyPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetRecoveryGroupResiliencyProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CyberResiliencyGroupProperties, *InfrastructureResiliencyGroupProperties, *RecoveryGroupResiliencyProperties
+type RecoveryGroupResiliencyPropertiesClassification interface {
+	// GetRecoveryGroupResiliencyProperties returns the RecoveryGroupResiliencyProperties content of the underlying type.
+	GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties
+}
+
+// RecoveryPlanResiliencyPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetRecoveryPlanResiliencyProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CyberResiliencyPlanProperties, *InfrastructureResiliencyPlanProperties, *RecoveryPlanResiliencyProperties
+type RecoveryPlanResiliencyPropertiesClassification interface {
+	// GetRecoveryPlanResiliencyProperties returns the RecoveryPlanResiliencyProperties content of the underlying type.
+	GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties
+}
+
+// RecoveryResourceResiliencyPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetRecoveryResourceResiliencyProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CyberResiliencyResourceProperties, *InfrastructureResiliencyResourceProperties, *RecoveryResourceResiliencyProperties
+type RecoveryResourceResiliencyPropertiesClassification interface {
+	// GetRecoveryResourceResiliencyProperties returns the RecoveryResourceResiliencyProperties content of the underlying type.
+	GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties
+}
+
 // ResourceBaseProtectionSolutionSettingClassification provides polymorphic access to related types.
 // Call the interface's GetResourceBaseProtectionSolutionSetting() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ResourceBaseProtectionSolutionSetting, *ResourceCrossZoneVMRecoveryProtectionSetting, *ResourceCustomProtectionSetting,
-// - *ResourceNativeProtectionSolutionSetting, *ResourceSiteRecoveryProtectionSetting
+// - *ResourceAzureTemplateProtectionSetting, *ResourceBaseProtectionSolutionSetting, *ResourceCosmosDBProtectionSetting,
+// - *ResourceCrossZoneVMRecoveryProtectionSetting, *ResourceCustomProtectionSetting, *ResourceNativeProtectionSolutionSetting,
+// - *ResourceNetAppFilesProtectionSetting, *ResourceServiceBusProtectionSetting, *ResourceSiteRecoveryProtectionSetting,
+// - *ResourceStorageAccountProtectionSetting
 type ResourceBaseProtectionSolutionSettingClassification interface {
 	// GetResourceBaseProtectionSolutionSetting returns the ResourceBaseProtectionSolutionSetting content of the underlying type.
 	GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting
+}
+
+// WorkloadConfigClassification provides polymorphic access to related types.
+// Call the interface's GetWorkloadConfig() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *FileShareRecoveryConfig, *VMRecoveryConfig, *WorkloadConfig
+type WorkloadConfigClassification interface {
+	// GetWorkloadConfig returns the WorkloadConfig content of the underlying type.
+	GetWorkloadConfig() *WorkloadConfig
 }

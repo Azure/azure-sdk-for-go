@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/UsagePlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/UsagePlans_Delete_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,156 +88,7 @@ func ExampleUsagePlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/UsagePlans_Get_MaximumSet_Gen.json
-func ExampleUsagePlansClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewUsagePlansClient().Get(ctx, "MyResourceGroup", "myUsagePlan", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresiliencemanagement.UsagePlansClientGetResponse{
-	// 	UsagePlan: armresiliencemanagement.UsagePlan{
-	// 		Properties: &armresiliencemanagement.UsagePlanProperties{
-	// 			PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
-	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
-	// 		},
-	// 		Location: to.Ptr("global"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
-	// 		Name: to.Ptr("myUsagePlan"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
-	// 		SystemData: &armresiliencemanagement.SystemData{
-	// 			CreatedBy: to.Ptr("admin@contoso.com"),
-	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-01/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleUsagePlansClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewUsagePlansClient().NewListByResourceGroupPager("MyResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armresiliencemanagement.UsagePlansClientListByResourceGroupResponse{
-		// 	UsagePlanListResult: armresiliencemanagement.UsagePlanListResult{
-		// 		Value: []*armresiliencemanagement.UsagePlan{
-		// 			{
-		// 				Properties: &armresiliencemanagement.UsagePlanProperties{
-		// 					PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
-		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
-		// 				},
-		// 				Location: to.Ptr("global"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
-		// 				Name: to.Ptr("myUsagePlan"),
-		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
-		// 				SystemData: &armresiliencemanagement.SystemData{
-		// 					CreatedBy: to.Ptr("admin@contoso.com"),
-		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-10-01/UsagePlans_ListBySubscription_MaximumSet_Gen.json
-func ExampleUsagePlansClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewUsagePlansClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armresiliencemanagement.UsagePlansClientListBySubscriptionResponse{
-		// 	UsagePlanListResult: armresiliencemanagement.UsagePlanListResult{
-		// 		Value: []*armresiliencemanagement.UsagePlan{
-		// 			{
-		// 				Properties: &armresiliencemanagement.UsagePlanProperties{
-		// 					PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
-		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
-		// 				},
-		// 				Location: to.Ptr("global"),
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
-		// 				Name: to.Ptr("myUsagePlan"),
-		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
-		// 				SystemData: &armresiliencemanagement.SystemData{
-		// 					CreatedBy: to.Ptr("admin@contoso.com"),
-		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-10-01/UsagePlans_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/UsagePlans_Update_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,4 +139,153 @@ func ExampleUsagePlansClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/UsagePlans_Get_MaximumSet_Gen.json
+func ExampleUsagePlansClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewUsagePlansClient().Get(ctx, "MyResourceGroup", "myUsagePlan", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.UsagePlansClientGetResponse{
+	// 	UsagePlan: armresiliencemanagement.UsagePlan{
+	// 		Properties: &armresiliencemanagement.UsagePlanProperties{
+	// 			PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 		},
+	// 		Location: to.Ptr("global"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
+	// 		Name: to.Ptr("myUsagePlan"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleUsagePlansClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewUsagePlansClient().NewListByResourceGroupPager("MyResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armresiliencemanagement.UsagePlansClientListByResourceGroupResponse{
+		// 	UsagePlanListResult: armresiliencemanagement.UsagePlanListResult{
+		// 		Value: []*armresiliencemanagement.UsagePlan{
+		// 			{
+		// 				Properties: &armresiliencemanagement.UsagePlanProperties{
+		// 					PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 				},
+		// 				Location: to.Ptr("global"),
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
+		// 				Name: to.Ptr("myUsagePlan"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
+		// 				SystemData: &armresiliencemanagement.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-30-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
+func ExampleUsagePlansClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewUsagePlansClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armresiliencemanagement.UsagePlansClientListBySubscriptionResponse{
+		// 	UsagePlanListResult: armresiliencemanagement.UsagePlanListResult{
+		// 		Value: []*armresiliencemanagement.UsagePlan{
+		// 			{
+		// 				Properties: &armresiliencemanagement.UsagePlanProperties{
+		// 					PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 				},
+		// 				Location: to.Ptr("global"),
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
+		// 				Name: to.Ptr("myUsagePlan"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
+		// 				SystemData: &armresiliencemanagement.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 	},
+		// }
+	}
 }

@@ -220,6 +220,35 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// RecoveryConfigProfilesClientCreateOrUpdateResponse contains the response from method RecoveryConfigProfilesClient.BeginCreateOrUpdate.
+type RecoveryConfigProfilesClientCreateOrUpdateResponse struct {
+	// A reusable, plan-scoped clean-room recovery configuration.
+	RecoveryConfigProfile
+}
+
+// RecoveryConfigProfilesClientDeleteResponse contains the response from method RecoveryConfigProfilesClient.BeginDelete.
+type RecoveryConfigProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RecoveryConfigProfilesClientGetResponse contains the response from method RecoveryConfigProfilesClient.Get.
+type RecoveryConfigProfilesClientGetResponse struct {
+	// A reusable, plan-scoped clean-room recovery configuration.
+	RecoveryConfigProfile
+}
+
+// RecoveryConfigProfilesClientListResponse contains the response from method RecoveryConfigProfilesClient.NewListPager.
+type RecoveryConfigProfilesClientListResponse struct {
+	// The response of a RecoveryConfigProfile list operation.
+	RecoveryConfigProfileListResult
+}
+
+// RecoveryConfigProfilesClientUpdateResponse contains the response from method RecoveryConfigProfilesClient.BeginUpdate.
+type RecoveryConfigProfilesClientUpdateResponse struct {
+	// A reusable, plan-scoped clean-room recovery configuration.
+	RecoveryConfigProfile
+}
+
 // RecoveryJobResourcesClientGetResponse contains the response from method RecoveryJobResourcesClient.Get.
 type RecoveryJobResourcesClientGetResponse struct {
 	// Represents a recovery orchestration job resource in the Azure Resilience Management provider namespace.

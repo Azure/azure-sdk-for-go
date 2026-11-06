@@ -22,6 +22,10 @@ import (
 
 // WorkflowTriggerHistoriesServer is a fake server for instances of the armappservice.WorkflowTriggerHistoriesClient type.
 type WorkflowTriggerHistoriesServer struct {
+	// BeginResubmit is the fake for method WorkflowTriggerHistoriesClient.BeginResubmit
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginResubmit func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientBeginResubmitOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WorkflowTriggerHistoriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientGetOptions) (resp azfake.Responder[armappservice.WorkflowTriggerHistoriesClientGetResponse], errResp azfake.ErrorResponder)
@@ -29,10 +33,6 @@ type WorkflowTriggerHistoriesServer struct {
 	// NewListPager is the fake for method WorkflowTriggerHistoriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggerHistoriesClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse])
-
-	// BeginResubmit is the fake for method WorkflowTriggerHistoriesClient.BeginResubmit
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginResubmit func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientBeginResubmitOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkflowTriggerHistoriesServerTransport creates a new instance of WorkflowTriggerHistoriesServerTransport with the provided implementation.
@@ -41,8 +41,8 @@ type WorkflowTriggerHistoriesServer struct {
 func NewWorkflowTriggerHistoriesServerTransport(srv *WorkflowTriggerHistoriesServer) *WorkflowTriggerHistoriesServerTransport {
 	return &WorkflowTriggerHistoriesServerTransport{
 		srv:           srv,
-		newListPager:  newTracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]](),
 		beginResubmit: newTracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]](),
+		newListPager:  newTracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]](),
 	}
 }
 
@@ -50,8 +50,8 @@ func NewWorkflowTriggerHistoriesServerTransport(srv *WorkflowTriggerHistoriesSer
 // Don't use this type directly, use NewWorkflowTriggerHistoriesServerTransport instead.
 type WorkflowTriggerHistoriesServerTransport struct {
 	srv           *WorkflowTriggerHistoriesServer
-	newListPager  *tracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]]
 	beginResubmit *tracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]]
+	newListPager  *tracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowTriggerHistoriesServerTransport.
@@ -75,12 +75,12 @@ func (w *WorkflowTriggerHistoriesServerTransport) dispatchToMethodFake(req *http
 		}
 		if !intercepted {
 			switch method {
+			case "WorkflowTriggerHistoriesClient.BeginResubmit":
+				res.resp, res.err = w.dispatchBeginResubmit(req)
 			case "WorkflowTriggerHistoriesClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WorkflowTriggerHistoriesClient.NewListPager":
 				res.resp, res.err = w.dispatchNewListPager(req)
-			case "WorkflowTriggerHistoriesClient.BeginResubmit":
-				res.resp, res.err = w.dispatchBeginResubmit(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -95,6 +95,62 @@ func (w *WorkflowTriggerHistoriesServerTransport) dispatchToMethodFake(req *http
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (w *WorkflowTriggerHistoriesServerTransport) dispatchBeginResubmit(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginResubmit == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResubmit not implemented")}
+	}
+	beginResubmit := w.beginResubmit.get(req)
+	if beginResubmit == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/histories/(?P<historyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resubmit`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		historyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("historyName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginResubmit(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, historyNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResubmit = &respr
+		w.beginResubmit.add(req, beginResubmit)
+	}
+
+	resp, err := server.PollerResponderNext(beginResubmit, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginResubmit.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResubmit) {
+		w.beginResubmit.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (w *WorkflowTriggerHistoriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -207,62 +263,6 @@ func (w *WorkflowTriggerHistoriesServerTransport) dispatchNewListPager(req *http
 	if !server.PagerResponderMore(newListPager) {
 		w.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WorkflowTriggerHistoriesServerTransport) dispatchBeginResubmit(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginResubmit == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginResubmit not implemented")}
-	}
-	beginResubmit := w.beginResubmit.get(req)
-	if beginResubmit == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/histories/(?P<historyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resubmit`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		historyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("historyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginResubmit(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, historyNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginResubmit = &respr
-		w.beginResubmit.add(req, beginResubmit)
-	}
-
-	resp, err := server.PollerResponderNext(beginResubmit, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginResubmit.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginResubmit) {
-		w.beginResubmit.remove(req)
-	}
-
 	return resp, nil
 }
 

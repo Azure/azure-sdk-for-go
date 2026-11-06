@@ -22,6 +22,10 @@ import (
 
 // WorkflowTriggersServer is a fake server for instances of the armappservice.WorkflowTriggersClient type.
 type WorkflowTriggersServer struct {
+	// BeginRun is the fake for method WorkflowTriggersClient.BeginRun
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRun func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggersClientBeginRunOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggersClientRunResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WorkflowTriggersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggersClientGetOptions) (resp azfake.Responder[armappservice.WorkflowTriggersClientGetResponse], errResp azfake.ErrorResponder)
@@ -30,17 +34,13 @@ type WorkflowTriggersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSchemaJSON func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggersClientGetSchemaJSONOptions) (resp azfake.Responder[armappservice.WorkflowTriggersClientGetSchemaJSONResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WorkflowTriggersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowTriggersClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse])
-
 	// ListCallbackURL is the fake for method WorkflowTriggersClient.ListCallbackURL
 	// HTTP status codes to indicate success: http.StatusOK
 	ListCallbackURL func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggersClientListCallbackURLOptions) (resp azfake.Responder[armappservice.WorkflowTriggersClientListCallbackURLResponse], errResp azfake.ErrorResponder)
 
-	// BeginRun is the fake for method WorkflowTriggersClient.BeginRun
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRun func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggersClientBeginRunOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggersClientRunResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method WorkflowTriggersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowTriggersClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse])
 }
 
 // NewWorkflowTriggersServerTransport creates a new instance of WorkflowTriggersServerTransport with the provided implementation.
@@ -49,8 +49,8 @@ type WorkflowTriggersServer struct {
 func NewWorkflowTriggersServerTransport(srv *WorkflowTriggersServer) *WorkflowTriggersServerTransport {
 	return &WorkflowTriggersServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse]](),
 		beginRun:     newTracker[azfake.PollerResponder[armappservice.WorkflowTriggersClientRunResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse]](),
 	}
 }
 
@@ -58,8 +58,8 @@ func NewWorkflowTriggersServerTransport(srv *WorkflowTriggersServer) *WorkflowTr
 // Don't use this type directly, use NewWorkflowTriggersServerTransport instead.
 type WorkflowTriggersServerTransport struct {
 	srv          *WorkflowTriggersServer
-	newListPager *tracker[azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse]]
 	beginRun     *tracker[azfake.PollerResponder[armappservice.WorkflowTriggersClientRunResponse]]
+	newListPager *tracker[azfake.PagerResponder[armappservice.WorkflowTriggersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowTriggersServerTransport.
@@ -83,16 +83,16 @@ func (w *WorkflowTriggersServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
+			case "WorkflowTriggersClient.BeginRun":
+				res.resp, res.err = w.dispatchBeginRun(req)
 			case "WorkflowTriggersClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WorkflowTriggersClient.GetSchemaJSON":
 				res.resp, res.err = w.dispatchGetSchemaJSON(req)
-			case "WorkflowTriggersClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkflowTriggersClient.ListCallbackURL":
 				res.resp, res.err = w.dispatchListCallbackURL(req)
-			case "WorkflowTriggersClient.BeginRun":
-				res.resp, res.err = w.dispatchBeginRun(req)
+			case "WorkflowTriggersClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -107,6 +107,58 @@ func (w *WorkflowTriggersServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (w *WorkflowTriggersServerTransport) dispatchBeginRun(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRun == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRun not implemented")}
+	}
+	beginRun := w.beginRun.get(req)
+	if beginRun == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/run`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+		if err != nil {
+			return nil, err
+		}
+		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRun(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRun = &respr
+		w.beginRun.add(req, beginRun)
+	}
+
+	resp, err := server.PollerResponderNext(beginRun, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRun.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRun) {
+		w.beginRun.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (w *WorkflowTriggersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -191,6 +243,47 @@ func (w *WorkflowTriggersServerTransport) dispatchGetSchemaJSON(req *http.Reques
 	return resp, nil
 }
 
+func (w *WorkflowTriggersServerTransport) dispatchListCallbackURL(req *http.Request) (*http.Response, error) {
+	if w.srv.ListCallbackURL == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCallbackURL not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCallbackUrl`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+	if err != nil {
+		return nil, err
+	}
+	triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListCallbackURL(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowTriggerCallbackURL, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (w *WorkflowTriggersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -252,99 +345,6 @@ func (w *WorkflowTriggersServerTransport) dispatchNewListPager(req *http.Request
 	if !server.PagerResponderMore(newListPager) {
 		w.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WorkflowTriggersServerTransport) dispatchListCallbackURL(req *http.Request) (*http.Response, error) {
-	if w.srv.ListCallbackURL == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCallbackURL not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCallbackUrl`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-	if err != nil {
-		return nil, err
-	}
-	triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListCallbackURL(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowTriggerCallbackURL, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WorkflowTriggersServerTransport) dispatchBeginRun(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRun == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRun not implemented")}
-	}
-	beginRun := w.beginRun.get(req)
-	if beginRun == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/run`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-		if err != nil {
-			return nil, err
-		}
-		triggerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("triggerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRun(req.Context(), resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRun = &respr
-		w.beginRun.add(req, beginRun)
-	}
-
-	resp, err := server.PollerResponderNext(beginRun, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRun.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRun) {
-		w.beginRun.remove(req)
-	}
-
 	return resp, nil
 }
 

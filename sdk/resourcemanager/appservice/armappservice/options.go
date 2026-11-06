@@ -6,6 +6,57 @@ package armappservice
 
 import "time"
 
+// AiGatewaysClientCreateOrUpdateOptions contains the optional parameters for the AiGatewaysClient.CreateOrUpdate method.
+type AiGatewaysClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiGatewaysClientDeleteOptions contains the optional parameters for the AiGatewaysClient.Delete method.
+type AiGatewaysClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiGatewaysClientGetOptions contains the optional parameters for the AiGatewaysClient.Get method.
+type AiGatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiGatewaysClientListByResourceGroupOptions contains the optional parameters for the AiGatewaysClient.NewListByResourceGroupPager
+// method.
+type AiGatewaysClientListByResourceGroupOptions struct {
+	// Expand the indicated resources into the response.
+	Expand []string
+
+	// Filter the result list using the given expression.
+	Filter *string
+
+	// The maximum number of result items per page.
+	Maxpagesize *int32
+
+	// Expressions that specify the order of returned results.
+	Orderby []string
+
+	// Select the specified fields to be included in the response.
+	Select []string
+
+	// The number of result items to skip.
+	Skip *int32
+
+	// The number of result items to return.
+	Top *int32
+}
+
+// AiGatewaysClientListBySubscriptionOptions contains the optional parameters for the AiGatewaysClient.NewListBySubscriptionPager
+// method.
+type AiGatewaysClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiGatewaysClientPatchOptions contains the optional parameters for the AiGatewaysClient.Patch method.
+type AiGatewaysClientPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate method.
 type CertificatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -582,6 +633,43 @@ type KubeEnvironmentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LastKnownGoodResourcesClientGetLastKnownGoodOptions contains the optional parameters for the LastKnownGoodResourcesClient.GetLastKnownGood
+// method.
+type LastKnownGoodResourcesClientGetLastKnownGoodOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LastKnownGoodResourcesClientListLastKnownGoodsOptions contains the optional parameters for the LastKnownGoodResourcesClient.NewListLastKnownGoodsPager
+// method.
+type LastKnownGoodResourcesClientListLastKnownGoodsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LastKnownGoodResourcesClientMarkLastKnownGoodOptions contains the optional parameters for the LastKnownGoodResourcesClient.MarkLastKnownGood
+// method.
+type LastKnownGoodResourcesClientMarkLastKnownGoodOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedTrafficConfigResourcesClientGetManagedTrafficConfigOptions contains the optional parameters for the ManagedTrafficConfigResourcesClient.GetManagedTrafficConfig
+// method.
+type ManagedTrafficConfigResourcesClientGetManagedTrafficConfigOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedTrafficConfigResourcesClientListManagedTrafficConfigsOptions contains the optional parameters for the ManagedTrafficConfigResourcesClient.NewListManagedTrafficConfigsPager
+// method.
+type ManagedTrafficConfigResourcesClientListManagedTrafficConfigsOptions struct {
+	// Set to `endpoints` to return the endpoint collection without projection, including both weight and priority for every endpoint.
+	Expand *string
+}
+
+// ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigOptions contains the optional parameters for the ManagedTrafficConfigResourcesClient.UpdateManagedTrafficConfig
+// method.
+type ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PlansClientBeginCreateOrUpdateOptions contains the optional parameters for the PlansClient.BeginCreateOrUpdate method.
 type PlansClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -741,6 +829,16 @@ type PlansClientRestartWebAppsOptions struct {
 	// Specify <code>true</code> to perform a soft restart, applies the configuration settings and restarts the apps if necessary.
 	// The default is <code>false</code>, which always restarts and reprovisions the apps
 	SoftRestart *bool
+}
+
+// PlansClientStartWebAppsOptions contains the optional parameters for the PlansClient.StartWebApps method.
+type PlansClientStartWebAppsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientStopWebAppsOptions contains the optional parameters for the PlansClient.StopWebApps method.
+type PlansClientStopWebAppsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PlansClientUpdateOptions contains the optional parameters for the PlansClient.Update method.
@@ -965,6 +1063,44 @@ type ResourceHealthMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ServerFarmSiloResourcesClientBeginCreateOrUpdateServerFarmSiloOptions contains the optional parameters for the ServerFarmSiloResourcesClient.BeginCreateOrUpdateServerFarmSilo
+// method.
+type ServerFarmSiloResourcesClientBeginCreateOrUpdateServerFarmSiloOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServerFarmSiloResourcesClientBeginDeleteServerFarmSiloOptions contains the optional parameters for the ServerFarmSiloResourcesClient.BeginDeleteServerFarmSilo
+// method.
+type ServerFarmSiloResourcesClientBeginDeleteServerFarmSiloOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServerFarmSiloResourcesClientGetServerFarmSiloOptions contains the optional parameters for the ServerFarmSiloResourcesClient.GetServerFarmSilo
+// method.
+type ServerFarmSiloResourcesClientGetServerFarmSiloOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions contains the optional parameters for the ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations
+// method.
+type ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerFarmSiloResourcesClientListServerFarmSilosOptions contains the optional parameters for the ServerFarmSiloResourcesClient.NewListServerFarmSilosPager
+// method.
+type ServerFarmSiloResourcesClientListServerFarmSilosOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerFarmSiloResourcesClientUpdateServerFarmSiloOptions contains the optional parameters for the ServerFarmSiloResourcesClient.UpdateServerFarmSilo
+// method.
+type ServerFarmSiloResourcesClientUpdateServerFarmSiloOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SiteCertificatesClientCreateOrUpdateOptions contains the optional parameters for the SiteCertificatesClient.CreateOrUpdate
 // method.
 type SiteCertificatesClientCreateOrUpdateOptions struct {
@@ -1015,6 +1151,99 @@ type SiteCertificatesClientUpdateOptions struct {
 
 // SiteCertificatesClientUpdateSlotOptions contains the optional parameters for the SiteCertificatesClient.UpdateSlot method.
 type SiteCertificatesClientUpdateSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloResourcesClientBeginCreateOrUpdateSiteSiloOptions contains the optional parameters for the SiteSiloResourcesClient.BeginCreateOrUpdateSiteSilo
+// method.
+type SiteSiloResourcesClientBeginCreateOrUpdateSiteSiloOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SiteSiloResourcesClientBeginDeleteSiteSiloOptions contains the optional parameters for the SiteSiloResourcesClient.BeginDeleteSiteSilo
+// method.
+type SiteSiloResourcesClientBeginDeleteSiteSiloOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SiteSiloResourcesClientGetSiteSiloOptions contains the optional parameters for the SiteSiloResourcesClient.GetSiteSilo
+// method.
+type SiteSiloResourcesClientGetSiteSiloOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloResourcesClientListSiteSilosOptions contains the optional parameters for the SiteSiloResourcesClient.NewListSiteSilosPager
+// method.
+type SiteSiloResourcesClientListSiteSilosOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloResourcesClientRefreshSiteSilosOptions contains the optional parameters for the SiteSiloResourcesClient.RefreshSiteSilos
+// method.
+type SiteSiloResourcesClientRefreshSiteSilosOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloResourcesClientUpdateSiteSiloOptions contains the optional parameters for the SiteSiloResourcesClient.UpdateSiteSilo
+// method.
+type SiteSiloResourcesClientUpdateSiteSiloOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionOptions contains the optional parameters for
+// the SiteSiloVirtualNetworkConnectionsClient.CreateOrUpdateSiteSiloVnetConnection method.
+type SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionOptions contains the optional parameters for the SiteSiloVirtualNetworkConnectionsClient.DeleteSiteSiloVnetConnection
+// method.
+type SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionOptions contains the optional parameters for the SiteSiloVirtualNetworkConnectionsClient.GetSiteSiloVnetConnection
+// method.
+type SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsOptions contains the optional parameters for the SiteSiloVirtualNetworkConnectionsClient.NewListSiteSiloVnetConnectionsPager
+// method.
+type SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionOptions contains the optional parameters for the SiteSiloVirtualNetworkConnectionsClient.UpdateSiteSiloVnetConnection
+// method.
+type SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SitesClientGetNetworkSecurityPerimeterConfigurationOptions contains the optional parameters for the SitesClient.GetNetworkSecurityPerimeterConfiguration
+// method.
+type SitesClientGetNetworkSecurityPerimeterConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SitesClientListNetworkSecurityPerimeterConfigurationsOptions contains the optional parameters for the SitesClient.NewListNetworkSecurityPerimeterConfigurationsPager
+// method.
+type SitesClientListNetworkSecurityPerimeterConfigurationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesAsyncOperationsClientBeginGetOperationResultOptions contains the optional parameters for the StaticSitesAsyncOperationsClient.BeginGetOperationResult
+// method.
+type StaticSitesAsyncOperationsClientBeginGetOperationResultOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StaticSitesAsyncOperationsClientGetOperationStatusOptions contains the optional parameters for the StaticSitesAsyncOperationsClient.GetOperationStatus
+// method.
+type StaticSitesAsyncOperationsClientGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -47,14 +47,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ApplySlotConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientApplySlotConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientApplySlotConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
-	// BeginApproveOrRejectPrivateEndpointConnection is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginApproveOrRejectPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
-
-	// BeginApproveOrRejectPrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginApproveOrRejectPrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
-
 	// Backup is the fake for method WebAppsClient.Backup
 	// HTTP status codes to indicate success: http.StatusOK
 	Backup func(ctx context.Context, resourceGroupName string, name string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupResponse], errResp azfake.ErrorResponder)
@@ -63,13 +55,13 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	BackupSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupSlotResponse], errResp azfake.ErrorResponder)
 
-	// CreateDeployment is the fake for method WebAppsClient.CreateDeployment
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateDeployment func(ctx context.Context, resourceGroupName string, name string, id string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentResponse], errResp azfake.ErrorResponder)
+	// BeginApproveOrRejectPrivateEndpointConnection is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginApproveOrRejectPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
-	// CreateDeploymentSlot is the fake for method WebAppsClient.CreateDeploymentSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateDeploymentSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentSlotResponse], errResp azfake.ErrorResponder)
+	// BeginApproveOrRejectPrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginApproveOrRejectPrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateFunction is the fake for method WebAppsClient.BeginCreateFunction
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -95,13 +87,129 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateMSDeployOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateMSDeployOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse], errResp azfake.ErrorResponder)
 
-	// CreateOneDeployOperation is the fake for method WebAppsClient.CreateOneDeployOperation
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOneDeployOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientCreateOneDeployOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOneDeployOperationResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method WebAppsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateOrUpdateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateSourceControl is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControl
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginCreateOrUpdateSourceControl func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateSourceControlSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControlSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginCreateOrUpdateSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeletePrivateEndpointConnection is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeletePrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnectionSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeletePrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginGetProductionSiteDeploymentStatus is the fake for method WebAppsClient.BeginGetProductionSiteDeploymentStatus
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetProductionSiteDeploymentStatus func(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse], errResp azfake.ErrorResponder)
+
+	// BeginGetSlotSiteDeploymentStatusSlot is the fake for method WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetSlotSiteDeploymentStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginInstallSiteExtension is the fake for method WebAppsClient.BeginInstallSiteExtension
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginInstallSiteExtension func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientBeginInstallSiteExtensionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse], errResp azfake.ErrorResponder)
+
+	// BeginInstallSiteExtensionSlot is the fake for method WebAppsClient.BeginInstallSiteExtensionSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginInstallSiteExtensionSlot func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientBeginInstallSiteExtensionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginListPublishingCredentials is the fake for method WebAppsClient.BeginListPublishingCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginListPublishingCredentials func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginListPublishingCredentialsOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse], errResp azfake.ErrorResponder)
+
+	// BeginListPublishingCredentialsSlot is the fake for method WebAppsClient.BeginListPublishingCredentialsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginListPublishingCredentialsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginListPublishingCredentialsSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateMySQL is the fake for method WebAppsClient.BeginMigrateMySQL
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginMigrateMySQL func(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope armappservice.MigrateMySQLRequest, options *armappservice.WebAppsClientBeginMigrateMySQLOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateStorage is the fake for method WebAppsClient.BeginMigrateStorage
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginMigrateStorage func(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions armappservice.StorageMigrationOptions, options *armappservice.WebAppsClientBeginMigrateStorageOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestore is the fake for method WebAppsClient.BeginRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestore func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreFromBackupBlob is the fake for method WebAppsClient.BeginRestoreFromBackupBlob
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreFromBackupBlob func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreFromBackupBlobSlot is the fake for method WebAppsClient.BeginRestoreFromBackupBlobSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreFromBackupBlobSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreFromDeletedApp is the fake for method WebAppsClient.BeginRestoreFromDeletedApp
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreFromDeletedApp func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreFromDeletedAppSlot is the fake for method WebAppsClient.BeginRestoreFromDeletedAppSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreFromDeletedAppSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreSlot is the fake for method WebAppsClient.BeginRestoreSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreSnapshot is the fake for method WebAppsClient.BeginRestoreSnapshot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreSnapshot func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreSnapshotSlot is the fake for method WebAppsClient.BeginRestoreSnapshotSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreSnapshotSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginStartNetworkTrace is the fake for method WebAppsClient.BeginStartNetworkTrace
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartNetworkTraceOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse], errResp azfake.ErrorResponder)
+
+	// BeginStartNetworkTraceSlot is the fake for method WebAppsClient.BeginStartNetworkTraceSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginStartWebSiteNetworkTraceOperation is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperation
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartWebSiteNetworkTraceOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
+
+	// BeginStartWebSiteNetworkTraceOperationSlot is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartWebSiteNetworkTraceOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginSwapSlot is the fake for method WebAppsClient.BeginSwapSlot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginSwapSlot func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse], errResp azfake.ErrorResponder)
+
+	// BeginSwapSlotWithProduction is the fake for method WebAppsClient.BeginSwapSlotWithProduction
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginSwapSlotWithProduction func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotWithProductionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse], errResp azfake.ErrorResponder)
+
+	// CreateDeployment is the fake for method WebAppsClient.CreateDeployment
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateDeployment func(ctx context.Context, resourceGroupName string, name string, id string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentResponse], errResp azfake.ErrorResponder)
+
+	// CreateDeploymentSlot is the fake for method WebAppsClient.CreateDeploymentSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateDeploymentSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentSlotResponse], errResp azfake.ErrorResponder)
+
+	// CreateOneDeployOperation is the fake for method WebAppsClient.CreateOneDeployOperation
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOneDeployOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientCreateOneDeployOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOneDeployOperationResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateConfiguration is the fake for method WebAppsClient.CreateOrUpdateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
@@ -174,18 +282,6 @@ type WebAppsServer struct {
 	// CreateOrUpdateSiteContainerSlot is the fake for method WebAppsClient.CreateOrUpdateSiteContainerSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdateSiteContainerSlot func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, request armappservice.SiteContainer, options *armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateSourceControl is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControl
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdateSourceControl func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateSourceControlSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControlSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdateSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck is the fake for method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck
 	// HTTP status codes to indicate success: http.StatusOK
@@ -311,14 +407,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	DeletePremierAddOnSlot func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *armappservice.WebAppsClientDeletePremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePremierAddOnSlotResponse], errResp azfake.ErrorResponder)
 
-	// BeginDeletePrivateEndpointConnection is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeletePrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnectionSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeletePrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
-
 	// DeleteProcess is the fake for method WebAppsClient.DeleteProcess
 	// HTTP status codes to indicate success: http.StatusNoContent
 	DeleteProcess func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientDeleteProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteProcessResponse], errResp azfake.ErrorResponder)
@@ -430,14 +518,6 @@ type WebAppsServer struct {
 	// GetAppSettingKeyVaultReferenceSlot is the fake for method WebAppsClient.GetAppSettingKeyVaultReferenceSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAppSettingKeyVaultReferenceSlot func(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, options *armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
-
-	// NewGetAppSettingsKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAppSettingsKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse])
-
-	// NewGetAppSettingsKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAppSettingsKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse])
 
 	// GetAuthSettings is the fake for method WebAppsClient.GetAuthSettings
 	// HTTP status codes to indicate success: http.StatusOK
@@ -707,14 +787,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
-	// NewGetPrivateEndpointConnectionListPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse])
-
-	// NewGetPrivateEndpointConnectionListSlotPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse])
-
 	// GetPrivateEndpointConnectionSlot is the fake for method WebAppsClient.GetPrivateEndpointConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
@@ -751,10 +823,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetProcessSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientGetProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessSlotResponse], errResp azfake.ErrorResponder)
 
-	// BeginGetProductionSiteDeploymentStatus is the fake for method WebAppsClient.BeginGetProductionSiteDeploymentStatus
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetProductionSiteDeploymentStatus func(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse], errResp azfake.ErrorResponder)
-
 	// GetPublicCertificate is the fake for method WebAppsClient.GetPublicCertificate
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPublicCertificate func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *armappservice.WebAppsClientGetPublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPublicCertificateResponse], errResp azfake.ErrorResponder)
@@ -787,14 +855,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSiteConnectionStringKeyVaultReferenceSlot func(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
 
-	// NewGetSiteConnectionStringKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetSiteConnectionStringKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse])
-
-	// NewGetSiteConnectionStringKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetSiteConnectionStringKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse])
-
 	// GetSiteContainer is the fake for method WebAppsClient.GetSiteContainer
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSiteContainer func(ctx context.Context, resourceGroupName string, name string, containerName string, options *armappservice.WebAppsClientGetSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteContainerResponse], errResp azfake.ErrorResponder)
@@ -822,10 +882,6 @@ type WebAppsServer struct {
 	// GetSlot is the fake for method WebAppsClient.GetSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginGetSlotSiteDeploymentStatusSlot is the fake for method WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetSlotSiteDeploymentStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSourceControl is the fake for method WebAppsClient.GetSourceControl
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
@@ -895,14 +951,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetWorkflow func(ctx context.Context, resourceGroupName string, name string, workflowName string, options *armappservice.WebAppsClientGetWorkflowOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWorkflowResponse], errResp azfake.ErrorResponder)
 
-	// BeginInstallSiteExtension is the fake for method WebAppsClient.BeginInstallSiteExtension
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginInstallSiteExtension func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientBeginInstallSiteExtensionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse], errResp azfake.ErrorResponder)
-
-	// BeginInstallSiteExtensionSlot is the fake for method WebAppsClient.BeginInstallSiteExtensionSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginInstallSiteExtensionSlot func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientBeginInstallSiteExtensionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
-
 	// IsCloneable is the fake for method WebAppsClient.IsCloneable
 	// HTTP status codes to indicate success: http.StatusOK
 	IsCloneable func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientIsCloneableOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableResponse], errResp azfake.ErrorResponder)
@@ -910,10 +958,6 @@ type WebAppsServer struct {
 	// IsCloneableSlot is the fake for method WebAppsClient.IsCloneableSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	IsCloneableSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientIsCloneableSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableSlotResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method WebAppsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.WebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListResponse])
 
 	// ListApplicationSettings is the fake for method WebAppsClient.ListApplicationSettings
 	// HTTP status codes to indicate success: http.StatusOK
@@ -938,6 +982,162 @@ type WebAppsServer struct {
 	// ListBackupStatusSecretsSlot is the fake for method WebAppsClient.ListBackupStatusSecretsSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	ListBackupStatusSecretsSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientListBackupStatusSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListBackupStatusSecretsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListConnectionStrings is the fake for method WebAppsClient.ListConnectionStrings
+	// HTTP status codes to indicate success: http.StatusOK
+	ListConnectionStrings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
+
+	// ListConnectionStringsSlot is the fake for method WebAppsClient.ListConnectionStringsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListConnectionStringsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListDeploymentLog is the fake for method WebAppsClient.ListDeploymentLog
+	// HTTP status codes to indicate success: http.StatusOK
+	ListDeploymentLog func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientListDeploymentLogOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogResponse], errResp azfake.ErrorResponder)
+
+	// ListDeploymentLogSlot is the fake for method WebAppsClient.ListDeploymentLogSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListDeploymentLogSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientListDeploymentLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListFunctionKeys is the fake for method WebAppsClient.ListFunctionKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListFunctionKeys func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysResponse], errResp azfake.ErrorResponder)
+
+	// ListFunctionKeysSlot is the fake for method WebAppsClient.ListFunctionKeysSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListFunctionKeysSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListFunctionSecrets is the fake for method WebAppsClient.ListFunctionSecrets
+	// HTTP status codes to indicate success: http.StatusOK
+	ListFunctionSecrets func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsResponse], errResp azfake.ErrorResponder)
+
+	// ListFunctionSecretsSlot is the fake for method WebAppsClient.ListFunctionSecretsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListFunctionSecretsSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListHostKeys is the fake for method WebAppsClient.ListHostKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListHostKeys func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHostKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysResponse], errResp azfake.ErrorResponder)
+
+	// ListHostKeysSlot is the fake for method WebAppsClient.ListHostKeysSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListHostKeysSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListHybridConnections is the fake for method WebAppsClient.ListHybridConnections
+	// HTTP status codes to indicate success: http.StatusOK
+	ListHybridConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHybridConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsResponse], errResp azfake.ErrorResponder)
+
+	// ListHybridConnectionsSlot is the fake for method WebAppsClient.ListHybridConnectionsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListHybridConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHybridConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListMetadata is the fake for method WebAppsClient.ListMetadata
+	// HTTP status codes to indicate success: http.StatusOK
+	ListMetadata func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataResponse], errResp azfake.ErrorResponder)
+
+	// ListMetadataSlot is the fake for method WebAppsClient.ListMetadataSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListMetadataSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListNetworkFeatures is the fake for method WebAppsClient.ListNetworkFeatures
+	// HTTP status codes to indicate success: http.StatusOK
+	ListNetworkFeatures func(ctx context.Context, resourceGroupName string, name string, view string, options *armappservice.WebAppsClientListNetworkFeaturesOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesResponse], errResp azfake.ErrorResponder)
+
+	// ListNetworkFeaturesSlot is the fake for method WebAppsClient.ListNetworkFeaturesSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListNetworkFeaturesSlot func(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *armappservice.WebAppsClientListNetworkFeaturesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListPremierAddOns is the fake for method WebAppsClient.ListPremierAddOns
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPremierAddOns func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListPremierAddOnsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsResponse], errResp azfake.ErrorResponder)
+
+	// ListPremierAddOnsSlot is the fake for method WebAppsClient.ListPremierAddOnsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPremierAddOnsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPremierAddOnsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListPublishingProfileXMLWithSecrets is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecrets
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPublishingProfileXMLWithSecrets func(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsResponse], errResp azfake.ErrorResponder)
+
+	// ListPublishingProfileXMLWithSecretsSlot is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPublishingProfileXMLWithSecretsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListRelayServiceConnections is the fake for method WebAppsClient.ListRelayServiceConnections
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRelayServiceConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListRelayServiceConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsResponse], errResp azfake.ErrorResponder)
+
+	// ListRelayServiceConnectionsSlot is the fake for method WebAppsClient.ListRelayServiceConnectionsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRelayServiceConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListRelayServiceConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListSitePushSettings is the fake for method WebAppsClient.ListSitePushSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSitePushSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsResponse], errResp azfake.ErrorResponder)
+
+	// ListSitePushSettingsSlot is the fake for method WebAppsClient.ListSitePushSettingsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSitePushSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListSlotConfigurationNames is the fake for method WebAppsClient.ListSlotConfigurationNames
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSlotConfigurationNames func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientListSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
+
+	// ListSyncFunctionTriggers is the fake for method WebAppsClient.ListSyncFunctionTriggers
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSyncFunctionTriggers func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
+
+	// ListSyncFunctionTriggersSlot is the fake for method WebAppsClient.ListSyncFunctionTriggersSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSyncFunctionTriggersSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListSyncStatus is the fake for method WebAppsClient.ListSyncStatus
+	// HTTP status codes to indicate success: http.StatusNoContent
+	ListSyncStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusResponse], errResp azfake.ErrorResponder)
+
+	// ListSyncStatusSlot is the fake for method WebAppsClient.ListSyncStatusSlot
+	// HTTP status codes to indicate success: http.StatusNoContent
+	ListSyncStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListVnetConnections is the fake for method WebAppsClient.ListVnetConnections
+	// HTTP status codes to indicate success: http.StatusOK
+	ListVnetConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListVnetConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsResponse], errResp azfake.ErrorResponder)
+
+	// ListVnetConnectionsSlot is the fake for method WebAppsClient.ListVnetConnectionsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListVnetConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListVnetConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsSlotResponse], errResp azfake.ErrorResponder)
+
+	// ListWorkflowsConnections is the fake for method WebAppsClient.ListWorkflowsConnections
+	// HTTP status codes to indicate success: http.StatusOK
+	ListWorkflowsConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsResponse], errResp azfake.ErrorResponder)
+
+	// ListWorkflowsConnectionsSlot is the fake for method WebAppsClient.ListWorkflowsConnectionsSlot
+	// HTTP status codes to indicate success: http.StatusOK
+	ListWorkflowsConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWorkflowsConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse], errResp azfake.ErrorResponder)
+
+	// NewGetAppSettingsKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAppSettingsKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse])
+
+	// NewGetAppSettingsKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAppSettingsKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse])
+
+	// NewGetPrivateEndpointConnectionListPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse])
+
+	// NewGetPrivateEndpointConnectionListSlotPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetPrivateEndpointConnectionListSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse])
+
+	// NewGetSiteConnectionStringKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetSiteConnectionStringKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse])
+
+	// NewGetSiteConnectionStringKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetSiteConnectionStringKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse])
 
 	// NewListBackupsPager is the fake for method WebAppsClient.NewListBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -975,14 +1175,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListConfigurationsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConfigurationsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse])
 
-	// ListConnectionStrings is the fake for method WebAppsClient.ListConnectionStrings
-	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStrings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
-
-	// ListConnectionStringsSlot is the fake for method WebAppsClient.ListConnectionStringsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStringsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
-
 	// NewListContinuousWebJobsPager is the fake for method WebAppsClient.NewListContinuousWebJobsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListContinuousWebJobsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListContinuousWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse])
@@ -990,14 +1182,6 @@ type WebAppsServer struct {
 	// NewListContinuousWebJobsSlotPager is the fake for method WebAppsClient.NewListContinuousWebJobsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListContinuousWebJobsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListContinuousWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse])
-
-	// ListDeploymentLog is the fake for method WebAppsClient.ListDeploymentLog
-	// HTTP status codes to indicate success: http.StatusOK
-	ListDeploymentLog func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientListDeploymentLogOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogResponse], errResp azfake.ErrorResponder)
-
-	// ListDeploymentLogSlot is the fake for method WebAppsClient.ListDeploymentLogSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListDeploymentLogSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientListDeploymentLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListDeploymentsPager is the fake for method WebAppsClient.NewListDeploymentsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1015,33 +1199,9 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDomainOwnershipIdentifiersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse])
 
-	// ListFunctionKeys is the fake for method WebAppsClient.ListFunctionKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionKeys func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysResponse], errResp azfake.ErrorResponder)
-
-	// ListFunctionKeysSlot is the fake for method WebAppsClient.ListFunctionKeysSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionKeysSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListFunctionSecrets is the fake for method WebAppsClient.ListFunctionSecrets
-	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionSecrets func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsResponse], errResp azfake.ErrorResponder)
-
-	// ListFunctionSecretsSlot is the fake for method WebAppsClient.ListFunctionSecretsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionSecretsSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsSlotResponse], errResp azfake.ErrorResponder)
-
 	// NewListFunctionsPager is the fake for method WebAppsClient.NewListFunctionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListFunctionsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListFunctionsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse])
-
-	// ListHostKeys is the fake for method WebAppsClient.ListHostKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListHostKeys func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHostKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysResponse], errResp azfake.ErrorResponder)
-
-	// ListHostKeysSlot is the fake for method WebAppsClient.ListHostKeysSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListHostKeysSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListHostNameBindingsPager is the fake for method WebAppsClient.NewListHostNameBindingsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1050,14 +1210,6 @@ type WebAppsServer struct {
 	// NewListHostNameBindingsSlotPager is the fake for method WebAppsClient.NewListHostNameBindingsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListHostNameBindingsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostNameBindingsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse])
-
-	// ListHybridConnections is the fake for method WebAppsClient.ListHybridConnections
-	// HTTP status codes to indicate success: http.StatusOK
-	ListHybridConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHybridConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsResponse], errResp azfake.ErrorResponder)
-
-	// ListHybridConnectionsSlot is the fake for method WebAppsClient.ListHybridConnectionsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListHybridConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHybridConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListInstanceFunctionsSlotPager is the fake for method WebAppsClient.NewListInstanceFunctionsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1099,21 +1251,9 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListInstanceWorkflowsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceWorkflowsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse])
 
-	// ListMetadata is the fake for method WebAppsClient.ListMetadata
+	// NewListPager is the fake for method WebAppsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListMetadata func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataResponse], errResp azfake.ErrorResponder)
-
-	// ListMetadataSlot is the fake for method WebAppsClient.ListMetadataSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListMetadataSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListNetworkFeatures is the fake for method WebAppsClient.ListNetworkFeatures
-	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkFeatures func(ctx context.Context, resourceGroupName string, name string, view string, options *armappservice.WebAppsClientListNetworkFeaturesOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesResponse], errResp azfake.ErrorResponder)
-
-	// ListNetworkFeaturesSlot is the fake for method WebAppsClient.ListNetworkFeaturesSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkFeaturesSlot func(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *armappservice.WebAppsClientListNetworkFeaturesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesSlotResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armappservice.WebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListResponse])
 
 	// NewListPerfMonCountersPager is the fake for method WebAppsClient.NewListPerfMonCountersPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1122,14 +1262,6 @@ type WebAppsServer struct {
 	// NewListPerfMonCountersSlotPager is the fake for method WebAppsClient.NewListPerfMonCountersSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPerfMonCountersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPerfMonCountersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse])
-
-	// ListPremierAddOns is the fake for method WebAppsClient.ListPremierAddOns
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPremierAddOns func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListPremierAddOnsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsResponse], errResp azfake.ErrorResponder)
-
-	// ListPremierAddOnsSlot is the fake for method WebAppsClient.ListPremierAddOnsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPremierAddOnsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPremierAddOnsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListProcessModulesPager is the fake for method WebAppsClient.NewListProcessModulesPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1167,30 +1299,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPublicCertificatesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPublicCertificatesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse])
 
-	// BeginListPublishingCredentials is the fake for method WebAppsClient.BeginListPublishingCredentials
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginListPublishingCredentials func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginListPublishingCredentialsOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// BeginListPublishingCredentialsSlot is the fake for method WebAppsClient.BeginListPublishingCredentialsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginListPublishingCredentialsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginListPublishingCredentialsSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListPublishingProfileXMLWithSecrets is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecrets
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPublishingProfileXMLWithSecrets func(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsResponse], errResp azfake.ErrorResponder)
-
-	// ListPublishingProfileXMLWithSecretsSlot is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPublishingProfileXMLWithSecretsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListRelayServiceConnections is the fake for method WebAppsClient.ListRelayServiceConnections
-	// HTTP status codes to indicate success: http.StatusOK
-	ListRelayServiceConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListRelayServiceConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsResponse], errResp azfake.ErrorResponder)
-
-	// ListRelayServiceConnectionsSlot is the fake for method WebAppsClient.ListRelayServiceConnectionsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListRelayServiceConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListRelayServiceConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsSlotResponse], errResp azfake.ErrorResponder)
-
 	// NewListSiteBackupsPager is the fake for method WebAppsClient.NewListSiteBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSiteBackupsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteBackupsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse])
@@ -1215,18 +1323,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSiteExtensionsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteExtensionsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse])
 
-	// ListSitePushSettings is the fake for method WebAppsClient.ListSitePushSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSitePushSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsResponse], errResp azfake.ErrorResponder)
-
-	// ListSitePushSettingsSlot is the fake for method WebAppsClient.ListSitePushSettingsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSitePushSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListSlotConfigurationNames is the fake for method WebAppsClient.ListSlotConfigurationNames
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSlotConfigurationNames func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientListSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
-
 	// NewListSlotDifferencesFromProductionPager is the fake for method WebAppsClient.NewListSlotDifferencesFromProductionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSlotDifferencesFromProductionPager func(resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientListSlotDifferencesFromProductionOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse])
@@ -1243,10 +1339,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSlotsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse])
 
-	// NewListSnapshotsPager is the fake for method WebAppsClient.NewListSnapshotsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListSnapshotsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse])
-
 	// NewListSnapshotsFromDRSecondaryPager is the fake for method WebAppsClient.NewListSnapshotsFromDRSecondaryPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSnapshotsFromDRSecondaryPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondaryOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse])
@@ -1255,25 +1347,13 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSnapshotsFromDRSecondarySlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse])
 
+	// NewListSnapshotsPager is the fake for method WebAppsClient.NewListSnapshotsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListSnapshotsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse])
+
 	// NewListSnapshotsSlotPager is the fake for method WebAppsClient.NewListSnapshotsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSnapshotsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse])
-
-	// ListSyncFunctionTriggers is the fake for method WebAppsClient.ListSyncFunctionTriggers
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSyncFunctionTriggers func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
-
-	// ListSyncFunctionTriggersSlot is the fake for method WebAppsClient.ListSyncFunctionTriggersSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSyncFunctionTriggersSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
-
-	// ListSyncStatus is the fake for method WebAppsClient.ListSyncStatus
-	// HTTP status codes to indicate success: http.StatusNoContent
-	ListSyncStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusResponse], errResp azfake.ErrorResponder)
-
-	// ListSyncStatusSlot is the fake for method WebAppsClient.ListSyncStatusSlot
-	// HTTP status codes to indicate success: http.StatusNoContent
-	ListSyncStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListTriggeredWebJobHistoryPager is the fake for method WebAppsClient.NewListTriggeredWebJobHistoryPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1299,14 +1379,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListUsagesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListUsagesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse])
 
-	// ListVnetConnections is the fake for method WebAppsClient.ListVnetConnections
-	// HTTP status codes to indicate success: http.StatusOK
-	ListVnetConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListVnetConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsResponse], errResp azfake.ErrorResponder)
-
-	// ListVnetConnectionsSlot is the fake for method WebAppsClient.ListVnetConnectionsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListVnetConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListVnetConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsSlotResponse], errResp azfake.ErrorResponder)
-
 	// NewListWebJobsPager is the fake for method WebAppsClient.NewListWebJobsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListWebJobsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse])
@@ -1318,22 +1390,6 @@ type WebAppsServer struct {
 	// NewListWorkflowsPager is the fake for method WebAppsClient.NewListWorkflowsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListWorkflowsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse])
-
-	// ListWorkflowsConnections is the fake for method WebAppsClient.ListWorkflowsConnections
-	// HTTP status codes to indicate success: http.StatusOK
-	ListWorkflowsConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsResponse], errResp azfake.ErrorResponder)
-
-	// ListWorkflowsConnectionsSlot is the fake for method WebAppsClient.ListWorkflowsConnectionsSlot
-	// HTTP status codes to indicate success: http.StatusOK
-	ListWorkflowsConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWorkflowsConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateMySQL is the fake for method WebAppsClient.BeginMigrateMySQL
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginMigrateMySQL func(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope armappservice.MigrateMySQLRequest, options *armappservice.WebAppsClientBeginMigrateMySQLOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateStorage is the fake for method WebAppsClient.BeginMigrateStorage
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginMigrateStorage func(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions armappservice.StorageMigrationOptions, options *armappservice.WebAppsClientBeginMigrateStorageOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse], errResp azfake.ErrorResponder)
 
 	// PutPrivateAccessVnet is the fake for method WebAppsClient.PutPrivateAccessVnet
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1367,38 +1423,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	RestartSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientRestartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRestartSlotResponse], errResp azfake.ErrorResponder)
 
-	// BeginRestore is the fake for method WebAppsClient.BeginRestore
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestore func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreFromBackupBlob is the fake for method WebAppsClient.BeginRestoreFromBackupBlob
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromBackupBlob func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreFromBackupBlobSlot is the fake for method WebAppsClient.BeginRestoreFromBackupBlobSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromBackupBlobSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreFromDeletedApp is the fake for method WebAppsClient.BeginRestoreFromDeletedApp
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromDeletedApp func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreFromDeletedAppSlot is the fake for method WebAppsClient.BeginRestoreFromDeletedAppSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromDeletedAppSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreSlot is the fake for method WebAppsClient.BeginRestoreSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreSnapshot is the fake for method WebAppsClient.BeginRestoreSnapshot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSnapshot func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse], errResp azfake.ErrorResponder)
-
-	// BeginRestoreSnapshotSlot is the fake for method WebAppsClient.BeginRestoreSnapshotSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSnapshotSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse], errResp azfake.ErrorResponder)
-
 	// RunTriggeredWebJob is the fake for method WebAppsClient.RunTriggeredWebJob
 	// HTTP status codes to indicate success: http.StatusOK
 	RunTriggeredWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientRunTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientRunTriggeredWebJobResponse], errResp azfake.ErrorResponder)
@@ -1419,14 +1443,6 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	StartContinuousWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientStartContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
 
-	// BeginStartNetworkTrace is the fake for method WebAppsClient.BeginStartNetworkTrace
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartNetworkTraceOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse], errResp azfake.ErrorResponder)
-
-	// BeginStartNetworkTraceSlot is the fake for method WebAppsClient.BeginStartNetworkTraceSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
-
 	// StartSlot is the fake for method WebAppsClient.StartSlot
 	// HTTP status codes to indicate success: http.StatusOK
 	StartSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartSlotResponse], errResp azfake.ErrorResponder)
@@ -1434,14 +1450,6 @@ type WebAppsServer struct {
 	// StartWebSiteNetworkTrace is the fake for method WebAppsClient.StartWebSiteNetworkTrace
 	// HTTP status codes to indicate success: http.StatusOK
 	StartWebSiteNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStartWebSiteNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStartWebSiteNetworkTraceResponse], errResp azfake.ErrorResponder)
-
-	// BeginStartWebSiteNetworkTraceOperation is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartWebSiteNetworkTraceOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
-
-	// BeginStartWebSiteNetworkTraceOperationSlot is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartWebSiteNetworkTraceOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
 
 	// StartWebSiteNetworkTraceSlot is the fake for method WebAppsClient.StartWebSiteNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1478,14 +1486,6 @@ type WebAppsServer struct {
 	// StopWebSiteNetworkTraceSlot is the fake for method WebAppsClient.StopWebSiteNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	StopWebSiteNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopWebSiteNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopWebSiteNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginSwapSlot is the fake for method WebAppsClient.BeginSwapSlot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSwapSlot func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse], errResp azfake.ErrorResponder)
-
-	// BeginSwapSlotWithProduction is the fake for method WebAppsClient.BeginSwapSlotWithProduction
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSwapSlotWithProduction func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotWithProductionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse], errResp azfake.ErrorResponder)
 
 	// SyncFunctionTriggers is the fake for method WebAppsClient.SyncFunctionTriggers
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -1708,17 +1708,34 @@ func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 		beginCreateOrUpdateSourceControlSlot:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]](),
 		beginDeletePrivateEndpointConnection:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]](),
 		beginDeletePrivateEndpointConnectionSlot:              newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]](),
+		beginGetProductionSiteDeploymentStatus:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]](),
+		beginGetSlotSiteDeploymentStatusSlot:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]](),
+		beginInstallSiteExtension:                             newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]](),
+		beginInstallSiteExtensionSlot:                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]](),
+		beginListPublishingCredentials:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]](),
+		beginListPublishingCredentialsSlot:                    newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]](),
+		beginMigrateMySQL:                                     newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]](),
+		beginMigrateStorage:                                   newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]](),
+		beginRestore:                                          newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]](),
+		beginRestoreFromBackupBlob:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]](),
+		beginRestoreFromBackupBlobSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]](),
+		beginRestoreFromDeletedApp:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]](),
+		beginRestoreFromDeletedAppSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]](),
+		beginRestoreSlot:                                      newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]](),
+		beginRestoreSnapshot:                                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]](),
+		beginRestoreSnapshotSlot:                              newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]](),
+		beginStartNetworkTrace:                                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]](),
+		beginStartNetworkTraceSlot:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]](),
+		beginStartWebSiteNetworkTraceOperation:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]](),
+		beginStartWebSiteNetworkTraceOperationSlot:            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]](),
+		beginSwapSlot:                                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]](),
+		beginSwapSlotWithProduction:                           newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]](),
 		newGetAppSettingsKeyVaultReferencesPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]](),
 		newGetAppSettingsKeyVaultReferencesSlotPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]](),
 		newGetPrivateEndpointConnectionListPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]](),
 		newGetPrivateEndpointConnectionListSlotPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]](),
-		beginGetProductionSiteDeploymentStatus:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]](),
 		newGetSiteConnectionStringKeyVaultReferencesPager:     newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]](),
 		newGetSiteConnectionStringKeyVaultReferencesSlotPager: newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]](),
-		beginGetSlotSiteDeploymentStatusSlot:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]](),
-		beginInstallSiteExtension:                             newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]](),
-		beginInstallSiteExtensionSlot:                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]](),
-		newListPager:                                          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]](),
 		newListBackupsPager:                                   newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]](),
 		newListBackupsSlotPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]](),
 		newListBasicPublishingCredentialsPoliciesPager:        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]](),
@@ -1747,6 +1764,7 @@ func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 		newListInstanceProcessesPager:                         newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]](),
 		newListInstanceProcessesSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]](),
 		newListInstanceWorkflowsSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]](),
+		newListPager:                                          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]](),
 		newListPerfMonCountersPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]](),
 		newListPerfMonCountersSlotPager:                       newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]](),
 		newListProcessModulesPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]](),
@@ -1758,8 +1776,6 @@ func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 		newListProductionSiteDeploymentStatusesPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]](),
 		newListPublicCertificatesPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]](),
 		newListPublicCertificatesSlotPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]](),
-		beginListPublishingCredentials:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]](),
-		beginListPublishingCredentialsSlot:                    newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]](),
 		newListSiteBackupsPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]](),
 		newListSiteBackupsSlotPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]](),
 		newListSiteContainersPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]](),
@@ -1770,9 +1786,9 @@ func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 		newListSlotDifferencesSlotPager:                       newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]](),
 		newListSlotSiteDeploymentStatusesSlotPager:            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]](),
 		newListSlotsPager:                                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]](),
-		newListSnapshotsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]](),
 		newListSnapshotsFromDRSecondaryPager:                  newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]](),
 		newListSnapshotsFromDRSecondarySlotPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]](),
+		newListSnapshotsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]](),
 		newListSnapshotsSlotPager:                             newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]](),
 		newListTriggeredWebJobHistoryPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]](),
 		newListTriggeredWebJobHistorySlotPager:                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]](),
@@ -1783,22 +1799,6 @@ func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 		newListWebJobsPager:                                   newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]](),
 		newListWebJobsSlotPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]](),
 		newListWorkflowsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]](),
-		beginMigrateMySQL:                                     newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]](),
-		beginMigrateStorage:                                   newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]](),
-		beginRestore:                                          newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]](),
-		beginRestoreFromBackupBlob:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]](),
-		beginRestoreFromBackupBlobSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]](),
-		beginRestoreFromDeletedApp:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]](),
-		beginRestoreFromDeletedAppSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]](),
-		beginRestoreSlot:                                      newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]](),
-		beginRestoreSnapshot:                                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]](),
-		beginRestoreSnapshotSlot:                              newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]](),
-		beginStartNetworkTrace:                                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]](),
-		beginStartNetworkTraceSlot:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]](),
-		beginStartWebSiteNetworkTraceOperation:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]](),
-		beginStartWebSiteNetworkTraceOperationSlot:            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]](),
-		beginSwapSlot:                                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]](),
-		beginSwapSlotWithProduction:                           newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]](),
 	}
 }
 
@@ -1820,17 +1820,34 @@ type WebAppsServerTransport struct {
 	beginCreateOrUpdateSourceControlSlot                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]]
 	beginDeletePrivateEndpointConnection                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]]
 	beginDeletePrivateEndpointConnectionSlot              *tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]]
+	beginGetProductionSiteDeploymentStatus                *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]]
+	beginGetSlotSiteDeploymentStatusSlot                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]]
+	beginInstallSiteExtension                             *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]]
+	beginInstallSiteExtensionSlot                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]]
+	beginListPublishingCredentials                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]]
+	beginListPublishingCredentialsSlot                    *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]]
+	beginMigrateMySQL                                     *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]]
+	beginMigrateStorage                                   *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]]
+	beginRestore                                          *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]]
+	beginRestoreFromBackupBlob                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]]
+	beginRestoreFromBackupBlobSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]]
+	beginRestoreFromDeletedApp                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]]
+	beginRestoreFromDeletedAppSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]]
+	beginRestoreSlot                                      *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]]
+	beginRestoreSnapshot                                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]]
+	beginRestoreSnapshotSlot                              *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]]
+	beginStartNetworkTrace                                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]]
+	beginStartNetworkTraceSlot                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]]
+	beginStartWebSiteNetworkTraceOperation                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]]
+	beginStartWebSiteNetworkTraceOperationSlot            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]]
+	beginSwapSlot                                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]]
+	beginSwapSlotWithProduction                           *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]]
 	newGetAppSettingsKeyVaultReferencesPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]]
 	newGetAppSettingsKeyVaultReferencesSlotPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]]
 	newGetPrivateEndpointConnectionListPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]]
 	newGetPrivateEndpointConnectionListSlotPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]]
-	beginGetProductionSiteDeploymentStatus                *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]]
 	newGetSiteConnectionStringKeyVaultReferencesPager     *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]]
 	newGetSiteConnectionStringKeyVaultReferencesSlotPager *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]]
-	beginGetSlotSiteDeploymentStatusSlot                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]]
-	beginInstallSiteExtension                             *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]]
-	beginInstallSiteExtensionSlot                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]]
-	newListPager                                          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]]
 	newListBackupsPager                                   *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]]
 	newListBackupsSlotPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]]
 	newListBasicPublishingCredentialsPoliciesPager        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]]
@@ -1859,6 +1876,7 @@ type WebAppsServerTransport struct {
 	newListInstanceProcessesPager                         *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]]
 	newListInstanceProcessesSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]]
 	newListInstanceWorkflowsSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]]
+	newListPager                                          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]]
 	newListPerfMonCountersPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]]
 	newListPerfMonCountersSlotPager                       *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]]
 	newListProcessModulesPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]]
@@ -1870,8 +1888,6 @@ type WebAppsServerTransport struct {
 	newListProductionSiteDeploymentStatusesPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]]
 	newListPublicCertificatesPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]]
 	newListPublicCertificatesSlotPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]]
-	beginListPublishingCredentials                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]]
-	beginListPublishingCredentialsSlot                    *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]]
 	newListSiteBackupsPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]]
 	newListSiteBackupsSlotPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]]
 	newListSiteContainersPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]]
@@ -1882,9 +1898,9 @@ type WebAppsServerTransport struct {
 	newListSlotDifferencesSlotPager                       *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]]
 	newListSlotSiteDeploymentStatusesSlotPager            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]]
 	newListSlotsPager                                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]]
-	newListSnapshotsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]]
 	newListSnapshotsFromDRSecondaryPager                  *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]]
 	newListSnapshotsFromDRSecondarySlotPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]]
+	newListSnapshotsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]]
 	newListSnapshotsSlotPager                             *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]]
 	newListTriggeredWebJobHistoryPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]]
 	newListTriggeredWebJobHistorySlotPager                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]]
@@ -1895,22 +1911,6 @@ type WebAppsServerTransport struct {
 	newListWebJobsPager                                   *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]]
 	newListWebJobsSlotPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]]
 	newListWorkflowsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]]
-	beginMigrateMySQL                                     *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]]
-	beginMigrateStorage                                   *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]]
-	beginRestore                                          *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]]
-	beginRestoreFromBackupBlob                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]]
-	beginRestoreFromBackupBlobSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]]
-	beginRestoreFromDeletedApp                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]]
-	beginRestoreFromDeletedAppSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]]
-	beginRestoreSlot                                      *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]]
-	beginRestoreSnapshot                                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]]
-	beginRestoreSnapshotSlot                              *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]]
-	beginStartNetworkTrace                                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]]
-	beginStartNetworkTraceSlot                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]]
-	beginStartWebSiteNetworkTraceOperation                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]]
-	beginStartWebSiteNetworkTraceOperationSlot            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]]
-	beginSwapSlot                                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]]
-	beginSwapSlotWithProduction                           *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebAppsServerTransport.
@@ -1946,18 +1946,14 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchApplySlotConfigToProduction(req)
 			case "WebAppsClient.ApplySlotConfigurationSlot":
 				res.resp, res.err = w.dispatchApplySlotConfigurationSlot(req)
-			case "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection":
-				res.resp, res.err = w.dispatchBeginApproveOrRejectPrivateEndpointConnection(req)
-			case "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot":
-				res.resp, res.err = w.dispatchBeginApproveOrRejectPrivateEndpointConnectionSlot(req)
 			case "WebAppsClient.Backup":
 				res.resp, res.err = w.dispatchBackup(req)
 			case "WebAppsClient.BackupSlot":
 				res.resp, res.err = w.dispatchBackupSlot(req)
-			case "WebAppsClient.CreateDeployment":
-				res.resp, res.err = w.dispatchCreateDeployment(req)
-			case "WebAppsClient.CreateDeploymentSlot":
-				res.resp, res.err = w.dispatchCreateDeploymentSlot(req)
+			case "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection":
+				res.resp, res.err = w.dispatchBeginApproveOrRejectPrivateEndpointConnection(req)
+			case "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot":
+				res.resp, res.err = w.dispatchBeginApproveOrRejectPrivateEndpointConnectionSlot(req)
 			case "WebAppsClient.BeginCreateFunction":
 				res.resp, res.err = w.dispatchBeginCreateFunction(req)
 			case "WebAppsClient.BeginCreateInstanceFunctionSlot":
@@ -1970,10 +1966,68 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchBeginCreateMSDeployOperation(req)
 			case "WebAppsClient.BeginCreateMSDeployOperationSlot":
 				res.resp, res.err = w.dispatchBeginCreateMSDeployOperationSlot(req)
-			case "WebAppsClient.CreateOneDeployOperation":
-				res.resp, res.err = w.dispatchCreateOneDeployOperation(req)
 			case "WebAppsClient.BeginCreateOrUpdate":
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
+			case "WebAppsClient.BeginCreateOrUpdateSlot":
+				res.resp, res.err = w.dispatchBeginCreateOrUpdateSlot(req)
+			case "WebAppsClient.BeginCreateOrUpdateSourceControl":
+				res.resp, res.err = w.dispatchBeginCreateOrUpdateSourceControl(req)
+			case "WebAppsClient.BeginCreateOrUpdateSourceControlSlot":
+				res.resp, res.err = w.dispatchBeginCreateOrUpdateSourceControlSlot(req)
+			case "WebAppsClient.BeginDeletePrivateEndpointConnection":
+				res.resp, res.err = w.dispatchBeginDeletePrivateEndpointConnection(req)
+			case "WebAppsClient.BeginDeletePrivateEndpointConnectionSlot":
+				res.resp, res.err = w.dispatchBeginDeletePrivateEndpointConnectionSlot(req)
+			case "WebAppsClient.BeginGetProductionSiteDeploymentStatus":
+				res.resp, res.err = w.dispatchBeginGetProductionSiteDeploymentStatus(req)
+			case "WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot":
+				res.resp, res.err = w.dispatchBeginGetSlotSiteDeploymentStatusSlot(req)
+			case "WebAppsClient.BeginInstallSiteExtension":
+				res.resp, res.err = w.dispatchBeginInstallSiteExtension(req)
+			case "WebAppsClient.BeginInstallSiteExtensionSlot":
+				res.resp, res.err = w.dispatchBeginInstallSiteExtensionSlot(req)
+			case "WebAppsClient.BeginListPublishingCredentials":
+				res.resp, res.err = w.dispatchBeginListPublishingCredentials(req)
+			case "WebAppsClient.BeginListPublishingCredentialsSlot":
+				res.resp, res.err = w.dispatchBeginListPublishingCredentialsSlot(req)
+			case "WebAppsClient.BeginMigrateMySQL":
+				res.resp, res.err = w.dispatchBeginMigrateMySQL(req)
+			case "WebAppsClient.BeginMigrateStorage":
+				res.resp, res.err = w.dispatchBeginMigrateStorage(req)
+			case "WebAppsClient.BeginRestore":
+				res.resp, res.err = w.dispatchBeginRestore(req)
+			case "WebAppsClient.BeginRestoreFromBackupBlob":
+				res.resp, res.err = w.dispatchBeginRestoreFromBackupBlob(req)
+			case "WebAppsClient.BeginRestoreFromBackupBlobSlot":
+				res.resp, res.err = w.dispatchBeginRestoreFromBackupBlobSlot(req)
+			case "WebAppsClient.BeginRestoreFromDeletedApp":
+				res.resp, res.err = w.dispatchBeginRestoreFromDeletedApp(req)
+			case "WebAppsClient.BeginRestoreFromDeletedAppSlot":
+				res.resp, res.err = w.dispatchBeginRestoreFromDeletedAppSlot(req)
+			case "WebAppsClient.BeginRestoreSlot":
+				res.resp, res.err = w.dispatchBeginRestoreSlot(req)
+			case "WebAppsClient.BeginRestoreSnapshot":
+				res.resp, res.err = w.dispatchBeginRestoreSnapshot(req)
+			case "WebAppsClient.BeginRestoreSnapshotSlot":
+				res.resp, res.err = w.dispatchBeginRestoreSnapshotSlot(req)
+			case "WebAppsClient.BeginStartNetworkTrace":
+				res.resp, res.err = w.dispatchBeginStartNetworkTrace(req)
+			case "WebAppsClient.BeginStartNetworkTraceSlot":
+				res.resp, res.err = w.dispatchBeginStartNetworkTraceSlot(req)
+			case "WebAppsClient.BeginStartWebSiteNetworkTraceOperation":
+				res.resp, res.err = w.dispatchBeginStartWebSiteNetworkTraceOperation(req)
+			case "WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot":
+				res.resp, res.err = w.dispatchBeginStartWebSiteNetworkTraceOperationSlot(req)
+			case "WebAppsClient.BeginSwapSlot":
+				res.resp, res.err = w.dispatchBeginSwapSlot(req)
+			case "WebAppsClient.BeginSwapSlotWithProduction":
+				res.resp, res.err = w.dispatchBeginSwapSlotWithProduction(req)
+			case "WebAppsClient.CreateDeployment":
+				res.resp, res.err = w.dispatchCreateDeployment(req)
+			case "WebAppsClient.CreateDeploymentSlot":
+				res.resp, res.err = w.dispatchCreateDeploymentSlot(req)
+			case "WebAppsClient.CreateOneDeployOperation":
+				res.resp, res.err = w.dispatchCreateOneDeployOperation(req)
 			case "WebAppsClient.CreateOrUpdateConfiguration":
 				res.resp, res.err = w.dispatchCreateOrUpdateConfiguration(req)
 			case "WebAppsClient.CreateOrUpdateConfigurationSlot":
@@ -2010,12 +2064,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchCreateOrUpdateSiteContainer(req)
 			case "WebAppsClient.CreateOrUpdateSiteContainerSlot":
 				res.resp, res.err = w.dispatchCreateOrUpdateSiteContainerSlot(req)
-			case "WebAppsClient.BeginCreateOrUpdateSlot":
-				res.resp, res.err = w.dispatchBeginCreateOrUpdateSlot(req)
-			case "WebAppsClient.BeginCreateOrUpdateSourceControl":
-				res.resp, res.err = w.dispatchBeginCreateOrUpdateSourceControl(req)
-			case "WebAppsClient.BeginCreateOrUpdateSourceControlSlot":
-				res.resp, res.err = w.dispatchBeginCreateOrUpdateSourceControlSlot(req)
 			case "WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck":
 				res.resp, res.err = w.dispatchCreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(req)
 			case "WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot":
@@ -2078,10 +2126,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchDeletePremierAddOn(req)
 			case "WebAppsClient.DeletePremierAddOnSlot":
 				res.resp, res.err = w.dispatchDeletePremierAddOnSlot(req)
-			case "WebAppsClient.BeginDeletePrivateEndpointConnection":
-				res.resp, res.err = w.dispatchBeginDeletePrivateEndpointConnection(req)
-			case "WebAppsClient.BeginDeletePrivateEndpointConnectionSlot":
-				res.resp, res.err = w.dispatchBeginDeletePrivateEndpointConnectionSlot(req)
 			case "WebAppsClient.DeleteProcess":
 				res.resp, res.err = w.dispatchDeleteProcess(req)
 			case "WebAppsClient.DeleteProcessSlot":
@@ -2138,10 +2182,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetAppSettingKeyVaultReference(req)
 			case "WebAppsClient.GetAppSettingKeyVaultReferenceSlot":
 				res.resp, res.err = w.dispatchGetAppSettingKeyVaultReferenceSlot(req)
-			case "WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager":
-				res.resp, res.err = w.dispatchNewGetAppSettingsKeyVaultReferencesPager(req)
-			case "WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager":
-				res.resp, res.err = w.dispatchNewGetAppSettingsKeyVaultReferencesSlotPager(req)
 			case "WebAppsClient.GetAuthSettings":
 				res.resp, res.err = w.dispatchGetAuthSettings(req)
 			case "WebAppsClient.GetAuthSettingsSlot":
@@ -2276,10 +2316,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetPrivateAccessSlot(req)
 			case "WebAppsClient.GetPrivateEndpointConnection":
 				res.resp, res.err = w.dispatchGetPrivateEndpointConnection(req)
-			case "WebAppsClient.NewGetPrivateEndpointConnectionListPager":
-				res.resp, res.err = w.dispatchNewGetPrivateEndpointConnectionListPager(req)
-			case "WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager":
-				res.resp, res.err = w.dispatchNewGetPrivateEndpointConnectionListSlotPager(req)
 			case "WebAppsClient.GetPrivateEndpointConnectionSlot":
 				res.resp, res.err = w.dispatchGetPrivateEndpointConnectionSlot(req)
 			case "WebAppsClient.GetPrivateLinkResources":
@@ -2298,8 +2334,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetProcessModuleSlot(req)
 			case "WebAppsClient.GetProcessSlot":
 				res.resp, res.err = w.dispatchGetProcessSlot(req)
-			case "WebAppsClient.BeginGetProductionSiteDeploymentStatus":
-				res.resp, res.err = w.dispatchBeginGetProductionSiteDeploymentStatus(req)
 			case "WebAppsClient.GetPublicCertificate":
 				res.resp, res.err = w.dispatchGetPublicCertificate(req)
 			case "WebAppsClient.GetPublicCertificateSlot":
@@ -2316,10 +2350,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetSiteConnectionStringKeyVaultReference(req)
 			case "WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot":
 				res.resp, res.err = w.dispatchGetSiteConnectionStringKeyVaultReferenceSlot(req)
-			case "WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager":
-				res.resp, res.err = w.dispatchNewGetSiteConnectionStringKeyVaultReferencesPager(req)
-			case "WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager":
-				res.resp, res.err = w.dispatchNewGetSiteConnectionStringKeyVaultReferencesSlotPager(req)
 			case "WebAppsClient.GetSiteContainer":
 				res.resp, res.err = w.dispatchGetSiteContainer(req)
 			case "WebAppsClient.GetSiteContainerSlot":
@@ -2334,8 +2364,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetSitePhpErrorLogFlagSlot(req)
 			case "WebAppsClient.GetSlot":
 				res.resp, res.err = w.dispatchGetSlot(req)
-			case "WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot":
-				res.resp, res.err = w.dispatchBeginGetSlotSiteDeploymentStatusSlot(req)
 			case "WebAppsClient.GetSourceControl":
 				res.resp, res.err = w.dispatchGetSourceControl(req)
 			case "WebAppsClient.GetSourceControlSlot":
@@ -2370,16 +2398,10 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchGetWebSiteContainerLogsSlot(req)
 			case "WebAppsClient.GetWorkflow":
 				res.resp, res.err = w.dispatchGetWorkflow(req)
-			case "WebAppsClient.BeginInstallSiteExtension":
-				res.resp, res.err = w.dispatchBeginInstallSiteExtension(req)
-			case "WebAppsClient.BeginInstallSiteExtensionSlot":
-				res.resp, res.err = w.dispatchBeginInstallSiteExtensionSlot(req)
 			case "WebAppsClient.IsCloneable":
 				res.resp, res.err = w.dispatchIsCloneable(req)
 			case "WebAppsClient.IsCloneableSlot":
 				res.resp, res.err = w.dispatchIsCloneableSlot(req)
-			case "WebAppsClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WebAppsClient.ListApplicationSettings":
 				res.resp, res.err = w.dispatchListApplicationSettings(req)
 			case "WebAppsClient.ListApplicationSettingsSlot":
@@ -2392,6 +2414,84 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchListBackupStatusSecrets(req)
 			case "WebAppsClient.ListBackupStatusSecretsSlot":
 				res.resp, res.err = w.dispatchListBackupStatusSecretsSlot(req)
+			case "WebAppsClient.ListConnectionStrings":
+				res.resp, res.err = w.dispatchListConnectionStrings(req)
+			case "WebAppsClient.ListConnectionStringsSlot":
+				res.resp, res.err = w.dispatchListConnectionStringsSlot(req)
+			case "WebAppsClient.ListDeploymentLog":
+				res.resp, res.err = w.dispatchListDeploymentLog(req)
+			case "WebAppsClient.ListDeploymentLogSlot":
+				res.resp, res.err = w.dispatchListDeploymentLogSlot(req)
+			case "WebAppsClient.ListFunctionKeys":
+				res.resp, res.err = w.dispatchListFunctionKeys(req)
+			case "WebAppsClient.ListFunctionKeysSlot":
+				res.resp, res.err = w.dispatchListFunctionKeysSlot(req)
+			case "WebAppsClient.ListFunctionSecrets":
+				res.resp, res.err = w.dispatchListFunctionSecrets(req)
+			case "WebAppsClient.ListFunctionSecretsSlot":
+				res.resp, res.err = w.dispatchListFunctionSecretsSlot(req)
+			case "WebAppsClient.ListHostKeys":
+				res.resp, res.err = w.dispatchListHostKeys(req)
+			case "WebAppsClient.ListHostKeysSlot":
+				res.resp, res.err = w.dispatchListHostKeysSlot(req)
+			case "WebAppsClient.ListHybridConnections":
+				res.resp, res.err = w.dispatchListHybridConnections(req)
+			case "WebAppsClient.ListHybridConnectionsSlot":
+				res.resp, res.err = w.dispatchListHybridConnectionsSlot(req)
+			case "WebAppsClient.ListMetadata":
+				res.resp, res.err = w.dispatchListMetadata(req)
+			case "WebAppsClient.ListMetadataSlot":
+				res.resp, res.err = w.dispatchListMetadataSlot(req)
+			case "WebAppsClient.ListNetworkFeatures":
+				res.resp, res.err = w.dispatchListNetworkFeatures(req)
+			case "WebAppsClient.ListNetworkFeaturesSlot":
+				res.resp, res.err = w.dispatchListNetworkFeaturesSlot(req)
+			case "WebAppsClient.ListPremierAddOns":
+				res.resp, res.err = w.dispatchListPremierAddOns(req)
+			case "WebAppsClient.ListPremierAddOnsSlot":
+				res.resp, res.err = w.dispatchListPremierAddOnsSlot(req)
+			case "WebAppsClient.ListPublishingProfileXMLWithSecrets":
+				res.resp, res.err = w.dispatchListPublishingProfileXMLWithSecrets(req)
+			case "WebAppsClient.ListPublishingProfileXMLWithSecretsSlot":
+				res.resp, res.err = w.dispatchListPublishingProfileXMLWithSecretsSlot(req)
+			case "WebAppsClient.ListRelayServiceConnections":
+				res.resp, res.err = w.dispatchListRelayServiceConnections(req)
+			case "WebAppsClient.ListRelayServiceConnectionsSlot":
+				res.resp, res.err = w.dispatchListRelayServiceConnectionsSlot(req)
+			case "WebAppsClient.ListSitePushSettings":
+				res.resp, res.err = w.dispatchListSitePushSettings(req)
+			case "WebAppsClient.ListSitePushSettingsSlot":
+				res.resp, res.err = w.dispatchListSitePushSettingsSlot(req)
+			case "WebAppsClient.ListSlotConfigurationNames":
+				res.resp, res.err = w.dispatchListSlotConfigurationNames(req)
+			case "WebAppsClient.ListSyncFunctionTriggers":
+				res.resp, res.err = w.dispatchListSyncFunctionTriggers(req)
+			case "WebAppsClient.ListSyncFunctionTriggersSlot":
+				res.resp, res.err = w.dispatchListSyncFunctionTriggersSlot(req)
+			case "WebAppsClient.ListSyncStatus":
+				res.resp, res.err = w.dispatchListSyncStatus(req)
+			case "WebAppsClient.ListSyncStatusSlot":
+				res.resp, res.err = w.dispatchListSyncStatusSlot(req)
+			case "WebAppsClient.ListVnetConnections":
+				res.resp, res.err = w.dispatchListVnetConnections(req)
+			case "WebAppsClient.ListVnetConnectionsSlot":
+				res.resp, res.err = w.dispatchListVnetConnectionsSlot(req)
+			case "WebAppsClient.ListWorkflowsConnections":
+				res.resp, res.err = w.dispatchListWorkflowsConnections(req)
+			case "WebAppsClient.ListWorkflowsConnectionsSlot":
+				res.resp, res.err = w.dispatchListWorkflowsConnectionsSlot(req)
+			case "WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager":
+				res.resp, res.err = w.dispatchNewGetAppSettingsKeyVaultReferencesPager(req)
+			case "WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager":
+				res.resp, res.err = w.dispatchNewGetAppSettingsKeyVaultReferencesSlotPager(req)
+			case "WebAppsClient.NewGetPrivateEndpointConnectionListPager":
+				res.resp, res.err = w.dispatchNewGetPrivateEndpointConnectionListPager(req)
+			case "WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager":
+				res.resp, res.err = w.dispatchNewGetPrivateEndpointConnectionListSlotPager(req)
+			case "WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager":
+				res.resp, res.err = w.dispatchNewGetSiteConnectionStringKeyVaultReferencesPager(req)
+			case "WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager":
+				res.resp, res.err = w.dispatchNewGetSiteConnectionStringKeyVaultReferencesSlotPager(req)
 			case "WebAppsClient.NewListBackupsPager":
 				res.resp, res.err = w.dispatchNewListBackupsPager(req)
 			case "WebAppsClient.NewListBackupsSlotPager":
@@ -2410,18 +2510,10 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListConfigurationsPager(req)
 			case "WebAppsClient.NewListConfigurationsSlotPager":
 				res.resp, res.err = w.dispatchNewListConfigurationsSlotPager(req)
-			case "WebAppsClient.ListConnectionStrings":
-				res.resp, res.err = w.dispatchListConnectionStrings(req)
-			case "WebAppsClient.ListConnectionStringsSlot":
-				res.resp, res.err = w.dispatchListConnectionStringsSlot(req)
 			case "WebAppsClient.NewListContinuousWebJobsPager":
 				res.resp, res.err = w.dispatchNewListContinuousWebJobsPager(req)
 			case "WebAppsClient.NewListContinuousWebJobsSlotPager":
 				res.resp, res.err = w.dispatchNewListContinuousWebJobsSlotPager(req)
-			case "WebAppsClient.ListDeploymentLog":
-				res.resp, res.err = w.dispatchListDeploymentLog(req)
-			case "WebAppsClient.ListDeploymentLogSlot":
-				res.resp, res.err = w.dispatchListDeploymentLogSlot(req)
 			case "WebAppsClient.NewListDeploymentsPager":
 				res.resp, res.err = w.dispatchNewListDeploymentsPager(req)
 			case "WebAppsClient.NewListDeploymentsSlotPager":
@@ -2430,28 +2522,12 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListDomainOwnershipIdentifiersPager(req)
 			case "WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager":
 				res.resp, res.err = w.dispatchNewListDomainOwnershipIdentifiersSlotPager(req)
-			case "WebAppsClient.ListFunctionKeys":
-				res.resp, res.err = w.dispatchListFunctionKeys(req)
-			case "WebAppsClient.ListFunctionKeysSlot":
-				res.resp, res.err = w.dispatchListFunctionKeysSlot(req)
-			case "WebAppsClient.ListFunctionSecrets":
-				res.resp, res.err = w.dispatchListFunctionSecrets(req)
-			case "WebAppsClient.ListFunctionSecretsSlot":
-				res.resp, res.err = w.dispatchListFunctionSecretsSlot(req)
 			case "WebAppsClient.NewListFunctionsPager":
 				res.resp, res.err = w.dispatchNewListFunctionsPager(req)
-			case "WebAppsClient.ListHostKeys":
-				res.resp, res.err = w.dispatchListHostKeys(req)
-			case "WebAppsClient.ListHostKeysSlot":
-				res.resp, res.err = w.dispatchListHostKeysSlot(req)
 			case "WebAppsClient.NewListHostNameBindingsPager":
 				res.resp, res.err = w.dispatchNewListHostNameBindingsPager(req)
 			case "WebAppsClient.NewListHostNameBindingsSlotPager":
 				res.resp, res.err = w.dispatchNewListHostNameBindingsSlotPager(req)
-			case "WebAppsClient.ListHybridConnections":
-				res.resp, res.err = w.dispatchListHybridConnections(req)
-			case "WebAppsClient.ListHybridConnectionsSlot":
-				res.resp, res.err = w.dispatchListHybridConnectionsSlot(req)
 			case "WebAppsClient.NewListInstanceFunctionsSlotPager":
 				res.resp, res.err = w.dispatchNewListInstanceFunctionsSlotPager(req)
 			case "WebAppsClient.NewListInstanceIdentifiersPager":
@@ -2472,22 +2548,12 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListInstanceProcessesSlotPager(req)
 			case "WebAppsClient.NewListInstanceWorkflowsSlotPager":
 				res.resp, res.err = w.dispatchNewListInstanceWorkflowsSlotPager(req)
-			case "WebAppsClient.ListMetadata":
-				res.resp, res.err = w.dispatchListMetadata(req)
-			case "WebAppsClient.ListMetadataSlot":
-				res.resp, res.err = w.dispatchListMetadataSlot(req)
-			case "WebAppsClient.ListNetworkFeatures":
-				res.resp, res.err = w.dispatchListNetworkFeatures(req)
-			case "WebAppsClient.ListNetworkFeaturesSlot":
-				res.resp, res.err = w.dispatchListNetworkFeaturesSlot(req)
+			case "WebAppsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WebAppsClient.NewListPerfMonCountersPager":
 				res.resp, res.err = w.dispatchNewListPerfMonCountersPager(req)
 			case "WebAppsClient.NewListPerfMonCountersSlotPager":
 				res.resp, res.err = w.dispatchNewListPerfMonCountersSlotPager(req)
-			case "WebAppsClient.ListPremierAddOns":
-				res.resp, res.err = w.dispatchListPremierAddOns(req)
-			case "WebAppsClient.ListPremierAddOnsSlot":
-				res.resp, res.err = w.dispatchListPremierAddOnsSlot(req)
 			case "WebAppsClient.NewListProcessModulesPager":
 				res.resp, res.err = w.dispatchNewListProcessModulesPager(req)
 			case "WebAppsClient.NewListProcessModulesSlotPager":
@@ -2506,18 +2572,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListPublicCertificatesPager(req)
 			case "WebAppsClient.NewListPublicCertificatesSlotPager":
 				res.resp, res.err = w.dispatchNewListPublicCertificatesSlotPager(req)
-			case "WebAppsClient.BeginListPublishingCredentials":
-				res.resp, res.err = w.dispatchBeginListPublishingCredentials(req)
-			case "WebAppsClient.BeginListPublishingCredentialsSlot":
-				res.resp, res.err = w.dispatchBeginListPublishingCredentialsSlot(req)
-			case "WebAppsClient.ListPublishingProfileXMLWithSecrets":
-				res.resp, res.err = w.dispatchListPublishingProfileXMLWithSecrets(req)
-			case "WebAppsClient.ListPublishingProfileXMLWithSecretsSlot":
-				res.resp, res.err = w.dispatchListPublishingProfileXMLWithSecretsSlot(req)
-			case "WebAppsClient.ListRelayServiceConnections":
-				res.resp, res.err = w.dispatchListRelayServiceConnections(req)
-			case "WebAppsClient.ListRelayServiceConnectionsSlot":
-				res.resp, res.err = w.dispatchListRelayServiceConnectionsSlot(req)
 			case "WebAppsClient.NewListSiteBackupsPager":
 				res.resp, res.err = w.dispatchNewListSiteBackupsPager(req)
 			case "WebAppsClient.NewListSiteBackupsSlotPager":
@@ -2530,12 +2584,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListSiteExtensionsPager(req)
 			case "WebAppsClient.NewListSiteExtensionsSlotPager":
 				res.resp, res.err = w.dispatchNewListSiteExtensionsSlotPager(req)
-			case "WebAppsClient.ListSitePushSettings":
-				res.resp, res.err = w.dispatchListSitePushSettings(req)
-			case "WebAppsClient.ListSitePushSettingsSlot":
-				res.resp, res.err = w.dispatchListSitePushSettingsSlot(req)
-			case "WebAppsClient.ListSlotConfigurationNames":
-				res.resp, res.err = w.dispatchListSlotConfigurationNames(req)
 			case "WebAppsClient.NewListSlotDifferencesFromProductionPager":
 				res.resp, res.err = w.dispatchNewListSlotDifferencesFromProductionPager(req)
 			case "WebAppsClient.NewListSlotDifferencesSlotPager":
@@ -2544,22 +2592,14 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListSlotSiteDeploymentStatusesSlotPager(req)
 			case "WebAppsClient.NewListSlotsPager":
 				res.resp, res.err = w.dispatchNewListSlotsPager(req)
-			case "WebAppsClient.NewListSnapshotsPager":
-				res.resp, res.err = w.dispatchNewListSnapshotsPager(req)
 			case "WebAppsClient.NewListSnapshotsFromDRSecondaryPager":
 				res.resp, res.err = w.dispatchNewListSnapshotsFromDRSecondaryPager(req)
 			case "WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager":
 				res.resp, res.err = w.dispatchNewListSnapshotsFromDRSecondarySlotPager(req)
+			case "WebAppsClient.NewListSnapshotsPager":
+				res.resp, res.err = w.dispatchNewListSnapshotsPager(req)
 			case "WebAppsClient.NewListSnapshotsSlotPager":
 				res.resp, res.err = w.dispatchNewListSnapshotsSlotPager(req)
-			case "WebAppsClient.ListSyncFunctionTriggers":
-				res.resp, res.err = w.dispatchListSyncFunctionTriggers(req)
-			case "WebAppsClient.ListSyncFunctionTriggersSlot":
-				res.resp, res.err = w.dispatchListSyncFunctionTriggersSlot(req)
-			case "WebAppsClient.ListSyncStatus":
-				res.resp, res.err = w.dispatchListSyncStatus(req)
-			case "WebAppsClient.ListSyncStatusSlot":
-				res.resp, res.err = w.dispatchListSyncStatusSlot(req)
 			case "WebAppsClient.NewListTriggeredWebJobHistoryPager":
 				res.resp, res.err = w.dispatchNewListTriggeredWebJobHistoryPager(req)
 			case "WebAppsClient.NewListTriggeredWebJobHistorySlotPager":
@@ -2572,24 +2612,12 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchNewListUsagesPager(req)
 			case "WebAppsClient.NewListUsagesSlotPager":
 				res.resp, res.err = w.dispatchNewListUsagesSlotPager(req)
-			case "WebAppsClient.ListVnetConnections":
-				res.resp, res.err = w.dispatchListVnetConnections(req)
-			case "WebAppsClient.ListVnetConnectionsSlot":
-				res.resp, res.err = w.dispatchListVnetConnectionsSlot(req)
 			case "WebAppsClient.NewListWebJobsPager":
 				res.resp, res.err = w.dispatchNewListWebJobsPager(req)
 			case "WebAppsClient.NewListWebJobsSlotPager":
 				res.resp, res.err = w.dispatchNewListWebJobsSlotPager(req)
 			case "WebAppsClient.NewListWorkflowsPager":
 				res.resp, res.err = w.dispatchNewListWorkflowsPager(req)
-			case "WebAppsClient.ListWorkflowsConnections":
-				res.resp, res.err = w.dispatchListWorkflowsConnections(req)
-			case "WebAppsClient.ListWorkflowsConnectionsSlot":
-				res.resp, res.err = w.dispatchListWorkflowsConnectionsSlot(req)
-			case "WebAppsClient.BeginMigrateMySQL":
-				res.resp, res.err = w.dispatchBeginMigrateMySQL(req)
-			case "WebAppsClient.BeginMigrateStorage":
-				res.resp, res.err = w.dispatchBeginMigrateStorage(req)
 			case "WebAppsClient.PutPrivateAccessVnet":
 				res.resp, res.err = w.dispatchPutPrivateAccessVnet(req)
 			case "WebAppsClient.PutPrivateAccessVnetSlot":
@@ -2606,22 +2634,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchRestart(req)
 			case "WebAppsClient.RestartSlot":
 				res.resp, res.err = w.dispatchRestartSlot(req)
-			case "WebAppsClient.BeginRestore":
-				res.resp, res.err = w.dispatchBeginRestore(req)
-			case "WebAppsClient.BeginRestoreFromBackupBlob":
-				res.resp, res.err = w.dispatchBeginRestoreFromBackupBlob(req)
-			case "WebAppsClient.BeginRestoreFromBackupBlobSlot":
-				res.resp, res.err = w.dispatchBeginRestoreFromBackupBlobSlot(req)
-			case "WebAppsClient.BeginRestoreFromDeletedApp":
-				res.resp, res.err = w.dispatchBeginRestoreFromDeletedApp(req)
-			case "WebAppsClient.BeginRestoreFromDeletedAppSlot":
-				res.resp, res.err = w.dispatchBeginRestoreFromDeletedAppSlot(req)
-			case "WebAppsClient.BeginRestoreSlot":
-				res.resp, res.err = w.dispatchBeginRestoreSlot(req)
-			case "WebAppsClient.BeginRestoreSnapshot":
-				res.resp, res.err = w.dispatchBeginRestoreSnapshot(req)
-			case "WebAppsClient.BeginRestoreSnapshotSlot":
-				res.resp, res.err = w.dispatchBeginRestoreSnapshotSlot(req)
 			case "WebAppsClient.RunTriggeredWebJob":
 				res.resp, res.err = w.dispatchRunTriggeredWebJob(req)
 			case "WebAppsClient.RunTriggeredWebJobSlot":
@@ -2632,18 +2644,10 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchStartContinuousWebJob(req)
 			case "WebAppsClient.StartContinuousWebJobSlot":
 				res.resp, res.err = w.dispatchStartContinuousWebJobSlot(req)
-			case "WebAppsClient.BeginStartNetworkTrace":
-				res.resp, res.err = w.dispatchBeginStartNetworkTrace(req)
-			case "WebAppsClient.BeginStartNetworkTraceSlot":
-				res.resp, res.err = w.dispatchBeginStartNetworkTraceSlot(req)
 			case "WebAppsClient.StartSlot":
 				res.resp, res.err = w.dispatchStartSlot(req)
 			case "WebAppsClient.StartWebSiteNetworkTrace":
 				res.resp, res.err = w.dispatchStartWebSiteNetworkTrace(req)
-			case "WebAppsClient.BeginStartWebSiteNetworkTraceOperation":
-				res.resp, res.err = w.dispatchBeginStartWebSiteNetworkTraceOperation(req)
-			case "WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot":
-				res.resp, res.err = w.dispatchBeginStartWebSiteNetworkTraceOperationSlot(req)
 			case "WebAppsClient.StartWebSiteNetworkTraceSlot":
 				res.resp, res.err = w.dispatchStartWebSiteNetworkTraceSlot(req)
 			case "WebAppsClient.Stop":
@@ -2662,10 +2666,6 @@ func (w *WebAppsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = w.dispatchStopWebSiteNetworkTrace(req)
 			case "WebAppsClient.StopWebSiteNetworkTraceSlot":
 				res.resp, res.err = w.dispatchStopWebSiteNetworkTraceSlot(req)
-			case "WebAppsClient.BeginSwapSlot":
-				res.resp, res.err = w.dispatchBeginSwapSlot(req)
-			case "WebAppsClient.BeginSwapSlotWithProduction":
-				res.resp, res.err = w.dispatchBeginSwapSlotWithProduction(req)
 			case "WebAppsClient.SyncFunctionTriggers":
 				res.resp, res.err = w.dispatchSyncFunctionTriggers(req)
 			case "WebAppsClient.SyncFunctionTriggersSlot":
@@ -3032,6 +3032,84 @@ func (w *WebAppsServerTransport) dispatchApplySlotConfigurationSlot(req *http.Re
 	return resp, nil
 }
 
+func (w *WebAppsServerTransport) dispatchBackup(req *http.Request) (*http.Response, error) {
+	if w.srv.Backup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Backup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.BackupRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Backup(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupItem, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBackupSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BackupSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BackupSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.BackupRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.BackupSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupItem, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (w *WebAppsServerTransport) dispatchBeginApproveOrRejectPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginApproveOrRejectPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginApproveOrRejectPrivateEndpointConnection not implemented")}
@@ -3137,170 +3215,6 @@ func (w *WebAppsServerTransport) dispatchBeginApproveOrRejectPrivateEndpointConn
 		w.beginApproveOrRejectPrivateEndpointConnectionSlot.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBackup(req *http.Request) (*http.Response, error) {
-	if w.srv.Backup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Backup not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.BackupRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Backup(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupItem, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBackupSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BackupSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BackupSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.BackupRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.BackupSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupItem, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchCreateDeployment(req *http.Request) (*http.Response, error) {
-	if w.srv.CreateDeployment == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateDeployment not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.Deployment](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CreateDeployment(req.Context(), resourceGroupNameParam, nameParam, idParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchCreateDeploymentSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.CreateDeploymentSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateDeploymentSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.Deployment](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CreateDeploymentSlot(req.Context(), resourceGroupNameParam, nameParam, idParam, slotParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -3620,39 +3534,6 @@ func (w *WebAppsServerTransport) dispatchBeginCreateMSDeployOperationSlot(req *h
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchCreateOneDeployOperation(req *http.Request) (*http.Response, error) {
-	if w.srv.CreateOneDeployOperation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOneDeployOperation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/onedeploy`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CreateOneDeployOperation(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
@@ -3698,6 +3579,1578 @@ func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		w.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginCreateOrUpdateSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSlot not implemented")}
+	}
+	beginCreateOrUpdateSlot := w.beginCreateOrUpdateSlot.get(req)
+	if beginCreateOrUpdateSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.Site](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginCreateOrUpdateSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateSlot = &respr
+		w.beginCreateOrUpdateSlot.add(req, beginCreateOrUpdateSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginCreateOrUpdateSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateSlot) {
+		w.beginCreateOrUpdateSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSourceControl(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginCreateOrUpdateSourceControl == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSourceControl not implemented")}
+	}
+	beginCreateOrUpdateSourceControl := w.beginCreateOrUpdateSourceControl.get(req)
+	if beginCreateOrUpdateSourceControl == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/web`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.SiteSourceControl](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginCreateOrUpdateSourceControl(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateSourceControl = &respr
+		w.beginCreateOrUpdateSourceControl.add(req, beginCreateOrUpdateSourceControl)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateSourceControl, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		w.beginCreateOrUpdateSourceControl.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateSourceControl) {
+		w.beginCreateOrUpdateSourceControl.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSourceControlSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginCreateOrUpdateSourceControlSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSourceControlSlot not implemented")}
+	}
+	beginCreateOrUpdateSourceControlSlot := w.beginCreateOrUpdateSourceControlSlot.get(req)
+	if beginCreateOrUpdateSourceControlSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/web`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.SiteSourceControl](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginCreateOrUpdateSourceControlSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateSourceControlSlot = &respr
+		w.beginCreateOrUpdateSourceControlSlot.add(req, beginCreateOrUpdateSourceControlSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateSourceControlSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		w.beginCreateOrUpdateSourceControlSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateSourceControlSlot) {
+		w.beginCreateOrUpdateSourceControlSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginDeletePrivateEndpointConnection(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginDeletePrivateEndpointConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeletePrivateEndpointConnection not implemented")}
+	}
+	beginDeletePrivateEndpointConnection := w.beginDeletePrivateEndpointConnection.get(req)
+	if beginDeletePrivateEndpointConnection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginDeletePrivateEndpointConnection(req.Context(), resourceGroupNameParam, nameParam, privateEndpointConnectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeletePrivateEndpointConnection = &respr
+		w.beginDeletePrivateEndpointConnection.add(req, beginDeletePrivateEndpointConnection)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeletePrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDeletePrivateEndpointConnection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeletePrivateEndpointConnection) {
+		w.beginDeletePrivateEndpointConnection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginDeletePrivateEndpointConnectionSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginDeletePrivateEndpointConnectionSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeletePrivateEndpointConnectionSlot not implemented")}
+	}
+	beginDeletePrivateEndpointConnectionSlot := w.beginDeletePrivateEndpointConnectionSlot.get(req)
+	if beginDeletePrivateEndpointConnectionSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginDeletePrivateEndpointConnectionSlot(req.Context(), resourceGroupNameParam, nameParam, privateEndpointConnectionNameParam, slotParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeletePrivateEndpointConnectionSlot = &respr
+		w.beginDeletePrivateEndpointConnectionSlot.add(req, beginDeletePrivateEndpointConnectionSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeletePrivateEndpointConnectionSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDeletePrivateEndpointConnectionSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeletePrivateEndpointConnectionSlot) {
+		w.beginDeletePrivateEndpointConnectionSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginGetProductionSiteDeploymentStatus(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginGetProductionSiteDeploymentStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetProductionSiteDeploymentStatus not implemented")}
+	}
+	beginGetProductionSiteDeploymentStatus := w.beginGetProductionSiteDeploymentStatus.get(req)
+	if beginGetProductionSiteDeploymentStatus == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deploymentStatus/(?P<deploymentStatusId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentStatusIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStatusId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginGetProductionSiteDeploymentStatus(req.Context(), resourceGroupNameParam, nameParam, deploymentStatusIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetProductionSiteDeploymentStatus = &respr
+		w.beginGetProductionSiteDeploymentStatus.add(req, beginGetProductionSiteDeploymentStatus)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetProductionSiteDeploymentStatus, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetProductionSiteDeploymentStatus.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetProductionSiteDeploymentStatus) {
+		w.beginGetProductionSiteDeploymentStatus.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginGetSlotSiteDeploymentStatusSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginGetSlotSiteDeploymentStatusSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetSlotSiteDeploymentStatusSlot not implemented")}
+	}
+	beginGetSlotSiteDeploymentStatusSlot := w.beginGetSlotSiteDeploymentStatusSlot.get(req)
+	if beginGetSlotSiteDeploymentStatusSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deploymentStatus/(?P<deploymentStatusId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentStatusIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStatusId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginGetSlotSiteDeploymentStatusSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, deploymentStatusIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetSlotSiteDeploymentStatusSlot = &respr
+		w.beginGetSlotSiteDeploymentStatusSlot.add(req, beginGetSlotSiteDeploymentStatusSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetSlotSiteDeploymentStatusSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetSlotSiteDeploymentStatusSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetSlotSiteDeploymentStatusSlot) {
+		w.beginGetSlotSiteDeploymentStatusSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginInstallSiteExtension(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginInstallSiteExtension == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInstallSiteExtension not implemented")}
+	}
+	beginInstallSiteExtension := w.beginInstallSiteExtension.get(req)
+	if beginInstallSiteExtension == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteextensions/(?P<siteExtensionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		siteExtensionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteExtensionId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginInstallSiteExtension(req.Context(), resourceGroupNameParam, nameParam, siteExtensionIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInstallSiteExtension = &respr
+		w.beginInstallSiteExtension.add(req, beginInstallSiteExtension)
+	}
+
+	resp, err := server.PollerResponderNext(beginInstallSiteExtension, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginInstallSiteExtension.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInstallSiteExtension) {
+		w.beginInstallSiteExtension.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginInstallSiteExtensionSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginInstallSiteExtensionSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInstallSiteExtensionSlot not implemented")}
+	}
+	beginInstallSiteExtensionSlot := w.beginInstallSiteExtensionSlot.get(req)
+	if beginInstallSiteExtensionSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteextensions/(?P<siteExtensionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		siteExtensionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteExtensionId")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginInstallSiteExtensionSlot(req.Context(), resourceGroupNameParam, nameParam, siteExtensionIDParam, slotParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInstallSiteExtensionSlot = &respr
+		w.beginInstallSiteExtensionSlot.add(req, beginInstallSiteExtensionSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginInstallSiteExtensionSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginInstallSiteExtensionSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInstallSiteExtensionSlot) {
+		w.beginInstallSiteExtensionSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginListPublishingCredentials(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginListPublishingCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListPublishingCredentials not implemented")}
+	}
+	beginListPublishingCredentials := w.beginListPublishingCredentials.get(req)
+	if beginListPublishingCredentials == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/publishingcredentials/list`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginListPublishingCredentials(req.Context(), resourceGroupNameParam, nameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListPublishingCredentials = &respr
+		w.beginListPublishingCredentials.add(req, beginListPublishingCredentials)
+	}
+
+	resp, err := server.PollerResponderNext(beginListPublishingCredentials, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.beginListPublishingCredentials.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListPublishingCredentials) {
+		w.beginListPublishingCredentials.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginListPublishingCredentialsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginListPublishingCredentialsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListPublishingCredentialsSlot not implemented")}
+	}
+	beginListPublishingCredentialsSlot := w.beginListPublishingCredentialsSlot.get(req)
+	if beginListPublishingCredentialsSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/publishingcredentials/list`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginListPublishingCredentialsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListPublishingCredentialsSlot = &respr
+		w.beginListPublishingCredentialsSlot.add(req, beginListPublishingCredentialsSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginListPublishingCredentialsSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.beginListPublishingCredentialsSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListPublishingCredentialsSlot) {
+		w.beginListPublishingCredentialsSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginMigrateMySQL(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginMigrateMySQL == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMySQL not implemented")}
+	}
+	beginMigrateMySQL := w.beginMigrateMySQL.get(req)
+	if beginMigrateMySQL == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migratemysql`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.MigrateMySQLRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginMigrateMySQL(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateMySQL = &respr
+		w.beginMigrateMySQL.add(req, beginMigrateMySQL)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateMySQL, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.beginMigrateMySQL.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateMySQL) {
+		w.beginMigrateMySQL.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginMigrateStorage(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginMigrateStorage == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateStorage not implemented")}
+	}
+	beginMigrateStorage := w.beginMigrateStorage.get(req)
+	if beginMigrateStorage == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StorageMigrationOptions](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginMigrateStorage(req.Context(), qp.Get("subscriptionName"), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateStorage = &respr
+		w.beginMigrateStorage.add(req, beginMigrateStorage)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateStorage, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.beginMigrateStorage.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateStorage) {
+		w.beginMigrateStorage.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
+	}
+	beginRestore := w.beginRestore.get(req)
+	if beginRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		backupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestore(req.Context(), resourceGroupNameParam, nameParam, backupIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestore = &respr
+		w.beginRestore.add(req, beginRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestore) {
+		w.beginRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreFromBackupBlob(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreFromBackupBlob == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromBackupBlob not implemented")}
+	}
+	beginRestoreFromBackupBlob := w.beginRestoreFromBackupBlob.get(req)
+	if beginRestoreFromBackupBlob == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromBackupBlob`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreFromBackupBlob(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreFromBackupBlob = &respr
+		w.beginRestoreFromBackupBlob.add(req, beginRestoreFromBackupBlob)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreFromBackupBlob, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreFromBackupBlob.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreFromBackupBlob) {
+		w.beginRestoreFromBackupBlob.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreFromBackupBlobSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreFromBackupBlobSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromBackupBlobSlot not implemented")}
+	}
+	beginRestoreFromBackupBlobSlot := w.beginRestoreFromBackupBlobSlot.get(req)
+	if beginRestoreFromBackupBlobSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromBackupBlob`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreFromBackupBlobSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreFromBackupBlobSlot = &respr
+		w.beginRestoreFromBackupBlobSlot.add(req, beginRestoreFromBackupBlobSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreFromBackupBlobSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreFromBackupBlobSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreFromBackupBlobSlot) {
+		w.beginRestoreFromBackupBlobSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreFromDeletedApp(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreFromDeletedApp == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromDeletedApp not implemented")}
+	}
+	beginRestoreFromDeletedApp := w.beginRestoreFromDeletedApp.get(req)
+	if beginRestoreFromDeletedApp == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromDeletedApp`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.DeletedAppRestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreFromDeletedApp(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreFromDeletedApp = &respr
+		w.beginRestoreFromDeletedApp.add(req, beginRestoreFromDeletedApp)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreFromDeletedApp, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreFromDeletedApp.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreFromDeletedApp) {
+		w.beginRestoreFromDeletedApp.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreFromDeletedAppSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreFromDeletedAppSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromDeletedAppSlot not implemented")}
+	}
+	beginRestoreFromDeletedAppSlot := w.beginRestoreFromDeletedAppSlot.get(req)
+	if beginRestoreFromDeletedAppSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromDeletedApp`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.DeletedAppRestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreFromDeletedAppSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreFromDeletedAppSlot = &respr
+		w.beginRestoreFromDeletedAppSlot.add(req, beginRestoreFromDeletedAppSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreFromDeletedAppSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreFromDeletedAppSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreFromDeletedAppSlot) {
+		w.beginRestoreFromDeletedAppSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSlot not implemented")}
+	}
+	beginRestoreSlot := w.beginRestoreSlot.get(req)
+	if beginRestoreSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		backupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupId")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreSlot(req.Context(), resourceGroupNameParam, nameParam, backupIDParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreSlot = &respr
+		w.beginRestoreSlot.add(req, beginRestoreSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreSlot) {
+		w.beginRestoreSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreSnapshot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreSnapshot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSnapshot not implemented")}
+	}
+	beginRestoreSnapshot := w.beginRestoreSnapshot.get(req)
+	if beginRestoreSnapshot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreSnapshot`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.SnapshotRestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreSnapshot(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreSnapshot = &respr
+		w.beginRestoreSnapshot.add(req, beginRestoreSnapshot)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreSnapshot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreSnapshot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreSnapshot) {
+		w.beginRestoreSnapshot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginRestoreSnapshotSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginRestoreSnapshotSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSnapshotSlot not implemented")}
+	}
+	beginRestoreSnapshotSlot := w.beginRestoreSnapshotSlot.get(req)
+	if beginRestoreSnapshotSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreSnapshot`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.SnapshotRestoreRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginRestoreSnapshotSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreSnapshotSlot = &respr
+		w.beginRestoreSnapshotSlot.add(req, beginRestoreSnapshotSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreSnapshotSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginRestoreSnapshotSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreSnapshotSlot) {
+		w.beginRestoreSnapshotSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginStartNetworkTrace(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginStartNetworkTrace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartNetworkTrace not implemented")}
+	}
+	beginStartNetworkTrace := w.beginStartNetworkTrace.get(req)
+	if beginStartNetworkTrace == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startNetworkTrace`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		sasURLParam := getOptional(qp.Get("sasUrl"))
+		var options *armappservice.WebAppsClientBeginStartNetworkTraceOptions
+		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
+			options = &armappservice.WebAppsClientBeginStartNetworkTraceOptions{
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
+			}
+		}
+		respr, errRespr := w.srv.BeginStartNetworkTrace(req.Context(), resourceGroupNameParam, nameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartNetworkTrace = &respr
+		w.beginStartNetworkTrace.add(req, beginStartNetworkTrace)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartNetworkTrace, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginStartNetworkTrace.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartNetworkTrace) {
+		w.beginStartNetworkTrace.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginStartNetworkTraceSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginStartNetworkTraceSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartNetworkTraceSlot not implemented")}
+	}
+	beginStartNetworkTraceSlot := w.beginStartNetworkTraceSlot.get(req)
+	if beginStartNetworkTraceSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startNetworkTrace`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		sasURLParam := getOptional(qp.Get("sasUrl"))
+		var options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions
+		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
+			options = &armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
+			}
+		}
+		respr, errRespr := w.srv.BeginStartNetworkTraceSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartNetworkTraceSlot = &respr
+		w.beginStartNetworkTraceSlot.add(req, beginStartNetworkTraceSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartNetworkTraceSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginStartNetworkTraceSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartNetworkTraceSlot) {
+		w.beginStartNetworkTraceSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperation(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginStartWebSiteNetworkTraceOperation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartWebSiteNetworkTraceOperation not implemented")}
+	}
+	beginStartWebSiteNetworkTraceOperation := w.beginStartWebSiteNetworkTraceOperation.get(req)
+	if beginStartWebSiteNetworkTraceOperation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkTrace/startOperation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		sasURLParam := getOptional(qp.Get("sasUrl"))
+		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions
+		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
+			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
+			}
+		}
+		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperation(req.Context(), resourceGroupNameParam, nameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartWebSiteNetworkTraceOperation = &respr
+		w.beginStartWebSiteNetworkTraceOperation.add(req, beginStartWebSiteNetworkTraceOperation)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartWebSiteNetworkTraceOperation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginStartWebSiteNetworkTraceOperation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartWebSiteNetworkTraceOperation) {
+		w.beginStartWebSiteNetworkTraceOperation.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperationSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginStartWebSiteNetworkTraceOperationSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartWebSiteNetworkTraceOperationSlot not implemented")}
+	}
+	beginStartWebSiteNetworkTraceOperationSlot := w.beginStartWebSiteNetworkTraceOperationSlot.get(req)
+	if beginStartWebSiteNetworkTraceOperationSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkTrace/startOperation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		sasURLParam := getOptional(qp.Get("sasUrl"))
+		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions
+		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
+			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
+			}
+		}
+		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperationSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartWebSiteNetworkTraceOperationSlot = &respr
+		w.beginStartWebSiteNetworkTraceOperationSlot.add(req, beginStartWebSiteNetworkTraceOperationSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartWebSiteNetworkTraceOperationSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginStartWebSiteNetworkTraceOperationSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartWebSiteNetworkTraceOperationSlot) {
+		w.beginStartWebSiteNetworkTraceOperationSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginSwapSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginSwapSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSwapSlot not implemented")}
+	}
+	beginSwapSlot := w.beginSwapSlot.get(req)
+	if beginSwapSlot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slotsswap`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.CsmSlotEntity](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginSwapSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSwapSlot = &respr
+		w.beginSwapSlot.add(req, beginSwapSlot)
+	}
+
+	resp, err := server.PollerResponderNext(beginSwapSlot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginSwapSlot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSwapSlot) {
+		w.beginSwapSlot.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchBeginSwapSlotWithProduction(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginSwapSlotWithProduction == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSwapSlotWithProduction not implemented")}
+	}
+	beginSwapSlotWithProduction := w.beginSwapSlotWithProduction.get(req)
+	if beginSwapSlotWithProduction == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slotsswap`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.CsmSlotEntity](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginSwapSlotWithProduction(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSwapSlotWithProduction = &respr
+		w.beginSwapSlotWithProduction.add(req, beginSwapSlotWithProduction)
+	}
+
+	resp, err := server.PollerResponderNext(beginSwapSlotWithProduction, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginSwapSlotWithProduction.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSwapSlotWithProduction) {
+		w.beginSwapSlotWithProduction.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchCreateDeployment(req *http.Request) (*http.Response, error) {
+	if w.srv.CreateDeployment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateDeployment not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.Deployment](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.CreateDeployment(req.Context(), resourceGroupNameParam, nameParam, idParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchCreateDeploymentSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.CreateDeploymentSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateDeploymentSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.Deployment](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.CreateDeploymentSlot(req.Context(), resourceGroupNameParam, nameParam, idParam, slotParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchCreateOneDeployOperation(req *http.Request) (*http.Response, error) {
+	if w.srv.CreateOneDeployOperation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOneDeployOperation not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/onedeploy`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.CreateOneDeployOperation(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -4488,158 +5941,6 @@ func (w *WebAppsServerTransport) dispatchCreateOrUpdateSiteContainerSlot(req *ht
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginCreateOrUpdateSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSlot not implemented")}
-	}
-	beginCreateOrUpdateSlot := w.beginCreateOrUpdateSlot.get(req)
-	if beginCreateOrUpdateSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.Site](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginCreateOrUpdateSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdateSlot = &respr
-		w.beginCreateOrUpdateSlot.add(req, beginCreateOrUpdateSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdateSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginCreateOrUpdateSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdateSlot) {
-		w.beginCreateOrUpdateSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSourceControl(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginCreateOrUpdateSourceControl == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSourceControl not implemented")}
-	}
-	beginCreateOrUpdateSourceControl := w.beginCreateOrUpdateSourceControl.get(req)
-	if beginCreateOrUpdateSourceControl == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/web`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.SiteSourceControl](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginCreateOrUpdateSourceControl(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdateSourceControl = &respr
-		w.beginCreateOrUpdateSourceControl.add(req, beginCreateOrUpdateSourceControl)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdateSourceControl, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		w.beginCreateOrUpdateSourceControl.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdateSourceControl) {
-		w.beginCreateOrUpdateSourceControl.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginCreateOrUpdateSourceControlSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginCreateOrUpdateSourceControlSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateSourceControlSlot not implemented")}
-	}
-	beginCreateOrUpdateSourceControlSlot := w.beginCreateOrUpdateSourceControlSlot.get(req)
-	if beginCreateOrUpdateSourceControlSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/web`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.SiteSourceControl](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginCreateOrUpdateSourceControlSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdateSourceControlSlot = &respr
-		w.beginCreateOrUpdateSourceControlSlot.add(req, beginCreateOrUpdateSourceControlSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdateSourceControlSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		w.beginCreateOrUpdateSourceControlSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdateSourceControlSlot) {
-		w.beginCreateOrUpdateSourceControlSlot.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -5910,106 +7211,6 @@ func (w *WebAppsServerTransport) dispatchDeletePremierAddOnSlot(req *http.Reques
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginDeletePrivateEndpointConnection(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginDeletePrivateEndpointConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDeletePrivateEndpointConnection not implemented")}
-	}
-	beginDeletePrivateEndpointConnection := w.beginDeletePrivateEndpointConnection.get(req)
-	if beginDeletePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginDeletePrivateEndpointConnection(req.Context(), resourceGroupNameParam, nameParam, privateEndpointConnectionNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDeletePrivateEndpointConnection = &respr
-		w.beginDeletePrivateEndpointConnection.add(req, beginDeletePrivateEndpointConnection)
-	}
-
-	resp, err := server.PollerResponderNext(beginDeletePrivateEndpointConnection, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginDeletePrivateEndpointConnection.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDeletePrivateEndpointConnection) {
-		w.beginDeletePrivateEndpointConnection.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginDeletePrivateEndpointConnectionSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginDeletePrivateEndpointConnectionSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDeletePrivateEndpointConnectionSlot not implemented")}
-	}
-	beginDeletePrivateEndpointConnectionSlot := w.beginDeletePrivateEndpointConnectionSlot.get(req)
-	if beginDeletePrivateEndpointConnectionSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginDeletePrivateEndpointConnectionSlot(req.Context(), resourceGroupNameParam, nameParam, privateEndpointConnectionNameParam, slotParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDeletePrivateEndpointConnectionSlot = &respr
-		w.beginDeletePrivateEndpointConnectionSlot.add(req, beginDeletePrivateEndpointConnectionSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginDeletePrivateEndpointConnectionSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginDeletePrivateEndpointConnectionSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDeletePrivateEndpointConnectionSlot) {
-		w.beginDeletePrivateEndpointConnectionSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchDeleteProcess(req *http.Request) (*http.Response, error) {
 	if w.srv.DeleteProcess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteProcess not implemented")}
@@ -7110,92 +8311,6 @@ func (w *WebAppsServerTransport) dispatchGetAppSettingKeyVaultReferenceSlot(req 
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).APIKVReference, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchNewGetAppSettingsKeyVaultReferencesPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetAppSettingsKeyVaultReferencesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetAppSettingsKeyVaultReferencesPager not implemented")}
-	}
-	newGetAppSettingsKeyVaultReferencesPager := w.newGetAppSettingsKeyVaultReferencesPager.get(req)
-	if newGetAppSettingsKeyVaultReferencesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/appsettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetAppSettingsKeyVaultReferencesPager(resourceGroupNameParam, nameParam, nil)
-		newGetAppSettingsKeyVaultReferencesPager = &resp
-		w.newGetAppSettingsKeyVaultReferencesPager.add(req, newGetAppSettingsKeyVaultReferencesPager)
-		server.PagerResponderInjectNextLinks(newGetAppSettingsKeyVaultReferencesPager, req, func(page *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetAppSettingsKeyVaultReferencesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetAppSettingsKeyVaultReferencesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetAppSettingsKeyVaultReferencesPager) {
-		w.newGetAppSettingsKeyVaultReferencesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchNewGetAppSettingsKeyVaultReferencesSlotPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetAppSettingsKeyVaultReferencesSlotPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetAppSettingsKeyVaultReferencesSlotPager not implemented")}
-	}
-	newGetAppSettingsKeyVaultReferencesSlotPager := w.newGetAppSettingsKeyVaultReferencesSlotPager.get(req)
-	if newGetAppSettingsKeyVaultReferencesSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/appsettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetAppSettingsKeyVaultReferencesSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
-		newGetAppSettingsKeyVaultReferencesSlotPager = &resp
-		w.newGetAppSettingsKeyVaultReferencesSlotPager.add(req, newGetAppSettingsKeyVaultReferencesSlotPager)
-		server.PagerResponderInjectNextLinks(newGetAppSettingsKeyVaultReferencesSlotPager, req, func(page *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetAppSettingsKeyVaultReferencesSlotPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetAppSettingsKeyVaultReferencesSlotPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetAppSettingsKeyVaultReferencesSlotPager) {
-		w.newGetAppSettingsKeyVaultReferencesSlotPager.remove(req)
 	}
 	return resp, nil
 }
@@ -9767,92 +10882,6 @@ func (w *WebAppsServerTransport) dispatchGetPrivateEndpointConnection(req *http.
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetPrivateEndpointConnectionListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
-	}
-	newGetPrivateEndpointConnectionListPager := w.newGetPrivateEndpointConnectionListPager.get(req)
-	if newGetPrivateEndpointConnectionListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
-		newGetPrivateEndpointConnectionListPager = &resp
-		w.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
-		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetPrivateEndpointConnectionListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
-		w.newGetPrivateEndpointConnectionListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchNewGetPrivateEndpointConnectionListSlotPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetPrivateEndpointConnectionListSlotPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListSlotPager not implemented")}
-	}
-	newGetPrivateEndpointConnectionListSlotPager := w.newGetPrivateEndpointConnectionListSlotPager.get(req)
-	if newGetPrivateEndpointConnectionListSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetPrivateEndpointConnectionListSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
-		newGetPrivateEndpointConnectionListSlotPager = &resp
-		w.newGetPrivateEndpointConnectionListSlotPager.add(req, newGetPrivateEndpointConnectionListSlotPager)
-		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListSlotPager, req, func(page *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListSlotPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetPrivateEndpointConnectionListSlotPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListSlotPager) {
-		w.newGetPrivateEndpointConnectionListSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchGetPrivateEndpointConnectionSlot(req *http.Request) (*http.Response, error) {
 	if w.srv.GetPrivateEndpointConnectionSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnectionSlot not implemented")}
@@ -10218,54 +11247,6 @@ func (w *WebAppsServerTransport) dispatchGetProcessSlot(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginGetProductionSiteDeploymentStatus(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginGetProductionSiteDeploymentStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetProductionSiteDeploymentStatus not implemented")}
-	}
-	beginGetProductionSiteDeploymentStatus := w.beginGetProductionSiteDeploymentStatus.get(req)
-	if beginGetProductionSiteDeploymentStatus == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deploymentStatus/(?P<deploymentStatusId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentStatusIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStatusId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginGetProductionSiteDeploymentStatus(req.Context(), resourceGroupNameParam, nameParam, deploymentStatusIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetProductionSiteDeploymentStatus = &respr
-		w.beginGetProductionSiteDeploymentStatus.add(req, beginGetProductionSiteDeploymentStatus)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetProductionSiteDeploymentStatus, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginGetProductionSiteDeploymentStatus.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetProductionSiteDeploymentStatus) {
-		w.beginGetProductionSiteDeploymentStatus.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchGetPublicCertificate(req *http.Request) (*http.Response, error) {
 	if w.srv.GetPublicCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPublicCertificate not implemented")}
@@ -10570,92 +11551,6 @@ func (w *WebAppsServerTransport) dispatchGetSiteConnectionStringKeyVaultReferenc
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchNewGetSiteConnectionStringKeyVaultReferencesPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetSiteConnectionStringKeyVaultReferencesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetSiteConnectionStringKeyVaultReferencesPager not implemented")}
-	}
-	newGetSiteConnectionStringKeyVaultReferencesPager := w.newGetSiteConnectionStringKeyVaultReferencesPager.get(req)
-	if newGetSiteConnectionStringKeyVaultReferencesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/connectionstrings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetSiteConnectionStringKeyVaultReferencesPager(resourceGroupNameParam, nameParam, nil)
-		newGetSiteConnectionStringKeyVaultReferencesPager = &resp
-		w.newGetSiteConnectionStringKeyVaultReferencesPager.add(req, newGetSiteConnectionStringKeyVaultReferencesPager)
-		server.PagerResponderInjectNextLinks(newGetSiteConnectionStringKeyVaultReferencesPager, req, func(page *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetSiteConnectionStringKeyVaultReferencesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetSiteConnectionStringKeyVaultReferencesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetSiteConnectionStringKeyVaultReferencesPager) {
-		w.newGetSiteConnectionStringKeyVaultReferencesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchNewGetSiteConnectionStringKeyVaultReferencesSlotPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewGetSiteConnectionStringKeyVaultReferencesSlotPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetSiteConnectionStringKeyVaultReferencesSlotPager not implemented")}
-	}
-	newGetSiteConnectionStringKeyVaultReferencesSlotPager := w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.get(req)
-	if newGetSiteConnectionStringKeyVaultReferencesSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/connectionstrings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewGetSiteConnectionStringKeyVaultReferencesSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
-		newGetSiteConnectionStringKeyVaultReferencesSlotPager = &resp
-		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.add(req, newGetSiteConnectionStringKeyVaultReferencesSlotPager)
-		server.PagerResponderInjectNextLinks(newGetSiteConnectionStringKeyVaultReferencesSlotPager, req, func(page *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetSiteConnectionStringKeyVaultReferencesSlotPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetSiteConnectionStringKeyVaultReferencesSlotPager) {
-		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchGetSiteContainer(req *http.Request) (*http.Response, error) {
 	if w.srv.GetSiteContainer == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteContainer not implemented")}
@@ -10916,58 +11811,6 @@ func (w *WebAppsServerTransport) dispatchGetSlot(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginGetSlotSiteDeploymentStatusSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginGetSlotSiteDeploymentStatusSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetSlotSiteDeploymentStatusSlot not implemented")}
-	}
-	beginGetSlotSiteDeploymentStatusSlot := w.beginGetSlotSiteDeploymentStatusSlot.get(req)
-	if beginGetSlotSiteDeploymentStatusSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deploymentStatus/(?P<deploymentStatusId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentStatusIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStatusId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginGetSlotSiteDeploymentStatusSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, deploymentStatusIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetSlotSiteDeploymentStatusSlot = &respr
-		w.beginGetSlotSiteDeploymentStatusSlot.add(req, beginGetSlotSiteDeploymentStatusSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetSlotSiteDeploymentStatusSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginGetSlotSiteDeploymentStatusSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetSlotSiteDeploymentStatusSlot) {
-		w.beginGetSlotSiteDeploymentStatusSlot.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -11636,106 +12479,6 @@ func (w *WebAppsServerTransport) dispatchGetWorkflow(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginInstallSiteExtension(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginInstallSiteExtension == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInstallSiteExtension not implemented")}
-	}
-	beginInstallSiteExtension := w.beginInstallSiteExtension.get(req)
-	if beginInstallSiteExtension == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteextensions/(?P<siteExtensionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		siteExtensionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteExtensionId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginInstallSiteExtension(req.Context(), resourceGroupNameParam, nameParam, siteExtensionIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInstallSiteExtension = &respr
-		w.beginInstallSiteExtension.add(req, beginInstallSiteExtension)
-	}
-
-	resp, err := server.PollerResponderNext(beginInstallSiteExtension, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		w.beginInstallSiteExtension.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInstallSiteExtension) {
-		w.beginInstallSiteExtension.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginInstallSiteExtensionSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginInstallSiteExtensionSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInstallSiteExtensionSlot not implemented")}
-	}
-	beginInstallSiteExtensionSlot := w.beginInstallSiteExtensionSlot.get(req)
-	if beginInstallSiteExtensionSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteextensions/(?P<siteExtensionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		siteExtensionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteExtensionId")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginInstallSiteExtensionSlot(req.Context(), resourceGroupNameParam, nameParam, siteExtensionIDParam, slotParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInstallSiteExtensionSlot = &respr
-		w.beginInstallSiteExtensionSlot.add(req, beginInstallSiteExtensionSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginInstallSiteExtensionSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		w.beginInstallSiteExtensionSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInstallSiteExtensionSlot) {
-		w.beginInstallSiteExtensionSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchIsCloneable(req *http.Request) (*http.Response, error) {
 	if w.srv.IsCloneable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method IsCloneable not implemented")}
@@ -11802,39 +12545,6 @@ func (w *WebAppsServerTransport) dispatchIsCloneableSlot(req *http.Request) (*ht
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SiteCloneability, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := w.srv.NewListPager(nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WebAppsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -12061,6 +12771,1469 @@ func (w *WebAppsServerTransport) dispatchListBackupStatusSecretsSlot(req *http.R
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupItem, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListConnectionStrings(req *http.Request) (*http.Response, error) {
+	if w.srv.ListConnectionStrings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStrings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/connectionstrings/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListConnectionStrings(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionStringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListConnectionStringsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListConnectionStringsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStringsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/connectionstrings/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListConnectionStringsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionStringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListDeploymentLog(req *http.Request) (*http.Response, error) {
+	if w.srv.ListDeploymentLog == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentLog not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/log`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListDeploymentLog(req.Context(), resourceGroupNameParam, nameParam, idParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListDeploymentLogSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListDeploymentLogSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentLogSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/log`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListDeploymentLogSlot(req.Context(), resourceGroupNameParam, nameParam, idParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListFunctionKeys(req *http.Request) (*http.Response, error) {
+	if w.srv.ListFunctionKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListFunctionKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListFunctionKeys(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListFunctionKeysSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListFunctionKeysSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListFunctionKeysSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListFunctionKeysSlot(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListFunctionSecrets(req *http.Request) (*http.Response, error) {
+	if w.srv.ListFunctionSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListFunctionSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListFunctionSecrets(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListFunctionSecretsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListFunctionSecretsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListFunctionSecretsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListFunctionSecretsSlot(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListHostKeys(req *http.Request) (*http.Response, error) {
+	if w.srv.ListHostKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListHostKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListHostKeys(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListHostKeysSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListHostKeysSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListHostKeysSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListHostKeysSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListHybridConnections(req *http.Request) (*http.Response, error) {
+	if w.srv.ListHybridConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListHybridConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionRelays`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListHybridConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListHybridConnectionsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListHybridConnectionsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListHybridConnectionsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionRelays`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListHybridConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListMetadata(req *http.Request) (*http.Response, error) {
+	if w.srv.ListMetadata == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListMetadata not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/metadata/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListMetadata(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListMetadataSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListMetadataSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListMetadataSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/metadata/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListMetadataSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListNetworkFeatures(req *http.Request) (*http.Response, error) {
+	if w.srv.ListNetworkFeatures == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListNetworkFeatures not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkFeatures/(?P<view>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	viewParam, err := url.PathUnescape(matches[regex.SubexpIndex("view")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListNetworkFeatures(req.Context(), resourceGroupNameParam, nameParam, viewParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkFeatures, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListNetworkFeaturesSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListNetworkFeaturesSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListNetworkFeaturesSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkFeatures/(?P<view>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	viewParam, err := url.PathUnescape(matches[regex.SubexpIndex("view")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListNetworkFeaturesSlot(req.Context(), resourceGroupNameParam, nameParam, viewParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkFeatures, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListPremierAddOns(req *http.Request) (*http.Response, error) {
+	if w.srv.ListPremierAddOns == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPremierAddOns not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/premieraddons`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListPremierAddOns(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PremierAddOn, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListPremierAddOnsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListPremierAddOnsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPremierAddOnsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/premieraddons`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListPremierAddOnsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PremierAddOn, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListPublishingProfileXMLWithSecrets(req *http.Request) (*http.Response, error) {
+	if w.srv.ListPublishingProfileXMLWithSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPublishingProfileXMLWithSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishxml`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmPublishingProfileOptions](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListPublishingProfileXMLWithSecrets(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
+	})
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).ContentType; val != nil {
+		resp.Header.Set("Content-Type", "application/xml")
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListPublishingProfileXMLWithSecretsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListPublishingProfileXMLWithSecretsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPublishingProfileXMLWithSecretsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishxml`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmPublishingProfileOptions](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListPublishingProfileXMLWithSecretsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
+	})
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).ContentType; val != nil {
+		resp.Header.Set("Content-Type", "application/xml")
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListRelayServiceConnections(req *http.Request) (*http.Response, error) {
+	if w.srv.ListRelayServiceConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRelayServiceConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridconnection`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListRelayServiceConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RelayServiceConnectionEntity, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListRelayServiceConnectionsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListRelayServiceConnectionsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRelayServiceConnectionsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridconnection`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListRelayServiceConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RelayServiceConnectionEntity, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSitePushSettings(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSitePushSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSitePushSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/pushsettings/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSitePushSettings(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PushSettings, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSitePushSettingsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSitePushSettingsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSitePushSettingsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/pushsettings/list`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSitePushSettingsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PushSettings, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSlotConfigurationNames(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSlotConfigurationNames == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSlotConfigurationNames not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/slotConfigNames`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSlotConfigurationNames(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SlotConfigNamesResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSyncFunctionTriggers(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSyncFunctionTriggers == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSyncFunctionTriggers not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsyncfunctiontriggerstatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSyncFunctionTriggers(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSyncFunctionTriggersSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSyncFunctionTriggersSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSyncFunctionTriggersSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsyncfunctiontriggerstatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSyncFunctionTriggersSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSyncStatus(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSyncStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSyncStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listsyncstatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSyncStatus(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListSyncStatusSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSyncStatusSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSyncStatusSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listsyncstatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListSyncStatusSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListVnetConnections(req *http.Request) (*http.Response, error) {
+	if w.srv.ListVnetConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListVnetConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListVnetConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListVnetConnectionsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListVnetConnectionsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListVnetConnectionsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListVnetConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListWorkflowsConnections(req *http.Request) (*http.Response, error) {
+	if w.srv.ListWorkflowsConnections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnections not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListWorkflowsConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchListWorkflowsConnectionsSlot(req *http.Request) (*http.Response, error) {
+	if w.srv.ListWorkflowsConnectionsSlot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnectionsSlot not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListWorkflowsConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetAppSettingsKeyVaultReferencesPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetAppSettingsKeyVaultReferencesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetAppSettingsKeyVaultReferencesPager not implemented")}
+	}
+	newGetAppSettingsKeyVaultReferencesPager := w.newGetAppSettingsKeyVaultReferencesPager.get(req)
+	if newGetAppSettingsKeyVaultReferencesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/appsettings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetAppSettingsKeyVaultReferencesPager(resourceGroupNameParam, nameParam, nil)
+		newGetAppSettingsKeyVaultReferencesPager = &resp
+		w.newGetAppSettingsKeyVaultReferencesPager.add(req, newGetAppSettingsKeyVaultReferencesPager)
+		server.PagerResponderInjectNextLinks(newGetAppSettingsKeyVaultReferencesPager, req, func(page *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetAppSettingsKeyVaultReferencesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetAppSettingsKeyVaultReferencesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetAppSettingsKeyVaultReferencesPager) {
+		w.newGetAppSettingsKeyVaultReferencesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetAppSettingsKeyVaultReferencesSlotPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetAppSettingsKeyVaultReferencesSlotPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetAppSettingsKeyVaultReferencesSlotPager not implemented")}
+	}
+	newGetAppSettingsKeyVaultReferencesSlotPager := w.newGetAppSettingsKeyVaultReferencesSlotPager.get(req)
+	if newGetAppSettingsKeyVaultReferencesSlotPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/appsettings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetAppSettingsKeyVaultReferencesSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
+		newGetAppSettingsKeyVaultReferencesSlotPager = &resp
+		w.newGetAppSettingsKeyVaultReferencesSlotPager.add(req, newGetAppSettingsKeyVaultReferencesSlotPager)
+		server.PagerResponderInjectNextLinks(newGetAppSettingsKeyVaultReferencesSlotPager, req, func(page *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetAppSettingsKeyVaultReferencesSlotPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetAppSettingsKeyVaultReferencesSlotPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetAppSettingsKeyVaultReferencesSlotPager) {
+		w.newGetAppSettingsKeyVaultReferencesSlotPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetPrivateEndpointConnectionListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
+	}
+	newGetPrivateEndpointConnectionListPager := w.newGetPrivateEndpointConnectionListPager.get(req)
+	if newGetPrivateEndpointConnectionListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
+		newGetPrivateEndpointConnectionListPager = &resp
+		w.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
+		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetPrivateEndpointConnectionListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
+		w.newGetPrivateEndpointConnectionListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetPrivateEndpointConnectionListSlotPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetPrivateEndpointConnectionListSlotPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListSlotPager not implemented")}
+	}
+	newGetPrivateEndpointConnectionListSlotPager := w.newGetPrivateEndpointConnectionListSlotPager.get(req)
+	if newGetPrivateEndpointConnectionListSlotPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetPrivateEndpointConnectionListSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
+		newGetPrivateEndpointConnectionListSlotPager = &resp
+		w.newGetPrivateEndpointConnectionListSlotPager.add(req, newGetPrivateEndpointConnectionListSlotPager)
+		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListSlotPager, req, func(page *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListSlotPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetPrivateEndpointConnectionListSlotPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListSlotPager) {
+		w.newGetPrivateEndpointConnectionListSlotPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetSiteConnectionStringKeyVaultReferencesPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetSiteConnectionStringKeyVaultReferencesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetSiteConnectionStringKeyVaultReferencesPager not implemented")}
+	}
+	newGetSiteConnectionStringKeyVaultReferencesPager := w.newGetSiteConnectionStringKeyVaultReferencesPager.get(req)
+	if newGetSiteConnectionStringKeyVaultReferencesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/connectionstrings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetSiteConnectionStringKeyVaultReferencesPager(resourceGroupNameParam, nameParam, nil)
+		newGetSiteConnectionStringKeyVaultReferencesPager = &resp
+		w.newGetSiteConnectionStringKeyVaultReferencesPager.add(req, newGetSiteConnectionStringKeyVaultReferencesPager)
+		server.PagerResponderInjectNextLinks(newGetSiteConnectionStringKeyVaultReferencesPager, req, func(page *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetSiteConnectionStringKeyVaultReferencesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetSiteConnectionStringKeyVaultReferencesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetSiteConnectionStringKeyVaultReferencesPager) {
+		w.newGetSiteConnectionStringKeyVaultReferencesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchNewGetSiteConnectionStringKeyVaultReferencesSlotPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewGetSiteConnectionStringKeyVaultReferencesSlotPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetSiteConnectionStringKeyVaultReferencesSlotPager not implemented")}
+	}
+	newGetSiteConnectionStringKeyVaultReferencesSlotPager := w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.get(req)
+	if newGetSiteConnectionStringKeyVaultReferencesSlotPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/configreferences/connectionstrings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewGetSiteConnectionStringKeyVaultReferencesSlotPager(resourceGroupNameParam, nameParam, slotParam, nil)
+		newGetSiteConnectionStringKeyVaultReferencesSlotPager = &resp
+		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.add(req, newGetSiteConnectionStringKeyVaultReferencesSlotPager)
+		server.PagerResponderInjectNextLinks(newGetSiteConnectionStringKeyVaultReferencesSlotPager, req, func(page *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetSiteConnectionStringKeyVaultReferencesSlotPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetSiteConnectionStringKeyVaultReferencesSlotPager) {
+		w.newGetSiteConnectionStringKeyVaultReferencesSlotPager.remove(req)
 	}
 	return resp, nil
 }
@@ -12457,76 +14630,6 @@ func (w *WebAppsServerTransport) dispatchNewListConfigurationsSlotPager(req *htt
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchListConnectionStrings(req *http.Request) (*http.Response, error) {
-	if w.srv.ListConnectionStrings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStrings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/connectionstrings/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListConnectionStrings(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionStringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListConnectionStringsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListConnectionStringsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStringsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/connectionstrings/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListConnectionStringsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionStringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListContinuousWebJobsPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListContinuousWebJobsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListContinuousWebJobsPager not implemented")}
@@ -12609,84 +14712,6 @@ func (w *WebAppsServerTransport) dispatchNewListContinuousWebJobsSlotPager(req *
 	}
 	if !server.PagerResponderMore(newListContinuousWebJobsSlotPager) {
 		w.newListContinuousWebJobsSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListDeploymentLog(req *http.Request) (*http.Response, error) {
-	if w.srv.ListDeploymentLog == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentLog not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/log`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListDeploymentLog(req.Context(), resourceGroupNameParam, nameParam, idParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListDeploymentLogSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListDeploymentLogSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDeploymentLogSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/log`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListDeploymentLogSlot(req.Context(), resourceGroupNameParam, nameParam, idParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -12863,162 +14888,6 @@ func (w *WebAppsServerTransport) dispatchNewListDomainOwnershipIdentifiersSlotPa
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchListFunctionKeys(req *http.Request) (*http.Response, error) {
-	if w.srv.ListFunctionKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListFunctionKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListFunctionKeys(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListFunctionKeysSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListFunctionKeysSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListFunctionKeysSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListFunctionKeysSlot(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListFunctionSecrets(req *http.Request) (*http.Response, error) {
-	if w.srv.ListFunctionSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListFunctionSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListFunctionSecrets(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListFunctionSecretsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListFunctionSecretsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListFunctionSecretsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions/(?P<functionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	functionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionName")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListFunctionSecretsSlot(req.Context(), resourceGroupNameParam, nameParam, functionNameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListFunctionsPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListFunctionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListFunctionsPager not implemented")}
@@ -13056,76 +14925,6 @@ func (w *WebAppsServerTransport) dispatchNewListFunctionsPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newListFunctionsPager) {
 		w.newListFunctionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListHostKeys(req *http.Request) (*http.Response, error) {
-	if w.srv.ListHostKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListHostKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListHostKeys(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostKeys, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListHostKeysSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListHostKeysSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListHostKeysSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListHostKeysSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HostKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -13212,76 +15011,6 @@ func (w *WebAppsServerTransport) dispatchNewListHostNameBindingsSlotPager(req *h
 	}
 	if !server.PagerResponderMore(newListHostNameBindingsSlotPager) {
 		w.newListHostNameBindingsSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListHybridConnections(req *http.Request) (*http.Response, error) {
-	if w.srv.ListHybridConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListHybridConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionRelays`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListHybridConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListHybridConnectionsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListHybridConnectionsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListHybridConnectionsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionRelays`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListHybridConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridConnection, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -13760,150 +15489,35 @@ func (w *WebAppsServerTransport) dispatchNewListInstanceWorkflowsSlotPager(req *
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchListMetadata(req *http.Request) (*http.Response, error) {
-	if w.srv.ListMetadata == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListMetadata not implemented")}
+func (w *WebAppsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/metadata/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := w.srv.NewListPager(nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WebAppsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := w.srv.ListMetadata(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListMetadataSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListMetadataSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListMetadataSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/metadata/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListMetadataSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListNetworkFeatures(req *http.Request) (*http.Response, error) {
-	if w.srv.ListNetworkFeatures == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNetworkFeatures not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkFeatures/(?P<view>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	viewParam, err := url.PathUnescape(matches[regex.SubexpIndex("view")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListNetworkFeatures(req.Context(), resourceGroupNameParam, nameParam, viewParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkFeatures, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListNetworkFeaturesSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListNetworkFeaturesSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNetworkFeaturesSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkFeatures/(?P<view>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	viewParam, err := url.PathUnescape(matches[regex.SubexpIndex("view")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListNetworkFeaturesSlot(req.Context(), resourceGroupNameParam, nameParam, viewParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkFeatures, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -14006,76 +15620,6 @@ func (w *WebAppsServerTransport) dispatchNewListPerfMonCountersSlotPager(req *ht
 	}
 	if !server.PagerResponderMore(newListPerfMonCountersSlotPager) {
 		w.newListPerfMonCountersSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListPremierAddOns(req *http.Request) (*http.Response, error) {
-	if w.srv.ListPremierAddOns == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPremierAddOns not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/premieraddons`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListPremierAddOns(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PremierAddOn, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListPremierAddOnsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListPremierAddOnsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPremierAddOnsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/premieraddons`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListPremierAddOnsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PremierAddOn, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -14481,258 +16025,6 @@ func (w *WebAppsServerTransport) dispatchNewListPublicCertificatesSlotPager(req 
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginListPublishingCredentials(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginListPublishingCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListPublishingCredentials not implemented")}
-	}
-	beginListPublishingCredentials := w.beginListPublishingCredentials.get(req)
-	if beginListPublishingCredentials == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/publishingcredentials/list`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginListPublishingCredentials(req.Context(), resourceGroupNameParam, nameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListPublishingCredentials = &respr
-		w.beginListPublishingCredentials.add(req, beginListPublishingCredentials)
-	}
-
-	resp, err := server.PollerResponderNext(beginListPublishingCredentials, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.beginListPublishingCredentials.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginListPublishingCredentials) {
-		w.beginListPublishingCredentials.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginListPublishingCredentialsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginListPublishingCredentialsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListPublishingCredentialsSlot not implemented")}
-	}
-	beginListPublishingCredentialsSlot := w.beginListPublishingCredentialsSlot.get(req)
-	if beginListPublishingCredentialsSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/publishingcredentials/list`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginListPublishingCredentialsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListPublishingCredentialsSlot = &respr
-		w.beginListPublishingCredentialsSlot.add(req, beginListPublishingCredentialsSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginListPublishingCredentialsSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.beginListPublishingCredentialsSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginListPublishingCredentialsSlot) {
-		w.beginListPublishingCredentialsSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListPublishingProfileXMLWithSecrets(req *http.Request) (*http.Response, error) {
-	if w.srv.ListPublishingProfileXMLWithSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPublishingProfileXMLWithSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishxml`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmPublishingProfileOptions](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListPublishingProfileXMLWithSecrets(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:        server.GetResponse(respr).Body,
-		ContentType: req.Header.Get("Content-Type"),
-	})
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).ContentType; val != nil {
-		resp.Header.Set("Content-Type", "application/xml")
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListPublishingProfileXMLWithSecretsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListPublishingProfileXMLWithSecretsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPublishingProfileXMLWithSecretsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishxml`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmPublishingProfileOptions](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListPublishingProfileXMLWithSecretsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:        server.GetResponse(respr).Body,
-		ContentType: req.Header.Get("Content-Type"),
-	})
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).ContentType; val != nil {
-		resp.Header.Set("Content-Type", "application/xml")
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListRelayServiceConnections(req *http.Request) (*http.Response, error) {
-	if w.srv.ListRelayServiceConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRelayServiceConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridconnection`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListRelayServiceConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RelayServiceConnectionEntity, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListRelayServiceConnectionsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListRelayServiceConnectionsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRelayServiceConnectionsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridconnection`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListRelayServiceConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RelayServiceConnectionEntity, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListSiteBackupsPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListSiteBackupsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSiteBackupsPager not implemented")}
@@ -14991,109 +16283,6 @@ func (w *WebAppsServerTransport) dispatchNewListSiteExtensionsSlotPager(req *htt
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchListSitePushSettings(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSitePushSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSitePushSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/pushsettings/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSitePushSettings(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PushSettings, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSitePushSettingsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSitePushSettingsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSitePushSettingsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/pushsettings/list`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSitePushSettingsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PushSettings, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSlotConfigurationNames(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSlotConfigurationNames == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSlotConfigurationNames not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/slotConfigNames`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSlotConfigurationNames(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SlotConfigNamesResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListSlotDifferencesFromProductionPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListSlotDifferencesFromProductionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSlotDifferencesFromProductionPager not implemented")}
@@ -15274,47 +16463,6 @@ func (w *WebAppsServerTransport) dispatchNewListSlotsPager(req *http.Request) (*
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchNewListSnapshotsPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListSnapshotsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListSnapshotsPager not implemented")}
-	}
-	newListSnapshotsPager := w.newListSnapshotsPager.get(req)
-	if newListSnapshotsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListSnapshotsPager(resourceGroupNameParam, nameParam, nil)
-		newListSnapshotsPager = &resp
-		w.newListSnapshotsPager.add(req, newListSnapshotsPager)
-		server.PagerResponderInjectNextLinks(newListSnapshotsPager, req, func(page *armappservice.WebAppsClientListSnapshotsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListSnapshotsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListSnapshotsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListSnapshotsPager) {
-		w.newListSnapshotsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListSnapshotsFromDRSecondaryPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListSnapshotsFromDRSecondaryPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSnapshotsFromDRSecondaryPager not implemented")}
@@ -15401,6 +16549,47 @@ func (w *WebAppsServerTransport) dispatchNewListSnapshotsFromDRSecondarySlotPage
 	return resp, nil
 }
 
+func (w *WebAppsServerTransport) dispatchNewListSnapshotsPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListSnapshotsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListSnapshotsPager not implemented")}
+	}
+	newListSnapshotsPager := w.newListSnapshotsPager.get(req)
+	if newListSnapshotsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListSnapshotsPager(resourceGroupNameParam, nameParam, nil)
+		newListSnapshotsPager = &resp
+		w.newListSnapshotsPager.add(req, newListSnapshotsPager)
+		server.PagerResponderInjectNextLinks(newListSnapshotsPager, req, func(page *armappservice.WebAppsClientListSnapshotsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListSnapshotsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListSnapshotsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListSnapshotsPager) {
+		w.newListSnapshotsPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (w *WebAppsServerTransport) dispatchNewListSnapshotsSlotPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListSnapshotsSlotPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSnapshotsSlotPager not implemented")}
@@ -15442,146 +16631,6 @@ func (w *WebAppsServerTransport) dispatchNewListSnapshotsSlotPager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListSnapshotsSlotPager) {
 		w.newListSnapshotsSlotPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSyncFunctionTriggers(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSyncFunctionTriggers == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSyncFunctionTriggers not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsyncfunctiontriggerstatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSyncFunctionTriggers(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSyncFunctionTriggersSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSyncFunctionTriggersSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSyncFunctionTriggersSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listsyncfunctiontriggerstatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSyncFunctionTriggersSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FunctionSecrets, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSyncStatus(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSyncStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSyncStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listsyncstatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSyncStatus(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListSyncStatusSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSyncStatusSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSyncStatusSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/host/default/listsyncstatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListSyncStatusSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -15868,76 +16917,6 @@ func (w *WebAppsServerTransport) dispatchNewListUsagesSlotPager(req *http.Reques
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchListVnetConnections(req *http.Request) (*http.Response, error) {
-	if w.srv.ListVnetConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListVnetConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListVnetConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListVnetConnectionsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListVnetConnectionsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListVnetConnectionsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListVnetConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetInfoResourceArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchNewListWebJobsPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListWebJobsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListWebJobsPager not implemented")}
@@ -16062,173 +17041,6 @@ func (w *WebAppsServerTransport) dispatchNewListWorkflowsPager(req *http.Request
 	if !server.PagerResponderMore(newListWorkflowsPager) {
 		w.newListWorkflowsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListWorkflowsConnections(req *http.Request) (*http.Response, error) {
-	if w.srv.ListWorkflowsConnections == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnections not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListWorkflowsConnections(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchListWorkflowsConnectionsSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.ListWorkflowsConnectionsSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListWorkflowsConnectionsSlot not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWorkflowsConnections`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListWorkflowsConnectionsSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginMigrateMySQL(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginMigrateMySQL == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateMySQL not implemented")}
-	}
-	beginMigrateMySQL := w.beginMigrateMySQL.get(req)
-	if beginMigrateMySQL == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migratemysql`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.MigrateMySQLRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginMigrateMySQL(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateMySQL = &respr
-		w.beginMigrateMySQL.add(req, beginMigrateMySQL)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateMySQL, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.beginMigrateMySQL.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateMySQL) {
-		w.beginMigrateMySQL.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginMigrateStorage(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginMigrateStorage == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateStorage not implemented")}
-	}
-	beginMigrateStorage := w.beginMigrateStorage.get(req)
-	if beginMigrateStorage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StorageMigrationOptions](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginMigrateStorage(req.Context(), qp.Get("subscriptionName"), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateStorage = &respr
-		w.beginMigrateStorage.add(req, beginMigrateStorage)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateStorage, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.beginMigrateStorage.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateStorage) {
-		w.beginMigrateStorage.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -16560,414 +17372,6 @@ func (w *WebAppsServerTransport) dispatchRestartSlot(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestore == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
-	}
-	beginRestore := w.beginRestore.get(req)
-	if beginRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		backupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestore(req.Context(), resourceGroupNameParam, nameParam, backupIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestore = &respr
-		w.beginRestore.add(req, beginRestore)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestore, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestore.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestore) {
-		w.beginRestore.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreFromBackupBlob(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreFromBackupBlob == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromBackupBlob not implemented")}
-	}
-	beginRestoreFromBackupBlob := w.beginRestoreFromBackupBlob.get(req)
-	if beginRestoreFromBackupBlob == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromBackupBlob`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreFromBackupBlob(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreFromBackupBlob = &respr
-		w.beginRestoreFromBackupBlob.add(req, beginRestoreFromBackupBlob)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreFromBackupBlob, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreFromBackupBlob.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreFromBackupBlob) {
-		w.beginRestoreFromBackupBlob.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreFromBackupBlobSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreFromBackupBlobSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromBackupBlobSlot not implemented")}
-	}
-	beginRestoreFromBackupBlobSlot := w.beginRestoreFromBackupBlobSlot.get(req)
-	if beginRestoreFromBackupBlobSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromBackupBlob`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreFromBackupBlobSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreFromBackupBlobSlot = &respr
-		w.beginRestoreFromBackupBlobSlot.add(req, beginRestoreFromBackupBlobSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreFromBackupBlobSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreFromBackupBlobSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreFromBackupBlobSlot) {
-		w.beginRestoreFromBackupBlobSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreFromDeletedApp(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreFromDeletedApp == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromDeletedApp not implemented")}
-	}
-	beginRestoreFromDeletedApp := w.beginRestoreFromDeletedApp.get(req)
-	if beginRestoreFromDeletedApp == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromDeletedApp`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.DeletedAppRestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreFromDeletedApp(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreFromDeletedApp = &respr
-		w.beginRestoreFromDeletedApp.add(req, beginRestoreFromDeletedApp)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreFromDeletedApp, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreFromDeletedApp.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreFromDeletedApp) {
-		w.beginRestoreFromDeletedApp.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreFromDeletedAppSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreFromDeletedAppSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreFromDeletedAppSlot not implemented")}
-	}
-	beginRestoreFromDeletedAppSlot := w.beginRestoreFromDeletedAppSlot.get(req)
-	if beginRestoreFromDeletedAppSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFromDeletedApp`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.DeletedAppRestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreFromDeletedAppSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreFromDeletedAppSlot = &respr
-		w.beginRestoreFromDeletedAppSlot.add(req, beginRestoreFromDeletedAppSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreFromDeletedAppSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreFromDeletedAppSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreFromDeletedAppSlot) {
-		w.beginRestoreFromDeletedAppSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSlot not implemented")}
-	}
-	beginRestoreSlot := w.beginRestoreSlot.get(req)
-	if beginRestoreSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.RestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		backupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupId")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreSlot(req.Context(), resourceGroupNameParam, nameParam, backupIDParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreSlot = &respr
-		w.beginRestoreSlot.add(req, beginRestoreSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreSlot) {
-		w.beginRestoreSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreSnapshot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreSnapshot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSnapshot not implemented")}
-	}
-	beginRestoreSnapshot := w.beginRestoreSnapshot.get(req)
-	if beginRestoreSnapshot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreSnapshot`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.SnapshotRestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreSnapshot(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreSnapshot = &respr
-		w.beginRestoreSnapshot.add(req, beginRestoreSnapshot)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreSnapshot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreSnapshot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreSnapshot) {
-		w.beginRestoreSnapshot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginRestoreSnapshotSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginRestoreSnapshotSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreSnapshotSlot not implemented")}
-	}
-	beginRestoreSnapshotSlot := w.beginRestoreSnapshotSlot.get(req)
-	if beginRestoreSnapshotSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreSnapshot`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.SnapshotRestoreRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginRestoreSnapshotSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreSnapshotSlot = &respr
-		w.beginRestoreSnapshotSlot.add(req, beginRestoreSnapshotSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreSnapshotSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginRestoreSnapshotSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreSnapshotSlot) {
-		w.beginRestoreSnapshotSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchRunTriggeredWebJob(req *http.Request) (*http.Response, error) {
 	if w.srv.RunTriggeredWebJob == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RunTriggeredWebJob not implemented")}
@@ -17157,158 +17561,6 @@ func (w *WebAppsServerTransport) dispatchStartContinuousWebJobSlot(req *http.Req
 	return resp, nil
 }
 
-func (w *WebAppsServerTransport) dispatchBeginStartNetworkTrace(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginStartNetworkTrace == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartNetworkTrace not implemented")}
-	}
-	beginStartNetworkTrace := w.beginStartNetworkTrace.get(req)
-	if beginStartNetworkTrace == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startNetworkTrace`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sasURLParam := getOptional(qp.Get("sasUrl"))
-		var options *armappservice.WebAppsClientBeginStartNetworkTraceOptions
-		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
-			options = &armappservice.WebAppsClientBeginStartNetworkTraceOptions{
-				DurationInSeconds: durationInSecondsParam,
-				MaxFrameLength:    maxFrameLengthParam,
-				SasURL:            sasURLParam,
-			}
-		}
-		respr, errRespr := w.srv.BeginStartNetworkTrace(req.Context(), resourceGroupNameParam, nameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartNetworkTrace = &respr
-		w.beginStartNetworkTrace.add(req, beginStartNetworkTrace)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartNetworkTrace, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginStartNetworkTrace.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartNetworkTrace) {
-		w.beginStartNetworkTrace.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginStartNetworkTraceSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginStartNetworkTraceSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartNetworkTraceSlot not implemented")}
-	}
-	beginStartNetworkTraceSlot := w.beginStartNetworkTraceSlot.get(req)
-	if beginStartNetworkTraceSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startNetworkTrace`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sasURLParam := getOptional(qp.Get("sasUrl"))
-		var options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions
-		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
-			options = &armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{
-				DurationInSeconds: durationInSecondsParam,
-				MaxFrameLength:    maxFrameLengthParam,
-				SasURL:            sasURLParam,
-			}
-		}
-		respr, errRespr := w.srv.BeginStartNetworkTraceSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartNetworkTraceSlot = &respr
-		w.beginStartNetworkTraceSlot.add(req, beginStartNetworkTraceSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartNetworkTraceSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginStartNetworkTraceSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartNetworkTraceSlot) {
-		w.beginStartNetworkTraceSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (w *WebAppsServerTransport) dispatchStartSlot(req *http.Request) (*http.Response, error) {
 	if w.srv.StartSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method StartSlot not implemented")}
@@ -17406,158 +17658,6 @@ func (w *WebAppsServerTransport) dispatchStartWebSiteNetworkTrace(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperation(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginStartWebSiteNetworkTraceOperation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartWebSiteNetworkTraceOperation not implemented")}
-	}
-	beginStartWebSiteNetworkTraceOperation := w.beginStartWebSiteNetworkTraceOperation.get(req)
-	if beginStartWebSiteNetworkTraceOperation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkTrace/startOperation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sasURLParam := getOptional(qp.Get("sasUrl"))
-		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions
-		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
-			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{
-				DurationInSeconds: durationInSecondsParam,
-				MaxFrameLength:    maxFrameLengthParam,
-				SasURL:            sasURLParam,
-			}
-		}
-		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperation(req.Context(), resourceGroupNameParam, nameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartWebSiteNetworkTraceOperation = &respr
-		w.beginStartWebSiteNetworkTraceOperation.add(req, beginStartWebSiteNetworkTraceOperation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartWebSiteNetworkTraceOperation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginStartWebSiteNetworkTraceOperation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartWebSiteNetworkTraceOperation) {
-		w.beginStartWebSiteNetworkTraceOperation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperationSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginStartWebSiteNetworkTraceOperationSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartWebSiteNetworkTraceOperationSlot not implemented")}
-	}
-	beginStartWebSiteNetworkTraceOperationSlot := w.beginStartWebSiteNetworkTraceOperationSlot.get(req)
-	if beginStartWebSiteNetworkTraceOperationSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkTrace/startOperation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sasURLParam := getOptional(qp.Get("sasUrl"))
-		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions
-		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
-			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{
-				DurationInSeconds: durationInSecondsParam,
-				MaxFrameLength:    maxFrameLengthParam,
-				SasURL:            sasURLParam,
-			}
-		}
-		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperationSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartWebSiteNetworkTraceOperationSlot = &respr
-		w.beginStartWebSiteNetworkTraceOperationSlot.add(req, beginStartWebSiteNetworkTraceOperationSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartWebSiteNetworkTraceOperationSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginStartWebSiteNetworkTraceOperationSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartWebSiteNetworkTraceOperationSlot) {
-		w.beginStartWebSiteNetworkTraceOperationSlot.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -17913,106 +18013,6 @@ func (w *WebAppsServerTransport) dispatchStopWebSiteNetworkTraceSlot(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginSwapSlot(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginSwapSlot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSwapSlot not implemented")}
-	}
-	beginSwapSlot := w.beginSwapSlot.get(req)
-	if beginSwapSlot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slotsswap`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.CsmSlotEntity](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		slotParam, err := url.PathUnescape(matches[regex.SubexpIndex("slot")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginSwapSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSwapSlot = &respr
-		w.beginSwapSlot.add(req, beginSwapSlot)
-	}
-
-	resp, err := server.PollerResponderNext(beginSwapSlot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginSwapSlot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSwapSlot) {
-		w.beginSwapSlot.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WebAppsServerTransport) dispatchBeginSwapSlotWithProduction(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginSwapSlotWithProduction == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSwapSlotWithProduction not implemented")}
-	}
-	beginSwapSlotWithProduction := w.beginSwapSlotWithProduction.get(req)
-	if beginSwapSlotWithProduction == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slotsswap`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.CsmSlotEntity](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginSwapSlotWithProduction(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSwapSlotWithProduction = &respr
-		w.beginSwapSlotWithProduction.add(req, beginSwapSlotWithProduction)
-	}
-
-	resp, err := server.PollerResponderNext(beginSwapSlotWithProduction, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginSwapSlotWithProduction.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSwapSlotWithProduction) {
-		w.beginSwapSlotWithProduction.remove(req)
-	}
-
 	return resp, nil
 }
 

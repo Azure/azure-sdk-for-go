@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armappservice.ClientFactory type.
 type ServerFactory struct {
+	// AiGatewaysServer contains the fakes for client AiGatewaysClient
+	AiGatewaysServer AiGatewaysServer
+
 	// CertificatesServer contains the fakes for client CertificatesClient
 	CertificatesServer CertificatesServer
 
@@ -36,6 +39,12 @@ type ServerFactory struct {
 	// KubeEnvironmentsServer contains the fakes for client KubeEnvironmentsClient
 	KubeEnvironmentsServer KubeEnvironmentsServer
 
+	// LastKnownGoodResourcesServer contains the fakes for client LastKnownGoodResourcesClient
+	LastKnownGoodResourcesServer LastKnownGoodResourcesServer
+
+	// ManagedTrafficConfigResourcesServer contains the fakes for client ManagedTrafficConfigResourcesClient
+	ManagedTrafficConfigResourcesServer ManagedTrafficConfigResourcesServer
+
 	// PlansServer contains the fakes for client PlansClient
 	PlansServer PlansServer
 
@@ -48,8 +57,23 @@ type ServerFactory struct {
 	// ResourceHealthMetadataServer contains the fakes for client ResourceHealthMetadataClient
 	ResourceHealthMetadataServer ResourceHealthMetadataServer
 
+	// ServerFarmSiloResourcesServer contains the fakes for client ServerFarmSiloResourcesClient
+	ServerFarmSiloResourcesServer ServerFarmSiloResourcesServer
+
 	// SiteCertificatesServer contains the fakes for client SiteCertificatesClient
 	SiteCertificatesServer SiteCertificatesServer
+
+	// SiteSiloResourcesServer contains the fakes for client SiteSiloResourcesClient
+	SiteSiloResourcesServer SiteSiloResourcesServer
+
+	// SiteSiloVirtualNetworkConnectionsServer contains the fakes for client SiteSiloVirtualNetworkConnectionsClient
+	SiteSiloVirtualNetworkConnectionsServer SiteSiloVirtualNetworkConnectionsServer
+
+	// SitesServer contains the fakes for client SitesClient
+	SitesServer SitesServer
+
+	// StaticSitesAsyncOperationsServer contains the fakes for client StaticSitesAsyncOperationsClient
+	StaticSitesAsyncOperationsServer StaticSitesAsyncOperationsServer
 
 	// StaticSitesServer contains the fakes for client StaticSitesClient
 	StaticSitesServer StaticSitesServer
@@ -102,6 +126,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
+	trAiGatewaysServer                                   *AiGatewaysServerTransport
 	trCertificatesServer                                 *CertificatesServerTransport
 	trDeletedWebAppsServer                               *DeletedWebAppsServerTransport
 	trDiagnosticsServer                                  *DiagnosticsServerTransport
@@ -109,11 +134,18 @@ type ServerFactoryTransport struct {
 	trGetUsagesInLocationServer                          *GetUsagesInLocationServerTransport
 	trGlobalServer                                       *GlobalServerTransport
 	trKubeEnvironmentsServer                             *KubeEnvironmentsServerTransport
+	trLastKnownGoodResourcesServer                       *LastKnownGoodResourcesServerTransport
+	trManagedTrafficConfigResourcesServer                *ManagedTrafficConfigResourcesServerTransport
 	trPlansServer                                        *PlansServerTransport
 	trProviderServer                                     *ProviderServerTransport
 	trRecommendationsServer                              *RecommendationsServerTransport
 	trResourceHealthMetadataServer                       *ResourceHealthMetadataServerTransport
+	trServerFarmSiloResourcesServer                      *ServerFarmSiloResourcesServerTransport
 	trSiteCertificatesServer                             *SiteCertificatesServerTransport
+	trSiteSiloResourcesServer                            *SiteSiloResourcesServerTransport
+	trSiteSiloVirtualNetworkConnectionsServer            *SiteSiloVirtualNetworkConnectionsServerTransport
+	trSitesServer                                        *SitesServerTransport
+	trStaticSitesAsyncOperationsServer                   *StaticSitesAsyncOperationsServerTransport
 	trStaticSitesServer                                  *StaticSitesServerTransport
 	trWebAppsServer                                      *WebAppsServerTransport
 	trWebSiteManagementServer                            *WebSiteManagementServerTransport
@@ -141,6 +173,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AiGatewaysClient":
+		initServer(&s.trMu, &s.trAiGatewaysServer, func() *AiGatewaysServerTransport { return NewAiGatewaysServerTransport(&s.srv.AiGatewaysServer) })
+		resp, err = s.trAiGatewaysServer.Do(req)
 	case "CertificatesClient":
 		initServer(&s.trMu, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)
@@ -168,6 +203,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewKubeEnvironmentsServerTransport(&s.srv.KubeEnvironmentsServer)
 		})
 		resp, err = s.trKubeEnvironmentsServer.Do(req)
+	case "LastKnownGoodResourcesClient":
+		initServer(&s.trMu, &s.trLastKnownGoodResourcesServer, func() *LastKnownGoodResourcesServerTransport {
+			return NewLastKnownGoodResourcesServerTransport(&s.srv.LastKnownGoodResourcesServer)
+		})
+		resp, err = s.trLastKnownGoodResourcesServer.Do(req)
+	case "ManagedTrafficConfigResourcesClient":
+		initServer(&s.trMu, &s.trManagedTrafficConfigResourcesServer, func() *ManagedTrafficConfigResourcesServerTransport {
+			return NewManagedTrafficConfigResourcesServerTransport(&s.srv.ManagedTrafficConfigResourcesServer)
+		})
+		resp, err = s.trManagedTrafficConfigResourcesServer.Do(req)
 	case "PlansClient":
 		initServer(&s.trMu, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
 		resp, err = s.trPlansServer.Do(req)
@@ -184,11 +229,34 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewResourceHealthMetadataServerTransport(&s.srv.ResourceHealthMetadataServer)
 		})
 		resp, err = s.trResourceHealthMetadataServer.Do(req)
+	case "ServerFarmSiloResourcesClient":
+		initServer(&s.trMu, &s.trServerFarmSiloResourcesServer, func() *ServerFarmSiloResourcesServerTransport {
+			return NewServerFarmSiloResourcesServerTransport(&s.srv.ServerFarmSiloResourcesServer)
+		})
+		resp, err = s.trServerFarmSiloResourcesServer.Do(req)
 	case "SiteCertificatesClient":
 		initServer(&s.trMu, &s.trSiteCertificatesServer, func() *SiteCertificatesServerTransport {
 			return NewSiteCertificatesServerTransport(&s.srv.SiteCertificatesServer)
 		})
 		resp, err = s.trSiteCertificatesServer.Do(req)
+	case "SiteSiloResourcesClient":
+		initServer(&s.trMu, &s.trSiteSiloResourcesServer, func() *SiteSiloResourcesServerTransport {
+			return NewSiteSiloResourcesServerTransport(&s.srv.SiteSiloResourcesServer)
+		})
+		resp, err = s.trSiteSiloResourcesServer.Do(req)
+	case "SiteSiloVirtualNetworkConnectionsClient":
+		initServer(&s.trMu, &s.trSiteSiloVirtualNetworkConnectionsServer, func() *SiteSiloVirtualNetworkConnectionsServerTransport {
+			return NewSiteSiloVirtualNetworkConnectionsServerTransport(&s.srv.SiteSiloVirtualNetworkConnectionsServer)
+		})
+		resp, err = s.trSiteSiloVirtualNetworkConnectionsServer.Do(req)
+	case "SitesClient":
+		initServer(&s.trMu, &s.trSitesServer, func() *SitesServerTransport { return NewSitesServerTransport(&s.srv.SitesServer) })
+		resp, err = s.trSitesServer.Do(req)
+	case "StaticSitesAsyncOperationsClient":
+		initServer(&s.trMu, &s.trStaticSitesAsyncOperationsServer, func() *StaticSitesAsyncOperationsServerTransport {
+			return NewStaticSitesAsyncOperationsServerTransport(&s.srv.StaticSitesAsyncOperationsServer)
+		})
+		resp, err = s.trStaticSitesAsyncOperationsServer.Do(req)
 	case "StaticSitesClient":
 		initServer(&s.trMu, &s.trStaticSitesServer, func() *StaticSitesServerTransport { return NewStaticSitesServerTransport(&s.srv.StaticSitesServer) })
 		resp, err = s.trStaticSitesServer.Do(req)

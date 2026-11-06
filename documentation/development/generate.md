@@ -56,8 +56,6 @@ Setting up your project involves a few steps:
 
 Generated code **must not** be edited, as any edits would be lost on future regeneration of content. To make customizations, update the TypeSpec project's `client.tsp` file, then regenerate.
 
-The Go generator creates a README when onboarding a new module, but preserves an existing README when onboarding runs again before the first release. Keep customer-facing service names and other README customizations in the module's checked-in README; module and import paths do not need to change.
-
 ### Using Autorest **DEPRECATED**
 
 If your SDK doesn't require any Autorest-generated content, please skip this section. All new SDKs should be created using TypeSpec.

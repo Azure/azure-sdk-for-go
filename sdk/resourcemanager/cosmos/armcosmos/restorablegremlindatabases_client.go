@@ -19,7 +19,7 @@ import (
 // RestorableGremlinDatabasesClient contains the methods for the RestorableGremlinDatabases group.
 // Don't use this type directly, use NewRestorableGremlinDatabasesClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-15
 type RestorableGremlinDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *RestorableGremlinDatabasesClient) listCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

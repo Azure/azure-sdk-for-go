@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Subscriptions/SBSubscriptionCreate.json
+// Generated from example definition: 2026-07-01-preview/Subscriptions/SBSubscriptionCreate.json
 func ExampleSubscriptionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Subscriptions/SBSubscriptionDelete.json
+// Generated from example definition: 2026-07-01-preview/Subscriptions/SBSubscriptionDelete.json
 func ExampleSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleSubscriptionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Subscriptions/SBSubscriptionGet.json
+// Generated from example definition: 2026-07-01-preview/Subscriptions/SBSubscriptionGet.json
 func ExampleSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Subscriptions/SBSubscriptionListByTopic.json
+// Generated from example definition: 2026-07-01-preview/Subscriptions/SBSubscriptionListByTopic.json
 func ExampleSubscriptionsClient_NewListByTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

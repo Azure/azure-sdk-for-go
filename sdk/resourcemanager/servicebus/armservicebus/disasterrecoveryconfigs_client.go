@@ -19,7 +19,7 @@ import (
 // DisasterRecoveryConfigsClient contains the methods for the DisasterRecoveryConfigs group.
 // Don't use this type directly, use NewDisasterRecoveryConfigsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-07-01-preview
 type DisasterRecoveryConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -95,7 +95,7 @@ func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -144,7 +144,7 @@ func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -215,7 +215,7 @@ func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -288,7 +288,7 @@ func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -344,7 +344,7 @@ func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -404,7 +404,7 @@ func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -475,7 +475,7 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -551,7 +551,7 @@ func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -633,7 +633,7 @@ func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -705,7 +705,7 @@ func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

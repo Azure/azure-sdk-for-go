@@ -1,4 +1,4 @@
 directory: specification/networksecurity/resource-manager/Microsoft.NetworkSecurity
-commit: 73f1687f0b6875c99a32f145a28c589274791aed
+commit: f2d8237a043f0ac3cbe11741f19ebed60f1248cc
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

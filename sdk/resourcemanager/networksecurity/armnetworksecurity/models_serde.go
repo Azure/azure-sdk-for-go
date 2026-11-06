@@ -191,14 +191,14 @@ func (n *NeuroShieldFindingListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NeuroShieldFindingProperties.
 func (n NeuroShieldFindingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "cveId", n.CveID)
+	populate(objectMap, "cveId", n.CVEID)
 	populate(objectMap, "description", n.Description)
 	populateTime[datetime.RFC3339](objectMap, "detectedTime", n.DetectedTime, true)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "reason", n.Reason)
 	populate(objectMap, "severity", n.Severity)
 	populate(objectMap, "status", n.Status)
-	populate(objectMap, "virtualMachineArmId", n.VirtualMachineArmID)
+	populate(objectMap, "virtualMachineArmId", n.VirtualMachineARMID)
 	return json.Marshal(objectMap)
 }
 
@@ -212,7 +212,7 @@ func (n *NeuroShieldFindingProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cveId":
-			err = unpopulate(val, "CveID", &n.CveID)
+			err = unpopulate(val, "CVEID", &n.CVEID)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &n.Description)
@@ -233,7 +233,7 @@ func (n *NeuroShieldFindingProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Status", &n.Status)
 			delete(rawMsg, key)
 		case "virtualMachineArmId":
-			err = unpopulate(val, "VirtualMachineArmID", &n.VirtualMachineArmID)
+			err = unpopulate(val, "VirtualMachineARMID", &n.VirtualMachineARMID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -422,15 +422,15 @@ func (n *NeuroShieldMitigationListResult) UnmarshalJSON(data []byte) error {
 func (n NeuroShieldMitigationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "appliedTime", n.AppliedTime, true)
+	populate(objectMap, "cveId", n.CVEID)
 	populate(objectMap, "commandsSummary", n.CommandsSummary)
-	populate(objectMap, "cveId", n.CveID)
 	populate(objectMap, "findingId", n.FindingID)
 	populate(objectMap, "isRollbackable", n.IsRollbackable)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "rank", n.Rank)
 	populate(objectMap, "status", n.Status)
 	populate(objectMap, "statusDetails", n.StatusDetails)
-	populate(objectMap, "virtualMachineArmId", n.VirtualMachineArmID)
+	populate(objectMap, "virtualMachineArmId", n.VirtualMachineARMID)
 	return json.Marshal(objectMap)
 }
 
@@ -446,11 +446,11 @@ func (n *NeuroShieldMitigationProperties) UnmarshalJSON(data []byte) error {
 		case "appliedTime":
 			err = unpopulateTime[datetime.RFC3339](val, "AppliedTime", &n.AppliedTime)
 			delete(rawMsg, key)
+		case "cveId":
+			err = unpopulate(val, "CVEID", &n.CVEID)
+			delete(rawMsg, key)
 		case "commandsSummary":
 			err = unpopulate(val, "CommandsSummary", &n.CommandsSummary)
-			delete(rawMsg, key)
-		case "cveId":
-			err = unpopulate(val, "CveID", &n.CveID)
 			delete(rawMsg, key)
 		case "findingId":
 			err = unpopulate(val, "FindingID", &n.FindingID)
@@ -471,7 +471,7 @@ func (n *NeuroShieldMitigationProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "StatusDetails", &n.StatusDetails)
 			delete(rawMsg, key)
 		case "virtualMachineArmId":
-			err = unpopulate(val, "VirtualMachineArmID", &n.VirtualMachineArmID)
+			err = unpopulate(val, "VirtualMachineARMID", &n.VirtualMachineARMID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

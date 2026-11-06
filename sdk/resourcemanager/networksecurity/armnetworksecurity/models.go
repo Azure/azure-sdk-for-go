@@ -69,7 +69,7 @@ type NeuroShieldFindingListResult struct {
 // NeuroShieldFindingProperties - Properties of a finding resource.
 type NeuroShieldFindingProperties struct {
 	// READ-ONLY; Common Vulnerabilities and Exposures (CVE) identifier associated with this finding.
-	CVEID *string
+	CveID *string
 
 	// READ-ONLY; Description of the finding.
 	Description *string
@@ -85,7 +85,7 @@ type NeuroShieldFindingProperties struct {
 
 	// READ-ONLY; Fully qualified Azure Resource Manager resource ID of the affected virtual machine or virtual machine scale
 	// set instance.
-	VirtualMachineARMID *string
+	VirtualMachineArmID *string
 
 	// READ-ONLY; Detection timestamp for the finding.
 	DetectedTime *time.Time
@@ -158,11 +158,11 @@ type NeuroShieldMitigationListResult struct {
 
 // NeuroShieldMitigationProperties - Properties of a mitigation resource.
 type NeuroShieldMitigationProperties struct {
-	// READ-ONLY; Common Vulnerabilities and Exposures (CVE) identifier addressed by this mitigation.
-	CVEID *string
-
 	// READ-ONLY; User-friendly description of the commands executed by this mitigation.
 	CommandsSummary *string
+
+	// READ-ONLY; Common Vulnerabilities and Exposures (CVE) identifier addressed by this mitigation.
+	CveID *string
 
 	// READ-ONLY; Resource identifier of the associated finding.
 	FindingID *string
@@ -183,7 +183,7 @@ type NeuroShieldMitigationProperties struct {
 	Status *NeuroShieldMitigationStatus
 
 	// READ-ONLY; Fully qualified Azure Resource Manager resource ID of the virtual machine targeted by this mitigation.
-	VirtualMachineARMID *string
+	VirtualMachineArmID *string
 
 	// READ-ONLY; Timestamp when the mitigation was applied.
 	AppliedTime *time.Time

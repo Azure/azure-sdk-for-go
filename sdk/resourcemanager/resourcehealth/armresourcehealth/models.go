@@ -6,6 +6,18 @@ package armresourcehealth
 
 import "time"
 
+// APIOperationLink - An API operation associated with an event.
+type APIOperationLink struct {
+	// READ-ONLY; HTTP method to use. Resource Health returns GET for Advisor recommendations.
+	HTTPMethod *string
+
+	// READ-ONLY; Opaque absolute ARM URL for the associated API operation.
+	URL *string
+
+	// READ-ONLY; Human-readable description of the operation. Clients must not parse this value.
+	Description *string
+}
+
 // AvailabilityStatus - availabilityStatus of a resource.
 type AvailabilityStatus struct {
 	// Azure Resource Manager Identity for the availabilityStatuses resource.
@@ -346,6 +358,9 @@ type EventProperties struct {
 
 	// Title text of event.
 	Title *string
+
+	// READ-ONLY; Operation for listing Advisor recommendations associated with this event's tracking ID in the response subscription.
+	AdvisorRecommendations *APIOperationLink
 }
 
 // EventPropertiesAdditionalInformation - Additional information

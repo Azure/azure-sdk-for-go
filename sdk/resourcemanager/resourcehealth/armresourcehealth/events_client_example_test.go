@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/Events_ListBySingleResource.json
+// Generated from example definition: 2026-07-01/Events_ListBySingleResource.json
 func ExampleEventsClient_NewListBySingleResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,27 +36,30 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armresourcehealth.EventsClientListBySingleResourceResponse{
 		// 	Events: armresourcehealth.Events{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.Compute/virtualMachines/rhctestenvV1PI/providers/Microsoft.ResourceHealth/events?api-version=2025-05-01&$skipToken=OpaquePageNumber"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.Compute/virtualMachines/rhctestenvV1PI/providers/Microsoft.ResourceHealth/events?api-version=2026-07-01&$skipToken=OpaquePageNumber"),
 		// 		Value: []*armresourcehealth.Event{
 		// 			{
 		// 				Name: to.Ptr("BC_1-FXZ"),
 		// 				Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 		// 				ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/BC_1-FXZ"),
 		// 				Properties: &armresourcehealth.EventProperties{
+		// 					AdvisorRecommendations: &armresourcehealth.APIOperationLink{
+		// 						HTTPMethod: to.Ptr("GET"),
+		// 						URL: to.Ptr("https://management.azure.com/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/providers/Microsoft.Advisor/recommendations?api-version=2025-01-01&$filter=trackingIds/any(t:%20t%20eq%20'BC_1-FXZ')%20and%20ResourceId%20eq%20'/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.Compute/virtualMachines/rhctestenvV1PI'"),
+		// 						Description: to.Ptr("Lists Advisor recommendations associated with this retirement event."),
+		// 					},
 		// 					Article: &armresourcehealth.EventPropertiesArticle{
-		// 						ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
+		// 						ArticleContent: to.Ptr("<html>An Azure service retirement is planned. Review the retirement guidance and recommended actions.</html>"),
 		// 					},
 		// 					EnableChatWithUs: to.Ptr(false),
 		// 					EnableMicrosoftSupport: to.Ptr(true),
 		// 					EventLevel: to.Ptr(armresourcehealth.EventLevelValuesWarning),
-		// 					EventSource: to.Ptr(armresourcehealth.EventSourceValuesResourceHealth),
+		// 					EventSource: to.Ptr(armresourcehealth.EventSourceValuesServiceHealth),
 		// 					EventTags: []*string{
 		// 						to.Ptr("Action Recommended"),
-		// 						to.Ptr("False Positive"),
-		// 						to.Ptr("Preliminary PIR"),
-		// 						to.Ptr("Final PIR"),
 		// 					},
-		// 					EventType: to.Ptr(armresourcehealth.EventTypeValuesServiceIssue),
+		// 					EventSubType: to.Ptr(armresourcehealth.EventSubTypeValuesRetirement),
+		// 					EventType: to.Ptr(armresourcehealth.EventTypeValuesHealthAdvisory),
 		// 					Faqs: []*armresourcehealth.Faq{
 		// 						{
 		// 							Answer: to.Ptr("This is an answer"),
@@ -64,7 +67,7 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 		// 							Question: to.Ptr("This is a question"),
 		// 						},
 		// 					},
-		// 					Header: to.Ptr("Your service might have been impacted by an Azure service issue"),
+		// 					Header: to.Ptr("Action may be required for an upcoming Azure service retirement"),
 		// 					HirStage: to.Ptr("active"),
 		// 					Impact: []*armresourcehealth.Impact{
 		// 						{
@@ -78,25 +81,18 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 		// 									Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 		// 									Updates: []*armresourcehealth.Update{
 		// 										{
-		// 											EventTags: []*string{
-		// 												to.Ptr("Final PIR"),
-		// 											},
-		// 											Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 3 - Retirement guidance and recommended actions have been updated."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 		// 										},
 		// 										{
-		// 											EventTags: []*string{
-		// 												to.Ptr("False Positive"),
-		// 												to.Ptr("Preliminary PIR"),
-		// 											},
-		// 											Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 2 - Additional retirement impact details are available."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 		// 										},
 		// 										{
 		// 											EventTags: []*string{
 		// 												to.Ptr("Action Recommended"),
 		// 											},
-		// 											Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 1 - An upcoming Azure service retirement was announced."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 		// 										},
 		// 									},
@@ -155,8 +151,8 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 		// 						Message: to.Ptr("Recommended actions title"),
 		// 					},
 		// 					Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
-		// 					Summary: to.Ptr("An outage alert is being investigated. More information will be provided as it is known."),
-		// 					Title: to.Ptr("ACTIVE: Virtual machines in West US"),
+		// 					Summary: to.Ptr("An Azure service retirement is planned. Review the retirement guidance and recommended actions."),
+		// 					Title: to.Ptr("Upcoming retirement: Virtual Machines in West US"),
 		// 				},
 		// 			},
 		// 		},
@@ -165,7 +161,7 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/Events_ListBySubscriptionId.json
+// Generated from example definition: 2026-07-01/Events_ListBySubscriptionId.json
 func ExampleEventsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,27 +187,30 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armresourcehealth.EventsClientListBySubscriptionIDResponse{
 		// 	Events: armresourcehealth.Events{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.ResourceHealth/events?api-version=2025-05-01&$skipToken=OpaquePageNumber"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.ResourceHealth/events?api-version=2026-07-01&$skipToken=OpaquePageNumber"),
 		// 		Value: []*armresourcehealth.Event{
 		// 			{
 		// 				Name: to.Ptr("BC_1-FXZ"),
 		// 				Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 		// 				ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/BC_1-FXZ"),
 		// 				Properties: &armresourcehealth.EventProperties{
+		// 					AdvisorRecommendations: &armresourcehealth.APIOperationLink{
+		// 						HTTPMethod: to.Ptr("GET"),
+		// 						URL: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Advisor/recommendations?api-version=2025-01-01&$filter=trackingIds/any(t:%20t%20eq%20'BC_1-FXZ')"),
+		// 						Description: to.Ptr("Lists Advisor recommendations associated with this retirement event."),
+		// 					},
 		// 					Article: &armresourcehealth.EventPropertiesArticle{
-		// 						ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
+		// 						ArticleContent: to.Ptr("<html>An Azure service retirement is planned. Review the retirement guidance and recommended actions.</html>"),
 		// 					},
 		// 					EnableChatWithUs: to.Ptr(false),
 		// 					EnableMicrosoftSupport: to.Ptr(true),
 		// 					EventLevel: to.Ptr(armresourcehealth.EventLevelValuesWarning),
-		// 					EventSource: to.Ptr(armresourcehealth.EventSourceValuesResourceHealth),
+		// 					EventSource: to.Ptr(armresourcehealth.EventSourceValuesServiceHealth),
 		// 					EventTags: []*string{
 		// 						to.Ptr("Action Recommended"),
-		// 						to.Ptr("False Positive"),
-		// 						to.Ptr("Preliminary PIR"),
-		// 						to.Ptr("Final PIR"),
 		// 					},
-		// 					EventType: to.Ptr(armresourcehealth.EventTypeValuesServiceIssue),
+		// 					EventSubType: to.Ptr(armresourcehealth.EventSubTypeValuesRetirement),
+		// 					EventType: to.Ptr(armresourcehealth.EventTypeValuesHealthAdvisory),
 		// 					Faqs: []*armresourcehealth.Faq{
 		// 						{
 		// 							Answer: to.Ptr("This is an answer"),
@@ -219,7 +218,7 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 		// 							Question: to.Ptr("This is a question"),
 		// 						},
 		// 					},
-		// 					Header: to.Ptr("Your service might have been impacted by an Azure service issue"),
+		// 					Header: to.Ptr("Action may be required for an upcoming Azure service retirement"),
 		// 					HirStage: to.Ptr("resolved"),
 		// 					Impact: []*armresourcehealth.Impact{
 		// 						{
@@ -235,25 +234,18 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 		// 									Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 		// 									Updates: []*armresourcehealth.Update{
 		// 										{
-		// 											EventTags: []*string{
-		// 												to.Ptr("Final PIR"),
-		// 											},
-		// 											Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 3 - Retirement guidance and recommended actions have been updated."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 		// 										},
 		// 										{
-		// 											EventTags: []*string{
-		// 												to.Ptr("False Positive"),
-		// 												to.Ptr("Preliminary PIR"),
-		// 											},
-		// 											Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 2 - Additional retirement impact details are available."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 		// 										},
 		// 										{
 		// 											EventTags: []*string{
 		// 												to.Ptr("Action Recommended"),
 		// 											},
-		// 											Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
+		// 											Summary: to.Ptr("Update 1 - An upcoming Azure service retirement was announced."),
 		// 											UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 		// 										},
 		// 									},
@@ -312,8 +304,8 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 		// 						Message: to.Ptr("Recommended actions title"),
 		// 					},
 		// 					Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
-		// 					Summary: to.Ptr("An outage alert is being investigated. More information will be provided as it is known."),
-		// 					Title: to.Ptr("ACTIVE: Virtual machines in West US"),
+		// 					Summary: to.Ptr("An Azure service retirement is planned. Review the retirement guidance and recommended actions."),
+		// 					Title: to.Ptr("Upcoming retirement: Virtual Machines in West US"),
 		// 				},
 		// 			},
 		// 		},
@@ -322,7 +314,7 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/Events_ListByTenantId.json
+// Generated from example definition: 2026-07-01/Events_ListByTenantId.json
 func ExampleEventsClient_NewListByTenantIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +340,7 @@ func ExampleEventsClient_NewListByTenantIDPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armresourcehealth.EventsClientListByTenantIDResponse{
 		// 	Events: armresourcehealth.Events{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.ResourceHealth/events?api-version=2025-05-01&$skipToken=OpaquePageNumber"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.ResourceHealth/events?api-version=2026-07-01&$skipToken=OpaquePageNumber"),
 		// 		Value: []*armresourcehealth.Event{
 		// 			{
 		// 				Name: to.Ptr("BC_1-FXZ"),

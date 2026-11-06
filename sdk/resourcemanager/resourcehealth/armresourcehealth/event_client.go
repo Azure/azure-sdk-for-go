@@ -19,7 +19,7 @@ import (
 // EventClient contains the methods for the Event group.
 // Don't use this type directly, use NewEventClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type EventClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,7 +83,7 @@ func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndT
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -140,7 +140,7 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,7 +252,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}
@@ -310,7 +310,7 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}

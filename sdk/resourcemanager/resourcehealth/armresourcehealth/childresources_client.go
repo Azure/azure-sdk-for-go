@@ -18,7 +18,7 @@ import (
 // ChildResourcesClient contains the methods for the ChildResources group.
 // Don't use this type directly, use NewChildResourcesClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type ChildResourcesClient struct {
 	internal *arm.Client
 }
@@ -92,7 +92,7 @@ func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resou
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

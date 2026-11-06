@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/Metadata_GetEntity.json
+// Generated from example definition: 2026-07-01/Metadata_GetEntity.json
 func ExampleMetadataClient_GetEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleMetadataClient_GetEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/Metadata_List.json
+// Generated from example definition: 2026-07-01/Metadata_List.json
 func ExampleMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // MetadataClient contains the methods for the Metadata group.
 // Don't use this type directly, use NewMetadataClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type MetadataClient struct {
 	internal *arm.Client
 }
@@ -71,7 +71,7 @@ func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -132,7 +132,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, nextLink st
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -25,10 +25,6 @@ type AvailabilityStatusesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByResource func(ctx context.Context, resourceURI string, options *armresourcehealth.AvailabilityStatusesClientGetByResourceOptions) (resp azfake.Responder[armresourcehealth.AvailabilityStatusesClientGetByResourceResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AvailabilityStatusesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armresourcehealth.AvailabilityStatusesClientListOptions) (resp azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AvailabilityStatusesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse])
@@ -36,6 +32,10 @@ type AvailabilityStatusesServer struct {
 	// NewListBySubscriptionIDPager is the fake for method AvailabilityStatusesClient.NewListBySubscriptionIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionIDPager func(options *armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions) (resp azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse])
+
+	// NewListPager is the fake for method AvailabilityStatusesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceURI string, options *armresourcehealth.AvailabilityStatusesClientListOptions) (resp azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse])
 }
 
 // NewAvailabilityStatusesServerTransport creates a new instance of AvailabilityStatusesServerTransport with the provided implementation.
@@ -44,9 +44,9 @@ type AvailabilityStatusesServer struct {
 func NewAvailabilityStatusesServerTransport(srv *AvailabilityStatusesServer) *AvailabilityStatusesServerTransport {
 	return &AvailabilityStatusesServerTransport{
 		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]](),
 		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]](),
 		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]](),
 	}
 }
 
@@ -54,9 +54,9 @@ func NewAvailabilityStatusesServerTransport(srv *AvailabilityStatusesServer) *Av
 // Don't use this type directly, use NewAvailabilityStatusesServerTransport instead.
 type AvailabilityStatusesServerTransport struct {
 	srv                          *AvailabilityStatusesServer
-	newListPager                 *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]]
 	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]]
 	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailabilityStatusesServerTransport.
@@ -82,12 +82,12 @@ func (a *AvailabilityStatusesServerTransport) dispatchToMethodFake(req *http.Req
 			switch method {
 			case "AvailabilityStatusesClient.GetByResource":
 				res.resp, res.err = a.dispatchGetByResource(req)
-			case "AvailabilityStatusesClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AvailabilityStatusesClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AvailabilityStatusesClient.NewListBySubscriptionIDPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionIDPager(req)
+			case "AvailabilityStatusesClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -136,50 +136,6 @@ func (a *AvailabilityStatusesServerTransport) dispatchGetByResource(req *http.Re
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailabilityStatus, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AvailabilityStatusesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armresourcehealth.AvailabilityStatusesClientListOptions
-		if filterParam != nil || expandParam != nil {
-			options = &armresourcehealth.AvailabilityStatusesClientListOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-			}
-		}
-		resp := a.srv.NewListPager(resourceURIParam, options)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresourcehealth.AvailabilityStatusesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -270,6 +226,50 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListBySubscriptionIDPag
 	}
 	if !server.PagerResponderMore(newListBySubscriptionIDPager) {
 		a.newListBySubscriptionIDPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AvailabilityStatusesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armresourcehealth.AvailabilityStatusesClientListOptions
+		if filterParam != nil || expandParam != nil {
+			options = &armresourcehealth.AvailabilityStatusesClientListOptions{
+				Filter: filterParam,
+				Expand: expandParam,
+			}
+		}
+		resp := a.srv.NewListPager(resourceURIParam, options)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresourcehealth.AvailabilityStatusesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

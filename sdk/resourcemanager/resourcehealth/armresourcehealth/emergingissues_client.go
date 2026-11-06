@@ -19,7 +19,7 @@ import (
 // EmergingIssuesClient contains the methods for the EmergingIssues group.
 // Don't use this type directly, use NewEmergingIssuesClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type EmergingIssuesClient struct {
 	internal *arm.Client
 }
@@ -71,7 +71,7 @@ func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -132,7 +132,7 @@ func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, nextL
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

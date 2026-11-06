@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/CapabilityHost/createOrUpdate.json
 func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/delete.json
+// Generated from example definition: 2026-05-15-preview/CapabilityHost/delete.json
 func ExampleCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleCapabilityHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/get.json
+// Generated from example definition: 2026-05-15-preview/CapabilityHost/get.json
 func ExampleCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

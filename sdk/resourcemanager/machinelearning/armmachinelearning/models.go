@@ -2893,11 +2893,17 @@ type CustomModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -6970,11 +6976,17 @@ type MLFlowModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -7060,11 +7072,17 @@ type MLTableJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -11531,11 +11549,17 @@ type TritonModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -11644,11 +11668,17 @@ type URIFileJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -11731,11 +11761,17 @@ type URIFolderJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string

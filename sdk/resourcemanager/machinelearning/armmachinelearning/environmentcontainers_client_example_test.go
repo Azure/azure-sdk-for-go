@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentContainer/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentContainer/createOrUpdate.json
 func ExampleEnvironmentContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleEnvironmentContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentContainer/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentContainer/delete.json
 func ExampleEnvironmentContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleEnvironmentContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentContainer/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentContainer/get.json
 func ExampleEnvironmentContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleEnvironmentContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/EnvironmentContainer/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/EnvironmentContainer/list.json
 func ExampleEnvironmentContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

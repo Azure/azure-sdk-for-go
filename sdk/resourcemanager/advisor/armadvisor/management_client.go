@@ -19,7 +19,7 @@ import (
 // ManagementClient - REST APIs for Azure Advisor Resiliency Reviews.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -77,7 +77,7 @@ func (client *ManagementClient) predictCreateRequest(ctx context.Context, predic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

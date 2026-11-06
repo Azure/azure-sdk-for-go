@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/ResiliencyReviewsGet.json
+// Generated from example definition: 2026-08-01-preview/ResiliencyReviewsGet.json
 func ExampleResiliencyReviewsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleResiliencyReviewsClient_Get() {
 	// 		Properties: &armadvisor.ResiliencyReviewProperties{
 	// 			ReviewName: to.Ptr("review name xyz"),
 	// 			WorkloadName: to.Ptr("workload name xyz"),
-	// 			ReviewStatus: to.Ptr(armadvisor.ReviewStatusTriaged),
+	// 			ReviewStatus: to.Ptr(armadvisor.ReviewStatusCompleted),
 	// 			RecommendationsCount: to.Ptr[int32](4),
 	// 			PublishedAt: to.Ptr("2023-06-30T09:41:00Z"),
 	// 			UpdatedAt: to.Ptr("2023-06-30T09:41:00Z"),
@@ -54,7 +54,7 @@ func ExampleResiliencyReviewsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ResiliencyReviewsList.json
+// Generated from example definition: 2026-08-01-preview/ResiliencyReviewsList.json
 func ExampleResiliencyReviewsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleResiliencyReviewsClient_NewListPager() {
 		// 				Properties: &armadvisor.ResiliencyReviewProperties{
 		// 					ReviewName: to.Ptr("review name xyz"),
 		// 					WorkloadName: to.Ptr("workload name xyz"),
-		// 					ReviewStatus: to.Ptr(armadvisor.ReviewStatusTriaged),
+		// 					ReviewStatus: to.Ptr(armadvisor.ReviewStatusCompleted),
 		// 					RecommendationsCount: to.Ptr[int32](4),
 		// 					PublishedAt: to.Ptr("2023-06-30T09:41:00Z"),
 		// 					UpdatedAt: to.Ptr("2023-06-30T09:41:00Z"),
@@ -115,14 +115,14 @@ func ExampleResiliencyReviewsClient_NewListPager() {
 		// 				Properties: &armadvisor.ResiliencyReviewProperties{
 		// 					ReviewName: to.Ptr("review name abc"),
 		// 					WorkloadName: to.Ptr("workload name abc"),
-		// 					ReviewStatus: to.Ptr(armadvisor.ReviewStatusTriaged),
+		// 					ReviewStatus: to.Ptr(armadvisor.ReviewStatusCompleted),
 		// 					RecommendationsCount: to.Ptr[int32](5),
 		// 					PublishedAt: to.Ptr("2023-06-30T09:41:00Z"),
 		// 					UpdatedAt: to.Ptr("2023-06-30T09:41:00Z"),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Advisor/resiliencyReviews?api-version=2025-05-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Advisor/resiliencyReviews?api-version=2026-08-01-preview&$skipToken=abc123"),
 		// 	},
 		// }
 	}

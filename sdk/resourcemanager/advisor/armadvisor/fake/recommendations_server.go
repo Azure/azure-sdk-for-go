@@ -30,21 +30,33 @@ type RecommendationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, recommendationID string, options *armadvisor.RecommendationsClientGetOptions) (resp azfake.Responder[armadvisor.RecommendationsClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetByServiceGroup is the fake for method RecommendationsClient.GetByServiceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByServiceGroup func(ctx context.Context, serviceGroupName string, recommendationID string, options *armadvisor.RecommendationsClientGetByServiceGroupOptions) (resp azfake.Responder[armadvisor.RecommendationsClientGetByServiceGroupResponse], errResp azfake.ErrorResponder)
+
 	// GetGenerateStatus is the fake for method RecommendationsClient.GetGenerateStatus
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	GetGenerateStatus func(ctx context.Context, operationID string, options *armadvisor.RecommendationsClientGetGenerateStatusOptions) (resp azfake.Responder[armadvisor.RecommendationsClientGetGenerateStatusResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RecommendationsClient.NewListPager
+	// NewListByServiceGroupPager is the fake for method RecommendationsClient.NewListByServiceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armadvisor.RecommendationsClientListOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListResponse])
+	NewListByServiceGroupPager func(serviceGroupName string, options *armadvisor.RecommendationsClientListByServiceGroupOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListByServiceGroupResponse])
 
 	// NewListByTenantPager is the fake for method RecommendationsClient.NewListByTenantPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByTenantPager func(resourceURI string, options *armadvisor.RecommendationsClientListByTenantOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse])
 
-	// Patch is the fake for method RecommendationsClient.Patch
+	// NewListPager is the fake for method RecommendationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	Patch func(ctx context.Context, resourceURI string, recommendationID string, trackedProperties armadvisor.TrackedRecommendationPropertiesPayload, options *armadvisor.RecommendationsClientPatchOptions) (resp azfake.Responder[armadvisor.RecommendationsClientPatchResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armadvisor.RecommendationsClientListOptions) (resp azfake.PagerResponder[armadvisor.RecommendationsClientListResponse])
+
+	// Update is the fake for method RecommendationsClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, recommendationID string, properties armadvisor.RecommendationPatchPayload, options *armadvisor.RecommendationsClientUpdateOptions) (resp azfake.Responder[armadvisor.RecommendationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// UpdateByServiceGroup is the fake for method RecommendationsClient.UpdateByServiceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateByServiceGroup func(ctx context.Context, serviceGroupName string, recommendationID string, properties armadvisor.RecommendationPatchPayload, options *armadvisor.RecommendationsClientUpdateByServiceGroupOptions) (resp azfake.Responder[armadvisor.RecommendationsClientUpdateByServiceGroupResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRecommendationsServerTransport creates a new instance of RecommendationsServerTransport with the provided implementation.
@@ -52,18 +64,20 @@ type RecommendationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecommendationsServerTransport(srv *RecommendationsServer) *RecommendationsServerTransport {
 	return &RecommendationsServerTransport{
-		srv:                  srv,
-		newListPager:         newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]](),
-		newListByTenantPager: newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]](),
+		srv:                        srv,
+		newListByServiceGroupPager: newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByServiceGroupResponse]](),
+		newListByTenantPager:       newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]](),
 	}
 }
 
 // RecommendationsServerTransport connects instances of armadvisor.RecommendationsClient to instances of RecommendationsServer.
 // Don't use this type directly, use NewRecommendationsServerTransport instead.
 type RecommendationsServerTransport struct {
-	srv                  *RecommendationsServer
-	newListPager         *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]]
-	newListByTenantPager *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]]
+	srv                        *RecommendationsServer
+	newListByServiceGroupPager *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByServiceGroupResponse]]
+	newListByTenantPager       *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListByTenantResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armadvisor.RecommendationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecommendationsServerTransport.
@@ -91,14 +105,20 @@ func (r *RecommendationsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = r.dispatchGenerate(req)
 			case "RecommendationsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
+			case "RecommendationsClient.GetByServiceGroup":
+				res.resp, res.err = r.dispatchGetByServiceGroup(req)
 			case "RecommendationsClient.GetGenerateStatus":
 				res.resp, res.err = r.dispatchGetGenerateStatus(req)
-			case "RecommendationsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
+			case "RecommendationsClient.NewListByServiceGroupPager":
+				res.resp, res.err = r.dispatchNewListByServiceGroupPager(req)
 			case "RecommendationsClient.NewListByTenantPager":
 				res.resp, res.err = r.dispatchNewListByTenantPager(req)
-			case "RecommendationsClient.Patch":
-				res.resp, res.err = r.dispatchPatch(req)
+			case "RecommendationsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			case "RecommendationsClient.Update":
+				res.resp, res.err = r.dispatchUpdate(req)
+			case "RecommendationsClient.UpdateByServiceGroup":
+				res.resp, res.err = r.dispatchUpdateByServiceGroup(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -176,6 +196,39 @@ func (r *RecommendationsServerTransport) dispatchGet(req *http.Request) (*http.R
 	return resp, nil
 }
 
+func (r *RecommendationsServerTransport) dispatchGetByServiceGroup(req *http.Request) (*http.Response, error) {
+	if r.srv.GetByServiceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByServiceGroup not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations/(?P<recommendationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetByServiceGroup(req.Context(), serviceGroupNameParam, recommendationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceRecommendationBase, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (r *RecommendationsServerTransport) dispatchGetGenerateStatus(req *http.Request) (*http.Response, error) {
 	if r.srv.GetGenerateStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGenerateStatus not implemented")}
@@ -208,20 +261,25 @@ func (r *RecommendationsServerTransport) dispatchGetGenerateStatus(req *http.Req
 	return resp, nil
 }
 
-func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (r *RecommendationsServerTransport) dispatchNewListByServiceGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByServiceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByServiceGroupPager not implemented")}
 	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations`
+	newListByServiceGroupPager := r.newListByServiceGroupPager.get(req)
+	if newListByServiceGroupPager == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
 		filterParam := getOptional(qp.Get("$filter"))
+		modeParam := getOptional(armadvisor.RecommendationListMode(qp.Get("mode")))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
@@ -233,31 +291,32 @@ func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, err
 		}
 		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armadvisor.RecommendationsClientListOptions
-		if filterParam != nil || topParam != nil || skipTokenParam != nil {
-			options = &armadvisor.RecommendationsClientListOptions{
+		var options *armadvisor.RecommendationsClientListByServiceGroupOptions
+		if filterParam != nil || modeParam != nil || topParam != nil || skipTokenParam != nil {
+			options = &armadvisor.RecommendationsClientListByServiceGroupOptions{
 				Filter:    filterParam,
+				Mode:      modeParam,
 				Top:       topParam,
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := r.srv.NewListPager(options)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armadvisor.RecommendationsClientListResponse, createLink func() string) {
+		resp := r.srv.NewListByServiceGroupPager(serviceGroupNameParam, options)
+		newListByServiceGroupPager = &resp
+		r.newListByServiceGroupPager.add(req, newListByServiceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByServiceGroupPager, req, func(page *armadvisor.RecommendationsClientListByServiceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resp, err := server.PagerResponderNext(newListByServiceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
+		r.newListByServiceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
+	if !server.PagerResponderMore(newListByServiceGroupPager) {
+		r.newListByServiceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -317,26 +376,118 @@ func (r *RecommendationsServerTransport) dispatchNewListByTenantPager(req *http.
 	return resp, nil
 }
 
-func (r *RecommendationsServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
-	if r.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
+func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Advisor/recommendations/(?P<recommendationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		modeParam := getOptional(armadvisor.RecommendationListMode(qp.Get("mode")))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armadvisor.RecommendationsClientListOptions
+		if filterParam != nil || modeParam != nil || topParam != nil || skipTokenParam != nil {
+			options = &armadvisor.RecommendationsClientListOptions{
+				Filter:    filterParam,
+				Mode:      modeParam,
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := r.srv.NewListPager(options)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armadvisor.RecommendationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RecommendationsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations/(?P<recommendationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armadvisor.TrackedRecommendationPropertiesPayload](req)
+	body, err := server.UnmarshalRequestAsJSON[armadvisor.RecommendationPatchPayload](req)
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Patch(req.Context(), resourceURIParam, recommendationIDParam, body, nil)
+	respr, errRespr := r.srv.Update(req.Context(), recommendationIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceRecommendationBase, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RecommendationsServerTransport) dispatchUpdateByServiceGroup(req *http.Request) (*http.Response, error) {
+	if r.srv.UpdateByServiceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateByServiceGroup not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/recommendations/(?P<recommendationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armadvisor.RecommendationPatchPayload](req)
+	if err != nil {
+		return nil, err
+	}
+	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.UpdateByServiceGroup(req.Context(), serviceGroupNameParam, recommendationIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-05-01-preview/GenerateRecommendations.json
+// Generated from example definition: 2026-08-01-preview/GenerateRecommendations.json
 func ExampleRecommendationsClient_Generate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleRecommendationsClient_Generate() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/GetRecommendationDetailServiceGroupResourceUri.json
+// Generated from example definition: 2026-08-01-preview/GetRecommendationDetailServiceGroupResourceUri.json
 func ExampleRecommendationsClient_Get_getRecommendationDetailServiceGroupResourceUri() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,6 +57,10 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailServiceGroupResourc
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
 	// 			ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
 	// 			ImpactedValue: to.Ptr("serviceGroupXYZ"),
+	// 			RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+	// 			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+	// 			PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+	// 			LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 	// 			LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
@@ -96,14 +100,13 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailServiceGroupResourc
 	// 			Label: to.Ptr("Enable Soft Delete"),
 	// 			LearnMoreLink: to.Ptr("https://link2"),
 	// 			PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-	// 			Tracked: to.Ptr(false),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/GetRecommendationDetailSubscriptionResourceUri.json
+// Generated from example definition: 2026-08-01-preview/GetRecommendationDetailSubscriptionResourceUri.json
 func ExampleRecommendationsClient_Get_getRecommendationDetailSubscriptionResourceUri() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +117,7 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailSubscriptionResourc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRecommendationsClient().Get(ctx, "subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset", "bd27ddc6-1312-4067-b4af-cbb45e32cfd7", nil)
+	res, err := clientFactory.NewRecommendationsClient().Get(ctx, "subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,13 +126,17 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailSubscriptionResourc
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armadvisor.RecommendationsClientGetResponse{
 	// 	ResourceRecommendationBase: armadvisor.ResourceRecommendationBase{
-	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
+	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
 	// 		Name: to.Ptr("bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
 	// 		Properties: &armadvisor.RecommendationProperties{
 	// 			Category: to.Ptr(armadvisor.CategorySecurity),
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
 	// 			ImpactedField: to.Ptr("Microsoft.Compute/availabilitysets"),
 	// 			ImpactedValue: to.Ptr("armavset"),
+	// 			RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+	// 			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+	// 			PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+	// 			LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 	// 			LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
@@ -177,14 +184,115 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailSubscriptionResourc
 	// 			Label: to.Ptr("Enable Soft Delete"),
 	// 			LearnMoreLink: to.Ptr("https://link2"),
 	// 			PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-	// 			Tracked: to.Ptr(false),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EmptyResponse.json
+// Generated from example definition: 2026-08-01-preview/GetRecommendationDetailByServiceGroup.json
+func ExampleRecommendationsClient_GetByServiceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecommendationsClient().GetByServiceGroup(ctx, "serviceGroupXYZ", "37c93209-4bfb-4f3b-8874-ccc718f7a467", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armadvisor.RecommendationsClientGetByServiceGroupResponse{
+	// 	ResourceRecommendationBase: armadvisor.ResourceRecommendationBase{
+	// 		ID: to.Ptr("/providers/microsoft.management/serviceGroups/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/37c93209-4bfb-4f3b-8874-ccc718f7a467"),
+	// 		Name: to.Ptr("37c93209-4bfb-4f3b-8874-ccc718f7a467"),
+	// 		Properties: &armadvisor.RecommendationProperties{
+	// 			Category: to.Ptr(armadvisor.CategoryHighAvailability),
+	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
+	// 			ImpactedField: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 			ImpactedValue: to.Ptr("serviceGroupXYZ"),
+	// 			CriticalityScore: to.Ptr("0.85"),
+	// 			Criticality: to.Ptr("High"),
+	// 			ScoreChangedAt: to.Ptr("2026-08-01T00:00:00Z"),
+	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+	// 			Savings: &armadvisor.ResourceRecommendationSavings{
+	// 				ProviderCurrency: to.Ptr("USD"),
+	// 				BillingCurrency: to.Ptr("EUR"),
+	// 				IsDirectChannel: to.Ptr(true),
+	// 				ResourceDeletedOn: to.Ptr(time.Date(2026, time.August, 6, 8, 42, 29, 471000000, time.UTC)),
+	// 				Retail: &armadvisor.ResourceRecommendationSavingsDetails{
+	// 					PotentialSavings: to.Ptr[float64](0),
+	// 					PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+	// 					WastedTillDate: to.Ptr[float64](40),
+	// 					WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+	// 					RealizedSavings: to.Ptr[float64](40),
+	// 					RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+	// 				},
+	// 				Contracted: &armadvisor.ResourceRecommendationSavingsDetails{
+	// 					PotentialSavings: to.Ptr[float64](0),
+	// 					PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+	// 					WastedTillDate: to.Ptr[float64](40),
+	// 					WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+	// 					RealizedSavings: to.Ptr[float64](40),
+	// 					RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+	// 				},
+	// 			},
+	// 			RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+	// 			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+	// 			PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+	// 			LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+	// 			LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
+	// 			Risk: to.Ptr(armadvisor.RiskWarning),
+	// 			ShortDescription: &armadvisor.ShortDescription{
+	// 				Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+	// 				Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+	// 			},
+	// 			ResourceMetadata: &armadvisor.ResourceMetadata{
+	// 				ResourceID: to.Ptr("/providers/microsoft.management/serviceGroups/serviceGroupXYZ"),
+	// 				Action: map[string]any{
+	// 					"additionalProperties": map[string]any{
+	// 						"actionType": "Document",
+	// 						"link": "https://link3",
+	// 						"caption": "Enable Soft Delete to protect blob data",
+	// 						"description": "Enable Soft Delete to protect blob data",
+	// 					},
+	// 					"metadata": map[string]any{
+	// 						"id": "/providers/microsoft.management/serviceGroups/serviceGroupXYZ",
+	// 					},
+	// 				},
+	// 				Singular: to.Ptr("Availability set"),
+	// 				Plural: to.Ptr("Availability sets"),
+	// 			},
+	// 			Actions: []map[string]any{
+	// 				map[string]any{
+	// 					"additionalProperties": map[string]any{
+	// 						"actionType": "Document",
+	// 						"link": "https://link1",
+	// 						"caption": "Enable Soft Delete to protect blob data",
+	// 						"description": "Enable Soft Delete to protect blob data",
+	// 					},
+	// 					"metadata": map[string]any{
+	// 						"id": "/providers/microsoft.management/serviceGroups/serviceGroupXYZ",
+	// 					},
+	// 				},
+	// 			},
+	// 			Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+	// 			Label: to.Ptr("Enable Soft Delete"),
+	// 			LearnMoreLink: to.Ptr("https://link2"),
+	// 			PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/EmptyResponse.json
 func ExampleRecommendationsClient_GetGenerateStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +309,342 @@ func ExampleRecommendationsClient_GetGenerateStatus() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/ListRecommendationsSubscriptionResourceUri.json
+// Generated from example definition: 2026-08-01-preview/ListRecommendationsByServiceGroup.json
+func ExampleRecommendationsClient_NewListByServiceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecommendationsClient().NewListByServiceGroupPager("serviceGroupXYZ", &armadvisor.RecommendationsClientListByServiceGroupOptions{
+		Top:  to.Ptr[int32](10),
+		Mode: to.Ptr(armadvisor.RecommendationListModeAll)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armadvisor.RecommendationsClientListByServiceGroupResponse{
+		// 	ResourceRecommendationBaseListResult: armadvisor.ResourceRecommendationBaseListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations?api-version=2026-08-01-preview&$top=10&mode=all&$skiptoken=skiptoken"),
+		// 		Value: []*armadvisor.ResourceRecommendationBase{
+		// 			{
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
+		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
+		// 				Properties: &armadvisor.RecommendationProperties{
+		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
+		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
+		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroups"),
+		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
+		// 					CriticalityScore: to.Ptr("0.85"),
+		// 					Criticality: to.Ptr("High"),
+		// 					ScoreChangedAt: to.Ptr("2026-08-01T00:00:00Z"),
+		// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+		// 					Savings: &armadvisor.ResourceRecommendationSavings{
+		// 						ProviderCurrency: to.Ptr("USD"),
+		// 						BillingCurrency: to.Ptr("EUR"),
+		// 						IsDirectChannel: to.Ptr(true),
+		// 						ResourceDeletedOn: to.Ptr(time.Date(2026, time.August, 6, 8, 42, 29, 471000000, time.UTC)),
+		// 						Retail: &armadvisor.ResourceRecommendationSavingsDetails{
+		// 							PotentialSavings: to.Ptr[float64](0),
+		// 							PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+		// 							WastedTillDate: to.Ptr[float64](40),
+		// 							WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+		// 							RealizedSavings: to.Ptr[float64](40),
+		// 							RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+		// 						},
+		// 						Contracted: &armadvisor.ResourceRecommendationSavingsDetails{
+		// 							PotentialSavings: to.Ptr[float64](0),
+		// 							PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+		// 							WastedTillDate: to.Ptr[float64](40),
+		// 							WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+		// 							RealizedSavings: to.Ptr[float64](40),
+		// 							RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+		// 						},
+		// 					},
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
+		// 					Risk: to.Ptr(armadvisor.RiskWarning),
+		// 					ShortDescription: &armadvisor.ShortDescription{
+		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 					},
+		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
+		// 						ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+		// 						Action: map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link3",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 						Singular: to.Ptr("Availability set"),
+		// 						Plural: to.Ptr("Availability sets"),
+		// 					},
+		// 					Actions: []map[string]any{
+		// 						map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link1",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 					},
+		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+		// 					Label: to.Ptr("Enable Soft Delete"),
+		// 					LearnMoreLink: to.Ptr("https://link2"),
+		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/virtualMachine1/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
+		// 				Properties: &armadvisor.RecommendationProperties{
+		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
+		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
+		// 					ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 					ImpactedValue: to.Ptr("virtualMachine1"),
+		// 					CriticalityScore: to.Ptr("0.65"),
+		// 					Criticality: to.Ptr("Medium"),
+		// 					ScoreChangedAt: to.Ptr("2026-08-01T00:00:00Z"),
+		// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+		// 					Savings: &armadvisor.ResourceRecommendationSavings{
+		// 						ProviderCurrency: to.Ptr("USD"),
+		// 						BillingCurrency: to.Ptr("EUR"),
+		// 						IsDirectChannel: to.Ptr(true),
+		// 						ResourceDeletedOn: to.Ptr(time.Date(2026, time.August, 6, 8, 42, 29, 471000000, time.UTC)),
+		// 						Retail: &armadvisor.ResourceRecommendationSavingsDetails{
+		// 							PotentialSavings: to.Ptr[float64](0),
+		// 							PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+		// 							WastedTillDate: to.Ptr[float64](40),
+		// 							WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+		// 							RealizedSavings: to.Ptr[float64](40),
+		// 							RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+		// 						},
+		// 						Contracted: &armadvisor.ResourceRecommendationSavingsDetails{
+		// 							PotentialSavings: to.Ptr[float64](0),
+		// 							PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+		// 							WastedTillDate: to.Ptr[float64](40),
+		// 							WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+		// 							RealizedSavings: to.Ptr[float64](40),
+		// 							RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+		// 						},
+		// 					},
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
+		// 					Risk: to.Ptr(armadvisor.RiskWarning),
+		// 					ShortDescription: &armadvisor.ShortDescription{
+		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 					},
+		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/virtualMachine1"),
+		// 						Action: map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link3",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/virtualMachine1",
+		// 							},
+		// 						},
+		// 						Singular: to.Ptr("Availability set"),
+		// 						Plural: to.Ptr("Availability sets"),
+		// 					},
+		// 					Actions: []map[string]any{
+		// 						map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link1",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/virtualMachine1",
+		// 							},
+		// 						},
+		// 					},
+		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+		// 					Label: to.Ptr("Enable Soft Delete"),
+		// 					LearnMoreLink: to.Ptr("https://link2"),
+		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListRecommendationsServiceGroupResourceUri.json
+func ExampleRecommendationsClient_NewListByTenantPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecommendationsClient().NewListByTenantPager("providers/microsoft.management/serviceGroups/serviceGroupXYZ", &armadvisor.RecommendationsClientListByTenantOptions{
+		Top: to.Ptr[int32](10)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armadvisor.RecommendationsClientListByTenantResponse{
+		// 	ResourceRecommendationBaseListResult: armadvisor.ResourceRecommendationBaseListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations?api-version=2026-08-01-preview&$top=10&$skiptoken=skiptoken"),
+		// 		Value: []*armadvisor.ResourceRecommendationBase{
+		// 			{
+		// 				ID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
+		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
+		// 				Properties: &armadvisor.RecommendationProperties{
+		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
+		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
+		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
+		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
+		// 					Risk: to.Ptr(armadvisor.RiskWarning),
+		// 					ShortDescription: &armadvisor.ShortDescription{
+		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 					},
+		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
+		// 						ResourceID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ"),
+		// 						Action: map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link3",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 						Singular: to.Ptr("Availability set"),
+		// 						Plural: to.Ptr("Availability sets"),
+		// 					},
+		// 					Actions: []map[string]any{
+		// 						map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link1",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 					},
+		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+		// 					Label: to.Ptr("Enable Soft Delete"),
+		// 					LearnMoreLink: to.Ptr("https://link2"),
+		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
+		// 				Properties: &armadvisor.RecommendationProperties{
+		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
+		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
+		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
+		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
+		// 					Risk: to.Ptr(armadvisor.RiskWarning),
+		// 					ShortDescription: &armadvisor.ShortDescription{
+		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
+		// 					},
+		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
+		// 						ResourceID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ"),
+		// 						Action: map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link3",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 						Singular: to.Ptr("Availability set"),
+		// 						Plural: to.Ptr("Availability sets"),
+		// 					},
+		// 					Actions: []map[string]any{
+		// 						map[string]any{
+		// 							"additionalProperties": map[string]any{
+		// 								"actionType": "Document",
+		// 								"link": "https://link1",
+		// 								"caption": "Enable Soft Delete to protect blob data",
+		// 								"description": "Enable Soft Delete to protect blob data",
+		// 							},
+		// 							"metadata": map[string]any{
+		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
+		// 							},
+		// 						},
+		// 					},
+		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+		// 					Label: to.Ptr("Enable Soft Delete"),
+		// 					LearnMoreLink: to.Ptr("https://link2"),
+		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListRecommendationsSubscriptionResourceUri.json
 func ExampleRecommendationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +656,8 @@ func ExampleRecommendationsClient_NewListPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewRecommendationsClient().NewListPager(&armadvisor.RecommendationsClientListOptions{
-		Top: to.Ptr[int32](10)})
+		Top:  to.Ptr[int32](10),
+		Mode: to.Ptr(armadvisor.RecommendationListModeAll)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -226,17 +670,22 @@ func ExampleRecommendationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armadvisor.RecommendationsClientListResponse{
 		// 	ResourceRecommendationBaseListResult: armadvisor.ResourceRecommendationBaseListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/providers/Microsoft.Advisor/recommendations?api-version=2025-05-01-preview&$top=10&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/providers/Microsoft.Advisor/recommendations?api-version=2026-08-01-preview&$top=10&mode=all&$skiptoken=skiptoken"),
 		// 		Value: []*armadvisor.ResourceRecommendationBase{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
-		// 				Name: to.Ptr("bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
+		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
 		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
 		// 				Properties: &armadvisor.RecommendationProperties{
 		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
+		// 					Control: to.Ptr(armadvisor.ControlHighAvailability),
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Compute/availabilitySets"),
 		// 					ImpactedValue: to.Ptr("armavset"),
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 		// 					LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					Remediation: map[string]any{
@@ -283,18 +732,21 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 					Label: to.Ptr("Enable Soft Delete"),
 		// 					LearnMoreLink: to.Ptr("https://link2"),
 		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-		// 					Tracked: to.Ptr(false),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Advisor/recommendations/1b266c91-3a92-4423-8aa2-ee13a6d90f47"),
-		// 				Name: to.Ptr("1b266c91-3a92-4423-8aa2-ee13a6d90f47"),
+		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
+		// 				Name: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
 		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
 		// 				Properties: &armadvisor.RecommendationProperties{
 		// 					Category: to.Ptr(armadvisor.CategorySecurity),
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 					ImpactedValue: to.Ptr("xyz"),
+		// 					RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusNew),
+		// 					RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("None")),
+		// 					PostponedUntilDateTime: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
+		// 					LastRefreshed: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 		// 					LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					ShortDescription: &armadvisor.ShortDescription{
@@ -335,11 +787,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 					Label: to.Ptr("Enable monitoring agent"),
 		// 					LearnMoreLink: to.Ptr("https://link2"),
 		// 					PotentialBenefits: to.Ptr("Protect and monitor machine"),
-		// 					Tracked: to.Ptr(true),
 		// 					TrackedProperties: &armadvisor.TrackedRecommendationProperties{
-		// 						State: to.Ptr(armadvisor.StatePostponed),
-		// 						PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
-		// 						Reason: to.Ptr(armadvisor.ReasonRiskAccepted),
 		// 						Priority: to.Ptr(armadvisor.PriorityHigh),
 		// 					},
 		// 					ResourceWorkload: &armadvisor.RecommendationPropertiesResourceWorkload{
@@ -360,158 +808,22 @@ func ExampleRecommendationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/ListRecommendationsServiceGroupResourceUri.json
-func ExampleRecommendationsClient_NewListByTenantPager() {
+// Generated from example definition: 2026-08-01-preview/PatchRecommendationStateProperties.json
+func ExampleRecommendationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armadvisor.NewClientFactory("a5481ee1-95df-47d0-85d4-dd3f0dfa19bc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRecommendationsClient().NewListByTenantPager("providers/microsoft.management/serviceGroups/serviceGroupXYZ", &armadvisor.RecommendationsClientListByTenantOptions{
-		Top: to.Ptr[int32](10)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armadvisor.RecommendationsClientListByTenantResponse{
-		// 	ResourceRecommendationBaseListResult: armadvisor.ResourceRecommendationBaseListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations?api-version=2025-05-01-preview&$top=10&$skiptoken=skiptoken"),
-		// 		Value: []*armadvisor.ResourceRecommendationBase{
-		// 			{
-		// 				ID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/37c93209-4bfb-4f3b-8874-ccc718f7a467"),
-		// 				Name: to.Ptr("37c93209-4bfb-4f3b-8874-ccc718f7a467"),
-		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
-		// 				Properties: &armadvisor.RecommendationProperties{
-		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
-		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
-		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
-		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
-		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
-		// 					Risk: to.Ptr(armadvisor.RiskWarning),
-		// 					ShortDescription: &armadvisor.ShortDescription{
-		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
-		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
-		// 					},
-		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
-		// 						ResourceID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ"),
-		// 						Action: map[string]any{
-		// 							"additionalProperties": map[string]any{
-		// 								"actionType": "Document",
-		// 								"link": "https://link3",
-		// 								"caption": "Enable Soft Delete to protect blob data",
-		// 								"description": "Enable Soft Delete to protect blob data",
-		// 							},
-		// 							"metadata": map[string]any{
-		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
-		// 							},
-		// 						},
-		// 						Singular: to.Ptr("Availability set"),
-		// 						Plural: to.Ptr("Availability sets"),
-		// 					},
-		// 					Actions: []map[string]any{
-		// 						map[string]any{
-		// 							"additionalProperties": map[string]any{
-		// 								"actionType": "Document",
-		// 								"link": "https://link1",
-		// 								"caption": "Enable Soft Delete to protect blob data",
-		// 								"description": "Enable Soft Delete to protect blob data",
-		// 							},
-		// 							"metadata": map[string]any{
-		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
-		// 							},
-		// 						},
-		// 					},
-		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
-		// 					Label: to.Ptr("Enable Soft Delete"),
-		// 					LearnMoreLink: to.Ptr("https://link2"),
-		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-		// 					Tracked: to.Ptr(false),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/de0eb863-583e-ac10-eb7f-cb0f6b570e2b"),
-		// 				Name: to.Ptr("de0eb863-583e-ac10-eb7f-cb0f6b570e2b"),
-		// 				Type: to.Ptr("Microsoft.Advisor/recommendations"),
-		// 				Properties: &armadvisor.RecommendationProperties{
-		// 					Category: to.Ptr(armadvisor.CategoryHighAvailability),
-		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
-		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
-		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
-		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
-		// 					Risk: to.Ptr(armadvisor.RiskWarning),
-		// 					ShortDescription: &armadvisor.ShortDescription{
-		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
-		// 						Solution: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
-		// 					},
-		// 					ResourceMetadata: &armadvisor.ResourceMetadata{
-		// 						ResourceID: to.Ptr("/providers/microsoft.management/serviceGroup/serviceGroupXYZ"),
-		// 						Action: map[string]any{
-		// 							"additionalProperties": map[string]any{
-		// 								"actionType": "Document",
-		// 								"link": "https://link3",
-		// 								"caption": "Enable Soft Delete to protect blob data",
-		// 								"description": "Enable Soft Delete to protect blob data",
-		// 							},
-		// 							"metadata": map[string]any{
-		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
-		// 							},
-		// 						},
-		// 						Singular: to.Ptr("Availability set"),
-		// 						Plural: to.Ptr("Availability sets"),
-		// 					},
-		// 					Actions: []map[string]any{
-		// 						map[string]any{
-		// 							"additionalProperties": map[string]any{
-		// 								"actionType": "Document",
-		// 								"link": "https://link1",
-		// 								"caption": "Enable Soft Delete to protect blob data",
-		// 								"description": "Enable Soft Delete to protect blob data",
-		// 							},
-		// 							"metadata": map[string]any{
-		// 								"id": "/providers/microsoft.management/serviceGroup/serviceGroupXYZ",
-		// 							},
-		// 						},
-		// 					},
-		// 					Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
-		// 					Label: to.Ptr("Enable Soft Delete"),
-		// 					LearnMoreLink: to.Ptr("https://link2"),
-		// 					PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-		// 					Tracked: to.Ptr(false),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01-preview/UpdateTrackedRecommendation.json
-func ExampleRecommendationsClient_Patch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRecommendationsClient().Patch(ctx, "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/xyz", "c5532a76-8605-4328-ad27-f37ae87c086c", armadvisor.TrackedRecommendationPropertiesPayload{
-		Properties: &armadvisor.TrackedRecommendationPropertiesPayloadProperties{
-			TrackedProperties: &armadvisor.TrackedRecommendationProperties{
-				State:         to.Ptr(armadvisor.StatePostponed),
-				PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
-			},
+	res, err := clientFactory.NewRecommendationsClient().Update(ctx, "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", armadvisor.RecommendationPatchPayload{
+		Properties: &armadvisor.RecommendationStatePropertiesPayload{
+			RecommendationStatus:        to.Ptr(armadvisor.RecommendationStatusPostponed),
+			PostponedUntilDateTime:      to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("NotRelevant")),
 		},
 	}, nil)
 	if err != nil {
@@ -520,17 +832,20 @@ func ExampleRecommendationsClient_Patch() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armadvisor.RecommendationsClientPatchResponse{
+	// res = armadvisor.RecommendationsClientUpdateResponse{
 	// 	ResourceRecommendationBase: armadvisor.ResourceRecommendationBase{
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Advisor/recommendations/c5532a76-8605-4328-ad27-f37ae87c086c"),
-	// 		Name: to.Ptr("c5532a76-8605-4328-ad27-f37ae87c086c"),
-	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
+	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+	// 		Name: to.Ptr("bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
 	// 		Properties: &armadvisor.RecommendationProperties{
 	// 			Category: to.Ptr(armadvisor.CategorySecurity),
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
-	// 			ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 			ImpactedField: to.Ptr("Microsoft.Compute/availabilitysets"),
 	// 			ImpactedValue: to.Ptr("armavset"),
-	// 			LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
+	// 			RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusPostponed),
+	// 			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("NotRelevant")),
+	// 			PostponedUntilDateTime: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastRefreshed: to.Ptr(time.Date(2024, time.August, 1, 19, 5, 0, 0, time.UTC)),
+	// 			LastUpdated: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
 	// 				Problem: to.Ptr("Monitoring agent should be installed on your machines"),
@@ -544,8 +859,8 @@ func ExampleRecommendationsClient_Patch() {
 	// 				},
 	// 			},
 	// 			ResourceMetadata: &armadvisor.ResourceMetadata{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/xyz"),
-	// 				Source: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Security/assessments/7d5f6ba5-307e-452e-b3c4-7d636f722055"),
+	// 				ResourceID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset"),
+	// 				Source: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Security/assessments/15e912ef-221a-4efe-80d2-df5671cdd5f5"),
 	// 				Action: map[string]any{
 	// 					"additionalProperties": map[string]any{
 	// 						"actionType": "Document",
@@ -554,11 +869,11 @@ func ExampleRecommendationsClient_Patch() {
 	// 						"description": "Enable Soft Delete to protect blob data",
 	// 					},
 	// 					"metadata": map[string]any{
-	// 						"id": "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/xyz",
+	// 						"id": "/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset",
 	// 					},
 	// 				},
-	// 				Singular: to.Ptr("Virtual machine"),
-	// 				Plural: to.Ptr("Virtual machines"),
+	// 				Singular: to.Ptr("Availability set"),
+	// 				Plural: to.Ptr("Availability sets"),
 	// 			},
 	// 			Actions: []map[string]any{
 	// 				map[string]any{
@@ -569,7 +884,7 @@ func ExampleRecommendationsClient_Patch() {
 	// 						"description": "Enable Soft Delete to protect blob data",
 	// 					},
 	// 					"metadata": map[string]any{
-	// 						"id": "/subscriptions/00000000-1111-2222-3333-444444444444",
+	// 						"id": "/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc",
 	// 					},
 	// 				},
 	// 			},
@@ -577,23 +892,124 @@ func ExampleRecommendationsClient_Patch() {
 	// 			Label: to.Ptr("Enable Soft Delete"),
 	// 			LearnMoreLink: to.Ptr("https://link2"),
 	// 			PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
-	// 			Tracked: to.Ptr(true),
-	// 			TrackedProperties: &armadvisor.TrackedRecommendationProperties{
-	// 				State: to.Ptr(armadvisor.StatePostponed),
-	// 				PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
-	// 				Priority: to.Ptr(armadvisor.PriorityHigh),
-	// 			},
-	// 			ResourceWorkload: &armadvisor.RecommendationPropertiesResourceWorkload{
-	// 				ID: to.Ptr("0560dbdb-f207-4690-b4ba-1fc0c3a0f082"),
-	// 				Name: to.Ptr("Critical VM Workload"),
-	// 			},
-	// 			Review: &armadvisor.RecommendationPropertiesReview{
-	// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/providers/Microsoft.Advisor/assessments/MCWAR1"),
-	// 				Name: to.Ptr("Monthly WAF Review 09/23"),
-	// 			},
-	// 			SourceSystem: to.Ptr("CxObserve"),
-	// 			Notes: to.Ptr("This is a note"),
 	// 		},
+	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/PatchRecommendationStatePropertiesByServiceGroup.json
+func ExampleRecommendationsClient_UpdateByServiceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armadvisor.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecommendationsClient().UpdateByServiceGroup(ctx, "serviceGroupXYZ", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", armadvisor.RecommendationPatchPayload{
+		Properties: &armadvisor.RecommendationStatePropertiesPayload{
+			RecommendationStatus:        to.Ptr(armadvisor.RecommendationStatusPostponed),
+			PostponedUntilDateTime:      to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("NotRelevant")),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armadvisor.RecommendationsClientUpdateByServiceGroupResponse{
+	// 	ResourceRecommendationBase: armadvisor.ResourceRecommendationBase{
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
+	// 		Name: to.Ptr("bd27ddc6-1312-4067-b4af-cbb45e32cfd7"),
+	// 		Properties: &armadvisor.RecommendationProperties{
+	// 			Category: to.Ptr(armadvisor.CategorySecurity),
+	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
+	// 			ImpactedField: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 			ImpactedValue: to.Ptr("serviceGroupXYZ"),
+	// 			CriticalityScore: to.Ptr("0.85"),
+	// 			Criticality: to.Ptr("High"),
+	// 			ScoreChangedAt: to.Ptr("2026-08-01T00:00:00Z"),
+	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+	// 			Savings: &armadvisor.ResourceRecommendationSavings{
+	// 				ProviderCurrency: to.Ptr("USD"),
+	// 				BillingCurrency: to.Ptr("EUR"),
+	// 				IsDirectChannel: to.Ptr(true),
+	// 				ResourceDeletedOn: to.Ptr(time.Date(2026, time.August, 6, 8, 42, 29, 471000000, time.UTC)),
+	// 				Retail: &armadvisor.ResourceRecommendationSavingsDetails{
+	// 					PotentialSavings: to.Ptr[float64](0),
+	// 					PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+	// 					WastedTillDate: to.Ptr[float64](40),
+	// 					WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+	// 					RealizedSavings: to.Ptr[float64](40),
+	// 					RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+	// 				},
+	// 				Contracted: &armadvisor.ResourceRecommendationSavingsDetails{
+	// 					PotentialSavings: to.Ptr[float64](0),
+	// 					PotentialSavingsInBillingCurrency: to.Ptr[float64](0),
+	// 					WastedTillDate: to.Ptr[float64](40),
+	// 					WastedTillDateInBillingCurrency: to.Ptr[float64](50),
+	// 					RealizedSavings: to.Ptr[float64](40),
+	// 					RealizedSavingsInBillingCurrency: to.Ptr[float64](50),
+	// 				},
+	// 			},
+	// 			RecommendationStatus: to.Ptr(armadvisor.RecommendationStatusPostponed),
+	// 			RecommendationDismissReason: to.Ptr(armadvisor.RecommendationDismissReason("NotRelevant")),
+	// 			PostponedUntilDateTime: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastRefreshed: to.Ptr(time.Date(2024, time.August, 1, 19, 5, 0, 0, time.UTC)),
+	// 			LastUpdated: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Risk: to.Ptr(armadvisor.RiskWarning),
+	// 			ShortDescription: &armadvisor.ShortDescription{
+	// 				Problem: to.Ptr("Monitoring agent should be installed on your machines"),
+	// 				Solution: to.Ptr("Monitoring agent should be installed on your machines"),
+	// 			},
+	// 			Remediation: map[string]any{
+	// 				"additionalProperties": map[string]any{
+	// 					"httpMethod": "POST",
+	// 					"uri": "uri",
+	// 					"details": "link to document",
+	// 				},
+	// 			},
+	// 			ResourceMetadata: &armadvisor.ResourceMetadata{
+	// 				ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ"),
+	// 				Source: to.Ptr("/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ/providers/Microsoft.Security/assessments/15e912ef-221a-4efe-80d2-df5671cdd5f5"),
+	// 				Action: map[string]any{
+	// 					"additionalProperties": map[string]any{
+	// 						"actionType": "Document",
+	// 						"link": "https://link3",
+	// 						"caption": "Enable Soft Delete to protect blob data",
+	// 						"description": "Enable Soft Delete to protect blob data",
+	// 					},
+	// 					"metadata": map[string]any{
+	// 						"id": "/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ",
+	// 					},
+	// 				},
+	// 				Singular: to.Ptr("Availability set"),
+	// 				Plural: to.Ptr("Availability sets"),
+	// 			},
+	// 			Actions: []map[string]any{
+	// 				map[string]any{
+	// 					"additionalProperties": map[string]any{
+	// 						"actionType": "Document",
+	// 						"link": "https://link1",
+	// 						"caption": "Enable Soft Delete to protect blob data",
+	// 						"description": "Enable Soft Delete to protect blob data",
+	// 					},
+	// 					"metadata": map[string]any{
+	// 						"id": "/providers/Microsoft.Management/serviceGroups/serviceGroupXYZ",
+	// 					},
+	// 				},
+	// 			},
+	// 			Description: to.Ptr("After enabling Soft Delete, deleted data transitions to a soft deleted state instead of being permanently deleted. When data is overwritten, a soft deleted snapshot is generated to save the state of the overwritten data. You can configure the amount of time soft deleted data is recoverable before it permanently expires."),
+	// 			Label: to.Ptr("Enable Soft Delete"),
+	// 			LearnMoreLink: to.Ptr("https://link2"),
+	// 			PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Advisor/recommendations"),
 	// 	},
 	// }
 }

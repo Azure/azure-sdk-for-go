@@ -19,7 +19,7 @@ import (
 // ScoresClient contains the methods for the Scores group.
 // Don't use this type directly, use NewScoresClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type ScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -81,7 +81,7 @@ func (client *ScoresClient) getCreateRequest(ctx context.Context, name string, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -134,7 +134,7 @@ func (client *ScoresClient) listCreateRequest(ctx context.Context, _ *ScoresClie
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

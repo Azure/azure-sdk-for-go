@@ -45,12 +45,6 @@ type ServerFactory struct {
 	// SuppressionsServer contains the fakes for client SuppressionsClient
 	SuppressionsServer SuppressionsServer
 
-	// TriageRecommendationsServer contains the fakes for client TriageRecommendationsClient
-	TriageRecommendationsServer TriageRecommendationsServer
-
-	// TriageResourcesServer contains the fakes for client TriageResourcesClient
-	TriageResourcesServer TriageResourcesServer
-
 	// WorkloadsServer contains the fakes for client WorkloadsClient
 	WorkloadsServer WorkloadsServer
 }
@@ -79,8 +73,6 @@ type ServerFactoryTransport struct {
 	trResiliencyReviewsServer      *ResiliencyReviewsServerTransport
 	trScoresServer                 *ScoresServerTransport
 	trSuppressionsServer           *SuppressionsServerTransport
-	trTriageRecommendationsServer  *TriageRecommendationsServerTransport
-	trTriageResourcesServer        *TriageResourcesServerTransport
 	trWorkloadsServer              *WorkloadsServerTransport
 }
 
@@ -137,16 +129,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SuppressionsClient":
 		initServer(&s.trMu, &s.trSuppressionsServer, func() *SuppressionsServerTransport { return NewSuppressionsServerTransport(&s.srv.SuppressionsServer) })
 		resp, err = s.trSuppressionsServer.Do(req)
-	case "TriageRecommendationsClient":
-		initServer(&s.trMu, &s.trTriageRecommendationsServer, func() *TriageRecommendationsServerTransport {
-			return NewTriageRecommendationsServerTransport(&s.srv.TriageRecommendationsServer)
-		})
-		resp, err = s.trTriageRecommendationsServer.Do(req)
-	case "TriageResourcesClient":
-		initServer(&s.trMu, &s.trTriageResourcesServer, func() *TriageResourcesServerTransport {
-			return NewTriageResourcesServerTransport(&s.srv.TriageResourcesServer)
-		})
-		resp, err = s.trTriageResourcesServer.Do(req)
 	case "WorkloadsClient":
 		initServer(&s.trMu, &s.trWorkloadsServer, func() *WorkloadsServerTransport { return NewWorkloadsServerTransport(&s.srv.WorkloadsServer) })
 		resp, err = s.trWorkloadsServer.Do(req)

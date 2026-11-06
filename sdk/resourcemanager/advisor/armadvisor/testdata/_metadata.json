@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.Advisor": "2025-05-01-preview"
+    "Microsoft.Advisor": "2026-08-01-preview"
   },
-  "emitterVersion": "0.17.4"
+  "emitterVersion": "0.17.6"
 }

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/GetAdvisorScoreDetail.json
+// Generated from example definition: 2026-08-01-preview/GetAdvisorScoreDetail.json
 func ExampleScoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleScoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ListAdvisorScore.json
+// Generated from example definition: 2026-08-01-preview/ListAdvisorScore.json
 func ExampleScoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

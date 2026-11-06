@@ -1,5 +1,57 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-10-12)
+### Breaking Changes
+
+- `ReviewStatusTriaged` from enum `ReviewStatus` has been removed
+- Enum `PriorityName` has been removed
+- Enum `Reason` has been removed
+- Enum `ReasonForRejectionName` has been removed
+- Enum `RecommendationStatusName` has been removed
+- Enum `State` has been removed
+- Function `*ClientFactory.NewTriageRecommendationsClient` has been removed
+- Function `*ClientFactory.NewTriageResourcesClient` has been removed
+- Function `PossibleReasonValues` has been removed
+- Function `*RecommendationsClient.Patch` has been removed
+- Function `NewTriageRecommendationsClient` has been removed
+- Function `*TriageRecommendationsClient.ApproveTriageRecommendation` has been removed
+- Function `*TriageRecommendationsClient.Get` has been removed
+- Function `*TriageRecommendationsClient.NewListPager` has been removed
+- Function `*TriageRecommendationsClient.RejectTriageRecommendation` has been removed
+- Function `*TriageRecommendationsClient.ResetTriageRecommendation` has been removed
+- Function `NewTriageResourcesClient` has been removed
+- Function `*TriageResourcesClient.Get` has been removed
+- Function `*TriageResourcesClient.NewListPager` has been removed
+- Struct `RecommendationRejectBody` has been removed
+- Struct `TrackedRecommendationPropertiesPayload` has been removed
+- Struct `TrackedRecommendationPropertiesPayloadProperties` has been removed
+- Struct `TriageRecommendation` has been removed
+- Struct `TriageRecommendationCollection` has been removed
+- Struct `TriageRecommendationProperties` has been removed
+- Struct `TriageResource` has been removed
+- Struct `TriageResourceCollection` has been removed
+- Struct `TriageResourceProperties` has been removed
+- Field `SuppressionIDs`, `Tracked` of struct `RecommendationProperties` has been removed
+- Field `PostponedTime`, `Reason`, `State` of struct `TrackedRecommendationProperties` has been removed
+
+### Features Added
+
+- New enum type `RecommendationDismissReason` with values `RecommendationDismissReasonAnAlternativeSolutionIsAlreadyInPlace`, `RecommendationDismissReasonExcessiveCostInvestmentRequired`, `RecommendationDismissReasonImplementationStepsAreUnclear`, `RecommendationDismissReasonIncompatibleWithTheCurrentConfiguration`, `RecommendationDismissReasonOther`, `RecommendationDismissReasonRiskIsAcceptable`, `RecommendationDismissReasonTooComplexOrImpracticalToImplement`
+- New enum type `RecommendationListMode` with values `RecommendationListModeAll`, `RecommendationListModeContextual`
+- New enum type `RecommendationStatus` with values `RecommendationStatusCompleted`, `RecommendationStatusDismissed`, `RecommendationStatusNew`, `RecommendationStatusPostponed`
+- New function `*RecommendationsClient.GetByServiceGroup(ctx context.Context, serviceGroupName string, recommendationID string, options *RecommendationsClientGetByServiceGroupOptions) (RecommendationsClientGetByServiceGroupResponse, error)`
+- New function `*RecommendationsClient.NewListByServiceGroupPager(serviceGroupName string, options *RecommendationsClientListByServiceGroupOptions) *runtime.Pager[RecommendationsClientListByServiceGroupResponse]`
+- New function `*RecommendationsClient.Update(ctx context.Context, recommendationID string, properties RecommendationPatchPayload, options *RecommendationsClientUpdateOptions) (RecommendationsClientUpdateResponse, error)`
+- New function `*RecommendationsClient.UpdateByServiceGroup(ctx context.Context, serviceGroupName string, recommendationID string, properties RecommendationPatchPayload, options *RecommendationsClientUpdateByServiceGroupOptions) (RecommendationsClientUpdateByServiceGroupResponse, error)`
+- New struct `RecommendationPatchPayload`
+- New struct `RecommendationStatePropertiesPayload`
+- New struct `ResourceRecommendationSavings`
+- New struct `ResourceRecommendationSavingsDetails`
+- New field `Filter` in struct `RecommendationMetadataClientListOptions`
+- New field `CompletionType`, `CreatedTime`, `Criticality`, `CriticalityScore`, `LastRefreshed`, `PostponedUntilDateTime`, `RecommendationDismissReason`, `RecommendationStatus`, `Savings`, `ScoreChangedAt`, `ServiceGroupID`, `SuppressionID` in struct `RecommendationProperties`
+- New field `Mode` in struct `RecommendationsClientListOptions`
+
+
 ## 2.0.0-beta.1 (2026-05-18)
 ### Breaking Changes
 

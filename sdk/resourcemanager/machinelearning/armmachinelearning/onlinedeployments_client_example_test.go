@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
 func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateKubernetes
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
+// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
 func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedOnl
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineDeployment/delete.json
+// Generated from example definition: 2026-09-01/Workspace/OnlineDeployment/delete.json
 func ExampleOnlineDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,446 +370,7 @@ func ExampleOnlineDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/get.json
-func ExampleOnlineDeploymentsClient_Get_getKubernetesOnlineDeployment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineDeploymentsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineDeploymentsClientGetResponse{
-	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.KubernetesOnlineDeployment{
-	// 			Description: to.Ptr("string"),
-	// 			AppInsightsEnabled: to.Ptr(false),
-	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
-	// 				CodeID: to.Ptr("string"),
-	// 				ScoringScript: to.Ptr("string"),
-	// 			},
-	// 			ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
-	// 				ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
-	// 					CPU: to.Ptr("\"1\""),
-	// 					Gpu: to.Ptr("\"1\""),
-	// 					Memory: to.Ptr("\"2Gi\""),
-	// 				},
-	// 				ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
-	// 					CPU: to.Ptr("\"1\""),
-	// 					Gpu: to.Ptr("\"1\""),
-	// 					Memory: to.Ptr("\"2Gi\""),
-	// 				},
-	// 			},
-	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
-	// 			EnvironmentID: to.Ptr("string"),
-	// 			EnvironmentVariables: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			InstanceType: to.Ptr("string"),
-	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](1),
-	// 				InitialDelay: to.Ptr("PT5M"),
-	// 				Period: to.Ptr("PT5M"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT5M"),
-	// 			},
-	// 			Model: to.Ptr("string"),
-	// 			ModelMountPath: to.Ptr("string"),
-	// 			Properties: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
-	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
-	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
-	// 				MaxQueueWait: to.Ptr("PT5M"),
-	// 				RequestTimeout: to.Ptr("PT5M"),
-	// 			},
-	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
-	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
-	// 			},
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/get.json
-func ExampleOnlineDeploymentsClient_Get_getManagedOnlineDeployment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineDeploymentsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineDeploymentsClientGetResponse{
-	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.ManagedOnlineDeployment{
-	// 			Description: to.Ptr("string"),
-	// 			AppInsightsEnabled: to.Ptr(false),
-	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
-	// 				CodeID: to.Ptr("string"),
-	// 				ScoringScript: to.Ptr("string"),
-	// 			},
-	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
-	// 			EnvironmentID: to.Ptr("string"),
-	// 			EnvironmentVariables: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			InstanceType: to.Ptr("string"),
-	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](1),
-	// 				InitialDelay: to.Ptr("PT5M"),
-	// 				Period: to.Ptr("PT5M"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT5M"),
-	// 			},
-	// 			Model: to.Ptr("string"),
-	// 			ModelMountPath: to.Ptr("string"),
-	// 			Properties: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
-	// 			ReadinessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](30),
-	// 				InitialDelay: to.Ptr("PT1S"),
-	// 				Period: to.Ptr("PT10S"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT2S"),
-	// 			},
-	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
-	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
-	// 				MaxQueueWait: to.Ptr("PT5M"),
-	// 				RequestTimeout: to.Ptr("PT5M"),
-	// 			},
-	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
-	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
-	// 			},
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/getLogs.json
-func ExampleOnlineDeploymentsClient_GetLogs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineDeploymentsClient().GetLogs(ctx, "testrg123", "workspace123", "testEndpoint", "testDeployment", armmachinelearning.DeploymentLogsRequest{
-		ContainerType: to.Ptr(armmachinelearning.ContainerTypeStorageInitializer),
-		Tail:          to.Ptr[int32](0),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineDeploymentsClientGetLogsResponse{
-	// 	DeploymentLogs: armmachinelearning.DeploymentLogs{
-	// 		Content: to.Ptr("string"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/list.json
-func ExampleOnlineDeploymentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOnlineDeploymentsClient().NewListPager("test-rg", "my-aml-workspace", "testEndpointName", &armmachinelearning.OnlineDeploymentsClientListOptions{
-		OrderBy: to.Ptr("string"),
-		Top:     to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.OnlineDeploymentsClientListResponse{
-		// 	OnlineDeploymentTrackedResourceArmPaginatedResult: armmachinelearning.OnlineDeploymentTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*armmachinelearning.OnlineDeployment{
-		// 			{
-		// 				Name: to.Ptr("string"),
-		// 				Type: to.Ptr("string"),
-		// 				ID: to.Ptr("string"),
-		// 				Identity: &armmachinelearning.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 					TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 					UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-		// 						"string": &armmachinelearning.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 							PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Kind: to.Ptr("string"),
-		// 				Location: to.Ptr("string"),
-		// 				Properties: &armmachinelearning.KubernetesOnlineDeployment{
-		// 					Description: to.Ptr("string"),
-		// 					AppInsightsEnabled: to.Ptr(false),
-		// 					CodeConfiguration: &armmachinelearning.CodeConfiguration{
-		// 						CodeID: to.Ptr("string"),
-		// 						ScoringScript: to.Ptr("string"),
-		// 					},
-		// 					ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
-		// 						ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
-		// 							CPU: to.Ptr("\"1\""),
-		// 							Gpu: to.Ptr("\"1\""),
-		// 							Memory: to.Ptr("\"2Gi\""),
-		// 						},
-		// 						ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
-		// 							CPU: to.Ptr("\"1\""),
-		// 							Gpu: to.Ptr("\"1\""),
-		// 							Memory: to.Ptr("\"2Gi\""),
-		// 						},
-		// 					},
-		// 					EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
-		// 					EnvironmentID: to.Ptr("string"),
-		// 					EnvironmentVariables: map[string]*string{
-		// 						"string": to.Ptr("string"),
-		// 					},
-		// 					InstanceType: to.Ptr("string"),
-		// 					LivenessProbe: &armmachinelearning.ProbeSettings{
-		// 						FailureThreshold: to.Ptr[int32](1),
-		// 						InitialDelay: to.Ptr("PT5M"),
-		// 						Period: to.Ptr("PT5M"),
-		// 						SuccessThreshold: to.Ptr[int32](1),
-		// 						Timeout: to.Ptr("PT5M"),
-		// 					},
-		// 					Model: to.Ptr("string"),
-		// 					ModelMountPath: to.Ptr("string"),
-		// 					Properties: map[string]*string{
-		// 						"string": to.Ptr("string"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
-		// 					RequestSettings: &armmachinelearning.OnlineRequestSettings{
-		// 						MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
-		// 						MaxQueueWait: to.Ptr("PT5M"),
-		// 						RequestTimeout: to.Ptr("PT5M"),
-		// 					},
-		// 					ScaleSettings: &armmachinelearning.DefaultScaleSettings{
-		// 						ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
-		// 					},
-		// 				},
-		// 				SKU: &armmachinelearning.SKU{
-		// 					Name: to.Ptr("string"),
-		// 					Capacity: to.Ptr[int32](1),
-		// 					Family: to.Ptr("string"),
-		// 					Size: to.Ptr("string"),
-		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
-		// 				},
-		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
-func ExampleOnlineDeploymentsClient_NewListSKUsPager_listKubernetesOnlineDeploymentSkus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOnlineDeploymentsClient().NewListSKUsPager("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", &armmachinelearning.OnlineDeploymentsClientListSKUsOptions{
-		Count: to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
-		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*armmachinelearning.SKUResource{
-		// 			{
-		// 				Capacity: &armmachinelearning.SKUCapacity{
-		// 					Default: to.Ptr[int32](1),
-		// 					Maximum: to.Ptr[int32](1),
-		// 					Minimum: to.Ptr[int32](1),
-		// 					ScaleType: to.Ptr(armmachinelearning.SKUScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("Microsoft.MachineLearning.Services/endpoints/deployments"),
-		// 				SKU: &armmachinelearning.SKUSetting{
-		// 					Name: to.Ptr("string"),
-		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
-func ExampleOnlineDeploymentsClient_NewListSKUsPager_listManagedOnlineDeploymentSkus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOnlineDeploymentsClient().NewListSKUsPager("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", &armmachinelearning.OnlineDeploymentsClientListSKUsOptions{
-		Count: to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
-		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*armmachinelearning.SKUResource{
-		// 			{
-		// 				Capacity: &armmachinelearning.SKUCapacity{
-		// 					Default: to.Ptr[int32](1),
-		// 					Maximum: to.Ptr[int32](1),
-		// 					Minimum: to.Ptr[int32](1),
-		// 					ScaleType: to.Ptr(armmachinelearning.SKUScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("Microsoft.MachineLearning.Services/endpoints/deployments"),
-		// 				SKU: &armmachinelearning.SKUSetting{
-		// 					Name: to.Ptr("string"),
-		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/update.json
+// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
 func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -926,7 +487,7 @@ func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/update.json
+// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/update.json
 func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1036,4 +597,443 @@ func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() 
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
+func ExampleOnlineDeploymentsClient_Get_getKubernetesOnlineDeployment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineDeploymentsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineDeploymentsClientGetResponse{
+	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.KubernetesOnlineDeployment{
+	// 			Description: to.Ptr("string"),
+	// 			AppInsightsEnabled: to.Ptr(false),
+	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
+	// 				CodeID: to.Ptr("string"),
+	// 				ScoringScript: to.Ptr("string"),
+	// 			},
+	// 			ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
+	// 				ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
+	// 					CPU: to.Ptr("\"1\""),
+	// 					Gpu: to.Ptr("\"1\""),
+	// 					Memory: to.Ptr("\"2Gi\""),
+	// 				},
+	// 				ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
+	// 					CPU: to.Ptr("\"1\""),
+	// 					Gpu: to.Ptr("\"1\""),
+	// 					Memory: to.Ptr("\"2Gi\""),
+	// 				},
+	// 			},
+	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
+	// 			EnvironmentID: to.Ptr("string"),
+	// 			EnvironmentVariables: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			InstanceType: to.Ptr("string"),
+	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](1),
+	// 				InitialDelay: to.Ptr("PT5M"),
+	// 				Period: to.Ptr("PT5M"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT5M"),
+	// 			},
+	// 			Model: to.Ptr("string"),
+	// 			ModelMountPath: to.Ptr("string"),
+	// 			Properties: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
+	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
+	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
+	// 				MaxQueueWait: to.Ptr("PT5M"),
+	// 				RequestTimeout: to.Ptr("PT5M"),
+	// 			},
+	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
+	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
+	// 			},
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/get.json
+func ExampleOnlineDeploymentsClient_Get_getManagedOnlineDeployment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineDeploymentsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineDeploymentsClientGetResponse{
+	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.ManagedOnlineDeployment{
+	// 			Description: to.Ptr("string"),
+	// 			AppInsightsEnabled: to.Ptr(false),
+	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
+	// 				CodeID: to.Ptr("string"),
+	// 				ScoringScript: to.Ptr("string"),
+	// 			},
+	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
+	// 			EnvironmentID: to.Ptr("string"),
+	// 			EnvironmentVariables: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			InstanceType: to.Ptr("string"),
+	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](1),
+	// 				InitialDelay: to.Ptr("PT5M"),
+	// 				Period: to.Ptr("PT5M"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT5M"),
+	// 			},
+	// 			Model: to.Ptr("string"),
+	// 			ModelMountPath: to.Ptr("string"),
+	// 			Properties: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
+	// 			ReadinessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](30),
+	// 				InitialDelay: to.Ptr("PT1S"),
+	// 				Period: to.Ptr("PT10S"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT2S"),
+	// 			},
+	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
+	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
+	// 				MaxQueueWait: to.Ptr("PT5M"),
+	// 				RequestTimeout: to.Ptr("PT5M"),
+	// 			},
+	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
+	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
+	// 			},
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/getLogs.json
+func ExampleOnlineDeploymentsClient_GetLogs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineDeploymentsClient().GetLogs(ctx, "testrg123", "workspace123", "testEndpoint", "testDeployment", armmachinelearning.DeploymentLogsRequest{
+		ContainerType: to.Ptr(armmachinelearning.ContainerTypeStorageInitializer),
+		Tail:          to.Ptr[int32](0),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineDeploymentsClientGetLogsResponse{
+	// 	DeploymentLogs: armmachinelearning.DeploymentLogs{
+	// 		Content: to.Ptr("string"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/list.json
+func ExampleOnlineDeploymentsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOnlineDeploymentsClient().NewListPager("test-rg", "my-aml-workspace", "testEndpointName", &armmachinelearning.OnlineDeploymentsClientListOptions{
+		OrderBy: to.Ptr("string"),
+		Top:     to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.OnlineDeploymentsClientListResponse{
+		// 	OnlineDeploymentTrackedResourceArmPaginatedResult: armmachinelearning.OnlineDeploymentTrackedResourceArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments?api-version=2026-09-01&$skip=2"),
+		// 		Value: []*armmachinelearning.OnlineDeployment{
+		// 			{
+		// 				Name: to.Ptr("string"),
+		// 				Type: to.Ptr("string"),
+		// 				ID: to.Ptr("string"),
+		// 				Identity: &armmachinelearning.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 					TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 					UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+		// 						"string": &armmachinelearning.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 							PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Kind: to.Ptr("string"),
+		// 				Location: to.Ptr("string"),
+		// 				Properties: &armmachinelearning.KubernetesOnlineDeployment{
+		// 					Description: to.Ptr("string"),
+		// 					AppInsightsEnabled: to.Ptr(false),
+		// 					CodeConfiguration: &armmachinelearning.CodeConfiguration{
+		// 						CodeID: to.Ptr("string"),
+		// 						ScoringScript: to.Ptr("string"),
+		// 					},
+		// 					ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
+		// 						ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
+		// 							CPU: to.Ptr("\"1\""),
+		// 							Gpu: to.Ptr("\"1\""),
+		// 							Memory: to.Ptr("\"2Gi\""),
+		// 						},
+		// 						ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
+		// 							CPU: to.Ptr("\"1\""),
+		// 							Gpu: to.Ptr("\"1\""),
+		// 							Memory: to.Ptr("\"2Gi\""),
+		// 						},
+		// 					},
+		// 					EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
+		// 					EnvironmentID: to.Ptr("string"),
+		// 					EnvironmentVariables: map[string]*string{
+		// 						"string": to.Ptr("string"),
+		// 					},
+		// 					InstanceType: to.Ptr("string"),
+		// 					LivenessProbe: &armmachinelearning.ProbeSettings{
+		// 						FailureThreshold: to.Ptr[int32](1),
+		// 						InitialDelay: to.Ptr("PT5M"),
+		// 						Period: to.Ptr("PT5M"),
+		// 						SuccessThreshold: to.Ptr[int32](1),
+		// 						Timeout: to.Ptr("PT5M"),
+		// 					},
+		// 					Model: to.Ptr("string"),
+		// 					ModelMountPath: to.Ptr("string"),
+		// 					Properties: map[string]*string{
+		// 						"string": to.Ptr("string"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
+		// 					RequestSettings: &armmachinelearning.OnlineRequestSettings{
+		// 						MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
+		// 						MaxQueueWait: to.Ptr("PT5M"),
+		// 						RequestTimeout: to.Ptr("PT5M"),
+		// 					},
+		// 					ScaleSettings: &armmachinelearning.DefaultScaleSettings{
+		// 						ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
+		// 					},
+		// 				},
+		// 				SKU: &armmachinelearning.SKU{
+		// 					Name: to.Ptr("string"),
+		// 					Capacity: to.Ptr[int32](1),
+		// 					Family: to.Ptr("string"),
+		// 					Size: to.Ptr("string"),
+		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
+		// 				},
+		// 				SystemData: &armmachinelearning.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
+func ExampleOnlineDeploymentsClient_NewListSKUsPager_listKubernetesOnlineDeploymentSkus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOnlineDeploymentsClient().NewListSKUsPager("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", &armmachinelearning.OnlineDeploymentsClientListSKUsOptions{
+		Count: to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
+		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2026-09-01&$skip=2"),
+		// 		Value: []*armmachinelearning.SKUResource{
+		// 			{
+		// 				Capacity: &armmachinelearning.SKUCapacity{
+		// 					Default: to.Ptr[int32](1),
+		// 					Maximum: to.Ptr[int32](1),
+		// 					Minimum: to.Ptr[int32](1),
+		// 					ScaleType: to.Ptr(armmachinelearning.SKUScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("Microsoft.MachineLearning.Services/endpoints/deployments"),
+		// 				SKU: &armmachinelearning.SKUSetting{
+		// 					Name: to.Ptr("string"),
+		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
+func ExampleOnlineDeploymentsClient_NewListSKUsPager_listManagedOnlineDeploymentSkus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOnlineDeploymentsClient().NewListSKUsPager("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", &armmachinelearning.OnlineDeploymentsClientListSKUsOptions{
+		Count: to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
+		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2026-09-01&$skip=2"),
+		// 		Value: []*armmachinelearning.SKUResource{
+		// 			{
+		// 				Capacity: &armmachinelearning.SKUCapacity{
+		// 					Default: to.Ptr[int32](1),
+		// 					Maximum: to.Ptr[int32](1),
+		// 					Minimum: to.Ptr[int32](1),
+		// 					ScaleType: to.Ptr(armmachinelearning.SKUScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("Microsoft.MachineLearning.Services/endpoints/deployments"),
+		// 				SKU: &armmachinelearning.SKUSetting{
+		// 					Name: to.Ptr("string"),
+		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

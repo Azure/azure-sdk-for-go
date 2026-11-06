@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/create.json
+// Generated from example definition: 2026-09-01/WorkspaceConnection/create.json
 func ExampleWorkspaceConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleWorkspaceConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/delete.json
+// Generated from example definition: 2026-09-01/WorkspaceConnection/delete.json
 func ExampleWorkspaceConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleWorkspaceConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/get.json
+// Generated from example definition: 2026-09-01/WorkspaceConnection/get.json
 func ExampleWorkspaceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,54 @@ func ExampleWorkspaceConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/list.json
+// Generated from example definition: 2026-09-01/WorkspaceConnection/listSecrets.json
+func ExampleWorkspaceConnectionsClient_ListSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspaceConnectionsClient().ListSecrets(ctx, "test-rg", "workspace-1", "connection-1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.WorkspaceConnectionsClientListSecretsResponse{
+	// 	WorkspaceConnectionPropertiesV2BasicResource: armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+	// 		Name: to.Ptr("connection-1"),
+	// 		Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
+	// 		Properties: &armmachinelearning.AccessKeyAuthTypeWorkspaceConnectionProperties{
+	// 			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeAccessKey),
+	// 			Category: to.Ptr(armmachinelearning.ConnectionCategoryCustomKeys),
+	// 			Credentials: &armmachinelearning.WorkspaceConnectionAccessKey{
+	// 				AccessKeyID: to.Ptr("some_string"),
+	// 				SecretAccessKey: to.Ptr("some_string"),
+	// 			},
+	// 			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Metadata: map[string]*string{
+	// 			},
+	// 			Target: to.Ptr("some_string"),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("some_string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("some_string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/WorkspaceConnection/list.json
 func ExampleWorkspaceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,83 +209,7 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/listSecrets.json
-func ExampleWorkspaceConnectionsClient_ListSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkspaceConnectionsClient().ListSecrets(ctx, "test-rg", "workspace-1", "connection-1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.WorkspaceConnectionsClientListSecretsResponse{
-	// 	WorkspaceConnectionPropertiesV2BasicResource: armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-	// 		Name: to.Ptr("connection-1"),
-	// 		Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
-	// 		Properties: &armmachinelearning.AccessKeyAuthTypeWorkspaceConnectionProperties{
-	// 			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeAccessKey),
-	// 			Category: to.Ptr(armmachinelearning.ConnectionCategoryCustomKeys),
-	// 			Credentials: &armmachinelearning.WorkspaceConnectionAccessKey{
-	// 				AccessKeyID: to.Ptr("some_string"),
-	// 				SecretAccessKey: to.Ptr("some_string"),
-	// 			},
-	// 			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Metadata: map[string]*string{
-	// 			},
-	// 			Target: to.Ptr("some_string"),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("some_string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("some_string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/testConnection.json
-func ExampleWorkspaceConnectionsClient_BeginTestConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspaceConnectionsClient().BeginTestConnection(ctx, "resourceGroup-1", "workspace-1", "connection-1", &armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions{
-		Body: &armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-			Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
-				AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
-				Category:   to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-				ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
-				Target:     to.Ptr("target_url"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/update.json
+// Generated from example definition: 2026-09-01/WorkspaceConnection/update.json
 func ExampleWorkspaceConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

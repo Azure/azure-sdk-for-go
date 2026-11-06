@@ -20,7 +20,7 @@ import (
 // RegistryEnvironmentVersionsClient contains the methods for the RegistryEnvironmentVersions group.
 // Don't use this type directly, use NewRegistryEnvironmentVersionsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type RegistryEnvironmentVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -74,7 +74,7 @@ func (client *RegistryEnvironmentVersionsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create or update version.
+// createOrUpdate - Create or update version.
 //
 // Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -98,7 +98,7 @@ func (client *RegistryEnvironmentVersionsClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryEnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, body EnvironmentVersion, _ *RegistryEnvironmentVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -126,7 +126,7 @@ func (client *RegistryEnvironmentVersionsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +148,7 @@ func (client *RegistryEnvironmentVersionsClient) createOrUpdateCreateRequest(ctx
 //     method.
 func (client *RegistryEnvironmentVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, options *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*runtime.Poller[RegistryEnvironmentVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, environmentName, version, options)
+		resp, err := client.delete(ctx, resourceGroupName, registryName, environmentName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -163,11 +163,11 @@ func (client *RegistryEnvironmentVersionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Delete version.
+// delete - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryEnvironmentVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, options *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryEnvironmentVersionsClient) delete(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, options *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryEnvironmentVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -187,7 +187,7 @@ func (client *RegistryEnvironmentVersionsClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryEnvironmentVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, _ *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -215,7 +215,7 @@ func (client *RegistryEnvironmentVersionsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -275,7 +275,7 @@ func (client *RegistryEnvironmentVersionsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -367,7 +367,7 @@ func (client *RegistryEnvironmentVersionsClient) listCreateRequest(ctx context.C
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		if options != nil && options.ListViewType != nil {
 			reqQP.Set("listViewType", string(*options.ListViewType))
 		}

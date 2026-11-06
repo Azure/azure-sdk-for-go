@@ -19,7 +19,7 @@ import (
 // RegistryCodeContainersClient contains the methods for the RegistryCodeContainers group.
 // Don't use this type directly, use NewRegistryCodeContainersClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type RegistryCodeContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *RegistryCodeContainersClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update Code container.
+// createOrUpdate - Create or update Code container.
 //
 // Create or update Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *RegistryCodeContainersClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, body CodeContainer, _ *RegistryCodeContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +141,7 @@ func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx cont
 //     method.
 func (client *RegistryCodeContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientBeginDeleteOptions) (*runtime.Poller[RegistryCodeContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, codeName, options)
+		resp, err := client.delete(ctx, resourceGroupName, registryName, codeName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +156,11 @@ func (client *RegistryCodeContainersClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete Code container.
+// delete - Delete Code container.
 //
 // Delete Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryCodeContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryCodeContainersClient) delete(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryCodeContainersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -180,7 +180,7 @@ func (client *RegistryCodeContainersClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, _ *RegistryCodeContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
@@ -204,7 +204,7 @@ func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -259,7 +259,7 @@ func (client *RegistryCodeContainersClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +340,7 @@ func (client *RegistryCodeContainersClient) listCreateRequest(ctx context.Contex
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -19,7 +19,7 @@ func ExampleExportConfigurationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleExportConfigurationsClient_Create() {
 	// 			RecordTypes: to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 	// 			ResourceGroup: to.Ptr("2"),
 	// 			StorageName: to.Ptr("mystorageblob"),
-	// 			SubscriptionID: to.Ptr("subid"),
+	// 			SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }
@@ -74,7 +74,7 @@ func ExampleExportConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -105,7 +105,7 @@ func ExampleExportConfigurationsClient_Delete() {
 	// 		RecordTypes: to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 	// 		ResourceGroup: to.Ptr("2"),
 	// 		StorageName: to.Ptr("mystorageblob"),
-	// 		SubscriptionID: to.Ptr("subid"),
+	// 		SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }
@@ -117,7 +117,7 @@ func ExampleExportConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -148,7 +148,7 @@ func ExampleExportConfigurationsClient_Get() {
 	// 		RecordTypes: to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 	// 		ResourceGroup: to.Ptr("2"),
 	// 		StorageName: to.Ptr("mystorageblob"),
-	// 		SubscriptionID: to.Ptr("subid"),
+	// 		SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }
@@ -160,7 +160,7 @@ func ExampleExportConfigurationsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -192,7 +192,7 @@ func ExampleExportConfigurationsClient_List() {
 	// 			RecordTypes: to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 	// 			ResourceGroup: to.Ptr("2"),
 	// 			StorageName: to.Ptr("mystorageblob"),
-	// 			SubscriptionID: to.Ptr("subid"),
+	// 			SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }
@@ -205,7 +205,7 @@ func ExampleExportConfigurationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -246,7 +246,7 @@ func ExampleExportConfigurationsClient_Update() {
 	// 		RecordTypes: to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 	// 		ResourceGroup: to.Ptr("2"),
 	// 		StorageName: to.Ptr("mystorageblob"),
-	// 		SubscriptionID: to.Ptr("subid"),
+	// 		SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }

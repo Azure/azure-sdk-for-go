@@ -39,13 +39,6 @@ type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
 	// placeholder for future response values
 }
 
-// OfferingsClientFetchResponse contains the response from method OfferingsClient.Fetch.
-type OfferingsClientFetchResponse struct {
-	// Response containing the available Azure AI Search offerings, organized by region, along with the recommended default region
-	// for creating new services.
-	OfferingsResult
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// The result of the request to list REST API operations. It contains a list of operations and a URL to get the next set of

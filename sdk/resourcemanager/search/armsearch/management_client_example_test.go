@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/GetQuotaUsage.json
+// Generated from example definition: 2026-11-01/GetQuotaUsage.json
 func ExampleManagementClient_UsageBySubscriptionSKU() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,14 +31,14 @@ func ExampleManagementClient_UsageBySubscriptionSKU() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ManagementClientUsageBySubscriptionSKUResponse{
 	// 	QuotaUsageResult: armsearch.QuotaUsageResult{
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/{skuName}"),
-	// 		Unit: to.Ptr("Count"),
-	// 		CurrentValue: to.Ptr[int32](8),
-	// 		Limit: to.Ptr[int32](16),
 	// 		Name: &armsearch.QuotaUsageResultName{
-	// 			Value: to.Ptr("free"),
 	// 			LocalizedValue: to.Ptr("F - Free"),
+	// 			Value: to.Ptr("free"),
 	// 		},
+	// 		CurrentValue: to.Ptr[int32](8),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/{skuName}"),
+	// 		Limit: to.Ptr[int32](16),
+	// 		Unit: to.Ptr("Count"),
 	// 	},
 	// }
 }

@@ -12,37 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/SearchCheckNameAvailability.json
-func ExampleServicesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armsearch.CheckNameAvailabilityInput{
-		Name: to.Ptr("mysearchservice"),
-		Type: to.Ptr("searchServices"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsearch.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: armsearch.CheckNameAvailabilityOutput{
-	// 		IsNameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr(armsearch.UnavailableNameReasonAlreadyExists),
-	// 		Message: to.Ptr(""),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateService.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateService.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,17 +25,17 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -80,62 +50,61 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceAuthOptions.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceAuthOptions.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,22 +117,22 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
 			AuthOptions: &armsearch.DataPlaneAuthOptions{
 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
 				},
 			},
+			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -178,61 +147,61 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
 	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
 	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
 	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
 	// 				},
 	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
 	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 			},
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceDisableLocalAuth.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,18 +214,18 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType:      to.Ptr(armsearch.ComputeTypeDefault),
+			DisableLocalAuth: to.Ptr(true),
+			HostingMode:      to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount:   to.Ptr[int32](1),
+			ReplicaCount:     to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:     to.Ptr[int32](3),
-			PartitionCount:   to.Ptr[int32](1),
-			HostingMode:      to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:      to.Ptr(armsearch.ComputeTypeDefault),
-			DisableLocalAuth: to.Ptr(true),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -271,57 +240,57 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(true),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(true),
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,18 +303,18 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType:         to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode:         to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount:      to.Ptr[int32](1),
+			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
+			ReplicaCount:        to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:        to.Ptr[int32](3),
-			PartitionCount:      to.Ptr[int32](1),
-			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
-			HostingMode:         to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:         to.Ptr(armsearch.ComputeTypeDefault),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -360,62 +329,61 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,15 +396,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](1),
-			PartitionCount: to.Ptr[int32](1),
+			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
 				IPRules: []*armsearch.IPRule{
 					{
@@ -447,8 +409,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 					},
 				},
 			},
-			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](1),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -463,26 +431,25 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](1),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
 	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
 	// 				IPRules: []*armsearch.IPRule{
 	// 					{
@@ -493,37 +460,37 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 					},
 	// 				},
 	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
 	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
 	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,16 +503,11 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](1),
-			PartitionCount: to.Ptr[int32](1),
+			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 				IPRules: []*armsearch.IPRule{
 					{
 						Value: to.Ptr("123.4.5.6"),
@@ -554,10 +516,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 						Value: to.Ptr("123.4.6.0/18"),
 					},
 				},
-				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
 			},
-			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](1),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -572,27 +539,27 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](1),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
 	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 	// 				IPRules: []*armsearch.IPRule{
 	// 					{
 	// 						Value: to.Ptr("123.4.5.6"),
@@ -601,134 +568,38 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 						Value: to.Ptr("123.4.6.0/18"),
 	// 					},
 	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
 	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
 	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
 	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
-	// 		SystemData: &armsearch.SystemData{
-	// 			CreatedBy: to.Ptr("My e-commerce app"),
-	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithAutoGeneratedDomainNameLabelScope.json
-func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithAutoGeneratedDomainNameLabelScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
-		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:                      to.Ptr[int32](3),
-			PartitionCount:                    to.Ptr[int32](1),
-			HostingMode:                       to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:                       to.Ptr(armsearch.ComputeTypeDefault),
-			AutoGeneratedDomainNameLabelScope: to.Ptr(armsearch.AutoGeneratedDomainNameLabelScopeTenantReuse),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
-	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice-12345678abcdefgh.sg.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armsearch.AutoGeneratedDomainNameLabelScopeTenantReuse),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -741,20 +612,20 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+			},
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
-			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
-			},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -769,62 +640,61 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithDataExfiltration.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,20 +707,20 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
+			},
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
-			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
-			},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -865,63 +735,62 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithIdentity.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceWithIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -933,24 +802,24 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
-		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
-		},
 		Identity: &armsearch.Identity{
 			Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armsearch.UserAssignedIdentity{
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": {},
 			},
+		},
+		Location: to.Ptr("westus"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -965,49 +834,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Identity: &armsearch.Identity{
 	// 			Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
 	// 			PrincipalID: to.Ptr("9d1e1f18-2122-4988-a11c-878782e40a5c"),
@@ -1019,19 +848,58 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// 				},
 	// 			},
 	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
+	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithServerless.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateServiceWithServerless.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithServerless() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1118,141 +986,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity.json
-func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
-		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
-			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-				Enforcement:                to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
-				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-				ServiceLevelEncryptionKey: &armsearch.ResourceEncryptionKey{
-					KeyName:    to.Ptr("myUserManagedEncryptionKey-createdinAzureKeyVault"),
-					KeyVersion: to.Ptr("myKeyVersion-32charAlphaNumericString"),
-					VaultURI:   to.Ptr("https://myKeyVault.vault.azure.net"),
-					Identity: &armsearch.DataUserAssignedIdentity{
-						ODataType:                 to.Ptr("#Microsoft.Azure.Search.DataUserAssignedIdentity"),
-						UserAssignedIdentity:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi"),
-						FederatedIdentityClientID: to.Ptr("f83c6b1b-4d34-47e4-bb34-9d83df58b540"),
-					},
-				},
-			},
-		},
-		Identity: &armsearch.Identity{
-			Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armsearch.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": {},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
-	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 				ServiceLevelEncryptionKey: &armsearch.ResourceEncryptionKey{
-	// 					KeyName: to.Ptr("myUserManagedEncryptionKey-createdinAzureKeyVault"),
-	// 					KeyVersion: to.Ptr("myKeyVersion-32charAlphaNumericString"),
-	// 					VaultURI: to.Ptr("https://myKeyVault.vault.azure.net"),
-	// 					Identity: &armsearch.DataUserAssignedIdentity{
-	// 						ODataType: to.Ptr("#Microsoft.Azure.Search.DataUserAssignedIdentity"),
-	// 						UserAssignedIdentity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi"),
-	// 						FederatedIdentityClientID: to.Ptr("f83c6b1b-4d34-47e4-bb34-9d83df58b540"),
-	// 					},
-	// 				},
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
-	// 		Identity: &armsearch.Identity{
-	// 			Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
-	// 			PrincipalID: to.Ptr("9d1e1f18-2122-4988-a11c-878782e40a5c"),
-	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 			UserAssignedIdentities: map[string]*armsearch.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": &armsearch.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("cd1dcac8-82dd-45b5-9aed-76795d529f6b"),
-	// 					PrincipalID: to.Ptr("24e07a75-1286-41e5-a15d-ded85ec3acd7"),
-	// 				},
-	// 			},
-	// 		},
-	// 		SystemData: &armsearch.SystemData{
-	// 			CreatedBy: to.Ptr("My e-commerce app"),
-	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateWithKnowledgeRetrieval.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateWithKnowledgeRetrieval.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledgeRetrieval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1347,7 +1081,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledge
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateWithSemanticSearch.json
+// Generated from example definition: 2026-11-01/SearchCreateOrUpdateWithSemanticSearch.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1360,18 +1094,18 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	}
 	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
 		Location: to.Ptr("westus"),
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
+		Properties: &armsearch.ServiceProperties{
+			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:   to.Ptr[int32](3),
-			PartitionCount: to.Ptr[int32](1),
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			ComputeType:    to.Ptr(armsearch.ComputeTypeDefault),
-			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
 		},
 	}, nil)
 	if err != nil {
@@ -1386,63 +1120,171 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchDeleteService.json
+// Generated from example definition: 2026-11-01/UpgradeSearchServiceToLatestVersion.json
+func ExampleServicesClient_BeginUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginUpgrade(ctx, "rg1", "mysearchservice", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsearch.ServicesClientUpgradeResponse{
+	// 	Service: armsearch.Service{
+	// 		Name: to.Ptr("mysearchservice"),
+	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](1),
+	// 			ServiceUpgradedAt: to.Ptr(time.Date(2026, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
+	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
+	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("My e-commerce app"),
+	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/SearchCheckNameAvailability.json
+func ExampleServicesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armsearch.CheckNameAvailabilityInput{
+		Name: to.Ptr("mysearchservice"),
+		Type: to.Ptr("searchServices"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsearch.ServicesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityOutput: armsearch.CheckNameAvailabilityOutput{
+	// 		Message: to.Ptr(""),
+	// 		IsNameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr(armsearch.UnavailableNameReasonAlreadyExists),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/SearchDeleteService.json
 func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1464,7 +1306,7 @@ func ExampleServicesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchGetService.json
+// Generated from example definition: 2026-11-01/SearchGetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1484,63 +1326,62 @@ func ExampleServicesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientGetResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			ServiceUpgradedAt: to.Ptr(time.Date(2026, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 			ServiceUpgradedAt: to.Ptr(time.Date(2025, time.February, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchListServicesByResourceGroup.json
+// Generated from example definition: 2026-11-01/SearchListServicesByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1566,109 +1407,107 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 	ServiceListResult: armsearch.ServiceListResult{
 		// 		Value: []*armsearch.Service{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 		// 				Name: to.Ptr("mysearchservice"),
-		// 				Location: to.Ptr("westus"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 				Tags: map[string]*string{
-		// 					"app-name": to.Ptr("My e-commerce app"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armsearch.ServiceProperties{
+		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
+		// 						APIKeyOnly: map[string]any{
+		// 						},
+		// 					},
+		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+		// 					},
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+		// 					},
+		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
+		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
+		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
+		// 						IPRules: []*armsearch.IPRule{
+		// 						},
+		// 					},
+		// 					PartitionCount: to.Ptr[int32](1),
+		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+		// 					ReplicaCount: to.Ptr[int32](3),
+		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+		// 					},
+		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+		// 					StatusDetails: to.Ptr(""),
+		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 				},
 		// 				SKU: &armsearch.SKU{
 		// 					Name: to.Ptr(armsearch.SKUNameStandard),
 		// 				},
-		// 				Properties: &armsearch.ServiceProperties{
-		// 					ReplicaCount: to.Ptr[int32](3),
-		// 					PartitionCount: to.Ptr[int32](1),
-		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-		// 					StatusDetails: to.Ptr(""),
-		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
-		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
-		// 						IPRules: []*armsearch.IPRule{
-		// 						},
-		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
-		// 					},
-		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-		// 					},
-		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-		// 					},
-		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-		// 					},
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
-		// 						AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-		// 							AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-		// 						},
-		// 					},
-		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-		// 					},
-		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-		// 				},
 		// 				SystemData: &armsearch.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("My e-commerce app"),
 		// 					CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"app-name": to.Ptr("My e-commerce app"),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 				Name: to.Ptr("mysearchservice2"),
-		// 				Location: to.Ptr("eastus"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 				Tags: map[string]*string{
-		// 					"app-name": to.Ptr("My e-commerce app"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armsearch.ServiceProperties{
+		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
+		// 						APIKeyOnly: map[string]any{
+		// 						},
+		// 					},
+		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+		// 					},
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+		// 					},
+		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
+		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
+		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
+		// 						IPRules: []*armsearch.IPRule{
+		// 						},
+		// 					},
+		// 					PartitionCount: to.Ptr[int32](1),
+		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+		// 					ReplicaCount: to.Ptr[int32](1),
+		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+		// 					},
+		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+		// 					StatusDetails: to.Ptr(""),
+		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 				},
 		// 				SKU: &armsearch.SKU{
 		// 					Name: to.Ptr(armsearch.SKUNameBasic),
 		// 				},
-		// 				Properties: &armsearch.ServiceProperties{
-		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					PartitionCount: to.Ptr[int32](1),
-		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-		// 					StatusDetails: to.Ptr(""),
-		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
-		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
-		// 						IPRules: []*armsearch.IPRule{
-		// 						},
-		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
-		// 					},
-		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-		// 					},
-		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-		// 					},
-		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-		// 					},
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
-		// 						AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-		// 							AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-		// 						},
-		// 					},
-		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-		// 					},
-		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-		// 				},
 		// 				SystemData: &armsearch.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("My e-commerce app"),
 		// 					CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"app-name": to.Ptr("My e-commerce app"),
 		// 				},
 		// 			},
 		// 		},
@@ -1677,7 +1516,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchListServicesBySubscription.json
+// Generated from example definition: 2026-11-01/SearchListServicesBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1703,109 +1542,107 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 	ServiceListResult: armsearch.ServiceListResult{
 		// 		Value: []*armsearch.Service{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 		// 				Name: to.Ptr("mysearchservice"),
-		// 				Location: to.Ptr("westus"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 				Tags: map[string]*string{
-		// 					"app-name": to.Ptr("My e-commerce app"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armsearch.ServiceProperties{
+		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
+		// 						APIKeyOnly: map[string]any{
+		// 						},
+		// 					},
+		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+		// 					},
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+		// 					},
+		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
+		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
+		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
+		// 						IPRules: []*armsearch.IPRule{
+		// 						},
+		// 					},
+		// 					PartitionCount: to.Ptr[int32](1),
+		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+		// 					ReplicaCount: to.Ptr[int32](3),
+		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+		// 					},
+		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+		// 					StatusDetails: to.Ptr(""),
+		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 				},
 		// 				SKU: &armsearch.SKU{
 		// 					Name: to.Ptr(armsearch.SKUNameStandard),
 		// 				},
-		// 				Properties: &armsearch.ServiceProperties{
-		// 					ReplicaCount: to.Ptr[int32](3),
-		// 					PartitionCount: to.Ptr[int32](1),
-		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-		// 					StatusDetails: to.Ptr(""),
-		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
-		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
-		// 						IPRules: []*armsearch.IPRule{
-		// 						},
-		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
-		// 					},
-		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-		// 					},
-		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-		// 					},
-		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-		// 					},
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
-		// 						AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-		// 							AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-		// 						},
-		// 					},
-		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-		// 					},
-		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-		// 				},
 		// 				SystemData: &armsearch.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("My e-commerce app"),
 		// 					CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"app-name": to.Ptr("My e-commerce app"),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 				Name: to.Ptr("mysearchservice2"),
-		// 				Location: to.Ptr("eastus"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 				Tags: map[string]*string{
-		// 					"app-name": to.Ptr("My e-commerce app"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Search/searchServices/mysearchservice2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armsearch.ServiceProperties{
+		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
+		// 						APIKeyOnly: map[string]any{
+		// 						},
+		// 					},
+		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+		// 					},
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+		// 					},
+		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
+		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
+		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
+		// 						IPRules: []*armsearch.IPRule{
+		// 						},
+		// 					},
+		// 					PartitionCount: to.Ptr[int32](1),
+		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+		// 					ReplicaCount: to.Ptr[int32](1),
+		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+		// 					},
+		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+		// 					StatusDetails: to.Ptr(""),
+		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 				},
 		// 				SKU: &armsearch.SKU{
 		// 					Name: to.Ptr(armsearch.SKUNameBasic),
 		// 				},
-		// 				Properties: &armsearch.ServiceProperties{
-		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					PartitionCount: to.Ptr[int32](1),
-		// 					Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-		// 					Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-		// 					StatusDetails: to.Ptr(""),
-		// 					HostingMode: to.Ptr(armsearch.HostingModeDefault),
-		// 					ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 					ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-		// 					NetworkRuleSet: &armsearch.NetworkRuleSet{
-		// 						IPRules: []*armsearch.IPRule{
-		// 						},
-		// 						Bypass: to.Ptr(armsearch.SearchBypassNone),
-		// 					},
-		// 					PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-		// 					},
-		// 					SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-		// 					},
-		// 					EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-		// 						Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-		// 						EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-		// 					},
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					AuthOptions: &armsearch.DataPlaneAuthOptions{
-		// 						AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-		// 							AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-		// 						},
-		// 					},
-		// 					DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-		// 					},
-		// 					UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-		// 				},
 		// 				SystemData: &armsearch.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("My e-commerce app"),
 		// 					CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"app-name": to.Ptr("My e-commerce app"),
 		// 				},
 		// 			},
 		// 		},
@@ -1814,7 +1651,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateService.json
+// Generated from example definition: 2026-11-01/SearchUpdateService.json
 func ExampleServicesClient_Update_searchUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1826,12 +1663,12 @@ func ExampleServicesClient_Update_searchUpdateService() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Properties: &armsearch.ServiceProperties{
+			ReplicaCount: to.Ptr[int32](2),
+		},
 		Tags: map[string]*string{
 			"app-name": to.Ptr("My e-commerce app"),
 			"new-tag":  to.Ptr("Adding a new tag"),
-		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount: to.Ptr[int32](2),
 		},
 	}, nil)
 	if err != nil {
@@ -1842,63 +1679,62 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceAuthOptions.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceAuthOptions.json
 func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1910,17 +1746,17 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-			"new-tag":  to.Ptr("Adding a new tag"),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount: to.Ptr[int32](2),
 			AuthOptions: &armsearch.DataPlaneAuthOptions{
 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
 				},
 			},
+			ReplicaCount: to.Ptr[int32](2),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
 		},
 	}, nil)
 	if err != nil {
@@ -1931,62 +1767,62 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
 	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
 	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
 	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
 	// 				},
 	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
 	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 			},
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceDisableLocalAuth.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1998,13 +1834,13 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Properties: &armsearch.ServiceProperties{
+			DisableLocalAuth: to.Ptr(true),
+			ReplicaCount:     to.Ptr[int32](2),
+		},
 		Tags: map[string]*string{
 			"app-name": to.Ptr("My e-commerce app"),
 			"new-tag":  to.Ptr("Adding a new tag"),
-		},
-		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:     to.Ptr[int32](2),
-			DisableLocalAuth: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -2015,58 +1851,58 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(true),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(true),
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,9 +1915,9 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:        to.Ptr[int32](1),
 			PartitionCount:      to.Ptr[int32](1),
 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
+			ReplicaCount:        to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -2092,63 +1928,62 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
+	// 			ReplicaCount: to.Ptr[int32](1),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameBasic),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](1),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessDisabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2161,9 +1996,6 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:        to.Ptr[int32](3),
-			PartitionCount:      to.Ptr[int32](1),
-			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
 				IPRules: []*armsearch.IPRule{
 					{
@@ -2173,8 +2005,10 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 						Value: to.Ptr("123.4.6.0/18"),
 					},
 				},
-				Bypass: to.Ptr(armsearch.SearchBypassNone),
 			},
+			PartitionCount:      to.Ptr[int32](1),
+			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+			ReplicaCount:        to.Ptr[int32](3),
 		},
 	}, nil)
 	if err != nil {
@@ -2185,65 +2019,64 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
 	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
 	// 				IPRules: []*armsearch.IPRule{
 	// 					{
 	// 						Value: to.Ptr("10.2.3.4"),
 	// 					},
 	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
 	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
 	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
 	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
 	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2256,10 +2089,8 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount:        to.Ptr[int32](3),
-			PartitionCount:      to.Ptr[int32](1),
-			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 				IPRules: []*armsearch.IPRule{
 					{
 						Value: to.Ptr("123.4.5.6"),
@@ -2268,8 +2099,10 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 						Value: to.Ptr("123.4.6.0/18"),
 					},
 				},
-				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
 			},
+			PartitionCount:      to.Ptr[int32](1),
+			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+			ReplicaCount:        to.Ptr[int32](3),
 		},
 	}, nil)
 	if err != nil {
@@ -2280,66 +2113,65 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
 	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 	// 				IPRules: []*armsearch.IPRule{
 	// 					{
 	// 						Value: to.Ptr("10.2.3.4"),
 	// 					},
 	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
 	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
 	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
 	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
 	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
 	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToRemoveIdentity.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceToRemoveIdentity.json
 func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2351,11 +2183,11 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
-		},
 		Identity: &armsearch.Identity{
 			Type: to.Ptr(armsearch.IdentityTypeNone),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
 	}, nil)
 	if err != nil {
@@ -2366,61 +2198,60 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](3),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2432,15 +2263,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-			"new-tag":  to.Ptr("Adding a new tag"),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount: to.Ptr[int32](2),
 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
 			},
+			ReplicaCount: to.Ptr[int32](2),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
 		},
 	}, nil)
 	if err != nil {
@@ -2451,63 +2282,62 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithDataExfiltration.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2519,15 +2349,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-			"new-tag":  to.Ptr("Adding a new tag"),
-		},
 		Properties: &armsearch.ServiceProperties{
-			ReplicaCount: to.Ptr[int32](2),
 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
 			},
+			ReplicaCount: to.Ptr[int32](2),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
 		},
 	}, nil)
 	if err != nil {
@@ -2538,64 +2368,63 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll),
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceWithKnowledgeRetrieval.json
 func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2681,7 +2510,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithSemanticSearch.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceWithSemanticSearch.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2693,13 +2522,13 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-			"new-tag":  to.Ptr("Adding a new tag"),
-		},
 		Properties: &armsearch.ServiceProperties{
 			ReplicaCount:   to.Ptr[int32](2),
 			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
 		},
 	}, nil)
 	if err != nil {
@@ -2710,64 +2539,63 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchStandard),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchStandard),
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 			"new-tag": to.Ptr("Adding a new tag"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithSku.json
+// Generated from example definition: 2026-11-01/SearchUpdateServiceWithSku.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2779,12 +2607,12 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard2),
+		},
 		Tags: map[string]*string{
 			"app-name": to.Ptr("My e-commerce app"),
 			"new-tag":  to.Ptr("Adding a new tag"),
-		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard2),
 		},
 	}, nil)
 	if err != nil {
@@ -2795,134 +2623,55 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
 	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	// 		Tags: map[string]*string{
-	// 			"app-name": to.Ptr("My e-commerce app"),
-	// 			"new-tag": to.Ptr("Adding a new tag"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				APIKeyOnly: map[string]any{
+	// 				},
+	// 			},
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 			},
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 			},
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			ReplicaCount: to.Ptr[int32](1),
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard2),
 	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](1),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 		},
 	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/UpgradeSearchServiceToLatestVersion.json
-func ExampleServicesClient_BeginUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginUpgrade(ctx, "rg1", "mysearchservice", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsearch.ServicesClientUpgradeResponse{
-	// 	Service: armsearch.Service{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
-	// 		Name: to.Ptr("mysearchservice"),
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 		Tags: map[string]*string{
 	// 			"app-name": to.Ptr("My e-commerce app"),
 	// 			"new-tag": to.Ptr("Adding a new tag"),
-	// 		},
-	// 		SKU: &armsearch.SKU{
-	// 			Name: to.Ptr(armsearch.SKUNameStandard),
-	// 		},
-	// 		Properties: &armsearch.ServiceProperties{
-	// 			ReplicaCount: to.Ptr[int32](1),
-	// 			PartitionCount: to.Ptr[int32](1),
-	// 			Status: to.Ptr(armsearch.SearchServiceStatusRunning),
-	// 			StatusDetails: to.Ptr(""),
-	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
-	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 				IPRules: []*armsearch.IPRule{
-	// 				},
-	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
-	// 			},
-	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 			},
-	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
-	// 			},
-	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
-	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
-	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
-	// 			},
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
-	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
-	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
-	// 				},
-	// 			},
-	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
-	// 			},
-	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
-	// 			ServiceUpgradedAt: to.Ptr(time.Date(2025, time.February, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 		SystemData: &armsearch.SystemData{
-	// 			CreatedBy: to.Ptr("My e-commerce app"),
-	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

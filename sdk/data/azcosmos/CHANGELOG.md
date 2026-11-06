@@ -7,6 +7,8 @@
 ### Features Added
 
 ### Breaking Changes
+## 1.6.0-beta.5 (2026-11-06)
+
 ### Bugs Fixed
 
 * Fixed `ReadManyItems` silently omitting existing items from multi-partition containers using V1 partition key hashing, including containers whose partition key definition omits the version. V1 routing now uses the service-compatible binary EPK encoding and string truncation. See [PR 27867](https://github.com/Azure/azure-sdk-for-go/pull/27867).

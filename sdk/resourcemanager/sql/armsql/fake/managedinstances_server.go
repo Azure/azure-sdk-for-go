@@ -34,30 +34,6 @@ type ManagedInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFailover func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientBeginFailoverOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientFailoverResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ManagedInstancesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientGetOptions) (resp azfake.Responder[armsql.ManagedInstancesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ManagedInstancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsql.ManagedInstancesClientListOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListResponse])
-
-	// NewListByInstancePoolPager is the fake for method ManagedInstancesClient.NewListByInstancePoolPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByInstancePoolPager func(resourceGroupName string, instancePoolName string, options *armsql.ManagedInstancesClientListByInstancePoolOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse])
-
-	// NewListByManagedInstancePager is the fake for method ManagedInstancesClient.NewListByManagedInstancePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByManagedInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientListByManagedInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse])
-
-	// NewListByResourceGroupPager is the fake for method ManagedInstancesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.ManagedInstancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse])
-
-	// NewListOutboundNetworkDependenciesByManagedInstancePager is the fake for method ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListOutboundNetworkDependenciesByManagedInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse])
-
 	// BeginReevaluateInaccessibleDatabaseState is the fake for method ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginReevaluateInaccessibleDatabaseState func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse], errResp azfake.ErrorResponder)
@@ -81,6 +57,30 @@ type ManagedInstancesServer struct {
 	// BeginValidateAzureKeyVaultEncryptionKey is the fake for method ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginValidateAzureKeyVaultEncryptionKey func(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters armsql.ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *armsql.ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ManagedInstancesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientGetOptions) (resp azfake.Responder[armsql.ManagedInstancesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByInstancePoolPager is the fake for method ManagedInstancesClient.NewListByInstancePoolPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByInstancePoolPager func(resourceGroupName string, instancePoolName string, options *armsql.ManagedInstancesClientListByInstancePoolOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse])
+
+	// NewListByManagedInstancePager is the fake for method ManagedInstancesClient.NewListByManagedInstancePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByManagedInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientListByManagedInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse])
+
+	// NewListByResourceGroupPager is the fake for method ManagedInstancesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.ManagedInstancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse])
+
+	// NewListOutboundNetworkDependenciesByManagedInstancePager is the fake for method ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListOutboundNetworkDependenciesByManagedInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse])
+
+	// NewListPager is the fake for method ManagedInstancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsql.ManagedInstancesClientListOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListResponse])
 }
 
 // NewManagedInstancesServerTransport creates a new instance of ManagedInstancesServerTransport with the provided implementation.
@@ -88,21 +88,21 @@ type ManagedInstancesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagedInstancesServerTransport(srv *ManagedInstancesServer) *ManagedInstancesServerTransport {
 	return &ManagedInstancesServerTransport{
-		srv:                           srv,
-		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientCreateOrUpdateResponse]](),
-		beginDelete:                   newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientDeleteResponse]](),
-		beginFailover:                 newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientFailoverResponse]](),
-		newListPager:                  newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListResponse]](),
-		newListByInstancePoolPager:    newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse]](),
-		newListByManagedInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]](),
-		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]](),
+		srv:                                      srv,
+		beginCreateOrUpdate:                      newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientCreateOrUpdateResponse]](),
+		beginDelete:                              newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientDeleteResponse]](),
+		beginFailover:                            newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientFailoverResponse]](),
+		beginReevaluateInaccessibleDatabaseState: newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]](),
+		beginRefreshStatus:                       newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse]](),
+		beginStart:                               newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]](),
+		beginStop:                                newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]](),
+		beginUpdate:                              newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]](),
+		beginValidateAzureKeyVaultEncryptionKey:  newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]](),
+		newListByInstancePoolPager:               newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse]](),
+		newListByManagedInstancePager:            newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]](),
+		newListByResourceGroupPager:              newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]](),
 		newListOutboundNetworkDependenciesByManagedInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]](),
-		beginReevaluateInaccessibleDatabaseState:                 newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]](),
-		beginRefreshStatus:                                       newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse]](),
-		beginStart:                                               newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]](),
-		beginStop:                                                newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]](),
-		beginUpdate:                                              newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]](),
-		beginValidateAzureKeyVaultEncryptionKey:                  newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListResponse]](),
 	}
 }
 
@@ -113,17 +113,17 @@ type ManagedInstancesServerTransport struct {
 	beginCreateOrUpdate                                      *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientCreateOrUpdateResponse]]
 	beginDelete                                              *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientDeleteResponse]]
 	beginFailover                                            *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientFailoverResponse]]
-	newListPager                                             *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListResponse]]
-	newListByInstancePoolPager                               *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse]]
-	newListByManagedInstancePager                            *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]]
-	newListByResourceGroupPager                              *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]]
-	newListOutboundNetworkDependenciesByManagedInstancePager *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]]
 	beginReevaluateInaccessibleDatabaseState                 *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]]
 	beginRefreshStatus                                       *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse]]
 	beginStart                                               *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]]
 	beginStop                                                *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]]
 	beginUpdate                                              *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]]
 	beginValidateAzureKeyVaultEncryptionKey                  *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]]
+	newListByInstancePoolPager                               *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByInstancePoolResponse]]
+	newListByManagedInstancePager                            *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]]
+	newListByResourceGroupPager                              *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]]
+	newListOutboundNetworkDependenciesByManagedInstancePager *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]]
+	newListPager                                             *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedInstancesServerTransport.
@@ -153,18 +153,6 @@ func (m *ManagedInstancesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = m.dispatchBeginDelete(req)
 			case "ManagedInstancesClient.BeginFailover":
 				res.resp, res.err = m.dispatchBeginFailover(req)
-			case "ManagedInstancesClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedInstancesClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
-			case "ManagedInstancesClient.NewListByInstancePoolPager":
-				res.resp, res.err = m.dispatchNewListByInstancePoolPager(req)
-			case "ManagedInstancesClient.NewListByManagedInstancePager":
-				res.resp, res.err = m.dispatchNewListByManagedInstancePager(req)
-			case "ManagedInstancesClient.NewListByResourceGroupPager":
-				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
-			case "ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager":
-				res.resp, res.err = m.dispatchNewListOutboundNetworkDependenciesByManagedInstancePager(req)
 			case "ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState":
 				res.resp, res.err = m.dispatchBeginReevaluateInaccessibleDatabaseState(req)
 			case "ManagedInstancesClient.BeginRefreshStatus":
@@ -177,6 +165,18 @@ func (m *ManagedInstancesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey":
 				res.resp, res.err = m.dispatchBeginValidateAzureKeyVaultEncryptionKey(req)
+			case "ManagedInstancesClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedInstancesClient.NewListByInstancePoolPager":
+				res.resp, res.err = m.dispatchNewListByInstancePoolPager(req)
+			case "ManagedInstancesClient.NewListByManagedInstancePager":
+				res.resp, res.err = m.dispatchNewListByManagedInstancePager(req)
+			case "ManagedInstancesClient.NewListByResourceGroupPager":
+				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
+			case "ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager":
+				res.resp, res.err = m.dispatchNewListOutboundNetworkDependenciesByManagedInstancePager(req)
+			case "ManagedInstancesClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -334,293 +334,6 @@ func (m *ManagedInstancesServerTransport) dispatchBeginFailover(req *http.Reques
 		m.beginFailover.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armsql.ManagedInstancesClientGetOptions
-	if expandParam != nil {
-		options = &armsql.ManagedInstancesClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedInstance, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armsql.ManagedInstancesClientListOptions
-		if expandParam != nil {
-			options = &armsql.ManagedInstancesClientListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := m.srv.NewListPager(options)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.ManagedInstancesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchNewListByInstancePoolPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByInstancePoolPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePoolPager not implemented")}
-	}
-	newListByInstancePoolPager := m.newListByInstancePoolPager.get(req)
-	if newListByInstancePoolPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools/(?P<instancePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		instancePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instancePoolName")])
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armsql.ManagedInstancesClientListByInstancePoolOptions
-		if expandParam != nil {
-			options = &armsql.ManagedInstancesClientListByInstancePoolOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := m.srv.NewListByInstancePoolPager(resourceGroupNameParam, instancePoolNameParam, options)
-		newListByInstancePoolPager = &resp
-		m.newListByInstancePoolPager.add(req, newListByInstancePoolPager)
-		server.PagerResponderInjectNextLinks(newListByInstancePoolPager, req, func(page *armsql.ManagedInstancesClientListByInstancePoolResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByInstancePoolPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByInstancePoolPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByInstancePoolPager) {
-		m.newListByInstancePoolPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchNewListByManagedInstancePager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByManagedInstancePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByManagedInstancePager not implemented")}
-	}
-	newListByManagedInstancePager := m.newListByManagedInstancePager.get(req)
-	if newListByManagedInstancePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topqueries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		numberOfQueriesParam, err := parseOptional(qp.Get("numberOfQueries"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		databasesParam := getOptional(qp.Get("databases"))
-		startTimeParam := getOptional(qp.Get("startTime"))
-		endTimeParam := getOptional(qp.Get("endTime"))
-		intervalParam := getOptional(armsql.QueryTimeGrainType(qp.Get("interval")))
-		aggregationFunctionParam := getOptional(armsql.AggregationFunctionType(qp.Get("aggregationFunction")))
-		observationMetricParam := getOptional(armsql.MetricType(qp.Get("observationMetric")))
-		var options *armsql.ManagedInstancesClientListByManagedInstanceOptions
-		if numberOfQueriesParam != nil || databasesParam != nil || startTimeParam != nil || endTimeParam != nil || intervalParam != nil || aggregationFunctionParam != nil || observationMetricParam != nil {
-			options = &armsql.ManagedInstancesClientListByManagedInstanceOptions{
-				NumberOfQueries:     numberOfQueriesParam,
-				Databases:           databasesParam,
-				StartTime:           startTimeParam,
-				EndTime:             endTimeParam,
-				Interval:            intervalParam,
-				AggregationFunction: aggregationFunctionParam,
-				ObservationMetric:   observationMetricParam,
-			}
-		}
-		resp := m.srv.NewListByManagedInstancePager(resourceGroupNameParam, managedInstanceNameParam, options)
-		newListByManagedInstancePager = &resp
-		m.newListByManagedInstancePager.add(req, newListByManagedInstancePager)
-		server.PagerResponderInjectNextLinks(newListByManagedInstancePager, req, func(page *armsql.ManagedInstancesClientListByManagedInstanceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByManagedInstancePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByManagedInstancePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByManagedInstancePager) {
-		m.newListByManagedInstancePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armsql.ManagedInstancesClientListByResourceGroupOptions
-		if expandParam != nil {
-			options = &armsql.ManagedInstancesClientListByResourceGroupOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.ManagedInstancesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		m.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedInstancesServerTransport) dispatchNewListOutboundNetworkDependenciesByManagedInstancePager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListOutboundNetworkDependenciesByManagedInstancePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesByManagedInstancePager not implemented")}
-	}
-	newListOutboundNetworkDependenciesByManagedInstancePager := m.newListOutboundNetworkDependenciesByManagedInstancePager.get(req)
-	if newListOutboundNetworkDependenciesByManagedInstancePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListOutboundNetworkDependenciesByManagedInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
-		newListOutboundNetworkDependenciesByManagedInstancePager = &resp
-		m.newListOutboundNetworkDependenciesByManagedInstancePager.add(req, newListOutboundNetworkDependenciesByManagedInstancePager)
-		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesByManagedInstancePager, req, func(page *armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesByManagedInstancePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListOutboundNetworkDependenciesByManagedInstancePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListOutboundNetworkDependenciesByManagedInstancePager) {
-		m.newListOutboundNetworkDependenciesByManagedInstancePager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -893,6 +606,293 @@ func (m *ManagedInstancesServerTransport) dispatchBeginValidateAzureKeyVaultEncr
 		m.beginValidateAzureKeyVaultEncryptionKey.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armsql.ManagedInstancesClientGetOptions
+	if expandParam != nil {
+		options = &armsql.ManagedInstancesClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedInstance, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchNewListByInstancePoolPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByInstancePoolPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePoolPager not implemented")}
+	}
+	newListByInstancePoolPager := m.newListByInstancePoolPager.get(req)
+	if newListByInstancePoolPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools/(?P<instancePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		instancePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instancePoolName")])
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armsql.ManagedInstancesClientListByInstancePoolOptions
+		if expandParam != nil {
+			options = &armsql.ManagedInstancesClientListByInstancePoolOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := m.srv.NewListByInstancePoolPager(resourceGroupNameParam, instancePoolNameParam, options)
+		newListByInstancePoolPager = &resp
+		m.newListByInstancePoolPager.add(req, newListByInstancePoolPager)
+		server.PagerResponderInjectNextLinks(newListByInstancePoolPager, req, func(page *armsql.ManagedInstancesClientListByInstancePoolResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByInstancePoolPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByInstancePoolPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByInstancePoolPager) {
+		m.newListByInstancePoolPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchNewListByManagedInstancePager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByManagedInstancePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByManagedInstancePager not implemented")}
+	}
+	newListByManagedInstancePager := m.newListByManagedInstancePager.get(req)
+	if newListByManagedInstancePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topqueries`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		numberOfQueriesParam, err := parseOptional(qp.Get("numberOfQueries"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		databasesParam := getOptional(qp.Get("databases"))
+		startTimeParam := getOptional(qp.Get("startTime"))
+		endTimeParam := getOptional(qp.Get("endTime"))
+		intervalParam := getOptional(armsql.QueryTimeGrainType(qp.Get("interval")))
+		aggregationFunctionParam := getOptional(armsql.AggregationFunctionType(qp.Get("aggregationFunction")))
+		observationMetricParam := getOptional(armsql.MetricType(qp.Get("observationMetric")))
+		var options *armsql.ManagedInstancesClientListByManagedInstanceOptions
+		if numberOfQueriesParam != nil || databasesParam != nil || startTimeParam != nil || endTimeParam != nil || intervalParam != nil || aggregationFunctionParam != nil || observationMetricParam != nil {
+			options = &armsql.ManagedInstancesClientListByManagedInstanceOptions{
+				NumberOfQueries:     numberOfQueriesParam,
+				Databases:           databasesParam,
+				StartTime:           startTimeParam,
+				EndTime:             endTimeParam,
+				Interval:            intervalParam,
+				AggregationFunction: aggregationFunctionParam,
+				ObservationMetric:   observationMetricParam,
+			}
+		}
+		resp := m.srv.NewListByManagedInstancePager(resourceGroupNameParam, managedInstanceNameParam, options)
+		newListByManagedInstancePager = &resp
+		m.newListByManagedInstancePager.add(req, newListByManagedInstancePager)
+		server.PagerResponderInjectNextLinks(newListByManagedInstancePager, req, func(page *armsql.ManagedInstancesClientListByManagedInstanceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByManagedInstancePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByManagedInstancePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByManagedInstancePager) {
+		m.newListByManagedInstancePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armsql.ManagedInstancesClientListByResourceGroupOptions
+		if expandParam != nil {
+			options = &armsql.ManagedInstancesClientListByResourceGroupOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.ManagedInstancesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		m.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchNewListOutboundNetworkDependenciesByManagedInstancePager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListOutboundNetworkDependenciesByManagedInstancePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesByManagedInstancePager not implemented")}
+	}
+	newListOutboundNetworkDependenciesByManagedInstancePager := m.newListOutboundNetworkDependenciesByManagedInstancePager.get(req)
+	if newListOutboundNetworkDependenciesByManagedInstancePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListOutboundNetworkDependenciesByManagedInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
+		newListOutboundNetworkDependenciesByManagedInstancePager = &resp
+		m.newListOutboundNetworkDependenciesByManagedInstancePager.add(req, newListOutboundNetworkDependenciesByManagedInstancePager)
+		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesByManagedInstancePager, req, func(page *armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesByManagedInstancePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListOutboundNetworkDependenciesByManagedInstancePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListOutboundNetworkDependenciesByManagedInstancePager) {
+		m.newListOutboundNetworkDependenciesByManagedInstancePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armsql.ManagedInstancesClientListOptions
+		if expandParam != nil {
+			options = &armsql.ManagedInstancesClientListOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := m.srv.NewListPager(options)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.ManagedInstancesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

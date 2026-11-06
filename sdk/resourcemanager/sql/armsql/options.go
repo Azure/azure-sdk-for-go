@@ -1483,6 +1483,34 @@ type LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// LongTermRetentionManagedInstanceBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions contains the optional
+// parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup method.
+type LongTermRetentionManagedInstanceBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LongTermRetentionManagedInstanceBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions contains the optional
+// parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup method.
+type LongTermRetentionManagedInstanceBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LongTermRetentionManagedInstanceBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions contains the optional
+// parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup method.
+type LongTermRetentionManagedInstanceBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LongTermRetentionManagedInstanceBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions contains the optional
+// parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup method.
+type LongTermRetentionManagedInstanceBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.GetByResourceGroup
 // method.
 type LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupOptions struct {
@@ -2139,6 +2167,34 @@ type ManagedInstanceKeysClientGetOptions struct {
 type ManagedInstanceKeysClientListByInstanceOptions struct {
 	// An OData filter expression that filters elements in the collection.
 	Filter *string
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions contains the optional parameters for
+// the ManagedInstanceLongTermRetentionBackupsClient.BeginLockTimeBasedImmutability method.
+type ManagedInstanceLongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions contains the optional parameters for
+// the ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability method.
+type ManagedInstanceLongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions contains the optional parameters for
+// the ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability method.
+type ManagedInstanceLongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions contains the optional parameters for
+// the ManagedInstanceLongTermRetentionBackupsClient.BeginSetLegalHoldImmutability method.
+type ManagedInstanceLongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedInstanceLongTermRetentionPoliciesClient.BeginCreateOrUpdate

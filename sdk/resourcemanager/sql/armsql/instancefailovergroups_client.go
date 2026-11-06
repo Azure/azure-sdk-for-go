@@ -69,7 +69,7 @@ func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates a failover group.
+// createOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, _ *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes a failover group.
+// deleteOperation - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, _ *InstanceFailoverGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}"
 	if client.subscriptionID == "" {
@@ -224,7 +224,7 @@ func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, r
 	}
 }
 
-// Failover - Fails over from the current primary managed instance to this managed instance.
+// failover - Fails over from the current primary managed instance to this managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -246,7 +246,7 @@ func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, _ *InstanceFailoverGroupsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover"
 	if client.subscriptionID == "" {
@@ -301,7 +301,7 @@ func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx 
 	}
 }
 
-// ForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
+// forceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
 // might result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
@@ -324,7 +324,7 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx conte
 	return httpResp, nil
 }
 
-// forceFailoverAllowDataLossCreateRequest creates the ForceFailoverAllowDataLoss request.
+// forceFailoverAllowDataLossCreateRequest creates the forceFailoverAllowDataLoss request.
 func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, _ *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss"
 	if client.subscriptionID == "" {

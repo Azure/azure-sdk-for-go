@@ -1332,6 +1332,34 @@ type LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationRes
 	ManagedInstanceLongTermRetentionBackupListResult
 }
 
+// LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse contains the response from
+// method LongTermRetentionManagedInstanceBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup.
+type LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse contains the response from
+// method LongTermRetentionManagedInstanceBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup.
+type LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse contains the response from
+// method LongTermRetentionManagedInstanceBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup.
+type LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse contains the response from
+// method LongTermRetentionManagedInstanceBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup.
+type LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
 // LongTermRetentionPoliciesClientCreateOrUpdateResponse contains the response from method LongTermRetentionPoliciesClient.BeginCreateOrUpdate.
 type LongTermRetentionPoliciesClientCreateOrUpdateResponse struct {
 	// A long term retention policy.
@@ -1828,6 +1856,30 @@ type ManagedInstanceKeysClientGetResponse struct {
 type ManagedInstanceKeysClientListByInstanceResponse struct {
 	// The response of a ManagedInstanceKey list operation.
 	ManagedInstanceKeyListResult
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse contains the response from method ManagedInstanceLongTermRetentionBackupsClient.BeginLockTimeBasedImmutability.
+type ManagedInstanceLongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse contains the response from method ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability.
+type ManagedInstanceLongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse contains the response from method ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability.
+type ManagedInstanceLongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
+}
+
+// ManagedInstanceLongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse contains the response from method ManagedInstanceLongTermRetentionBackupsClient.BeginSetLegalHoldImmutability.
+type ManagedInstanceLongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse struct {
+	// A long term retention backup for a managed database.
+	ManagedInstanceLongTermRetentionBackup
 }
 
 // ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse contains the response from method ManagedInstanceLongTermRetentionPoliciesClient.BeginCreateOrUpdate.

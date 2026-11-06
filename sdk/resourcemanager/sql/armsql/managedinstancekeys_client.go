@@ -69,7 +69,7 @@ func (client *ManagedInstanceKeysClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a managed instance key.
+// createOrUpdate - Creates or updates a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceKeysClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, options *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ManagedInstanceKeysClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstanceKeysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, _ *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ManagedInstanceKeysClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes the managed instance key with the given name.
+// deleteOperation - Deletes the managed instance key with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceKeysClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, options *ManagedInstanceKeysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ManagedInstanceKeysClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedInstanceKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, _ *ManagedInstanceKeysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}"
 	if client.subscriptionID == "" {

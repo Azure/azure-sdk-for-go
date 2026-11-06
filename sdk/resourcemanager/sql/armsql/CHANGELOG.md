@@ -1,5 +1,20 @@
 # Release History
 
+## 2.0.0-beta.10 (2026-11-06)
+### Features Added
+
+- New function `*ClientFactory.NewManagedInstanceLongTermRetentionBackupsClient() *ManagedInstanceLongTermRetentionBackupsClient`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse], error)`
+- New function `NewManagedInstanceLongTermRetentionBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceLongTermRetentionBackupsClient, error)`
+- New function `*ManagedInstanceLongTermRetentionBackupsClient.BeginLockTimeBasedImmutability(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *ManagedInstanceLongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*runtime.Poller[ManagedInstanceLongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse], error)`
+- New function `*ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *ManagedInstanceLongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*runtime.Poller[ManagedInstanceLongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse], error)`
+- New function `*ManagedInstanceLongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *ManagedInstanceLongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*runtime.Poller[ManagedInstanceLongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse], error)`
+- New function `*ManagedInstanceLongTermRetentionBackupsClient.BeginSetLegalHoldImmutability(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *ManagedInstanceLongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*runtime.Poller[ManagedInstanceLongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse], error)`
+
+
 ## 2.0.0-beta.9 (2026-09-09)
 ### Breaking Changes
 

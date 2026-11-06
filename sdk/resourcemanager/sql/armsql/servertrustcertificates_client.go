@@ -69,7 +69,7 @@ func (client *ServerTrustCertificatesClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Uploads a server trust certificate from SQL Server to SQL Managed Instance.
+// createOrUpdate - Uploads a server trust certificate from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerTrustCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, options *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ServerTrustCertificatesClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerTrustCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, _ *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ServerTrustCertificatesClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Deletes a server trust certificate that was uploaded from SQL Server to SQL Managed Instance.
+// deleteOperation - Deletes a server trust certificate that was uploaded from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerTrustCertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, options *ServerTrustCertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ServerTrustCertificatesClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServerTrustCertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, _ *ServerTrustCertificatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}"
 	if client.subscriptionID == "" {

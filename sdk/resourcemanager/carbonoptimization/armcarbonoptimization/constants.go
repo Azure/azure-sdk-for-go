@@ -5,7 +5,7 @@
 package armcarbonoptimization
 
 const (
-	version20250401 string = "2025-04-01"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // AccessDecisionEnum - Enum for Access Decision
@@ -38,6 +38,62 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// BillingAccountCategoryTypeEnum - Supported category types for billing account scoped queries. The ResourceGroup and Resource
+// category types are not supported for billing account scope.
+type BillingAccountCategoryTypeEnum string
+
+const (
+	// BillingAccountCategoryTypeEnumLocation - Emissions aggregated at the location level.
+	BillingAccountCategoryTypeEnumLocation BillingAccountCategoryTypeEnum = "Location"
+	// BillingAccountCategoryTypeEnumResourceType - Emissions aggregated at the resource type level.
+	BillingAccountCategoryTypeEnumResourceType BillingAccountCategoryTypeEnum = "ResourceType"
+	// BillingAccountCategoryTypeEnumSubscription - Emissions aggregated at the subscription level.
+	BillingAccountCategoryTypeEnumSubscription BillingAccountCategoryTypeEnum = "Subscription"
+)
+
+// PossibleBillingAccountCategoryTypeEnumValues returns the possible values for the BillingAccountCategoryTypeEnum const type.
+func PossibleBillingAccountCategoryTypeEnumValues() []BillingAccountCategoryTypeEnum {
+	return []BillingAccountCategoryTypeEnum{
+		BillingAccountCategoryTypeEnumLocation,
+		BillingAccountCategoryTypeEnumResourceType,
+		BillingAccountCategoryTypeEnumSubscription,
+	}
+}
+
+// BillingAccountOrderByColumnEnum - Sorting is supported for columns in billing account scoped ItemDetailsReport. This object
+// includes the column names that sorting is allowed for. Select one of these supported values. The ResourceGroup column is
+// not supported for billing account scope.
+type BillingAccountOrderByColumnEnum string
+
+const (
+	// BillingAccountOrderByColumnEnumItemName - The itemName filed in ItemDetailsReport result, see CarbonEmissionItemDetailData
+	// for more information.
+	BillingAccountOrderByColumnEnumItemName BillingAccountOrderByColumnEnum = "ItemName"
+	// BillingAccountOrderByColumnEnumLatestMonthEmissions - The latestMonthEmissions filed in ItemDetailsReport result, see CarbonEmissionItemDetailData
+	// for more information.
+	BillingAccountOrderByColumnEnumLatestMonthEmissions BillingAccountOrderByColumnEnum = "LatestMonthEmissions"
+	// BillingAccountOrderByColumnEnumMonthOverMonthEmissionsChangeRatio - The monthOverMonthEmissionsChangeRatio filed in ItemDetailsReport
+	// result, see CarbonEmissionItemDetailData for more information.
+	BillingAccountOrderByColumnEnumMonthOverMonthEmissionsChangeRatio BillingAccountOrderByColumnEnum = "MonthOverMonthEmissionsChangeRatio"
+	// BillingAccountOrderByColumnEnumMonthlyEmissionsChangeValue - The monthlyEmissionsChangeValue filed in ItemDetailsReport
+	// result, see CarbonEmissionItemDetailData for more information.
+	BillingAccountOrderByColumnEnumMonthlyEmissionsChangeValue BillingAccountOrderByColumnEnum = "MonthlyEmissionsChangeValue"
+	// BillingAccountOrderByColumnEnumPreviousMonthEmissions - The previousMonthEmissions filed in ItemDetailsReport result, see
+	// CarbonEmissionItemDetailData for more information.
+	BillingAccountOrderByColumnEnumPreviousMonthEmissions BillingAccountOrderByColumnEnum = "PreviousMonthEmissions"
+)
+
+// PossibleBillingAccountOrderByColumnEnumValues returns the possible values for the BillingAccountOrderByColumnEnum const type.
+func PossibleBillingAccountOrderByColumnEnumValues() []BillingAccountOrderByColumnEnum {
+	return []BillingAccountOrderByColumnEnum{
+		BillingAccountOrderByColumnEnumItemName,
+		BillingAccountOrderByColumnEnumLatestMonthEmissions,
+		BillingAccountOrderByColumnEnumMonthOverMonthEmissionsChangeRatio,
+		BillingAccountOrderByColumnEnumMonthlyEmissionsChangeValue,
+		BillingAccountOrderByColumnEnumPreviousMonthEmissions,
 	}
 }
 

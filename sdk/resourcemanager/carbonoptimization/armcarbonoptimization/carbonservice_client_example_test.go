@@ -6,14 +6,15 @@ package armcarbonoptimization_test
 
 import (
 	"context"
+	"log"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
-	"log"
-	"time"
 )
 
-// Generated from example definition: 2025-04-01/carbonEmissionsDataAvailableDateRange.json
+// Generated from example definition: 2026-05-01-preview/carbonEmissionsDataAvailableDateRange.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionDataAvailableDateRange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +40,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionDataAvailableDateRange() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsLocationItemDetailsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsLocationItemDetailsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLocationItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +175,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsMonthlySummaryReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallMonthlySummaryReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +247,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsMonthlySummaryReportWithOtherOptionalFilter.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReportWithOtherOptionalFilter.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMonthlySummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,7 +330,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsOverallSummaryReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallSummaryReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +382,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsOverallSummaryReportWithOtherOptionalFilter.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReportWithOtherOptionalFilter.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallSummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +445,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsResourceGroupItemDetailsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceGroupItemDetailsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceGroupItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -589,7 +590,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsResourceItemDetailsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -750,7 +751,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsResourceItemDetailsReportWithPaginationToken.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReportWithPaginationToken.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceItemDetailsReportWithPaginationToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -911,7 +912,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsResourceTypeItemDetailsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceTypeItemDetailsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceTypeItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1046,7 +1047,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsSubscriptionItemDetailsReportReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsSubscriptionItemDetailsReportReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSubscriptionsItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1181,7 +1182,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSu
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNLocationsMonthlyReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1329,7 +1330,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNLocationItemsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNLocationsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1462,7 +1463,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceGroupMonthlyReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1622,7 +1623,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceGroupItemsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceGroupReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1765,7 +1766,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceMonthlyReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1931,7 +1932,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceItemsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,7 +2080,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceTypeMonthlyReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2227,7 +2228,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNResourceTypeItemsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceTypeReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2360,7 +2361,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNSubscriptionsMonthlyReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2508,7 +2509,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// }
 }
 
-// Generated from example definition: 2025-04-01/queryCarbonEmissionsTopNSubscriptionItemsReport.json
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsReport.json
 func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNSubscriptionsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2634,6 +2635,297 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
 	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
 	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountMonthlySummaryReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountMonthlySummaryReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.25),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.7),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0851),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.4),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 				CarbonIntensity: to.Ptr[float64](21),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](4.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.6),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0761),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.35),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 				CarbonIntensity: to.Ptr[float64](20),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountOverallSummaryReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountOverallSummaryReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountOverallSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.25),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountSubscriptionItemDetailsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountSubscriptionItemDetailsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountItemDetailsReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType:  to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		OrderBy:       to.Ptr(armcarbonoptimization.BillingAccountOrderByColumnEnumLatestMonthEmissions),
+		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
+		PageSize:      to.Ptr[int32](100),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
+	// 		SkipToken: to.Ptr("dGVzdF9za2lwX3Rva2Vu"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountTopNSubscriptionsMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.95),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.1579),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.15),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountTopNSubscriptionsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
 	// 			},
 	// 		},

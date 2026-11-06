@@ -8,12 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"regexp"
+	"slices"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
-	"net/http"
-	"slices"
 )
 
 // CarbonServiceServer is a fake server for instances of the armcarbonoptimization.CarbonServiceClient type.
@@ -25,6 +27,10 @@ type CarbonServiceServer struct {
 	// QueryCarbonEmissionReports is the fake for method CarbonServiceClient.QueryCarbonEmissionReports
 	// HTTP status codes to indicate success: http.StatusOK
 	QueryCarbonEmissionReports func(ctx context.Context, queryParameters armcarbonoptimization.QueryFilterClassification, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsOptions) (resp azfake.Responder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse], errResp azfake.ErrorResponder)
+
+	// QueryCarbonEmissionReportsByBillingAccount is the fake for method CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	QueryCarbonEmissionReportsByBillingAccount func(ctx context.Context, scope string, queryParameters armcarbonoptimization.BillingAccountQueryFilterClassification, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) (resp azfake.Responder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCarbonServiceServerTransport creates a new instance of CarbonServiceServerTransport with the provided implementation.
@@ -65,6 +71,8 @@ func (c *CarbonServiceServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = c.dispatchQueryCarbonEmissionDataAvailableDateRange(req)
 			case "CarbonServiceClient.QueryCarbonEmissionReports":
 				res.resp, res.err = c.dispatchQueryCarbonEmissionReports(req)
+			case "CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount":
+				res.resp, res.err = c.dispatchQueryCarbonEmissionReportsByBillingAccount(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -113,6 +121,40 @@ func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionReports(req *h
 		return nil, err
 	}
 	respr, errRespr := c.srv.QueryCarbonEmissionReports(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CarbonEmissionDataListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionReportsByBillingAccount(req *http.Request) (*http.Response, error) {
+	if c.srv.QueryCarbonEmissionReportsByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method QueryCarbonEmissionReportsByBillingAccount not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Carbon/carbonEmissionReports`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	raw, err := readRequestBody(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := unmarshalBillingAccountQueryFilterClassification(raw)
+	if err != nil {
+		return nil, err
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	respr, errRespr := c.srv.QueryCarbonEmissionReportsByBillingAccount(req.Context(), scopeParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

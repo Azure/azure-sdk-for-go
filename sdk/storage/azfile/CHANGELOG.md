@@ -1,13 +1,11 @@
 # Release History
 
-## 1.7.1-beta.2 (Unreleased)
+## 1.7.1-beta.2 (2026-10-01)
 
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
 * Added structured message (XSM/1.0) CRC64 content validation for `azfile` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 * Added `TransactionalValidation` support on `CreateOptions` for structured message CRC64 content validation when creating a file with initial data.
-
-### Breaking Changes
 
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.

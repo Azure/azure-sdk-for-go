@@ -8,7 +8,11 @@
   requests to the DFS endpoint, writes and every other operation keep using the bearer token. With
   `SessionOptions.Enabled` set to true, reads are authenticated with a session created and cached per file system.
   The default, nil, currently resolves to disabled; false disables sessions explicitly.
-  * Each client creates its own session cache, shared with the clients derived from it.
+  * Each client created with a constructor has its own session cache. Clients derived from it with
+    `service.Client.NewFileSystemClient`, `filesystem.Client.NewDirectoryClient` and `filesystem.Client.NewFileClient`
+    share that cache. Clients created with `directory.Client.NewFileClient` and
+    `directory.Client.NewSubdirectoryClient` have their own cache, so navigating through a directory can create
+    additional sessions for the same file system.
   * The account name that signs session requests is derived from the client's URL, or set with
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionOptions.Enabled` was set to true.

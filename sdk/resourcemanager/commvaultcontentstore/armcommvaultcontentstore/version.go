@@ -6,5 +6,5 @@ package armcommvaultcontentstore
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )

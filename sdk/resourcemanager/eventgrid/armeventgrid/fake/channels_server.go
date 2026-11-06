@@ -22,13 +22,13 @@ import (
 
 // ChannelsServer is a fake server for instances of the armeventgrid.ChannelsClient type.
 type ChannelsServer struct {
-	// CreateOrUpdate is the fake for method ChannelsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, channelInfo armeventgrid.Channel, options *armeventgrid.ChannelsClientCreateOrUpdateOptions) (resp azfake.Responder[armeventgrid.ChannelsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ChannelsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *armeventgrid.ChannelsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.ChannelsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ChannelsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, channelInfo armeventgrid.Channel, options *armeventgrid.ChannelsClientCreateOrUpdateOptions) (resp azfake.Responder[armeventgrid.ChannelsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ChannelsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -87,10 +87,10 @@ func (c *ChannelsServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ChannelsClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "ChannelsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ChannelsClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "ChannelsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ChannelsClient.GetFullURL":
@@ -113,47 +113,6 @@ func (c *ChannelsServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ChannelsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerNamespaces/(?P<partnerNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/channels/(?P<channelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armeventgrid.Channel](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	partnerNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerNamespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	channelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("channelName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, partnerNamespaceNameParam, channelNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Channel, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *ChannelsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -201,6 +160,47 @@ func (c *ChannelsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ChannelsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerNamespaces/(?P<partnerNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/channels/(?P<channelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armeventgrid.Channel](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	partnerNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerNamespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	channelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("channelName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, partnerNamespaceNameParam, channelNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Channel, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

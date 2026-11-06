@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_CreateOrUpdate.json
 func ExampleNamespaceTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleNamespaceTopicsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Delete.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Delete.json
 func ExampleNamespaceTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,80 @@ func ExampleNamespaceTopicsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Get.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_RegenerateKey.json
+func ExampleNamespaceTopicsClient_BeginRegenerateKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespaceTopicsClient().BeginRegenerateKey(ctx, "examplerg", "examplenamespace2", "examplenamespacetopic2", armeventgrid.TopicRegenerateKeyRequest{
+		KeyName: to.Ptr("key1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespaceTopicsClientRegenerateKeyResponse{
+	// 	TopicSharedAccessKeys: armeventgrid.TopicSharedAccessKeys{
+	// 		Key1: to.Ptr("testKey1Value"),
+	// 		Key2: to.Ptr("testKey2Value"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Update.json
+func ExampleNamespaceTopicsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespaceTopicsClient().BeginUpdate(ctx, "examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1", armeventgrid.NamespaceTopicUpdateParameters{
+		Properties: &armeventgrid.NamespaceTopicUpdateParameterProperties{
+			EventRetentionInDays: to.Ptr[int32](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespaceTopicsClientUpdateResponse{
+	// 	NamespaceTopic: armeventgrid.NamespaceTopic{
+	// 		Name: to.Ptr("examplenamespacetopic2"),
+	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics"),
+	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/topics/exampleNamespaceTopicName1"),
+	// 		Properties: &armeventgrid.NamespaceTopicProperties{
+	// 			EventRetentionInDays: to.Ptr[int32](1),
+	// 			InputSchema: to.Ptr(armeventgrid.EventInputSchemaCloudEventSchemaV10),
+	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceTopicProvisioningStateSucceeded),
+	// 			PublisherType: to.Ptr(armeventgrid.PublisherTypeCustom),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Get.json
 func ExampleNamespaceTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +187,33 @@ func ExampleNamespaceTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_ListSharedAccessKeys.json
+func ExampleNamespaceTopicsClient_ListSharedAccessKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespaceTopicsClient().ListSharedAccessKeys(ctx, "examplerg", "examplenamespace2", "examplenamespacetopic2", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespaceTopicsClientListSharedAccessKeysResponse{
+	// 	TopicSharedAccessKeys: armeventgrid.TopicSharedAccessKeys{
+	// 		Key1: to.Ptr("testKey1Value"),
+	// 		Key2: to.Ptr("testKey2Value"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_ListByNamespace.json
 func ExampleNamespaceTopicsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,103 +264,4 @@ func ExampleNamespaceTopicsClient_NewListByNamespacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_ListSharedAccessKeys.json
-func ExampleNamespaceTopicsClient_ListSharedAccessKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespaceTopicsClient().ListSharedAccessKeys(ctx, "examplerg", "examplenamespace2", "examplenamespacetopic2", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespaceTopicsClientListSharedAccessKeysResponse{
-	// 	TopicSharedAccessKeys: armeventgrid.TopicSharedAccessKeys{
-	// 		Key1: to.Ptr("testKey1Value"),
-	// 		Key2: to.Ptr("testKey2Value"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_RegenerateKey.json
-func ExampleNamespaceTopicsClient_BeginRegenerateKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespaceTopicsClient().BeginRegenerateKey(ctx, "examplerg", "examplenamespace2", "examplenamespacetopic2", armeventgrid.TopicRegenerateKeyRequest{
-		KeyName: to.Ptr("key1"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespaceTopicsClientRegenerateKeyResponse{
-	// 	TopicSharedAccessKeys: armeventgrid.TopicSharedAccessKeys{
-	// 		Key1: to.Ptr("testKey1Value"),
-	// 		Key2: to.Ptr("testKey2Value"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Update.json
-func ExampleNamespaceTopicsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespaceTopicsClient().BeginUpdate(ctx, "examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1", armeventgrid.NamespaceTopicUpdateParameters{
-		Properties: &armeventgrid.NamespaceTopicUpdateParameterProperties{
-			EventRetentionInDays: to.Ptr[int32](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespaceTopicsClientUpdateResponse{
-	// 	NamespaceTopic: armeventgrid.NamespaceTopic{
-	// 		Name: to.Ptr("examplenamespacetopic2"),
-	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics"),
-	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/topics/exampleNamespaceTopicName1"),
-	// 		Properties: &armeventgrid.NamespaceTopicProperties{
-	// 			EventRetentionInDays: to.Ptr[int32](1),
-	// 			InputSchema: to.Ptr(armeventgrid.EventInputSchemaCloudEventSchemaV10),
-	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceTopicProvisioningStateSucceeded),
-	// 			PublisherType: to.Ptr(armeventgrid.PublisherTypeCustom),
-	// 		},
-	// 	},
-	// }
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_CreateOrUpdate.json
 func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Delete.json
 func ExamplePartnerRegistrationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,37 @@ func ExamplePartnerRegistrationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Update.json
+func ExamplePartnerRegistrationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPartnerRegistrationsClient().BeginUpdate(ctx, "examplerg", "examplePartnerRegistrationName1", armeventgrid.PartnerRegistrationUpdateParameters{
+		Tags: map[string]*string{
+			"NewKey": to.Ptr("NewValue"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.PartnerRegistrationsClientUpdateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Get.json
 func ExamplePartnerRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +153,7 @@ func ExamplePartnerRegistrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_ListByResourceGroup.json
 func ExamplePartnerRegistrationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +199,7 @@ func ExamplePartnerRegistrationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_ListBySubscription.json
 func ExamplePartnerRegistrationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,34 +243,4 @@ func ExamplePartnerRegistrationsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Update.json
-func ExamplePartnerRegistrationsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPartnerRegistrationsClient().BeginUpdate(ctx, "examplerg", "examplePartnerRegistrationName1", armeventgrid.PartnerRegistrationUpdateParameters{
-		Tags: map[string]*string{
-			"NewKey": to.Ptr("NewValue"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.PartnerRegistrationsClientUpdateResponse{
-	// }
 }

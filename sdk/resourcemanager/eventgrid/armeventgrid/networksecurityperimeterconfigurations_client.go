@@ -19,7 +19,7 @@ import (
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,98 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginReconcile - Reconcile a specific network security perimeter configuration for a given network security perimeter association.
+//
+// Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
+// topic or domain.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceType - The type of the resource. This can be either \\'topics\\', or \\'domains\\'.
+//   - resourceName - The name of the resource group within the user's subscription.
+//   - perimeterGUID - Unique identifier for perimeter
+//   - associationName - Association name to association network security perimeter resource to profile
+//   - options - NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
+//     method.
+func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcile(ctx, resourceGroupName, resourceType, resourceName, perimeterGUID, associationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkSecurityPerimeterConfigurationsClientReconcileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkSecurityPerimeterConfigurationsClientReconcileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcile - Reconcile a specific network security perimeter configuration for a given network security perimeter association.
+//
+// Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
+// topic or domain.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileCreateRequest(ctx, resourceGroupName, resourceType, resourceName, perimeterGUID, associationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reconcileCreateRequest creates the reconcile request.
+func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateRequest(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations/{perimeterGuid}.{associationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(string(resourceType)))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if perimeterGUID == "" {
+		return nil, errors.New("parameter perimeterGUID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{perimeterGuid}", url.PathEscape(perimeterGUID))
+	if associationName == "" {
+		return nil, errors.New("parameter associationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }
 
 // Get - Get a specific network security perimeter configuration.
@@ -104,7 +196,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,7 +279,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -204,96 +296,4 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listHandleResponse(r
 		return NetworkSecurityPerimeterConfigurationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReconcile - Reconcile a specific network security perimeter configuration for a given network security perimeter association.
-//
-// Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
-// topic or domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceType - The type of the resource. This can be either \\'topics\\', or \\'domains\\'.
-//   - resourceName - The name of the resource group within the user's subscription.
-//   - perimeterGUID - Unique identifier for perimeter
-//   - associationName - Association name to association network security perimeter resource to profile
-//   - options - NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
-//     method.
-func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reconcile(ctx, resourceGroupName, resourceType, resourceName, perimeterGUID, associationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkSecurityPerimeterConfigurationsClientReconcileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkSecurityPerimeterConfigurationsClientReconcileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Reconcile - Reconcile a specific network security perimeter configuration for a given network security perimeter association.
-//
-// Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
-// topic or domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reconcileCreateRequest(ctx, resourceGroupName, resourceType, resourceName, perimeterGUID, associationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reconcileCreateRequest creates the Reconcile request.
-func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateRequest(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations/{perimeterGuid}.{associationName}/reconcile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(string(resourceType)))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if perimeterGUID == "" {
-		return nil, errors.New("parameter perimeterGUID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{perimeterGuid}", url.PathEscape(perimeterGUID))
-	if associationName == "" {
-		return nil, errors.New("parameter associationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

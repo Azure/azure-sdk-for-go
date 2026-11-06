@@ -1,5 +1,16 @@
 # Release History
 
+## 2.4.0-beta.3 (2026-10-09)
+### Features Added
+
+- New value `TLSVersionOne3` added to enum type `TLSVersion`
+- New enum type `IPAddressType` with values `IPAddressTypeDualStack`, `IPAddressTypeIPv4`
+- New struct `AutoScaleConfiguration`
+- New struct `UpdateAutoScaleConfiguration`
+- New field `AutoScaleConfiguration`, `IPAddressType` in struct `NamespaceProperties`
+- New field `AutoScaleConfiguration`, `IPAddressType` in struct `NamespaceUpdateParameterProperties`
+
+
 ## 2.4.0-beta.2 (2026-03-09)
 ### Breaking Changes
 

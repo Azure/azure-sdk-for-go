@@ -69,7 +69,7 @@ func (client *ServerAzureADAdministratorsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
+// createOrUpdate - Creates or updates an existing Azure Active Directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerAzureADAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters ServerAzureADAdministrator, options *ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ServerAzureADAdministratorsClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerAzureADAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters ServerAzureADAdministrator, _ *ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ServerAzureADAdministratorsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes the Azure Active Directory administrator with the given name.
+// deleteOperation - Deletes the Azure Active Directory administrator with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerAzureADAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *ServerAzureADAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ServerAzureADAdministratorsClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServerAzureADAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, _ *ServerAzureADAdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}"
 	if client.subscriptionID == "" {

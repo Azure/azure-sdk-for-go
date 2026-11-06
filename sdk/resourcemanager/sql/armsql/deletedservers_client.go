@@ -44,6 +44,77 @@ func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginRecover - Recovers a deleted server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The name of the region where the resource is located.
+//   - deletedServerName - The name of the deleted server.
+//   - options - DeletedServersClientBeginRecoverOptions contains the optional parameters for the DeletedServersClient.BeginRecover
+//     method.
+func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*runtime.Poller[DeletedServersClientRecoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.recoverOperation(ctx, locationName, deletedServerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedServersClientRecoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedServersClientRecoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// recoverOperation - Recovers a deleted server.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DeletedServersClient) recoverOperation(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DeletedServersClient.BeginRecover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.recoverCreateRequest(ctx, locationName, deletedServerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// recoverCreateRequest creates the recover request.
+func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, locationName string, deletedServerName string, _ *DeletedServersClientBeginRecoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}/recover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if deletedServerName == "" {
+		return nil, errors.New("parameter deletedServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deletedServerName}", url.PathEscape(deletedServerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Gets a deleted server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - locationName - The name of the region where the resource is located.
@@ -100,72 +171,6 @@ func (client *DeletedServersClient) getHandleResponse(resp *http.Response, succe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServer); err != nil {
 		return DeletedServersClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of all deleted servers in a subscription.
-//   - options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.NewListPager method.
-func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DeletedServersClientListResponse]{
-		More: func(page DeletedServersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DeletedServersClientListResponse) (DeletedServersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedServersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DeletedServersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeletedServersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DeletedServersClient) listCreateRequest(ctx context.Context, nextLink string, _ *DeletedServersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DeletedServersClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeletedServersClientListResponse, error) {
-	result := DeletedServersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
-		return DeletedServersClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -242,73 +247,68 @@ func (client *DeletedServersClient) listByLocationHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// BeginRecover - Recovers a deleted server.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The name of the region where the resource is located.
-//   - deletedServerName - The name of the deleted server.
-//   - options - DeletedServersClientBeginRecoverOptions contains the optional parameters for the DeletedServersClient.BeginRecover
-//     method.
-func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*runtime.Poller[DeletedServersClientRecoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.recoverOperation(ctx, locationName, deletedServerName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedServersClientRecoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedServersClientRecoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+// NewListPager - Gets a list of all deleted servers in a subscription.
+//   - options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.NewListPager method.
+func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DeletedServersClientListResponse]{
+		More: func(page DeletedServersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DeletedServersClientListResponse) (DeletedServersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedServersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DeletedServersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeletedServersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Recover - Recovers a deleted server.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DeletedServersClient) recoverOperation(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *DeletedServersClient) listCreateRequest(ctx context.Context, nextLink string, _ *DeletedServersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "DeletedServersClient.BeginRecover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.recoverCreateRequest(ctx, locationName, deletedServerName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return req, nil
 }
 
-// recoverCreateRequest creates the Recover request.
-func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, locationName string, deletedServerName string, _ *DeletedServersClientBeginRecoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}/recover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listHandleResponse handles the List response.
+func (client *DeletedServersClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeletedServersClientListResponse, error) {
+	result := DeletedServersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
+		return DeletedServersClientListResponse{}, err
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if deletedServerName == "" {
-		return nil, errors.New("parameter deletedServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deletedServerName}", url.PathEscape(deletedServerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
+	return result, nil
 }

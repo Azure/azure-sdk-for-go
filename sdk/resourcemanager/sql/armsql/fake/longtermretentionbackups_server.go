@@ -46,38 +46,6 @@ type LongTermRetentionBackupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method LongTermRetentionBackupsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientGetOptions) (resp azfake.Responder[armsql.LongTermRetentionBackupsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetByResourceGroup is the fake for method LongTermRetentionBackupsClient.GetByResourceGroup
-	// HTTP status codes to indicate success: http.StatusOK
-	GetByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientGetByResourceGroupOptions) (resp azfake.Responder[armsql.LongTermRetentionBackupsClientGetByResourceGroupResponse], errResp azfake.ErrorResponder)
-
-	// NewListByDatabasePager is the fake for method LongTermRetentionBackupsClient.NewListByDatabasePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByDatabasePager func(locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *armsql.LongTermRetentionBackupsClientListByDatabaseOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse])
-
-	// NewListByLocationPager is the fake for method LongTermRetentionBackupsClient.NewListByLocationPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocationPager func(locationName string, options *armsql.LongTermRetentionBackupsClientListByLocationOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse])
-
-	// NewListByResourceGroupDatabasePager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupDatabasePager func(resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse])
-
-	// NewListByResourceGroupLocationPager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupLocationPager func(resourceGroupName string, locationName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse])
-
-	// NewListByResourceGroupServerPager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupServerPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupServerPager func(resourceGroupName string, locationName string, longTermRetentionServerName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse])
-
-	// NewListByServerPager is the fake for method LongTermRetentionBackupsClient.NewListByServerPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByServerPager func(locationName string, longTermRetentionServerName string, options *armsql.LongTermRetentionBackupsClientListByServerOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse])
-
 	// BeginLockTimeBasedImmutability is the fake for method LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginLockTimeBasedImmutability func(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse], errResp azfake.ErrorResponder)
@@ -117,6 +85,38 @@ type LongTermRetentionBackupsServer struct {
 	// BeginUpdateByResourceGroup is the fake for method LongTermRetentionBackupsClient.BeginUpdateByResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters armsql.UpdateLongTermRetentionBackupParameters, options *armsql.LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method LongTermRetentionBackupsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientGetOptions) (resp azfake.Responder[armsql.LongTermRetentionBackupsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetByResourceGroup is the fake for method LongTermRetentionBackupsClient.GetByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *armsql.LongTermRetentionBackupsClientGetByResourceGroupOptions) (resp azfake.Responder[armsql.LongTermRetentionBackupsClientGetByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// NewListByDatabasePager is the fake for method LongTermRetentionBackupsClient.NewListByDatabasePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDatabasePager func(locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *armsql.LongTermRetentionBackupsClientListByDatabaseOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse])
+
+	// NewListByLocationPager is the fake for method LongTermRetentionBackupsClient.NewListByLocationPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByLocationPager func(locationName string, options *armsql.LongTermRetentionBackupsClientListByLocationOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse])
+
+	// NewListByResourceGroupDatabasePager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupDatabasePager func(resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse])
+
+	// NewListByResourceGroupLocationPager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupLocationPager func(resourceGroupName string, locationName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse])
+
+	// NewListByResourceGroupServerPager is the fake for method LongTermRetentionBackupsClient.NewListByResourceGroupServerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupServerPager func(resourceGroupName string, locationName string, longTermRetentionServerName string, options *armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse])
+
+	// NewListByServerPager is the fake for method LongTermRetentionBackupsClient.NewListByServerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByServerPager func(locationName string, longTermRetentionServerName string, options *armsql.LongTermRetentionBackupsClientListByServerOptions) (resp azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse])
 }
 
 // NewLongTermRetentionBackupsServerTransport creates a new instance of LongTermRetentionBackupsServerTransport with the provided implementation.
@@ -124,20 +124,14 @@ type LongTermRetentionBackupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLongTermRetentionBackupsServerTransport(srv *LongTermRetentionBackupsServer) *LongTermRetentionBackupsServerTransport {
 	return &LongTermRetentionBackupsServerTransport{
-		srv:                                             srv,
-		beginChangeAccessTier:                           newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierResponse]](),
-		beginChangeAccessTierByResourceGroup:            newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]](),
-		beginCopy:                                       newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]](),
-		beginCopyByResourceGroup:                        newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]](),
-		beginDelete:                                     newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]](),
-		beginDeleteByResourceGroup:                      newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]](),
-		newListByDatabasePager:                          newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]](),
-		newListByLocationPager:                          newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]](),
-		newListByResourceGroupDatabasePager:             newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]](),
-		newListByResourceGroupLocationPager:             newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]](),
-		newListByResourceGroupServerPager:               newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]](),
-		newListByServerPager:                            newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]](),
-		beginLockTimeBasedImmutability:                  newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]](),
+		srv:                                  srv,
+		beginChangeAccessTier:                newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierResponse]](),
+		beginChangeAccessTierByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]](),
+		beginCopy:                            newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]](),
+		beginCopyByResourceGroup:             newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]](),
+		beginDeleteByResourceGroup:           newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]](),
+		beginLockTimeBasedImmutability:       newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]](),
 		beginLockTimeBasedImmutabilityByResourceGroup:   newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]](),
 		beginRemoveLegalHoldImmutability:                newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]](),
 		beginRemoveLegalHoldImmutabilityByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]](),
@@ -145,8 +139,14 @@ func NewLongTermRetentionBackupsServerTransport(srv *LongTermRetentionBackupsSer
 		beginRemoveTimeBasedImmutabilityByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]](),
 		beginSetLegalHoldImmutability:                   newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse]](),
 		beginSetLegalHoldImmutabilityByResourceGroup:    newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]](),
-		beginUpdate:                                     newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]](),
-		beginUpdateByResourceGroup:                      newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]](),
+		beginUpdate:                         newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]](),
+		beginUpdateByResourceGroup:          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]](),
+		newListByDatabasePager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]](),
+		newListByLocationPager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]](),
+		newListByResourceGroupDatabasePager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]](),
+		newListByResourceGroupLocationPager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]](),
+		newListByResourceGroupServerPager:   newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]](),
+		newListByServerPager:                newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]](),
 	}
 }
 
@@ -160,12 +160,6 @@ type LongTermRetentionBackupsServerTransport struct {
 	beginCopyByResourceGroup                        *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]]
 	beginDelete                                     *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]]
 	beginDeleteByResourceGroup                      *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]]
-	newListByDatabasePager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]]
-	newListByLocationPager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]]
-	newListByResourceGroupDatabasePager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]]
-	newListByResourceGroupLocationPager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]]
-	newListByResourceGroupServerPager               *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]]
-	newListByServerPager                            *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]]
 	beginLockTimeBasedImmutability                  *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]]
 	beginLockTimeBasedImmutabilityByResourceGroup   *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]]
 	beginRemoveLegalHoldImmutability                *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]]
@@ -176,6 +170,12 @@ type LongTermRetentionBackupsServerTransport struct {
 	beginSetLegalHoldImmutabilityByResourceGroup    *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]]
 	beginUpdate                                     *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]]
 	beginUpdateByResourceGroup                      *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]]
+	newListByDatabasePager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]]
+	newListByLocationPager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]]
+	newListByResourceGroupDatabasePager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]]
+	newListByResourceGroupLocationPager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]]
+	newListByResourceGroupServerPager               *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]]
+	newListByServerPager                            *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for LongTermRetentionBackupsServerTransport.
@@ -211,22 +211,6 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = l.dispatchBeginDelete(req)
 			case "LongTermRetentionBackupsClient.BeginDeleteByResourceGroup":
 				res.resp, res.err = l.dispatchBeginDeleteByResourceGroup(req)
-			case "LongTermRetentionBackupsClient.Get":
-				res.resp, res.err = l.dispatchGet(req)
-			case "LongTermRetentionBackupsClient.GetByResourceGroup":
-				res.resp, res.err = l.dispatchGetByResourceGroup(req)
-			case "LongTermRetentionBackupsClient.NewListByDatabasePager":
-				res.resp, res.err = l.dispatchNewListByDatabasePager(req)
-			case "LongTermRetentionBackupsClient.NewListByLocationPager":
-				res.resp, res.err = l.dispatchNewListByLocationPager(req)
-			case "LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager":
-				res.resp, res.err = l.dispatchNewListByResourceGroupDatabasePager(req)
-			case "LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager":
-				res.resp, res.err = l.dispatchNewListByResourceGroupLocationPager(req)
-			case "LongTermRetentionBackupsClient.NewListByResourceGroupServerPager":
-				res.resp, res.err = l.dispatchNewListByResourceGroupServerPager(req)
-			case "LongTermRetentionBackupsClient.NewListByServerPager":
-				res.resp, res.err = l.dispatchNewListByServerPager(req)
 			case "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability":
 				res.resp, res.err = l.dispatchBeginLockTimeBasedImmutability(req)
 			case "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup":
@@ -247,6 +231,22 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = l.dispatchBeginUpdate(req)
 			case "LongTermRetentionBackupsClient.BeginUpdateByResourceGroup":
 				res.resp, res.err = l.dispatchBeginUpdateByResourceGroup(req)
+			case "LongTermRetentionBackupsClient.Get":
+				res.resp, res.err = l.dispatchGet(req)
+			case "LongTermRetentionBackupsClient.GetByResourceGroup":
+				res.resp, res.err = l.dispatchGetByResourceGroup(req)
+			case "LongTermRetentionBackupsClient.NewListByDatabasePager":
+				res.resp, res.err = l.dispatchNewListByDatabasePager(req)
+			case "LongTermRetentionBackupsClient.NewListByLocationPager":
+				res.resp, res.err = l.dispatchNewListByLocationPager(req)
+			case "LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager":
+				res.resp, res.err = l.dispatchNewListByResourceGroupDatabasePager(req)
+			case "LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager":
+				res.resp, res.err = l.dispatchNewListByResourceGroupLocationPager(req)
+			case "LongTermRetentionBackupsClient.NewListByResourceGroupServerPager":
+				res.resp, res.err = l.dispatchNewListByResourceGroupServerPager(req)
+			case "LongTermRetentionBackupsClient.NewListByServerPager":
+				res.resp, res.err = l.dispatchNewListByServerPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -600,480 +600,6 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginDeleteByResourceG
 		l.beginDeleteByResourceGroup.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-	if err != nil {
-		return nil, err
-	}
-	longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-	if err != nil {
-		return nil, err
-	}
-	longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
-	if err != nil {
-		return nil, err
-	}
-	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Get(req.Context(), locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LongTermRetentionBackup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchGetByResourceGroup(req *http.Request) (*http.Response, error) {
-	if l.srv.GetByResourceGroup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetByResourceGroup not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-	if err != nil {
-		return nil, err
-	}
-	longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-	if err != nil {
-		return nil, err
-	}
-	longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
-	if err != nil {
-		return nil, err
-	}
-	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.GetByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LongTermRetentionBackup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByDatabasePager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByDatabasePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByDatabasePager not implemented")}
-	}
-	newListByDatabasePager := l.newListByDatabasePager.get(req)
-	if newListByDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		var options *armsql.LongTermRetentionBackupsClientListByDatabaseOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByDatabaseOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-			}
-		}
-		resp := l.srv.NewListByDatabasePager(locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, options)
-		newListByDatabasePager = &resp
-		l.newListByDatabasePager.add(req, newListByDatabasePager)
-		server.PagerResponderInjectNextLinks(newListByDatabasePager, req, func(page *armsql.LongTermRetentionBackupsClientListByDatabaseResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByDatabasePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByDatabasePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByDatabasePager) {
-		l.newListByDatabasePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByLocationPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
-	}
-	newListByLocationPager := l.newListByLocationPager.get(req)
-	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armsql.LongTermRetentionBackupsClientListByLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByLocationOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-				Skiptoken:             skiptokenParam,
-				Top:                   topParam,
-			}
-		}
-		resp := l.srv.NewListByLocationPager(locationNameParam, options)
-		newListByLocationPager = &resp
-		l.newListByLocationPager.add(req, newListByLocationPager)
-		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armsql.LongTermRetentionBackupsClientListByLocationResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByLocationPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByLocationPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByLocationPager) {
-		l.newListByLocationPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupDatabasePager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByResourceGroupDatabasePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupDatabasePager not implemented")}
-	}
-	newListByResourceGroupDatabasePager := l.newListByResourceGroupDatabasePager.get(req)
-	if newListByResourceGroupDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-			}
-		}
-		resp := l.srv.NewListByResourceGroupDatabasePager(resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, options)
-		newListByResourceGroupDatabasePager = &resp
-		l.newListByResourceGroupDatabasePager.add(req, newListByResourceGroupDatabasePager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupDatabasePager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupDatabasePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByResourceGroupDatabasePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupDatabasePager) {
-		l.newListByResourceGroupDatabasePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupLocationPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByResourceGroupLocationPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupLocationPager not implemented")}
-	}
-	newListByResourceGroupLocationPager := l.newListByResourceGroupLocationPager.get(req)
-	if newListByResourceGroupLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-				Skiptoken:             skiptokenParam,
-				Top:                   topParam,
-			}
-		}
-		resp := l.srv.NewListByResourceGroupLocationPager(resourceGroupNameParam, locationNameParam, options)
-		newListByResourceGroupLocationPager = &resp
-		l.newListByResourceGroupLocationPager.add(req, newListByResourceGroupLocationPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupLocationPager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupLocationPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByResourceGroupLocationPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupLocationPager) {
-		l.newListByResourceGroupLocationPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupServerPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByResourceGroupServerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupServerPager not implemented")}
-	}
-	newListByResourceGroupServerPager := l.newListByResourceGroupServerPager.get(req)
-	if newListByResourceGroupServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-				Skiptoken:             skiptokenParam,
-				Top:                   topParam,
-			}
-		}
-		resp := l.srv.NewListByResourceGroupServerPager(resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, options)
-		newListByResourceGroupServerPager = &resp
-		l.newListByResourceGroupServerPager.add(req, newListByResourceGroupServerPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupServerPager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupServerPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByResourceGroupServerPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupServerPager) {
-		l.newListByResourceGroupServerPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByServerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
-	}
-	newListByServerPager := l.newListByServerPager.get(req)
-	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
-		if err != nil {
-			return nil, err
-		}
-		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armsql.LongTermRetentionBackupsClientListByServerOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
-			options = &armsql.LongTermRetentionBackupsClientListByServerOptions{
-				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
-				DatabaseState:         databaseStateParam,
-				Skiptoken:             skiptokenParam,
-				Top:                   topParam,
-			}
-		}
-		resp := l.srv.NewListByServerPager(locationNameParam, longTermRetentionServerNameParam, options)
-		newListByServerPager = &resp
-		l.newListByServerPager.add(req, newListByServerPager)
-		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.LongTermRetentionBackupsClientListByServerResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByServerPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByServerPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByServerPager) {
-		l.newListByServerPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -1622,6 +1148,480 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginUpdateByResourceG
 		l.beginUpdateByResourceGroup.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if l.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+	if err != nil {
+		return nil, err
+	}
+	longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+	if err != nil {
+		return nil, err
+	}
+	longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+	if err != nil {
+		return nil, err
+	}
+	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.Get(req.Context(), locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LongTermRetentionBackup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchGetByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.GetByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByResourceGroup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+	if err != nil {
+		return nil, err
+	}
+	longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+	if err != nil {
+		return nil, err
+	}
+	longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+	if err != nil {
+		return nil, err
+	}
+	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.GetByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LongTermRetentionBackup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByDatabasePager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByDatabasePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByDatabasePager not implemented")}
+	}
+	newListByDatabasePager := l.newListByDatabasePager.get(req)
+	if newListByDatabasePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		var options *armsql.LongTermRetentionBackupsClientListByDatabaseOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByDatabaseOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+			}
+		}
+		resp := l.srv.NewListByDatabasePager(locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, options)
+		newListByDatabasePager = &resp
+		l.newListByDatabasePager.add(req, newListByDatabasePager)
+		server.PagerResponderInjectNextLinks(newListByDatabasePager, req, func(page *armsql.LongTermRetentionBackupsClientListByDatabaseResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByDatabasePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByDatabasePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByDatabasePager) {
+		l.newListByDatabasePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByLocationPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
+	}
+	newListByLocationPager := l.newListByLocationPager.get(req)
+	if newListByLocationPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.LongTermRetentionBackupsClientListByLocationOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByLocationOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
+			}
+		}
+		resp := l.srv.NewListByLocationPager(locationNameParam, options)
+		newListByLocationPager = &resp
+		l.newListByLocationPager.add(req, newListByLocationPager)
+		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armsql.LongTermRetentionBackupsClientListByLocationResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByLocationPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByLocationPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByLocationPager) {
+		l.newListByLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupDatabasePager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByResourceGroupDatabasePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupDatabasePager not implemented")}
+	}
+	newListByResourceGroupDatabasePager := l.newListByResourceGroupDatabasePager.get(req)
+	if newListByResourceGroupDatabasePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+			}
+		}
+		resp := l.srv.NewListByResourceGroupDatabasePager(resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, options)
+		newListByResourceGroupDatabasePager = &resp
+		l.newListByResourceGroupDatabasePager.add(req, newListByResourceGroupDatabasePager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupDatabasePager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupDatabasePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByResourceGroupDatabasePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupDatabasePager) {
+		l.newListByResourceGroupDatabasePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupLocationPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByResourceGroupLocationPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupLocationPager not implemented")}
+	}
+	newListByResourceGroupLocationPager := l.newListByResourceGroupLocationPager.get(req)
+	if newListByResourceGroupLocationPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
+			}
+		}
+		resp := l.srv.NewListByResourceGroupLocationPager(resourceGroupNameParam, locationNameParam, options)
+		newListByResourceGroupLocationPager = &resp
+		l.newListByResourceGroupLocationPager.add(req, newListByResourceGroupLocationPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupLocationPager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupLocationPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByResourceGroupLocationPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupLocationPager) {
+		l.newListByResourceGroupLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroupServerPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByResourceGroupServerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupServerPager not implemented")}
+	}
+	newListByResourceGroupServerPager := l.newListByResourceGroupServerPager.get(req)
+	if newListByResourceGroupServerPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
+			}
+		}
+		resp := l.srv.NewListByResourceGroupServerPager(resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, options)
+		newListByResourceGroupServerPager = &resp
+		l.newListByResourceGroupServerPager.add(req, newListByResourceGroupServerPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupServerPager, req, func(page *armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupServerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByResourceGroupServerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupServerPager) {
+		l.newListByResourceGroupServerPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByServerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
+	}
+	newListByServerPager := l.newListByServerPager.get(req)
+	if newListByServerPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		onlyLatestPerDatabaseParam, err := parseOptional(qp.Get("onlyLatestPerDatabase"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.LongTermRetentionBackupsClientListByServerOptions
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
+			options = &armsql.LongTermRetentionBackupsClientListByServerOptions{
+				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
+				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
+			}
+		}
+		resp := l.srv.NewListByServerPager(locationNameParam, longTermRetentionServerNameParam, options)
+		newListByServerPager = &resp
+		l.newListByServerPager.add(req, newListByServerPager)
+		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.LongTermRetentionBackupsClientListByServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByServerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByServerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByServerPager) {
+		l.newListByServerPager.remove(req)
+	}
 	return resp, nil
 }
 

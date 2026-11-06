@@ -69,7 +69,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx 
 	}
 }
 
-// CreateOrUpdate - Creates or updates a threat detection policy.
+// createOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, _ *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if client.subscriptionID == "" {

@@ -38,13 +38,29 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFailover func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginFailoverOptions) (resp azfake.PollerResponder[armsql.DatabasesClientFailoverResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DatabasesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientGetOptions) (resp azfake.Responder[armsql.DatabasesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginImport is the fake for method DatabasesClient.BeginImport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginImport func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters armsql.ImportExistingDatabaseDefinition, options *armsql.DatabasesClientBeginImportOptions) (resp azfake.PollerResponder[armsql.DatabasesClientImportResponse], errResp azfake.ErrorResponder)
+
+	// BeginPause is the fake for method DatabasesClient.BeginPause
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPause func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginPauseOptions) (resp azfake.PollerResponder[armsql.DatabasesClientPauseResponse], errResp azfake.ErrorResponder)
+
+	// BeginResume is the fake for method DatabasesClient.BeginResume
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResume func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginResumeOptions) (resp azfake.PollerResponder[armsql.DatabasesClientResumeResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method DatabasesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters armsql.DatabaseUpdate, options *armsql.DatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.DatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpgradeDataWarehouse is the fake for method DatabasesClient.BeginUpgradeDataWarehouse
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpgradeDataWarehouse func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginUpgradeDataWarehouseOptions) (resp azfake.PollerResponder[armsql.DatabasesClientUpgradeDataWarehouseResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DatabasesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientGetOptions) (resp azfake.Responder[armsql.DatabasesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByElasticPoolPager is the fake for method DatabasesClient.NewListByElasticPoolPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,25 +74,9 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListInaccessibleByServerPager func(resourceGroupName string, serverName string, options *armsql.DatabasesClientListInaccessibleByServerOptions) (resp azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse])
 
-	// BeginPause is the fake for method DatabasesClient.BeginPause
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginPause func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginPauseOptions) (resp azfake.PollerResponder[armsql.DatabasesClientPauseResponse], errResp azfake.ErrorResponder)
-
 	// Rename is the fake for method DatabasesClient.Rename
 	// HTTP status codes to indicate success: http.StatusOK
 	Rename func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters armsql.ResourceMoveDefinition, options *armsql.DatabasesClientRenameOptions) (resp azfake.Responder[armsql.DatabasesClientRenameResponse], errResp azfake.ErrorResponder)
-
-	// BeginResume is the fake for method DatabasesClient.BeginResume
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginResume func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginResumeOptions) (resp azfake.PollerResponder[armsql.DatabasesClientResumeResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method DatabasesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters armsql.DatabaseUpdate, options *armsql.DatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.DatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpgradeDataWarehouse is the fake for method DatabasesClient.BeginUpgradeDataWarehouse
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpgradeDataWarehouse func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginUpgradeDataWarehouseOptions) (resp azfake.PollerResponder[armsql.DatabasesClientUpgradeDataWarehouseResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDatabasesServerTransport creates a new instance of DatabasesServerTransport with the provided implementation.
@@ -90,13 +90,13 @@ func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport
 		beginExport:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientExportResponse]](),
 		beginFailover:                    newTracker[azfake.PollerResponder[armsql.DatabasesClientFailoverResponse]](),
 		beginImport:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientImportResponse]](),
-		newListByElasticPoolPager:        newTracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]](),
-		newListByServerPager:             newTracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]](),
-		newListInaccessibleByServerPager: newTracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]](),
 		beginPause:                       newTracker[azfake.PollerResponder[armsql.DatabasesClientPauseResponse]](),
 		beginResume:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientResumeResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientUpdateResponse]](),
 		beginUpgradeDataWarehouse:        newTracker[azfake.PollerResponder[armsql.DatabasesClientUpgradeDataWarehouseResponse]](),
+		newListByElasticPoolPager:        newTracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]](),
+		newListByServerPager:             newTracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]](),
+		newListInaccessibleByServerPager: newTracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]](),
 	}
 }
 
@@ -109,13 +109,13 @@ type DatabasesServerTransport struct {
 	beginExport                      *tracker[azfake.PollerResponder[armsql.DatabasesClientExportResponse]]
 	beginFailover                    *tracker[azfake.PollerResponder[armsql.DatabasesClientFailoverResponse]]
 	beginImport                      *tracker[azfake.PollerResponder[armsql.DatabasesClientImportResponse]]
-	newListByElasticPoolPager        *tracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]]
-	newListByServerPager             *tracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]]
-	newListInaccessibleByServerPager *tracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]]
 	beginPause                       *tracker[azfake.PollerResponder[armsql.DatabasesClientPauseResponse]]
 	beginResume                      *tracker[azfake.PollerResponder[armsql.DatabasesClientResumeResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armsql.DatabasesClientUpdateResponse]]
 	beginUpgradeDataWarehouse        *tracker[azfake.PollerResponder[armsql.DatabasesClientUpgradeDataWarehouseResponse]]
+	newListByElasticPoolPager        *tracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]]
+	newListByServerPager             *tracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]]
+	newListInaccessibleByServerPager *tracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabasesServerTransport.
@@ -147,26 +147,26 @@ func (d *DatabasesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchBeginExport(req)
 			case "DatabasesClient.BeginFailover":
 				res.resp, res.err = d.dispatchBeginFailover(req)
-			case "DatabasesClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
 			case "DatabasesClient.BeginImport":
 				res.resp, res.err = d.dispatchBeginImport(req)
-			case "DatabasesClient.NewListByElasticPoolPager":
-				res.resp, res.err = d.dispatchNewListByElasticPoolPager(req)
-			case "DatabasesClient.NewListByServerPager":
-				res.resp, res.err = d.dispatchNewListByServerPager(req)
-			case "DatabasesClient.NewListInaccessibleByServerPager":
-				res.resp, res.err = d.dispatchNewListInaccessibleByServerPager(req)
 			case "DatabasesClient.BeginPause":
 				res.resp, res.err = d.dispatchBeginPause(req)
-			case "DatabasesClient.Rename":
-				res.resp, res.err = d.dispatchRename(req)
 			case "DatabasesClient.BeginResume":
 				res.resp, res.err = d.dispatchBeginResume(req)
 			case "DatabasesClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DatabasesClient.BeginUpgradeDataWarehouse":
 				res.resp, res.err = d.dispatchBeginUpgradeDataWarehouse(req)
+			case "DatabasesClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DatabasesClient.NewListByElasticPoolPager":
+				res.resp, res.err = d.dispatchNewListByElasticPoolPager(req)
+			case "DatabasesClient.NewListByServerPager":
+				res.resp, res.err = d.dispatchNewListByServerPager(req)
+			case "DatabasesClient.NewListInaccessibleByServerPager":
+				res.resp, res.err = d.dispatchNewListInaccessibleByServerPager(req)
+			case "DatabasesClient.Rename":
+				res.resp, res.err = d.dispatchRename(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -391,53 +391,6 @@ func (d *DatabasesServerTransport) dispatchBeginFailover(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (d *DatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	filterParam := getOptional(qp.Get("$filter"))
-	var options *armsql.DatabasesClientGetOptions
-	if expandParam != nil || filterParam != nil {
-		options = &armsql.DatabasesClientGetOptions{
-			Expand: expandParam,
-			Filter: filterParam,
-		}
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Database, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (d *DatabasesServerTransport) dispatchBeginImport(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginImport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginImport not implemented")}
@@ -487,6 +440,249 @@ func (d *DatabasesServerTransport) dispatchBeginImport(req *http.Request) (*http
 		d.beginImport.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginPause(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginPause == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPause not implemented")}
+	}
+	beginPause := d.beginPause.get(req)
+	if beginPause == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pause`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginPause(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPause = &respr
+		d.beginPause.add(req, beginPause)
+	}
+
+	resp, err := server.PollerResponderNext(beginPause, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginPause.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPause) {
+		d.beginPause.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginResume == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
+	}
+	beginResume := d.beginResume.get(req)
+	if beginResume == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginResume(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResume = &respr
+		d.beginResume.add(req, beginResume)
+	}
+
+	resp, err := server.PollerResponderNext(beginResume, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginResume.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResume) {
+		d.beginResume.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.DatabaseUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginUpgradeDataWarehouse(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpgradeDataWarehouse == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradeDataWarehouse not implemented")}
+	}
+	beginUpgradeDataWarehouse := d.beginUpgradeDataWarehouse.get(req)
+	if beginUpgradeDataWarehouse == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeDataWarehouse`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpgradeDataWarehouse(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgradeDataWarehouse = &respr
+		d.beginUpgradeDataWarehouse.add(req, beginUpgradeDataWarehouse)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgradeDataWarehouse, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginUpgradeDataWarehouse.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgradeDataWarehouse) {
+		d.beginUpgradeDataWarehouse.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	filterParam := getOptional(qp.Get("$filter"))
+	var options *armsql.DatabasesClientGetOptions
+	if expandParam != nil || filterParam != nil {
+		options = &armsql.DatabasesClientGetOptions{
+			Expand: expandParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Database, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -649,54 +845,6 @@ func (d *DatabasesServerTransport) dispatchNewListInaccessibleByServerPager(req 
 	return resp, nil
 }
 
-func (d *DatabasesServerTransport) dispatchBeginPause(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginPause == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPause not implemented")}
-	}
-	beginPause := d.beginPause.get(req)
-	if beginPause == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pause`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginPause(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPause = &respr
-		d.beginPause.add(req, beginPause)
-	}
-
-	resp, err := server.PollerResponderNext(beginPause, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginPause.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPause) {
-		d.beginPause.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (d *DatabasesServerTransport) dispatchRename(req *http.Request) (*http.Response, error) {
 	if d.srv.Rename == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Rename not implemented")}
@@ -735,154 +883,6 @@ func (d *DatabasesServerTransport) dispatchRename(req *http.Request) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginResume == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
-	}
-	beginResume := d.beginResume.get(req)
-	if beginResume == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginResume(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginResume = &respr
-		d.beginResume.add(req, beginResume)
-	}
-
-	resp, err := server.PollerResponderNext(beginResume, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginResume.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginResume) {
-		d.beginResume.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.DatabaseUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchBeginUpgradeDataWarehouse(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpgradeDataWarehouse == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradeDataWarehouse not implemented")}
-	}
-	beginUpgradeDataWarehouse := d.beginUpgradeDataWarehouse.get(req)
-	if beginUpgradeDataWarehouse == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeDataWarehouse`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpgradeDataWarehouse(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpgradeDataWarehouse = &respr
-		d.beginUpgradeDataWarehouse.add(req, beginUpgradeDataWarehouse)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpgradeDataWarehouse, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginUpgradeDataWarehouse.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpgradeDataWarehouse) {
-		d.beginUpgradeDataWarehouse.remove(req)
-	}
-
 	return resp, nil
 }
 

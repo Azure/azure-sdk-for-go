@@ -29,21 +29,21 @@ type InstancePoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, instancePoolName string, options *armsql.InstancePoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.InstancePoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method InstancePoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, instancePoolName string, parameters armsql.InstancePoolUpdate, options *armsql.InstancePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.InstancePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InstancePoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, instancePoolName string, options *armsql.InstancePoolsClientGetOptions) (resp azfake.Responder[armsql.InstancePoolsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method InstancePoolsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsql.InstancePoolsClientListOptions) (resp azfake.PagerResponder[armsql.InstancePoolsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method InstancePoolsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.InstancePoolsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.InstancePoolsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method InstancePoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, instancePoolName string, parameters armsql.InstancePoolUpdate, options *armsql.InstancePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.InstancePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method InstancePoolsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsql.InstancePoolsClientListOptions) (resp azfake.PagerResponder[armsql.InstancePoolsClientListResponse])
 }
 
 // NewInstancePoolsServerTransport creates a new instance of InstancePoolsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewInstancePoolsServerTransport(srv *InstancePoolsServer) *InstancePoolsSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsql.InstancePoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsql.InstancePoolsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armsql.InstancePoolsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.InstancePoolsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.InstancePoolsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.InstancePoolsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armsql.InstancePoolsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type InstancePoolsServerTransport struct {
 	srv                         *InstancePoolsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsql.InstancePoolsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsql.InstancePoolsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armsql.InstancePoolsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.InstancePoolsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsql.InstancePoolsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.InstancePoolsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armsql.InstancePoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for InstancePoolsServerTransport.
@@ -96,14 +96,14 @@ func (i *InstancePoolsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InstancePoolsClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
-			case "InstancePoolsClient.Get":
-				res.resp, res.err = i.dispatchGet(req)
-			case "InstancePoolsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
-			case "InstancePoolsClient.NewListByResourceGroupPager":
-				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "InstancePoolsClient.BeginUpdate":
 				res.resp, res.err = i.dispatchBeginUpdate(req)
+			case "InstancePoolsClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "InstancePoolsClient.NewListByResourceGroupPager":
+				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "InstancePoolsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,109 +212,6 @@ func (i *InstancePoolsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (i *InstancePoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if i.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools/(?P<instancePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	instancePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instancePoolName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, instancePoolNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InstancePool, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *InstancePoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListPager(nil)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.InstancePoolsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *InstancePoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.InstancePoolsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		i.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *InstancePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if i.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -360,6 +257,109 @@ func (i *InstancePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		i.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (i *InstancePoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if i.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools/(?P<instancePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	instancePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instancePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, instancePoolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InstancePool, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *InstancePoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.InstancePoolsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		i.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *InstancePoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/instancePools`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := i.srv.NewListPager(nil)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.InstancePoolsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

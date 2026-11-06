@@ -155,13 +155,17 @@ func TestListBlobsArrowResponseReportsRequestValues(t *testing.T) {
 
 // hnsTransport answers list requests the way an account with a hierarchical namespace does: it
 // doesn't support Arrow listings, so it returns XML even when Arrow is accepted, including the
-// properties only such an account returns.
+// properties only such an account returns. Like the service, it returns the owner, group,
+// permissions and ACL only when the request includes permissions.
 type hnsTransport struct{ reqs []*http.Request }
 
 func (h *hnsTransport) Do(req *http.Request) (*http.Response, error) {
 	h.reqs = append(h.reqs, req)
-	props := `<Properties><Expiry-Time>Wed, 01 Jan 2031 00:00:00 GMT</Expiry-Time>` +
-		`<Owner>owner-id</Owner><Group>group-id</Group><Permissions>rwxr-x---</Permissions><Acl>user::rwx,group::r-x,other::---</Acl></Properties>`
+	props := `<Properties><Expiry-Time>Wed, 01 Jan 2031 00:00:00 GMT</Expiry-Time>`
+	if strings.Contains(req.URL.Query().Get("include"), "permissions") {
+		props += `<Owner>owner-id</Owner><Group>group-id</Group><Permissions>rwxr-x---</Permissions><Acl>user::rwx,group::r-x,other::---</Acl>`
+	}
+	props += `</Properties>`
 	body := `<?xml version="1.0" encoding="utf-8"?><EnumerationResults ServiceEndpoint="https://account.blob.core.windows.net/" ContainerName="container">` +
 		`<Blobs><Blob><Name>dir/file</Name>` + props + `</Blob></Blobs><NextMarker /></EnumerationResults>`
 	return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {"application/xml"}}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
@@ -208,11 +212,19 @@ func TestListBlobsArrowFormatXMLResponseKeepsHNSProperties(t *testing.T) {
 				require.Len(t, items, 1, name)
 				p := items[0].Properties
 				require.NotNil(t, p, name)
+				require.NotNil(t, p.ExpiresOn, name)
+				require.True(t, expiresOn.Equal(*p.ExpiresOn), name)
+				if !tt.permissions {
+					require.Nil(t, p.Owner, name)
+					require.Nil(t, p.Group, name)
+					require.Nil(t, p.Permissions, name)
+					require.Nil(t, p.ACL, name)
+					continue
+				}
 				require.Equal(t, "owner-id", *p.Owner, name)
 				require.Equal(t, "group-id", *p.Group, name)
 				require.Equal(t, "rwxr-x---", *p.Permissions, name)
 				require.Equal(t, "user::rwx,group::r-x,other::---", *p.ACL, name)
-				require.True(t, expiresOn.Equal(*p.ExpiresOn), name)
 			}
 		})
 	}

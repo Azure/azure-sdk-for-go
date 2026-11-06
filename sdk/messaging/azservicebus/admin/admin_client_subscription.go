@@ -85,7 +85,7 @@ type SubscriptionRuntimeProperties struct {
 	// into transfer-dead-letter subqueue.
 	TransferDeadLetterMessageCount int32
 
-	// AccessedAt is when the entity was last updated.
+	// AccessedAt is the last time there was a receive request on the subscription.
 	AccessedAt time.Time
 
 	// CreatedAt is when the entity was created.

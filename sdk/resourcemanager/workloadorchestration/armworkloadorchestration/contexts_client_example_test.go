@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Contexts_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Contexts_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleContextsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -27,22 +27,20 @@ func ExampleContextsClient_BeginCreateOrUpdate() {
 		Properties: &armworkloadorchestration.ContextProperties{
 			Capabilities: []*armworkloadorchestration.Capability{
 				{
-					Name:        to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-					Description: to.Ptr("banbenutsngwytoqh"),
+					Name:        to.Ptr("alufbbxccup"),
 					State:       to.Ptr(armworkloadorchestration.ResourceStateActive),
+					Description: to.Ptr("sin"),
 				},
 			},
 			Hierarchies: []*armworkloadorchestration.Hierarchy{
 				{
-					Name:        to.Ptr("upqe"),
-					Description: to.Ptr("vg"),
+					Name:        to.Ptr("fz"),
+					Description: to.Ptr("eg"),
 				},
 			},
 		},
-		Tags: map[string]*string{
-			"key3046": to.Ptr("clcnhzwypk"),
-		},
-		Location: to.Ptr("pkquwbplcp"),
+		Tags:     map[string]*string{},
+		Location: to.Ptr("ctfi"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -59,46 +57,46 @@ func ExampleContextsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armworkloadorchestration.ContextProperties{
 	// 			Capabilities: []*armworkloadorchestration.Capability{
 	// 				{
-	// 					Name: to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-	// 					Description: to.Ptr("banbenutsngwytoqh"),
+	// 					Name: to.Ptr("alufbbxccup"),
 	// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+	// 					Description: to.Ptr("sin"),
 	// 				},
 	// 			},
 	// 			Hierarchies: []*armworkloadorchestration.Hierarchy{
 	// 				{
-	// 					Name: to.Ptr("upqe"),
-	// 					Description: to.Ptr("vg"),
+	// 					Name: to.Ptr("fz"),
+	// 					Description: to.Ptr("eg"),
 	// 				},
 	// 			},
+	// 			UniqueIdentifier: to.Ptr("gszeyktrrbddmhbhkdhrxh"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key3046": to.Ptr("clcnhzwypk"),
 	// 		},
-	// 		Location: to.Ptr("pkquwbplcp"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("dtpqgxwo"),
-	// 		Type: to.Ptr("odtmcknffvktfmdhxzhjfrvupezs"),
+	// 		Location: to.Ptr("ctfi"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Contexts_Delete_MaximumSet_Gen.json
 func ExampleContextsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -112,14 +110,14 @@ func ExampleContextsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Contexts_Get_MaximumSet_Gen.json
 func ExampleContextsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -135,46 +133,46 @@ func ExampleContextsClient_Get() {
 	// 		Properties: &armworkloadorchestration.ContextProperties{
 	// 			Capabilities: []*armworkloadorchestration.Capability{
 	// 				{
-	// 					Name: to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-	// 					Description: to.Ptr("banbenutsngwytoqh"),
+	// 					Name: to.Ptr("alufbbxccup"),
 	// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+	// 					Description: to.Ptr("sin"),
 	// 				},
 	// 			},
 	// 			Hierarchies: []*armworkloadorchestration.Hierarchy{
 	// 				{
-	// 					Name: to.Ptr("upqe"),
-	// 					Description: to.Ptr("vg"),
+	// 					Name: to.Ptr("fz"),
+	// 					Description: to.Ptr("eg"),
 	// 				},
 	// 			},
+	// 			UniqueIdentifier: to.Ptr("gszeyktrrbddmhbhkdhrxh"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key3046": to.Ptr("clcnhzwypk"),
 	// 		},
-	// 		Location: to.Ptr("pkquwbplcp"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("dtpqgxwo"),
-	// 		Type: to.Ptr("odtmcknffvktfmdhxzhjfrvupezs"),
+	// 		Location: to.Ptr("ctfi"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Contexts_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleContextsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-05-01-preview/Contexts_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleContextsClient_NewListByResourceGroupPager_contextsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -194,52 +192,89 @@ func ExampleContextsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armworkloadorchestration.Context{
 		// 			{
 		// 				Properties: &armworkloadorchestration.ContextProperties{
+		// 					UniqueIdentifier: to.Ptr("gszeyktrrbddmhbhkdhrxh"),
 		// 					Capabilities: []*armworkloadorchestration.Capability{
 		// 						{
-		// 							Name: to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-		// 							Description: to.Ptr("banbenutsngwytoqh"),
+		// 							Name: to.Ptr("alufbbxccup"),
 		// 							State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+		// 							Description: to.Ptr("oojnzvcggvlzxtievgetl"),
 		// 						},
 		// 					},
 		// 					Hierarchies: []*armworkloadorchestration.Hierarchy{
 		// 						{
-		// 							Name: to.Ptr("upqe"),
-		// 							Description: to.Ptr("vg"),
+		// 							Name: to.Ptr("fz"),
+		// 							Description: to.Ptr("owrev"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key3046": to.Ptr("clcnhzwypk"),
 		// 				},
-		// 				Location: to.Ptr("pkquwbplcp"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("dtpqgxwo"),
-		// 				Type: to.Ptr("odtmcknffvktfmdhxzhjfrvupezs"),
+		// 				Location: to.Ptr("ctfi"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 				Name: to.Ptr("testContext"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/apcxwc"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_ListBySubscription_MaximumSet_Gen.json
-func ExampleContextsClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2026-05-01-preview/Contexts_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleContextsClient_NewListByResourceGroupPager_contextsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewContextsClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.ContextsClientListByResourceGroupResponse{
+		// 	ContextListResult: armworkloadorchestration.ContextListResult{
+		// 		Value: []*armworkloadorchestration.Context{
+		// 			{
+		// 				Location: to.Ptr("ctfi"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 				Name: to.Ptr("testContext"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Contexts_ListBySubscription_MaximumSet_Gen.json
+func ExampleContextsClient_NewListBySubscriptionPager_contextsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -259,52 +294,89 @@ func ExampleContextsClient_NewListBySubscriptionPager() {
 		// 		Value: []*armworkloadorchestration.Context{
 		// 			{
 		// 				Properties: &armworkloadorchestration.ContextProperties{
+		// 					UniqueIdentifier: to.Ptr("gszeyktrrbddmhbhkdhrxh"),
 		// 					Capabilities: []*armworkloadorchestration.Capability{
 		// 						{
-		// 							Name: to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-		// 							Description: to.Ptr("banbenutsngwytoqh"),
+		// 							Name: to.Ptr("alufbbxccup"),
 		// 							State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+		// 							Description: to.Ptr("oojnzvcggvlzxtievgetl"),
 		// 						},
 		// 					},
 		// 					Hierarchies: []*armworkloadorchestration.Hierarchy{
 		// 						{
-		// 							Name: to.Ptr("upqe"),
-		// 							Description: to.Ptr("vg"),
+		// 							Name: to.Ptr("fz"),
+		// 							Description: to.Ptr("owrev"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key3046": to.Ptr("clcnhzwypk"),
 		// 				},
-		// 				Location: to.Ptr("pkquwbplcp"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("dtpqgxwo"),
-		// 				Type: to.Ptr("odtmcknffvktfmdhxzhjfrvupezs"),
+		// 				Location: to.Ptr("ctfi"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 				Name: to.Ptr("testContext"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/apcxwc"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Contexts_ListBySubscription_MinimumSet_Gen.json
+func ExampleContextsClient_NewListBySubscriptionPager_contextsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewContextsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.ContextsClientListBySubscriptionResponse{
+		// 	ContextListResult: armworkloadorchestration.ContextListResult{
+		// 		Value: []*armworkloadorchestration.Context{
+		// 			{
+		// 				Location: to.Ptr("ctfi"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 				Name: to.Ptr("testContext"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Contexts_Update_MaximumSet_Gen.json
 func ExampleContextsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -312,21 +384,19 @@ func ExampleContextsClient_BeginUpdate() {
 		Properties: &armworkloadorchestration.ContextUpdateProperties{
 			Capabilities: []*armworkloadorchestration.Capability{
 				{
-					Name:        to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-					Description: to.Ptr("banbenutsngwytoqh"),
+					Name:        to.Ptr("alufbbxccup"),
 					State:       to.Ptr(armworkloadorchestration.ResourceStateActive),
+					Description: to.Ptr("hnwcxjwfecxnwsqkoac"),
 				},
 			},
 			Hierarchies: []*armworkloadorchestration.Hierarchy{
 				{
-					Name:        to.Ptr("upqe"),
-					Description: to.Ptr("vg"),
+					Name:        to.Ptr("fz"),
+					Description: to.Ptr("nlrpsglqgbdmwpantk"),
 				},
 			},
 		},
-		Tags: map[string]*string{
-			"key9545": to.Ptr("dhxykbzgliyqxxizttbjhuruhhv"),
-		},
+		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -343,33 +413,33 @@ func ExampleContextsClient_BeginUpdate() {
 	// 		Properties: &armworkloadorchestration.ContextProperties{
 	// 			Capabilities: []*armworkloadorchestration.Capability{
 	// 				{
-	// 					Name: to.Ptr("tpylinjcmlnycfpofpxjtqmt"),
-	// 					Description: to.Ptr("banbenutsngwytoqh"),
+	// 					Name: to.Ptr("alufbbxccup"),
 	// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+	// 					Description: to.Ptr("hnwcxjwfecxnwsqkoac"),
 	// 				},
 	// 			},
 	// 			Hierarchies: []*armworkloadorchestration.Hierarchy{
 	// 				{
-	// 					Name: to.Ptr("upqe"),
-	// 					Description: to.Ptr("vg"),
+	// 					Name: to.Ptr("fz"),
+	// 					Description: to.Ptr("nlrpsglqgbdmwpantk"),
 	// 				},
 	// 			},
+	// 			UniqueIdentifier: to.Ptr("gszeyktrrbddmhbhkdhrxh"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key3046": to.Ptr("clcnhzwypk"),
 	// 		},
-	// 		Location: to.Ptr("pkquwbplcp"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("dtpqgxwo"),
-	// 		Type: to.Ptr("odtmcknffvktfmdhxzhjfrvupezs"),
+	// 		Location: to.Ptr("ctfi"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

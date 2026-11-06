@@ -19,7 +19,7 @@ import (
 // SolutionTemplateVersionsClient contains the methods for the SolutionTemplateVersions group.
 // Don't use this type directly, use NewSolutionTemplateVersionsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-05-01-preview
 type SolutionTemplateVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *SolutionTemplateVersionsClient) bulkDeploySolutionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -195,12 +195,248 @@ func (client *SolutionTemplateVersionsClient) bulkPublishSolutionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginBulkReviewSolution - Post request for bulk review
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - solutionTemplateName - The name of the SolutionTemplate
+//   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
+//   - body - The content of the action request
+//   - options - SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginBulkReviewSolution
+//     method.
+func (client *SolutionTemplateVersionsClient) BeginBulkReviewSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*runtime.Poller[SolutionTemplateVersionsClientBulkReviewSolutionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkReviewSolution(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionTemplateVersionsClientBulkReviewSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionTemplateVersionsClientBulkReviewSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// BulkReviewSolution - Post request for bulk review
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SolutionTemplateVersionsClient) bulkReviewSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionTemplateVersionsClient.BeginBulkReviewSolution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.bulkReviewSolutionCreateRequest(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// bulkReviewSolutionCreateRequest creates the BulkReviewSolution request.
+func (client *SolutionTemplateVersionsClient) bulkReviewSolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkReviewSolution"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if solutionTemplateName == "" {
+		return nil, errors.New("parameter solutionTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateName}", url.PathEscape(solutionTemplateName))
+	if solutionTemplateVersionName == "" {
+		return nil, errors.New("parameter solutionTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateVersionName}", url.PathEscape(solutionTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdate - Create or update a Solution Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - solutionTemplateName - The name of the SolutionTemplate
+//   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
+//   - resource - Resource create parameters.
+//   - options - SolutionTemplateVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginCreateOrUpdate
+//     method.
+func (client *SolutionTemplateVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, resource SolutionTemplateVersion, options *SolutionTemplateVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SolutionTemplateVersionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionTemplateVersionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionTemplateVersionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create or update a Solution Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SolutionTemplateVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, resource SolutionTemplateVersion, options *SolutionTemplateVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionTemplateVersionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *SolutionTemplateVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, resource SolutionTemplateVersion, _ *SolutionTemplateVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if solutionTemplateName == "" {
+		return nil, errors.New("parameter solutionTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateName}", url.PathEscape(solutionTemplateName))
+	if solutionTemplateVersionName == "" {
+		return nil, errors.New("parameter solutionTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateVersionName}", url.PathEscape(solutionTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a Solution Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - solutionTemplateName - The name of the SolutionTemplate
+//   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
+//   - options - SolutionTemplateVersionsClientBeginDeleteOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginDelete
+//     method.
+func (client *SolutionTemplateVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, options *SolutionTemplateVersionsClientBeginDeleteOptions) (*runtime.Poller[SolutionTemplateVersionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionTemplateVersionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionTemplateVersionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a Solution Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SolutionTemplateVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, options *SolutionTemplateVersionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionTemplateVersionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *SolutionTemplateVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, _ *SolutionTemplateVersionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if solutionTemplateName == "" {
+		return nil, errors.New("parameter solutionTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateName}", url.PathEscape(solutionTemplateName))
+	if solutionTemplateVersionName == "" {
+		return nil, errors.New("parameter solutionTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateVersionName}", url.PathEscape(solutionTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -252,7 +488,7 @@ func (client *SolutionTemplateVersionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +564,7 @@ func (client *SolutionTemplateVersionsClient) listBySolutionTemplateCreateReques
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -343,6 +579,77 @@ func (client *SolutionTemplateVersionsClient) listBySolutionTemplateHandleRespon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionTemplateVersionListResult); err != nil {
 		return SolutionTemplateVersionsClientListBySolutionTemplateResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - Update a Solution Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - solutionTemplateName - The name of the SolutionTemplate
+//   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
+//   - properties - The resource properties to be updated.
+//   - options - SolutionTemplateVersionsClientUpdateOptions contains the optional parameters for the SolutionTemplateVersionsClient.Update
+//     method.
+func (client *SolutionTemplateVersionsClient) Update(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, properties SolutionTemplateVersion, options *SolutionTemplateVersionsClientUpdateOptions) (SolutionTemplateVersionsClientUpdateResponse, error) {
+	var err error
+	const operationName = "SolutionTemplateVersionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, properties, options)
+	if err != nil {
+		return SolutionTemplateVersionsClientUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SolutionTemplateVersionsClientUpdateResponse{}, err
+	}
+	return client.updateHandleResponse(httpResp, http.StatusOK)
+}
+
+// updateCreateRequest creates the Update request.
+func (client *SolutionTemplateVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, properties SolutionTemplateVersion, _ *SolutionTemplateVersionsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if solutionTemplateName == "" {
+		return nil, errors.New("parameter solutionTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateName}", url.PathEscape(solutionTemplateName))
+	if solutionTemplateVersionName == "" {
+		return nil, errors.New("parameter solutionTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateVersionName}", url.PathEscape(solutionTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *SolutionTemplateVersionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SolutionTemplateVersionsClientUpdateResponse, error) {
+	result := SolutionTemplateVersionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionTemplateVersion); err != nil {
+		return SolutionTemplateVersionsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

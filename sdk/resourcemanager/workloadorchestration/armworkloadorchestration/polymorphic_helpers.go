@@ -18,6 +18,10 @@ func unmarshalJobParameterBaseClassification(rawMsg json.RawMessage) (JobParamet
 	switch m["jobType"] {
 	case string(JobTypeDeploy):
 		b = &DeployJobParameter{}
+	case string(JobTypePublish):
+		b = &PublishJobParameter{}
+	case string(JobTypeUninstall):
+		b = &UninstallJobParameter{}
 	default:
 		b = &JobParameterBase{}
 	}
@@ -39,6 +43,10 @@ func unmarshalJobStepStatisticsBaseClassification(rawMsg json.RawMessage) (JobSt
 	switch m["statisticsType"] {
 	case string(JobTypeDeploy):
 		b = &DeployJobStepStatistics{}
+	case string(JobTypePublish):
+		b = &PublishJobStepStatistics{}
+	case string(JobTypeUninstall):
+		b = &UninstallJobStepStatistics{}
 	default:
 		b = &JobStepStatisticsBase{}
 	}

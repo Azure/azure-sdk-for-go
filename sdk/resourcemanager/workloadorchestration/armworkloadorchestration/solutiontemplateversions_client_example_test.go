@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SolutionTemplateVersions_BulkDeploySolution_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_BulkDeploySolution_MaximumSet_Gen.json
 func ExampleSolutionTemplateVersionsClient_BeginBulkDeploySolution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -39,35 +39,48 @@ func ExampleSolutionTemplateVersionsClient_BeginBulkDeploySolution() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplateVersions_BulkPublishSolution_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_BulkPublishSolution_MaximumSet_Gen.json
 func ExampleSolutionTemplateVersionsClient_BeginBulkPublishSolution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSolutionTemplateVersionsClient().BeginBulkPublishSolution(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.BulkPublishSolutionParameter{
 		Targets: []*armworkloadorchestration.BulkPublishTargetDetails{
 			{
-				TargetID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
-				SolutionInstanceName: to.Ptr("test-instance"),
+				TargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
+				SolutionDependencies: []*armworkloadorchestration.SolutionDependencyParameter{
+					{
+						SolutionVersionID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
+						SolutionTemplateID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/SolutionTemplates/st"),
+						SolutionTemplateVersion: to.Ptr("bwji"),
+						SolutionInstanceName:    to.Ptr("testname"),
+						TargetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
+						Dependencies:            []*armworkloadorchestration.SolutionDependencyParameter{},
+					},
+				},
+				SolutionInstanceName:  to.Ptr("testname"),
+				SolutionVersionID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
+				SolutionConfiguration: to.Ptr("mxnhusmdpoxqmbujrudeildj"),
 			},
 		},
-		SolutionInstanceName: to.Ptr("test-instance"),
+		SolutionInstanceName: to.Ptr("testname"),
 		SolutionDependencies: []*armworkloadorchestration.SolutionDependencyParameter{
 			{
 				SolutionVersionID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
 				SolutionTemplateID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/SolutionTemplates/st"),
-				SolutionTemplateVersion: to.Ptr("1.0.0"),
-				SolutionInstanceName:    to.Ptr("test-instance"),
+				SolutionTemplateVersion: to.Ptr("bwji"),
+				SolutionInstanceName:    to.Ptr("testname"),
 				TargetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
 				Dependencies:            []*armworkloadorchestration.SolutionDependencyParameter{},
 			},
 		},
+		SolutionConfiguration: to.Ptr("tkkfcy"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,14 +91,139 @@ func ExampleSolutionTemplateVersionsClient_BeginBulkPublishSolution() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplateVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_BulkReviewSolution_MaximumSet_Gen.json
+func ExampleSolutionTemplateVersionsClient_BeginBulkReviewSolution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSolutionTemplateVersionsClient().BeginBulkReviewSolution(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.BulkReviewSolutionParameter{
+		Targets: []*armworkloadorchestration.BulkReviewTargetDetails{
+			{
+				TargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
+				SolutionDependencies: []*armworkloadorchestration.SolutionDependencyParameter{
+					{
+						SolutionVersionID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
+						SolutionTemplateID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/SolutionTemplates/st"),
+						SolutionTemplateVersion: to.Ptr("bwji"),
+						SolutionInstanceName:    to.Ptr("testname"),
+						TargetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
+						Dependencies:            []*armworkloadorchestration.SolutionDependencyParameter{},
+					},
+				},
+				SolutionInstanceName:  to.Ptr("testname"),
+				SolutionConfiguration: to.Ptr("hizjdicxgebxdoxvplltbemeg"),
+			},
+		},
+		SolutionInstanceName: to.Ptr("testname"),
+		SolutionDependencies: []*armworkloadorchestration.SolutionDependencyParameter{
+			{
+				SolutionVersionID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
+				SolutionTemplateID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/SolutionTemplates/st"),
+				SolutionTemplateVersion: to.Ptr("bwji"),
+				SolutionInstanceName:    to.Ptr("testname"),
+				TargetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target"),
+				Dependencies:            []*armworkloadorchestration.SolutionDependencyParameter{},
+			},
+		},
+		SolutionConfiguration: to.Ptr("jrmogjyqtgidoxbvbztkz"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleSolutionTemplateVersionsClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSolutionTemplateVersionsClient().BeginCreateOrUpdate(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.SolutionTemplateVersion{
+		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
+			Specification:    map[string]any{},
+			OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+			InternalState:    to.Ptr(armworkloadorchestration.InternalStatePendingValidation),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.SolutionTemplateVersionsClientCreateOrUpdateResponse{
+	// 	SolutionTemplateVersion: armworkloadorchestration.SolutionTemplateVersion{
+	// 		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
+	// 			Specification: map[string]any{
+	// 			},
+	// 			OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+	// 			InternalState: to.Ptr(armworkloadorchestration.InternalStatePendingValidation),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ETag: to.Ptr("vonqctoicswtfwansrdqagxut"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/solutionTemplates/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/solutionTemplates/versions"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_Delete_MaximumSet_Gen.json
+func ExampleSolutionTemplateVersionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSolutionTemplateVersionsClient().BeginDelete(ctx, "rgconfigurationmanager", "testname", "1.0.0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_Get_MaximumSet_Gen.json
 func ExampleSolutionTemplateVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -99,36 +237,36 @@ func ExampleSolutionTemplateVersionsClient_Get() {
 	// res = armworkloadorchestration.SolutionTemplateVersionsClientGetResponse{
 	// 	SolutionTemplateVersion: armworkloadorchestration.SolutionTemplateVersion{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
-	// 			Configurations: to.Ptr("ofqcsavwmeuwmvtjnqpoybtjvkmrlh"),
 	// 			Specification: map[string]any{
 	// 			},
 	// 			OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+	// 			InternalState: to.Ptr(armworkloadorchestration.InternalStatePendingValidation),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("diqzzjtqycbtjzinckqwxowzdy"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("haebwdswymjzjfwbfipf"),
-	// 		Type: to.Ptr("swo"),
+	// 		ETag: to.Ptr("vonqctoicswtfwansrdqagxut"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/solutionTemplates/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/solutionTemplates/versions"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplateVersions_ListBySolutionTemplate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_ListBySolutionTemplate_MaximumSet_Gen.json
 func ExampleSolutionTemplateVersionsClient_NewListBySolutionTemplatePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -148,28 +286,76 @@ func ExampleSolutionTemplateVersionsClient_NewListBySolutionTemplatePager() {
 		// 		Value: []*armworkloadorchestration.SolutionTemplateVersion{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
-		// 					Configurations: to.Ptr("ofqcsavwmeuwmvtjnqpoybtjvkmrlh"),
 		// 					Specification: map[string]any{
 		// 					},
 		// 					OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+		// 					InternalState: to.Ptr(armworkloadorchestration.InternalStatePendingValidation),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ETag: to.Ptr("diqzzjtqycbtjzinckqwxowzdy"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("haebwdswymjzjfwbfipf"),
-		// 				Type: to.Ptr("swo"),
+		// 				ETag: to.Ptr("vonqctoicswtfwansrdqagxut"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/solutionTemplates/testname/versions/testVersion"),
+		// 				Name: to.Ptr("testVersion"),
+		// 				Type: to.Ptr("Microsoft.Edge/solutionTemplates/versions"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://microsoft.com/acebx"),
 		// 	},
 		// }
 	}
+}
+
+// Generated from example definition: 2026-05-01-preview/SolutionTemplateVersions_Update_MaximumSet_Gen.json
+func ExampleSolutionTemplateVersionsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSolutionTemplateVersionsClient().Update(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.SolutionTemplateVersion{
+		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
+			Specification:    map[string]any{},
+			OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.SolutionTemplateVersionsClientUpdateResponse{
+	// 	SolutionTemplateVersion: armworkloadorchestration.SolutionTemplateVersion{
+	// 		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
+	// 			Specification: map[string]any{
+	// 			},
+	// 			OrchestratorType: to.Ptr(armworkloadorchestration.OrchestratorTypeTO),
+	// 			InternalState: to.Ptr(armworkloadorchestration.InternalStatePendingValidation),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ETag: to.Ptr("vonqctoicswtfwansrdqagxut"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/solutionTemplates/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/solutionTemplates/versions"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
 }

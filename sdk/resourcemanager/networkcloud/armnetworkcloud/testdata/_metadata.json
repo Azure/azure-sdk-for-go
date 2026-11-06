@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.NetworkCloud": "2026-07-01"
+    "Microsoft.NetworkCloud": "2026-08-01-preview"
   },
   "emitterVersion": "0.17.4"
 }

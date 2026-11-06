@@ -1,5 +1,51 @@
 # Release History
 
+## 4.1.0 (2026-10-22)
+### Features Added
+
+- New value `OptInHeaderTypeAuxiliaryUserContext`, `OptInHeaderTypeUserContext` added to enum type `OptInHeaderType`
+- New enum type `IsolationType` with values `IsolationTypePrivate`, `IsolationTypePublic`
+- New enum type `LifecycleStage` with values `LifecycleStageGA`, `LifecycleStageInDevelopment`, `LifecycleStagePrivatePreview`, `LifecycleStagePublicPreview`, `LifecycleStageRetired`
+- New enum type `PartnerCategory` with values `PartnerCategoryFirstParty`, `PartnerCategoryThirdParty`
+- New function `*ClientFactory.NewEndpointRegistrationsClient() *EndpointRegistrationsClient`
+- New function `NewEndpointRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointRegistrationsClient, error)`
+- New function `*EndpointRegistrationsClient.CreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, endpointName string, properties EndpointRegistration, options *EndpointRegistrationsClientCreateOrUpdateOptions) (EndpointRegistrationsClientCreateOrUpdateResponse, error)`
+- New function `*EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, endpointName string, properties EndpointRegistration, options *EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstOptions) (EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse, error)`
+- New function `*EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeSecond(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, endpointName string, properties EndpointRegistration, options *EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondOptions) (EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondResponse, error)`
+- New function `*EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeThird(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, endpointName string, properties EndpointRegistration, options *EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdOptions) (EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdResponse, error)`
+- New function `*EndpointRegistrationsClient.Delete(ctx context.Context, providerNamespace string, resourceType string, endpointName string, options *EndpointRegistrationsClientDeleteOptions) (EndpointRegistrationsClientDeleteResponse, error)`
+- New function `*EndpointRegistrationsClient.DeleteNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, endpointName string, options *EndpointRegistrationsClientDeleteNestedResourceTypeFirstOptions) (EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse, error)`
+- New function `*EndpointRegistrationsClient.DeleteNestedResourceTypeSecond(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, endpointName string, options *EndpointRegistrationsClientDeleteNestedResourceTypeSecondOptions) (EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse, error)`
+- New function `*EndpointRegistrationsClient.DeleteNestedResourceTypeThird(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, endpointName string, options *EndpointRegistrationsClientDeleteNestedResourceTypeThirdOptions) (EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse, error)`
+- New function `*EndpointRegistrationsClient.Get(ctx context.Context, providerNamespace string, resourceType string, endpointName string, options *EndpointRegistrationsClientGetOptions) (EndpointRegistrationsClientGetResponse, error)`
+- New function `*EndpointRegistrationsClient.GetNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, endpointName string, options *EndpointRegistrationsClientGetNestedResourceTypeFirstOptions) (EndpointRegistrationsClientGetNestedResourceTypeFirstResponse, error)`
+- New function `*EndpointRegistrationsClient.GetNestedResourceTypeSecond(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, endpointName string, options *EndpointRegistrationsClientGetNestedResourceTypeSecondOptions) (EndpointRegistrationsClientGetNestedResourceTypeSecondResponse, error)`
+- New function `*EndpointRegistrationsClient.GetNestedResourceTypeThird(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, endpointName string, options *EndpointRegistrationsClientGetNestedResourceTypeThirdOptions) (EndpointRegistrationsClientGetNestedResourceTypeThirdResponse, error)`
+- New function `*EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeFirstPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstOptions) *runtime.Pager[EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstResponse]`
+- New function `*EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeSecondPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, options *EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondOptions) *runtime.Pager[EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondResponse]`
+- New function `*EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeThirdPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, options *EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdOptions) *runtime.Pager[EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdResponse]`
+- New function `*EndpointRegistrationsClient.NewListByResourceTypeRegistrationPager(providerNamespace string, resourceType string, options *EndpointRegistrationsClientListByResourceTypeRegistrationOptions) *runtime.Pager[EndpointRegistrationsClientListByResourceTypeRegistrationResponse]`
+- New function `*ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions) (*runtime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse], error)`
+- New function `*ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions) (*runtime.Poller[ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse], error)`
+- New function `*ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions) (ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse, error)`
+- New struct `EndpointRegistration`
+- New struct `EndpointRegistrationArrayResponseWithContinuation`
+- New struct `EndpointRegistrationProperties`
+- New struct `ResourceProviderLifecycleInfo`
+- New struct `ResourceTypeLifecycleInfo`
+- New struct `RolloutOrchestrationMetadata`
+- New struct `SwaggerSpecificationLifecycleInfo`
+- New field `RootProviderNamespace` in struct `AppliedManifestInfo`
+- New field `CheckinComment`, `SwaggerURI` in struct `CheckinManifestParams`
+- New field `RolloutOrchestrationMetadata` in struct `CustomRolloutPropertiesSpecification`
+- New field `LifecycleInfo` in struct `ProviderRegistrationProperties`
+- New field `FeatureApprovalClaims` in struct `ResourceProviderManifestManagement`
+- New field `FeatureApprovalClaims` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `LifecycleInfo` in struct `ResourceTypeRegistrationProperties`
+- New field `FeatureApprovalClaims` in struct `ResourceTypeRegistrationPropertiesManagement`
+- New field `LifecycleInfo` in struct `SwaggerSpecification`
+
+
 ## 4.0.0 (2026-09-02)
 ### Breaking Changes
 

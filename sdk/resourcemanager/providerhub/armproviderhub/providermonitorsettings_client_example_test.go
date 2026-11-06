@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Create.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_Create.json
 func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Delete.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_Delete.json
 func ExampleProviderMonitorSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleProviderMonitorSettingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Get.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_Get.json
 func ExampleProviderMonitorSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleProviderMonitorSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_ListByResourceGroup.json
 func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_ListBySubscription.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_ListBySubscription.json
 func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/ProviderMonitorSettings_Update.json
+// Generated from example definition: 2026-10-01/ProviderMonitorSettings_Update.json
 func ExampleProviderMonitorSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

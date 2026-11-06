@@ -19,7 +19,7 @@ import (
 // ResourceTypeRegistrationsClient contains the methods for the ResourceTypeRegistrations group.
 // Don't use this type directly, use NewResourceTypeRegistrationsClient() instead.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-10-01
 type ResourceTypeRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Creates or updates a resource type.
+// createOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, _ *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
@@ -110,7 +110,88 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateNestedResourceTypeFirst - Creates or updates a nested resource type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - providerNamespace - The name of the resource provider hosted within ProviderHub.
+//   - resourceType - The resource type.
+//   - nestedResourceTypeFirst - The first child resource type.
+//   - properties - The required request body parameters supplied to the resource type registration CreateOrUpdate operation.
+//   - options - ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions contains the optional parameters
+//     for the ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst method.
+func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdateNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions) (*runtime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateNestedResourceTypeFirst(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdateNestedResourceTypeFirst - Creates or updates a nested resource type.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceTypeRegistrationsClient) createOrUpdateNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateNestedResourceTypeFirstCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateNestedResourceTypeFirstCreateRequest creates the createOrUpdateNestedResourceTypeFirst request.
+func (client *ResourceTypeRegistrationsClient) createOrUpdateNestedResourceTypeFirstCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, properties ResourceTypeRegistration, _ *ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if providerNamespace == "" {
+		return nil, errors.New("parameter providerNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if nestedResourceTypeFirst == "" {
+		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -143,7 +224,7 @@ func (client *ResourceTypeRegistrationsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes a resource type
+// deleteOperation - Deletes a resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +246,7 @@ func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, resourceType string, _ *ResourceTypeRegistrationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
@@ -185,7 +266,82 @@ func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginDeleteNestedResourceTypeFirst - Deletes a nested resource type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - providerNamespace - The name of the resource provider hosted within ProviderHub.
+//   - resourceType - The resource type.
+//   - nestedResourceTypeFirst - The first child resource type.
+//   - options - ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions contains the optional parameters for
+//     the ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst method.
+func (client *ResourceTypeRegistrationsClient) BeginDeleteNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions) (*runtime.Poller[ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteNestedResourceTypeFirst(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteNestedResourceTypeFirst - Deletes a nested resource type.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceTypeRegistrationsClient) deleteNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteNestedResourceTypeFirstCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteNestedResourceTypeFirstCreateRequest creates the deleteNestedResourceTypeFirst request.
+func (client *ResourceTypeRegistrationsClient) deleteNestedResourceTypeFirstCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, _ *ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if providerNamespace == "" {
+		return nil, errors.New("parameter providerNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if nestedResourceTypeFirst == "" {
+		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -233,7 +389,7 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,6 +403,72 @@ func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistration); err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetNestedResourceTypeFirst - Gets a nested resource type details in the given subscription and provider.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - providerNamespace - The name of the resource provider hosted within ProviderHub.
+//   - resourceType - The resource type.
+//   - nestedResourceTypeFirst - The first child resource type.
+//   - options - ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions contains the optional parameters for the ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst
+//     method.
+func (client *ResourceTypeRegistrationsClient) GetNestedResourceTypeFirst(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions) (ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse, error) {
+	var err error
+	const operationName = "ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getNestedResourceTypeFirstCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, options)
+	if err != nil {
+		return ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse{}, err
+	}
+	return client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
+}
+
+// getNestedResourceTypeFirstCreateRequest creates the GetNestedResourceTypeFirst request.
+func (client *ResourceTypeRegistrationsClient) getNestedResourceTypeFirstCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, _ *ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if providerNamespace == "" {
+		return nil, errors.New("parameter providerNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if nestedResourceTypeFirst == "" {
+		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getNestedResourceTypeFirstHandleResponse handles the GetNestedResourceTypeFirst response.
+func (client *ResourceTypeRegistrationsClient) getNestedResourceTypeFirstHandleResponse(resp *http.Response, successCodes ...int) (ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse, error) {
+	result := ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistration); err != nil {
+		return ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse{}, err
 	}
 	return result, nil
 }
@@ -304,7 +526,7 @@ func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251001)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

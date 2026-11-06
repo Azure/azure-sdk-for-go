@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/NotificationRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/NotificationRegistrations_CreateOrUpdate.json
 func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NotificationRegistrations_Delete.json
+// Generated from example definition: 2026-10-01/NotificationRegistrations_Delete.json
 func ExampleNotificationRegistrationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleNotificationRegistrationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NotificationRegistrations_Get.json
+// Generated from example definition: 2026-10-01/NotificationRegistrations_Get.json
 func ExampleNotificationRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleNotificationRegistrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NotificationRegistrations_ListByProviderRegistration.json
+// Generated from example definition: 2026-10-01/NotificationRegistrations_ListByProviderRegistration.json
 func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

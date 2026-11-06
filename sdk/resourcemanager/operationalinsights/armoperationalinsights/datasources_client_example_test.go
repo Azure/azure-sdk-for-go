@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/DataSourcesCreate.json
+// Generated from example definition: 2026-03-01/DataSourcesCreate.json
 func ExampleDataSourcesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleDataSourcesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataSourcesDelete.json
+// Generated from example definition: 2026-03-01/DataSourcesDelete.json
 func ExampleDataSourcesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleDataSourcesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataSourcesGet.json
+// Generated from example definition: 2026-03-01/DataSourcesGet.json
 func ExampleDataSourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleDataSourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataSourcesListByWorkspace.json
+// Generated from example definition: 2026-03-01/DataSourcesListByWorkspace.json
 func ExampleDataSourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleDataSourcesClient_NewListByWorkspacePager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armoperationalinsights.DataSourcesClientListByWorkspaceResponse{
 		// 	DataSourceListResult: armoperationalinsights.DataSourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/OIAutoRest7887/providers/Microsoft.OperationalInsights/workspaces/AzTest218/dataSources?$filter=kind+eq+'WindowsEvent'&api-version=2025-07-01&$skiptoken=AzTestDSWE7191"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/OIAutoRest7887/providers/Microsoft.OperationalInsights/workspaces/AzTest218/dataSources?$filter=kind+eq+'WindowsEvent'&api-version=2026-03-01&$skiptoken=AzTestDSWE7191"),
 		// 		Value: []*armoperationalinsights.DataSource{
 		// 			{
 		// 				Name: to.Ptr("AzTestDSWE1011"),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesSubscriptionList.json
+// Generated from example definition: 2026-03-01/WorkspacesSubscriptionList.json
 func ExampleDeletedWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleDeletedWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesListByResourceGroupForDeleted.json
+// Generated from example definition: 2026-03-01/WorkspacesListByResourceGroupForDeleted.json
 func ExampleDeletedWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

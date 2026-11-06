@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesDelete.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesDelete.json
 func ExampleQueriesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleQueriesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesGet.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesGet.json
 func ExampleQueriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleQueriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesList.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesList.json
 func ExampleQueriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleQueriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesPut.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesPut.json
 func ExampleQueriesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleQueriesClient_Put() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesSearch.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesSearch.json
 func ExampleQueriesClient_NewSearchPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,7 +424,7 @@ func ExampleQueriesClient_NewSearchPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPackQueriesUpdate.json
+// Generated from example definition: 2026-03-01/QueryPackQueriesUpdate.json
 func ExampleQueriesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

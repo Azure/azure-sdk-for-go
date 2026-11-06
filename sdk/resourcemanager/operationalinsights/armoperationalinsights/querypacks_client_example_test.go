@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/QueryPacksCreate.json
+// Generated from example definition: 2026-03-01/QueryPacksCreate.json
 func ExampleQueryPacksClient_CreateOrUpdate_queryPackCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleQueryPacksClient_CreateOrUpdate_queryPackCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksUpdate.json
+// Generated from example definition: 2026-03-01/QueryPacksUpdate.json
 func ExampleQueryPacksClient_CreateOrUpdate_queryPackUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleQueryPacksClient_CreateOrUpdate_queryPackUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPackUpdateNoName.json
+// Generated from example definition: 2026-03-01/QueryPackUpdateNoName.json
 func ExampleQueryPacksClient_CreateOrUpdateWithoutName_queryPackUpdateNoName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleQueryPacksClient_CreateOrUpdateWithoutName_queryPackUpdateNoName() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksCreateNoName.json
+// Generated from example definition: 2026-03-01/QueryPacksCreateNoName.json
 func ExampleQueryPacksClient_CreateOrUpdateWithoutName_queryPackCreateNoName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleQueryPacksClient_CreateOrUpdateWithoutName_queryPackCreateNoName() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksDelete.json
+// Generated from example definition: 2026-03-01/QueryPacksDelete.json
 func ExampleQueryPacksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleQueryPacksClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksGet.json
+// Generated from example definition: 2026-03-01/QueryPacksGet.json
 func ExampleQueryPacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleQueryPacksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksList.json
+// Generated from example definition: 2026-03-01/QueryPacksList.json
 func ExampleQueryPacksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleQueryPacksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksListByResourceGroup.json
+// Generated from example definition: 2026-03-01/QueryPacksListByResourceGroup.json
 func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +313,7 @@ func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksUpdateTagsOnly.json
+// Generated from example definition: 2026-03-01/QueryPacksUpdateTagsOnly.json
 func ExampleQueryPacksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

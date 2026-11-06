@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LinkedStorageAccountsCreate.json
+// Generated from example definition: 2026-03-01/LinkedStorageAccountsCreate.json
 func ExampleLinkedStorageAccountsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleLinkedStorageAccountsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedStorageAccountsDelete.json
+// Generated from example definition: 2026-03-01/LinkedStorageAccountsDelete.json
 func ExampleLinkedStorageAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleLinkedStorageAccountsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedStorageAccountsGet.json
+// Generated from example definition: 2026-03-01/LinkedStorageAccountsGet.json
 func ExampleLinkedStorageAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleLinkedStorageAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedStorageAccountsListByWorkspace.json
+// Generated from example definition: 2026-03-01/LinkedStorageAccountsListByWorkspace.json
 func ExampleLinkedStorageAccountsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

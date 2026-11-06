@@ -1,0 +1,66 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+[package]
+name = "azure_data_cosmos_driver_native"
+description = "C ABI wrapper for the Azure Cosmos DB driver crate (azure_data_cosmos_driver). Exposes a schema-agnostic completion-queue-style FFI for cross-language SDK reuse (.NET, Java, Go, Python, native C/C++)."
+version = "0.3.0"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+publish = false
+keywords = ["sdk", "internal"]
+categories = ["api-bindings"]
+
+[lib]
+name = "azurecosmosdriver"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+# Path-only — the driver crate is not (yet) a workspace dependency.
+# The wrapper opts into the `tokio` feature so it can drive Tokio-backed
+# completion delivery on top of the same runtime model the driver uses;
+# `rustls` lets `CosmosDriverRuntimeBuilder::build()` actually construct an
+# HTTP client (the driver's default factory needs either `rustls` or
+# `native_tls` — `rustls` matches the driver's own default and avoids the
+# OpenSSL-on-Windows breakage that bites `native_tls`).
+azure_data_cosmos_driver = { path = "../azure_data_cosmos_driver", version = "1.1.0-beta.3", default-features = false, features = ["unstable_patch", "tokio", "rustls", "fault_injection"] }
+# Required at runtime for master-key auth — `Secret` lives in
+# `azure_core::credentials` and `Url::parse` is the gate for the account
+# endpoint. Both are zero-cost wrappers around existing driver deps so
+# they don't grow the closure.
+azure_core = { workspace = true, default-features = false }
+async-trait.workspace = true
+url = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "sync", "time", "macros"] }
+# `FutureExt::catch_unwind` is used by the submit pipeline to keep the
+# "every submission produces exactly one completion" invariant even when the
+# driver future panics (a panic would otherwise be isolated at the Tokio task
+# boundary, leaving the operation handle IN_FLIGHT forever).
+futures.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+time.workspace = true
+
+[dev-dependencies]
+# Path-only — the driver crate is not (yet) a workspace dependency.
+# Internal features provide mock transport, populated cursor fixtures, and diagnostics test data.
+azure_data_cosmos_driver = { path = "../azure_data_cosmos_driver", version = "1.1.0-beta.3", default-features = false, features = ["__internal_mocking", "__internal_in_memory_emulator", "__internal_test_diagnostics_construction"] }
+azure_core = { workspace = true, default-features = false }
+tokio = { workspace = true, features = ["rt-multi-thread", "sync", "time", "macros", "test-util"] }
+
+[build-dependencies]
+cbindgen = "0.29.2"
+
+[features]
+# Compiles the `__test_only_*` C-ABI helpers that back the `c_tests/`
+# end-to-end suite. Off by default — production `cdylib` / `staticlib`
+# builds do not expose these symbols. Enabled by the CMake C-test build
+# (`corrosion_import_crate(FEATURES test-abi)`); Rust integration tests
+# and normal consumer builds must not enable it.
+test-abi = ["azure_data_cosmos_driver/__internal_in_memory_emulator", "azure_data_cosmos_driver/__internal_mocking"]
+
+[lints]
+workspace = true

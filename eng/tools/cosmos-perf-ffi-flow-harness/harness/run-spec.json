@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "campaign": "go-v2-ffi-flow-latest-main-20261105-a",
+  "rustSourceCommit": "77ebe786ad1012bc9ac56105e08c05fb4c65b321",
+  "goOptimizedSourceCommit": "b20b0fd00ac20c78bdb2d138fb6960b35e428af0",
+  "legs": ["go-v2-native", "rust-sdk", "rust-driver"],
+  "workers": [32, 64],
+  "warmupSeconds": 10,
+  "measurementSeconds": 60,
+  "cleanRepeats": 2,
+  "cleanOrder": {
+    "32": ["go-v2-native", "rust-sdk", "rust-driver", "rust-driver", "rust-sdk", "go-v2-native"],
+    "64": ["rust-driver", "rust-sdk", "go-v2-native", "go-v2-native", "rust-sdk", "rust-driver"]
+  },
+  "workload": {
+    "operation": "point-read",
+    "seedCount": 1024,
+    "documentBytesBeforeServiceMetadata": 1024,
+    "partitionKeyPath": "/pk",
+    "keySequence": "round-robin-0-through-1023",
+    "strictClosedLoop": true,
+    "binaryEncodingEnabled": false,
+    "callerOutput": "UTF8JSON",
+    "requiredTransport": "GatewayV1HTTP2",
+    "tokioWorkerThreads": 2,
+    "goReactorShards": 1
+  },
+  "gates": {
+    "binaryDisablement": "explicit option, native propagation, pre-conversion wire evidence per leg",
+    "wireEvidenceMustBeFromTestedSource": true,
+    "requiredMeasuredErrors": 0,
+    "requiredMeasuredRetries": 0,
+    "requiredMeasuredThrottles": 0,
+    "workerCPUCapacity": 4,
+    "nativeABICompatibilityRequired": true,
+    "flowWallDriftRelativeTolerance": 0.001,
+    "flowWallDriftAbsoluteFloorSeconds": 0.02,
+    "noConcurrentBenchmarks": true,
+    "preserveOldEvidence": true
+  },
+  "classes": {
+    "clean-score": "No new hot-path flow/wire counters, perf, pprof, or trace.",
+    "perf": "Uninstrumented source, per-PID Linux perf 49 Hz with calibrated call chains.",
+    "ffi-flow": "Go v2 only; per-second Go and native lifecycle ledgers, actual queue high-water, exact phase-boundary and count reconciliation.",
+    "rust-flow": "Standalone Rust SDK/direct-driver completion rates by Unix second; separate from clean scores.",
+    "scheduler": "Bounded PID-attached perf sched plus per-thread status/schedstat; not a system-wide scheduler capture.",
+    "go-diagnostic": "Go CPU/heap pprof and bounded runtime trace, separate from perf and flow rates.",
+    "wire-proof": "Short binary-disablement validation, never authoritative performance scores."
+  },
+  "interpretation": {
+    "historicalBinaryWireScoresAreNotMatchedBaselines": true,
+    "latestMainUpgradeCannotBeAttributedToOneSessionTokenCommit": true,
+    "completionBatchSizeIsNotQueueDepth": true,
+    "doNotAddPerfAndPprofDenominators": true,
+    "newBackpressureBehavior": false
+  }
+}

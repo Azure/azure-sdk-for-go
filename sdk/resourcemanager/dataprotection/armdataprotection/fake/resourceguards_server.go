@@ -29,10 +29,6 @@ type ResourceGuardsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceGuardsName string, options *armdataprotection.ResourceGuardsClientGetOptions) (resp azfake.Responder[armdataprotection.ResourceGuardsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewGetBackupSecurityPINRequestsObjectsPager is the fake for method ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetBackupSecurityPINRequestsObjectsPager func(resourceGroupName string, resourceGuardsName string, options *armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) (resp azfake.PagerResponder[armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse])
-
 	// GetDefaultBackupSecurityPINRequestsObject is the fake for method ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDefaultBackupSecurityPINRequestsObject func(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *armdataprotection.ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions) (resp azfake.Responder[armdataprotection.ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse], errResp azfake.ErrorResponder)
@@ -56,6 +52,10 @@ type ResourceGuardsServer struct {
 	// GetDefaultUpdateProtectionPolicyRequestsObject is the fake for method ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDefaultUpdateProtectionPolicyRequestsObject func(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions) (resp azfake.Responder[armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse], errResp azfake.ErrorResponder)
+
+	// NewGetBackupSecurityPINRequestsObjectsPager is the fake for method ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetBackupSecurityPINRequestsObjectsPager func(resourceGroupName string, resourceGuardsName string, options *armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) (resp azfake.PagerResponder[armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse])
 
 	// NewGetDeleteProtectedItemRequestsObjectsPager is the fake for method ResourceGuardsClient.NewGetDeleteProtectedItemRequestsObjectsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -150,8 +150,6 @@ func (r *ResourceGuardsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = r.dispatchDelete(req)
 			case "ResourceGuardsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager":
-				res.resp, res.err = r.dispatchNewGetBackupSecurityPINRequestsObjectsPager(req)
 			case "ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject":
 				res.resp, res.err = r.dispatchGetDefaultBackupSecurityPINRequestsObject(req)
 			case "ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject":
@@ -164,6 +162,8 @@ func (r *ResourceGuardsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = r.dispatchGetDefaultUpdateProtectedItemRequestsObject(req)
 			case "ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject":
 				res.resp, res.err = r.dispatchGetDefaultUpdateProtectionPolicyRequestsObject(req)
+			case "ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager":
+				res.resp, res.err = r.dispatchNewGetBackupSecurityPINRequestsObjectsPager(req)
 			case "ResourceGuardsClient.NewGetDeleteProtectedItemRequestsObjectsPager":
 				res.resp, res.err = r.dispatchNewGetDeleteProtectedItemRequestsObjectsPager(req)
 			case "ResourceGuardsClient.NewGetDeleteResourceGuardProxyRequestsObjectsPager":
@@ -260,47 +260,6 @@ func (r *ResourceGuardsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceGuardResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceGuardsServerTransport) dispatchNewGetBackupSecurityPINRequestsObjectsPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewGetBackupSecurityPINRequestsObjectsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetBackupSecurityPINRequestsObjectsPager not implemented")}
-	}
-	newGetBackupSecurityPINRequestsObjectsPager := r.newGetBackupSecurityPINRequestsObjectsPager.get(req)
-	if newGetBackupSecurityPINRequestsObjectsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/resourceGuards/(?P<resourceGuardsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBackupSecurityPINRequests`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGuardsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGuardsName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewGetBackupSecurityPINRequestsObjectsPager(resourceGroupNameParam, resourceGuardsNameParam, nil)
-		newGetBackupSecurityPINRequestsObjectsPager = &resp
-		r.newGetBackupSecurityPINRequestsObjectsPager.add(req, newGetBackupSecurityPINRequestsObjectsPager)
-		server.PagerResponderInjectNextLinks(newGetBackupSecurityPINRequestsObjectsPager, req, func(page *armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetBackupSecurityPINRequestsObjectsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newGetBackupSecurityPINRequestsObjectsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetBackupSecurityPINRequestsObjectsPager) {
-		r.newGetBackupSecurityPINRequestsObjectsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -523,6 +482,47 @@ func (r *ResourceGuardsServerTransport) dispatchGetDefaultUpdateProtectionPolicy
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DppBaseResource, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceGuardsServerTransport) dispatchNewGetBackupSecurityPINRequestsObjectsPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewGetBackupSecurityPINRequestsObjectsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetBackupSecurityPINRequestsObjectsPager not implemented")}
+	}
+	newGetBackupSecurityPINRequestsObjectsPager := r.newGetBackupSecurityPINRequestsObjectsPager.get(req)
+	if newGetBackupSecurityPINRequestsObjectsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/resourceGuards/(?P<resourceGuardsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBackupSecurityPINRequests`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGuardsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGuardsName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewGetBackupSecurityPINRequestsObjectsPager(resourceGroupNameParam, resourceGuardsNameParam, nil)
+		newGetBackupSecurityPINRequestsObjectsPager = &resp
+		r.newGetBackupSecurityPINRequestsObjectsPager.add(req, newGetBackupSecurityPINRequestsObjectsPager)
+		server.PagerResponderInjectNextLinks(newGetBackupSecurityPINRequestsObjectsPager, req, func(page *armdataprotection.ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetBackupSecurityPINRequestsObjectsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newGetBackupSecurityPINRequestsObjectsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetBackupSecurityPINRequestsObjectsPager) {
+		r.newGetBackupSecurityPINRequestsObjectsPager.remove(req)
 	}
 	return resp, nil
 }

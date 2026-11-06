@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/DeleteResourceGuard.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/DeleteResourceGuard.json
 func ExampleResourceGuardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleResourceGuardsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetResourceGuard.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetResourceGuard.json
 func ExampleResourceGuardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,169 @@ func ExampleResourceGuardsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultBackupSecurityPINRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/getBackupSecurityPINRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/getBackupSecurityPINRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteProtectedItemRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/deleteProtectedItemRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
+func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteResourceGuardProxyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/deleteResourceGuardProxyRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDisableSoftDeleteRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/disableSoftDeleteRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/disableSoftDeleteRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/updateProtectedItemRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/updateProtectedItemRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
+func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectionPolicyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{
+	// 	DppBaseResource: armdataprotection.DppBaseResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/updateProtectionPolicyRequests"),
+	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/updateProtectionPolicyRequests/default"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,169 +280,7 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
-func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultBackupSecurityPINRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/getBackupSecurityPINRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/getBackupSecurityPINRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
-func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteProtectedItemRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/deleteProtectedItemRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
-func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteResourceGuardProxyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/deleteResourceGuardProxyRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
-func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDisableSoftDeleteRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/disableSoftDeleteRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/disableSoftDeleteRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
-func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/updateProtectedItemRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/updateProtectedItemRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
-func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectionPolicyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{
-	// 	DppBaseResource: armdataprotection.DppBaseResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/resourceGuards/updateProtectionPolicyRequests"),
-	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/resourceGuards/swaggerExample/updateProtectionPolicyRequests/default"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,7 +388,7 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
 func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
 func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,7 +538,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +574,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 	}
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/PatchResourceGuard.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/PatchResourceGuard.json
 func ExampleResourceGuardsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleResourceGuardsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ResourceGuardCRUD/PutResourceGuard.json
+// Generated from example definition: 2026-08-31-preview/ResourceGuardCRUD/PutResourceGuard.json
 func ExampleResourceGuardsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

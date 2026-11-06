@@ -19,7 +19,7 @@ import (
 // ExportJobsClient contains the methods for the ExportJobs group.
 // Don't use this type directly, use NewExportJobsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-31-preview
 type ExportJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,7 @@ func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupN
 	}
 }
 
-// Trigger - Triggers export of jobs and returns an OperationID to track.
+// trigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// triggerCreateRequest creates the Trigger request.
+// triggerCreateRequest creates the trigger request.
 func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *ExportJobsClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/exportBackupJobs"
 	if client.subscriptionID == "" {
@@ -108,7 +108,7 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

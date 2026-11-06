@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-01/scheduledActions/checkNameAvailability-private-scheduledAction.json
+// Generated from example definition: 2026-06-01/scheduledActions/checkNameAvailability-private-scheduledAction.json
 func ExampleScheduledActionsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleScheduledActionsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/checkNameAvailability-shared-scheduledAction.json
+// Generated from example definition: 2026-06-01/scheduledActions/checkNameAvailability-shared-scheduledAction.json
 func ExampleScheduledActionsClient_CheckNameAvailabilityByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleScheduledActionsClient_CheckNameAvailabilityByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-createOrUpdate-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-createOrUpdate-private.json
 func ExampleScheduledActionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleScheduledActionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-createOrUpdate-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-createOrUpdate-shared.json
 func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateScheduledActionByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateScheduled
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
 func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateInsightAlertScheduledActionByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +339,7 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateInsightAl
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-delete-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-delete-private.json
 func ExampleScheduledActionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleScheduledActionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-delete-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-delete-shared.json
 func ExampleScheduledActionsClient_DeleteByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleScheduledActionsClient_DeleteByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-get-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-get-private.json
 func ExampleScheduledActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleScheduledActionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-get-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-get-shared.json
 func ExampleScheduledActionsClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +509,7 @@ func ExampleScheduledActionsClient_GetByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-list-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledActions-list-private.json
 func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledActions-listWithFilter-private.json
 func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilterByViewId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,7 +722,7 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilte
 	}
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-list-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledActions-list-shared.json
 func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,7 +828,7 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 	}
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledActions-listWithFilter-shared.json
 func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListByScopeFilterByViewId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -935,7 +935,7 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 	}
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-sendNow-private.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-sendNow-private.json
 func ExampleScheduledActionsClient_Run() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -957,7 +957,7 @@ func ExampleScheduledActionsClient_Run() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledAction-sendNow-shared.json
+// Generated from example definition: 2026-06-01/scheduledActions/scheduledAction-sendNow-shared.json
 func ExampleScheduledActionsClient_RunByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

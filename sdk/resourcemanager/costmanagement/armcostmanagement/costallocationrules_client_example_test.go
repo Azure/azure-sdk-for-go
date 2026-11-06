@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/CostAllocationRuleCheckNameAvailability.json
+// Generated from example definition: 2026-06-01/CostAllocationRuleCheckNameAvailability.json
 func ExampleCostAllocationRulesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleCostAllocationRulesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostAllocationRuleCreate.json
+// Generated from example definition: 2026-06-01/CostAllocationRuleCreate.json
 func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateRe
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostAllocationRuleCreateTag.json
+// Generated from example definition: 2026-06-01/CostAllocationRuleCreateTag.json
 func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateTa
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostAllocationRuleDelete.json
+// Generated from example definition: 2026-06-01/CostAllocationRuleDelete.json
 func ExampleCostAllocationRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleCostAllocationRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostAllocationRuleGet.json
+// Generated from example definition: 2026-06-01/CostAllocationRuleGet.json
 func ExampleCostAllocationRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleCostAllocationRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostAllocationRulesList.json
+// Generated from example definition: 2026-06-01/CostAllocationRulesList.json
 func ExampleCostAllocationRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

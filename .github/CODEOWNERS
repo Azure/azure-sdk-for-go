@@ -661,7 +661,7 @@
 /eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
 /.config/1espt/                    @Azure/azure-sdk-eng
 /.github/workflows/                @Azure/azure-sdk-eng
-/.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng @j7nw4r
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool

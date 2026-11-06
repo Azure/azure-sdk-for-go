@@ -36,18 +36,41 @@ func completeOperation[T any](t *testing.T, ctx context.Context, owned *ownedVal
 	poller, err := begin()
 	requireNoError(t, err)
 	result, err := testutil.PollForTest(ctx, poller)
-	owned.mutationInProgress = !poller.Done()
 	requireNoError(t, err)
+	require.True(t, poller.Done(), "Mutation has not reached confirmed completion")
+	require.NotNil(t, result)
+	owned.mutationInProgress = false
 	return *result
+}
+
+func validateImageSource(source string) error {
+	uri, err := url.Parse(source)
+	if err != nil || uri.Scheme != "https" || uri.Host == "" || uri.User != nil ||
+		uri.RawQuery != "" || uri.Fragment != "" || !strings.HasSuffix(strings.ToLower(uri.Path), ".vhd") {
+		return errors.New("an approved credential-free HTTPS VHD is required")
+	}
+	return nil
+}
+
+func TestCredentialFreeVHDSource(t *testing.T) {
+	for _, source := range []string{
+		"https://example.invalid/image.vhd?sig=example-secret",
+		"https://example-secret@example.invalid/image.vhd",
+		"https://example.invalid/image.vhd#example-secret",
+		"http://example.invalid/image.vhd",
+		"https://[invalid/image.vhd",
+	} {
+		err := validateImageSource(source)
+		require.EqualError(t, err, "an approved credential-free HTTPS VHD is required")
+	}
+	require.NoError(t, validateImageSource("https://example.invalid/image.vhd"))
 }
 
 func TestPlatformValidationBootLifecycle(t *testing.T) {
 	clients, ctx := newTestClients(t)
 	source := recording.GetEnvVariable("PLATFORMVALIDATION_SOURCE_VHD_URI", "https://example.invalid/image.vhd")
-	parsedSource, err := url.Parse(source)
-	requireNoError(t, err)
-	require.True(t, parsedSource.Scheme == "https" && parsedSource.Host != "",
-		"An approved HTTPS Linux Gen1 x64 VHD is required")
+	requireNoError(t, validateImageSource(source))
+	scopedBootTestID := "/subscriptions/" + clients.subscriptionID + bootTestID
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		require.NotEmpty(t, recording.GetEnvVariable("PLATFORMVALIDATION_SOURCE_VHD_URI", ""),
 			"Set the approved VHD privately before starting live tests")
@@ -132,7 +155,7 @@ func TestPlatformValidationBootLifecycle(t *testing.T) {
 			"additionalProperties": map[string]any{},
 		}},
 		"authoring": map[string]any{"steps": []any{map[string]any{
-			"name": "vm-boot-test", "type": "test", "testRef": bootTestID,
+			"name": "vm-boot-test", "type": "test", "testRef": scopedBootTestID,
 		}}},
 	})
 	requireNoError(t, err)
@@ -186,6 +209,7 @@ func TestPlatformValidationBootLifecycle(t *testing.T) {
 			Properties: &pv.ExecutionPlanRunProperties{Description: to.Ptr("Go SDK boot execution " + owned.name)},
 		}, nil)
 	})
+	owned.mutationInProgress = true
 	for {
 		require.NotNil(t, run.Properties)
 		if terminalStatus(stringValue(run.Properties.Status)) {
@@ -197,6 +221,7 @@ func TestPlatformValidationBootLifecycle(t *testing.T) {
 		requireNoError(t, err)
 		run.ExecutionPlanRun = fetched.ExecutionPlanRun
 	}
+	owned.mutationInProgress = false
 	require.Contains(t, []string{"Completed", "Succeeded"}, stringValue(run.Properties.Status))
 	require.Equal(t, "Succeeded", stringValue(run.Properties.ProvisioningState))
 	require.Nil(t, run.Properties.Error)
@@ -234,7 +259,7 @@ func TestPlatformValidationBootLifecycle(t *testing.T) {
 			require.NotNil(t, result.Properties)
 			require.Equal(t, "Completed", stringValue(result.Properties.Status))
 			require.Equal(t, "Succeeded", stringValue(result.Properties.ProvisioningState))
-			require.Equal(t, bootTestID, stringValue(result.Properties.TestID))
+			require.Equal(t, strings.ToLower(scopedBootTestID), strings.ToLower(stringValue(result.Properties.TestID)))
 			require.NotEmpty(t, result.Properties.PassDetails)
 			require.Empty(t, result.Properties.FailureDetails)
 			require.Nil(t, result.Properties.Error)

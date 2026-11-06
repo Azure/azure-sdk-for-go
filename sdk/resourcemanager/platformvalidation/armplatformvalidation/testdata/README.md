@@ -12,17 +12,19 @@ variables, or load them from a private `.env` file:
 
 ```powershell
 $env:AZURE_SUBSCRIPTION_ID = "<approved-subscription>"
-$env:LOCATION = "eastus2euap"
-$env:PLATFORMVALIDATION_ARM_ENDPOINT = "https://eastus2euap.management.azure.com"
-# Inject PLATFORMVALIDATION_SOURCE_VHD_URI privately; never commit a signed URL.
+$env:LOCATION = "swedencentral"
+$env:PLATFORMVALIDATION_ARM_ENDPOINT = "https://swedencentral.management.azure.com"
+# Inject an approved credential-free HTTPS PLATFORMVALIDATION_SOURCE_VHD_URI privately.
 $env:AZURE_RECORD_MODE = "record"
 go test -count=1 -timeout 75m -v ./...
 ```
 
 The subscription must have `Microsoft.PlatformValidation` registered and permission
 to create resource groups and validation resources. The boot scenario requires an
-accessible Linux Gen1 x64 VHD and uses `Standard_D4s_v3`. Allow sufficient validity
-on the image URL for provisioning and execution. For public ARM, omit
+accessible Linux Gen1 x64 `.vhd` URL and uses `Standard_D4s_v3`. Test inputs reject
+URL credentials, query strings and fragments. A private blob requires the backend
+service identity to have read access; the tests do not change storage permissions.
+For public ARM, omit
 `PLATFORMVALIDATION_ARM_ENDPOINT`.
 
 The lifecycle test creates a unique, tagged resource group and CloudValidation,

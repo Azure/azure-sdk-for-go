@@ -112,7 +112,7 @@ func newTestClients(t *testing.T) (*testClients, context.Context) {
 	t.Cleanup(cancel)
 	return &testClients{
 		factory: factory, credential: cred, options: options, subscriptionID: subscriptionID,
-		location: recording.GetEnvVariable("LOCATION", "eastus2euap"),
+		location: recording.GetEnvVariable("LOCATION", "swedencentral"),
 	}, ctx
 }
 

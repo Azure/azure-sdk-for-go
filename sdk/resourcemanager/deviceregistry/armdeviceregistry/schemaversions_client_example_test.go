@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_SchemaVersion.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_SchemaVersion.json
 func ExampleSchemaVersionsClient_CreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleSchemaVersionsClient_CreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Delete_SchemaVersion.json
+// Generated from example definition: 2026-11-01/Delete_SchemaVersion.json
 func ExampleSchemaVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleSchemaVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_SchemaVersion.json
+// Generated from example definition: 2026-11-01/Get_SchemaVersion.json
 func ExampleSchemaVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleSchemaVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/List_SchemaVersions_BySchema.json
+// Generated from example definition: 2026-11-01/List_SchemaVersions_BySchema.json
 func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 		// 				Properties: &armdeviceregistry.SchemaVersionProperties{
 		// 					UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 		// 					Description: to.Ptr("Schema version 2"),
-		// 					SchemaContent: to.Ptr("{\"$schema\": \"http://json-schema.org/draft-07/schema#\",\"type\": \"object\",\"properties\": {\"humidity\": {\"type\": \"string\"},\"temperature\": {\"type\":\"number\"}, {\"pressure\": {\"type\": \"number\"}}}"),
+		// 					SchemaContent: to.Ptr("{\"$schema\": \"http://json-schema.org/draft-07/schema#\",\"type\": \"object\",\"properties\": {\"humidity\": {\"type\": \"string\"},\"temperature\": {\"type\":\"number\"}, \"pressure\": {\"type\": \"number\"}}}"),
 		// 					Hash: to.Ptr("b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"),
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				},

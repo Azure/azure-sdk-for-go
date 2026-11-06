@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 			Namespace:                  to.Ptr("sr-namespace-001"),
 			DisplayName:                to.Ptr("Schema Registry namespace 001"),
 			Description:                to.Ptr("This is a sample Schema Registry"),
-			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+			StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 		},
 		Tags:     map[string]*string{},
 		Location: to.Ptr("West Europe"),
@@ -48,9 +48,9 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
+	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("West Europe"),
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
@@ -64,14 +64,14 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	// 			Namespace: to.Ptr("sr-namespace-001"),
 	// 			DisplayName: to.Ptr("Schema Registry namespace 001"),
 	// 			Description: to.Ptr("This is a sample Schema Registry"),
-	// 			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+	// 			StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Delete_SchemaRegistry.json
+// Generated from example definition: 2026-11-01/Delete_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSchemaRegistriesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_SchemaRegistry.json
+// Generated from example definition: 2026-11-01/Get_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,9 +115,9 @@ func ExampleSchemaRegistriesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
+	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("West Europe"),
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
@@ -131,14 +131,14 @@ func ExampleSchemaRegistriesClient_Get() {
 	// 			Namespace: to.Ptr("sr-namespace-001"),
 	// 			DisplayName: to.Ptr("Schema Registry namespace 001"),
 	// 			Description: to.Ptr("This is a sample Schema Registry"),
-	// 			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+	// 			StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_ByResourceGroup.json
+// Generated from example definition: 2026-11-01/List_SchemaRegistries_ByResourceGroup.json
 func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 		// 					Namespace: to.Ptr("sr-namespace-001"),
 		// 					DisplayName: to.Ptr("Schema Registry namespace 001"),
 		// 					Description: to.Ptr("This is a sample Schema Registry"),
-		// 					StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+		// 					StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -207,7 +207,7 @@ func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 		// 					Namespace: to.Ptr("sr-namespace-002"),
 		// 					DisplayName: to.Ptr("Schema Registry namespace 002"),
 		// 					Description: to.Ptr("This is another sample Schema Registry"),
-		// 					StorageAccountContainerURL: to.Ptr("my-blob-storage-2.blob.core.windows.net/my-container"),
+		// 					StorageAccountContainerURL: to.Ptr("https://my-blob-storage-2.blob.core.windows.net/my-container"),
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -217,7 +217,7 @@ func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_BySubscription.json
+// Generated from example definition: 2026-11-01/List_SchemaRegistries_BySubscription.json
 func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 		// 					Namespace: to.Ptr("sr-namespace-001"),
 		// 					DisplayName: to.Ptr("Schema Registry namespace 001"),
 		// 					Description: to.Ptr("This is a sample Schema Registry"),
-		// 					StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+		// 					StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -272,7 +272,7 @@ func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Update_SchemaRegistry.json
+// Generated from example definition: 2026-11-01/Update_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,9 +305,9 @@ func ExampleSchemaRegistriesClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
+	// 		Location: to.Ptr("West Europe"),
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("West Europe"),
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
@@ -321,7 +321,7 @@ func ExampleSchemaRegistriesClient_BeginUpdate() {
 	// 			Namespace: to.Ptr("sr-namespace-001"),
 	// 			DisplayName: to.Ptr("Schema Registry namespace 001"),
 	// 			Description: to.Ptr("This is a sample Schema Registry"),
-	// 			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+	// 			StorageAccountContainerURL: to.Ptr("https://my-blob-storage.blob.core.windows.net/my-container"),
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

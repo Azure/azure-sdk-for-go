@@ -19,7 +19,7 @@ import (
 // NamespaceDiscoveredDevicesClient contains the methods for the NamespaceDiscoveredDevices group.
 // Don't use this type directly, use NewNamespaceDiscoveredDevicesClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-11-01
 type NamespaceDiscoveredDevicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *NamespaceDiscoveredDevicesClient) createOrReplaceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -195,7 +195,7 @@ func (client *NamespaceDiscoveredDevicesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +248,7 @@ func (client *NamespaceDiscoveredDevicesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,38 +266,38 @@ func (client *NamespaceDiscoveredDevicesClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List NamespaceDiscoveredDevice resources by Namespace
+// NewListByNamespacePager - List NamespaceDiscoveredDevice resources by Namespace
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceDiscoveredDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager
+//   - options - NamespaceDiscoveredDevicesClientListByNamespaceOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.NewListByNamespacePager
 //     method.
-func (client *NamespaceDiscoveredDevicesClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredDevicesClientListByResourceGroupOptions) *runtime.Pager[NamespaceDiscoveredDevicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceDiscoveredDevicesClientListByResourceGroupResponse]{
-		More: func(page NamespaceDiscoveredDevicesClientListByResourceGroupResponse) bool {
+func (client *NamespaceDiscoveredDevicesClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredDevicesClientListByNamespaceOptions) *runtime.Pager[NamespaceDiscoveredDevicesClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NamespaceDiscoveredDevicesClientListByNamespaceResponse]{
+		More: func(page NamespaceDiscoveredDevicesClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceDiscoveredDevicesClientListByResourceGroupResponse) (NamespaceDiscoveredDevicesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *NamespaceDiscoveredDevicesClientListByNamespaceResponse) (NamespaceDiscoveredDevicesClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDiscoveredDevicesClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
-				return NamespaceDiscoveredDevicesClientListByResourceGroupResponse{}, err
+				return NamespaceDiscoveredDevicesClientListByNamespaceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NamespaceDiscoveredDevicesClientListByResourceGroupResponse{}, err
+				return NamespaceDiscoveredDevicesClientListByNamespaceResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespaceDiscoveredDevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDiscoveredDevicesClientListByResourceGroupOptions) (*policy.Request, error) {
+// listByNamespaceCreateRequest creates the ListByNamespace request.
+func (client *NamespaceDiscoveredDevicesClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDiscoveredDevicesClientListByNamespaceOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -324,21 +324,21 @@ func (client *NamespaceDiscoveredDevicesClient) listByResourceGroupCreateRequest
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespaceDiscoveredDevicesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredDevicesClientListByResourceGroupResponse, error) {
-	result := NamespaceDiscoveredDevicesClientListByResourceGroupResponse{}
+// listByNamespaceHandleResponse handles the ListByNamespace response.
+func (client *NamespaceDiscoveredDevicesClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredDevicesClientListByNamespaceResponse, error) {
+	result := NamespaceDiscoveredDevicesClientListByNamespaceResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDiscoveredDeviceListResult); err != nil {
-		return NamespaceDiscoveredDevicesClientListByResourceGroupResponse{}, err
+		return NamespaceDiscoveredDevicesClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
@@ -414,7 +414,7 @@ func (client *NamespaceDiscoveredDevicesClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

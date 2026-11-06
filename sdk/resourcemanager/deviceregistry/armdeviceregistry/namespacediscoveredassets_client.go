@@ -19,7 +19,7 @@ import (
 // NamespaceDiscoveredAssetsClient contains the methods for the NamespaceDiscoveredAssets group.
 // Don't use this type directly, use NewNamespaceDiscoveredAssetsClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-11-01
 type NamespaceDiscoveredAssetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -195,7 +195,7 @@ func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +248,7 @@ func (client *NamespaceDiscoveredAssetsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,38 +266,38 @@ func (client *NamespaceDiscoveredAssetsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List NamespaceDiscoveredAsset resources by Namespace
+// NewListByNamespacePager - List NamespaceDiscoveredAsset resources by Namespace
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceDiscoveredAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
+//   - options - NamespaceDiscoveredAssetsClientListByNamespaceOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByNamespacePager
 //     method.
-func (client *NamespaceDiscoveredAssetsClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredAssetsClientListByResourceGroupOptions) *runtime.Pager[NamespaceDiscoveredAssetsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceDiscoveredAssetsClientListByResourceGroupResponse]{
-		More: func(page NamespaceDiscoveredAssetsClientListByResourceGroupResponse) bool {
+func (client *NamespaceDiscoveredAssetsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredAssetsClientListByNamespaceOptions) *runtime.Pager[NamespaceDiscoveredAssetsClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NamespaceDiscoveredAssetsClientListByNamespaceResponse]{
+		More: func(page NamespaceDiscoveredAssetsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceDiscoveredAssetsClientListByResourceGroupResponse) (NamespaceDiscoveredAssetsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *NamespaceDiscoveredAssetsClientListByNamespaceResponse) (NamespaceDiscoveredAssetsClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDiscoveredAssetsClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
-				return NamespaceDiscoveredAssetsClientListByResourceGroupResponse{}, err
+				return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NamespaceDiscoveredAssetsClientListByResourceGroupResponse{}, err
+				return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespaceDiscoveredAssetsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDiscoveredAssetsClientListByResourceGroupOptions) (*policy.Request, error) {
+// listByNamespaceCreateRequest creates the ListByNamespace request.
+func (client *NamespaceDiscoveredAssetsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDiscoveredAssetsClientListByNamespaceOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -324,21 +324,21 @@ func (client *NamespaceDiscoveredAssetsClient) listByResourceGroupCreateRequest(
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespaceDiscoveredAssetsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredAssetsClientListByResourceGroupResponse, error) {
-	result := NamespaceDiscoveredAssetsClientListByResourceGroupResponse{}
+// listByNamespaceHandleResponse handles the ListByNamespace response.
+func (client *NamespaceDiscoveredAssetsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredAssetsClientListByNamespaceResponse, error) {
+	result := NamespaceDiscoveredAssetsClientListByNamespaceResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDiscoveredAssetListResult); err != nil {
-		return NamespaceDiscoveredAssetsClientListByResourceGroupResponse{}, err
+		return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
@@ -414,7 +414,7 @@ func (client *NamespaceDiscoveredAssetsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

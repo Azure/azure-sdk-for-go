@@ -19,7 +19,7 @@ import (
 // NetworkProfileClient contains the methods for the NetworkProfile group.
 // Don't use this type directly, use NewNetworkProfileClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type NetworkProfileClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *NetworkProfileClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

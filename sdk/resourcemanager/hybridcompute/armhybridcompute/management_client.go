@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *ManagementClient) BeginSetupExtensions(ctx context.Context, resour
 	}
 }
 
-// SetupExtensions - The operation to Setup Machine Extensions.
+// setupExtensions - The operation to Setup Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) setupExtensions(ctx context.Context, resourceGroupName string, machineName string, extensions SetupExtensionRequest, options *ManagementClientBeginSetupExtensionsOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ManagementClient) setupExtensions(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// setupExtensionsCreateRequest creates the SetupExtensions request.
+// setupExtensionsCreateRequest creates the setupExtensions request.
 func (client *ManagementClient) setupExtensionsCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensions SetupExtensionRequest, _ *ManagementClientBeginSetupExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/addExtensions"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *ManagementClient) setupExtensionsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +144,7 @@ func (client *ManagementClient) BeginUpgradeExtensions(ctx context.Context, reso
 	}
 }
 
-// UpgradeExtensions - The operation to Upgrade Machine Extensions.
+// upgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// upgradeExtensionsCreateRequest creates the UpgradeExtensions request.
+// upgradeExtensionsCreateRequest creates the upgradeExtensions request.
 func (client *ManagementClient) upgradeExtensionsCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, _ *ManagementClientBeginUpgradeExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions"
 	if client.subscriptionID == "" {
@@ -186,7 +186,7 @@ func (client *ManagementClient) upgradeExtensionsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionUpgradeParameters); err != nil {

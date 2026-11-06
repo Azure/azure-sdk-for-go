@@ -1,5 +1,27 @@
 # Release History
 
+## 3.1.0 (2026-10-26)
+### Features Added
+
+- New value `IdentityKeyStoreTpmTransition` added to enum type `IdentityKeyStore`
+- New function `*ClientFactory.NewVMApplicationsClient() *VMApplicationsClient`
+- New function `NewVMApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMApplicationsClient, error)`
+- New function `*VMApplicationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, applicationName string, resource VMApplication, options *VMApplicationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VMApplicationsClientCreateOrUpdateResponse], error)`
+- New function `*VMApplicationsClient.BeginDelete(ctx context.Context, resourceGroupName string, machineName string, applicationName string, options *VMApplicationsClientBeginDeleteOptions) (*runtime.Poller[VMApplicationsClientDeleteResponse], error)`
+- New function `*VMApplicationsClient.Get(ctx context.Context, resourceGroupName string, machineName string, applicationName string, options *VMApplicationsClientGetOptions) (VMApplicationsClientGetResponse, error)`
+- New function `*VMApplicationsClient.GetInstanceView(ctx context.Context, resourceGroupName string, machineName string, applicationName string, options *VMApplicationsClientGetInstanceViewOptions) (VMApplicationsClientGetInstanceViewResponse, error)`
+- New function `*VMApplicationsClient.NewListPager(resourceGroupName string, machineName string, options *VMApplicationsClientListOptions) *runtime.Pager[VMApplicationsClientListResponse]`
+- New function `*VMApplicationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, applicationName string, properties VMApplicationUpdate, options *VMApplicationsClientBeginUpdateOptions) (*runtime.Poller[VMApplicationsClientUpdateResponse], error)`
+- New struct `VMApplication`
+- New struct `VMApplicationInstanceView`
+- New struct `VMApplicationInstanceViewAction`
+- New struct `VMApplicationProperties`
+- New struct `VMApplicationUpdate`
+- New struct `VMApplicationUpdateProperties`
+- New struct `VMApplicationsListResult`
+- New field `ClientPublicKey` in struct `MachineUpdateProperties`
+
+
 ## 3.0.0 (2026-07-24)
 ### Breaking Changes
 

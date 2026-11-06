@@ -25,21 +25,21 @@ type MachinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginAssessPatches func(ctx context.Context, resourceGroupName string, name string, options *armhybridcompute.MachinesClientBeginAssessPatchesOptions) (resp azfake.PollerResponder[armhybridcompute.MachinesClientAssessPatchesResponse], errResp azfake.ErrorResponder)
 
-	// CreateOrUpdate is the fake for method MachinesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, machineName string, parameters armhybridcompute.Machine, options *armhybridcompute.MachinesClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridcompute.MachinesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method MachinesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, machineName string, options *armhybridcompute.MachinesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhybridcompute.MachinesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method MachinesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, machineName string, options *armhybridcompute.MachinesClientGetOptions) (resp azfake.Responder[armhybridcompute.MachinesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginInstallPatches is the fake for method MachinesClient.BeginInstallPatches
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginInstallPatches func(ctx context.Context, resourceGroupName string, name string, installPatchesInput armhybridcompute.MachineInstallPatchesParameters, options *armhybridcompute.MachinesClientBeginInstallPatchesOptions) (resp azfake.PollerResponder[armhybridcompute.MachinesClientInstallPatchesResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method MachinesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, machineName string, parameters armhybridcompute.Machine, options *armhybridcompute.MachinesClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridcompute.MachinesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method MachinesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, machineName string, options *armhybridcompute.MachinesClientGetOptions) (resp azfake.Responder[armhybridcompute.MachinesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method MachinesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -102,14 +102,14 @@ func (m *MachinesServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "MachinesClient.BeginAssessPatches":
 				res.resp, res.err = m.dispatchBeginAssessPatches(req)
-			case "MachinesClient.CreateOrUpdate":
-				res.resp, res.err = m.dispatchCreateOrUpdate(req)
 			case "MachinesClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
-			case "MachinesClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
 			case "MachinesClient.BeginInstallPatches":
 				res.resp, res.err = m.dispatchBeginInstallPatches(req)
+			case "MachinesClient.CreateOrUpdate":
+				res.resp, res.err = m.dispatchCreateOrUpdate(req)
+			case "MachinesClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
 			case "MachinesClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
 			case "MachinesClient.NewListBySubscriptionPager":
@@ -176,51 +176,6 @@ func (m *MachinesServerTransport) dispatchBeginAssessPatches(req *http.Request) 
 	return resp, nil
 }
 
-func (m *MachinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	body, err := server.UnmarshalRequestAsJSON[armhybridcompute.Machine](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armhybridcompute.MachinesClientCreateOrUpdateOptions
-	if expandParam != nil {
-		options = &armhybridcompute.MachinesClientCreateOrUpdateOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, machineNameParam, body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Machine, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (m *MachinesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
@@ -262,47 +217,6 @@ func (m *MachinesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		m.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (m *MachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(armhybridcompute.InstanceViewTypes(qp.Get("$expand")))
-	var options *armhybridcompute.MachinesClientGetOptions
-	if expandParam != nil {
-		options = &armhybridcompute.MachinesClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, machineNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Machine, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -351,6 +265,92 @@ func (m *MachinesServerTransport) dispatchBeginInstallPatches(req *http.Request)
 		m.beginInstallPatches.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *MachinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	body, err := server.UnmarshalRequestAsJSON[armhybridcompute.Machine](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armhybridcompute.MachinesClientCreateOrUpdateOptions
+	if expandParam != nil {
+		options = &armhybridcompute.MachinesClientCreateOrUpdateOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, machineNameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Machine, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *MachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armhybridcompute.InstanceViewTypes(qp.Get("$expand")))
+	var options *armhybridcompute.MachinesClientGetOptions
+	if expandParam != nil {
+		options = &armhybridcompute.MachinesClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, machineNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Machine, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

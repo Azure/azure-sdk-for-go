@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-15/machine/Machine_AssessPatches.json
+// Generated from example definition: 2026-09-01/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,85 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/machine/Machines_Delete.json
+func ExampleMachinesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMachinesClient().BeginDelete(ctx, "myResourceGroup", "myMachine", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01/machine/Machine_InstallPatches.json
+func ExampleMachinesClient_BeginInstallPatches() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMachinesClient().BeginInstallPatches(ctx, "myResourceGroupName", "myMachineName", armhybridcompute.MachineInstallPatchesParameters{
+		MaximumDuration: to.Ptr("PT4H"),
+		RebootSetting:   to.Ptr(armhybridcompute.VMGuestPatchRebootSettingIfRequired),
+		WindowsParameters: &armhybridcompute.WindowsParameters{
+			ClassificationsToInclude: []*armhybridcompute.VMGuestPatchClassificationWindows{
+				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsCritical),
+				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsSecurity),
+			},
+			MaxPatchPublishDate: to.Ptr(time.Date(2021, time.August, 19, 2, 36, 43, 53990400, time.UTC)),
+			PatchNameMasksToExclude: []*string{
+				to.Ptr("*Windows*"),
+			},
+			PatchNameMasksToInclude: []*string{
+				to.Ptr("*SQL*"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhybridcompute.MachinesClientInstallPatchesResponse{
+	// 	MachineInstallPatchesResult: armhybridcompute.MachineInstallPatchesResult{
+	// 		ExcludedPatchCount: to.Ptr[int32](0),
+	// 		FailedPatchCount: to.Ptr[int32](0),
+	// 		InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
+	// 		InstalledPatchCount: to.Ptr[int32](3),
+	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
+	// 		MaintenanceWindowExceeded: to.Ptr(false),
+	// 		NotSelectedPatchCount: to.Ptr[int32](0),
+	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
+	// 		PendingPatchCount: to.Ptr[int32](2),
+	// 		RebootStatus: to.Ptr(armhybridcompute.VMGuestPatchRebootStatusCompleted),
+	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 6, 974000000, time.UTC)),
+	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
+	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,32 +264,13 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/machine/Machines_Delete.json
-func ExampleMachinesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMachinesClient().BeginDelete(ctx, "myResourceGroup", "myMachine", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15/machine/Machines_Get.json
+// Generated from example definition: 2026-09-01/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,11 +460,13 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 		},
 	// 		Resources: []*armhybridcompute.MachineExtension{
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: 2026-09-01/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,6 +550,8 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 							},
 	// 							LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 						},
+	// 						Tags: map[string]*string{
 	// 						},
 	// 					},
 	// 					EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -613,68 +676,13 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 		},
 	// 		Resources: []*armhybridcompute.MachineExtension{
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/machine/Machine_InstallPatches.json
-func ExampleMachinesClient_BeginInstallPatches() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMachinesClient().BeginInstallPatches(ctx, "myResourceGroupName", "myMachineName", armhybridcompute.MachineInstallPatchesParameters{
-		MaximumDuration: to.Ptr("PT4H"),
-		RebootSetting:   to.Ptr(armhybridcompute.VMGuestPatchRebootSettingIfRequired),
-		WindowsParameters: &armhybridcompute.WindowsParameters{
-			ClassificationsToInclude: []*armhybridcompute.VMGuestPatchClassificationWindows{
-				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsCritical),
-				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsSecurity),
-			},
-			MaxPatchPublishDate: to.Ptr(time.Date(2021, time.August, 19, 2, 36, 43, 53990400, time.UTC)),
-			PatchNameMasksToExclude: []*string{
-				to.Ptr("*Windows*"),
-			},
-			PatchNameMasksToInclude: []*string{
-				to.Ptr("*SQL*"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridcompute.MachinesClientInstallPatchesResponse{
-	// 	MachineInstallPatchesResult: armhybridcompute.MachineInstallPatchesResult{
-	// 		ExcludedPatchCount: to.Ptr[int32](0),
-	// 		FailedPatchCount: to.Ptr[int32](0),
-	// 		InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
-	// 		InstalledPatchCount: to.Ptr[int32](3),
-	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
-	// 		MaintenanceWindowExceeded: to.Ptr(false),
-	// 		NotSelectedPatchCount: to.Ptr[int32](0),
-	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
-	// 		PendingPatchCount: to.Ptr[int32](2),
-	// 		RebootStatus: to.Ptr(armhybridcompute.VMGuestPatchRebootStatusCompleted),
-	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 6, 974000000, time.UTC)),
-	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
-	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,6 +802,8 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myMachine2"),
@@ -891,6 +901,8 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -898,7 +910,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/machine/Machines_ListBySubscription.json
+// Generated from example definition: 2026-09-01/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -922,7 +934,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armhybridcompute.MachinesClientListBySubscriptionResponse{
 		// 	MachineListResult: armhybridcompute.MachineListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-07-15&$skiptoken=nextPageToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-09-01&$skiptoken=nextPageToken"),
 		// 		Value: []*armhybridcompute.Machine{
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
@@ -1018,6 +1030,8 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 			{
@@ -1115,6 +1129,8 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1122,7 +1138,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/machine/Machines_Update.json
+// Generated from example definition: 2026-09-01/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1250,6 +1266,8 @@ func ExampleMachinesClient_Update() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }

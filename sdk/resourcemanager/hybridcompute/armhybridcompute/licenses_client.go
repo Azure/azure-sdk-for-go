@@ -19,7 +19,7 @@ import (
 // LicensesClient contains the methods for the Licenses group.
 // Don't use this type directly, use NewLicensesClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type LicensesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *LicensesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a license.
+// createOrUpdate - The operation to create or update a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupName string, licenseName string, parameters License, options *LicensesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, licenseName string, parameters License, _ *LicensesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -142,7 +142,7 @@ func (client *LicensesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - The operation to delete a license.
+// deleteOperation - The operation to delete a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroupName string, licenseName string, options *LicensesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, licenseName string, _ *LicensesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}"
 	if client.subscriptionID == "" {
@@ -184,8 +184,149 @@ func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - The operation to update a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - licenseName - The name of the license.
+//   - parameters - Parameters supplied to the Update license operation.
+//   - options - LicensesClientBeginUpdateOptions contains the optional parameters for the LicensesClient.BeginUpdate method.
+func (client *LicensesClient) BeginUpdate(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, options *LicensesClientBeginUpdateOptions) (*runtime.Poller[LicensesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, licenseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LicensesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LicensesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - The operation to update a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LicensesClient) update(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, options *LicensesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LicensesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, licenseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *LicensesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, _ *LicensesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if licenseName == "" {
+		return nil, errors.New("parameter licenseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{licenseName}", url.PathEscape(licenseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateLicense - The operation to validate a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - parameters - The content of the action request
+//   - options - LicensesClientBeginValidateLicenseOptions contains the optional parameters for the LicensesClient.BeginValidateLicense
+//     method.
+func (client *LicensesClient) BeginValidateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*runtime.Poller[LicensesClientValidateLicenseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateLicense(ctx, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LicensesClientValidateLicenseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LicensesClientValidateLicenseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateLicense - The operation to validate a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LicensesClient) validateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LicensesClient.BeginValidateLicense"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateLicenseCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateLicenseCreateRequest creates the validateLicense request.
+func (client *LicensesClient) validateLicenseCreateRequest(ctx context.Context, parameters License, _ *LicensesClientBeginValidateLicenseOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/validateLicense"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -231,7 +372,7 @@ func (client *LicensesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,7 +443,7 @@ func (client *LicensesClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -369,7 +510,7 @@ func (client *LicensesClient) listBySubscriptionCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -386,145 +527,4 @@ func (client *LicensesClient) listBySubscriptionHandleResponse(resp *http.Respon
 		return LicensesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - The operation to update a license.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - licenseName - The name of the license.
-//   - parameters - Parameters supplied to the Update license operation.
-//   - options - LicensesClientBeginUpdateOptions contains the optional parameters for the LicensesClient.BeginUpdate method.
-func (client *LicensesClient) BeginUpdate(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, options *LicensesClientBeginUpdateOptions) (*runtime.Poller[LicensesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, licenseName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LicensesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LicensesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - The operation to update a license.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LicensesClient) update(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, options *LicensesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LicensesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, licenseName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *LicensesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, _ *LicensesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if licenseName == "" {
-		return nil, errors.New("parameter licenseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{licenseName}", url.PathEscape(licenseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginValidateLicense - The operation to validate a license.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - parameters - The content of the action request
-//   - options - LicensesClientBeginValidateLicenseOptions contains the optional parameters for the LicensesClient.BeginValidateLicense
-//     method.
-func (client *LicensesClient) BeginValidateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*runtime.Poller[LicensesClientValidateLicenseResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateLicense(ctx, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LicensesClientValidateLicenseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LicensesClientValidateLicenseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ValidateLicense - The operation to validate a license.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LicensesClient) validateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LicensesClient.BeginValidateLicense"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateLicenseCreateRequest(ctx, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateLicenseCreateRequest creates the ValidateLicense request.
-func (client *LicensesClient) validateLicenseCreateRequest(ctx context.Context, parameters License, _ *LicensesClientBeginValidateLicenseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/validateLicense"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

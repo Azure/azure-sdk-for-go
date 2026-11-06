@@ -12,7 +12,33 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Create.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_Delete.json
+func ExamplePrivateLinkScopesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateLinkScopesClient().BeginDelete(ctx, "my-resource-group", "my-privatelinkscope", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhybridcompute.PrivateLinkScopesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_Create.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +99,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Update.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_Update.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,33 +164,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Delete.json
-func ExamplePrivateLinkScopesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateLinkScopesClient().BeginDelete(ctx, "my-resource-group", "my-privatelinkscope", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridcompute.PrivateLinkScopesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Get.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_Get.json
 func ExamplePrivateLinkScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_GetValidation.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_GetValidation.json
 func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
 func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,94 +293,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_List.json
-func ExamplePrivateLinkScopesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateLinkScopesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armhybridcompute.PrivateLinkScopesClientListResponse{
-		// 	PrivateLinkScopeListResult: armhybridcompute.PrivateLinkScopeListResult{
-		// 		Value: []*armhybridcompute.PrivateLinkScope{
-		// 			{
-		// 				Name: to.Ptr("my-privatelinkscope"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-privatelinkscope"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armhybridcompute.PrivateLinkScopeProperties{
-		// 					PrivateLinkScopeID: to.Ptr("e5dc51d3-92ed-4d7e-947a-775ea79b4919"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					PublicNetworkAccess: to.Ptr(armhybridcompute.PublicNetworkAccessTypeDisabled),
-		// 					ServiceExtensions: []*armhybridcompute.ServiceExtension{
-		// 						{
-		// 							ServiceExtensionPublicNetworkAccess: to.Ptr(armhybridcompute.ServiceExtensionPublicNetworkAccessEnabled),
-		// 							ServiceExtensionType: to.Ptr("SQL"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("my-other-privatelinkscope"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-other-privatelinkscope"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armhybridcompute.PrivateLinkScopeProperties{
-		// 					PrivateEndpointConnections: []*armhybridcompute.PrivateEndpointConnectionDataModel{
-		// 						{
-		// 							Name: to.Ptr("private-endpoint-connection-name"),
-		// 							Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes/privateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/myPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name"),
-		// 							Properties: &armhybridcompute.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armhybridcompute.PrivateEndpointProperty{
-		// 									ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armhybridcompute.PrivateLinkServiceConnectionStateProperty{
-		// 									Description: to.Ptr("Auto-approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr("Approved"),
-		// 								},
-		// 								ProvisioningState: to.Ptr("Succeeded"),
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateLinkScopeID: to.Ptr("f5dc51d3-92ed-4d7e-947a-775ea79b4919"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					PublicNetworkAccess: to.Ptr(armhybridcompute.PublicNetworkAccessTypeDisabled),
-		// 					ServiceExtensions: []*armhybridcompute.ServiceExtension{
-		// 						{
-		// 							ServiceExtensionPublicNetworkAccess: to.Ptr(armhybridcompute.ServiceExtensionPublicNetworkAccessEnabled),
-		// 							ServiceExtensionType: to.Ptr("SQL"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
 func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +398,94 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_List.json
+func ExamplePrivateLinkScopesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinkScopesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridcompute.PrivateLinkScopesClientListResponse{
+		// 	PrivateLinkScopeListResult: armhybridcompute.PrivateLinkScopeListResult{
+		// 		Value: []*armhybridcompute.PrivateLinkScope{
+		// 			{
+		// 				Name: to.Ptr("my-privatelinkscope"),
+		// 				Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-privatelinkscope"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armhybridcompute.PrivateLinkScopeProperties{
+		// 					PrivateLinkScopeID: to.Ptr("e5dc51d3-92ed-4d7e-947a-775ea79b4919"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					PublicNetworkAccess: to.Ptr(armhybridcompute.PublicNetworkAccessTypeDisabled),
+		// 					ServiceExtensions: []*armhybridcompute.ServiceExtension{
+		// 						{
+		// 							ServiceExtensionPublicNetworkAccess: to.Ptr(armhybridcompute.ServiceExtensionPublicNetworkAccessEnabled),
+		// 							ServiceExtensionType: to.Ptr("SQL"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("my-other-privatelinkscope"),
+		// 				Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-other-privatelinkscope"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armhybridcompute.PrivateLinkScopeProperties{
+		// 					PrivateEndpointConnections: []*armhybridcompute.PrivateEndpointConnectionDataModel{
+		// 						{
+		// 							Name: to.Ptr("private-endpoint-connection-name"),
+		// 							Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/myPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name"),
+		// 							Properties: &armhybridcompute.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armhybridcompute.PrivateEndpointProperty{
+		// 									ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armhybridcompute.PrivateLinkServiceConnectionStateProperty{
+		// 									Description: to.Ptr("Auto-approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr("Approved"),
+		// 								},
+		// 								ProvisioningState: to.Ptr("Succeeded"),
+		// 							},
+		// 						},
+		// 					},
+		// 					PrivateLinkScopeID: to.Ptr("f5dc51d3-92ed-4d7e-947a-775ea79b4919"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					PublicNetworkAccess: to.Ptr(armhybridcompute.PublicNetworkAccessTypeDisabled),
+		// 					ServiceExtensions: []*armhybridcompute.ServiceExtension{
+		// 						{
+		// 							ServiceExtensionPublicNetworkAccess: to.Ptr(armhybridcompute.ServiceExtensionPublicNetworkAccessEnabled),
+		// 							ServiceExtensionType: to.Ptr("SQL"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
 func ExamplePrivateLinkScopesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

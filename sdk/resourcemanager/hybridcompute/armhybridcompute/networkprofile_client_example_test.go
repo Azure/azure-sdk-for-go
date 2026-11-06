@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/NetworkProfile_Get.json
+// Generated from example definition: 2026-09-01/NetworkProfile_Get.json
 func ExampleNetworkProfileClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

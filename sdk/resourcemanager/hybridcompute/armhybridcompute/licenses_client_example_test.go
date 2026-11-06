@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/license/License_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/license/License_CreateOrUpdate.json
 func ExampleLicensesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,13 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_Delete.json
+// Generated from example definition: 2026-09-01/license/License_Delete.json
 func ExampleLicensesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,148 +97,7 @@ func ExampleLicensesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_Get.json
-func ExampleLicensesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLicensesClient().Get(ctx, "myResourceGroup", "{licenseName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridcompute.LicensesClientGetResponse{
-	// 	License: armhybridcompute.License{
-	// 		Name: to.Ptr("{licenseName}"),
-	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		Properties: &armhybridcompute.LicenseProperties{
-	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
-	// 				Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
-	// 				AssignedLicenses: to.Ptr[int32](8),
-	// 				Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
-	// 				ImmutableID: to.Ptr("<generated Guid>"),
-	// 				Processors: to.Ptr[int32](6),
-	// 				State: to.Ptr(armhybridcompute.LicenseStateActivated),
-	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
-	// 			},
-	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15/license/License_ListByResourceGroup.json
-func ExampleLicensesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLicensesClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armhybridcompute.LicensesClientListByResourceGroupResponse{
-		// 	LicensesListResult: armhybridcompute.LicensesListResult{
-		// 		Value: []*armhybridcompute.License{
-		// 			{
-		// 				Name: to.Ptr("{licenseName}"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
-		// 				Location: to.Ptr("eastus2euap"),
-		// 				Properties: &armhybridcompute.LicenseProperties{
-		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
-		// 						Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
-		// 						AssignedLicenses: to.Ptr[int32](8),
-		// 						Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
-		// 						ImmutableID: to.Ptr("<generated Guid>"),
-		// 						Processors: to.Ptr[int32](6),
-		// 						State: to.Ptr(armhybridcompute.LicenseStateActivated),
-		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
-		// 					},
-		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-15/license/License_ListBySubscription.json
-func ExampleLicensesClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLicensesClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armhybridcompute.LicensesClientListBySubscriptionResponse{
-		// 	LicensesListResult: armhybridcompute.LicensesListResult{
-		// 		Value: []*armhybridcompute.License{
-		// 			{
-		// 				Name: to.Ptr("{licenseName}"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
-		// 				Location: to.Ptr("eastus2euap"),
-		// 				Properties: &armhybridcompute.LicenseProperties{
-		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
-		// 						Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
-		// 						AssignedLicenses: to.Ptr[int32](8),
-		// 						Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
-		// 						ImmutableID: to.Ptr("<generated Guid>"),
-		// 						Processors: to.Ptr[int32](6),
-		// 						State: to.Ptr(armhybridcompute.LicenseStateActivated),
-		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
-		// 					},
-		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-15/license/License_Update.json
+// Generated from example definition: 2026-09-01/license/License_Update.json
 func ExampleLicensesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +153,7 @@ func ExampleLicensesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_ValidateLicense.json
+// Generated from example definition: 2026-09-01/license/License_ValidateLicense.json
 func ExampleLicensesClient_BeginValidateLicense() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,6 +206,155 @@ func ExampleLicensesClient_BeginValidateLicense() {
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-09-01/license/License_Get.json
+func ExampleLicensesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLicensesClient().Get(ctx, "myResourceGroup", "{licenseName}", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhybridcompute.LicensesClientGetResponse{
+	// 	License: armhybridcompute.License{
+	// 		Name: to.Ptr("{licenseName}"),
+	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 		Location: to.Ptr("eastus2euap"),
+	// 		Properties: &armhybridcompute.LicenseProperties{
+	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
+	// 				Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
+	// 				AssignedLicenses: to.Ptr[int32](8),
+	// 				Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
+	// 				ImmutableID: to.Ptr("<generated Guid>"),
+	// 				Processors: to.Ptr[int32](6),
+	// 				State: to.Ptr(armhybridcompute.LicenseStateActivated),
+	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
+	// 			},
+	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/license/License_ListByResourceGroup.json
+func ExampleLicensesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLicensesClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridcompute.LicensesClientListByResourceGroupResponse{
+		// 	LicensesListResult: armhybridcompute.LicensesListResult{
+		// 		Value: []*armhybridcompute.License{
+		// 			{
+		// 				Name: to.Ptr("{licenseName}"),
+		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+		// 				Location: to.Ptr("eastus2euap"),
+		// 				Properties: &armhybridcompute.LicenseProperties{
+		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
+		// 						Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
+		// 						AssignedLicenses: to.Ptr[int32](8),
+		// 						Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
+		// 						ImmutableID: to.Ptr("<generated Guid>"),
+		// 						Processors: to.Ptr[int32](6),
+		// 						State: to.Ptr(armhybridcompute.LicenseStateActivated),
+		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
+		// 					},
+		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/license/License_ListBySubscription.json
+func ExampleLicensesClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLicensesClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridcompute.LicensesClientListBySubscriptionResponse{
+		// 	LicensesListResult: armhybridcompute.LicensesListResult{
+		// 		Value: []*armhybridcompute.License{
+		// 			{
+		// 				Name: to.Ptr("{licenseName}"),
+		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+		// 				Location: to.Ptr("eastus2euap"),
+		// 				Properties: &armhybridcompute.LicenseProperties{
+		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
+		// 						Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
+		// 						AssignedLicenses: to.Ptr[int32](8),
+		// 						Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
+		// 						ImmutableID: to.Ptr("<generated Guid>"),
+		// 						Processors: to.Ptr[int32](6),
+		// 						State: to.Ptr(armhybridcompute.LicenseStateActivated),
+		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
+		// 					},
+		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

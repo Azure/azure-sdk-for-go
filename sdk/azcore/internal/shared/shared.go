@@ -22,6 +22,9 @@ type CtxWithHTTPHeaderKey struct{}
 // CtxWithRetryOptionsKey is used as a context key for adding/retrieving RetryOptions.
 type CtxWithRetryOptionsKey struct{}
 
+// CtxWithTokenRefreshKey is used as a context key for requesting token refresh.
+type CtxWithTokenRefreshKey struct{}
+
 // CtxWithCaptureResponse is used as a context key for retrieving the raw response.
 type CtxWithCaptureResponse struct{}
 
@@ -138,7 +141,7 @@ type ContextWithDeniedValues struct {
 // It acts as a deny-list for certain context keys.
 func (c *ContextWithDeniedValues) Value(key any) any {
 	switch key.(type) {
-	case CtxAPINameKey, CtxWithCaptureResponse, CtxWithHTTPHeaderKey, CtxWithRetryOptionsKey, CtxWithTracingTracer:
+	case CtxAPINameKey, CtxWithCaptureResponse, CtxWithHTTPHeaderKey, CtxWithRetryOptionsKey, CtxWithTokenRefreshKey, CtxWithTracingTracer:
 		return nil
 	default:
 		return c.Context.Value(key)

@@ -113,6 +113,7 @@ func TestContextWithDeniedValues(t *testing.T) {
 	ctx = context.WithValue(ctx, CtxWithCaptureResponse{}, value)
 	ctx = context.WithValue(ctx, CtxWithHTTPHeaderKey{}, value)
 	ctx = context.WithValue(ctx, CtxWithRetryOptionsKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithTokenRefreshKey{}, value)
 	ctx = context.WithValue(ctx, CtxWithTracingTracer{}, value)
 	ctx = &ContextWithDeniedValues{Context: ctx}
 
@@ -120,6 +121,7 @@ func TestContextWithDeniedValues(t *testing.T) {
 	require.Nil(t, ctx.Value(CtxWithCaptureResponse{}))
 	require.Nil(t, ctx.Value(CtxWithHTTPHeaderKey{}))
 	require.Nil(t, ctx.Value(CtxWithRetryOptionsKey{}))
+	require.Nil(t, ctx.Value(CtxWithTokenRefreshKey{}))
 	require.Nil(t, ctx.Value(CtxWithTracingTracer{}))
 	require.NotNil(t, ctx.Value(testKey{}))
 }

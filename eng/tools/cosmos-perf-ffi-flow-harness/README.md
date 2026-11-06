@@ -1,14 +1,36 @@
 # Cosmos Go v2 FFI flow harness (Nov 5 campaign)
 
-This is the exact harness behind the Nov 5 Go v2 CPU analysis. It compares three point-read paths:
+This is the exact harness behind the Nov 5 Go v2 CPU analysis. It is a review snapshot, not a supported tool. For the reusable workflow, see the `cosmos-cross-sdk-perf` skill.
 
-- `go-v2-native`: Go v2 calling the Rust native driver through cgo.
-- `rust-sdk`: the standalone Rust SDK.
-- `rust-driver`: the Rust driver called directly.
+It compares three point-read paths on the same VM, account, and container:
 
-The harness is a snapshot for review, not a supported tool. For the reusable, parameterized workflow, see the `cosmos-cross-sdk-perf` skill.
+| Leg | What it measures |
+| --- | --- |
+| `go-v2-native` | Go v2 calling the Rust native driver through cgo |
+| `rust-driver` | The Rust driver called directly |
+| `rust-sdk` | The standalone Rust SDK |
 
-## Pinned inputs
+## Layout
+
+| Folder | Purpose | Needed for a smoke test? |
+| --- | --- | --- |
+| [`bench/`](bench) | Workload spec, the Rust benchmark, source pinning and patching, builds, and the campaign runner | Yes |
+| [`instrumentation/`](instrumentation) | Optional FFI lifecycle counters, wire proofs, and their tests | No |
+| [`analysis/`](analysis) | Perf Self attribution, calibration, summaries, and provenance | No |
+| [`ops/`](ops) | VM plumbing: scratch disk, resume, inspection, export, and input bundling | No |
+| [`report/`](report) | Builds the team HTML report from exported results | No |
+
+The folders exist for review only. [`ops/package_inputs.py`](ops/package_inputs.py) bundles everything into one flat directory, and the scripts run from there on the VM. Moving the files into folders didn't change the bundle; its SHA-256 is identical.
+
+## Read these first
+
+1. [`bench/run-spec.json`](bench/run-spec.json): the workload and the gates.
+2. [`bench/run_campaign.sh`](bench/run_campaign.sh): the end-to-end order.
+3. [`bench/patch_native.py`](bench/patch_native.py): how the native driver is patched, including Tokio threads.
+4. [`bench/rust_main.rs`](bench/rust_main.rs): the Rust SDK and Rust driver legs.
+5. [`bench/run_leg.py`](bench/run_leg.py): how one leg is launched and sampled.
+
+## Pinned inputs and workload
 
 | Input | Value |
 | --- | --- |
@@ -17,52 +39,50 @@ The harness is a snapshot for review, not a supported tool. For the reusable, pa
 | Native ABI | 0.3.0 |
 | VM | 4 vCPU Linux, in the same region as the Cosmos account |
 
-The workload and gates are defined in [`harness/run-spec.json`](harness/run-spec.json):
+The workload:
 
-- 1,024 seeded 1 KiB documents with partition key `/pk`, read in round-robin order.
+- 1,024 seeded 1 KiB documents with partition key `/pk`, read round-robin.
 - Strict closed loop at 32 and 64 workers.
 - 10 s warmup, then 60 s of measurement.
 - Gateway V1 over HTTP/2, with binary encoding disabled.
 - Zero errors, retries, and throttles required.
 
-## Where the two Tokio worker threads come from
+## Why Tokio uses two worker threads
 
-All three legs pin Tokio to two worker threads so they're compared on the same runtime shape:
+All legs use the same runtime shape:
 
-- **Go v2 native driver:** [`harness/patch_native.py`](harness/patch_native.py) (around lines 35–38) inserts `.worker_threads(2)` into the driver's `src/runtime.rs`. The unpatched driver uses Tokio's default, which is one worker per core.
-- **Rust SDK and Rust driver legs:** [`harness/rust_main.rs`](harness/rust_main.rs) uses `#[tokio::main(flavor = "multi_thread", worker_threads = 2)]`.
+- **Go v2 native driver:** [`bench/patch_native.py`](bench/patch_native.py) (around lines 35–38) inserts `.worker_threads(2)` into the driver's `src/runtime.rs`. The unpatched driver defaults to one worker per core.
+- **Rust legs:** [`bench/rust_main.rs`](bench/rust_main.rs) uses `#[tokio::main(flavor = "multi_thread", worker_threads = 2)]`.
 
 ## Flow
 
-[`harness/run_campaign.sh`](harness/run_campaign.sh) runs the campaign in this order:
+[`bench/run_campaign.sh`](bench/run_campaign.sh) runs these steps:
 
-1. Prerequisite checks (`check_run_prerequisites.sh`).
-2. Stage the pinned sources (`stage_sources.sh`), patch the native driver and Go code (`patch_native.py`, `patch_go.py`, `patch_wire.py`), then build (`build_rust.sh`, `build_go.sh`).
-3. Write build provenance: a SHA-256 hash and build ID for every binary (`write_build_provenance.py`).
-4. Calibrate perf call chains (`calibrate.py`).
-5. Run the separated classes. The clean-score order is mirrored to reduce time bias, and each leg runs through `run_leg.py`.
+1. Check prerequisites.
+2. Stage pinned sources, patch them, then build.
+3. Record each binary's SHA-256 and build ID.
+4. Calibrate perf call chains.
+5. Run the run classes, mirroring order to reduce time bias:
    - `clean-score`: external sampling only.
    - `perf`: per-PID perf at 49 Hz.
-   - `ffi-flow`: Go v2 per-second lifecycle ledgers.
+   - `ffi-flow`: Go v2 lifecycle ledgers.
    - `go-diagnostic`: pprof and a short runtime trace.
-6. Summarize and attribute the results:
-   - `clean_summary.py` and `flow_summary.py`.
-   - `analyze_go_diagnostics.py`.
-   - `profile_attribution.py`: perf Self accounting, CPU flywheels, and flame graphs.
-   - `report.py`.
+6. Summarize and attribute CPU.
 
-Flame graphs are generated in `profile_attribution.py` from folded perf stacks using Brendan Gregg's `flamegraph.pl`. Output goes to `run/w{32,64}/perf/repeat-1/<leg>/derived-label-v2/`:
+Flame graphs come from [`analysis/profile_attribution.py`](analysis/profile_attribution.py), which uses `flamegraph.pl`. Output goes to `run/w{32,64}/perf/repeat-1/<leg>/derived-label-v2/`:
 
 - `whole-process.{folded,svg,html}`
 - `cpu-per-read.{folded,svg,html}`
 - `cpu-flywheel.svg`
 
-The `report/` scripts build the team HTML report from the exported results.
+## Tests
+
+The tests assume the flat VM layout. To run them locally, copy the four source folders into one directory and run `python -m unittest test_flow` there. Four tests need the pinned driver sources, which aren't included, so they error locally.
 
 ## Not included
 
-- The VM key helper (`common.sh`). It retrieves the Cosmos key through managed identity and passes it on file descriptor 3.
-- Local VM-access scripts, generated input bundles, and results.
+- The VM key helper, which passes the Cosmos key on file descriptor 3.
+- Local VM-access scripts, generated bundles, and results.
 
 No endpoints, keys, or resource names are included.
 

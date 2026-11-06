@@ -7,6 +7,17 @@ import sys
 import zipfile
 
 root = pathlib.Path(__file__).parent
+# Sources are grouped into folders for review; the VM bundle is flat.
+folders = ("bench", "instrumentation", "analysis", "ops")
+
+
+def source(name):
+    matches = [root.parent / folder / name for folder in folders if (root.parent / folder / name).is_file()]
+    if len(matches) != 1:
+        raise SystemExit(f"expected exactly one {name} under {folders}, found {len(matches)}")
+    return matches[0]
+
+
 names = [
     "flow.rs", "flow.go", "flow_cgo.go", "flow_test.go",
     "barrier_go.go", "barrier_go_test.go", "rust_main.rs", "core.rs",
@@ -61,7 +72,7 @@ with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED, compressleve
     for name in names:
         info = zipfile.ZipInfo(name)
         info.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(info, (root / name).read_text().replace("\r\n", "\n").encode())
+        archive.writestr(info, source(name).read_text().replace("\r\n", "\n").encode())
 data = buffer.getvalue()
 digest = hashlib.sha256(data).hexdigest()
 if resume_rust:

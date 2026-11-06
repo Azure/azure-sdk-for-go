@@ -4,6 +4,10 @@
 
 package armquota
 
+const (
+	version20260901Preview string = "2026-09-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -150,6 +154,64 @@ func PossibleRequestStateValues() []RequestState {
 		RequestStateInProgress,
 		RequestStateInvalid,
 		RequestStateSucceeded,
+	}
+}
+
+// TransferProvisioningState - Provisioning state of the ARM long-running operation that last wrote to a quota
+// transfer resource (the donor PUT, or the recipient approve / reject actions).
+// Reflects the infrastructure outcome of that call only; the business outcome of the
+// transfer itself is reported separately on `transferStatus`.
+type TransferProvisioningState string
+
+const (
+	// TransferProvisioningStateCanceled - The LRO was canceled before it reached a terminal state.
+	TransferProvisioningStateCanceled TransferProvisioningState = "Canceled"
+	// TransferProvisioningStateFailed - The LRO terminated with a failure.
+	TransferProvisioningStateFailed TransferProvisioningState = "Failed"
+	// TransferProvisioningStateSucceeded - The LRO completed successfully.
+	TransferProvisioningStateSucceeded TransferProvisioningState = "Succeeded"
+)
+
+// PossibleTransferProvisioningStateValues returns the possible values for the TransferProvisioningState const type.
+func PossibleTransferProvisioningStateValues() []TransferProvisioningState {
+	return []TransferProvisioningState{
+		TransferProvisioningStateCanceled,
+		TransferProvisioningStateFailed,
+		TransferProvisioningStateSucceeded,
+	}
+}
+
+// TransferStatus - Business status of a quota transfer. Distinct from `provisioningState`, which only
+// reports the ARM LRO outcome of the most recent call.
+type TransferStatus string
+
+const (
+	// TransferStatusAccepted - The recipient has approved the transfer; quota commit is in progress.
+	TransferStatusAccepted TransferStatus = "Accepted"
+	// TransferStatusCancelled - The donor cancelled the transfer before it was approved.
+	TransferStatusCancelled TransferStatus = "Cancelled"
+	// TransferStatusCompleted - The transfer has been applied and quota is committed at the recipient.
+	TransferStatusCompleted TransferStatus = "Completed"
+	// TransferStatusExpired - The transfer aged out before the recipient approved or rejected it.
+	TransferStatusExpired TransferStatus = "Expired"
+	// TransferStatusFailed - The transfer terminated with a failure.
+	TransferStatusFailed TransferStatus = "Failed"
+	// TransferStatusPending - The transfer has been created on the donor side and is awaiting recipient action.
+	TransferStatusPending TransferStatus = "Pending"
+	// TransferStatusRejected - The recipient rejected the transfer.
+	TransferStatusRejected TransferStatus = "Rejected"
+)
+
+// PossibleTransferStatusValues returns the possible values for the TransferStatus const type.
+func PossibleTransferStatusValues() []TransferStatus {
+	return []TransferStatus{
+		TransferStatusAccepted,
+		TransferStatusCancelled,
+		TransferStatusCompleted,
+		TransferStatusExpired,
+		TransferStatusFailed,
+		TransferStatusPending,
+		TransferStatusRejected,
 	}
 }
 

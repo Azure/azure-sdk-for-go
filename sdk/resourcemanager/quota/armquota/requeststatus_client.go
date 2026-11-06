@@ -19,6 +19,8 @@ import (
 
 // RequestStatusClient contains the methods for the RequestStatus group.
 // Don't use this type directly, use NewRequestStatusClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type RequestStatusClient struct {
 	internal *arm.Client
 }
@@ -40,8 +42,6 @@ func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.Clie
 // Get - Get the quota request details and status by quota request ID for the resources of the resource provider at a specific
 // location. The quota request ID **id** is returned in the response of the PUT operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - options - RequestStatusClientGetOptions contains the optional parameters for the RequestStatusClient.Get method.
 func (client *RequestStatusClient) Get(ctx context.Context, id string, scope string, options *RequestStatusClientGetOptions) (RequestStatusClientGetResponse, error) {
 	var err error
@@ -57,12 +57,7 @@ func (client *RequestStatusClient) Get(ctx context.Context, id string, scope str
 	if err != nil {
 		return RequestStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RequestStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -81,15 +76,18 @@ func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (RequestStatusClientGetResponse, error) {
+func (client *RequestStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (RequestStatusClientGetResponse, error) {
 	result := RequestStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetails); err != nil {
 		return RequestStatusClientGetResponse{}, err
 	}
@@ -98,8 +96,6 @@ func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (Reque
 
 // NewListPager - For the specified scope, get the current quota requests for a one year period ending at the time is made.
 // Use the **oData** filter to select quota requests.
-//
-// Generated from API version 2025-09-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RequestStatusClientListOptions contains the optional parameters for the RequestStatusClient.NewListPager method.
 func (client *RequestStatusClient) NewListPager(scope string, options *RequestStatusClientListOptions) *runtime.Pager[RequestStatusClientListResponse] {
@@ -113,48 +109,62 @@ func (client *RequestStatusClient) NewListPager(scope string, options *RequestSt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return RequestStatusClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RequestStatusClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope string, options *RequestStatusClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope string, nextLink string, options *RequestStatusClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RequestStatusClient) listHandleResponse(resp *http.Response) (RequestStatusClientListResponse, error) {
+func (client *RequestStatusClient) listHandleResponse(resp *http.Response, successCodes ...int) (RequestStatusClientListResponse, error) {
 	result := RequestStatusClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetailsList); err != nil {
 		return RequestStatusClientListResponse{}, err
 	}

@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaSubscriptionAllocationClient contains the methods for the GroupQuotaSubscriptionAllocation group.
 // Don't use this type directly, use NewGroupQuotaSubscriptionAllocationClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaSubscriptionAllocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewGroupQuotaSubscriptionAllocationClient(subscriptionID string, credential
 // passed in $filter=resourceName eq {SKU}. This will include the GroupQuota and total quota allocated to the subscription.
 // Only the Group quota allocated to the subscription can be allocated back to the MG Group Quota.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -66,12 +66,7 @@ func (client *GroupQuotaSubscriptionAllocationClient) List(ctx context.Context, 
 	if err != nil {
 		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -102,15 +97,18 @@ func (client *GroupQuotaSubscriptionAllocationClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupQuotaSubscriptionAllocationClient) listHandleResponse(resp *http.Response) (GroupQuotaSubscriptionAllocationClientListResponse, error) {
+func (client *GroupQuotaSubscriptionAllocationClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionAllocationClientListResponse, error) {
 	result := GroupQuotaSubscriptionAllocationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaAllocationsList); err != nil {
 		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
 	}

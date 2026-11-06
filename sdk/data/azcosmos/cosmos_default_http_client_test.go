@@ -38,6 +38,7 @@ func TestDefaultCosmosHTTPClient_TransportSettings(t *testing.T) {
 	assert.True(t, transport.ForceAttemptHTTP2)
 	assert.Equal(t, 1000, transport.MaxIdleConns)
 	assert.Equal(t, 100, transport.MaxIdleConnsPerHost)
+	assert.Equal(t, 1000, transport.MaxConnsPerHost)
 	assert.Equal(t, 90*time.Second, transport.IdleConnTimeout)
 	assert.Equal(t, 10*time.Second, transport.TLSHandshakeTimeout)
 	assert.Equal(t, time.Second, transport.ExpectContinueTimeout)

@@ -17,7 +17,7 @@ import (
 // OperationsClient - Operations for Playwright service management.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2026-08-01-preview
 type OperationsClient struct {
 	internal *arm.Client
 }
@@ -79,7 +79,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

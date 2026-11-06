@@ -61,9 +61,10 @@ func TestListBlobsNilOptionsUseDefaultResponseFormat(t *testing.T) {
 		hierarchy *container.ListBlobsHierarchyOptions
 		wantArrow bool
 	}{
-		{"Nil", nil, nil, true},
-		{"Empty", &container.ListBlobsFlatOptions{}, &container.ListBlobsHierarchyOptions{}, true},
+		{"Nil", nil, nil, false},
+		{"Empty", &container.ListBlobsFlatOptions{}, &container.ListBlobsHierarchyOptions{}, false},
 		{"XML", &container.ListBlobsFlatOptions{ResponseFormat: container.StorageResponseFormatXML}, &container.ListBlobsHierarchyOptions{ResponseFormat: container.StorageResponseFormatXML}, false},
+		{"Arrow", &container.ListBlobsFlatOptions{ResponseFormat: container.StorageResponseFormatArrow}, &container.ListBlobsHierarchyOptions{ResponseFormat: container.StorageResponseFormatArrow}, true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			tr := &acceptTransport{}
@@ -79,15 +80,20 @@ func TestListBlobsNilOptionsUseDefaultResponseFormat(t *testing.T) {
 	}
 }
 
-// formatTransport answers list requests with one blob in Arrow format, or in XML format echoing
-// the request the way the service does.
+// formatTransport answers list requests with one blob the way an account that supports Arrow does:
+// in Arrow format when the request accepts it, otherwise in XML format echoing the request.
 type formatTransport struct {
-	t     *testing.T
-	arrow bool
+	t *testing.T
 }
 
 func (f *formatTransport) Do(req *http.Request) (*http.Response, error) {
-	if f.arrow {
+	acceptsArrow := false
+	for k, v := range req.Header {
+		if strings.EqualFold(k, "Accept") && strings.Contains(strings.Join(v, ","), "application/vnd.apache.arrow.stream") {
+			acceptsArrow = true
+		}
+	}
+	if acceptsArrow {
 		schema := arrow.NewSchema([]arrow.Field{{Name: "Name", Type: arrow.BinaryTypes.String}}, nil)
 		var buf bytes.Buffer
 		w := ipc.NewWriter(&buf, ipc.WithSchema(schema), ipc.WithAllocator(memory.DefaultAllocator))
@@ -111,23 +117,27 @@ func (f *formatTransport) Do(req *http.Request) (*http.Response, error) {
 	return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {"application/xml"}}, Body: io.NopCloser(strings.NewReader(body)), Request: req}, nil
 }
 
-// An Arrow listing reports the same container and request values as an XML listing. The service
-// endpoint isn't in an Arrow response and can't be derived reliably, so it stays nil.
+// The default listing is XML, so even on an account that supports Arrow it returns the service
+// endpoint, as it always has. An opted-in Arrow listing reports the same container and request
+// values as an XML listing. The service endpoint isn't in an Arrow response and can't be derived
+// reliably, so it stays nil there.
 func TestListBlobsArrowResponseReportsRequestValues(t *testing.T) {
-	list := func(t *testing.T, arrowFormat bool) (container.ListBlobsFlatResponse, container.ListBlobsHierarchyResponse) {
+	list := func(t *testing.T, format container.StorageResponseFormat) (container.ListBlobsFlatResponse, container.ListBlobsHierarchyResponse) {
 		c, err := container.NewClientWithNoCredential("https://account.blob.core.windows.net/container?sv=2026-12-06&sig=x", &container.ClientOptions{
-			ClientOptions: azcore.ClientOptions{Transport: &formatTransport{t: t, arrow: arrowFormat}, Retry: policy.RetryOptions{MaxRetries: -1}},
+			ClientOptions: azcore.ClientOptions{Transport: &formatTransport{t: t}, Retry: policy.RetryOptions{MaxRetries: -1}},
 		})
 		require.NoError(t, err)
-		flat, err := c.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5)}).NextPage(context.Background())
+		flat, err := c.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5), ResponseFormat: format}).NextPage(context.Background())
 		require.NoError(t, err)
-		hier, err := c.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5)}).NextPage(context.Background())
+		hier, err := c.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{Prefix: to.Ptr("p"), Marker: to.Ptr("m"), MaxResults: to.Ptr[int32](5), ResponseFormat: format}).NextPage(context.Background())
 		require.NoError(t, err)
 		return flat, hier
 	}
-	xmlFlat, xmlHier := list(t, false)
-	arrowFlat, arrowHier := list(t, true)
+	xmlFlat, xmlHier := list(t, container.StorageResponseFormatAuto)
+	arrowFlat, arrowHier := list(t, container.StorageResponseFormatArrow)
 
+	require.Equal(t, "https://account.blob.core.windows.net/", *xmlFlat.ServiceEndpoint, "the default listing keeps the service endpoint")
+	require.Equal(t, "https://account.blob.core.windows.net/", *xmlHier.ServiceEndpoint, "the default listing keeps the service endpoint")
 	require.Equal(t, "container", *arrowFlat.ContainerName)
 	require.Nil(t, arrowFlat.ServiceEndpoint)
 	require.Nil(t, arrowHier.ServiceEndpoint)
